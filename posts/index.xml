@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on karl</title>
+    <link>https://karlquinsland.com/posts/</link>
+    <description>Recent content in Posts on karl</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 27 Jun 2020 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://karlquinsland.com/posts/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Hello World</title>
+      <link>https://karlquinsland.com/2020/06/hello-world/</link>
+      <pubDate>Sat, 27 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://karlquinsland.com/2020/06/hello-world/</guid>
+      <description>Blowing the dust off the domain, trying Hugo out.
+tap tap Is this thing on?</description>
+    </item>
+    
+  </channel>
+</rss>
