@@ -2,21 +2,21 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on karl</title>
-    <link>https://blog.karlquinsland.com/tags/</link>
+    <link>https://karlquinsland.com/tags/</link>
     <description>Recent content in Tags on karl</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Sat, 27 Jun 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://blog.karlquinsland.com/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://karlquinsland.com/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>short-posts</title>
-      <link>https://blog.karlquinsland.com/tags/short-posts/</link>
+      <link>https://karlquinsland.com/tags/short-posts/</link>
       <pubDate>Sat, 27 Jun 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://blog.karlquinsland.com/tags/short-posts/</guid>
+      <guid>https://karlquinsland.com/tags/short-posts/</guid>
       <description></description>
     </item>
     
