@@ -21,5 +21,15 @@
 tap tap Is this thing on?</description>
     </item>
     
+    <item>
+      <title>home lab: consolidating multiple PSUs</title>
+      <link>https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/</link>
+      <pubDate>Sat, 27 Jun 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/</guid>
+      <description>A while back, I traded writing salt states and managing systemd .service files wrapping podman for the &amp;lsquo;simplicity&amp;rsquo; of running kubernetes in my home lab. Jury is still out on weather or not the switch was worth it.
+The cluster is a hodgepodge of second hand Intel NUCs and other scavenged compute hardware i&amp;rsquo;ve collected over the past few years. Some of it runs on 12v, some of it on 19v.</description>
+    </item>
+    
   </channel>
 </rss>
