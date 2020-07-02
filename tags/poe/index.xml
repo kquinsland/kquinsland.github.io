@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>posts on karl</title>
-    <link>https://karlquinsland.com/categories/posts/</link>
-    <description>Recent content in posts on karl</description>
+    <title>PoE on karl</title>
+    <link>https://karlquinsland.com/tags/poe/</link>
+    <description>Recent content in PoE on karl</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 01 Jul 2020 00:00:00 +0000</lastBuildDate>
     
-	<atom:link href="https://karlquinsland.com/categories/posts/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://karlquinsland.com/tags/poe/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
@@ -19,16 +19,6 @@
       <guid>https://karlquinsland.com/2020/07/poe-at-a-distance-caused-terrible-cat5-speeds/</guid>
       <description>This is a quick post for made in the hopes that some poor soul in the future will find it and save themselves some time.
 Background I&amp;rsquo;ve been experimenting with a few different ways to surface various home automation controls in the appropriate place and at a good time. One prototype host is deployed behind a small LCD under some cabinets in a high traffic area. This host is a raspberry pi 4 with a PoE hat.</description>
-    </item>
-    
-    <item>
-      <title>Hello World</title>
-      <link>https://karlquinsland.com/2020/06/hello-world/</link>
-      <pubDate>Sat, 27 Jun 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://karlquinsland.com/2020/06/hello-world/</guid>
-      <description>Blowing the dust off the domain, trying Hugo out.
-tap tap Is this thing on?</description>
     </item>
     
   </channel>

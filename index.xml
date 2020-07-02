@@ -6,10 +6,20 @@
     <description>Recent content on karl</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 27 Jun 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 01 Jul 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://karlquinsland.com/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>PoE at a distance caused terrible cat5 speeds</title>
+      <link>https://karlquinsland.com/2020/07/poe-at-a-distance-caused-terrible-cat5-speeds/</link>
+      <pubDate>Wed, 01 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://karlquinsland.com/2020/07/poe-at-a-distance-caused-terrible-cat5-speeds/</guid>
+      <description>This is a quick post for made in the hopes that some poor soul in the future will find it and save themselves some time.
+Background I&amp;rsquo;ve been experimenting with a few different ways to surface various home automation controls in the appropriate place and at a good time. One prototype host is deployed behind a small LCD under some cabinets in a high traffic area. This host is a raspberry pi 4 with a PoE hat.</description>
+    </item>
     
     <item>
       <title>Hello World</title>
