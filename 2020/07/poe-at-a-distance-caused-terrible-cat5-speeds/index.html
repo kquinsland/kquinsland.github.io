@@ -172,7 +172,7 @@
 </ul>
 <p>I was <em>confident</em> then, that the rPi was not the issue and that something about the network was. But I just spent 3 hours systematically testing out every component of the network and concluding that the network is fine!</p>
 <p><strong>Conclusion</strong>: I&rsquo;m back where I started; angry and confused.</p>
-<p>The &ldquo;ah ha!&rdquo; moment didn&rsquo;t come until i decided to try my second PoE injector <em>at the client</em>. Much to my sunrise, <strong>it worked!</strong>.</p>
+<p>The &ldquo;ah ha!&rdquo; moment didn&rsquo;t come until i decided to try my second PoE injector <em>at the client</em>. Much to my surprise, <strong>it worked!</strong>.</p>
 <p>After a bit more testing, I determined that the PoE HAT on the rPi is &lsquo;fine&rsquo; when the PoE source is CLOSE&hellip; which probably explains the &lsquo;works fine on other networks&rsquo; fact above.</p>
 <p>That leaves just the &lsquo;problem is OS independent&rsquo; fact which - after thoroughly vetting every part of the network and PoE system - makes it pretty obvious that the problem must be between the rPi and the cat5 cable coming from the wall. There&rsquo;s <em>only</em> the PoE HAT between the rPi and the cat5 cable coming from the wall. I borrowed a PoE HAT from another host elsewhere on the network and the problematic rPi started behaving again. Network transfer speeds were appropriate and the web app / dashboard was performant again!</p>
 <p><strong>Conclusion</strong>: the PoE HAT powering a home automation dashboard has failed in such a way that makes the <code>eth0</code> interface all but useless. replacing the HAT solved the problem.</p>

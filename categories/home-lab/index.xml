@@ -17,8 +17,233 @@
       <pubDate>Sat, 27 Jun 2020 00:00:00 +0000</pubDate>
       
       <guid>https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/</guid>
-      <description>A while back, I traded writing salt states and managing systemd .service files wrapping podman for the &amp;lsquo;simplicity&amp;rsquo; of running kubernetes in my home lab. Jury is still out on weather or not the switch was worth it.
-The cluster is a hodgepodge of second hand Intel NUCs and other scavenged compute hardware i&amp;rsquo;ve collected over the past few years. Some of it runs on 12v, some of it on 19v.</description>
+      <description>&lt;p&gt;A while back, I traded writing salt states and managing systemd &lt;code&gt;.service&lt;/code&gt; files wrapping &lt;code&gt;podman&lt;/code&gt; for the &lt;a href=&#34;https://www.youtube.com/watch?v=9wvEwPLcLcA&#34;&gt;&amp;lsquo;simplicity&amp;rsquo;&lt;/a&gt; of running kubernetes in my home lab. Jury is still out on weather or not the switch was worth it.&lt;/p&gt;
+&lt;p&gt;The cluster is a hodgepodge of second hand Intel NUCs and other scavenged compute hardware i&amp;rsquo;ve collected over the past few years. Some of it runs on 12v, some of it on 19v. For each node, there&amp;rsquo;s a dedicated switch mode power supply. Each supply takes up an outlet and brings a bit of cable mgmt related clutter. The solution is consolidation.&lt;/p&gt;
+&lt;p&gt;So thats how this project came to be.&lt;/p&gt;
+&lt;h2 id=&#34;what&#34;&gt;What&lt;/h2&gt;
+&lt;p&gt;A set of 3d printable parts to compactly combine two LRS-350 PSUs into a compact unit with optional voltage and current displays.&lt;/p&gt;
+&lt;p&gt;The details are on the &lt;a href=&#34;https://www.thingiverse.com/thing:4504948&#34;&gt;thingiverse&lt;/a&gt; and &lt;a href=&#34;https://www.prusaprinters.org/prints/35514-dual-mean-well-lrs-350-psu&#34;&gt;prusaprinters&lt;/a&gt; page.&lt;/p&gt;
+&lt;h2 id=&#34;files&#34;&gt;Files&lt;/h2&gt;
+&lt;p&gt;For archive / posterity, all source files are included here. All files are licensed as &lt;a href=&#34;https://creativecommons.org/licenses/by-nc-sa/4.0/&#34;&gt;Creative Commons Attribution-NonCommercial-ShareAlike&lt;/a&gt; (CC BY-NC-SA).&lt;/p&gt;
+&lt;ul&gt;
+    
+    &lt;li&gt;
+        
+
+            
+            
+        
+            &lt;figure&gt;
+                &lt;a target=&#34;_blank&#34; href=&#34;https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/images/built.jpg&#34;&gt;
+                    &lt;img style=&#34;width: auto; height: auto;&#34; src=&#34;https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/images/built_hue8f36c4f699ca512381ec1ecdae0f96e_1394325_300x0_resize_q75_box.jpg&#34; width=&#34;300&#34; height=&#34;189&#34;&gt;
+                &lt;/a&gt;
+                
+                &lt;figcaption&gt;
+                    &lt;small&gt;Fully Assembled; ignore the messy workbench&lt;/small&gt;
+                &lt;/figcaption&gt;
+                
+            &lt;/figure&gt;
+
+        
+    &lt;/li&gt;
+    
+    &lt;li&gt;
+        
+
+            
+            
+        
+            &lt;figure&gt;
+                &lt;a target=&#34;_blank&#34; href=&#34;https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/images/cad-back.jpg&#34;&gt;
+                    &lt;img style=&#34;width: auto; height: auto;&#34; src=&#34;https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/images/cad-back_hu9cc2ce5e929a14998f22cb542d786aa7_342135_300x0_resize_q75_box.jpg&#34; width=&#34;300&#34; height=&#34;215&#34;&gt;
+                &lt;/a&gt;
+                
+                &lt;figcaption&gt;
+                    &lt;small&gt;component view, from rear&lt;/small&gt;
+                &lt;/figcaption&gt;
+                
+            &lt;/figure&gt;
+
+        
+    &lt;/li&gt;
+    
+    &lt;li&gt;
+        
+
+            
+            
+        
+            &lt;figure&gt;
+                &lt;a target=&#34;_blank&#34; href=&#34;https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/images/cad-front.jpg&#34;&gt;
+                    &lt;img style=&#34;width: auto; height: auto;&#34; src=&#34;https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/images/cad-front_hue2810dd6e158cf3715e15de998852c44_365005_300x0_resize_q75_box.jpg&#34; width=&#34;300&#34; height=&#34;220&#34;&gt;
+                &lt;/a&gt;
+                
+                &lt;figcaption&gt;
+                    &lt;small&gt;component view, from front&lt;/small&gt;
+                &lt;/figcaption&gt;
+                
+            &lt;/figure&gt;
+
+        
+    &lt;/li&gt;
+    
+    &lt;li&gt;
+        
+
+            
+            
+        
+            &lt;figure&gt;
+                &lt;a target=&#34;_blank&#34; href=&#34;https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/images/core.jpg&#34;&gt;
+                    &lt;img style=&#34;width: auto; height: auto;&#34; src=&#34;https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/images/core_hue43f3402df27eedd99dff8c904086e8c_310336_300x0_resize_q75_box.jpg&#34; width=&#34;300&#34; height=&#34;219&#34;&gt;
+                &lt;/a&gt;
+                
+                &lt;figcaption&gt;
+                    &lt;small&gt;Print Bed arrangement, green is support structures&lt;/small&gt;
+                &lt;/figcaption&gt;
+                
+            &lt;/figure&gt;
+
+        
+    &lt;/li&gt;
+    
+    &lt;li&gt;
+        
+
+            
+            
+        
+            &lt;figure&gt;
+                &lt;a target=&#34;_blank&#34; href=&#34;https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/images/meter-panel.jpg&#34;&gt;
+                    &lt;img style=&#34;width: auto; height: auto;&#34; src=&#34;https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/images/meter-panel_hu546d99e5993001046c71e4a3333af77d_135643_300x0_resize_q75_box.jpg&#34; width=&#34;300&#34; height=&#34;267&#34;&gt;
+                &lt;/a&gt;
+                
+                &lt;figcaption&gt;
+                    &lt;small&gt;meter panel print orientation&lt;/small&gt;
+                &lt;/figcaption&gt;
+                
+            &lt;/figure&gt;
+
+        
+    &lt;/li&gt;
+    
+    &lt;li&gt;
+        
+            &lt;a target=&#34;_blank&#34; href=&#34;https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/models/2x-lrs-psu.f3z&#34;&gt;
+                &lt;i class=&#34;far fa-file-archive&#34;&gt;&lt;/i&gt;
+                Consolidated PSU CAD:
+                
+                &lt;small style=&#34;font-family:&#39;Lucida Console&#39;, monospace&#34;&gt;f3z&lt;/small&gt; &lt;small&gt;file&lt;/small&gt;
+                
+                
+                &lt;br&gt;
+                &lt;small&gt;Fusion360 Archive&lt;/small&gt;
+                
+            &lt;/a&gt;
+        
+    &lt;/li&gt;
+    
+    &lt;li&gt;
+        
+            &lt;a target=&#34;_blank&#34; href=&#34;https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/models/box.stl&#34;&gt;
+                &lt;i class=&#34;far fa-file-code&#34;&gt;&lt;/i&gt;
+                Box:
+                
+                &lt;small style=&#34;font-family:&#39;Lucida Console&#39;, monospace&#34;&gt;stl&lt;/small&gt; &lt;small&gt;file&lt;/small&gt;
+                
+                
+            &lt;/a&gt;
+        
+    &lt;/li&gt;
+    
+    &lt;li&gt;
+        
+            &lt;a target=&#34;_blank&#34; href=&#34;https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/models/brace.stl&#34;&gt;
+                &lt;i class=&#34;far fa-file-code&#34;&gt;&lt;/i&gt;
+                Brace:
+                
+                &lt;small style=&#34;font-family:&#39;Lucida Console&#39;, monospace&#34;&gt;stl&lt;/small&gt; &lt;small&gt;file&lt;/small&gt;
+                
+                
+            &lt;/a&gt;
+        
+    &lt;/li&gt;
+    
+    &lt;li&gt;
+        
+            &lt;a target=&#34;_blank&#34; href=&#34;https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/models/core.3mf&#34;&gt;
+                &lt;i class=&#34;far fa-file-archive&#34;&gt;&lt;/i&gt;
+                Core Components:
+                
+                &lt;small style=&#34;font-family:&#39;Lucida Console&#39;, monospace&#34;&gt;3mf&lt;/small&gt; &lt;small&gt;file&lt;/small&gt;
+                
+                
+            &lt;/a&gt;
+        
+    &lt;/li&gt;
+    
+    &lt;li&gt;
+        
+            &lt;a target=&#34;_blank&#34; href=&#34;https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/models/lid.stl&#34;&gt;
+                &lt;i class=&#34;far fa-file-code&#34;&gt;&lt;/i&gt;
+                Lid:
+                
+                &lt;small style=&#34;font-family:&#39;Lucida Console&#39;, monospace&#34;&gt;stl&lt;/small&gt; &lt;small&gt;file&lt;/small&gt;
+                
+                
+            &lt;/a&gt;
+        
+    &lt;/li&gt;
+    
+    &lt;li&gt;
+        
+            &lt;a target=&#34;_blank&#34; href=&#34;https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/models/meter-panel.3mf&#34;&gt;
+                &lt;i class=&#34;far fa-file-archive&#34;&gt;&lt;/i&gt;
+                (Optional) Meter Panel:
+                
+                &lt;small style=&#34;font-family:&#39;Lucida Console&#39;, monospace&#34;&gt;3mf&lt;/small&gt; &lt;small&gt;file&lt;/small&gt;
+                
+                
+            &lt;/a&gt;
+        
+    &lt;/li&gt;
+    
+    &lt;li&gt;
+        
+            &lt;a target=&#34;_blank&#34; href=&#34;https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/models/meter-panel.stl&#34;&gt;
+                &lt;i class=&#34;far fa-file-code&#34;&gt;&lt;/i&gt;
+                (Optional) Meter Panel:
+                
+                &lt;small style=&#34;font-family:&#39;Lucida Console&#39;, monospace&#34;&gt;stl&lt;/small&gt; &lt;small&gt;file&lt;/small&gt;
+                
+                
+            &lt;/a&gt;
+        
+    &lt;/li&gt;
+    
+    &lt;li&gt;
+        
+
+            
+            
+        
+            &lt;figure&gt;
+                &lt;a target=&#34;_blank&#34; href=&#34;https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/images/meter-panel-slice.jpg&#34;&gt;
+                    &lt;img style=&#34;width: auto; height: auto;&#34; src=&#34;https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/images/meter-panel-slice_hu512c49ce3497e3dea530288ed57cb214_547680_300x0_resize_q75_box.jpg&#34; width=&#34;300&#34; height=&#34;255&#34;&gt;
+                &lt;/a&gt;
+                
+                &lt;figcaption&gt;
+                    &lt;small&gt;using slic3r too remove the second meter cutout&lt;/small&gt;
+                &lt;/figcaption&gt;
+                
+            &lt;/figure&gt;
+
+        
+    &lt;/li&gt;
+    
+&lt;/ul&gt;
+
+</description> 
     </item>
     
   </channel>
