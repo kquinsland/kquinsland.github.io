@@ -19,6 +19,7 @@
       <guid>https://karlquinsland.com/2020/07/electronics-lab-enhanced-psu/</guid>
       <description>&lt;p&gt;While doing the PoE related testing for &lt;a href=&#34;https://karlquinsland.com/2020/07/poe-at-a-distance-caused-terrible-cat5-speeds/&#34;&gt;this&lt;/a&gt; incident, it occurred to me that I never got around to sharing the files for a small modification to the popular RD6006 PSU.&lt;/p&gt;
 &lt;p&gt;While drafting this post, I discovered that there appears to be a newer version of the RD6006: the 6012. As far as I can tell, they&amp;rsquo;re in the same &amp;lsquo;family&amp;rsquo; and have the same dimensions so the CAD and related model files below &lt;em&gt;should&lt;/em&gt; work w/ the RD6012 just as they do w/ the 6006, but i can only &amp;lsquo;guarantee&amp;rsquo; that the CAD and related model files below will work with the &lt;a href=&#34;https://hackaday.com/tag/riden-rd6006/&#34;&gt;RD6006&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;A version of this post appears on &lt;a href=&#34;https://www.prusaprinters.org/prints/36338-poe-and-qc30-adapter-for-rd6006-psu&#34;&gt;prusaprinters&lt;/a&gt; and &lt;a href=&#34;https://www.thingiverse.com/thing:4536551&#34;&gt;thingiverse&lt;/a&gt;&lt;/p&gt;
 &lt;h2 id=&#34;what&#34;&gt;What&lt;/h2&gt;
 &lt;p&gt;A small enclosure for a PoE injector and QC 3.0 charger designed to sit on top of the RD6012 PSU &amp;lsquo;kit&amp;rsquo; sold all over aliexpress and banggood.&lt;/p&gt;
 &lt;p&gt;Assembled, it looks like this:&lt;/p&gt;
