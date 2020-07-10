@@ -4,16 +4,46 @@
   
   <url>
     <loc>https://karlquinsland.com/categories/</loc>
-    <lastmod>2020-07-01T00:00:00+00:00</lastmod>
+    <lastmod>2020-07-09T00:00:00+00:00</lastmod>
   </url>
   
   <url>
-    <loc>https://karlquinsland.com/tags/home-automation/</loc>
-    <lastmod>2020-07-01T00:00:00+00:00</lastmod>
+    <loc>https://karlquinsland.com/2020/07/electronics-lab-enhanced-psu/</loc>
+    <lastmod>2020-07-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://karlquinsland.com/categories/electronics-lab/</loc>
+    <lastmod>2020-07-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://karlquinsland.com/tags/fusion-360/</loc>
+    <lastmod>2020-07-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://karlquinsland.com/tags/hasdownload/</loc>
+    <lastmod>2020-07-09T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://karlquinsland.com/</loc>
+    <lastmod>2020-07-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://karlquinsland.com/posts/</loc>
+    <lastmod>2020-07-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://karlquinsland.com/tags/</loc>
+    <lastmod>2020-07-09T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://karlquinsland.com/tags/home-automation/</loc>
     <lastmod>2020-07-01T00:00:00+00:00</lastmod>
   </url>
   
@@ -24,11 +54,6 @@
   
   <url>
     <loc>https://karlquinsland.com/2020/07/poe-at-a-distance-caused-terrible-cat5-speeds/</loc>
-    <lastmod>2020-07-01T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://karlquinsland.com/posts/</loc>
     <lastmod>2020-07-01T00:00:00+00:00</lastmod>
   </url>
   
@@ -48,23 +73,8 @@
   </url>
   
   <url>
-    <loc>https://karlquinsland.com/tags/</loc>
-    <lastmod>2020-07-01T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://karlquinsland.com/categories/troubleshooting/</loc>
     <lastmod>2020-07-01T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://karlquinsland.com/tags/fusion-360/</loc>
-    <lastmod>2020-06-27T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://karlquinsland.com/tags/hasdownload/</loc>
-    <lastmod>2020-06-27T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -74,6 +84,11 @@
   
   <url>
     <loc>https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/</loc>
+    <lastmod>2020-06-27T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://karlquinsland.com/2020/06/home-lab-mini-universal-patch-panel/</loc>
     <lastmod>2020-06-27T00:00:00+00:00</lastmod>
   </url>
   
