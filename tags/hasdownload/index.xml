@@ -1,685 +1,349 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
-  <channel>
-    <title>has:download on karl</title>
-    <link>https://karlquinsland.com/tags/hasdownload/</link>
-    <description>Recent content in has:download on karl</description>
-    <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language>
-    <lastBuildDate>Thu, 09 Jul 2020 00:00:00 +0000</lastBuildDate>
-    
-	<atom:link href="https://karlquinsland.com/tags/hasdownload/index.xml" rel="self" type="application/rss+xml" />
-    
-    
-    <item>
-      <title>electronics lab: enhanced psu</title>
-      <link>https://karlquinsland.com/2020/07/electronics-lab-enhanced-psu/</link>
-      <pubDate>Thu, 09 Jul 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://karlquinsland.com/2020/07/electronics-lab-enhanced-psu/</guid>
-      <description>&lt;p&gt;While doing the PoE related testing for &lt;a href=&#34;https://karlquinsland.com/2020/07/poe-at-a-distance-caused-terrible-cat5-speeds/&#34;&gt;this&lt;/a&gt; incident, it occurred to me that I never got around to sharing the files for a small modification to the popular RD6006 PSU.&lt;/p&gt;
-&lt;p&gt;While drafting this post, I discovered that there appears to be a newer version of the RD6006: the 6012. As far as I can tell, they&amp;rsquo;re in the same &amp;lsquo;family&amp;rsquo; and have the same dimensions so the CAD and related model files below &lt;em&gt;should&lt;/em&gt; work w/ the RD6012 just as they do w/ the 6006, but i can only &amp;lsquo;guarantee&amp;rsquo; that the CAD and related model files below will work with the &lt;a href=&#34;https://hackaday.com/tag/riden-rd6006/&#34;&gt;RD6006&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;A version of this post appears on &lt;a href=&#34;https://www.prusaprinters.org/prints/36338-poe-and-qc30-adapter-for-rd6006-psu&#34;&gt;prusaprinters&lt;/a&gt; and &lt;a href=&#34;https://www.thingiverse.com/thing:4536551&#34;&gt;thingiverse&lt;/a&gt;&lt;/p&gt;
-&lt;h2 id=&#34;what&#34;&gt;What&lt;/h2&gt;
-&lt;p&gt;A small enclosure for a PoE injector and QC 3.0 charger designed to sit on top of the RD6012 PSU &amp;lsquo;kit&amp;rsquo; sold all over aliexpress and banggood.&lt;/p&gt;
-&lt;p&gt;Assembled, it looks like this:&lt;/p&gt;
-&lt;figure &gt;
-
-    
-        &lt;img src=&#34;https://karlquinsland.com/2020/07/electronics-lab-enhanced-psu/images/rd6012-assembled.jpg&#34; alt=&#34;picture of assembled DR60 series PSU&#34; /&gt;
-    
-
-    
-
-    &lt;figcaption&gt;
-        
-        &lt;p&gt;
-        As seen on AliExpress
-        
-            
-        
-        &lt;/p&gt; 
-    &lt;/figcaption&gt;
-    
-&lt;/figure&gt;
-
-
-&lt;p&gt;The RD6006 is incredibly versatile, but can only supply power for about 85% of the devices that make their way onto my &amp;lsquo;healing&amp;rsquo; bench. I wasn&amp;rsquo;t keen on taking up more valuable space with a device dedicated to PoE injection so finding a way to mod one into the PSU seemed like a good idea. Similarly, adding a versatile USB port seemed like a no-brainer as my &lt;a href=&#34;http://www.miniware.com.cn/product/ts80-soldering-iron-more/&#34;&gt;favorite soldering iron&lt;/a&gt; is powered via QuickCharge 3.&lt;/p&gt;
-&lt;p&gt;Three useful bench tools, one footprint, one consumed power outlet. What&amp;rsquo;s not to love?&lt;/p&gt;
-&lt;h2 id=&#34;printing&#34;&gt;Printing:&lt;/h2&gt;
-&lt;p&gt;There are two components for this build:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;the &amp;lsquo;plate&amp;rsquo; which rests on the top of the PSU case and has small &amp;lsquo;fences&amp;rsquo; to fix the circuit boards in place. It&amp;rsquo;s the &amp;lsquo;salmon&amp;rsquo; colored component&lt;/li&gt;
-&lt;li&gt;the &amp;lsquo;lid&amp;rsquo; is the (mostly) transparent yellow component which holds the auxiliary power supplies (pink components) in place and keeps all voltages away from people.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;figure &gt;
-
-    
-        &lt;img src=&#34;https://karlquinsland.com/2020/07/electronics-lab-enhanced-psu/images/plate_and_lid.jpg&#34; alt=&#34;picture of assembled components, colored&#34; /&gt;
-    
-
-    
-
-    &lt;figcaption&gt;
-        
-            &lt;h4&gt;Colorized Components&lt;/h4&gt;
-        
-        &lt;p&gt;
-        Relevant components, colored in F360
-        
-            
-        
-        &lt;/p&gt; 
-    &lt;/figcaption&gt;
-    
-&lt;/figure&gt;
-
-
-&lt;p&gt;I used black PETG, but any material and at least 10% infill should be fine. Tune the layer height to taste.&lt;/p&gt;
-&lt;p&gt;The &amp;lsquo;plate&amp;rsquo; does not need any supports nor does the lid if printed in the suggested print orientation shown below 👇. I printed with settings optimized for speed so there was minimal sagging, but nothing substantial. What little there was didn&amp;rsquo;t interfere with clearance of any other internal component and was completely hidden.&lt;/p&gt;
-&lt;p&gt;If you&amp;rsquo;re not comfortable with bridging long distances, you can optionally enforce support material from the build plate to the top of the lid &lt;strong&gt;or&lt;/strong&gt; flip the lid upside down and use supports for the four feet where the screws go. Because any sagging would be hidden inside,&lt;/p&gt;
-&lt;figure &gt;
-
-    
-        &lt;img src=&#34;https://karlquinsland.com/2020/07/electronics-lab-enhanced-psu/images/print_orientation.jpg&#34; alt=&#34;picture of components arranged on print bed&#34; /&gt;
-    
-
-    
-
-    &lt;figcaption&gt;
-        
-        &lt;p&gt;
-        suggested print orientation
-        
-            
-        
-        &lt;/p&gt; 
-    &lt;/figcaption&gt;
-    
-&lt;/figure&gt;
-
-
-&lt;h2 id=&#34;components&#34;&gt;Components&lt;/h2&gt;
-&lt;p&gt;In addition to the miscellaneous wire and crimp connectors, there are two components used in this design:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.aliexpress.com/item/33019891423.html&#34;&gt;PoE injector&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://www.amazon.com/gp/product/B07Y9HP4KM/&#34;&gt;QC 3.0 Charger&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id=&#34;assembly&#34;&gt;Assembly&lt;/h2&gt;
-&lt;p&gt;I don&amp;rsquo;t have any pictures from the assembly 😞, but it&amp;rsquo;s not particularly difficult to figure out from the attached pictures. In general, the steps to take are:&lt;/p&gt;
-&lt;ol start=&#34;0&#34;&gt;
-&lt;li&gt;Print everything and clean up the parts as needed&lt;/li&gt;
-&lt;li&gt;de-shell the PoE injector and QC3 charger. A plastic pry-tool or a few flat-head screwdrivers will help here!&lt;/li&gt;
-&lt;li&gt;desolder the existing mains connections from both modules and solder on new ones. The new ones don&amp;rsquo;t need to be long, just a bit longer than the leads that came on the module PCBs!&lt;/li&gt;
-&lt;li&gt;disconnect power from the assembled PSU and remove the case cover&lt;/li&gt;
-&lt;li&gt;place the &amp;lsquo;plate&amp;rsquo; onto the top of the PSU and use a pencil to mark all 5 holes on the cover&lt;/li&gt;
-&lt;li&gt;remove the plate, drill out all 5 holes and use a file to smooth down any sharp edges on the big hole as that&amp;rsquo;s where the mains wires will go. A burr poking through insulation means the case may become energized @ mains voltages! 💥 💀&lt;/li&gt;
-&lt;li&gt;crimp connectors onto wires and attach to the mains supply &lt;strong&gt;after&lt;/strong&gt; the switch and fuse!&lt;/li&gt;
-&lt;li&gt;place the &amp;lsquo;plate&amp;rsquo; back onto the PSU cover&lt;/li&gt;
-&lt;li&gt;run the wires through the new hole in the top of the PSU case and through the hole in the &amp;lsquo;plate&amp;rsquo;&lt;/li&gt;
-&lt;li&gt;add the PoE injector and QC3 module to the plate&lt;/li&gt;
-&lt;li&gt;join the mains leads to the module leads. I used &lt;a href=&#34;https://www.amazon.com/Wago-221-413-LEVER-NUTS-Conductor-Connectors/dp/B06XGYXVXR/&#34;&gt;Wago&lt;/a&gt; connectors, but simple wirenuts or a screw terminal block will work.&lt;/li&gt;
-&lt;li&gt;Use M3 screws to secure the lid to the plate and the PSU. I intentionally drilled the holes slightly too small so the screws would thread against the case. Not ideal, but works absolutely fine for something that&amp;rsquo;s not load-bearing or going to be repeatedly re-screwed.&lt;/li&gt;
-&lt;li&gt;re-connect the IEC power connector and power on&lt;/li&gt;
-&lt;li&gt;monitor for sounds and smells that indicate you screwed up. begin testing PoE and USB port for proper power.&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;Just prior to seating the &amp;lsquo;lid&amp;rsquo; you should have something like this:&lt;/p&gt;
-&lt;figure &gt;
-
-    
-        &lt;img src=&#34;https://karlquinsland.com/2020/07/electronics-lab-enhanced-psu/images/cover-and-screws-off.jpg&#34; alt=&#34;picture of auxiliary PSUs seated and wired&#34; /&gt;
-    
-
-    
-
-    &lt;figcaption&gt;
-        
-        &lt;p&gt;
-        components seated and wired
-        
-            
-        
-        &lt;/p&gt; 
-    &lt;/figcaption&gt;
-    
-&lt;/figure&gt;
-
-
-&lt;p&gt;When all said and done, you&amp;rsquo;ll get this:&lt;/p&gt;
-&lt;figure &gt;
-
-    
-        &lt;img src=&#34;https://karlquinsland.com/2020/07/electronics-lab-enhanced-psu/images/modded-assembled.jpg&#34; alt=&#34;picture of plate and lid attached to PSU&#34; /&gt;
-    
-
-    
-
-    &lt;figcaption&gt;
-        
-        &lt;p&gt;
-        everything assembled and powered up
-        
-            
-        
-        &lt;/p&gt; 
-    &lt;/figcaption&gt;
-    
-&lt;/figure&gt;
-
-
-&lt;h2 id=&#34;files&#34;&gt;Files&lt;/h2&gt;
-&lt;p&gt;The f360 file is&amp;hellip; a mess. I&amp;rsquo;m not going to share it here. Contact me if you really want it. The &lt;code&gt;stl&lt;/code&gt; and &lt;code&gt;3mf&lt;/code&gt; files are below, though. As you can tell from the initials and date, this project was &amp;lsquo;completed&amp;rsquo; awhile ago.&lt;/p&gt;
-&lt;p&gt;For archive / posterity, all source files are included here. All files are licensed as &lt;a href=&#34;https://creativecommons.org/licenses/by-nc-sa/4.0/&#34;&gt;Creative Commons Attribution-NonCommercial-ShareAlike&lt;/a&gt; (CC BY-NC-SA).&lt;/p&gt;
-&lt;ul&gt;
-    
-    &lt;li&gt;
-        
-
-            
-            
-        
-            &lt;figure&gt;
-                &lt;a target=&#34;_blank&#34; href=&#34;https://karlquinsland.com/2020/07/electronics-lab-enhanced-psu/images/modded-assembled.jpg&#34;&gt;
-                    &lt;img style=&#34;width: auto; height: auto;&#34; src=&#34;https://karlquinsland.com/2020/07/electronics-lab-enhanced-psu/images/modded-assembled_hu5e0638bd999b700992e2199b07155936_1574650_300x0_resize_q75_box.jpg&#34; width=&#34;300&#34; height=&#34;226&#34;&gt;
-                &lt;/a&gt;
-                
-                &lt;figcaption&gt;
-                    &lt;small&gt;everything assembled and powered up&lt;/small&gt;
-                &lt;/figcaption&gt;
-                
-            &lt;/figure&gt;
-
-        
-    &lt;/li&gt;
-    
-    &lt;li&gt;
-        
-
-            
-            
-        
-            &lt;figure&gt;
-                &lt;a target=&#34;_blank&#34; href=&#34;https://karlquinsland.com/2020/07/electronics-lab-enhanced-psu/images/plate_and_lid.jpg&#34;&gt;
-                    &lt;img style=&#34;width: auto; height: auto;&#34; src=&#34;https://karlquinsland.com/2020/07/electronics-lab-enhanced-psu/images/plate_and_lid_hu7df47cce6e64ee651dfc4aee7a2b6320_100047_300x0_resize_q75_box.jpg&#34; width=&#34;300&#34; height=&#34;224&#34;&gt;
-                &lt;/a&gt;
-                
-                &lt;figcaption&gt;
-                    &lt;small&gt;Relevant components, colored in F360&lt;/small&gt;
-                &lt;/figcaption&gt;
-                
-            &lt;/figure&gt;
-
-        
-    &lt;/li&gt;
-    
-    &lt;li&gt;
-        
-            &lt;a target=&#34;_blank&#34; href=&#34;https://karlquinsland.com/2020/07/electronics-lab-enhanced-psu/models/combined.3mf&#34;&gt;
-                &lt;i class=&#34;far fa-file-archive&#34;&gt;&lt;/i&gt;
-                models/combined.3mf:
-                
-                &lt;small style=&#34;font-family:&#39;Lucida Console&#39;, monospace&#34;&gt;3mf&lt;/small&gt; &lt;small&gt;file&lt;/small&gt;
-                
-                
-            &lt;/a&gt;
-        
-    &lt;/li&gt;
-    
-    &lt;li&gt;
-        
-            &lt;a target=&#34;_blank&#34; href=&#34;https://karlquinsland.com/2020/07/electronics-lab-enhanced-psu/models/lid.stl&#34;&gt;
-                &lt;i class=&#34;far fa-file-code&#34;&gt;&lt;/i&gt;
-                models/lid.stl:
-                
-                &lt;small style=&#34;font-family:&#39;Lucida Console&#39;, monospace&#34;&gt;stl&lt;/small&gt; &lt;small&gt;file&lt;/small&gt;
-                
-                
-            &lt;/a&gt;
-        
-    &lt;/li&gt;
-    
-    &lt;li&gt;
-        
-            &lt;a target=&#34;_blank&#34; href=&#34;https://karlquinsland.com/2020/07/electronics-lab-enhanced-psu/models/plate.stl&#34;&gt;
-                &lt;i class=&#34;far fa-file-code&#34;&gt;&lt;/i&gt;
-                models/plate.stl:
-                
-                &lt;small style=&#34;font-family:&#39;Lucida Console&#39;, monospace&#34;&gt;stl&lt;/small&gt; &lt;small&gt;file&lt;/small&gt;
-                
-                
-            &lt;/a&gt;
-        
-    &lt;/li&gt;
-    
-    &lt;li&gt;
-        
-
-            
-            
-        
-            &lt;figure&gt;
-                &lt;a target=&#34;_blank&#34; href=&#34;https://karlquinsland.com/2020/07/electronics-lab-enhanced-psu/images/cover-and-screws-off.jpg&#34;&gt;
-                    &lt;img style=&#34;width: auto; height: auto;&#34; src=&#34;https://karlquinsland.com/2020/07/electronics-lab-enhanced-psu/images/cover-and-screws-off_hu3f72322543fc63d58d9c086dc73ec59d_2108898_300x0_resize_q75_box.jpg&#34; width=&#34;300&#34; height=&#34;192&#34;&gt;
-                &lt;/a&gt;
-                
-                &lt;figcaption&gt;
-                    &lt;small&gt;components seated and wired&lt;/small&gt;
-                &lt;/figcaption&gt;
-                
-            &lt;/figure&gt;
-
-        
-    &lt;/li&gt;
-    
-    &lt;li&gt;
-        
-
-            
-            
-        
-            &lt;figure&gt;
-                &lt;a target=&#34;_blank&#34; href=&#34;https://karlquinsland.com/2020/07/electronics-lab-enhanced-psu/images/print_orientation.jpg&#34;&gt;
-                    &lt;img style=&#34;width: auto; height: auto;&#34; src=&#34;https://karlquinsland.com/2020/07/electronics-lab-enhanced-psu/images/print_orientation_huacfb77ea22eded6192e18f25c598ee63_329076_300x0_resize_q75_box.jpg&#34; width=&#34;300&#34; height=&#34;206&#34;&gt;
-                &lt;/a&gt;
-                
-                &lt;figcaption&gt;
-                    &lt;small&gt;suggested print orientation&lt;/small&gt;
-                &lt;/figcaption&gt;
-                
-            &lt;/figure&gt;
-
-        
-    &lt;/li&gt;
-    
-    &lt;li&gt;
-        
-
-            
-            
-        
-            &lt;figure&gt;
-                &lt;a target=&#34;_blank&#34; href=&#34;https://karlquinsland.com/2020/07/electronics-lab-enhanced-psu/images/rd6012-assembled.jpg&#34;&gt;
-                    &lt;img style=&#34;width: auto; height: auto;&#34; src=&#34;https://karlquinsland.com/2020/07/electronics-lab-enhanced-psu/images/rd6012-assembled_hub76e8fd9b3f797047933500d97d420d7_77086_300x0_resize_q75_box.jpg&#34; width=&#34;300&#34; height=&#34;300&#34;&gt;
-                &lt;/a&gt;
-                
-                &lt;figcaption&gt;
-                    &lt;small&gt;As seen on AliExpress&lt;/small&gt;
-                &lt;/figcaption&gt;
-                
-            &lt;/figure&gt;
-
-        
-    &lt;/li&gt;
-    
-&lt;/ul&gt;
-
-</description> 
-    </item>
-    
-    <item>
-      <title>home lab: mini &#39;universal&#39; patch panel</title>
-      <link>https://karlquinsland.com/2020/07/home-lab-mini-universal-patch-panel/</link>
-      <pubDate>Sun, 05 Jul 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://karlquinsland.com/2020/07/home-lab-mini-universal-patch-panel/</guid>
-      <description>&lt;p&gt;This is another brief &amp;ldquo;i made a thing!&amp;rdquo; posts.&lt;/p&gt;
-&lt;h2 id=&#34;what&#34;&gt;What&lt;/h2&gt;
-&lt;p&gt;Taking the side / rear of my rack off every time I needed to change which host(s) were connected to the monitor was starting to get old. Only recently did I realize that you can fit more than just RJ45 jacks in a &lt;a href=&#34;https://en.wikipedia.org/wiki/Keystone_module&#34;&gt;Keystone Jack&lt;/a&gt;. A few measurements, a quick search through thingiverse and some CAD time later, this is the result.&lt;/p&gt;
-&lt;p&gt;The model is tailored to my specific rack, but should be easily adoptable to any other dimensions. Import the Fusion360 model and then edit the first sketch in the timeline as needed and adjust the &lt;code&gt;pattern on line&lt;/code&gt; step to adjust the number of keystone jacks.&lt;/p&gt;
-&lt;p&gt;Of course, you can always just glue the print to whichever surface you need it mounted on as there&amp;rsquo;s plenty of broad/flat surface for adhesive if the two built-in screw holes won&amp;rsquo;t work!&lt;/p&gt;
-&lt;p&gt;As is, the model has:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;8 jacks&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;178.5mm&lt;/code&gt; from &amp;lsquo;edge&amp;rsquo; to &amp;lsquo;edge&amp;rsquo; between the two screw holes&lt;/li&gt;
-&lt;li&gt;&lt;code&gt;6.5mm&lt;/code&gt; diameter for the holes as my rack uses M6 screws.&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;Note: After printing the model you see in the pictures below, I added a small cutout which should make it easier to depress the clip on the &amp;lsquo;male&amp;rsquo; end of a keystone device from the &amp;lsquo;user facing&amp;rsquo; side as you&amp;rsquo;d typically find on a proper patch panel&lt;/p&gt;
-&lt;p&gt;All in all, I&amp;rsquo;m quite happy with how it turned out: 8 jacks is more than enough for current and (projected!) future use. The only obvious improvement would be moving the numbers from the bottom to the top where there&amp;rsquo;s more room. As it is now, the perimeters around the numbers look a bit weird as they merge w/ the bottom edge that are flush w/ the rack and the top edges that are flush w/ the jacks.&lt;/p&gt;
-&lt;p&gt;Many thanks to &lt;a href=&#34;https://www.thingiverse.com/belfers/about&#34;&gt;&lt;code&gt;belfers&lt;/code&gt;&lt;/a&gt; for the &lt;a href=&#34;https://www.thingiverse.com/thing:3150524&#34;&gt;Keystone model&lt;/a&gt;.&lt;/p&gt;
-&lt;p&gt;The details are on the &lt;a href=&#34;https://www.thingiverse.com/thing:4536257&#34;&gt;thingiverse&lt;/a&gt; and &lt;a href=&#34;https://www.prusaprinters.org/prints/36325-8-port-keystone-patch-panel&#34;&gt;prusaprinters&lt;/a&gt; page.&lt;/p&gt;
-&lt;h2 id=&#34;printing&#34;&gt;Printing:&lt;/h2&gt;
-&lt;p&gt;Any material and at least 10% infill should be fine.
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>has:download on karl</title><link>https://karlquinsland.com/tags/hasdownload/</link><description>Recent content in has:download on karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 09 Jul 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/hasdownload/index.xml" rel="self" type="application/rss+xml"/><item><title>electronics lab: enhanced psu</title><link>https://karlquinsland.com/2020/07/electronics-lab-enhanced-psu/</link><pubDate>Thu, 09 Jul 2020 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/2020/07/electronics-lab-enhanced-psu/</guid><description>&lt;p>While doing the PoE related testing for &lt;a href="https://karlquinsland.com/2020/07/poe-at-a-distance-caused-terrible-cat5-speeds/">this&lt;/a> incident, it occurred to me that I never got around to sharing the files for a small modification to the popular RD6006 PSU.&lt;/p>
+&lt;p>While drafting this post, I discovered that there appears to be a newer version of the RD6006: the 6012. As far as I can tell, they&amp;rsquo;re in the same &amp;lsquo;family&amp;rsquo; and have the same dimensions so the CAD and related model files below &lt;em>should&lt;/em> work w/ the RD6012 just as they do w/ the 6006, but i can only &amp;lsquo;guarantee&amp;rsquo; that the CAD and related model files below will work with the &lt;a href="https://hackaday.com/tag/riden-rd6006/">RD6006&lt;/a>.&lt;/p>
+&lt;p>A version of this post appears on &lt;a href="https://www.prusaprinters.org/prints/36338-poe-and-qc30-adapter-for-rd6006-psu">prusaprinters&lt;/a> and &lt;a href="https://www.thingiverse.com/thing:4536551">thingiverse&lt;/a>&lt;/p>
+&lt;h2 id="what">What&lt;/h2>
+&lt;p>A small enclosure for a PoE injector and QC 3.0 charger designed to sit on top of the RD6012 PSU &amp;lsquo;kit&amp;rsquo; sold all over aliexpress and banggood.&lt;/p>
+&lt;p>Assembled, it looks like this:&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/07/electronics-lab-enhanced-psu/images/rd6012-assembled.jpg" alt="picture of assembled DR60 series PSU" />
+&lt;figcaption>
+&lt;p>
+As seen on AliExpress
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>The RD6006 is incredibly versatile, but can only supply power for about 85% of the devices that make their way onto my &amp;lsquo;healing&amp;rsquo; bench. I wasn&amp;rsquo;t keen on taking up more valuable space with a device dedicated to PoE injection so finding a way to mod one into the PSU seemed like a good idea. Similarly, adding a versatile USB port seemed like a no-brainer as my &lt;a href="http://www.miniware.com.cn/product/ts80-soldering-iron-more/">favorite soldering iron&lt;/a> is powered via QuickCharge 3.&lt;/p>
+&lt;p>Three useful bench tools, one footprint, one consumed power outlet. What&amp;rsquo;s not to love?&lt;/p>
+&lt;h2 id="printing">Printing:&lt;/h2>
+&lt;p>There are two components for this build:&lt;/p>
+&lt;ul>
+&lt;li>the &amp;lsquo;plate&amp;rsquo; which rests on the top of the PSU case and has small &amp;lsquo;fences&amp;rsquo; to fix the circuit boards in place. It&amp;rsquo;s the &amp;lsquo;salmon&amp;rsquo; colored component&lt;/li>
+&lt;li>the &amp;lsquo;lid&amp;rsquo; is the (mostly) transparent yellow component which holds the auxiliary power supplies (pink components) in place and keeps all voltages away from people.&lt;/li>
+&lt;/ul>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/07/electronics-lab-enhanced-psu/images/plate_and_lid.jpg" alt="picture of assembled components, colored" />
+&lt;figcaption>
+&lt;h4>Colorized Components&lt;/h4>
+&lt;p>
+Relevant components, colored in F360
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>I used black PETG, but any material and at least 10% infill should be fine. Tune the layer height to taste.&lt;/p>
+&lt;p>The &amp;lsquo;plate&amp;rsquo; does not need any supports nor does the lid if printed in the suggested print orientation shown below 👇. I printed with settings optimized for speed so there was minimal sagging, but nothing substantial. What little there was didn&amp;rsquo;t interfere with clearance of any other internal component and was completely hidden.&lt;/p>
+&lt;p>If you&amp;rsquo;re not comfortable with bridging long distances, you can optionally enforce support material from the build plate to the top of the lid &lt;strong>or&lt;/strong> flip the lid upside down and use supports for the four feet where the screws go. Because any sagging would be hidden inside,&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/07/electronics-lab-enhanced-psu/images/print_orientation.jpg" alt="picture of components arranged on print bed" />
+&lt;figcaption>
+&lt;p>
+suggested print orientation
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="components">Components&lt;/h2>
+&lt;p>In addition to the miscellaneous wire and crimp connectors, there are two components used in this design:&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://www.aliexpress.com/item/33019891423.html">PoE injector&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://www.amazon.com/gp/product/B07Y9HP4KM/">QC 3.0 Charger&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;h2 id="assembly">Assembly&lt;/h2>
+&lt;p>I don&amp;rsquo;t have any pictures from the assembly 😞, but it&amp;rsquo;s not particularly difficult to figure out from the attached pictures. In general, the steps to take are:&lt;/p>
+&lt;ol start="0">
+&lt;li>Print everything and clean up the parts as needed&lt;/li>
+&lt;li>de-shell the PoE injector and QC3 charger. A plastic pry-tool or a few flat-head screwdrivers will help here!&lt;/li>
+&lt;li>desolder the existing mains connections from both modules and solder on new ones. The new ones don&amp;rsquo;t need to be long, just a bit longer than the leads that came on the module PCBs!&lt;/li>
+&lt;li>disconnect power from the assembled PSU and remove the case cover&lt;/li>
+&lt;li>place the &amp;lsquo;plate&amp;rsquo; onto the top of the PSU and use a pencil to mark all 5 holes on the cover&lt;/li>
+&lt;li>remove the plate, drill out all 5 holes and use a file to smooth down any sharp edges on the big hole as that&amp;rsquo;s where the mains wires will go. A burr poking through insulation means the case may become energized @ mains voltages! 💥 💀&lt;/li>
+&lt;li>crimp connectors onto wires and attach to the mains supply &lt;strong>after&lt;/strong> the switch and fuse!&lt;/li>
+&lt;li>place the &amp;lsquo;plate&amp;rsquo; back onto the PSU cover&lt;/li>
+&lt;li>run the wires through the new hole in the top of the PSU case and through the hole in the &amp;lsquo;plate&amp;rsquo;&lt;/li>
+&lt;li>add the PoE injector and QC3 module to the plate&lt;/li>
+&lt;li>join the mains leads to the module leads. I used &lt;a href="https://www.amazon.com/Wago-221-413-LEVER-NUTS-Conductor-Connectors/dp/B06XGYXVXR/">Wago&lt;/a> connectors, but simple wirenuts or a screw terminal block will work.&lt;/li>
+&lt;li>Use M3 screws to secure the lid to the plate and the PSU. I intentionally drilled the holes slightly too small so the screws would thread against the case. Not ideal, but works absolutely fine for something that&amp;rsquo;s not load-bearing or going to be repeatedly re-screwed.&lt;/li>
+&lt;li>re-connect the IEC power connector and power on&lt;/li>
+&lt;li>monitor for sounds and smells that indicate you screwed up. begin testing PoE and USB port for proper power.&lt;/li>
+&lt;/ol>
+&lt;p>Just prior to seating the &amp;lsquo;lid&amp;rsquo; you should have something like this:&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/07/electronics-lab-enhanced-psu/images/cover-and-screws-off.jpg" alt="picture of auxiliary PSUs seated and wired" />
+&lt;figcaption>
+&lt;p>
+components seated and wired
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>When all said and done, you&amp;rsquo;ll get this:&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/07/electronics-lab-enhanced-psu/images/modded-assembled.jpg" alt="picture of plate and lid attached to PSU" />
+&lt;figcaption>
+&lt;p>
+everything assembled and powered up
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="files">Files&lt;/h2>
+&lt;p>The f360 file is&amp;hellip; a mess. I&amp;rsquo;m not going to share it here. Contact me if you really want it. The &lt;code>stl&lt;/code> and &lt;code>3mf&lt;/code> files are below, though. As you can tell from the initials and date, this project was &amp;lsquo;completed&amp;rsquo; awhile ago.&lt;/p>
+&lt;p>For archive / posterity, all source files are included here. All files are licensed as &lt;a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike&lt;/a> (CC BY-NC-SA).&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/07/electronics-lab-enhanced-psu/images/modded-assembled.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/07/electronics-lab-enhanced-psu/images/modded-assembled_hu5e0638bd999b700992e2199b07155936_1574650_300x0_resize_q75_box.jpg" width="300" height="226">
+&lt;/a>
+&lt;figcaption>
+&lt;small>everything assembled and powered up&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/07/electronics-lab-enhanced-psu/images/plate_and_lid.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/07/electronics-lab-enhanced-psu/images/plate_and_lid_hu7df47cce6e64ee651dfc4aee7a2b6320_100047_300x0_resize_q75_box.jpg" width="300" height="224">
+&lt;/a>
+&lt;figcaption>
+&lt;small>Relevant components, colored in F360&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/07/electronics-lab-enhanced-psu/models/combined.3mf">
+&lt;i class="far fa-file-archive">&lt;/i>
+models/combined.3mf:
+&lt;small style="font-family:'Lucida Console', monospace">3mf&lt;/small> &lt;small>file&lt;/small>
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/07/electronics-lab-enhanced-psu/models/lid.stl">
+&lt;i class="far fa-file-code">&lt;/i>
+models/lid.stl:
+&lt;small style="font-family:'Lucida Console', monospace">stl&lt;/small> &lt;small>file&lt;/small>
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/07/electronics-lab-enhanced-psu/models/plate.stl">
+&lt;i class="far fa-file-code">&lt;/i>
+models/plate.stl:
+&lt;small style="font-family:'Lucida Console', monospace">stl&lt;/small> &lt;small>file&lt;/small>
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/07/electronics-lab-enhanced-psu/images/cover-and-screws-off.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/07/electronics-lab-enhanced-psu/images/cover-and-screws-off_hu3f72322543fc63d58d9c086dc73ec59d_2108898_300x0_resize_q75_box.jpg" width="300" height="192">
+&lt;/a>
+&lt;figcaption>
+&lt;small>components seated and wired&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/07/electronics-lab-enhanced-psu/images/print_orientation.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/07/electronics-lab-enhanced-psu/images/print_orientation_huacfb77ea22eded6192e18f25c598ee63_329076_300x0_resize_q75_box.jpg" width="300" height="206">
+&lt;/a>
+&lt;figcaption>
+&lt;small>suggested print orientation&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/07/electronics-lab-enhanced-psu/images/rd6012-assembled.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/07/electronics-lab-enhanced-psu/images/rd6012-assembled_hub76e8fd9b3f797047933500d97d420d7_77086_300x0_resize_q75_box.jpg" width="300" height="300">
+&lt;/a>
+&lt;figcaption>
+&lt;small>As seen on AliExpress&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;/ul></description></item><item><title>home lab: mini 'universal' patch panel</title><link>https://karlquinsland.com/2020/07/home-lab-mini-universal-patch-panel/</link><pubDate>Sun, 05 Jul 2020 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/2020/07/home-lab-mini-universal-patch-panel/</guid><description>&lt;p>This is another brief &amp;ldquo;i made a thing!&amp;rdquo; posts.&lt;/p>
+&lt;h2 id="what">What&lt;/h2>
+&lt;p>Taking the side / rear of my rack off every time I needed to change which host(s) were connected to the monitor was starting to get old. Only recently did I realize that you can fit more than just RJ45 jacks in a &lt;a href="https://en.wikipedia.org/wiki/Keystone_module">Keystone Jack&lt;/a>. A few measurements, a quick search through thingiverse and some CAD time later, this is the result.&lt;/p>
+&lt;p>The model is tailored to my specific rack, but should be easily adoptable to any other dimensions. Import the Fusion360 model and then edit the first sketch in the timeline as needed and adjust the &lt;code>pattern on line&lt;/code> step to adjust the number of keystone jacks.&lt;/p>
+&lt;p>Of course, you can always just glue the print to whichever surface you need it mounted on as there&amp;rsquo;s plenty of broad/flat surface for adhesive if the two built-in screw holes won&amp;rsquo;t work!&lt;/p>
+&lt;p>As is, the model has:&lt;/p>
+&lt;ul>
+&lt;li>8 jacks&lt;/li>
+&lt;li>&lt;code>178.5mm&lt;/code> from &amp;lsquo;edge&amp;rsquo; to &amp;lsquo;edge&amp;rsquo; between the two screw holes&lt;/li>
+&lt;li>&lt;code>6.5mm&lt;/code> diameter for the holes as my rack uses M6 screws.&lt;/li>
+&lt;/ul>
+&lt;p>Note: After printing the model you see in the pictures below, I added a small cutout which should make it easier to depress the clip on the &amp;lsquo;male&amp;rsquo; end of a keystone device from the &amp;lsquo;user facing&amp;rsquo; side as you&amp;rsquo;d typically find on a proper patch panel&lt;/p>
+&lt;p>All in all, I&amp;rsquo;m quite happy with how it turned out: 8 jacks is more than enough for current and (projected!) future use. The only obvious improvement would be moving the numbers from the bottom to the top where there&amp;rsquo;s more room. As it is now, the perimeters around the numbers look a bit weird as they merge w/ the bottom edge that are flush w/ the rack and the top edges that are flush w/ the jacks.&lt;/p>
+&lt;p>Many thanks to &lt;a href="https://www.thingiverse.com/belfers/about">&lt;code>belfers&lt;/code>&lt;/a> for the &lt;a href="https://www.thingiverse.com/thing:3150524">Keystone model&lt;/a>.&lt;/p>
+&lt;p>The details are on the &lt;a href="https://www.thingiverse.com/thing:4536257">thingiverse&lt;/a> and &lt;a href="https://www.prusaprinters.org/prints/36325-8-port-keystone-patch-panel">prusaprinters&lt;/a> page.&lt;/p>
+&lt;h2 id="printing">Printing:&lt;/h2>
+&lt;p>Any material and at least 10% infill should be fine.
 No supports if you use the suggested print orientation shown in picture below.
-Tolerances on the jacks are somewhat tight so printing at a more accurate setting is probably going to be a good idea.&lt;/p&gt;
-&lt;h2 id=&#34;files&#34;&gt;Files&lt;/h2&gt;
-&lt;p&gt;For archive / posterity, all source files are included here. All files are licensed as &lt;a href=&#34;https://creativecommons.org/licenses/by-nc-sa/4.0/&#34;&gt;Creative Commons Attribution-NonCommercial-ShareAlike&lt;/a&gt; (CC BY-NC-SA).&lt;/p&gt;
-&lt;ul&gt;
-    
-    &lt;li&gt;
-        
-
-            
-            
-        
-            &lt;figure&gt;
-                &lt;a target=&#34;_blank&#34; href=&#34;https://karlquinsland.com/2020/07/home-lab-mini-universal-patch-panel/images/rear-installed.jpg&#34;&gt;
-                    &lt;img style=&#34;width: auto; height: auto;&#34; src=&#34;https://karlquinsland.com/2020/07/home-lab-mini-universal-patch-panel/images/rear-installed_hua3383d84163f112bd060af4ed3b8937c_1343110_300x0_resize_q75_box.jpg&#34; width=&#34;300&#34; height=&#34;122&#34;&gt;
-                &lt;/a&gt;
-                
-                
-            &lt;/figure&gt;
-
-        
-    &lt;/li&gt;
-    
-    &lt;li&gt;
-        
-
-            
-            
-        
-            &lt;figure&gt;
-                &lt;a target=&#34;_blank&#34; href=&#34;https://karlquinsland.com/2020/07/home-lab-mini-universal-patch-panel/images/front-installed.jpg&#34;&gt;
-                    &lt;img style=&#34;width: auto; height: auto;&#34; src=&#34;https://karlquinsland.com/2020/07/home-lab-mini-universal-patch-panel/images/front-installed_hu41ccff79e18526a44598cc32ce35c2c7_1597423_300x0_resize_q75_box.jpg&#34; width=&#34;300&#34; height=&#34;127&#34;&gt;
-                &lt;/a&gt;
-                
-                
-            &lt;/figure&gt;
-
-        
-    &lt;/li&gt;
-    
-    &lt;li&gt;
-        
-            &lt;a target=&#34;_blank&#34; href=&#34;https://karlquinsland.com/2020/07/home-lab-mini-universal-patch-panel/models/keystone-bracket.3mf&#34;&gt;
-                &lt;i class=&#34;far fa-file-archive&#34;&gt;&lt;/i&gt;
-                models/keystone-bracket.3mf:
-                
-                &lt;small style=&#34;font-family:&#39;Lucida Console&#39;, monospace&#34;&gt;3mf&lt;/small&gt; &lt;small&gt;file&lt;/small&gt;
-                
-                
-            &lt;/a&gt;
-        
-    &lt;/li&gt;
-    
-    &lt;li&gt;
-        
-            &lt;a target=&#34;_blank&#34; href=&#34;https://karlquinsland.com/2020/07/home-lab-mini-universal-patch-panel/models/keystone-bracket.f3z&#34;&gt;
-                &lt;i class=&#34;far fa-file-archive&#34;&gt;&lt;/i&gt;
-                Consolidated PSU CAD:
-                
-                &lt;small style=&#34;font-family:&#39;Lucida Console&#39;, monospace&#34;&gt;f3z&lt;/small&gt; &lt;small&gt;file&lt;/small&gt;
-                
-                
-                &lt;br&gt;
-                &lt;small&gt;Fusion360 Archive&lt;/small&gt;
-                
-            &lt;/a&gt;
-        
-    &lt;/li&gt;
-    
-    &lt;li&gt;
-        
-            &lt;a target=&#34;_blank&#34; href=&#34;https://karlquinsland.com/2020/07/home-lab-mini-universal-patch-panel/models/keystone-bracket.stl&#34;&gt;
-                &lt;i class=&#34;far fa-file-code&#34;&gt;&lt;/i&gt;
-                models/keystone-bracket.stl:
-                
-                &lt;small style=&#34;font-family:&#39;Lucida Console&#39;, monospace&#34;&gt;stl&lt;/small&gt; &lt;small&gt;file&lt;/small&gt;
-                
-                
-            &lt;/a&gt;
-        
-    &lt;/li&gt;
-    
-    &lt;li&gt;
-        
-
-            
-            
-        
-            &lt;figure&gt;
-                &lt;a target=&#34;_blank&#34; href=&#34;https://karlquinsland.com/2020/07/home-lab-mini-universal-patch-panel/images/print_orientation.jpg&#34;&gt;
-                    &lt;img style=&#34;width: auto; height: auto;&#34; src=&#34;https://karlquinsland.com/2020/07/home-lab-mini-universal-patch-panel/images/print_orientation_hu76c02f2da9eb89859f866c4853e1d8f8_295257_300x0_resize_q75_box.jpg&#34; width=&#34;300&#34; height=&#34;227&#34;&gt;
-                &lt;/a&gt;
-                
-                &lt;figcaption&gt;
-                    &lt;small&gt;Suggested print orientation&lt;/small&gt;
-                &lt;/figcaption&gt;
-                
-            &lt;/figure&gt;
-
-        
-    &lt;/li&gt;
-    
-&lt;/ul&gt;
-
-</description> 
-    </item>
-    
-    <item>
-      <title>home lab: consolidating multiple PSUs</title>
-      <link>https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/</link>
-      <pubDate>Sat, 27 Jun 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/</guid>
-      <description>&lt;p&gt;A while back, I traded writing salt states and managing systemd &lt;code&gt;.service&lt;/code&gt; files wrapping &lt;code&gt;podman&lt;/code&gt; for the &lt;a href=&#34;https://www.youtube.com/watch?v=9wvEwPLcLcA&#34;&gt;&amp;lsquo;simplicity&amp;rsquo;&lt;/a&gt; of running kubernetes in my home lab. Jury is still out on weather or not the switch was worth it.&lt;/p&gt;
-&lt;p&gt;The cluster is a hodgepodge of second hand Intel NUCs and other scavenged compute hardware i&amp;rsquo;ve collected over the past few years. Some of it runs on 12v, some of it on 19v. For each node, there&amp;rsquo;s a dedicated switch mode power supply. Each supply takes up an outlet and brings a bit of cable mgmt related clutter. The solution is consolidation.&lt;/p&gt;
-&lt;p&gt;So thats how this project came to be.&lt;/p&gt;
-&lt;h2 id=&#34;what&#34;&gt;What&lt;/h2&gt;
-&lt;p&gt;A set of 3d printable parts to compactly combine two LRS-350 PSUs into a compact unit with optional voltage and current displays.&lt;/p&gt;
-&lt;p&gt;The details are on the &lt;a href=&#34;https://www.thingiverse.com/thing:4504948&#34;&gt;thingiverse&lt;/a&gt; and &lt;a href=&#34;https://www.prusaprinters.org/prints/35514-dual-mean-well-lrs-350-psu&#34;&gt;prusaprinters&lt;/a&gt; page.&lt;/p&gt;
-&lt;h2 id=&#34;files&#34;&gt;Files&lt;/h2&gt;
-&lt;p&gt;For archive / posterity, all source files are included here. All files are licensed as &lt;a href=&#34;https://creativecommons.org/licenses/by-nc-sa/4.0/&#34;&gt;Creative Commons Attribution-NonCommercial-ShareAlike&lt;/a&gt; (CC BY-NC-SA).&lt;/p&gt;
-&lt;ul&gt;
-    
-    &lt;li&gt;
-        
-
-            
-            
-        
-            &lt;figure&gt;
-                &lt;a target=&#34;_blank&#34; href=&#34;https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/images/built.jpg&#34;&gt;
-                    &lt;img style=&#34;width: auto; height: auto;&#34; src=&#34;https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/images/built_hue8f36c4f699ca512381ec1ecdae0f96e_1394325_300x0_resize_q75_box.jpg&#34; width=&#34;300&#34; height=&#34;189&#34;&gt;
-                &lt;/a&gt;
-                
-                &lt;figcaption&gt;
-                    &lt;small&gt;Fully Assembled; ignore the messy workbench&lt;/small&gt;
-                &lt;/figcaption&gt;
-                
-            &lt;/figure&gt;
-
-        
-    &lt;/li&gt;
-    
-    &lt;li&gt;
-        
-
-            
-            
-        
-            &lt;figure&gt;
-                &lt;a target=&#34;_blank&#34; href=&#34;https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/images/cad-back.jpg&#34;&gt;
-                    &lt;img style=&#34;width: auto; height: auto;&#34; src=&#34;https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/images/cad-back_hu9cc2ce5e929a14998f22cb542d786aa7_342135_300x0_resize_q75_box.jpg&#34; width=&#34;300&#34; height=&#34;215&#34;&gt;
-                &lt;/a&gt;
-                
-                &lt;figcaption&gt;
-                    &lt;small&gt;component view, from rear&lt;/small&gt;
-                &lt;/figcaption&gt;
-                
-            &lt;/figure&gt;
-
-        
-    &lt;/li&gt;
-    
-    &lt;li&gt;
-        
-
-            
-            
-        
-            &lt;figure&gt;
-                &lt;a target=&#34;_blank&#34; href=&#34;https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/images/cad-front.jpg&#34;&gt;
-                    &lt;img style=&#34;width: auto; height: auto;&#34; src=&#34;https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/images/cad-front_hue2810dd6e158cf3715e15de998852c44_365005_300x0_resize_q75_box.jpg&#34; width=&#34;300&#34; height=&#34;220&#34;&gt;
-                &lt;/a&gt;
-                
-                &lt;figcaption&gt;
-                    &lt;small&gt;component view, from front&lt;/small&gt;
-                &lt;/figcaption&gt;
-                
-            &lt;/figure&gt;
-
-        
-    &lt;/li&gt;
-    
-    &lt;li&gt;
-        
-
-            
-            
-        
-            &lt;figure&gt;
-                &lt;a target=&#34;_blank&#34; href=&#34;https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/images/core.jpg&#34;&gt;
-                    &lt;img style=&#34;width: auto; height: auto;&#34; src=&#34;https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/images/core_hue43f3402df27eedd99dff8c904086e8c_310336_300x0_resize_q75_box.jpg&#34; width=&#34;300&#34; height=&#34;219&#34;&gt;
-                &lt;/a&gt;
-                
-                &lt;figcaption&gt;
-                    &lt;small&gt;Print Bed arrangement, green is support structures&lt;/small&gt;
-                &lt;/figcaption&gt;
-                
-            &lt;/figure&gt;
-
-        
-    &lt;/li&gt;
-    
-    &lt;li&gt;
-        
-
-            
-            
-        
-            &lt;figure&gt;
-                &lt;a target=&#34;_blank&#34; href=&#34;https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/images/meter-panel.jpg&#34;&gt;
-                    &lt;img style=&#34;width: auto; height: auto;&#34; src=&#34;https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/images/meter-panel_hu546d99e5993001046c71e4a3333af77d_135643_300x0_resize_q75_box.jpg&#34; width=&#34;300&#34; height=&#34;267&#34;&gt;
-                &lt;/a&gt;
-                
-                &lt;figcaption&gt;
-                    &lt;small&gt;meter panel print orientation&lt;/small&gt;
-                &lt;/figcaption&gt;
-                
-            &lt;/figure&gt;
-
-        
-    &lt;/li&gt;
-    
-    &lt;li&gt;
-        
-            &lt;a target=&#34;_blank&#34; href=&#34;https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/models/2x-lrs-psu.f3z&#34;&gt;
-                &lt;i class=&#34;far fa-file-archive&#34;&gt;&lt;/i&gt;
-                Consolidated PSU CAD:
-                
-                &lt;small style=&#34;font-family:&#39;Lucida Console&#39;, monospace&#34;&gt;f3z&lt;/small&gt; &lt;small&gt;file&lt;/small&gt;
-                
-                
-                &lt;br&gt;
-                &lt;small&gt;Fusion360 Archive&lt;/small&gt;
-                
-            &lt;/a&gt;
-        
-    &lt;/li&gt;
-    
-    &lt;li&gt;
-        
-            &lt;a target=&#34;_blank&#34; href=&#34;https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/models/box.stl&#34;&gt;
-                &lt;i class=&#34;far fa-file-code&#34;&gt;&lt;/i&gt;
-                Box:
-                
-                &lt;small style=&#34;font-family:&#39;Lucida Console&#39;, monospace&#34;&gt;stl&lt;/small&gt; &lt;small&gt;file&lt;/small&gt;
-                
-                
-            &lt;/a&gt;
-        
-    &lt;/li&gt;
-    
-    &lt;li&gt;
-        
-            &lt;a target=&#34;_blank&#34; href=&#34;https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/models/brace.stl&#34;&gt;
-                &lt;i class=&#34;far fa-file-code&#34;&gt;&lt;/i&gt;
-                Brace:
-                
-                &lt;small style=&#34;font-family:&#39;Lucida Console&#39;, monospace&#34;&gt;stl&lt;/small&gt; &lt;small&gt;file&lt;/small&gt;
-                
-                
-            &lt;/a&gt;
-        
-    &lt;/li&gt;
-    
-    &lt;li&gt;
-        
-            &lt;a target=&#34;_blank&#34; href=&#34;https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/models/core.3mf&#34;&gt;
-                &lt;i class=&#34;far fa-file-archive&#34;&gt;&lt;/i&gt;
-                Core Components:
-                
-                &lt;small style=&#34;font-family:&#39;Lucida Console&#39;, monospace&#34;&gt;3mf&lt;/small&gt; &lt;small&gt;file&lt;/small&gt;
-                
-                
-            &lt;/a&gt;
-        
-    &lt;/li&gt;
-    
-    &lt;li&gt;
-        
-            &lt;a target=&#34;_blank&#34; href=&#34;https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/models/lid.stl&#34;&gt;
-                &lt;i class=&#34;far fa-file-code&#34;&gt;&lt;/i&gt;
-                Lid:
-                
-                &lt;small style=&#34;font-family:&#39;Lucida Console&#39;, monospace&#34;&gt;stl&lt;/small&gt; &lt;small&gt;file&lt;/small&gt;
-                
-                
-            &lt;/a&gt;
-        
-    &lt;/li&gt;
-    
-    &lt;li&gt;
-        
-            &lt;a target=&#34;_blank&#34; href=&#34;https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/models/meter-panel.3mf&#34;&gt;
-                &lt;i class=&#34;far fa-file-archive&#34;&gt;&lt;/i&gt;
-                (Optional) Meter Panel:
-                
-                &lt;small style=&#34;font-family:&#39;Lucida Console&#39;, monospace&#34;&gt;3mf&lt;/small&gt; &lt;small&gt;file&lt;/small&gt;
-                
-                
-            &lt;/a&gt;
-        
-    &lt;/li&gt;
-    
-    &lt;li&gt;
-        
-            &lt;a target=&#34;_blank&#34; href=&#34;https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/models/meter-panel.stl&#34;&gt;
-                &lt;i class=&#34;far fa-file-code&#34;&gt;&lt;/i&gt;
-                (Optional) Meter Panel:
-                
-                &lt;small style=&#34;font-family:&#39;Lucida Console&#39;, monospace&#34;&gt;stl&lt;/small&gt; &lt;small&gt;file&lt;/small&gt;
-                
-                
-            &lt;/a&gt;
-        
-    &lt;/li&gt;
-    
-    &lt;li&gt;
-        
-
-            
-            
-        
-            &lt;figure&gt;
-                &lt;a target=&#34;_blank&#34; href=&#34;https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/images/meter-panel-slice.jpg&#34;&gt;
-                    &lt;img style=&#34;width: auto; height: auto;&#34; src=&#34;https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/images/meter-panel-slice_hu512c49ce3497e3dea530288ed57cb214_547680_300x0_resize_q75_box.jpg&#34; width=&#34;300&#34; height=&#34;255&#34;&gt;
-                &lt;/a&gt;
-                
-                &lt;figcaption&gt;
-                    &lt;small&gt;using slic3r too remove the second meter cutout&lt;/small&gt;
-                &lt;/figcaption&gt;
-                
-            &lt;/figure&gt;
-
-        
-    &lt;/li&gt;
-    
-&lt;/ul&gt;
-
-</description> 
-    </item>
-    
-  </channel>
-</rss>
+Tolerances on the jacks are somewhat tight so printing at a more accurate setting is probably going to be a good idea.&lt;/p>
+&lt;h2 id="files">Files&lt;/h2>
+&lt;p>For archive / posterity, all source files are included here. All files are licensed as &lt;a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike&lt;/a> (CC BY-NC-SA).&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/07/home-lab-mini-universal-patch-panel/images/rear-installed.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/07/home-lab-mini-universal-patch-panel/images/rear-installed_hua3383d84163f112bd060af4ed3b8937c_1343110_300x0_resize_q75_box.jpg" width="300" height="122">
+&lt;/a>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/07/home-lab-mini-universal-patch-panel/images/front-installed.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/07/home-lab-mini-universal-patch-panel/images/front-installed_hu41ccff79e18526a44598cc32ce35c2c7_1597423_300x0_resize_q75_box.jpg" width="300" height="127">
+&lt;/a>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/07/home-lab-mini-universal-patch-panel/models/keystone-bracket.3mf">
+&lt;i class="far fa-file-archive">&lt;/i>
+models/keystone-bracket.3mf:
+&lt;small style="font-family:'Lucida Console', monospace">3mf&lt;/small> &lt;small>file&lt;/small>
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/07/home-lab-mini-universal-patch-panel/models/keystone-bracket.f3z">
+&lt;i class="far fa-file-archive">&lt;/i>
+Consolidated PSU CAD:
+&lt;small style="font-family:'Lucida Console', monospace">f3z&lt;/small> &lt;small>file&lt;/small>
+&lt;br>
+&lt;small>Fusion360 Archive&lt;/small>
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/07/home-lab-mini-universal-patch-panel/models/keystone-bracket.stl">
+&lt;i class="far fa-file-code">&lt;/i>
+models/keystone-bracket.stl:
+&lt;small style="font-family:'Lucida Console', monospace">stl&lt;/small> &lt;small>file&lt;/small>
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/07/home-lab-mini-universal-patch-panel/images/print_orientation.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/07/home-lab-mini-universal-patch-panel/images/print_orientation_hu76c02f2da9eb89859f866c4853e1d8f8_295257_300x0_resize_q75_box.jpg" width="300" height="227">
+&lt;/a>
+&lt;figcaption>
+&lt;small>Suggested print orientation&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;/ul></description></item><item><title>home lab: consolidating multiple PSUs</title><link>https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/</link><pubDate>Sat, 27 Jun 2020 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/</guid><description>&lt;p>A while back, I traded writing salt states and managing systemd &lt;code>.service&lt;/code> files wrapping &lt;code>podman&lt;/code> for the &lt;a href="https://www.youtube.com/watch?v=9wvEwPLcLcA">&amp;lsquo;simplicity&amp;rsquo;&lt;/a> of running kubernetes in my home lab. Jury is still out on weather or not the switch was worth it.&lt;/p>
+&lt;p>The cluster is a hodgepodge of second hand Intel NUCs and other scavenged compute hardware i&amp;rsquo;ve collected over the past few years. Some of it runs on 12v, some of it on 19v. For each node, there&amp;rsquo;s a dedicated switch mode power supply. Each supply takes up an outlet and brings a bit of cable mgmt related clutter. The solution is consolidation.&lt;/p>
+&lt;p>So thats how this project came to be.&lt;/p>
+&lt;h2 id="what">What&lt;/h2>
+&lt;p>A set of 3d printable parts to compactly combine two LRS-350 PSUs into a compact unit with optional voltage and current displays.&lt;/p>
+&lt;p>The details are on the &lt;a href="https://www.thingiverse.com/thing:4504948">thingiverse&lt;/a> and &lt;a href="https://www.prusaprinters.org/prints/35514-dual-mean-well-lrs-350-psu">prusaprinters&lt;/a> page.&lt;/p>
+&lt;h2 id="files">Files&lt;/h2>
+&lt;p>For archive / posterity, all source files are included here. All files are licensed as &lt;a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike&lt;/a> (CC BY-NC-SA).&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/images/built.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/images/built_hue8f36c4f699ca512381ec1ecdae0f96e_1394325_300x0_resize_q75_box.jpg" width="300" height="189">
+&lt;/a>
+&lt;figcaption>
+&lt;small>Fully Assembled; ignore the messy workbench&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/images/cad-back.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/images/cad-back_hu9cc2ce5e929a14998f22cb542d786aa7_342135_300x0_resize_q75_box.jpg" width="300" height="215">
+&lt;/a>
+&lt;figcaption>
+&lt;small>component view, from rear&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/images/cad-front.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/images/cad-front_hue2810dd6e158cf3715e15de998852c44_365005_300x0_resize_q75_box.jpg" width="300" height="220">
+&lt;/a>
+&lt;figcaption>
+&lt;small>component view, from front&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/images/core.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/images/core_hue43f3402df27eedd99dff8c904086e8c_310336_300x0_resize_q75_box.jpg" width="300" height="219">
+&lt;/a>
+&lt;figcaption>
+&lt;small>Print Bed arrangement, green is support structures&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/images/meter-panel.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/images/meter-panel_hu546d99e5993001046c71e4a3333af77d_135643_300x0_resize_q75_box.jpg" width="300" height="267">
+&lt;/a>
+&lt;figcaption>
+&lt;small>meter panel print orientation&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/models/2x-lrs-psu.f3z">
+&lt;i class="far fa-file-archive">&lt;/i>
+Consolidated PSU CAD:
+&lt;small style="font-family:'Lucida Console', monospace">f3z&lt;/small> &lt;small>file&lt;/small>
+&lt;br>
+&lt;small>Fusion360 Archive&lt;/small>
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/models/box.stl">
+&lt;i class="far fa-file-code">&lt;/i>
+Box:
+&lt;small style="font-family:'Lucida Console', monospace">stl&lt;/small> &lt;small>file&lt;/small>
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/models/brace.stl">
+&lt;i class="far fa-file-code">&lt;/i>
+Brace:
+&lt;small style="font-family:'Lucida Console', monospace">stl&lt;/small> &lt;small>file&lt;/small>
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/models/core.3mf">
+&lt;i class="far fa-file-archive">&lt;/i>
+Core Components:
+&lt;small style="font-family:'Lucida Console', monospace">3mf&lt;/small> &lt;small>file&lt;/small>
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/models/lid.stl">
+&lt;i class="far fa-file-code">&lt;/i>
+Lid:
+&lt;small style="font-family:'Lucida Console', monospace">stl&lt;/small> &lt;small>file&lt;/small>
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/models/meter-panel.3mf">
+&lt;i class="far fa-file-archive">&lt;/i>
+(Optional) Meter Panel:
+&lt;small style="font-family:'Lucida Console', monospace">3mf&lt;/small> &lt;small>file&lt;/small>
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/models/meter-panel.stl">
+&lt;i class="far fa-file-code">&lt;/i>
+(Optional) Meter Panel:
+&lt;small style="font-family:'Lucida Console', monospace">stl&lt;/small> &lt;small>file&lt;/small>
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/images/meter-panel-slice.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/06/home-lab-consolidating-multiple-psus/images/meter-panel-slice_hu512c49ce3497e3dea530288ed57cb214_547680_300x0_resize_q75_box.jpg" width="300" height="255">
+&lt;/a>
+&lt;figcaption>
+&lt;small>using slic3r too remove the second meter cutout&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;/ul></description></item></channel></rss>
