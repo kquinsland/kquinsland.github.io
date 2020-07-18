@@ -1,4 +1,124 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>home-lab on karl</title><link>https://karlquinsland.com/categories/home-lab/</link><description>Recent content in home-lab on karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 05 Jul 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/categories/home-lab/index.xml" rel="self" type="application/rss+xml"/><item><title>home lab: mini 'universal' patch panel</title><link>https://karlquinsland.com/2020/07/home-lab-mini-universal-patch-panel/</link><pubDate>Sun, 05 Jul 2020 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/2020/07/home-lab-mini-universal-patch-panel/</guid><description>&lt;p>This is another brief &amp;ldquo;i made a thing!&amp;rdquo; posts.&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>home-lab on karl</title><link>https://karlquinsland.com/categories/home-lab/</link><description>Recent content in home-lab on karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 18 Jul 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/categories/home-lab/index.xml" rel="self" type="application/rss+xml"/><item><title>home lab: simple printable cable org</title><link>https://karlquinsland.com/2020/07/home-lab-simple-printable-cable-org/</link><pubDate>Sat, 18 Jul 2020 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/2020/07/home-lab-simple-printable-cable-org/</guid><description>&lt;p>Quick / another &amp;ldquo;i made a thing!&amp;rdquo; post.&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/07/home-lab-simple-printable-cable-org/images/installed.jpg" alt="Picture showing designed parts deployed as intended (please ignore the lingering dust! 💨)" />
+&lt;figcaption>
+&lt;p>
+Picture showing designed parts deployed as intended (please ignore the lingering dust! 💨)
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>I needed some horizontal / vertical cable rings for cat5 and power cables. I would have used the excellent &lt;a href="https://www.thingiverse.com/thing:3315960">1U Rackmount Cable Management Rings&lt;/a> by &lt;a href="https://www.thingiverse.com/boulwarek/about">boulwarek&lt;/a> except the hole spacing didn&amp;rsquo;t work for my application. I needed cable rings for the &amp;lsquo;front-to-back&amp;rsquo; braces which have distinct dimensions:&lt;/p>
+&lt;ul>
+&lt;li>holes needed to be spaced &lt;code>10.85mm&lt;/code> apart&lt;/li>
+&lt;li>distance between center of screw is &lt;code>20.0mm&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/07/home-lab-simple-printable-cable-org/images/hole-dimensions.jpg" alt="Screenshot from Fusion360 showing dimensions between screw holes" />
+&lt;figcaption>
+&lt;p>
+Screenshot from Fusion360 showing dimensions between screw holes
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>I made the rings slightly smaller as the horizontal / vertical runs I needed rings for do not carry more than a few cables.&lt;/p>
+&lt;p>A similar copy of this post is on &lt;a href="hhttps://www.thingiverse.com/thing:4546078">thingiverse&lt;/a> and &lt;a href="https://www.prusaprinters.org/prints/36851-server-rack-cable-org">prusaprinters&lt;/a> page.&lt;/p>
+&lt;h2 id="printing">Printing&lt;/h2>
+&lt;p>Theses are &amp;lsquo;function&amp;rsquo; parts, so the cheapest material and fastest settings work. No support material needed and minimal bridging with the suggested print orientation shown below.&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/07/home-lab-simple-printable-cable-org/images/suggested_print_orientation.jpg" alt="Screenshot showing suggested print bed arrangement" />
+&lt;figcaption>
+&lt;p>
+Screenshot showing suggested print bed arrangement
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="files">Files&lt;/h2>
+&lt;p>For archive / posterity, all source files are included here. All files are licensed as &lt;a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike&lt;/a> (CC BY-NC-SA).&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/07/home-lab-simple-printable-cable-org/images/hole-dimensions.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/07/home-lab-simple-printable-cable-org/images/hole-dimensions_hu83b61487aa052e287a0d86e657470027_73623_300x0_resize_q75_box.jpg" width="300" height="232">
+&lt;/a>
+&lt;figcaption>
+&lt;small>Screenshot from Fusion360 showing dimensions between screw holes&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/07/home-lab-simple-printable-cable-org/images/horizontal-model.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/07/home-lab-simple-printable-cable-org/images/horizontal-model_hu543f65d8397ef1c757ed8c5dd191bd79_44806_300x0_resize_q75_box.jpg" width="300" height="337">
+&lt;/a>
+&lt;figcaption>
+&lt;small>Picture showing the CAD model for horizontal variant&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/07/home-lab-simple-printable-cable-org/images/installed.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/07/home-lab-simple-printable-cable-org/images/installed_hu8273af6dd11af8c1f0254ae91302bd85_877360_300x0_resize_q75_box.jpg" width="300" height="118">
+&lt;/a>
+&lt;figcaption>
+&lt;small>Picture showing designed parts deployed as intended (please ignore the lingering dust! 💨)&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/07/home-lab-simple-printable-cable-org/models/combined.3mf">
+&lt;i class="far fa-file-archive">&lt;/i>
+models/combined.3mf:
+&lt;small style="font-family:'Lucida Console', monospace">3mf&lt;/small> &lt;small>file&lt;/small>
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/07/home-lab-simple-printable-cable-org/models/horizontal.f3d">
+&lt;i class="far fa-file-">&lt;/i>
+models/horizontal.f3d:
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/07/home-lab-simple-printable-cable-org/models/horizontal.stl">
+&lt;i class="far fa-file-code">&lt;/i>
+Horizontal STL:
+&lt;small style="font-family:'Lucida Console', monospace">stl&lt;/small> &lt;small>file&lt;/small>
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/07/home-lab-simple-printable-cable-org/models/vertical.f3d">
+&lt;i class="far fa-file-">&lt;/i>
+models/vertical.f3d:
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/07/home-lab-simple-printable-cable-org/models/vertical.stl">
+&lt;i class="far fa-file-code">&lt;/i>
+Vertical STL:
+&lt;small style="font-family:'Lucida Console', monospace">stl&lt;/small> &lt;small>file&lt;/small>
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/07/home-lab-simple-printable-cable-org/images/suggested_print_orientation.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/07/home-lab-simple-printable-cable-org/images/suggested_print_orientation_hud61f960f3afd79e64529ec719f59eb42_400356_300x0_resize_q75_box.jpg" width="300" height="207">
+&lt;/a>
+&lt;figcaption>
+&lt;small>Screenshot showing suggested print bed arrangement&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/07/home-lab-simple-printable-cable-org/images/vertical-model.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/07/home-lab-simple-printable-cable-org/images/vertical-model_hu17d82c0049c0096ab66a3dbcef39359e_44352_300x0_resize_q75_box.jpg" width="300" height="241">
+&lt;/a>
+&lt;figcaption>
+&lt;small>Picture showing the CAD model for vertical variant&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;/ul></description></item><item><title>home lab: mini 'universal' patch panel</title><link>https://karlquinsland.com/2020/07/home-lab-mini-universal-patch-panel/</link><pubDate>Sun, 05 Jul 2020 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/2020/07/home-lab-mini-universal-patch-panel/</guid><description>&lt;p>This is another brief &amp;ldquo;i made a thing!&amp;rdquo; posts.&lt;/p>
 &lt;h2 id="what">What&lt;/h2>
 &lt;p>Taking the side / rear of my rack off every time I needed to change which host(s) were connected to the monitor was starting to get old. Only recently did I realize that you can fit more than just RJ45 jacks in a &lt;a href="https://en.wikipedia.org/wiki/Keystone_module">Keystone Jack&lt;/a>. A few measurements, a quick search through thingiverse and some CAD time later, this is the result.&lt;/p>
 &lt;p>The model is tailored to my specific rack, but should be easily adoptable to any other dimensions. Import the Fusion360 model and then edit the first sketch in the timeline as needed and adjust the &lt;code>pattern on line&lt;/code> step to adjust the number of keystone jacks.&lt;/p>
