@@ -527,7 +527,7 @@ Lid:
 &lt;/figcaption>
 &lt;/figure>
 &lt;/li>
-&lt;/ul></description></item><item><title/><link>https://karlquinsland.com/contact/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/contact/</guid><description>&lt;p>The best way to get in touch is to email me.&lt;/p>
+&lt;/ul></description></item><item><title/><link>https://karlquinsland.com/contact/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/contact/</guid><description>&lt;p>The best way to get in touch is to email me ✉️.&lt;/p>
 &lt;p>There are a few &lt;a href="https://github.com/martignoni/hugo-cloak-email">clever&lt;/a> ways to &lt;a href="https://hugodutka.com/posts/email-obfuscation/">obfuscate&lt;/a> email addresses to prevent spam. Unfortunately, they all rely on javascript or otherwise can break screen readers and other tools that are often used by disabled persons.&lt;/p>
 &lt;p>So with that in mind, here&amp;rsquo;s a simple algorithm to derive the best email to contact me&lt;/p>
 &lt;ol>
@@ -535,4 +535,6 @@ Lid:
 &lt;li>Split my name into &lt;code>$first_name&lt;/code> and &lt;code>$last_name&lt;/code>&lt;/li>
 &lt;li>Send your email to &lt;code>contact@$fist_name$last_name.com&lt;/code>&lt;/li>
 &lt;/ol>
-&lt;p>If you had observed the name &lt;code>Bobby Tables&lt;/code> on the home page, you would email &lt;code>contact@bobbytables.com&lt;/code>.&lt;/p></description></item></channel></rss>
+&lt;p>If you had observed the name &lt;code>Bobby Tables&lt;/code> on the home page, you would email &lt;code>contact@bobbytables.com&lt;/code>.&lt;/p>
+&lt;h3 id="security-and-privacy-related-things">Security and Privacy related things&lt;/h3>
+&lt;p>For sensitive topics, especially any security issues in any software I am, responsible for, please use PGP to get in touch with me. The easiest way to do so is through &lt;a href="https://keybase.io/kquinsland">KeyBase&lt;/a>&lt;/p></description></item></channel></rss>
