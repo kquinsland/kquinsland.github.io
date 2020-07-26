@@ -53,7 +53,7 @@ Credit: XKCD #1319
 &lt;li>&lt;a href="https://planner-todo.web.app/">planner&lt;/a>. This is more of a UI, but it&amp;rsquo;s a &lt;strong>very&lt;/strong> pretty app.&lt;/li>
 &lt;/ul>
 &lt;p>And I&amp;rsquo;m genuinely curious about how other people will user it. I am always appreciative when somebody finds a smart way to save some time and shares their trick. I&amp;rsquo;m hoping somebody figures out how to use this tool in a way that I can learn from.&lt;/p>
-&lt;p>Around the time that this post goes live, I&amp;rsquo;ll create an announcement post in &lt;a href="https://www.reddit.com/r/todoist">/r/todoist&lt;/a> for discussion.&lt;/p>
+&lt;p>An announcement post for TMTDT is now on &lt;a href="https://old.reddit.com/r/todoist/comments/hyfl3o/introducing_the_missing_todoist_tools_a/">/r/todoist&lt;/a>.&lt;/p>
 &lt;h2 id="how">How&lt;/h2>
 &lt;p>The code and some documentation can be found on &lt;a href="https://github.com/kquinsland/the-missing-todoist-tools">GitHub&lt;/a>.&lt;/p>
 &lt;p>The demo gif at the top of this post illustrates a simple example, but more through (read: contrived) examples are included in the &lt;a href="https://github.com/kquinsland/the-missing-todoist-tools/tree/master/jobs/v1">jobs&lt;/a> directory.&lt;/p>
