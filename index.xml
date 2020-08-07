@@ -654,4 +654,11 @@ Lid:
 &lt;/ol>
 &lt;p>If you had observed the name &lt;code>Bobby Tables&lt;/code> on the home page, you would email &lt;code>contact@bobbytables.com&lt;/code>.&lt;/p>
 &lt;h3 id="security-and-privacy-related-things">Security and Privacy related things&lt;/h3>
-&lt;p>For sensitive topics, especially any security issues in any software I am, responsible for, please use PGP to get in touch with me. The easiest way to do so is through &lt;a href="https://keybase.io/kquinsland">KeyBase&lt;/a>&lt;/p></description></item></channel></rss>
+&lt;p>For sensitive topics, especially any security issues in any software I am, responsible for, please use PGP to get in touch with me. The easiest way to do so is through &lt;a href="https://keybase.io/kquinsland">KeyBase&lt;/a>&lt;/p></description></item><item><title/><link>https://karlquinsland.com/resume/</link><pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/resume/</guid><description>&lt;p>I used to curate a résumé as an excuse to learn &lt;a href="https://www.latex-project.org/">LaTex&lt;/a> but have found over the years that most positions don&amp;rsquo;t actually look at the résumé, they look at the summary that their &lt;a href="https://en.wikipedia.org/wiki/Applicant_tracking_system">ATS&lt;/a> generates &lt;em>after&lt;/em> ingesting the resume.&lt;/p>
+&lt;p>Not all ATS platforms can reliably ingest the PDF export from LinkedIn that has been my defacto resume since I stopped maintaining the LaTex version, so I offer my résumé in a few formats for other workflows/needs.&lt;/p>
+&lt;p>All the formats below are parsed / rendered based off of the the parent source - LinkedIn - which is kept up to date and rather descriptive/detailed.&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="https://www.linkedin.com/in/karlq/">LinkedIn&lt;/a>&lt;/li>
+&lt;li>&lt;a href="https://karlquinsland.com/resume/kq.json">JSON&lt;/a> document. Complies with the &lt;a href="https://jsonresume.org/">JSON Resume&lt;/a> schema)&lt;/li>
+&lt;li>&lt;a href="https://karlquinsland.com/resume/kq.html">HTML&lt;/a> document which can be easily turned into a PDF if you so choose&lt;/li>
+&lt;/ul></description></item></channel></rss>
