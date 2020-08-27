@@ -276,20 +276,23 @@ images/.gitignore:
 &lt;/li>
 &lt;li>
 &lt;a target="_blank" href="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/models/BASE.step">
-&lt;i class="far fa-file-">&lt;/i>
+&lt;i class="far fa-file-code">&lt;/i>
 models/BASE.step:
+&lt;small style="font-family:'Lucida Console', monospace">step&lt;/small> &lt;small>file&lt;/small>
 &lt;/a>
 &lt;/li>
 &lt;li>
 &lt;a target="_blank" href="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/models/BODY.step">
-&lt;i class="far fa-file-">&lt;/i>
+&lt;i class="far fa-file-code">&lt;/i>
 models/BODY.step:
+&lt;small style="font-family:'Lucida Console', monospace">step&lt;/small> &lt;small>file&lt;/small>
 &lt;/a>
 &lt;/li>
 &lt;li>
 &lt;a target="_blank" href="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/models/LID.step">
-&lt;i class="far fa-file-">&lt;/i>
+&lt;i class="far fa-file-code">&lt;/i>
 models/LID.step:
+&lt;small style="font-family:'Lucida Console', monospace">step&lt;/small> &lt;small>file&lt;/small>
 &lt;/a>
 &lt;/li>
 &lt;li>
