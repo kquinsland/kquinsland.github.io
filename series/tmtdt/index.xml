@@ -81,11 +81,11 @@ Credit: XKCD #1319
 &lt;span style="font-weight:bold">match&lt;/span>: &lt;span style="font-style:italic">&amp;#39;(at work$|at the office$)&amp;#39;&lt;/span>
 &lt;span style="font-weight:bold">option&lt;/span>:
 &lt;span style="font-style:italic"># remove portions of task content that match the query&lt;/span>
-&lt;span style="font-weight:bold">mutate&lt;/span>: Yes
+&lt;span style="font-weight:bold">mutate&lt;/span>: &lt;span style="font-weight:bold">Yes&lt;/span>
 &lt;span style="font-style:italic"># *AND*&lt;/span>
 &lt;span style="font-style:italic"># ... has no labels&lt;/span>
 &lt;span style="font-weight:bold">labels&lt;/span>:
-&lt;span style="font-weight:bold">absent&lt;/span>: Yes
+&lt;span style="font-weight:bold">absent&lt;/span>: &lt;span style="font-weight:bold">Yes&lt;/span>
 &lt;span style="font-style:italic"># *AND*&lt;/span>
 &lt;span style="font-style:italic"># ... is in this project&lt;/span>
 &lt;span style="font-weight:bold">projects&lt;/span>:
@@ -110,7 +110,7 @@ Credit: XKCD #1319
 &lt;span style="font-weight:bold">content&lt;/span>:
 &lt;span style="font-weight:bold">match&lt;/span>: &lt;span style="font-style:italic">&amp;#34;.&amp;#34;&lt;/span>
 &lt;span style="font-weight:bold">option&lt;/span>:
-&lt;span style="font-weight:bold">delete&lt;/span>: yes
+&lt;span style="font-weight:bold">delete&lt;/span>: &lt;span style="font-weight:bold">yes&lt;/span>
 &lt;span style="font-weight:bold">projects&lt;/span>:
 &lt;span style="font-style:italic"># ... is in this project&lt;/span>
 &lt;span style="font-weight:bold">name&lt;/span>:
