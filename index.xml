@@ -1,4 +1,78 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>karl</title><link>https://karlquinsland.com/</link><description>Recent content on karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 01 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Enhanced Home Assistant Switch Plate (HASP)</title><link>https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/</link><pubDate>Thu, 01 Oct 2020 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/</guid><description>&lt;p>The &lt;a href="https://github.com/aderusha/HASwitchPlate/">HASwitchPlate&lt;/a> project by &lt;code>aderusha&lt;/code> is brilliant. He&amp;rsquo;s managed to arrange some relatively cheap commodity hardware into a package that conveniently fits into a prime location for interacting with Home Automation - the light switch. The entire package sips power off of the already present mains wiring and connects to any MQTT broker via the esp8266 chip. As the HASP was designed to be used with Home Assistant, the humble 2.4 inch LCD transforms into an accessible control surface for an incredibly powerful home automation platform!&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>karl</title><link>https://karlquinsland.com/</link><description>Recent content on karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 20 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Two Tasmota rules</title><link>https://karlquinsland.com/2020/11/two-tasmota-rules/</link><pubDate>Fri, 20 Nov 2020 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/2020/11/two-tasmota-rules/</guid><description>&lt;p>&lt;a href="https://tasmota.github.io/">Tasmota&lt;/a> is an incredibly powerful alternative/open source firmware for the ever popular Espressif family of WiFi equipped microcontrollers.
+This does not need to be another post espousing it&amp;rsquo;s many awesome qualities, so just trust me on this; Tasmota is AWESOME.&lt;/p>
+&lt;p>Tasmota supports user configurable &lt;a href="https://tasmota.github.io/docs/Rules/">rules&lt;/a> which are simple commands wired into various device triggers.
+In short; a device running Tasmota gains some autonomy to react to events without needing to report the event to, and wait for commands from, a remote server.&lt;/p>
+&lt;p>I find the rules syntax to be a bit awkward and the list of practical examples feels like autodoc with a few practical examples sprinkled in.
+I have &lt;em>never&lt;/em> been able to craft a Tasmota rule without also consulting the list of &lt;a href="https://tasmota.github.io/docs/Commands/">commands&lt;/a>
+and doing a few searches through the github issues looking for issues/questions similar to mine.&lt;/p>
+&lt;p>This post is a simple &amp;ldquo;here&amp;rsquo;s how i did it&amp;rdquo; that I wish I had found when I needed to solve the problem.
+Hopefully this will save you some trouble!&lt;/p>
+&lt;h3 id="mr-coffee">Mr. Coffee&lt;/h3>
+&lt;p>A $15 &amp;lsquo;&lt;a href="https://tasmota.github.io/docs/devices/Sonoff-Pow/">smart relay&lt;/a>&amp;rsquo; is all that&amp;rsquo;s needed to turn a simple drip-over coffee maker into a remote-controllable coffee maker.
+Immediately, you gain the ability to start brewing coffee in the morning from bed.
+With a little extra integration work, start brewing coffee 10 minutes before your alarm is scheduled to go off. Simple quality of life improvement!&lt;/p>
+&lt;p>Every coffee maker has at least one safety interlock to disable the heating element if it gets too hot, but some have additional interlocks. Specifically,
+my coffee maker has two more interlocks in series with the heating element; if the carafe is removed or the water tank is empty, the circuit is broken and
+the heater immediately stops producing heat. From the perspective of the smart relay, the power consumption is either 0 Watts or a bit over 1100 Watts.&lt;/p>
+&lt;p>I was not comfortable using Home Assistant to monitor power consumption and then toggle the relay off after observing an interlock kick in.
+If something happened to the WiFi connection or the MQTT server or Home Assistant, there&amp;rsquo;s no way to disconnect power from the coffee maker; the relay will stay &amp;lsquo;on&amp;rsquo;.
+If the interlock failed, somehow, the heating element would immediately begin pumping out heat when it &lt;em>really&lt;/em> shouldn&amp;rsquo;t be!&lt;/p>
+&lt;p>Writing a simple &amp;ldquo;if power consumption drops below 1100 Watts, turn relay off&amp;rdquo; rule would be enough, except there&amp;rsquo;s no way to distinguish between the thermal interlock tripping
+and the carafe being removed for a quick pour. The simple rule is incompatible with the extra interlocks; it will prematurely send the brewing 100% of the time the carafe is removed.
+If you want to pour a cup of coffee while it&amp;rsquo;s still brewing, this is rather inconvenient.&lt;/p>
+&lt;p>Solution: give the user 30 seconds to return the carafe during brewing before turning the relay off.&lt;/p>
+&lt;p>From the perspective of the outlet, ignore any lulls in power consumption as long as they&amp;rsquo;re shorter than 30 seconds. Otherwise, assume that an interlock &lt;em>has&lt;/em> tripped.&lt;/p>
+&lt;p>This is implemented with two rules:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-fallback" data-lang="fallback">Rule1
+# When relay1 (heater) is turned on, activate rule2
+ON Power1#state=1 DO Rule2 1 ENDON
+# and deactivate rule2 when the heater is turned off
+ON Power1#state=0 DO Rule2 0 ENDON
+# When Timer1 expires, turn the heater off
+ON Rules#Timer=1 DO Power1 off ENDON
+# When the current used by the heating element rises above 1 Amp, disable Timer1
+ON Energy#Current&amp;gt;1 DO RuleTimer1 0 ENDON
+# ... and enable rule 2
+ON Energy#Current&amp;gt;1 DO Rule2 1 ENDON
+Rule2
+# Wait for power use to drop to 0; start counting down
+ON Energy#Current&amp;lt;.2 DO RuleTimer1 30 ENDON
+# and disable rule2 so the timer is not constantly reset
+ON Energy#Current&amp;lt;.2 DO Rule2 0 ENDON
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>I chose &lt;code>.2&lt;/code> Amps as the trigger, but the logic works the exact same way with Power / Wattage.&lt;/p>
+&lt;h2 id="electric-kettle">Electric Kettle&lt;/h2>
+&lt;p>I wanted to detect when my electric kettle was done boiling the water so I could play a sound and flash the lights in whichever room I happened to be in at the time.
+This is trivial to do with a &amp;lsquo;&lt;a href="https://tasmota.github.io/docs/devices/Sonoff-S31/">smart outlet&lt;/a>&amp;rsquo; and a &lt;a href="https://www.home-assistant.io/integrations/binary_sensor.template/">template sensor&lt;/a> in Home Assistant:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-yaml" data-lang="yaml">- &lt;span style="font-weight:bold">platform&lt;/span>: template
+&lt;span style="font-weight:bold">sensors&lt;/span>:
+&lt;span style="font-weight:bold">kettle_running&lt;/span>:
+&lt;span style="font-weight:bold">friendly_name&lt;/span>: &lt;span style="font-style:italic">&amp;#34;Kettle Boiling&amp;#34;&lt;/span>
+&lt;span style="font-style:italic"># If the kettle is using more than 5w, assume its on / boiling water&lt;/span>
+&lt;span style="font-weight:bold">icon_template&lt;/span>: &amp;gt;-&lt;span style="font-style:italic">
+&lt;/span>&lt;span style="font-style:italic"> {% if states(&amp;#39;sensor.kettle_energy_power&amp;#39;) | float &amp;gt; 5 %}
+&lt;/span>&lt;span style="font-style:italic"> mdi:kettle-steam
+&lt;/span>&lt;span style="font-style:italic"> {% else %}
+&lt;/span>&lt;span style="font-style:italic"> mdi:kettle
+&lt;/span>&lt;span style="font-style:italic"> {% endif %}&lt;/span>
+&lt;span style="font-weight:bold">value_template&lt;/span>: &lt;span style="font-style:italic">&amp;#34;{{states(&amp;#39;sensor.kettle_energy_power&amp;#39;) | float &amp;gt; 5}}&amp;#34;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Only problem, Tasmota only publishes the kettle&amp;rsquo;s power once every 300 seconds. This means &lt;code>sensor.kettle_energy_power&lt;/code> only gets updated every 300s which makes it really hard
+to fire off a &lt;em>timely&lt;/em> notification when the kettle is done.
+The &amp;lsquo;brute-force&amp;rsquo; solution is to configure Tasmota to transmit the telemetry &lt;a href="https://github.com/arendst/Tasmota/issues/2567">continuously&lt;/a>.
+Except there&amp;rsquo;s no need for the Tasmota device on the kettle to be constantly informing Home Assistant that there&amp;rsquo;s no power being used whenever the kettle is not on; my application only cares about the &amp;lsquo;&lt;a href="https://en.wikipedia.org/wiki/Signal_edge">falling edge&lt;/a>&amp;rsquo;.&lt;/p>
+&lt;p>Borrow the trigger from the &lt;a href="#mr-coffee">Mr. Coffee&lt;/a> rule and shorten the &lt;a href="https://tasmota.github.io/docs/Commands/#teleperiod">telemetry period&lt;/a> only when the kettle
+is consuming more than 1 Watt. Like the coffee maker, it&amp;rsquo;s either consuming 0 Watts or about 1.1 Kilowatt.&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-fallback" data-lang="fallback">Rule1
+on ENERGY#Power&amp;gt;1 do Backlog TelePeriod 10; Rule2 1 endon
+Rule2
+on ENERGY#Power=0 do Backlog TelePeriod 1; Rule2 0 endon
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>As soon as the kettle starts using more than 1 Watt, configure Tasmota to publish its sensor data every 10 seconds.
+I&amp;rsquo;ll get notified that the water is boiling within 10s; much better than 300s!
+Once the power consumption goes back down to 0, reset the telemetry update period and disable the rule.&lt;/p>
+&lt;p>The second rule must be disabled to prevent constant triggering of the rule when the kettle is not boiling.
+Without the &lt;code>Rule2 0&lt;/code>, the console/logs for the device would be full of statements like this repeating every few seconds:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-fallback" data-lang="fallback">RUL: ENERGY#POWER&amp;gt;1 performs &amp;#34;TelePeriod 10&amp;#34;
+MQT: stat/tasmota_kettle/RESULT = {&amp;#34;TelePeriod&amp;#34;:10}
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Hope that helped!&lt;/p></description></item><item><title>Enhanced Home Assistant Switch Plate (HASP)</title><link>https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/</link><pubDate>Thu, 01 Oct 2020 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/</guid><description>&lt;p>The &lt;a href="https://github.com/aderusha/HASwitchPlate/">HASwitchPlate&lt;/a> project by &lt;code>aderusha&lt;/code> is brilliant. He&amp;rsquo;s managed to arrange some relatively cheap commodity hardware into a package that conveniently fits into a prime location for interacting with Home Automation - the light switch. The entire package sips power off of the already present mains wiring and connects to any MQTT broker via the esp8266 chip. As the HASP was designed to be used with Home Assistant, the humble 2.4 inch LCD transforms into an accessible control surface for an incredibly powerful home automation platform!&lt;/p>
 &lt;p>Within moments of discovering the project and browsing through a few examples, my mind ran wild with possibilities. After double checking the relatively low &lt;a href="https://github.com/aderusha/HASwitchPlate#bill-of-materials">B.O.M.&lt;/a> cost,&lt;/p>
 &lt;p>While shopping for the parts to make my own version, I got a few ideas.&lt;/p>
 &lt;figure >
@@ -913,7 +987,7 @@ I suggest waiting until the end to glue on the optional roof and waiting until j
 &lt;span style="font-weight:bold">baud_rate&lt;/span>: 2400
 &lt;span style="font-weight:bold">sensor&lt;/span>:
 - &lt;span style="font-weight:bold">platform&lt;/span>: custom
-&lt;span style="font-weight:bold">lambda&lt;/span>: &lt;span style="font-style:italic">|-
+&lt;span style="font-weight:bold">lambda&lt;/span>: |-&lt;span style="font-style:italic">
 &lt;/span>&lt;span style="font-style:italic"> auto ws3 = new WS3(id(uart_bus));
 &lt;/span>&lt;span style="font-style:italic"> App.register_component(ws3);
 &lt;/span>&lt;span style="font-style:italic"> return {
@@ -932,8 +1006,8 @@ I suggest waiting until the end to glue on the optional roof and waiting until j
 &lt;/span>&lt;span style="font-style:italic"> ws3-&amp;gt;particles_25um,
 &lt;/span>&lt;span style="font-style:italic"> ws3-&amp;gt;particles_50um,
 &lt;/span>&lt;span style="font-style:italic"> ws3-&amp;gt;particles_100um,
-&lt;/span>&lt;span style="font-style:italic"> };
-&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>With that, check the logs from your instance of ESPHome and you should see something like this:&lt;/p>
+&lt;/span>&lt;span style="font-style:italic"> };&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>With that, check the logs from your instance of ESPHome and you should see something like this:&lt;/p>
 &lt;div class="highlight">&lt;pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-fallback" data-lang="fallback">[D][ws3:157]: pkt_read_ok!
 [D][WS3:410]: VALID! Packet: [c000s000g000t093r000p000h35b09880,050,080,088,502,056,065,*18
 ], Checksum: [18] chksum: [18]
@@ -1132,14 +1206,14 @@ models/lid.stl:
 &lt;span style="font-weight:bold">data_template&lt;/span>:
 &lt;span style="font-weight:bold">notification_id&lt;/span>: &lt;span style="font-style:italic">&amp;#34;{{ trigger.event.data.title }}&amp;#34;&lt;/span>
 &lt;span style="font-weight:bold">title&lt;/span>: &lt;span style="font-style:italic">&amp;#34;FlexAlert&amp;#34;&lt;/span>
-&lt;span style="font-weight:bold">message&lt;/span>: &lt;span style="font-style:italic">&amp;gt;
+&lt;span style="font-weight:bold">message&lt;/span>: &amp;gt;&lt;span style="font-style:italic">
 &lt;/span>&lt;span style="font-style:italic"> {% set tokens = trigger.event.data.description.split(&amp;#39; &amp;#39;) %}
 &lt;/span>&lt;span style="font-style:italic"> {% set start_str = &amp;#34;{} {} {}&amp;#34;.format(tokens[1], tokens[2], tokens[3]) %}
 &lt;/span>&lt;span style="font-style:italic"> {% set start = strptime(start_str, &amp;#39;%d-%b-%Y %I:%M %p&amp;#39;) %}
 &lt;/span>&lt;span style="font-style:italic"> {% set end_str = &amp;#34;{} {} {}&amp;#34;.format(tokens[5], tokens[6], tokens[7]) %}
 &lt;/span>&lt;span style="font-style:italic"> {% set end = strptime(end_str, &amp;#39;%d-%b-%Y %I:%M %p&amp;#39;) %}
-&lt;/span>&lt;span style="font-style:italic"> &amp;#34;Heads up, electricity demand is likely to exceed production from {{ start.isoformat() }} to {{ end.isoformat() }}&amp;#34;
-&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>Which should create a simple notification that&amp;rsquo;ll look something like this:&lt;/p>
+&lt;/span>&lt;span style="font-style:italic"> &amp;#34;Heads up, electricity demand is likely to exceed production from {{ start.isoformat() }} to {{ end.isoformat() }}&amp;#34;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Which should create a simple notification that&amp;rsquo;ll look something like this:&lt;/p>
 &lt;figure >
 &lt;img src="https://karlquinsland.com/2020/08/rss-and-home-assistant-early-warning-for-grid-blackouts/images/notification.jpg" alt="Ignore the sample text from my testing" />
 &lt;figcaption>

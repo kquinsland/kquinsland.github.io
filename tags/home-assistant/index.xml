@@ -1,0 +1,1230 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>home assistant on karl</title><link>https://karlquinsland.com/tags/home-assistant/</link><description>Recent content in home assistant on karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 20 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/home-assistant/index.xml" rel="self" type="application/rss+xml"/><item><title>Two Tasmota rules</title><link>https://karlquinsland.com/2020/11/two-tasmota-rules/</link><pubDate>Fri, 20 Nov 2020 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/2020/11/two-tasmota-rules/</guid><description>&lt;p>&lt;a href="https://tasmota.github.io/">Tasmota&lt;/a> is an incredibly powerful alternative/open source firmware for the ever popular Espressif family of WiFi equipped microcontrollers.
+This does not need to be another post espousing it&amp;rsquo;s many awesome qualities, so just trust me on this; Tasmota is AWESOME.&lt;/p>
+&lt;p>Tasmota supports user configurable &lt;a href="https://tasmota.github.io/docs/Rules/">rules&lt;/a> which are simple commands wired into various device triggers.
+In short; a device running Tasmota gains some autonomy to react to events without needing to report the event to, and wait for commands from, a remote server.&lt;/p>
+&lt;p>I find the rules syntax to be a bit awkward and the list of practical examples feels like autodoc with a few practical examples sprinkled in.
+I have &lt;em>never&lt;/em> been able to craft a Tasmota rule without also consulting the list of &lt;a href="https://tasmota.github.io/docs/Commands/">commands&lt;/a>
+and doing a few searches through the github issues looking for issues/questions similar to mine.&lt;/p>
+&lt;p>This post is a simple &amp;ldquo;here&amp;rsquo;s how i did it&amp;rdquo; that I wish I had found when I needed to solve the problem.
+Hopefully this will save you some trouble!&lt;/p>
+&lt;h3 id="mr-coffee">Mr. Coffee&lt;/h3>
+&lt;p>A $15 &amp;lsquo;&lt;a href="https://tasmota.github.io/docs/devices/Sonoff-Pow/">smart relay&lt;/a>&amp;rsquo; is all that&amp;rsquo;s needed to turn a simple drip-over coffee maker into a remote-controllable coffee maker.
+Immediately, you gain the ability to start brewing coffee in the morning from bed.
+With a little extra integration work, start brewing coffee 10 minutes before your alarm is scheduled to go off. Simple quality of life improvement!&lt;/p>
+&lt;p>Every coffee maker has at least one safety interlock to disable the heating element if it gets too hot, but some have additional interlocks. Specifically,
+my coffee maker has two more interlocks in series with the heating element; if the carafe is removed or the water tank is empty, the circuit is broken and
+the heater immediately stops producing heat. From the perspective of the smart relay, the power consumption is either 0 Watts or a bit over 1100 Watts.&lt;/p>
+&lt;p>I was not comfortable using Home Assistant to monitor power consumption and then toggle the relay off after observing an interlock kick in.
+If something happened to the WiFi connection or the MQTT server or Home Assistant, there&amp;rsquo;s no way to disconnect power from the coffee maker; the relay will stay &amp;lsquo;on&amp;rsquo;.
+If the interlock failed, somehow, the heating element would immediately begin pumping out heat when it &lt;em>really&lt;/em> shouldn&amp;rsquo;t be!&lt;/p>
+&lt;p>Writing a simple &amp;ldquo;if power consumption drops below 1100 Watts, turn relay off&amp;rdquo; rule would be enough, except there&amp;rsquo;s no way to distinguish between the thermal interlock tripping
+and the carafe being removed for a quick pour. The simple rule is incompatible with the extra interlocks; it will prematurely send the brewing 100% of the time the carafe is removed.
+If you want to pour a cup of coffee while it&amp;rsquo;s still brewing, this is rather inconvenient.&lt;/p>
+&lt;p>Solution: give the user 30 seconds to return the carafe during brewing before turning the relay off.&lt;/p>
+&lt;p>From the perspective of the outlet, ignore any lulls in power consumption as long as they&amp;rsquo;re shorter than 30 seconds. Otherwise, assume that an interlock &lt;em>has&lt;/em> tripped.&lt;/p>
+&lt;p>This is implemented with two rules:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-fallback" data-lang="fallback">Rule1
+# When relay1 (heater) is turned on, activate rule2
+ON Power1#state=1 DO Rule2 1 ENDON
+# and deactivate rule2 when the heater is turned off
+ON Power1#state=0 DO Rule2 0 ENDON
+# When Timer1 expires, turn the heater off
+ON Rules#Timer=1 DO Power1 off ENDON
+# When the current used by the heating element rises above 1 Amp, disable Timer1
+ON Energy#Current&amp;gt;1 DO RuleTimer1 0 ENDON
+# ... and enable rule 2
+ON Energy#Current&amp;gt;1 DO Rule2 1 ENDON
+Rule2
+# Wait for power use to drop to 0; start counting down
+ON Energy#Current&amp;lt;.2 DO RuleTimer1 30 ENDON
+# and disable rule2 so the timer is not constantly reset
+ON Energy#Current&amp;lt;.2 DO Rule2 0 ENDON
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>I chose &lt;code>.2&lt;/code> Amps as the trigger, but the logic works the exact same way with Power / Wattage.&lt;/p>
+&lt;h2 id="electric-kettle">Electric Kettle&lt;/h2>
+&lt;p>I wanted to detect when my electric kettle was done boiling the water so I could play a sound and flash the lights in whichever room I happened to be in at the time.
+This is trivial to do with a &amp;lsquo;&lt;a href="https://tasmota.github.io/docs/devices/Sonoff-S31/">smart outlet&lt;/a>&amp;rsquo; and a &lt;a href="https://www.home-assistant.io/integrations/binary_sensor.template/">template sensor&lt;/a> in Home Assistant:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-yaml" data-lang="yaml">- &lt;span style="font-weight:bold">platform&lt;/span>: template
+&lt;span style="font-weight:bold">sensors&lt;/span>:
+&lt;span style="font-weight:bold">kettle_running&lt;/span>:
+&lt;span style="font-weight:bold">friendly_name&lt;/span>: &lt;span style="font-style:italic">&amp;#34;Kettle Boiling&amp;#34;&lt;/span>
+&lt;span style="font-style:italic"># If the kettle is using more than 5w, assume its on / boiling water&lt;/span>
+&lt;span style="font-weight:bold">icon_template&lt;/span>: &amp;gt;-&lt;span style="font-style:italic">
+&lt;/span>&lt;span style="font-style:italic"> {% if states(&amp;#39;sensor.kettle_energy_power&amp;#39;) | float &amp;gt; 5 %}
+&lt;/span>&lt;span style="font-style:italic"> mdi:kettle-steam
+&lt;/span>&lt;span style="font-style:italic"> {% else %}
+&lt;/span>&lt;span style="font-style:italic"> mdi:kettle
+&lt;/span>&lt;span style="font-style:italic"> {% endif %}&lt;/span>
+&lt;span style="font-weight:bold">value_template&lt;/span>: &lt;span style="font-style:italic">&amp;#34;{{states(&amp;#39;sensor.kettle_energy_power&amp;#39;) | float &amp;gt; 5}}&amp;#34;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Only problem, Tasmota only publishes the kettle&amp;rsquo;s power once every 300 seconds. This means &lt;code>sensor.kettle_energy_power&lt;/code> only gets updated every 300s which makes it really hard
+to fire off a &lt;em>timely&lt;/em> notification when the kettle is done.
+The &amp;lsquo;brute-force&amp;rsquo; solution is to configure Tasmota to transmit the telemetry &lt;a href="https://github.com/arendst/Tasmota/issues/2567">continuously&lt;/a>.
+Except there&amp;rsquo;s no need for the Tasmota device on the kettle to be constantly informing Home Assistant that there&amp;rsquo;s no power being used whenever the kettle is not on; my application only cares about the &amp;lsquo;&lt;a href="https://en.wikipedia.org/wiki/Signal_edge">falling edge&lt;/a>&amp;rsquo;.&lt;/p>
+&lt;p>Borrow the trigger from the &lt;a href="#mr-coffee">Mr. Coffee&lt;/a> rule and shorten the &lt;a href="https://tasmota.github.io/docs/Commands/#teleperiod">telemetry period&lt;/a> only when the kettle
+is consuming more than 1 Watt. Like the coffee maker, it&amp;rsquo;s either consuming 0 Watts or about 1.1 Kilowatt.&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-fallback" data-lang="fallback">Rule1
+on ENERGY#Power&amp;gt;1 do Backlog TelePeriod 10; Rule2 1 endon
+Rule2
+on ENERGY#Power=0 do Backlog TelePeriod 1; Rule2 0 endon
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>As soon as the kettle starts using more than 1 Watt, configure Tasmota to publish its sensor data every 10 seconds.
+I&amp;rsquo;ll get notified that the water is boiling within 10s; much better than 300s!
+Once the power consumption goes back down to 0, reset the telemetry update period and disable the rule.&lt;/p>
+&lt;p>The second rule must be disabled to prevent constant triggering of the rule when the kettle is not boiling.
+Without the &lt;code>Rule2 0&lt;/code>, the console/logs for the device would be full of statements like this repeating every few seconds:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-fallback" data-lang="fallback">RUL: ENERGY#POWER&amp;gt;1 performs &amp;#34;TelePeriod 10&amp;#34;
+MQT: stat/tasmota_kettle/RESULT = {&amp;#34;TelePeriod&amp;#34;:10}
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Hope that helped!&lt;/p></description></item><item><title>Enhanced Home Assistant Switch Plate (HASP)</title><link>https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/</link><pubDate>Thu, 01 Oct 2020 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/</guid><description>&lt;p>The &lt;a href="https://github.com/aderusha/HASwitchPlate/">HASwitchPlate&lt;/a> project by &lt;code>aderusha&lt;/code> is brilliant. He&amp;rsquo;s managed to arrange some relatively cheap commodity hardware into a package that conveniently fits into a prime location for interacting with Home Automation - the light switch. The entire package sips power off of the already present mains wiring and connects to any MQTT broker via the esp8266 chip. As the HASP was designed to be used with Home Assistant, the humble 2.4 inch LCD transforms into an accessible control surface for an incredibly powerful home automation platform!&lt;/p>
+&lt;p>Within moments of discovering the project and browsing through a few examples, my mind ran wild with possibilities. After double checking the relatively low &lt;a href="https://github.com/aderusha/HASwitchPlate#bill-of-materials">B.O.M.&lt;/a> cost,&lt;/p>
+&lt;p>While shopping for the parts to make my own version, I got a few ideas.&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/installed.jpg" alt="Picture showing modified HASP installed, LCD indicated the colors of the LEDs" />
+&lt;figcaption>
+&lt;p>
+If the LEDs weren&amp;#39;t on, you&amp;#39;d never know they were there 😊
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="modifications">Modifications&lt;/h2>
+&lt;p>First, a brief word about indemnification:&lt;/p>
+&lt;blockquote>
+&lt;p>All instructions and information on this page is purely for informational purposes.&lt;/p>
+&lt;p>The original HASP and my modifications come with neither an expressed or implied warranty. By constructing your own, you assume all risk.&lt;/p>
+&lt;/blockquote>
+&lt;h3 id="software">Software&lt;/h3>
+&lt;p>The few software modifications I&amp;rsquo;ve made to the HASP project are relatively small and don&amp;rsquo;t implement anything significant or new; they are &amp;lsquo;quality of life&amp;rsquo; improvements that target small portions of the code.&lt;/p>
+&lt;p>I strongly believe that the hardest part of using a given piece automation technology should be taking it out of the box. To wit, Home Assistant has robust - &lt;a href="https://community.home-assistant.io/t/ability-to-set-entity-icon-through-mqtt-discovery/224538">but not perfect&lt;/a> - support for &lt;a href="Https://www.home-assistant.io/docs/mqtt/discovery/">automatic device discovery and configuration via MQTT&lt;/a>. Once a device has connected to the MQTT broker, it simply publishes a document detailing how HA should interface with the device. It&amp;rsquo;s a wonderful experience to see a new device connect to the network for the first time and just a few seconds later the new device is registered in HA, waiting for you to start integrating it into automations 🤩🤤.&lt;/p>
+&lt;p>While there are quite a few sensors/stateful-attributes in the original HASP code, none of them automatically present themselves to Home Assistant 😔. I set about fixing that to the best of my abilities. Unfortunately, the LCD backlight is the only peripheral that could be &amp;lsquo;upgraded&amp;rsquo; to automatic configuration without making a ton of changes to the original code base.&lt;/p>
+&lt;p>All of the hardware modifications detailed below automatically configure themselves with Home Assistant.&lt;/p>
+&lt;p>The original HASP code base uses allocates too little memory for storing MQTT credentials. Any username or password longer than 31 bytes/characters would be &lt;strong>silently&lt;/strong> truncated on save. Despite the &amp;lsquo;credentials saved, rebooting&amp;rsquo; message, the next screen was always a &amp;lsquo;failure to connect&amp;rsquo; message. Frustrating! The pull request to address this is &lt;a href="https://github.com/aderusha/HASwitchPlate/pull/117">here&lt;/a>.&lt;/p>
+&lt;h3 id="hardware">Hardware&lt;/h3>
+&lt;p>The HASP does support dimming the LCD, but it has no awareness of ambient light levels. This makes it rather difficult to deploy a HASP in any &amp;lsquo;light sensitive&amp;rsquo; location like a bedroom or media room without another device to cue Home Assistant and lower the LCD brightness. Workable, but too high friction to be ideal.&lt;/p>
+&lt;p>Light Dependent Resistors - &lt;a href="https://en.wikipedia.org/wiki/Photoresistor">LDR&lt;/a> for short - are a very cheap and compact way to get an approximate light level. Fortunately, the analogue pin is broken out on the &lt;a href="https://github.com/aderusha/HASwitchPlate/tree/master/PCB">PCB&lt;/a> so a simple &lt;a href="https://en.wikipedia.org/wiki/Voltage_divider#Resistive_divider">resistive divider&lt;/a> and a few lines of code are all that&amp;rsquo;s needed to get a a number that linearly correlates to the level of light hitting the face plate.&lt;/p>
+&lt;p>It just so happens that there is &lt;em>just enough&lt;/em> room to fit a LDR beneath the surface of the decor plate and out of the way of the LCD. As (not) shown in the picture above, there is no way to tell that the LDR is embedded beneath the surface.&lt;/p>
+&lt;p>The range of values from the LDR isn&amp;rsquo;t great, but they are adequate enough to reliably detect if the HASP is in a darkened room.&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/ldr-graph.jpg" alt="Screenshot depicting graph of LDR values, rising over time. Annotated to indicate sharp rise in brightness right around sunrise" />
+&lt;figcaption>
+&lt;p>
+ignore the spikes just before noon, those are due to to testing with a flash light
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>While researching potential ways to measure the ambient brightness, I stumbled across the &lt;a href="https://shop.homeseer.com/products/z-wave-dimmer-switch">HomeSeer HS-WD200+&lt;/a> which features a rather novel way to convey additional information to a user; seven RGB leds 😍. It&amp;rsquo;s a brilliant use of such a simple and ubiquitous technology that I&amp;rsquo;m not really sure why every smart switch doesn&amp;rsquo;t do this!&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/HS-WD200-Modes.jpg" alt="Picture showing tools/materials required for assembly" />
+&lt;figcaption>
+&lt;p>
+HomeSeer&amp;#39;s WS200 has a delightful innovation... RGB LEDs!
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>With &lt;em>zero&lt;/em> room to spare, four LEDs can fit into a small cavity between the LCD and decor plate surface. Like with the LDR, there is no visual &amp;lsquo;tell&amp;rsquo; that there are LEDs beneath the surface&amp;hellip; unless they&amp;rsquo;re on, of course.&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/prototype-leds.jpg" alt="Picture showing a prototype HASP with LEDs embedded beneath the surface and powered on" />
+&lt;figcaption>
+&lt;p>
+Ignore the dirt on the switch. Notice how you can&amp;#39;t tell there&amp;#39;s an LDR beneath the surface
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;h4 id="the-enclosure">The enclosure&lt;/h4>
+&lt;p>Without consuming more than 1 &lt;a href="https://diy.stackexchange.com/questions/11654/what-does-1-gang-2-gang-and-so-forth-mean-when-talking-about-electrical-bo">gang&lt;/a>, the only realistic way to get the wires for the new components to the HASP PCB is to go around the edge of the LCD&amp;rsquo;s PCB. This is accomplished with two small &amp;lsquo;channels&amp;rsquo; that slightly protrude in the vertical directions from the lip around the LCD and into the box that encloses the electronics.&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/CAD-channel-profile.jpg" alt="Screenshot of Fusion360, showing side profile of HASP, annotated to indicate channels in enclosure for wires leading to LED tape, LDR in relation to LCD" />
+&lt;figcaption>
+&lt;p>
+Section analysis from f360 showing small channels around the LCD for wires to LDR and LEDs
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>Additionally, I found that the original printed parts do not properly fit in the &lt;a href="https://www.amazon.com/Thomas-Betts-B232A-UPC-Carlon-Bulk/dp/B000GAWYZ8/">two gang electrical box&lt;/a> where I intended to deploy the HASP.&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/electric-box-clearance.jpg" alt="Closeup photograph of prototype HASP enclosure and 2-gang electric box. Annotated to show interfering surfaces" />
+&lt;figcaption>
+&lt;p>
+The only way to fit the HASP in my 2-gang electric boxes is to cut out a small section
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>In total, the modifications required to accommodate the LDR and LED tape are relatively small, but &lt;a href="https://github.com/aderusha/HASwitchPlate/issues/116">I had to re-create the model from scratch&lt;/a> so several things are likely a bit different from the original model. It should be relatively easy to port the modifications to the other multi-gang configurations that the original HASP supports.&lt;/p>
+&lt;p>The &lt;code>.step&lt;/code> and &lt;code>.f3z&lt;/code> files are available should you want to make the necessary modifications to other switch plate configurations.
+The &lt;code>.stl&lt;/code> and &lt;code>.3mf&lt;/code> files are available for easy printing.&lt;/p>
+&lt;p>All files available &lt;a href="#files">below&lt;/a> and on &lt;a href="https://github.com/kquinsland/HASwitchPlate/tree/master/3D_Printable_Models/enhanced-HASP">github&lt;/a>.&lt;/p>
+&lt;h2 id="assembly">Assembly&lt;/h2>
+&lt;p>The steps below are meant to be followed between the original steps &lt;a href="https://github.com/aderusha/HASwitchPlate/blob/master/Documentation/03_Electronics_Assembly.md">&lt;code>03_Electronics_Assembly&lt;/code>&lt;/a> and &lt;a href="https://github.com/aderusha/HASwitchPlate/blob/master/Documentation/04_Project_Enclosure.md">&lt;code>04_Project_Enclosure&lt;/code>&lt;/a>.&lt;/p>
+&lt;p>In short, you&amp;rsquo;ll want to assemble and test the HASP PCB as in the original instructions, but use the steps below as a substitute for the enclosure assembly process.&lt;/p>
+&lt;h3 id="additional-materials">Additional Materials&lt;/h3>
+&lt;p>In addition to everything in the original BOM, you&amp;rsquo;ll need:&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>A LDR. Be aware that LDRs come in many different shapes and sizes and have different resistance values. Space is rather tight, so the form factor matters a lot more than the resistance values or band of light that the LDR responds to. If you use a different LDR, you may need to adjust the resistor value to better match your LDR. You can get 50 of the exact model GL5516 that I used for less than $2 &lt;a href="https://s.click.aliexpress.com/e/_dUjV8Rn">here&lt;/a>.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>A 10KΩ resistor to form a simple resistive divider with the LDR. This will better map the the full range of the LDR to the 0-1 volt range that the ESP8266 ADC uses. Space is rather limited so the smaller the resistor, the better; no need for anything larger than 1/4 Watt. You can get a 10-pack of 10KΩ resistors &lt;a href="https://rover.ebay.com/rover/1/711-53200-19255-0/1?mpre=https%3A%2F%2Fwww.ebay.com%2Fitm%2F10-Pcs-1-8-Watt-1-Metal-Film-Resistor-Choose-you-own-values-USA-SELLER%2F302971259661&amp;amp;campid=5338745533&amp;amp;toolid=10001&amp;amp;customid=">here&lt;/a>&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>WS2812B LED tape &lt;strong>featuring the 3535SMD package&lt;/strong>. The &amp;lsquo;regular size&amp;rsquo; LED package &lt;em>will &lt;strong>not&lt;/strong> fit&lt;/em> so make sure you use the smaller &lt;code>3535SMD&lt;/code> package! Beyond that, aim for LED tape that is no wider than ~8mm and has highest density possible. After quite some searching, the best that I could find is 8mm wide tape with a density of 144 LEDs per meter. Unfortunately, they don&amp;rsquo;t sell LEDs 4 at a time, so you can pick up 1 meter of the exact LEDs I used &lt;a href="https://rover.ebay.com/rover/1/711-53200-19255-0/1?mpre=https%3A%2F%2Fwww.ebay.com%2Fitm%2FNarrow-DC-5V-WS2812B-Led-Strip-Individually-Addressable-WS2812-Led-pixel-Light%2F254647279915%3Fhash%3Ditem3b4a29212b%3Ag%3A9D8AAOSwIZ5fBTn7&amp;amp;campid=5338745533&amp;amp;toolid=10001&amp;amp;customid=pixel_tape">here&lt;/a>.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Several centimeters of very fine gauge wire. Ideally, multiple colors so you can keep organized but this is not required. Again, space is rather tight, so AWG 28 or 30 is ideal. Much bigger than that and you&amp;rsquo;ll likely have issues fitting everything together. You can get a 1m length of multiple colors &lt;a href="https://rover.ebay.com/rover/1/711-53200-19255-0/1?mpre=https%3A%2F%2Fwww.ebay.com%2Fitm%2FNarrow-DC-5V-WS2812B-Led-Strip-Individually-Addressable-WS2812-Led-pixel-Light%2F254647279915%3Fhash%3Ditem3b4a29212b%3Ag%3A9D8AAOSwIZ5fBTn7&amp;amp;campid=5338745533&amp;amp;toolid=10001">here&lt;/a>.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>HeatShrink Tubing (HST). The exact diameter needed will depend on how compact your soldering is and the size of resistor used. Multiple colors will help keep things organized, but that&amp;rsquo;s not required. I suggest a kit so you can get the perfect diameter and length. You can get a kit &lt;a href="https://rover.ebay.com/rover/1/711-53200-19255-0/1?mpre=https%3A%2F%2Fwww.ebay.com%2Fitm%2F360pcs-2-1-Heat-Shrink-Tube-Tubing-Sleeving-Wrap-Wire-cable-Insulated-Assorted%2F224122863249%3Fhash%3Ditem342ec37e91%3Ag%3AMbcAAOSwXGhfPCNK&amp;amp;campid=5338745533&amp;amp;toolid=10001">here&lt;/a>.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Standard 2.54mm pin headers. You can get a set of male and female headers &lt;a href="https://rover.ebay.com/rover/1/711-53200-19255-0/1?mpre=https%3A%2F%2Fwww.ebay.com%2Fitm%2F10pcs-Male-Header-1x40-2-54mm-40-Pin-PCB-Through-Hole-Arduino-and-Pi%2F223105297271%3Fepid%3D28022683725%26hash%3Ditem33f21cab77%3Ag%3A~X8AAOSwvFpbdZWA&amp;amp;campid=5338745533&amp;amp;toolid=10001">here&lt;/a>.&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/assembly/00.prep-electronics.jpg" alt="Picture showing the additional electronic components for mod" />
+&lt;figcaption>
+&lt;p>
+All the components needed for assembly
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>&lt;strong>Note&lt;/strong>: Where possible, I&amp;rsquo;ve used commission links. The links don&amp;rsquo;t raise the price of any item, they simply let the retailer know that I&amp;rsquo;m the reason for your business. In return, I get a small cut of your purchase as a &amp;lsquo;thanks&amp;rsquo; from the retailer. If you&amp;rsquo;re not comfortable with that, you can use a URL unwinding service to get the &amp;lsquo;raw&amp;rsquo; product link and drop the attribution/commission part.&lt;/p>
+&lt;h3 id="brass-inserts">Brass inserts&lt;/h3>
+&lt;p>The original instructions suggest using glue to secure the brass inserts to the face plate, but I suggest using either a lighter or a very fine tip soldering iron to heat up the brass insert. A hot insert will melt the surrounding plastic which will make for a much stronger joint. The modified version of the HASP face plate used in this guide intentionally features holes slightly too small for the brass inserts so glue won&amp;rsquo;t be enough.&lt;/p>
+&lt;p>Fully insert the 20mm screw into the brass insert, use pliers to grasp the screw and apply heat with a lighter for a few seconds and then insert into the face plate. Make sure that the screw is &lt;strong>completely&lt;/strong> inserted into the insert so that molten plastic can&amp;rsquo;t flow into the insert. If molten plastic enters and cools on the threads, it will be rather difficult to later screw things together!&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/assembly/01.prep-brass-inserts.jpg" alt="Picture showing a 20mm screw fully inserted into brass threaded insert" />
+&lt;figcaption>
+&lt;p>
+Molten plastic can&amp;#39;t flow into a filled insert
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>As the inserts cool, you&amp;rsquo;ll have a few seconds to make adjustments to their orientation before they become fixed. Make sure that each screw is vertical and cool to the touch before moving on to the wiring harness.&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/assembly/02.inserts-cooling.jpg" alt="Picture showing threaded inserts inserted into faceplate with screws sticking out, pointed vertically" />
+&lt;figcaption>
+&lt;p>
+screws make it easy to perform final alignment on inserts and act as a heatsink
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;h3 id="wire-harness">Wire Harness&lt;/h3>
+&lt;p>There are only six wires for the two components and the LED tape is the only component where polarity matters. A table mapping each pin on the HASP PCB to each component lead is below.&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>HASP PCB Pin&lt;/th>
+&lt;th>Component&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>GND&lt;/td>
+&lt;td>LED Tape, 10KΩ resistor&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>+5V&lt;/td>
+&lt;td>LED Tape VCC in&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>+3.3V&lt;/td>
+&lt;td>LDR&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>A0&lt;/td>
+&lt;td>LDR &amp;amp; 10KΩ resistor junction&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>D0&lt;/td>
+&lt;td>N/A&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>D1&lt;/td>
+&lt;td>LED Tape CLK/DTA in&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>D2&lt;/td>
+&lt;td>N/A&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>DBG&lt;/td>
+&lt;td>N/A&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>You are &lt;strong>strongly&lt;/strong> encouraged to test / check your work after each step with a simple multimeter. Complete assembly involves irreversible steps, like shrinking HST. If you make a mistake, it&amp;rsquo;s best to catch it before &amp;lsquo;finalizing&amp;rsquo; things as you&amp;rsquo;re almost certainly going to have to destroy the component and or wiring harness to repair it.&lt;/p>
+&lt;p>Additionally, you can flash my &lt;a href="https://github.com/kquinsland/HASwitchPlate">modified HASP firmware&lt;/a> to a fully assembled HASP device and use that as a testing device. On boot up, the modified firmware briefly flashes each LED in sequence. About every 10 seconds after boot, the LDR value will be read and published to MQTT. Cover the LDR with your hand and check your MQTT broker or HA to confirm that the value changes significantly between exposed and covered states.&lt;/p>
+&lt;h5 id="ldr">LDR&lt;/h5>
+&lt;p>Fit the LDR into the face plate and position the leads in the channel under and to the top of the LCD PCB. Then trim the excess length off of the LDR leads so that they extend &amp;lsquo;beyond&amp;rsquo; the LCD by about 8mm or so.&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/assembly/03.ldr-position.jpg" alt="Picture showing the LDR in position under the LCD with it&amp;#39;s leads trimmed slightly" />
+&lt;figcaption>
+&lt;p>
+LDR under the LCD w/ trimmed leads...
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>Remove the LDR from the face plate and straighten the leads out. Lay the LDR, resistor, and wire out as shown below. Use this time to cut the HST down to size so everything but the leg of the LDR that joins the resistor can be covered. &lt;strong>Note:&lt;/strong> the leads on the resistor have also been trimmed down to ~15mm to better fit.&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/assembly/04.wire-harness.jpg" alt="Picture showing rough layout of LDR and related components" />
+&lt;figcaption>
+&lt;p>
+rough layout of LDR harness
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>It&amp;rsquo;s probably going to be easiest to start with the &amp;lsquo;supply&amp;rsquo; wire which runs directly from the HASP PCB&amp;rsquo;s +3.3v pin to the LDR. As space is exceedingly tight, there is no room for overly large solder joints. Carefully wrap the wire around the lead and apply just enough solder to make good electrical contact. Once the supply wire has been soldered to the LDR, affix the HST so the entirety of the lead and solder joint are protected.&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/assembly/05.ldr-wire-wrap.jpg" alt="picture showing wire wrapped around the lead of LDR prior to soldering" />
+&lt;figcaption>
+&lt;p>
+strip ~1cm off the end of the wire, wrap around the lead, then solder
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>Repeat the same procedure with the lead of the resistor that will go directly to the ground. Affix the HST after the solder joint has cooled.&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/assembly/06.ldr-ground.jpg" alt="picture showing sire soldered to the &amp;#39;ground-facing&amp;#39; lead of the 10k resistor with heat shrink tubing about to be applied" />
+&lt;figcaption>
+&lt;p>
+No room for mechanically strong solder joints
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>Use the same &amp;lsquo;wrap&amp;rsquo; technique with the remaining leads from the LDR and the resistor. Apply just enough solder for good electrical contact between the signal wire and the two leads of the LDR and resistor.&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/assembly/07.ldr-signal.jpg" alt="picture showing wire wrapped around the LDR and 10K resistor leads" />
+&lt;figcaption>
+&lt;p>
+same wrapping technique, just with two leads this time
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>After the solder joint cools, cover the entire LDR/Resistor assembly in HST so there is no exposed wire or component lead.&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/assembly/08.hst.jpg" alt="Picture showing rough layout of LDR and related components" />
+&lt;figcaption>
+&lt;p>
+get everything nicely protected behind HST
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>Set the LDR component aside for now and move on to the LED tape.&lt;/p>
+&lt;h5 id="leds">LEDs&lt;/h5>
+&lt;p>If you&amp;rsquo;ve not already trimmed the LED tape to fit in the face plate, do so now. Leave yourself as much room as needed to solder on the one side where you&amp;rsquo;ll need to feed power and data in.&lt;/p>
+&lt;p>The LED tape has incredibly small pads so take your time on this. You have about 5 cubic millimeters &lt;em>total&lt;/em> for the three solder joints on the LED tape. Solder just enough for electrical contact, there will be no significant mechanical stress. &lt;strong>Note:&lt;/strong> The arrows printed on the strip point in the direction of data flow; combined with the off-center placement of the LED packages, there is only one way to properly install the LED tape in the decor plate.&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/assembly/09.wire-alignment.jpg" alt="picture showing wire lined up with one solder pad on the LED tape " />
+&lt;figcaption>
+&lt;p>
+know which way the LED tape wires will need to point to make it into the &amp;#39;channel&amp;#39; prior to soldering
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>After soldering the power, signal and ground wires, flatten them and gently shape them so they align and flow into the channel on the face plate in a manner similar to the LDR. For a bit of mechanical robustness, consider braiding the wires together.&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/assembly/10.twisted-cable.jpg" alt="picture showing three wires from LED tape carefully braised together for a more compact and stronger cable" />
+&lt;figcaption>
+&lt;p>
+twist the wires together for a more compact and robust cable
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;h5 id="pin-header">Pin Header&lt;/h5>
+&lt;p>After soldering wires onto the two components, all that&amp;rsquo;s left is soldering the wires to the correct pins on the pin header.&lt;/p>
+&lt;p>One at a time, carefully take the pins out of the plastic &amp;lsquo;frame&amp;rsquo;. This is to prevent the heat from the soldering and HST steps from melting the plastic. Consider marking the pin with the location of the &amp;lsquo;frame&amp;rsquo; so you don&amp;rsquo;t take up too much room with the solder joint. You will need the &amp;lsquo;business end&amp;rsquo; of the pin to make good contact with the socket on the HASP board; this is quite difficult if most of the pin can&amp;rsquo;t be slid through the &amp;lsquo;frame&amp;rsquo; because of an excessively large solder joint!&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/assembly/11.process.jpg" alt="picture showing single pin removed from pin header, about to be soldered" />
+&lt;figcaption>
+&lt;p>
+remove the pin from the plastic &amp;#39;frame&amp;#39; and carefully solder the wires to the pins
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>Make sure that HST is on the wire(s) &lt;em>before&lt;/em> soldering! After the solder joint cools, slip the HST over the solder joint and apply heat until the joint is covered. Repeat this process for the remaining pins. There will be three &amp;lsquo;unused&amp;rsquo; pins that you can just ignore.&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/assembly/12.unused-pins.jpg" alt="picture showing the unused pins in the wire harness" />
+&lt;figcaption>
+&lt;p>
+A few pins are not needed
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>When all the wires have been soldered and covered, you&amp;rsquo;ll have something that looks like this:&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/assembly/13.harness-finished.jpg" alt="picture showing each component in the decor plate and the finished wiring harness." />
+&lt;figcaption>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>Double check electrical connections and then combine the PCB, enclosure, plate and harness. Carefully align the &amp;lsquo;channels&amp;rsquo; for LDR and LED wires:&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/assembly/14.finished.jpg" alt="picture of finished assembly ready to be screwed together. Annotated to call attention to pinch points w/ wires" />
+&lt;figcaption>
+&lt;p>
+Align and ensure no pinched wires!
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;h3 id="printing">Printing&lt;/h3>
+&lt;p>In the electrical boxes there&amp;rsquo;s absolutely no room to spare, so all parts are designed to fit together with &lt;strong>very&lt;/strong> tight clearances. Print as slow as you need to in order too achieve very good dimensional accuracy. Like with the brass inserts, the various screw holes are intentionally undersized for better thread engagement.&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/suggested-print.jpg" alt="Screenshot showing modified enclosure files in slicer for 3d printer" />
+&lt;figcaption>
+&lt;p>
+The obvious orientation is the best, no supports needed
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>The HASP does run a bit warm, but not any warmer than other smart switches with similar form-factor. PLA will likely be fine unless you in tend to deploy the HASP in a particularly hot location.&lt;/p>
+&lt;h4 id="thermals">Thermals&lt;/h4>
+&lt;p>In testing, the parts of the HASP ran ~20º above ambient. Most of that heat comes from the small AC-&amp;gt;DC converter and the LCD. Surprisingly, the ESP8266 does not emit that much heat. Overall, nothing particularly alarming, especially when the HASP is deployed into a larger multi-gang electrical box with with plenty of air to radiate heat into. Apologies in advance for the mixed ºC/ºF units.&lt;/p>
+&lt;p>&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/thermals/01.removed-side-rear.png" alt="photo from a thermal camera showing the HASP device removed from it&amp;#39;s electrical box, the sides and rear are warm" />
+&lt;figcaption>
+&lt;p>
+HASP removed from electrical box, heat from the AC-DC converter radiating through the enclosure
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/thermals/02.removed-top-side.png" alt="photo from a thermal camera showing the HASP device removed from it&amp;#39;s electrical box, the sides and rear are warm" />
+&lt;figcaption>
+&lt;p>
+similar to first picture, parts inside enclosure radiate heat through the enclosure, bringing it to about 20 degrees above ambient temperature
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/thermals/03.removed-rear-side.png" alt="photo from a thermal camera showing the HASP device removed from it&amp;#39;s electrical box, the sides and rear are warm" />
+&lt;figcaption>
+&lt;p>
+there are clear hot-spots on the enclosure that match up with the location of the ESP and the AC-DC converter
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/thermals/04.front-leds-on.png" alt="photo from a thermal camera showing the HASP device installed in its electrical enclosure. The LCD and LEDs are the warmest part" />
+&lt;figcaption>
+&lt;p>
+Less heat is radiated through the front of the HASP; the LCD backlight and embedded LEDs are clearly the warmest components
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/p>
+&lt;p>The tiny PNP transistor that toggles the LCD power is the hottest component, by far. Everything else has a relatively consistent temperature:&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/thermals/05.internals.png" alt="photo from a thermal camera showing the internals of deployed HASP; the AC-&amp;gt;DC converter is clearly the warmest object" />
+&lt;figcaption>
+&lt;p>
+PNP Transistor is clearly warmest internal component, ESP8266 cooler than expected
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>When installed in wall, the HASP is radiating heat into the electrical box and through neighboring switches:&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/thermals/06.installed-markup.jpg" alt="photo from a thermal camera showing the HASP as deployed in wall. Heat is evenly radiated through LCD and through neighboring switch" />
+&lt;figcaption>
+&lt;p>
+a little bit of ambient heat radiating through the gap between LCD and switch as well as through the switch
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="future-work">Future work&lt;/h2>
+&lt;p>I did accomplish my two main goals:&lt;/p>
+&lt;ol>
+&lt;li>Ambient light sensor for more responsive backlight control&lt;/li>
+&lt;li>HomeSeer-like LEDs for additional information display&lt;/li>
+&lt;/ol>
+&lt;p>However, there&amp;rsquo;s a few aspects of the HASP that i&amp;rsquo;d like to further improve:&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>Increased automatic configuration w/ the HASP. There&amp;rsquo;s still a non-trivial amount of work required to set up a HASP with Home Assistant. The HASP device has many different attributes that could be exposed to Home Assistant automatically. E.G.: The HASP will periodically check for a firmware update; the HASP should configure Home Assistant with a &lt;a href="https://www.home-assistant.io/integrations/binary_sensor.mqtt/#configuration">&lt;code>binary_sensor&lt;/code>&lt;/a> that indicates if there&amp;rsquo;s a firmware update available.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Some of the automations that live in Home Assistant to manage button presses / update screen content could probably be re-factored down to a few generic scripts and services.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>The display uses a &lt;a href="https://forum.digikey.com/t/resistive-touch-vs-capacitive-touch-whats-the-difference/1063">resistive matrix&lt;/a> to detect touch events. Resistive screens, while cheap, are a bit finnicky and inferior to the more consistent and precise capacitive touch screen tech. If Nextion ever makes a capacitive version of the NX3224T024, then it would be an instant upgrade!&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Similarly, the viewing angle on the LCD is&amp;hellip; not great. The HASP, like most light switches, is at a convenient height for hands&amp;hellip; not eyes. If you&amp;rsquo;re standing relatively close to the HASP, you&amp;rsquo;ll be looking down at the screen with quite a steep angle. Depending on the current screen brightness and colors, this may result in a washed out and illegible screen.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Better LED diffusion. There&amp;rsquo;s not a lot of space for light pipes or similar, but I would like to find a better way of diffusing the LEDs. Or even to fit a masking layer between the LEDs and the plate, so the effect would be akin to a back-lit silhouette.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Effects for the LEDs. Right now, the LEDs only support on/off/brightness commands. Their ability to passively indicate information would be enhanced if Home Assistant could send &amp;lsquo;effect&amp;rsquo; commands, too. E.G.: Rather than HA having to send a constant stream of color/brightness commands to fade between blue, green, yellow, purple, simply send a &lt;code>fade(2s) blue, green, yellow, purple&lt;/code> command.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>There&amp;rsquo;s plenty of spare room on the HASP PCB for the 10KΩ resistor. This would simplify the creation of the wiring harness. I&amp;rsquo;ve been meaning to learn KiKad, this might be a very gentle way to start learning it. 🤔&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>Enclose the LED tape 100% inside the HASP. This version works well and the small &amp;lsquo;hole&amp;rsquo; in the enclosure. I don&amp;rsquo;t think there&amp;rsquo;s any safety concern w/ the current design, but I&amp;rsquo;d still like to have the low voltage stuff 100% blocked off from thee electrical box&amp;hellip;&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;h2 id="files">Files&lt;/h2>
+&lt;p>For archive / posterity, all source files are included here. Unless otherwise explicitly stated otherwise, all files below are licensed as &lt;a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike&lt;/a> (CC BY-NC-SA).&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/CAD-channel-profile.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/CAD-channel-profile_huf3557e6811054f83d6c066da6e362a76_146168_300x0_resize_q75_box.jpg" width="300" height="125">
+&lt;/a>
+&lt;figcaption>
+&lt;small>Section analysis from f360 showing small channels around the LCD for wires to LDR and LEDs&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/electric-box-clearance.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/electric-box-clearance_huf58d9f58f994f5fc3386c0ee9ba7741a_595046_300x0_resize_q75_box.jpg" width="300" height="205">
+&lt;/a>
+&lt;figcaption>
+&lt;small>The only way to fit the HASP in my 2-gang electric boxes is to cut out a small section&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/assembly/00.prep-electronics.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/assembly/00.prep-electronics_hu840d6c90086eacc53afc6cd9854fffac_1921095_300x0_resize_q75_box.jpg" width="300" height="190">
+&lt;/a>
+&lt;figcaption>
+&lt;small>All the components needed for assembly&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/assembly/01.prep-brass-inserts.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/assembly/01.prep-brass-inserts_hue99de1545ab1b4e8a1f78c703c7e00db_1778399_300x0_resize_q75_box.jpg" width="300" height="169">
+&lt;/a>
+&lt;figcaption>
+&lt;small>Molten plastic can&amp;#39;t flow into a filled insert&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/assembly/02.inserts-cooling.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/assembly/02.inserts-cooling_hu07e3c61c34ed61160be3a79f859eb400_1929998_300x0_resize_q75_box.jpg" width="300" height="166">
+&lt;/a>
+&lt;figcaption>
+&lt;small>screws make it easy to perform final alignment on inserts and act as a heatsink&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/assembly/03.ldr-position.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/assembly/03.ldr-position_hu1bd2ce9daf86385639d10876539024e3_676881_300x0_resize_q75_box.jpg" width="300" height="143">
+&lt;/a>
+&lt;figcaption>
+&lt;small>LDR under the LCD w/ trimmed leads...&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/assembly/04.wire-harness.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/assembly/04.wire-harness_hu71b96d1a05e1df3ee64c3981ad9e6dab_2998591_300x0_resize_q75_box.jpg" width="300" height="169">
+&lt;/a>
+&lt;figcaption>
+&lt;small>rough layout of LDR harness&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/assembly/05.ldr-wire-wrap.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/assembly/05.ldr-wire-wrap_hu8627bf47a5ae116ee04aa108e70ce56c_1254876_300x0_resize_q75_box.jpg" width="300" height="165">
+&lt;/a>
+&lt;figcaption>
+&lt;small>strip ~1cm off the end of the wire, wrap around the lead, then solder&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/assembly/06.ldr-ground.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/assembly/06.ldr-ground_hu1349227ce5bc5caaad08db86e061dedc_1388792_300x0_resize_q75_box.jpg" width="300" height="155">
+&lt;/a>
+&lt;figcaption>
+&lt;small>No room for mechanically strong solder joints&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/assembly/07.ldr-signal.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/assembly/07.ldr-signal_hua832255d5a7fcd256e6bb492f1e9737d_1115039_300x0_resize_q75_box.jpg" width="300" height="169">
+&lt;/a>
+&lt;figcaption>
+&lt;small>same wrapping technique, just with two leads this time&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/assembly/08.hst.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/assembly/08.hst_hu31912292b23f492cd1f37e22c2d6d4b6_1058335_300x0_resize_q75_box.jpg" width="300" height="200">
+&lt;/a>
+&lt;figcaption>
+&lt;small>get everything nicely protected behind HST&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/assembly/09.wire-alignment.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/assembly/09.wire-alignment_huaea1d9f1eb838c4ba15a2f7af33720a9_769321_300x0_resize_q75_box.jpg" width="300" height="212">
+&lt;/a>
+&lt;figcaption>
+&lt;small>know which way the LED tape wires will need to point to make it into the &amp;#39;channel&amp;#39; prior to soldering&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/assembly/10.twisted-cable.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/assembly/10.twisted-cable_hue7b70705622f1f0b3e7232d9f9f0df37_600817_300x0_resize_q75_box.jpg" width="300" height="219">
+&lt;/a>
+&lt;figcaption>
+&lt;small>twist the wires together for a more compact and robust cable&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/assembly/11.process.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/assembly/11.process_hu93074e0b3024e8cc13c2d7f3c0ac56dc_1111739_300x0_resize_q75_box.jpg" width="300" height="251">
+&lt;/a>
+&lt;figcaption>
+&lt;small>remove the pin from the plastic &amp;#39;frame&amp;#39; and carefully solder the wires to the pins&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/assembly/12.unused-pins.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/assembly/12.unused-pins_hu5cd0461a68334d23deddf4b6a1294171_1162551_300x0_resize_q75_box.jpg" width="300" height="284">
+&lt;/a>
+&lt;figcaption>
+&lt;small>A few pins are not needed&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/assembly/13.harness-finished.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/assembly/13.harness-finished_hua5b584d3ebb0e123f88cf8ccf1117216_1142587_300x0_resize_q75_box.jpg" width="300" height="311">
+&lt;/a>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/assembly/14.finished.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/assembly/14.finished_hua77d1e2180bc67fbf65b06f051489a93_1426974_300x0_resize_q75_box.jpg" width="300" height="179">
+&lt;/a>
+&lt;figcaption>
+&lt;small>Align and ensure no pinched wires!&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/installed.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/installed_hub2bf50855c95bbc45616a7cfcc63aa58_1018309_300x0_resize_q75_box.jpg" width="300" height="285">
+&lt;/a>
+&lt;figcaption>
+&lt;small>If the LEDs weren&amp;#39;t on, you&amp;#39;d never know they were there 😊&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/ldr-graph.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/ldr-graph_hu593a76bffb994c11e5c98e7eb75552c2_40288_300x0_resize_q75_box.jpg" width="300" height="300">
+&lt;/a>
+&lt;figcaption>
+&lt;small>ignore the spikes just before noon, those are due to to testing with a flash light&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/models/box.step">
+&lt;i class="far fa-file-code">&lt;/i>
+models/box.step:
+&lt;small style="font-family:'Lucida Console', monospace">step&lt;/small> &lt;small>file&lt;/small>
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/models/box.stl">
+&lt;i class="far fa-file-code">&lt;/i>
+models/box.stl:
+&lt;small style="font-family:'Lucida Console', monospace">stl&lt;/small> &lt;small>file&lt;/small>
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/models/combined.3mf">
+&lt;i class="far fa-file-archive">&lt;/i>
+models/combined.3mf:
+&lt;small style="font-family:'Lucida Console', monospace">3mf&lt;/small> &lt;small>file&lt;/small>
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/models/combined.step">
+&lt;i class="far fa-file-code">&lt;/i>
+models/combined.step:
+&lt;small style="font-family:'Lucida Console', monospace">step&lt;/small> &lt;small>file&lt;/small>
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/models/enhanced-HASP.f3z">
+&lt;i class="far fa-file-">&lt;/i>
+models/enhanced-HASP.f3z:
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/models/plate.step">
+&lt;i class="far fa-file-code">&lt;/i>
+models/plate.step:
+&lt;small style="font-family:'Lucida Console', monospace">step&lt;/small> &lt;small>file&lt;/small>
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/models/plate.stl">
+&lt;i class="far fa-file-code">&lt;/i>
+models/plate.stl:
+&lt;small style="font-family:'Lucida Console', monospace">stl&lt;/small> &lt;small>file&lt;/small>
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/prototype-leds.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/prototype-leds_huc3855f28b218abee9b660598a6bb642d_522361_300x0_resize_q75_box.jpg" width="300" height="304">
+&lt;/a>
+&lt;figcaption>
+&lt;small>Ignore the dirt on the switch. Notice how you can&amp;#39;t tell there&amp;#39;s an LDR beneath the surface&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/suggested-print.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/suggested-print_hu3026d7095368642cea18036c28f140af_772900_300x0_resize_q75_box.jpg" width="300" height="165">
+&lt;/a>
+&lt;figcaption>
+&lt;small>The obvious orientation is the best, no supports needed&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/thermals/01.removed-side-rear.png">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/thermals/01.removed-side-rear_hue7f3e3fe323889e9523fde0d0b16fc09_27411_300x0_resize_box_2.png" width="300" height="400">
+&lt;/a>
+&lt;figcaption>
+&lt;small>HASP removed from electrical box, heat from the AC-DC converter radiating through the enclosure&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/thermals/02.removed-top-side.png">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/thermals/02.removed-top-side_hu7f7deb0d48ada52e65cf9d07af4f2d7b_31528_300x0_resize_box_2.png" width="300" height="400">
+&lt;/a>
+&lt;figcaption>
+&lt;small>similar to first picture, parts inside enclosure radiate heat through the enclosure, bringing it to about 20 degrees above ambient temperature&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/thermals/03.removed-rear-side.png">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/thermals/03.removed-rear-side_huaf7d1f0412acd7326b9fbe2292beafc4_27688_300x0_resize_box_2.png" width="300" height="400">
+&lt;/a>
+&lt;figcaption>
+&lt;small>there are clear hot-spots on the enclosure that match up with the location of the ESP and the AC-DC converter&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/thermals/04.front-leds-on.png">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/thermals/04.front-leds-on_hu2ffecc7e561aeb7b1635133e11faf738_23402_300x0_resize_box_2.png" width="300" height="400">
+&lt;/a>
+&lt;figcaption>
+&lt;small>Less heat is radiated through the front of the HASP; the LCD backlight and embedded LEDs are clearly the warmest components&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/thermals/05.internals.png">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/thermals/05.internals_huce2a4f8e97e3ddbdf2b0b78056c76aa4_20396_300x0_resize_box_2.png" width="300" height="400">
+&lt;/a>
+&lt;figcaption>
+&lt;small>PNP Transistor is clearly warmest internal component, ESP8266 cooler than expected&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/thermals/06.installed-markup.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/thermals/06.installed-markup_hub6a44a9834fd9990d3b6fe92876c3a3b_20990_300x0_resize_q75_box.jpg" width="300" height="400">
+&lt;/a>
+&lt;figcaption>
+&lt;small>a little bit of ambient heat radiating through the gap between LCD and switch as well as through the switch&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/HS-WD200-Modes.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/HS-WD200-Modes_hu41c9204fb955c7bf61a99d537ead8f86_35404_300x0_resize_q75_box.jpg" width="300" height="300">
+&lt;/a>
+&lt;figcaption>
+&lt;small>HomeSeer&amp;#39;s WS200 has a delightful innovation... RGB LEDs!&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;/ul></description></item><item><title>Adding an airborne particulate mater sensor to WS3 Weather Station</title><link>https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/</link><pubDate>Thu, 27 Aug 2020 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/</guid><description>&lt;p>A while back, I &lt;a href="https://github.com/kquinsland/ws3-to-esphome-bridge/">posted a small bit of code&lt;/a> that could decode the data from the ubiquitous WS3 Weather Station and make it accessible to the amazing &lt;a href="https://www.home-assistant.io/">HomeAssistant&lt;/a> via the wonderful &lt;a href="https://esphome.io/">ESPHome&lt;/a> project. Since then, my weather station has been dutifully collecting data that&amp;rsquo;s been invaluable for augmenting automation that deals with indoor climate.&lt;/p>
+&lt;p>As the numerous wild fires in California rage on, &lt;a href="https://www.forbes.com/sites/ericmack/2020/08/21/wildfire-smoke-blankets-the-west-as-california-records-worlds-worst-air-quality/">the air quality has gone from bad to dangerous&lt;/a>. Knowing that outside was warmer, but less humid, was no longer enough to make a smart decision about weather or not to open the windows for some cost-effective cooling. I now need HomeAssistant to be aware of how clean the outside air was before making the decision to pipe in outdoor air.&lt;/p>
+&lt;p>This post covers two things:&lt;/p>
+&lt;ul>
+&lt;li>A small update to the existing WS3 -&amp;gt; ESPHome -&amp;gt; HomeAssistant bridge code to take advantage of the WS3s' support for the ubiquitous &lt;code>PMS5003T&lt;/code> sensor.&lt;/li>
+&lt;li>A simple 3d-printable enclosure for deploying the particulate matter sensor outdoors&lt;/li>
+&lt;/ul>
+&lt;p>When deployed, it looks like this:&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/04.installed.jpg" alt="Picture showing designed parts assembled and deployed as intended" />
+&lt;figcaption>
+&lt;p>
+Excuse the awkward camera angle; sensor is deployed in an awkward to photograph location.
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>Please ignore the awkward camera angle as the sensor is deployed in a location where there&amp;rsquo;s not quite enough room for proper camera placement.&lt;/p>
+&lt;p>And results in graphs that look like this:&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/example_dashboard.jpg" alt="Picture showing a simple WS3 dashboard in Grafana" />
+&lt;figcaption>
+&lt;p>
+Smoke particles are between .4μm to .7μm in size... which explains the elevated red line relative to other particle sizes.
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>A simplified copy of this post appears on &lt;a href="https://www.thingiverse.com/thing:4581351">thingiverse&lt;/a> and &lt;a href="https://www.prusaprinters.org/prints/39560-outdoor-enclosure-for-pms5003-particulate-matter-s">prusaprinters&lt;/a>.&lt;/p>
+&lt;h2 id="the-enclosure">The enclosure&lt;/h2>
+&lt;p>As of writing, there&amp;rsquo;s &lt;a href="https://www.thingiverse.com/thing:4044492">one existing enclosure&lt;/a> for the sensor on thingiverse. Unfortunately, the enclosure does not appear to have any design features for mounting to a pole nor does it have any bug-proofing design elements. I took this opportunity to design my own that could be easily mounted, features a slanted &amp;lsquo;roof&amp;rsquo; to prevent standing moisture ingress and could use standard size tobacco pipe filters to keep all but the tiniest of insects/particles out.&lt;/p>
+&lt;p>The sensor uses a small fan to draw ambient air past an infrared laser. As airborne particles cross the laser beam, they reflect a certain amount of light which can be correlated with the size of the particle. This data can then be turned into fairly accurate counts of how many particles of a given size are in the sampled air. The enclosure is a basic box with two circular air channels pointed downwards to prevent moisture ingress. The intake and exhaust ports are at staggered heights and pointed in opposite directions and to minimize the chance of recirculating the same air.&lt;/p>
+&lt;p>The lower port is the intake which connects to a few small holes on the front of the sensor and the exhaust port is the raised port which connects directly to the exhaust fan. If you could remove the first few mm from the front, it would look something like this:&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/f360_air_channels.jpg" alt="Screenshot showing labeled ingress/egress for air flow" />
+&lt;figcaption>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>From the side, you can see the two air channels and the few mm of room in the back for wiring. The sensor sits on a &amp;lsquo;pedestal&amp;rsquo; to keep it elevated away from any moisture that may collect on the bottom of the enclosure.&lt;/p>
+&lt;p>The base plate/pedestal are secured to the &amp;lsquo;body&amp;rsquo; with two M3 screws. I used &lt;code>10mm&lt;/code> as that&amp;rsquo;s what I had on hand, but screws between 6-12mm should work as well. The holes are sized for a M3, but any similar sized screw will work. Use a lighter or similar to heat the screw as you drive it into the plastic to create your own threads if using a larger/longer screw.&lt;/p>
+&lt;p>Besides the &amp;lsquo;pedestal&amp;rsquo; there are a few contact surfaces that hold on to the sensor with a friction fit. The &amp;lsquo;ceiling&amp;rsquo; is a few mm thick and shouldn&amp;rsquo;t permit much moisture ingress but an optional slanted roof component can be printed as an extra precaution.&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/f360_side_profile.jpg" alt="Screenshot showing side profile of assembly and the two ports" />
+&lt;figcaption>
+&lt;p>
+Upper and lower chambers for exhaust and intake.
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>While designing the enclosure, I used this &lt;a href="https://grabcad.com/library/pms5003-2">&lt;code>PMS5003&lt;/code> model&lt;/a> from Leclercq Gregory. 🙏&lt;/p>
+&lt;h3 id="printing">Printing&lt;/h3>
+&lt;p>This is a functional part with only three small surfaces that require reasonably tight precision to properly hold onto the sensor. The &lt;code>SPEED&lt;/code> setting with a &lt;code>.2mm&lt;/code> layer height and a reasonable 20% infill gave me part that works and feels water tight. The walls and ceiling need to keep water out so dipping below 15% infill or otherwise using settings that wont give solid layer adhesion is not advised. I printed using ABS for durability, but PLA will probably work if you can deploy into a shaded environment.&lt;/p>
+&lt;p>The shroud and the base are not optional, the triangle shaped block is intended to turn the flat roof of the shroud into a slanted roof so water can&amp;rsquo;t collect. It is optional but shown below.&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/suggested_print_orientation.jpg" alt="Screenshot showing suggested print bed arrangement" />
+&lt;figcaption>
+&lt;p>
+No raft/support when printed in this orientation.
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="assemble">Assemble&lt;/h2>
+&lt;p>Briefly:&lt;/p>
+&lt;ul>
+&lt;li>collect materials&lt;/li>
+&lt;li>press-fit the PM2.5 sensor into the enclosure&lt;/li>
+&lt;li>make a wire that can interface the PM2.5 sensor to the WS3 board via RJ11&lt;/li>
+&lt;li>seal everything up&lt;/li>
+&lt;li>glue on mesh screens and angled roof&lt;/li>
+&lt;li>plug into WS3&lt;/li>
+&lt;li>flash ESPHome onto&lt;/li>
+&lt;/ul>
+&lt;h3 id="bill-of-materials">Bill of Materials&lt;/h3>
+&lt;p>More or less everything that is needed for assembly is pictured below.&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/01.collect.jpg" alt="Picture showing tools/materials required for assembly" />
+&lt;figcaption>
+&lt;p>
+More or less everything needed to assemble.
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>Components:&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>&lt;a href="https://www.aliexpress.com/item/32921725022.html">WS3 Weather Station&lt;/a> - Essential / Foundational&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a href="https://rover.ebay.com/rover/1/711-53200-19255-0/1?mpre=https%3A%2F%2Fwww.ebay.com%2Fitm%2FDigital-Universal-Particle-Concentration-Laser-Sensor-PMS5003-PM1-0-PM2-5-PM10%2F254616699639&amp;amp;campid=5338734064&amp;amp;toolid=10001&amp;amp;customid=">ST5003T PM2.5 Sensor&lt;/a> - Essential / Foundational&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a href="https://rover.ebay.com/rover/1/711-53200-19255-0/1?mpre=https%3A%2F%2Fwww.ebay.com%2Fitm%2FTTGO-Wemos-MINI-D1-ESP32-WiFi-Bluetooth-Wemos-D1-Mini-ESP8266-ESP-32-Module%2F183413480551&amp;amp;campid=5338734064&amp;amp;toolid=10001&amp;amp;customid=">ESP32 Device&lt;/a> - A link to the ESP32 based device that I use but any ESP platform with a spare GPIO that can be used as a UART will work.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a href="https://rover.ebay.com/rover/1/711-53200-19255-0/1?mpre=https%3A%2F%2Fwww.ebay.com%2Fitm%2F25-Stainless-Steel-Smoking-Pipe-Screens-3-4-19mm-Tobacco-HOOKAH-FILTER-Heavy%2F183969079809&amp;amp;campid=5338734064&amp;amp;toolid=10001&amp;amp;customid=">3/4 inch tobacco pipe screens&lt;/a> - For bug/critter proofing the enclosure. Strongly suggested for outdoor deployments.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a href="https://www.mcmaster.com/91292A113/">2x M3 x 10mm screws&lt;/a> - Optional. The base can be glued to the shroud or any similar screw will work&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>Note&lt;/strong>: Where possible, I&amp;rsquo;ve used referral links. The links don&amp;rsquo;t raise the price of any item, they simply let the retailer know that I sent you and, in return, I get a small cut of your purchase. If you&amp;rsquo;re not comfortable with that, you can use a URL unwinding service to get the &amp;lsquo;raw&amp;rsquo; product link and drop the attribution/commission part.&lt;/p>
+&lt;p>General bits:&lt;/p>
+&lt;ul>
+&lt;li>Superglue&lt;/li>
+&lt;li>Waterproofing caulk/sealant&lt;/li>
+&lt;li>Drill/Screwdriver&lt;/li>
+&lt;li>Driver bit for the screws&lt;/li>
+&lt;/ul>
+&lt;p>The stepped drill bit in the above picture is not a requirement if you assemble things in the correct oder. The cable egress hole is sized for a &amp;lsquo;typical&amp;rsquo; 3 pair &lt;a href="https://en.wikipedia.org/wiki/Registered_jack#RJ11,_RJ14,_RJ25_wiring">RJ11 cable&lt;/a> plus a tiny bit of wiggle room. I needed a working cable to test the code while the parts were printing so the hole in the printed base needed to be enlarged slightly to fit the head of the cable.&lt;/p>
+&lt;h3 id="wiring">Wiring&lt;/h3>
+&lt;p>There&amp;rsquo;s no ready-made cable out there that&amp;rsquo;ll join the two devices so one must be made. Fortunately, there&amp;rsquo;s only 6 wires to deal with&amp;hellip; 4 of them are distinct.&lt;/p>
+&lt;p>Sacrifice the cable that comes with the PM2.5 sensor and the RJ11 cable by cutting them in half and solder the correct wires together. The &lt;em>color&lt;/em> of the wires that come in both the RJ11 cable and the PM2.5 cable are likely going to differ from the ones I used so I&amp;rsquo;ve left those details out and provided a table showing which pins are to be joined together:&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Pin #&lt;/th>
+&lt;th>PM2.5 Sensor Pin&lt;/th>
+&lt;th>WS3 Pin&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>1&lt;/td>
+&lt;td>VCC&lt;/td>
+&lt;td>5V&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>2&lt;/td>
+&lt;td>GND&lt;/td>
+&lt;td>GND&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>3&lt;/td>
+&lt;td>SET&lt;/td>
+&lt;td>ENABLE&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>4&lt;/td>
+&lt;td>RX&lt;/td>
+&lt;td>RX&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>5&lt;/td>
+&lt;td>TX&lt;/td>
+&lt;td>GND&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>6&lt;/td>
+&lt;td>RESET&lt;/td>
+&lt;td>5V&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>7&lt;/td>
+&lt;td>NC&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>8&lt;/td>
+&lt;td>NC&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>For reference, Pin 1 on both the WS3 and PM2.5 Sensor:&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/pin_out/WS3_Pins.jpg" alt="Screenshot showing the RJ11 jack on WS3 board w/ pin numbers" />
+&lt;figcaption>
+&lt;/figcaption>
+&lt;/figure>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/pin_out/PM2.5_Pins.jpg" alt="Screenshot showing labeled pins on the 8 pin jack on the back of the PM2.5 sensor" />
+&lt;figcaption>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>With the wiring done, the sensor just needs to be stuffed into the enclosure. Don&amp;rsquo;t forget to thread the RJ11 cable through the hole in the base plate &lt;em>BEFORE&lt;/em> soldering it to the cable for the PM2.5 sensor&amp;hellip; otherwise you&amp;rsquo;ll need that stepped drill bit! 🙃&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/02.assemble.jpg" alt="Picture showing sensor inserted into printed shroud" />
+&lt;figcaption>
+&lt;p>
+Sensor has been press-fit into the enclosure and wire fed through the base plate.
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>To finish, secure the base with screws and a bit of water-proofing caulk for good measure:&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/03.glue.jpg" alt="Picture showing assembled components while glue/caulk curing" />
+&lt;figcaption>
+&lt;p>
+I suggest waiting until the end to glue on the optional roof and waiting until just before that to glue on the optional mesh screens.
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="the-code">The code&lt;/h2>
+&lt;p>Setting up and using ESPHome is outside the scope of this post but there are several &lt;a href="https://esphome.io/guides/getting_started_hassio.html">good guides&lt;/a> out there. Once you have that set up, &lt;a href="https://esphome.io/custom/custom_component.html">include&lt;/a> the &lt;code>ws3.h&lt;/code> file and set up your custom sensor as shown below. A working example and more detail is over on the
+&lt;a href="https://github.com/kquinsland/ws3-to-esphome-bridge/">github repo&lt;/a>.&lt;/p>
+&lt;p>It&amp;rsquo;ll look like this:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="font-weight:bold">uart&lt;/span>:
+&lt;span style="font-weight:bold">id&lt;/span>: uart_bus
+&lt;span style="font-style:italic"># At this time, ESP does not Transmit anything to the WS3&lt;/span>
+&lt;span style="font-weight:bold">tx_pin&lt;/span>: GPIO16
+&lt;span style="font-weight:bold">rx_pin&lt;/span>: GPIO17
+&lt;span style="font-weight:bold">baud_rate&lt;/span>: 2400
+&lt;span style="font-weight:bold">sensor&lt;/span>:
+- &lt;span style="font-weight:bold">platform&lt;/span>: custom
+&lt;span style="font-weight:bold">lambda&lt;/span>: |-&lt;span style="font-style:italic">
+&lt;/span>&lt;span style="font-style:italic"> auto ws3 = new WS3(id(uart_bus));
+&lt;/span>&lt;span style="font-style:italic"> App.register_component(ws3);
+&lt;/span>&lt;span style="font-style:italic"> return {
+&lt;/span>&lt;span style="font-style:italic"> ws3-&amp;gt;temperature_sensor,
+&lt;/span>&lt;span style="font-style:italic"> ws3-&amp;gt;pressure_sensor,
+&lt;/span>&lt;span style="font-style:italic"> ws3-&amp;gt;humidity_sensor,
+&lt;/span>&lt;span style="font-style:italic"> ws3-&amp;gt;wind_speed_current_sensor,
+&lt;/span>&lt;span style="font-style:italic"> ws3-&amp;gt;wind_speed_peak_5m_sensor,
+&lt;/span>&lt;span style="font-style:italic"> ws3-&amp;gt;wind_direction_sensor,
+&lt;/span>&lt;span style="font-style:italic"> ws3-&amp;gt;rain_fall_1h_sensor,
+&lt;/span>&lt;span style="font-style:italic"> ws3-&amp;gt;rain_fall_24h_sensor,
+&lt;/span>&lt;span style="font-style:italic">
+&lt;/span>&lt;span style="font-style:italic"> ws3-&amp;gt;particles_03um,
+&lt;/span>&lt;span style="font-style:italic"> ws3-&amp;gt;particles_05um,
+&lt;/span>&lt;span style="font-style:italic"> ws3-&amp;gt;particles_10um,
+&lt;/span>&lt;span style="font-style:italic"> ws3-&amp;gt;particles_25um,
+&lt;/span>&lt;span style="font-style:italic"> ws3-&amp;gt;particles_50um,
+&lt;/span>&lt;span style="font-style:italic"> ws3-&amp;gt;particles_100um,
+&lt;/span>&lt;span style="font-style:italic"> };&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>With that, check the logs from your instance of ESPHome and you should see something like this:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-fallback" data-lang="fallback">[D][ws3:157]: pkt_read_ok!
+[D][WS3:410]: VALID! Packet: [c000s000g000t093r000p000h35b09880,050,080,088,502,056,065,*18
+], Checksum: [18] chksum: [18]
+[E][WS3:342]: Validating: [c000s000g000t093r000p000h35b09880,050,080,088,502,056,065]
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>indicating that the WS3 has detected the PM2.5 sensor and is reporting it&amp;rsquo;s readings in addition to the temperature/wind data. Then just check your HomeAssistant install for the data.&lt;/p>
+&lt;h2 id="files">Files&lt;/h2>
+&lt;p>For archive / posterity, all source files are included here. All files are licensed as &lt;a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike&lt;/a> (CC BY-NC-SA).&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/02.assemble.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/02.assemble_hu581ed75240ad3bd415fa4d000e729c07_1277716_300x0_resize_q75_box.jpg" width="300" height="414">
+&lt;/a>
+&lt;figcaption>
+&lt;small>Sensor has been press-fit into the enclosure and wire fed through the base plate.&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/03.glue.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/03.glue_hu4b434a2d0bde22f360c0e8fbf7a649e9_1464402_300x0_resize_q75_box.jpg" width="300" height="398">
+&lt;/a>
+&lt;figcaption>
+&lt;small>I suggest waiting until the end to glue on the optional roof and waiting until just before that to glue on the optional mesh screens.&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/example_dashboard.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/example_dashboard_hud37127b2a8725f9b696f09347ad21464_272815_300x0_resize_q75_box.jpg" width="300" height="163">
+&lt;/a>
+&lt;figcaption>
+&lt;small>Smoke particles are between .4μm to .7μm in size... which explains the elevated red line relative to other particle sizes.&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/04.installed.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/04.installed_hu2a1504819b520ffab23f58c73dabe877_1392166_300x0_resize_q75_box.jpg" width="300" height="309">
+&lt;/a>
+&lt;figcaption>
+&lt;small>Excuse the awkward camera angle; sensor is deployed in an awkward to photograph location.&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/models/BASE.step">
+&lt;i class="far fa-file-code">&lt;/i>
+models/BASE.step:
+&lt;small style="font-family:'Lucida Console', monospace">step&lt;/small> &lt;small>file&lt;/small>
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/models/BODY.step">
+&lt;i class="far fa-file-code">&lt;/i>
+models/BODY.step:
+&lt;small style="font-family:'Lucida Console', monospace">step&lt;/small> &lt;small>file&lt;/small>
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/models/LID.step">
+&lt;i class="far fa-file-code">&lt;/i>
+models/LID.step:
+&lt;small style="font-family:'Lucida Console', monospace">step&lt;/small> &lt;small>file&lt;/small>
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/models/base.stl">
+&lt;i class="far fa-file-code">&lt;/i>
+models/base.stl:
+&lt;small style="font-family:'Lucida Console', monospace">stl&lt;/small> &lt;small>file&lt;/small>
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/models/body.stl">
+&lt;i class="far fa-file-code">&lt;/i>
+models/body.stl:
+&lt;small style="font-family:'Lucida Console', monospace">stl&lt;/small> &lt;small>file&lt;/small>
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/models/combined.3mf">
+&lt;i class="far fa-file-archive">&lt;/i>
+models/combined.3mf:
+&lt;small style="font-family:'Lucida Console', monospace">3mf&lt;/small> &lt;small>file&lt;/small>
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/models/lid.stl">
+&lt;i class="far fa-file-code">&lt;/i>
+models/lid.stl:
+&lt;small style="font-family:'Lucida Console', monospace">stl&lt;/small> &lt;small>file&lt;/small>
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/pin_out/PM2.5_Pins.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/pin_out/PM2.5_Pins_hu73d3c3e0df5406e1f5d0c0aa79c239b4_47767_300x0_resize_q75_box.jpg" width="300" height="152">
+&lt;/a>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/pin_out/WS3_Pins.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/pin_out/WS3_Pins_hu320425c47decf2d27d21e4a5ee712e53_888503_300x0_resize_q75_box.jpg" width="300" height="214">
+&lt;/a>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/01.collect.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/01.collect_hu256fbbed5931a8fb15e03274d1dfa3ce_1070239_300x0_resize_q75_box.jpg" width="300" height="338">
+&lt;/a>
+&lt;figcaption>
+&lt;small>More or less everything needed to assemble.&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/suggested_print_orientation.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/suggested_print_orientation_hubc29781a1e48d16ebf7b06eb48685880_519298_300x0_resize_q75_box.jpg" width="300" height="175">
+&lt;/a>
+&lt;figcaption>
+&lt;small>No raft/support when printed in this orientation.&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/f360_air_channels.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/f360_air_channels_hu16ba34b32cdb392111aa122e323e4ab7_84744_300x0_resize_q75_box.jpg" width="300" height="436">
+&lt;/a>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/f360_side_profile.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/f360_side_profile_hu6d0a16d67440fb635793f95d3fd27d1d_152867_300x0_resize_q75_box.jpg" width="300" height="324">
+&lt;/a>
+&lt;figcaption>
+&lt;small>Upper and lower chambers for exhaust and intake.&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;/ul></description></item><item><title>RSS and Home Assistant: early warning for grid blackouts</title><link>https://karlquinsland.com/2020/08/rss-and-home-assistant-early-warning-for-grid-blackouts/</link><pubDate>Sun, 16 Aug 2020 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/2020/08/rss-and-home-assistant-early-warning-for-grid-blackouts/</guid><description>&lt;p>California, like most of the West Coast, is currently in the middle of a prolonged and serious heat-wave. Record breaking temperatures results in a distribution grid stressed beyond it&amp;rsquo;s abilities which guarantees blackouts.&lt;/p>
+&lt;p>The &lt;a href="https://en.wikipedia.org/wiki/California_Independent_System_Operator">organization that oversees the electric grid&lt;/a> in California publishes RSS feeds for various types of grid related news and events. All the CA ISO RSS feeds are published &lt;a href="http://www.caiso.com/Pages/GlobalRSS.aspx">here&lt;/a>, but the two feed that I&amp;rsquo;m using are:&lt;/p>
+&lt;ul>
+&lt;li>&lt;a href="http://content.caiso.com/awe/noticeRSS.xml">http://content.caiso.com/awe/noticeRSS.xml&lt;/a>&lt;/li>
+&lt;li>&lt;a href="http://content.caiso.com/awe/noticeflexRSS.xml">http://content.caiso.com/awe/noticeflexRSS.xml&lt;/a>&lt;/li>
+&lt;/ul>
+&lt;p>As energy demand ramps up, &lt;code>flex&lt;/code> alerts are issued as a call to reduce energy consumption. If demand continues to rise &lt;code>warnings&lt;/code> and, finally, &lt;code>stage3&lt;/code> events are issued. A &lt;code>warning&lt;/code> does not guarantee a &lt;code>stage3&lt;/code> event, but a &lt;code>stage3&lt;/code> event mans that blackouts are all but inevitable in the coming hours. The &lt;em>exact&lt;/em> meaning of each alert type is outlined in &lt;a href="https://www.caiso.com/Documents/SystemAlertsWarningsandEmergenciesFactSheet.pdf">this PDF&lt;/a>.&lt;/p>
+&lt;p>The &lt;code>noticeRSS.xml&lt;/code> feed, has &lt;em>early&lt;/em> warning notifications that look like this:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-xml" data-lang="xml">&lt;span style="font-weight:bold">&amp;lt;item&amp;gt;&lt;/span>
+\n
+&lt;span style="font-weight:bold">&amp;lt;title&amp;gt;&lt;/span>NOTICE 202002440: CAISO Grid Warning Issued &lt;span style="font-weight:bold">&amp;lt;/title&amp;gt;&lt;/span>
+\n
+&lt;span style="font-weight:bold">&amp;lt;link&amp;gt;&lt;/span>http://www.caiso.com/awe/noticelog.html#202002440&lt;span style="font-weight:bold">&amp;lt;/link&amp;gt;&lt;/span>
+\n
+&lt;span style="font-weight:bold">&amp;lt;description&amp;gt;&lt;/span>Effective: 16-Aug-2020 12:00 PM Terminates: 16-Aug-2020 11:59 PM&lt;span style="font-weight:bold">&amp;lt;/description&amp;gt;&lt;/span>
+\n
+&lt;span style="font-weight:bold">&amp;lt;/item&amp;gt;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Note: there&amp;rsquo;s nothing wrong w/ your browser, the &lt;code>\n&lt;/code> characters &lt;em>are&lt;/em> in the actual feed. No matter, the &lt;a href="https://github.com/home-assistant/core/tree/dev/homeassistant/components/feedreader">RSS parser&lt;/a> in Home Assistant &lt;em>can&lt;/em> tolerate them.&lt;/p>
+&lt;p>I use the alerts/warnings to do a few simple tasks, but there&amp;rsquo;s so much potential beyond the automation I currently have:&lt;/p>
+&lt;ul>
+&lt;li>bumps thermostats up by a few degrees to lighten demand*&lt;/li>
+&lt;li>re-schedule a few routine activities that are usually done in the evening to as soon as possible (cooking, for example)&lt;/li>
+&lt;li>notify me to immediately go check that the generator has fuel&lt;/li>
+&lt;/ul>
+&lt;ul>
+&lt;li>Currently in &amp;lsquo;unarmed&amp;rsquo; mode as I tweak the logic driving the decision&lt;/li>
+&lt;/ul>
+&lt;h2 id="how-to-do-it">How to do it&lt;/h2>
+&lt;p>Basically, add the two feeds above to the &lt;a href="https://www.home-assistant.io/integrations/feedreader/">feedreader&lt;/a> integration and use the &lt;code>feedreader&lt;/code> type of &lt;a href="https://www.home-assistant.io/docs/automation/trigger/#event-trigger">event&lt;/a> to trigger your automation.&lt;/p>
+&lt;p>Somewhere in &lt;code>configuration.yaml&lt;/code>, load the &lt;code>feedreader&lt;/code> component.&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="font-weight:bold">feedreader&lt;/span>: !include feedreader/rss.yaml
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>and in the &lt;code>feedreader/rss.yaml&lt;/code> file, add the URLs:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="font-weight:bold">urls&lt;/span>:
+- http://content.caiso.com/awe/noticeRSS.xml
+- http://content.caiso.com/awe/noticeflexRSS.xml
+&lt;span style="font-style:italic"># Pull down the feed 2x/ hour&lt;/span>
+&lt;span style="font-weight:bold">scan_interval&lt;/span>:
+&lt;span style="font-weight:bold">minutes&lt;/span>: 30
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Unfortunately, Home Assistant does not support setting the &lt;code>scan_interval&lt;/code> per feed, so you&amp;rsquo;ll have to figure out a happy middle ground if you&amp;rsquo;ve already got a few RSS feeds you monitor. Likewise, don&amp;rsquo;t pull the feed down excessively&amp;hellip; I don&amp;rsquo;t see a lot of evidence that the feed is cached well and the CA ISO does occasionally have to put banners on the top of their site saying that the site is under heavy load. Don&amp;rsquo;t be the reason the site goes down because &lt;em>you&lt;/em> wanted &lt;strong>instant&lt;/strong> notification.&lt;/p>
+&lt;p>If you&amp;rsquo;re not in a position to do any sophisticated automation based on the notification, it&amp;rsquo;s still simple to fire off a notification to &lt;em>manually&lt;/em> prepare:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="font-style:italic">##&lt;/span>
+- &lt;span style="font-weight:bold">alias&lt;/span>: Notify when new Flex or Warning issued
+&lt;span style="font-weight:bold">trigger&lt;/span>:
+&lt;span style="font-weight:bold">platform&lt;/span>: event
+&lt;span style="font-weight:bold">event_type&lt;/span>: feedreader
+&lt;span style="font-weight:bold">action&lt;/span>:
+&lt;span style="font-weight:bold">service&lt;/span>: persistent_notification.create
+&lt;span style="font-weight:bold">data_template&lt;/span>:
+&lt;span style="font-weight:bold">notification_id&lt;/span>: &lt;span style="font-style:italic">&amp;#34;{{ trigger.event.data.title }}&amp;#34;&lt;/span>
+&lt;span style="font-weight:bold">title&lt;/span>: &lt;span style="font-style:italic">&amp;#34;FlexAlert&amp;#34;&lt;/span>
+&lt;span style="font-weight:bold">message&lt;/span>: &amp;gt;&lt;span style="font-style:italic">
+&lt;/span>&lt;span style="font-style:italic"> {% set tokens = trigger.event.data.description.split(&amp;#39; &amp;#39;) %}
+&lt;/span>&lt;span style="font-style:italic"> {% set start_str = &amp;#34;{} {} {}&amp;#34;.format(tokens[1], tokens[2], tokens[3]) %}
+&lt;/span>&lt;span style="font-style:italic"> {% set start = strptime(start_str, &amp;#39;%d-%b-%Y %I:%M %p&amp;#39;) %}
+&lt;/span>&lt;span style="font-style:italic"> {% set end_str = &amp;#34;{} {} {}&amp;#34;.format(tokens[5], tokens[6], tokens[7]) %}
+&lt;/span>&lt;span style="font-style:italic"> {% set end = strptime(end_str, &amp;#39;%d-%b-%Y %I:%M %p&amp;#39;) %}
+&lt;/span>&lt;span style="font-style:italic"> &amp;#34;Heads up, electricity demand is likely to exceed production from {{ start.isoformat() }} to {{ end.isoformat() }}&amp;#34;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Which should create a simple notification that&amp;rsquo;ll look something like this:&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/08/rss-and-home-assistant-early-warning-for-grid-blackouts/images/notification.jpg" alt="Ignore the sample text from my testing" />
+&lt;figcaption>
+&lt;p>
+Ignore the sample text from my testing
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>The &lt;code>strptime&lt;/code> function yields &lt;code>start&lt;/code> and &lt;code>end&lt;/code> objects that can be manipulated further:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-fallback" data-lang="fallback">{% set now = now() %}
+{% if start.day &amp;gt; now.day -%}
+It looks like demand will be high *tomorrow*
+{%- endif %}
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Happy automating.&lt;/p></description></item></channel></rss>

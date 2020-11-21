@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>esphome on karl</title><link>https://karlquinsland.com/tags/esphome/</link><description>Recent content in esphome on karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 27 Aug 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/esphome/index.xml" rel="self" type="application/rss+xml"/><item><title>Adding an airborne particulate mater sensor to WS3 Weather Station</title><link>https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/</link><pubDate>Thu, 27 Aug 2020 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/</guid><description>&lt;p>A while back, I &lt;a href="https://github.com/kquinsland/ws3-to-esphome-bridge/">posted a small bit of code&lt;/a> that could decode the data from the ubiquitous WS3 Weather Station and make it accessible to the amazing &lt;a href="https://www.home-assistant.io/">HomeAssistant&lt;/a> via the wonderful &lt;a href="https://esphome.io/">ESPHome&lt;/a> project. Since then, my weather station has been dutifully collecting data that&amp;rsquo;s been invaluable for augmenting automation that deals with indoor climate.&lt;/p>
+&lt;p>As the numerous wild fires in California rage on, &lt;a href="https://www.forbes.com/sites/ericmack/2020/08/21/wildfire-smoke-blankets-the-west-as-california-records-worlds-worst-air-quality/">the air quality has gone from bad to dangerous&lt;/a>. Knowing that outside was warmer, but less humid, was no longer enough to make a smart decision about weather or not to open the windows for some cost-effective cooling. I now need HomeAssistant to be aware of how clean the outside air was before making the decision to pipe in outdoor air.&lt;/p>
+&lt;p>This post covers two things:&lt;/p>
+&lt;ul>
+&lt;li>A small update to the existing WS3 -&amp;gt; ESPHome -&amp;gt; HomeAssistant bridge code to take advantage of the WS3s' support for the ubiquitous &lt;code>PMS5003T&lt;/code> sensor.&lt;/li>
+&lt;li>A simple 3d-printable enclosure for deploying the particulate matter sensor outdoors&lt;/li>
+&lt;/ul>
+&lt;p>When deployed, it looks like this:&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/04.installed.jpg" alt="Picture showing designed parts assembled and deployed as intended" />
+&lt;figcaption>
+&lt;p>
+Excuse the awkward camera angle; sensor is deployed in an awkward to photograph location.
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>Please ignore the awkward camera angle as the sensor is deployed in a location where there&amp;rsquo;s not quite enough room for proper camera placement.&lt;/p>
+&lt;p>And results in graphs that look like this:&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/example_dashboard.jpg" alt="Picture showing a simple WS3 dashboard in Grafana" />
+&lt;figcaption>
+&lt;p>
+Smoke particles are between .4μm to .7μm in size... which explains the elevated red line relative to other particle sizes.
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>A simplified copy of this post appears on &lt;a href="https://www.thingiverse.com/thing:4581351">thingiverse&lt;/a> and &lt;a href="https://www.prusaprinters.org/prints/39560-outdoor-enclosure-for-pms5003-particulate-matter-s">prusaprinters&lt;/a>.&lt;/p>
+&lt;h2 id="the-enclosure">The enclosure&lt;/h2>
+&lt;p>As of writing, there&amp;rsquo;s &lt;a href="https://www.thingiverse.com/thing:4044492">one existing enclosure&lt;/a> for the sensor on thingiverse. Unfortunately, the enclosure does not appear to have any design features for mounting to a pole nor does it have any bug-proofing design elements. I took this opportunity to design my own that could be easily mounted, features a slanted &amp;lsquo;roof&amp;rsquo; to prevent standing moisture ingress and could use standard size tobacco pipe filters to keep all but the tiniest of insects/particles out.&lt;/p>
+&lt;p>The sensor uses a small fan to draw ambient air past an infrared laser. As airborne particles cross the laser beam, they reflect a certain amount of light which can be correlated with the size of the particle. This data can then be turned into fairly accurate counts of how many particles of a given size are in the sampled air. The enclosure is a basic box with two circular air channels pointed downwards to prevent moisture ingress. The intake and exhaust ports are at staggered heights and pointed in opposite directions and to minimize the chance of recirculating the same air.&lt;/p>
+&lt;p>The lower port is the intake which connects to a few small holes on the front of the sensor and the exhaust port is the raised port which connects directly to the exhaust fan. If you could remove the first few mm from the front, it would look something like this:&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/f360_air_channels.jpg" alt="Screenshot showing labeled ingress/egress for air flow" />
+&lt;figcaption>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>From the side, you can see the two air channels and the few mm of room in the back for wiring. The sensor sits on a &amp;lsquo;pedestal&amp;rsquo; to keep it elevated away from any moisture that may collect on the bottom of the enclosure.&lt;/p>
+&lt;p>The base plate/pedestal are secured to the &amp;lsquo;body&amp;rsquo; with two M3 screws. I used &lt;code>10mm&lt;/code> as that&amp;rsquo;s what I had on hand, but screws between 6-12mm should work as well. The holes are sized for a M3, but any similar sized screw will work. Use a lighter or similar to heat the screw as you drive it into the plastic to create your own threads if using a larger/longer screw.&lt;/p>
+&lt;p>Besides the &amp;lsquo;pedestal&amp;rsquo; there are a few contact surfaces that hold on to the sensor with a friction fit. The &amp;lsquo;ceiling&amp;rsquo; is a few mm thick and shouldn&amp;rsquo;t permit much moisture ingress but an optional slanted roof component can be printed as an extra precaution.&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/f360_side_profile.jpg" alt="Screenshot showing side profile of assembly and the two ports" />
+&lt;figcaption>
+&lt;p>
+Upper and lower chambers for exhaust and intake.
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>While designing the enclosure, I used this &lt;a href="https://grabcad.com/library/pms5003-2">&lt;code>PMS5003&lt;/code> model&lt;/a> from Leclercq Gregory. 🙏&lt;/p>
+&lt;h3 id="printing">Printing&lt;/h3>
+&lt;p>This is a functional part with only three small surfaces that require reasonably tight precision to properly hold onto the sensor. The &lt;code>SPEED&lt;/code> setting with a &lt;code>.2mm&lt;/code> layer height and a reasonable 20% infill gave me part that works and feels water tight. The walls and ceiling need to keep water out so dipping below 15% infill or otherwise using settings that wont give solid layer adhesion is not advised. I printed using ABS for durability, but PLA will probably work if you can deploy into a shaded environment.&lt;/p>
+&lt;p>The shroud and the base are not optional, the triangle shaped block is intended to turn the flat roof of the shroud into a slanted roof so water can&amp;rsquo;t collect. It is optional but shown below.&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/suggested_print_orientation.jpg" alt="Screenshot showing suggested print bed arrangement" />
+&lt;figcaption>
+&lt;p>
+No raft/support when printed in this orientation.
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="assemble">Assemble&lt;/h2>
+&lt;p>Briefly:&lt;/p>
+&lt;ul>
+&lt;li>collect materials&lt;/li>
+&lt;li>press-fit the PM2.5 sensor into the enclosure&lt;/li>
+&lt;li>make a wire that can interface the PM2.5 sensor to the WS3 board via RJ11&lt;/li>
+&lt;li>seal everything up&lt;/li>
+&lt;li>glue on mesh screens and angled roof&lt;/li>
+&lt;li>plug into WS3&lt;/li>
+&lt;li>flash ESPHome onto&lt;/li>
+&lt;/ul>
+&lt;h3 id="bill-of-materials">Bill of Materials&lt;/h3>
+&lt;p>More or less everything that is needed for assembly is pictured below.&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/01.collect.jpg" alt="Picture showing tools/materials required for assembly" />
+&lt;figcaption>
+&lt;p>
+More or less everything needed to assemble.
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>Components:&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;p>&lt;a href="https://www.aliexpress.com/item/32921725022.html">WS3 Weather Station&lt;/a> - Essential / Foundational&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a href="https://rover.ebay.com/rover/1/711-53200-19255-0/1?mpre=https%3A%2F%2Fwww.ebay.com%2Fitm%2FDigital-Universal-Particle-Concentration-Laser-Sensor-PMS5003-PM1-0-PM2-5-PM10%2F254616699639&amp;amp;campid=5338734064&amp;amp;toolid=10001&amp;amp;customid=">ST5003T PM2.5 Sensor&lt;/a> - Essential / Foundational&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a href="https://rover.ebay.com/rover/1/711-53200-19255-0/1?mpre=https%3A%2F%2Fwww.ebay.com%2Fitm%2FTTGO-Wemos-MINI-D1-ESP32-WiFi-Bluetooth-Wemos-D1-Mini-ESP8266-ESP-32-Module%2F183413480551&amp;amp;campid=5338734064&amp;amp;toolid=10001&amp;amp;customid=">ESP32 Device&lt;/a> - A link to the ESP32 based device that I use but any ESP platform with a spare GPIO that can be used as a UART will work.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a href="https://rover.ebay.com/rover/1/711-53200-19255-0/1?mpre=https%3A%2F%2Fwww.ebay.com%2Fitm%2F25-Stainless-Steel-Smoking-Pipe-Screens-3-4-19mm-Tobacco-HOOKAH-FILTER-Heavy%2F183969079809&amp;amp;campid=5338734064&amp;amp;toolid=10001&amp;amp;customid=">3/4 inch tobacco pipe screens&lt;/a> - For bug/critter proofing the enclosure. Strongly suggested for outdoor deployments.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>&lt;a href="https://www.mcmaster.com/91292A113/">2x M3 x 10mm screws&lt;/a> - Optional. The base can be glued to the shroud or any similar screw will work&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>&lt;strong>Note&lt;/strong>: Where possible, I&amp;rsquo;ve used referral links. The links don&amp;rsquo;t raise the price of any item, they simply let the retailer know that I sent you and, in return, I get a small cut of your purchase. If you&amp;rsquo;re not comfortable with that, you can use a URL unwinding service to get the &amp;lsquo;raw&amp;rsquo; product link and drop the attribution/commission part.&lt;/p>
+&lt;p>General bits:&lt;/p>
+&lt;ul>
+&lt;li>Superglue&lt;/li>
+&lt;li>Waterproofing caulk/sealant&lt;/li>
+&lt;li>Drill/Screwdriver&lt;/li>
+&lt;li>Driver bit for the screws&lt;/li>
+&lt;/ul>
+&lt;p>The stepped drill bit in the above picture is not a requirement if you assemble things in the correct oder. The cable egress hole is sized for a &amp;lsquo;typical&amp;rsquo; 3 pair &lt;a href="https://en.wikipedia.org/wiki/Registered_jack#RJ11,_RJ14,_RJ25_wiring">RJ11 cable&lt;/a> plus a tiny bit of wiggle room. I needed a working cable to test the code while the parts were printing so the hole in the printed base needed to be enlarged slightly to fit the head of the cable.&lt;/p>
+&lt;h3 id="wiring">Wiring&lt;/h3>
+&lt;p>There&amp;rsquo;s no ready-made cable out there that&amp;rsquo;ll join the two devices so one must be made. Fortunately, there&amp;rsquo;s only 6 wires to deal with&amp;hellip; 4 of them are distinct.&lt;/p>
+&lt;p>Sacrifice the cable that comes with the PM2.5 sensor and the RJ11 cable by cutting them in half and solder the correct wires together. The &lt;em>color&lt;/em> of the wires that come in both the RJ11 cable and the PM2.5 cable are likely going to differ from the ones I used so I&amp;rsquo;ve left those details out and provided a table showing which pins are to be joined together:&lt;/p>
+&lt;table>
+&lt;thead>
+&lt;tr>
+&lt;th>Pin #&lt;/th>
+&lt;th>PM2.5 Sensor Pin&lt;/th>
+&lt;th>WS3 Pin&lt;/th>
+&lt;/tr>
+&lt;/thead>
+&lt;tbody>
+&lt;tr>
+&lt;td>1&lt;/td>
+&lt;td>VCC&lt;/td>
+&lt;td>5V&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>2&lt;/td>
+&lt;td>GND&lt;/td>
+&lt;td>GND&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>3&lt;/td>
+&lt;td>SET&lt;/td>
+&lt;td>ENABLE&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>4&lt;/td>
+&lt;td>RX&lt;/td>
+&lt;td>RX&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>5&lt;/td>
+&lt;td>TX&lt;/td>
+&lt;td>GND&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>6&lt;/td>
+&lt;td>RESET&lt;/td>
+&lt;td>5V&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>7&lt;/td>
+&lt;td>NC&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;tr>
+&lt;td>8&lt;/td>
+&lt;td>NC&lt;/td>
+&lt;td>&lt;/td>
+&lt;/tr>
+&lt;/tbody>
+&lt;/table>
+&lt;p>For reference, Pin 1 on both the WS3 and PM2.5 Sensor:&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/pin_out/WS3_Pins.jpg" alt="Screenshot showing the RJ11 jack on WS3 board w/ pin numbers" />
+&lt;figcaption>
+&lt;/figcaption>
+&lt;/figure>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/pin_out/PM2.5_Pins.jpg" alt="Screenshot showing labeled pins on the 8 pin jack on the back of the PM2.5 sensor" />
+&lt;figcaption>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>With the wiring done, the sensor just needs to be stuffed into the enclosure. Don&amp;rsquo;t forget to thread the RJ11 cable through the hole in the base plate &lt;em>BEFORE&lt;/em> soldering it to the cable for the PM2.5 sensor&amp;hellip; otherwise you&amp;rsquo;ll need that stepped drill bit! 🙃&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/02.assemble.jpg" alt="Picture showing sensor inserted into printed shroud" />
+&lt;figcaption>
+&lt;p>
+Sensor has been press-fit into the enclosure and wire fed through the base plate.
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>To finish, secure the base with screws and a bit of water-proofing caulk for good measure:&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/03.glue.jpg" alt="Picture showing assembled components while glue/caulk curing" />
+&lt;figcaption>
+&lt;p>
+I suggest waiting until the end to glue on the optional roof and waiting until just before that to glue on the optional mesh screens.
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="the-code">The code&lt;/h2>
+&lt;p>Setting up and using ESPHome is outside the scope of this post but there are several &lt;a href="https://esphome.io/guides/getting_started_hassio.html">good guides&lt;/a> out there. Once you have that set up, &lt;a href="https://esphome.io/custom/custom_component.html">include&lt;/a> the &lt;code>ws3.h&lt;/code> file and set up your custom sensor as shown below. A working example and more detail is over on the
+&lt;a href="https://github.com/kquinsland/ws3-to-esphome-bridge/">github repo&lt;/a>.&lt;/p>
+&lt;p>It&amp;rsquo;ll look like this:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="font-weight:bold">uart&lt;/span>:
+&lt;span style="font-weight:bold">id&lt;/span>: uart_bus
+&lt;span style="font-style:italic"># At this time, ESP does not Transmit anything to the WS3&lt;/span>
+&lt;span style="font-weight:bold">tx_pin&lt;/span>: GPIO16
+&lt;span style="font-weight:bold">rx_pin&lt;/span>: GPIO17
+&lt;span style="font-weight:bold">baud_rate&lt;/span>: 2400
+&lt;span style="font-weight:bold">sensor&lt;/span>:
+- &lt;span style="font-weight:bold">platform&lt;/span>: custom
+&lt;span style="font-weight:bold">lambda&lt;/span>: |-&lt;span style="font-style:italic">
+&lt;/span>&lt;span style="font-style:italic"> auto ws3 = new WS3(id(uart_bus));
+&lt;/span>&lt;span style="font-style:italic"> App.register_component(ws3);
+&lt;/span>&lt;span style="font-style:italic"> return {
+&lt;/span>&lt;span style="font-style:italic"> ws3-&amp;gt;temperature_sensor,
+&lt;/span>&lt;span style="font-style:italic"> ws3-&amp;gt;pressure_sensor,
+&lt;/span>&lt;span style="font-style:italic"> ws3-&amp;gt;humidity_sensor,
+&lt;/span>&lt;span style="font-style:italic"> ws3-&amp;gt;wind_speed_current_sensor,
+&lt;/span>&lt;span style="font-style:italic"> ws3-&amp;gt;wind_speed_peak_5m_sensor,
+&lt;/span>&lt;span style="font-style:italic"> ws3-&amp;gt;wind_direction_sensor,
+&lt;/span>&lt;span style="font-style:italic"> ws3-&amp;gt;rain_fall_1h_sensor,
+&lt;/span>&lt;span style="font-style:italic"> ws3-&amp;gt;rain_fall_24h_sensor,
+&lt;/span>&lt;span style="font-style:italic">
+&lt;/span>&lt;span style="font-style:italic"> ws3-&amp;gt;particles_03um,
+&lt;/span>&lt;span style="font-style:italic"> ws3-&amp;gt;particles_05um,
+&lt;/span>&lt;span style="font-style:italic"> ws3-&amp;gt;particles_10um,
+&lt;/span>&lt;span style="font-style:italic"> ws3-&amp;gt;particles_25um,
+&lt;/span>&lt;span style="font-style:italic"> ws3-&amp;gt;particles_50um,
+&lt;/span>&lt;span style="font-style:italic"> ws3-&amp;gt;particles_100um,
+&lt;/span>&lt;span style="font-style:italic"> };&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>With that, check the logs from your instance of ESPHome and you should see something like this:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-fallback" data-lang="fallback">[D][ws3:157]: pkt_read_ok!
+[D][WS3:410]: VALID! Packet: [c000s000g000t093r000p000h35b09880,050,080,088,502,056,065,*18
+], Checksum: [18] chksum: [18]
+[E][WS3:342]: Validating: [c000s000g000t093r000p000h35b09880,050,080,088,502,056,065]
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>indicating that the WS3 has detected the PM2.5 sensor and is reporting it&amp;rsquo;s readings in addition to the temperature/wind data. Then just check your HomeAssistant install for the data.&lt;/p>
+&lt;h2 id="files">Files&lt;/h2>
+&lt;p>For archive / posterity, all source files are included here. All files are licensed as &lt;a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike&lt;/a> (CC BY-NC-SA).&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/02.assemble.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/02.assemble_hu581ed75240ad3bd415fa4d000e729c07_1277716_300x0_resize_q75_box.jpg" width="300" height="414">
+&lt;/a>
+&lt;figcaption>
+&lt;small>Sensor has been press-fit into the enclosure and wire fed through the base plate.&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/03.glue.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/03.glue_hu4b434a2d0bde22f360c0e8fbf7a649e9_1464402_300x0_resize_q75_box.jpg" width="300" height="398">
+&lt;/a>
+&lt;figcaption>
+&lt;small>I suggest waiting until the end to glue on the optional roof and waiting until just before that to glue on the optional mesh screens.&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/example_dashboard.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/example_dashboard_hud37127b2a8725f9b696f09347ad21464_272815_300x0_resize_q75_box.jpg" width="300" height="163">
+&lt;/a>
+&lt;figcaption>
+&lt;small>Smoke particles are between .4μm to .7μm in size... which explains the elevated red line relative to other particle sizes.&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/04.installed.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/04.installed_hu2a1504819b520ffab23f58c73dabe877_1392166_300x0_resize_q75_box.jpg" width="300" height="309">
+&lt;/a>
+&lt;figcaption>
+&lt;small>Excuse the awkward camera angle; sensor is deployed in an awkward to photograph location.&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/models/BASE.step">
+&lt;i class="far fa-file-code">&lt;/i>
+models/BASE.step:
+&lt;small style="font-family:'Lucida Console', monospace">step&lt;/small> &lt;small>file&lt;/small>
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/models/BODY.step">
+&lt;i class="far fa-file-code">&lt;/i>
+models/BODY.step:
+&lt;small style="font-family:'Lucida Console', monospace">step&lt;/small> &lt;small>file&lt;/small>
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/models/LID.step">
+&lt;i class="far fa-file-code">&lt;/i>
+models/LID.step:
+&lt;small style="font-family:'Lucida Console', monospace">step&lt;/small> &lt;small>file&lt;/small>
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/models/base.stl">
+&lt;i class="far fa-file-code">&lt;/i>
+models/base.stl:
+&lt;small style="font-family:'Lucida Console', monospace">stl&lt;/small> &lt;small>file&lt;/small>
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/models/body.stl">
+&lt;i class="far fa-file-code">&lt;/i>
+models/body.stl:
+&lt;small style="font-family:'Lucida Console', monospace">stl&lt;/small> &lt;small>file&lt;/small>
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/models/combined.3mf">
+&lt;i class="far fa-file-archive">&lt;/i>
+models/combined.3mf:
+&lt;small style="font-family:'Lucida Console', monospace">3mf&lt;/small> &lt;small>file&lt;/small>
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/models/lid.stl">
+&lt;i class="far fa-file-code">&lt;/i>
+models/lid.stl:
+&lt;small style="font-family:'Lucida Console', monospace">stl&lt;/small> &lt;small>file&lt;/small>
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/pin_out/PM2.5_Pins.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/pin_out/PM2.5_Pins_hu73d3c3e0df5406e1f5d0c0aa79c239b4_47767_300x0_resize_q75_box.jpg" width="300" height="152">
+&lt;/a>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/pin_out/WS3_Pins.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/pin_out/WS3_Pins_hu320425c47decf2d27d21e4a5ee712e53_888503_300x0_resize_q75_box.jpg" width="300" height="214">
+&lt;/a>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/01.collect.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/01.collect_hu256fbbed5931a8fb15e03274d1dfa3ce_1070239_300x0_resize_q75_box.jpg" width="300" height="338">
+&lt;/a>
+&lt;figcaption>
+&lt;small>More or less everything needed to assemble.&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/suggested_print_orientation.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/suggested_print_orientation_hubc29781a1e48d16ebf7b06eb48685880_519298_300x0_resize_q75_box.jpg" width="300" height="175">
+&lt;/a>
+&lt;figcaption>
+&lt;small>No raft/support when printed in this orientation.&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/f360_air_channels.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/f360_air_channels_hu16ba34b32cdb392111aa122e323e4ab7_84744_300x0_resize_q75_box.jpg" width="300" height="436">
+&lt;/a>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/f360_side_profile.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/images/f360_side_profile_hu6d0a16d67440fb635793f95d3fd27d1d_152867_300x0_resize_q75_box.jpg" width="300" height="324">
+&lt;/a>
+&lt;figcaption>
+&lt;small>Upper and lower chambers for exhaust and intake.&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;/ul></description></item></channel></rss>
