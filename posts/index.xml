@@ -1,4 +1,179 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on karl</title><link>https://karlquinsland.com/posts/</link><description>Recent content in Posts on karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 20 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Two Tasmota rules</title><link>https://karlquinsland.com/2020/11/two-tasmota-rules/</link><pubDate>Fri, 20 Nov 2020 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/2020/11/two-tasmota-rules/</guid><description>&lt;p>&lt;a href="https://tasmota.github.io/">Tasmota&lt;/a> is an incredibly powerful alternative/open source firmware for the ever popular Espressif family of WiFi equipped microcontrollers.
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Posts on karl</title><link>https://karlquinsland.com/posts/</link><description>Recent content in Posts on karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 27 Nov 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>Amcrest IP Cameras: security isn't a feature, it's a punchline</title><link>https://karlquinsland.com/2020/11/amcrest-ip-cameras-security-isnt-a-feature-its-a-punchline/</link><pubDate>Fri, 27 Nov 2020 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/2020/11/amcrest-ip-cameras-security-isnt-a-feature-its-a-punchline/</guid><description>&lt;p>This is part rant, part &amp;ldquo;reference&amp;rdquo; for anybody else that&amp;rsquo;s struggling to get their Amcrest IP Camera to work with &lt;a href="https://www.home-assistant.io/integrations/onvif/">Home Assistant&lt;/a> via ONVIF. Skip to &lt;a href="#tldr">TL;DR&lt;/a> for a working Home Assistant config.&lt;/p>
+&lt;p>Briefly, &lt;a href="https://www.onvif.org/profiles/">ONVIF&lt;/a> is an industry group that maintains a set of standards to allow for interoperability between IP Cameras and related devices from multiple vendors. One set of protocols so your cameras from &lt;code>$vendorA&lt;/code> will work with with the recording/analytics software from &lt;code>$vendorB&lt;/code> which can then pipe events into software from &lt;code>$vendorC&lt;/code>.
+How ONVIF works and how it&amp;rsquo;s implemented are beyond the scope of this rant, but, like most standards that haven&amp;rsquo;t aged well, &lt;a href="https://en.wikipedia.org/wiki/SOAP">SOAP&lt;/a> is involved. 🤮.&lt;/p>
+&lt;p>The IP Camera in question is the &lt;code>Amcrest IP4M-1051&lt;/code>, though it does appear that other devices from Amcrest are effected by some of the same issues I&amp;rsquo;ll detail below.
+Additionally, Amcrest appears to be a budget brand offering cheaper versions of &lt;a href="https://en.wikipedia.org/wiki/Dahua_Technology">DaHua&lt;/a> hardware, so the firmware Amcrest uses likely originates from DaHua.&lt;/p>
+&lt;p>The hardware is pretty good for the price. About $80 and you get a camera with a pretty wide field of view, 4K resolution, automatic IR leds/filter, PTZ servos, 10/100 Ethernet &lt;em>and&lt;/em> 2.4/5ghz WiFi. The software, however is scarry 😱.&lt;/p>
+&lt;p>I&amp;rsquo;ve only spent a few hours with the camera so far, but here&amp;rsquo;s an incomplete list of the security-related issues i&amp;rsquo;ve noticed in that time:&lt;/p>
+&lt;ul>
+&lt;li>There&amp;rsquo;s no way to require the web interface be served over HTTPS. You can turn on HTTPS support, but you can&amp;rsquo;t turn of HTTP support!&lt;/li>
+&lt;li>ONVIF runs over HTTP &amp;hellip; on port 80!&lt;/li>
+&lt;li>Only the ADMIN user is supported for ONVIF&lt;/li>
+&lt;li>Passwords are limited to 32 characters in length&amp;hellip; but the web UI won&amp;rsquo;t inform you about this.&lt;/li>
+&lt;/ul>
+&lt;h3 id="firmware">Firmware&lt;/h3>
+&lt;p>Before anybody asks, yes, I did update the firmware to the latest version immediately after unboxing.
+As of writing, the latest firmware available is version &lt;code>V2.620.00AC000.3.R.20191218&lt;/code> which can be downloaded &lt;a href="https://sup-files.s3.us-east-2.amazonaws.com/Firmware/IP4M-1051/Amcrest_IPC-AWXX-V2-Rhea_Eng_NP_AMCREST_V2.620.00AC000.3.R.20191218.bin">here&lt;/a>.&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/11/amcrest-ip-cameras-security-isnt-a-feature-its-a-punchline/images/fw-update-download.png" alt="Screenshot showing the Amcrest Firmware page" />
+&lt;figcaption>
+&lt;p>
+FW for all Amcrest devices can be fetched from https://amcrest.com/firmwaredownloads.
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>In the unlikely event that anybody sees this post and somehow gets Amcrest to correct their issues, the versions of software on the affected cameras are:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-txt" data-lang="txt">Software Version: V2.620.00AC000.3.R, Build Date: 2019-12-18
+WEB Version: 3.2.1.619604
+ONVIF Version: 16.12(V2.4.1.513183)
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="web-ui">Web UI&lt;/h2>
+&lt;p>Nothing shocking about a networking equipped, consumer-grade bit of electronics with a web based management interface. The only reason I&amp;rsquo;m noting it here is because I can&amp;rsquo;t find a way to
+force the web UI to be served over HTTPS 😢.&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/11/amcrest-ip-cameras-security-isnt-a-feature-its-a-punchline/images/network_port-conflict.png" alt="Screenshot showing the port assignment page on the camera management interface" />
+&lt;figcaption>
+&lt;p>
+*sigh*
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>And the &lt;code>HTTPS&lt;/code> tab has no way to disable the web server on port 80 or at least do a simple redirect to the HTTPS URL 😞.&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/11/amcrest-ip-cameras-security-isnt-a-feature-its-a-punchline/images/network_https.png" alt="Screenshot showing the HTTPS / certificate configuration on the camera management interface" />
+&lt;figcaption>
+&lt;p>
+I&amp;#39;ll leave you to determine if it&amp;#39;s a good idea for the web interface to generate a self-signed certificate or not.
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>I suspect that the next issue might have something to do with the &amp;lsquo;always on&amp;rsquo; HTTP server&amp;hellip; 🤔&lt;/p>
+&lt;h2 id="onvif-over-port-80">ONVIF over port 80&lt;/h2>
+&lt;p>The inciting &amp;lsquo;incident&amp;rsquo; for this post was a &amp;lsquo;generic&amp;rsquo; error from Home Assistant while trying to connect the camera to HA.
+While going through the config flow, I&amp;rsquo;d get a super useful &lt;code>an unknown error occurred&lt;/code> message 🙃.&lt;/p>
+&lt;p>After a bit of digging through verbose HA logs, I started to suspect that the default port of &lt;code>5000&lt;/code> was not the correct port despite the port being &amp;lsquo;open&amp;rsquo; on the camera:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ nmap -p1-6553 cameraIPv4Here
+Starting Nmap 7.91 ( https://nmap.org ) at 2020-11-27 16:14 PST
+Nmap scan report &lt;span style="font-weight:bold">for&lt;/span> cameraIPv4Here
+Host is up (0.010s latency).
+Not shown: 6547 closed ports
+PORT STATE SERVICE
+53/tcp open domain
+80/tcp open http
+123/tcp filtered ntp
+443/tcp open https
+554/tcp open rtsp
+5000/tcp open upnp
+Nmap &lt;span style="font-weight:bold">done&lt;/span>: 1 IP address (1 host up) scanned in 2.21 seconds
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Sure enough, Home Assistant found a responsive ONVIF endpoint on port 80. Repeated testing showed that port 80 is the ONLY port with a responsive ONVIF endpoint 🤦.&lt;/p>
+&lt;p>So yeah. ONVIF traffic, just like the web UI traffic, can be sniffed by anybody between the client and the camera. That&amp;rsquo;s not OK for a device that&amp;rsquo;s intended to be used for security.&lt;/p>
+&lt;p>So this little setting is basically useless:&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/11/amcrest-ip-cameras-security-isnt-a-feature-its-a-punchline/images/manual_onvif_auth.png" alt="Screenshot showing the &amp;#39;authentication&amp;#39; setting for the ONVIF service on the camera management interface" />
+&lt;figcaption>
+&lt;p>
+&amp;#39;Authentication&amp;#39; is misleading. It should be labeled something along the lines of &amp;#39;allow just ADMIN to use onvif or allow anybody to use onvif&amp;#39;
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>That screenshot is from the PDF file &lt;a href="https://drive.google.com/file/d/1X-f5xH4aSjhd4vXpIT9yPN_y9-LSgVWN/view">here&lt;/a> which has this revision info:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-fallback" data-lang="fallback">Amcrest IP4M-1051B / IP4M-1051W
+4MP ProHD Indoor Wi-Fi Camera
+User Manual
+Version 1.0.3
+Revised April 4th, 2019
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="onvif-only-supports-authentication-with-the-admin-user">ONVIF only supports authentication with the Admin user&lt;/h2>
+&lt;p>After discovering that ONVIF only &amp;lsquo;works&amp;rsquo; over port 80, I took a moment to get over my disappointment and then tried to set up a second user with minimal authority on the camera; read only and limited permission to move the camera around.&lt;/p>
+&lt;p>Except I was never able to get HA to successfully connect to the camera when using the secondary user. Home Assistant still failed to connect to the camera over ONVIF even after elevating the secondary user to the privilege level of an admin:&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/11/amcrest-ip-cameras-security-isnt-a-feature-its-a-punchline/images/web_ui-admin_user.png" alt="Screenshot showing the admin user and its entitlements on the camera web UI" />
+&lt;figcaption>
+&lt;p>
+Admin users have all 34 permissions enabled
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>My secondary user permissions:&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/11/amcrest-ip-cameras-security-isnt-a-feature-its-a-punchline/images/web_ui-ha_user.png" alt="Screenshot showing the secondary/home-assistant user and its entitlements on the camera web UI" />
+&lt;figcaption>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>As Home Assistant really does not expose a ton of debugging information, I tried the secondary user credentials with the &lt;a href="https://play.google.com/store/apps/details?id=net.biyee.onvifer&amp;amp;hl=en_US&amp;amp;gl=US">&lt;code>Onvifer&lt;/code>&lt;/a> app. The debugging logs from that app confirmed that only the &lt;code>admin&lt;/code> credential set &amp;lsquo;worked&amp;rsquo; with ONVIF.&lt;/p>
+&lt;p>After a bit more research, it turns out that I&amp;rsquo;m not the first person to discover this:&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/11/amcrest-ip-cameras-security-isnt-a-feature-its-a-punchline/images/forum01.png" alt="Screenshot showing a post on the amcrest support forums where other people have noticed the lack of multi-user authentication for ONVIF authentication" />
+&lt;figcaption>
+&lt;p>
+Source: https://amcrest.com/forum/ip-cameras-f18/firmware-security-bug-regarding-onvif--t13445-s10.html
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/11/amcrest-ip-cameras-security-isnt-a-feature-its-a-punchline/images/forum02.png" alt="Screenshot showing a post on the amcrest support forums where other people have noticed the lack of multi-user authentication for ONVIF authentication" />
+&lt;figcaption>
+&lt;p>
+Source: https://amcrest.com/forum/ip-cameras-f18/ip3m-941b-onvif-and-user-management-t12647.html
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>Now i&amp;rsquo;m embarrassed that it took me so long to discover an issue that&amp;rsquo;s been documented since AT LEAST summer of 2019! 😳&lt;/p>
+&lt;h3 id="password-length">Password length&lt;/h3>
+&lt;p>Can we &lt;em>please&lt;/em> &lt;a href="https://security.stackexchange.com/questions/33470/what-technical-reasons-are-there-to-have-low-maximum-password-lengths">stop putting ceilings on password length&lt;/a>?&lt;/p>
+&lt;p>Or, at least if you&amp;rsquo;re going to set an upper bound on password length, please make sure that:&lt;/p>
+&lt;ul>
+&lt;li>You&amp;rsquo;re consistent about enforcing the length&lt;/li>
+&lt;li>You tell the user when their password is longer than allowed.&lt;/li>
+&lt;/ul>
+&lt;p>The very first time the default credentials are used to sign into the camera, you&amp;rsquo;re prompted to change the default password. Good! Only problem: the password generated by my password was, apparently, longer than the camera supports. The new admin password was &lt;em>&lt;strong>silently&lt;/strong> truncated&lt;/em> as I was logged in.&lt;/p>
+&lt;p>I didn&amp;rsquo;t realize that the password stored in the manager wouldn&amp;rsquo;t let me in until after the camera applied it&amp;rsquo;s FW update and rebooted. After a factory reset, I figured out what happened.&lt;/p>
+&lt;p>The &lt;code>maxlength&lt;/code> property of the login form differs from the password set form. In any case, there&amp;rsquo;s no warning that the input exceeds the length!&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/11/amcrest-ip-cameras-security-isnt-a-feature-its-a-punchline/images/pw_login.png" alt="Screenshot showing the HTML for the password field on the login page" />
+&lt;figcaption>
+&lt;p>
+...
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/11/amcrest-ip-cameras-security-isnt-a-feature-its-a-punchline/images/pw_reset.png" alt="Screenshot showing the HTML for the password field on the password reset page" />
+&lt;figcaption>
+&lt;p>
+...
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>&lt;em>sigh&lt;/em>&lt;/p>
+&lt;h2 id="tldr">TL;DR:&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;p>It&amp;rsquo;s almost 2021, but we still have IP Cameras shipping with 2011&amp;rsquo;s security issues. &lt;strong>Absolutely&lt;/strong> do not expose your IP Cameras directly to the internet or otherwise allow them to contact the internet. Keep cameras on their &lt;em>own&lt;/em> dedicated and isolated network and consider the admin credentials for the camera to be compromised. Seriously re-consider using WiFi for your cameras.&lt;/p>
+&lt;/li>
+&lt;li>
+&lt;p>If you&amp;rsquo;re trying to use the &lt;a href="https://www.home-assistant.io/integrations/onvif/">Home Assistant ONVIF integration&lt;/a> to control an &lt;code>Amcrest IP4M-1051&lt;/code>, you must use the &lt;code>admin&lt;/code> credentials and change the port from &lt;code>5000&lt;/code> to &lt;code>80&lt;/code>.&lt;/p>
+&lt;/li>
+&lt;/ul>
+&lt;p>The first bit of documentation you see when unboxing the camera is this little guy:&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/11/amcrest-ip-cameras-security-isnt-a-feature-its-a-punchline/images/unboxing_security_warning.jpg" alt="Picture of an ironic leaflet urging the customer to use long, complex passwords and up to date firmware." />
+&lt;figcaption>
+&lt;p>
+This is *literally* the first thing you see when unpacking the camera.
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>which reads:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-fallback" data-lang="fallback">IMPORTANT SECURITY NOTICE
+Please make sure your device has the
+latest firmware as listed on:
+www.amcrest.com/firmware-subscribe
+Never use the default password for
+your device. Always ensure your
+password contains a combination
+of lowercase and uppercase
+characters and numbers.
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>A for effort, though, Amcrest! 👏🌟&lt;/p>
+&lt;p>🙃&lt;/p></description></item><item><title>Two Tasmota rules</title><link>https://karlquinsland.com/2020/11/two-tasmota-rules/</link><pubDate>Fri, 20 Nov 2020 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/2020/11/two-tasmota-rules/</guid><description>&lt;p>&lt;a href="https://tasmota.github.io/">Tasmota&lt;/a> is an incredibly powerful alternative/open source firmware for the ever popular Espressif family of WiFi equipped microcontrollers.
 This does not need to be another post espousing it&amp;rsquo;s many awesome qualities, so just trust me on this; Tasmota is AWESOME.&lt;/p>
 &lt;p>Tasmota supports user configurable &lt;a href="https://tasmota.github.io/docs/Rules/">rules&lt;/a> which are simple commands wired into various device triggers.
 In short; a device running Tasmota gains some autonomy to react to events without needing to report the event to, and wait for commands from, a remote server.&lt;/p>
