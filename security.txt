@@ -1,0 +1,6 @@
+Contact: security@karlquinsland.com
+Encryption: https://karlquinsland.com/karl.asc
+Encryption: https://keybase.io/kquinsland/pgp_keys.asc?fingerprint=a7cc6c1054d4721f0aa6b196377b19fee7f3788d
+Preferred-Languages: en
+Canonical: https://karlquinsland.com/security.txt.signed
+Policy: https://karlquinsland.com/contact/#security-and-privacy-related-things
