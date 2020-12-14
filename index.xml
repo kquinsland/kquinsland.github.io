@@ -1824,6 +1824,21 @@ models/plate.stl:
 &lt;/figure>
 &lt;/li>
 &lt;/ul></description></item><item><title>home lab: mini 'universal' patch panel</title><link>https://karlquinsland.com/2020/07/home-lab-mini-universal-patch-panel/</link><pubDate>Sun, 05 Jul 2020 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/2020/07/home-lab-mini-universal-patch-panel/</guid><description>&lt;p>This is another brief &amp;ldquo;i made a thing!&amp;rdquo; posts.&lt;/p>
+&lt;h2 id="version-2">Version 2&lt;/h2>
+&lt;p>&lt;strong>Update 2020-12-12:&lt;/strong> I outgrew version 1! I needed a few more ports and didn&amp;rsquo;t have much time&amp;hellip; so I just scaled the part up to double the number of jacks. The links below and the thingiverse and prusaprinters links have been updated w/ the new STL files. Printing and attachment works exactly the same as with the 1x8 version. Rather than include the Fusion360 source, I have included a standard STEP file.&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/07/home-lab-mini-universal-patch-panel/images/v2_installed_front.jpg" alt="Picture showing the new 2x8 keystone bracket installed on rack from the front." />
+&lt;figcaption>
+&lt;/figcaption>
+&lt;/figure>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/07/home-lab-mini-universal-patch-panel/images/v2_installed_rear.jpg" alt="Picture showing the new 2x8 keystone bracket installed on rack from the rear." />
+&lt;figcaption>
+&lt;p>
+Yes, I do need to re-do the cable runs; they&amp;#39;re a mess
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
 &lt;h2 id="what">What&lt;/h2>
 &lt;p>Taking the side / rear of my rack off every time I needed to change which host(s) were connected to the monitor was starting to get old. Only recently did I realize that you can fit more than just RJ45 jacks in a &lt;a href="https://en.wikipedia.org/wiki/Keystone_module">Keystone Jack&lt;/a>. A few measurements, a quick search through thingiverse and some CAD time later, this is the result.&lt;/p>
 &lt;p>The model is tailored to my specific rack, but should be easily adoptable to any other dimensions. Import the Fusion360 model and then edit the first sketch in the timeline as needed and adjust the &lt;code>pattern on line&lt;/code> step to adjust the number of keystone jacks.&lt;/p>
@@ -1860,25 +1875,48 @@ Tolerances on the jacks are somewhat tight so printing at a more accurate settin
 &lt;/figure>
 &lt;/li>
 &lt;li>
-&lt;a target="_blank" href="https://karlquinsland.com/2020/07/home-lab-mini-universal-patch-panel/models/keystone-bracket.3mf">
+&lt;a target="_blank" href="https://karlquinsland.com/2020/07/home-lab-mini-universal-patch-panel/models/v1_keystone-bracket.3mf">
 &lt;i class="far fa-file-archive">&lt;/i>
-models/keystone-bracket.3mf:
+models/v1_keystone-bracket.3mf:
 &lt;small style="font-family:'Lucida Console', monospace">3mf&lt;/small> &lt;small>file&lt;/small>
 &lt;/a>
 &lt;/li>
 &lt;li>
-&lt;a target="_blank" href="https://karlquinsland.com/2020/07/home-lab-mini-universal-patch-panel/models/keystone-bracket.f3z">
+&lt;a target="_blank" href="https://karlquinsland.com/2020/07/home-lab-mini-universal-patch-panel/models/v1_keystone-bracket.f3z">
 &lt;i class="far fa-file-archive">&lt;/i>
-Consolidated PSU CAD:
+models/v1_keystone-bracket.f3z:
 &lt;small style="font-family:'Lucida Console', monospace">f3z&lt;/small> &lt;small>file&lt;/small>
 &lt;br>
 &lt;small>Fusion360 Archive&lt;/small>
 &lt;/a>
 &lt;/li>
 &lt;li>
-&lt;a target="_blank" href="https://karlquinsland.com/2020/07/home-lab-mini-universal-patch-panel/models/keystone-bracket.stl">
+&lt;a target="_blank" href="https://karlquinsland.com/2020/07/home-lab-mini-universal-patch-panel/models/v1_keystone-bracket.stl">
 &lt;i class="far fa-file-code">&lt;/i>
-models/keystone-bracket.stl:
+models/v1_keystone-bracket.stl:
+&lt;small style="font-family:'Lucida Console', monospace">stl&lt;/small> &lt;small>file&lt;/small>
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/07/home-lab-mini-universal-patch-panel/models/v2.3mf">
+&lt;i class="far fa-file-archive">&lt;/i>
+models/v2.3mf:
+&lt;small style="font-family:'Lucida Console', monospace">3mf&lt;/small> &lt;small>file&lt;/small>
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/07/home-lab-mini-universal-patch-panel/models/v2.step">
+&lt;i class="far fa-file-archive">&lt;/i>
+models/v2.step:
+&lt;small style="font-family:'Lucida Console', monospace">step&lt;/small> &lt;small>file&lt;/small>
+&lt;br>
+&lt;small>STEP file&lt;/small>
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/07/home-lab-mini-universal-patch-panel/models/v2.stl">
+&lt;i class="far fa-file-code">&lt;/i>
+models/v2.stl:
 &lt;small style="font-family:'Lucida Console', monospace">stl&lt;/small> &lt;small>file&lt;/small>
 &lt;/a>
 &lt;/li>
@@ -1889,6 +1927,23 @@ models/keystone-bracket.stl:
 &lt;/a>
 &lt;figcaption>
 &lt;small>Suggested print orientation&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/07/home-lab-mini-universal-patch-panel/images/v2_installed_front.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/07/home-lab-mini-universal-patch-panel/images/v2_installed_front_hueaa041fd3e89eb8857e8d8911e38c610_2003909_300x0_resize_q75_box.jpg" width="300" height="220">
+&lt;/a>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/07/home-lab-mini-universal-patch-panel/images/v2_installed_rear.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/07/home-lab-mini-universal-patch-panel/images/v2_installed_rear_huc45c71727a5e03d4cd0254c0178b7cc0_903650_300x0_resize_q75_box.jpg" width="300" height="265">
+&lt;/a>
+&lt;figcaption>
+&lt;small>Yes, I do need to re-do the cable runs; they&amp;#39;re a mess&lt;/small>
 &lt;/figcaption>
 &lt;/figure>
 &lt;/li>
