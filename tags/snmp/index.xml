@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>SNMP on karl</title><link>https://karlquinsland.com/tags/snmp/</link><description>Recent content in SNMP on karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 27 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/snmp/index.xml" rel="self" type="application/rss+xml"/><item><title>Monitoring APC AP7900 switched PDU with Prometheus and Grafana</title><link>https://karlquinsland.com/2020/12/monitoring-apc-ap7900-switched-pdu-with-prometheus-and-grafana/</link><pubDate>Sun, 27 Dec 2020 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/2020/12/monitoring-apc-ap7900-switched-pdu-with-prometheus-and-grafana/</guid><description>&lt;p>The APC AP7900 is a 1U single phase PDU with 8 switchable outlets and a network interface. It&amp;rsquo;s been EoL&amp;rsquo;d and can be had for less than 20% of it&amp;rsquo;s original price on &lt;a href="https://www.ebay.com/sch/i.html?_nkw=AP7900">eBay&lt;/a>. The network interface is so underpowered tha it can&amp;rsquo;t &lt;a href="http://origin-faq.pro-face.com/resources/sites/PROFACE/content/live/FAQS/300000/FA300635/en_US/APC%20AP7000%20Series%20End%20of%20Life%20Notice.pdf">support any modern cryptographic ciphers&lt;/a>.&lt;/p>
+&lt;p>So with that, here&amp;rsquo;s a revised copy of my notes from the process of getting the device reset, updated and monitored.&lt;/p>
+&lt;h2 id="the-hardware">The Hardware&lt;/h2>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/12/monitoring-apc-ap7900-switched-pdu-with-prometheus-and-grafana/images/ap7900.png" alt="marketing photo of AP7900" />
+&lt;figcaption>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>Unfortunately, there&amp;rsquo;s no &amp;ldquo;reset everything to defaults&amp;rdquo; button or button sequence on the PDU. The unit I purchased had been configured with a manual IP assignment so it wasn&amp;rsquo;t as straightforward as using an unfolded paperclip to press the reboot button at boot and wait for a successful DHCP negotiation. This process has been &lt;a href="https://dan.langille.org/2015/01/13/apc-pdu-ap7900-resetting-the-password/">covered before&lt;/a>, so I&amp;rsquo;ll omit it here. In short: connect to the local mgmt interface via the &lt;a href="https://pinoutguide.com/UPS/apc_smart_cable_pinout.shtml">serial port&lt;/a>, adjust the network configuration and other settings as needed.&lt;/p>
+&lt;p>The firmware can be updated via FTP easily enough. The processor on the network interface is &lt;em>really&lt;/em> slow so allow for &lt;em>several minutes&lt;/em> between the bin file upload and the flashing to commence/end. I had to repeat this three times for each of the partitions / subsystem OSs.&lt;/p>
+&lt;h2 id="the-metrics">The Metrics&lt;/h2>
+&lt;p>Again, because the network interface has an ancient/slow CPU, any method that extracts metrics from the device must be light weight&amp;hellip; enter &lt;a href="https://en.wikipedia.org/wiki/Simple_Network_Management_Protocol">SNMP&lt;/a>.&lt;/p>
+&lt;p>SNMP is quite old and cumbersome but there&amp;rsquo;s an &lt;a href="https://github.com/prometheus/snmp_exporter">exporter for prometheus&lt;/a> which, after some tedious configuration, can interface the complexity that is is legacy SNMP with prometheus.&lt;/p>
+&lt;h3 id="generating-a-config">Generating a config&lt;/h3>
+&lt;p>In short, SNMP identifies each setting/entity that can be monitored or set with a unique numerical ID. Each number is separated with a &lt;code>.&lt;/code> and represents a specific edge/vertex on the graph of all settings that device supports.&lt;/p>
+&lt;p>So, a setting known as &lt;code>rPDUIdentDeviceLinetoLineVoltage&lt;/code> may be &amp;lsquo;read&amp;rsquo; at the following address: &lt;code>1.3.6.1.4.1.318.1.1.12.1.15.0&lt;/code>. So if you have a few hundred parameters to monitor, you&amp;rsquo;ll have a few hundred nondescript numerical paths. Keeping track of them all is a royal pain in the ass, even with &lt;a href="https://en.wikipedia.org/wiki/Management_information_base">lookup tables&lt;/a>; known as &amp;ldquo;MIB files&amp;rdquo;.&lt;/p>
+&lt;p>Unfortunately, there&amp;rsquo;s no way around it; a map between the numerical paths and the &amp;lsquo;human friendly&amp;rsquo; names must be built so the prometheus exporter knows what to expose and how to categorize it.&lt;/p>
+&lt;p>The exporter comes with &lt;a href="https://github.com/prometheus/snmp_exporter/tree/master/generator">generator&lt;/a> to make this process a bit easier, but the process of obtaining MIB files isn&amp;rsquo;t quite so straightforward.
+I hit a few snags and below is an updated &lt;code>Dockerfile&lt;/code> that gave me a &lt;em>working&lt;/em> generator tool:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-Dockerfile" data-lang="Dockerfile">&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-weight:bold">FROM&lt;/span>&lt;span style="font-style:italic"> golang:latest&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic">##&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># The `mibs` target in the Makefile does not run to completion on OSX.&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># Somewhere, a `sed` command is run against some vendor&amp;#39;s MIB file that&amp;#39;s for hardware that I don&amp;#39;t want to target.&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># I don&amp;#39;t have the patience to resolve those issues and i&amp;#39;d prefer that the _entire_ MIB parse and generate &lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># process be 100% contained in the container image anyways.&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic">#&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># There are a _variety_ of errors that cropped up when running `generator parse_errors`:&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic">#&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># - level=warn ts=2020-12-27T21:40:42.988Z caller=main.go:120 msg=&amp;#34;NetSNMP reported parse error(s)&amp;#34; errors=16924&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># - Cannot find module (SNMPv2-SMI): At line 275 in mibs/apc-powernet-mib&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># - Did not find &amp;#39;enterprises&amp;#39; in module #-1 (mibs/apc-powernet-mib)&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># - Did not find &amp;#39;DisplayString&amp;#39; in module #-1 (mibs/apc-powernet-mib)&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># - Unlinked OID in PowerNet-MIB: apc ::= { enterprises 318 }&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># - Undefined identifier: enterprises near line 281 of mibs/apc-powernet-mib&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># - Cannot adopt OID in PowerNet-MIB: atsInputEntry ::= { atsInputTable 1 }&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># - &amp;lt;and hundreds more `Cannot adopt OID in PowerNet-MIB:` messages&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># - Bad operator (INTEGER): At line 73 in /usr/share/snmp/mibs/ietf/SNMPv2-PDU&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic">#&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic">#&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># After some searching, it appears that MIBs can refer to other MIBs and some set of &amp;#39;base&amp;#39; files is not present.&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># Due to licensing, the Debian docker image that the generator is based on does NOT ship w/ them or the &lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># `snmp-mibs-downloader` tool which is used to fetch the base MIB files. This is easy enough to fix...&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic">##&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># First, update the repos we&amp;#39;ll pull packaged from&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-weight:bold">RUN&lt;/span> echo &lt;span style="font-style:italic">&amp;#34;deb http://deb.debian.org/debian/ buster main contrib non-free&amp;#34;&lt;/span> | tee -a /etc/apt/sources.list &amp;amp;&amp;amp; &lt;span style="font-weight:bold;font-style:italic">\
+&lt;/span>&lt;span style="font-weight:bold;font-style:italic">&lt;/span> echo &lt;span style="font-style:italic">&amp;#34;deb http://deb.debian.org/debian/ buster-updates main contrib non-free&amp;#34;&lt;/span> | tee -a /etc/apt/sources.list &amp;amp;&amp;amp; &lt;span style="font-weight:bold;font-style:italic">\
+&lt;/span>&lt;span style="font-weight:bold;font-style:italic">&lt;/span> echo &lt;span style="font-style:italic">&amp;#34;deb http://security.debian.org/debian-security buster/updates main contrib non-free&amp;#34;&lt;/span> | tee -a /etc/apt/sources.list&lt;span style="">
+&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># Then we run the &amp;#39;original&amp;#39; set of commands, adding in the `snmp-mibs-downloader` package.&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># As part of the post-install hook, snmp-mibs-downloader will fetch the base MIBs that appear to be&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># missing.&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic">##&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-weight:bold">RUN&lt;/span> apt-get update &amp;amp;&amp;amp; &lt;span style="font-weight:bold;font-style:italic">\
+&lt;/span>&lt;span style="font-weight:bold;font-style:italic">&lt;/span> apt-get install -y libsnmp-dev p7zip-full snmp-mibs-downloader &amp;amp;&amp;amp; &lt;span style="font-weight:bold;font-style:italic">\
+&lt;/span>&lt;span style="font-weight:bold;font-style:italic">&lt;/span> go get github.com/prometheus/snmp_exporter/generator &amp;amp;&amp;amp; &lt;span style="font-weight:bold;font-style:italic">\
+&lt;/span>&lt;span style="font-weight:bold;font-style:italic">&lt;/span> cd /go/src/github.com/prometheus/snmp_exporter/generator &amp;amp;&amp;amp; &lt;span style="font-weight:bold;font-style:italic">\
+&lt;/span>&lt;span style="font-weight:bold;font-style:italic">&lt;/span> go get -v . &amp;amp;&amp;amp; &lt;span style="font-weight:bold;font-style:italic">\
+&lt;/span>&lt;span style="font-weight:bold;font-style:italic">&lt;/span> go install&lt;span style="">
+&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># To fix _this_ error:&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># Bad operator (INTEGER): At line 73 in /usr/share/snmp/mibs/ietf/SNMPv2-PDU&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic">#&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># we install a &amp;#39;patched&amp;#39; version.&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># src: https://serverfault.com/questions/936119/snmp-mibs-on-ubuntu-error-in-mibs&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic">##&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-weight:bold">RUN&lt;/span> wget http://pastebin.com/raw.php?i=p3QyuXzZ -O /usr/share/snmp/mibs/ietf/SNMPv2-PDU&lt;span style="">
+&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic">##&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># This command is not needed for generation, but IS needed for manual checking / use of `snmptranslate` within the&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># container. Add to the above RUN statement if needed.&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># sed -i &amp;#34;s/^\(mibs *:\).*/#\1/&amp;#34; /etc/snmp/snmp.conf&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic">#&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># It simply comments out the `mibs:` line in `/etc/snmp/snmp.conf`&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic">##&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># The &amp;#39;stock&amp;#39; generator expects the output of `make mibs` to be mounted into /opt/mibs.&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># Since we are no longer relying on the `make` target, we must tell the generator binary&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># to look in all of the &amp;#39;system default&amp;#39; locations *as well as* /opt/mibs&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic">##&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-weight:bold">WORKDIR&lt;/span>&lt;span style="font-style:italic"> &amp;#34;/opt&amp;#34;&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-weight:bold">ENTRYPOINT&lt;/span> [&lt;span style="font-style:italic">&amp;#34;/go/bin/generator&amp;#34;&lt;/span>]&lt;span style="">
+&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># Rather than do something like this on the CLI every time the container is run&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># `-e MIBDIRS=&amp;#34;/usr/share/snmp/mibs:/usr/share/snmp/mibs/iana:/usr/share/snmp/mibs/ietf:/opt/mibs&amp;#34;`&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># we do it here...&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic">##&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-weight:bold">ENV&lt;/span> MIBDIRS /usr/share/snmp/mibs:/usr/share/snmp/mibs/iana:/usr/share/snmp/mibs/ietf:/opt/mibs&lt;span style="">
+&lt;/span>&lt;span style="">
+&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-weight:bold">CMD&lt;/span> [&lt;span style="font-style:italic">&amp;#34;generate&amp;#34;&lt;/span>]&lt;span style="">
+&lt;/span>&lt;span style="">
+&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>In short, ditch the &lt;code>make mibs&lt;/code> step from &lt;a href="https://github.com/prometheus/snmp_exporter/tree/master/generator#docker-users">here&lt;/a> and move it inside the &lt;code>docker build&lt;/code> step; fetch all the MIB files, patching those that need it. Tell the tool where to find them.&lt;/p>
+&lt;p>For my needs, I only care about the total amount of power being distributed through the PDU so, of the hundreds of different parameters that can be monitored, I&amp;rsquo;m only interested in:&lt;/p>
+&lt;ul>
+&lt;li>Uptime&lt;/li>
+&lt;li>Input Voltage&lt;/li>
+&lt;li>Power in Watts and VoltAmps&lt;/li>
+&lt;li>Percentage of used/remaining capacity&lt;/li>
+&lt;/ul>
+&lt;p>This makes for a simple generator config:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="font-style:italic"># See: https://github.com/prometheus/snmp_exporter/tree/master/generator&lt;/span>
+&lt;span style="font-style:italic">##&lt;/span>
+&lt;span style="font-weight:bold">modules&lt;/span>:
+&lt;span style="font-style:italic"># APC/Schneider UPS Network Management Cards&lt;/span>
+&lt;span style="font-style:italic">#&lt;/span>
+&lt;span style="font-style:italic"># Note: older management cards only support SNMP v1 (AP9606 and&lt;/span>
+&lt;span style="font-style:italic"># AP9607, possibly others). Older versions of the firmware may only&lt;/span>
+&lt;span style="font-style:italic"># support v1 as well. If you only have newer cards you can switch to&lt;/span>
+&lt;span style="font-style:italic"># version v2c or v3.&lt;/span>
+&lt;span style="font-style:italic">#&lt;/span>
+&lt;span style="font-style:italic"># The management cards have relatively slow processors so don&amp;#39;t poll&lt;/span>
+&lt;span style="font-style:italic"># very often and give a generous timeout to prevent spurious&lt;/span>
+&lt;span style="font-style:italic"># errors. Alternatively you can eliminate the interface polling (OIDs&lt;/span>
+&lt;span style="font-style:italic"># beginning with 1.3.6.1.2.1) to reduce the time taken for polling.&lt;/span>
+&lt;span style="font-style:italic">#&lt;/span>
+&lt;span style="font-style:italic"># MIB: https://download.schneider-electric.com/files?p_File_Name=powernet426.mib&lt;/span>
+&lt;span style="font-style:italic"># Guide: http://www.apc.com/salestools/ASTE-6Z5QEY/ASTE-6Z5QEY_R0_EN.pdf&lt;/span>
+&lt;span style="font-style:italic"># Download site: http://www.apc.com/us/en/tools/download/index.cfm&lt;/span>
+&lt;span style="font-style:italic">##&lt;/span>
+&lt;span style="font-weight:bold">apcups&lt;/span>:
+&lt;span style="font-style:italic"># Not 100% sure why, but APC firmware does not appear to properly authenticate with the&lt;/span>
+&lt;span style="font-style:italic"># credentials that i&amp;#39;ve set through the web UI. I&amp;#39;ve disabled write/set via SNMP so &lt;/span>
+&lt;span style="font-style:italic"># sticking w/ v2 (no auth) is fine.&lt;/span>
+&lt;span style="font-weight:bold">version&lt;/span>: 2
+&lt;span style="font-weight:bold">walk&lt;/span>:
+&lt;span style="font-style:italic"># Don&amp;#39;t care about network stats on this guy...&lt;/span>
+&lt;span style="font-style:italic"># - interfaces&lt;/span>
+&lt;span style="font-style:italic">##&lt;/span>
+&lt;span style="font-style:italic"># Do care about uptime, tho&lt;/span>
+- sysUpTime
+&lt;span style="font-style:italic">##&lt;/span>
+&lt;span style="font-style:italic"># For reasons that I don&amp;#39;t understand, specifying the OID results in errors like this:&lt;/span>
+&lt;span style="font-style:italic"># level=error caller=main.go:130 msg=&amp;#34;Error generating config netsnmp&amp;#34; err=&amp;#34;cannot find oid &amp;#39;.1.3.6.1.4.1.318.1.1.12.1.15.0&amp;#39; to walk&amp;#34;&lt;/span>
+&lt;span style="font-style:italic"># But the path &amp;#39;.1.3.6.1.4.1.318.1.1.12.1.15.0&amp;#39; maps to rPDUIdentDeviceLinetoLineVoltage.0&lt;/span>
+&lt;span style="font-style:italic"># So specify that by name and the error goes away :/&lt;/span>
+&lt;span style="font-style:italic">##&lt;/span>
+- rPDUIdentDeviceLinetoLineVoltage &lt;span style="font-style:italic"># .1.3.6.1.4.1.318.1.1.12.1.15.0&lt;/span>
+- rPDUIdentDevicePowerWatts &lt;span style="font-style:italic"># .1.3.6.1.4.1.318.1.1.12.1.16.0&lt;/span>
+- rPDUIdentDevicePowerVA &lt;span style="font-style:italic"># .1.3.6.1.4.1.318.1.1.12.1.18.0&lt;/span>
+- rPDULoadStatusTable &lt;span style="font-style:italic"># .1.3.6.1.4.1.318.1.1.12.2.3.1&lt;/span>
+&lt;span style="font-style:italic">##&lt;/span>
+&lt;span style="font-style:italic"># From `rPDULoadStatusTable`, I can get `rPDULoadStatusLoad` and `rPDULoadStatusLoadState`&lt;/span>
+&lt;span style="font-style:italic"># which represent the percentage capacity as a percentage and a &amp;#34;low, nominal, warn, critical&amp;#34; flag.&lt;/span>
+&lt;span style="font-style:italic">#&lt;/span>
+&lt;span style="font-style:italic"># Don&amp;#39;t need to resort to the `lookup` mechanism as the PDU has only one bank and can just extract the values&lt;/span>
+&lt;span style="font-style:italic"># by referring to them explicitly below. This would likely change w/ a 2U PDU&lt;/span>
+&lt;span style="font-style:italic"># Allows for adjustment to how various SNMP endpoints are parsed (as info about a device vs a moving metric)&lt;/span>
+&lt;span style="font-style:italic"># See: https://github.com/prometheus/snmp_exporter/tree/master/generator#enumasinfo-and-enumasstateset&lt;/span>
+&lt;span style="font-style:italic">##&lt;/span>
+&lt;span style="font-weight:bold">overrides&lt;/span>:
+&lt;span style="font-style:italic"># Should be a percentage of load&lt;/span>
+&lt;span style="font-weight:bold">rPDULoadStatusLoad&lt;/span>:
+&lt;span style="font-weight:bold">type&lt;/span>: gauge
+&lt;span style="font-style:italic"># In addition to a numerical load percentage, also handy to have the characterization _of_ that load, too&lt;/span>
+&lt;span style="font-style:italic"># In this case, the load can be characterized one of 4 ways:&lt;/span>
+&lt;span style="font-style:italic"># phaseLoadNormal (1),phaseLoadLow (2),phaseLoadNearOverload (3),phaseLoadOverload (4)&lt;/span>
+&lt;span style="font-weight:bold">rPDULoadStatusLoadState&lt;/span>:
+&lt;span style="font-weight:bold">type&lt;/span>: EnumAsStateSet
+&lt;span style="font-style:italic">##&lt;/span>
+&lt;span style="font-style:italic"># There are a few &amp;#39;constants&amp;#39; that come from the table i don&amp;#39;t need to track, so we drop them :)&lt;/span>
+&lt;span style="font-weight:bold">rPDULoadStatusBankNumber&lt;/span>:
+&lt;span style="font-weight:bold">ignore&lt;/span>: &lt;span style="font-weight:bold">true&lt;/span>
+&lt;span style="font-weight:bold">type&lt;/span>: EnumAsInfo
+&lt;span style="font-weight:bold">rPDULoadStatusIndex&lt;/span>:
+&lt;span style="font-weight:bold">ignore&lt;/span>: &lt;span style="font-weight:bold">true&lt;/span>
+&lt;span style="font-weight:bold">type&lt;/span>: EnumAsInfo
+&lt;span style="font-weight:bold">rPDULoadStatusPhaseNumber&lt;/span>:
+&lt;span style="font-weight:bold">ignore&lt;/span>: &lt;span style="font-weight:bold">true&lt;/span>
+&lt;span style="font-weight:bold">type&lt;/span>: EnumAsInfo
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>The resulting &lt;code>snmp.yml&lt;/code> is quite brief:&lt;/p>
+&lt;div class="highlight">&lt;pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="font-style:italic"># WARNING: This file was auto-generated using snmp_exporter generator, manual changes will be lost.&lt;/span>
+&lt;span style="font-weight:bold">apcups&lt;/span>:
+&lt;span style="font-weight:bold">walk&lt;/span>:
+- 1.3.6.1.4.1.318.1.1.12.2.3.1
+&lt;span style="font-weight:bold">get&lt;/span>:
+- 1.3.6.1.2.1.1.3.0
+- 1.3.6.1.4.1.318.1.1.12.1.15.0
+- 1.3.6.1.4.1.318.1.1.12.1.16.0
+- 1.3.6.1.4.1.318.1.1.12.1.18.0
+&lt;span style="font-weight:bold">metrics&lt;/span>:
+- &lt;span style="font-weight:bold">name&lt;/span>: sysUpTime
+&lt;span style="font-weight:bold">oid&lt;/span>: 1.3.6.1.2.1.1.3
+&lt;span style="font-weight:bold">type&lt;/span>: gauge
+&lt;span style="font-weight:bold">help&lt;/span>: The time (in hundredths of a second) since the network management portion of the system was last re-initialized. - 1.3.6.1.2.1.1.3
+- &lt;span style="font-weight:bold">name&lt;/span>: rPDUIdentDeviceLinetoLineVoltage
+&lt;span style="font-weight:bold">oid&lt;/span>: 1.3.6.1.4.1.318.1.1.12.1.15
+&lt;span style="font-weight:bold">type&lt;/span>: gauge
+&lt;span style="font-weight:bold">help&lt;/span>: Getting/Setting this OID will return/set the Line to Line Voltage - 1.3.6.1.4.1.318.1.1.12.1.15
+- &lt;span style="font-weight:bold">name&lt;/span>: rPDUIdentDevicePowerWatts
+&lt;span style="font-weight:bold">oid&lt;/span>: 1.3.6.1.4.1.318.1.1.12.1.16
+&lt;span style="font-weight:bold">type&lt;/span>: gauge
+&lt;span style="font-weight:bold">help&lt;/span>: Getting this OID will return the Power in Watts. - 1.3.6.1.4.1.318.1.1.12.1.16
+- &lt;span style="font-weight:bold">name&lt;/span>: rPDUIdentDevicePowerVA
+&lt;span style="font-weight:bold">oid&lt;/span>: 1.3.6.1.4.1.318.1.1.12.1.18
+&lt;span style="font-weight:bold">type&lt;/span>: gauge
+&lt;span style="font-weight:bold">help&lt;/span>: Getting this OID will return the Power in VA. - 1.3.6.1.4.1.318.1.1.12.1.18
+- &lt;span style="font-weight:bold">name&lt;/span>: rPDULoadStatusLoad
+&lt;span style="font-weight:bold">oid&lt;/span>: 1.3.6.1.4.1.318.1.1.12.2.3.1.1.2
+&lt;span style="font-weight:bold">type&lt;/span>: gauge
+&lt;span style="font-weight:bold">help&lt;/span>: Getting this OID will return the phase/bank load measured in tenths of Amps. - 1.3.6.1.4.1.318.1.1.12.2.3.1.1.2
+&lt;span style="font-weight:bold">indexes&lt;/span>:
+- &lt;span style="font-weight:bold">labelname&lt;/span>: rPDULoadStatusIndex
+&lt;span style="font-weight:bold">type&lt;/span>: EnumAsInfo
+- &lt;span style="font-weight:bold">name&lt;/span>: rPDULoadStatusLoadState
+&lt;span style="font-weight:bold">oid&lt;/span>: 1.3.6.1.4.1.318.1.1.12.2.3.1.1.3
+&lt;span style="font-weight:bold">type&lt;/span>: EnumAsStateSet
+&lt;span style="font-weight:bold">help&lt;/span>: Getting this OID will return the phase/bank load state - 1.3.6.1.4.1.318.1.1.12.2.3.1.1.3
+&lt;span style="font-weight:bold">indexes&lt;/span>:
+- &lt;span style="font-weight:bold">labelname&lt;/span>: rPDULoadStatusIndex
+&lt;span style="font-weight:bold">type&lt;/span>: EnumAsInfo
+&lt;span style="font-weight:bold">enum_values&lt;/span>:
+&lt;span style="font-weight:bold">1&lt;/span>: phaseLoadNormal
+&lt;span style="font-weight:bold">2&lt;/span>: phaseLoadLow
+&lt;span style="font-weight:bold">3&lt;/span>: phaseLoadNearOverload
+&lt;span style="font-weight:bold">4&lt;/span>: phaseLoadOverload
+&lt;span style="font-weight:bold">version&lt;/span>: 2
+&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="the-dashboard">The Dashboard&lt;/h2>
+&lt;p>Once metrics are making their way into prometheus, it&amp;rsquo;s only a bit of work to get a dashboard up and running.&lt;/p>
+&lt;p>For sanity checking I fired up a load; a crypto-miner. See if you can spot when&amp;hellip; :).&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2020/12/monitoring-apc-ap7900-switched-pdu-with-prometheus-and-grafana/images/grafana.png" alt="screenshot showing simple grafana dashboard consuming some of the PDU metrics" />
+&lt;figcaption>
+&lt;p>
+Simple dashboard in grafana
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>The &lt;code>json&lt;/code> file for the dashboard is about 750 lines long, so rather than embed it, I&amp;rsquo;ve &lt;a href="#files">attached&lt;/a> it as a file; the sha1 hash of &lt;code>dashboard.json&lt;/code> is &lt;code>400edb0c4064068f12e17c2f1f0d6862d3b8d449&lt;/code>.&lt;/p>
+&lt;h3 id="estimating-costs">estimating costs&lt;/h3>
+&lt;p>The dashboard just multiplies the average Wattage by the average cost of a kWh and then scales that to fit a 24h window.&lt;/p>
+&lt;p>The rate I pay for electricity changes based on the hour in which the power is used; about 40% of the week, my power costs a few cents per kWh more. The cost shown in the image above is a rough approximation based on my average power rate of around 12.5 cents per kWh. This rate can be adjusted with the &lt;code>avgkWH_Cost&lt;/code> variable, if needed.&lt;/p>
+&lt;h2 id="files">Files&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/12/monitoring-apc-ap7900-switched-pdu-with-prometheus-and-grafana/images/ap7900.png">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/12/monitoring-apc-ap7900-switched-pdu-with-prometheus-and-grafana/images/ap7900_hua86ef71d7c97469c72abcc8606f92a1f_30363_300x0_resize_box_2.png" width="300" height="300">
+&lt;/a>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/12/monitoring-apc-ap7900-switched-pdu-with-prometheus-and-grafana/files/dashboard.json">
+&lt;i class="far fa-file-file-code">&lt;/i>
+files/dashboard.json:
+&lt;br>
+&lt;small>sha1(dashboard.json): 400edb0c4064068f12e17c2f1f0d6862d3b8d449&lt;/small>
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2020/12/monitoring-apc-ap7900-switched-pdu-with-prometheus-and-grafana/images/grafana.png">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/12/monitoring-apc-ap7900-switched-pdu-with-prometheus-and-grafana/images/grafana_hu12e2e56abae7547e2e0002fa4ac227b7_229334_300x0_resize_box_2.png" width="300" height="147">
+&lt;/a>
+&lt;figcaption>
+&lt;small>Simple dashboard in grafana&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;/ul></description></item></channel></rss>
