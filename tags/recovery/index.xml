@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>recovery on karl</title><link>https://karlquinsland.com/tags/recovery/</link><description>Recent content in recovery on karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 13 Jan 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/recovery/index.xml" rel="self" type="application/rss+xml"/><item><title>Unbrick a rievtech PLC after failed firmware upgrade</title><link>https://karlquinsland.com/2021/01/unbrick-a-rievtech-plc-after-failed-firmware-upgrade/</link><pubDate>Wed, 13 Jan 2021 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/2021/01/unbrick-a-rievtech-plc-after-failed-firmware-upgrade/</guid><description>&lt;p>This is &amp;ldquo;reference&amp;rdquo; post for anybody else that happens to have this same very specific problem.&lt;/p>
+&lt;p>I was looking for a way to incorporate some of the &lt;em>many&lt;/em> cheap / industrial grade sensors from AliExpress with Home Assistant.
+Long story short: almost everything electronic in the industrial space uses &lt;a href="https://modbus.org/">Modbus&lt;/a> to communicate, typically with a &lt;a href="https://en.wikipedia.org/wiki/Programmable_logic_controller">PLC&lt;/a>. While Home Assistant &lt;a href="https://www.home-assistant.io/integrations/modbus/">does have support&lt;/a> for the Modbus protocol, but wanted to use a PLC that could manage the sensors directly and expose the values over the network in a more standard format; MQTT.&lt;/p>
+&lt;p>Turns out, quite a few PLCs come with network interfaces and can speak MQTT now!&lt;/p>
+&lt;p>So I picked up a &lt;a href="https://www.rievtech.com/PR-18DC-DAI-R-N-pd72286477.html">&lt;code>PR-18DC-DAI-R-N&lt;/code>&lt;/a> PLC from the &amp;lsquo;budget friendly&amp;rsquo; supplier rievtech. The PLC was put into service in 2018 and never updated; the firmware version it was running was almost certainly below &lt;code>150&lt;/code> but I didn&amp;rsquo;t record the specific version.&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2021/01/unbrick-a-rievtech-plc-after-failed-firmware-upgrade/images/plc-00.jpg" alt="Stock photo from manufacturer&amp;#39;s website showing a device from the same product line as my bricked unit" />
+&lt;figcaption>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>Hoping to squash a small bug, I chose to upgrade the firmware to version &lt;code>152&lt;/code> which was released at the end of 2020 and somehow managed to brick the device 🤦.&lt;/p>
+&lt;p>I am &lt;em>speculating&lt;/em> but it looks like something significant changed around firmware version &lt;code>150&lt;/code>. If you try to update a device from a version prior to &lt;code>150&lt;/code> - like I did - something in memory is not properly migrated to the format required by versions after &lt;code>150&lt;/code> and this causes the update process to fail before completion:&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2021/01/unbrick-a-rievtech-plc-after-failed-firmware-upgrade/images/update-01.png" alt="Screenshot showing &amp;#39;Communicate is FAILED!&amp;#39; message with only .83% left to go on the firmware update." />
+&lt;figcaption>
+&lt;p>
+SO close!
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>That failure message came from the &lt;a href="https://www.rievtech.com/phoenix/admin/download?fileId=jGUKpAvYWcQE&amp;amp;dp=GvUApKfKKUAU">Update_Net_V152_20201205.zip&lt;/a> file which is meant for the ethernet equipped PLCs in the &lt;code>PR&lt;/code> line. The failure apparently soft bricks the PLC.&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2021/01/unbrick-a-rievtech-plc-after-failed-firmware-upgrade/images/plc-01.jpg" alt="Picture showing the bricked PLC powered up." />
+&lt;figcaption>
+&lt;p>
+Blank white screen. Non responsive buttons, Occasional blinking Ethernet lights. Fun! 🙃
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>The PLC seemed &amp;lsquo;alive&amp;rsquo; as I could still see &lt;code>arp&lt;/code> packets coming from it&amp;rsquo;s ethernet port on boot and the web server seemed to accept my connection but never return any data. Even after restarting the PLC, the firmware updater was able to open a new connection and flash the firmware&amp;hellip; always failing at the same spot: 99.17%.&lt;/p>
+&lt;p>Clearly &lt;em>something&lt;/em> is alive and well inside the PLC&amp;hellip; If I can connect to whatever &lt;em>is&lt;/em> running and convince that process to update the flash then I have a good shot to do &amp;lsquo;solderless&amp;rsquo; recovery. Absolute worst case, I buy another one and clone the flash memory from the working one onto the bricked one.&lt;/p>
+&lt;h2 id="recovery-process">Recovery process&lt;/h2>
+&lt;p>Turns out, their support team has a file ready to go for this exact problem! I guess I&amp;rsquo;m not the first person. Really wish they&amp;rsquo;d publish this file and/or procedure on their website. I could have recovered from my failure in minutes with a quick google search and saved myself a few hours of trouble shooting before drafting a support ticket&amp;hellip; not to mention the days of waiting for a reply. Oh well. That&amp;rsquo;s why &lt;em>I&amp;rsquo;m&lt;/em> documenting it.&lt;/p>
+&lt;p>I was given a 2.6MB file named &lt;code>UpdateFail_PR-18DC-DAI-R-N_V150.zip&lt;/code>. After extracting, it looks a lot like their &lt;em>regular&lt;/em> firmware update archives, just much smaller. I suspect that the archive is much smaller because it&amp;rsquo;s only got flash images for a few affected models/devices. In any event, the archive comes with a &lt;code>doc&lt;/code> file that I couldn&amp;rsquo;t open and was able to eventually convert it to a &lt;code>pdf&lt;/code> which is also attached to this post.&lt;/p>
+&lt;p>In short:&lt;/p>
+&lt;ul>
+&lt;li>Connect the PLC using their &lt;a href="https://www.rievtech.com/USB-Cable-pd67130.html">programming cable&lt;/a>&lt;/li>
+&lt;li>Open the COM port and &amp;lsquo;prepare&amp;rsquo; the device. This takes only a few seconds&lt;/li>
+&lt;li>Click the update button. In my case, I got a failure telling me to `Please power off the PLC first, and then power on again!&amp;quot;&lt;/li>
+&lt;li>Power cycle the PLC, keeping the update program and COM port open&lt;/li>
+&lt;li>Click &lt;code>Start&lt;/code>. The process of flashing version &lt;code>150&lt;/code> started and took several minutes to finish&lt;/li>
+&lt;/ul>
+&lt;p>This left me with a &lt;em>completely working&lt;/em> PLC 🥳! I was able to access the web interface and use the LCD screen. I was &lt;em>then&lt;/em> able to use the network update tool to the firmware version released recently; version &lt;code>152&lt;/code>.&lt;/p>
+&lt;p>So there you go. If a failed network update leaves your &lt;code>PR&lt;/code> series PLC in a mostly-not-working state, there is hope!&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2021/01/unbrick-a-rievtech-plc-after-failed-firmware-upgrade/images/recovery-01.png" alt="Screenshot showing &amp;#39;Update is SUCCEED!&amp;#39; message after device recovery." />
+&lt;figcaption>
+&lt;p>
+Able to flash Version 152 w/o issue!
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="files">Files&lt;/h2>
+&lt;ul>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2021/01/unbrick-a-rievtech-plc-after-failed-firmware-upgrade/files/How%20to%20update%20the%20hardware.doc.pdf">
+&lt;i class="far fa-file-doc">&lt;/i>
+files/How to update the hardware.doc.pdf:
+&lt;small style="font-family:'Lucida Console', monospace">pdf&lt;/small> &lt;small>file&lt;/small>
+&lt;br>
+&lt;small>sha1(How to update the hardware.doc.pdf): 0b451b11938b58c384465f5bf350b2f133848649&lt;/small>
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2021/01/unbrick-a-rievtech-plc-after-failed-firmware-upgrade/files/UpdateFail_PR-18DC-DAI-R-N_V150.zip">
+&lt;i class="far fa-file-archive">&lt;/i>
+files/UpdateFail_PR-18DC-DAI-R-N_V150.zip:
+&lt;small style="font-family:'Lucida Console', monospace">zip&lt;/small> &lt;small>file&lt;/small>
+&lt;br>
+&lt;small>sha1(UpdateFail_PR-18DC-DAI-R-N_V150.zip): 60c306b521cdb15589b0e36dc73df484c2117539&lt;/small>
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2021/01/unbrick-a-rievtech-plc-after-failed-firmware-upgrade/images/plc-01.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2021/01/unbrick-a-rievtech-plc-after-failed-firmware-upgrade/images/plc-01_huf50e4ff8022cdea5fd849e876fbc526e_1066128_300x0_resize_q75_box.jpg" width="300" height="262">
+&lt;/a>
+&lt;figcaption>
+&lt;small>Blank white screen. Non responsive buttons, Occasional blinking Ethernet lights. Fun! 🙃&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2021/01/unbrick-a-rievtech-plc-after-failed-firmware-upgrade/images/plc-00.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2021/01/unbrick-a-rievtech-plc-after-failed-firmware-upgrade/images/plc-00_hu2021a2dddf6a319278f4640805172316_18216_300x0_resize_q75_box.jpg" width="300" height="300">
+&lt;/a>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2021/01/unbrick-a-rievtech-plc-after-failed-firmware-upgrade/images/recovery-01.png">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2021/01/unbrick-a-rievtech-plc-after-failed-firmware-upgrade/images/recovery-01_hu656f8d998128e6c53b83359f6326ff82_16229_300x0_resize_box_2.png" width="300" height="314">
+&lt;/a>
+&lt;figcaption>
+&lt;small>Able to flash Version 152 w/o issue!&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2021/01/unbrick-a-rievtech-plc-after-failed-firmware-upgrade/images/update-01.png">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2021/01/unbrick-a-rievtech-plc-after-failed-firmware-upgrade/images/update-01_hu06e722afe350a8459b354a9a55c31522_47082_300x0_resize_box_2.png" width="300" height="315">
+&lt;/a>
+&lt;figcaption>
+&lt;small>SO close!&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;/ul></description></item></channel></rss>
