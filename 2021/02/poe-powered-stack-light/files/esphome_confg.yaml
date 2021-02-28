@@ -1,0 +1,302 @@
+######
+# Karl Quinsland, 2021
+# Licensed as:
+#   Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+#
+# You are free to share this file and build on it so long as your work is also
+#   shared under the same license. You must mention your work was based off of this work
+#   and indicate where your work changes this work.
+#
+#   You may not use this work for commercial purposes.
+#
+# See: https://creativecommons.org/licenses/by-nc-sa/4.0/
+######
+# Uses an ESP32-eth module.
+# See: http://www.wireless-tag.com/portfolio/wt32-eth01/
+# Small breakout PCB for easy interface between the stack light and the ESP Module
+##
+# Note, there might be a few issues w/ pins that don't work as expected
+# See: https://github.com/Aircoookie/WLED/commit/82e7328903628e34a8d141e5a9419da75bc33d76#diff-81fb86539a4966e6e5a2df3e463988478732991e5db8bdb763dc340ab0e2462bR29
+#
+#   // WT32-EHT01
+#   // Please note, from my testing only these pins work for LED outputs:
+#   //   IO2, IO4, IO12, IO14, IO15
+#   // These pins do not appear to work from my testing:
+#   //   IO35, IO36, IO39
+##
+# For uploads
+#   esphome stack_light.yaml run --upload-port $IPv4Here
+#   esphome stack_light.yaml run --upload-port /dev/cu.$UARTNameHere
+##
+
+substitutions:
+  # WIFI
+  wifi_name: !secret wifi_ssid
+  wifi_pass: !secret wifi_pass
+
+  # MQTT
+  mqtt_host: !secret mqtt_host
+  mqtt_user: !secret mqtt_user
+  mqtt_pass: !secret mqtt_pass
+
+  # OTA/Updates
+  ota_pass: !secret ota_pass
+  web_server_port: "80"
+
+  # Displayed in HA frontend
+  friendly_name: "PoE Stack Light"
+  hostname: "stack_light01"
+
+  # output pins, as labeled on the WT32-01 pinout diagram
+  OUT_red: "GPIO15"
+  OUT_orange: "GPIO14"
+  OUT_green: "GPIO12"
+  OUT_blue: "GPIO04"
+  OUT_white: "GPIO02"
+  OUT_extra: "GPIO33"
+
+esphome:
+  # Note: this will be the hostname that device request during the DHCP dance... but appears to be broken on ESP32 devices
+  # See: https://github.com/esphome/issues/issues/125
+  name: ${hostname}
+  platform: ESP32
+  # I can't find any SPECIFIC config for the WT32-ETH01 so i'm going to assume that we use it like a generic ESP32 module
+  # See: https://github.com/platformio/platform-espressif32/issues/448
+  # See: https://docs.platformio.orange/en/latest/platforms/espressif32.html
+  ##
+  # This seems to indicate that i can use the rover kit board
+  # See: https://community.home-assistant.io/t/esphome-ethernet-connectivity-feature-request/110390/77
+  board: esp-wrover-kit
+
+  # Shows up in UI
+  comment: PoE powered stack light for indicating status
+
+  # We do a small chase effect on boot to confirm that each channel is wired correctly
+  on_boot:
+    then:
+      - script.execute: light_chase
+
+# See: https://esphome.io/components/ethernet.html#configuration-for-wireless-tag-wt32-eth01
+ethernet:
+  type: LAN8720
+  mdc_pin: GPIO23
+  mdio_pin: GPIO18
+  clk_mode: GPIO0_IN
+  phy_addr: 1
+  # Does this mean I can power down the eth interface?
+  power_pin: GPIO16
+
+ota:
+  # See: https://esphome.io/components/ota.html
+  password: ${ota_pass}
+
+# See: https://esphome.io/components/mqtt.html
+mqtt:
+  broker: ${mqtt_host}
+  username: ${mqtt_user}
+  password: ${mqtt_pass}
+
+# See: https://esphome.io/components/web_server.html
+# Simple debug log + states + FW upload
+#
+# Note: When MQTT is unavailable, ESPHome can still be controlled via the web interface!
+# This is helpful for out of band notifications: in the event that MQTT fails, backup
+#   monitoring / alerting systems should still be able to send commands to the stack
+#   light if they know the IP address of the light.
+# See: https://esphome.io/web-api/index.html#rest-api
+##
+web_server:
+  port: ${web_server_port}
+
+# Enable logging
+logger:
+
+# As a fail-safe, we want the light to indicate if it's lost connectivity to the MQTT broker.
+# Do this with a simple interval based trigger: every 20s check if MQTT connected. If no, flash
+#   the red light in a distinctive pattern that is unlikely to be mistaken for a regular pattern
+#   that normal automation would create
+#
+# See: https://esphome.io/guides/automations.html#interval
+##
+interval:
+  - interval: 10s
+    then:
+      if:
+        condition:
+          not:
+            # There is also a wifi.connected, but there does not appear to be an ethernet.connected
+            # There might be an is_connected() method in the class, but I think i'd have to call it from
+            #   lambda.
+            # While I would like to use a different light flash pattern depending on _which_ $thing is not connected
+            #   I can just ignore any wifi|eth connection issues and treat MQTT connection and wifi|eth connection
+            #   issues the same error state.
+            #
+            # Note: ESPHome _automatically_ reboots the ESP module after 15m of no connectivity by default
+            ##
+            mqtt.connected:
+        then:
+          - script.execute: light_chase_error
+        else:
+          # If we are connected, stop the chase
+          - script.stop: light_chase_error
+
+# See: https://esphome.io/guides/automations.html#script
+script:
+  - id: light_chase
+    mode: single
+    then:
+      # Turn all lights on, then off. Going in order from top to bottom, bottom to top
+      - output.turn_on: out_red
+      - delay: 100ms
+      - output.turn_on: out_orange
+      - delay: 100ms
+      - output.turn_on: out_green
+      - delay: 100ms
+      - output.turn_on: out_blue
+      - delay: 100ms
+      - output.turn_on: out_white
+      - delay: 250ms
+      - output.turn_off: out_white
+      - delay: 200ms
+      - output.turn_off: out_blue
+      - delay: 200ms
+      - output.turn_off: out_green
+      - delay: 200ms
+      - output.turn_off: out_orange
+      - delay: 200ms
+      - output.turn_off: out_red
+
+  - id: light_chase_error
+    # If we queue up script executions then we can have the last step of a script queue up another execution
+    # From testing, it appears that in-flight script is not stopped when a script.stop call is made, but the
+    #   queue does get emptied so the in-flight script run will be the last
+    ##
+    #mode: queued
+    then:
+      # Do the regular start up chase to differentiate this error condition from a regular automation that
+      #   may trigger the red light to flash
+      ##
+      - script.execute: light_chase
+      # Then flash it a few times before doing the chase again
+      # Start with a long on/off flash
+      - output.turn_on: out_red
+      - delay: 1500ms
+      - output.turn_off: out_red
+      - delay: 1000ms
+      # Then a three quick on / off
+      - output.turn_on: out_red
+      - delay: 500ms
+      - output.turn_off: out_red
+      - delay: 500ms
+
+      - output.turn_on: out_red
+      - delay: 500ms
+      - output.turn_off: out_red
+      - delay: 500ms
+
+      - output.turn_on: out_red
+      - delay: 500ms
+      - output.turn_off: out_red
+      - delay: 500ms
+
+      # Then the long on/off before we restart the cycle
+      - output.turn_on: out_red
+      - delay: 1500ms
+      - output.turn_off: out_red
+      - delay: 100ms
+      ## Loop back around
+      # Unfortunately, didn't get the reliability I wanted w/ this technique
+      #   but we can get basically the same effect by checking MQTT status
+      #   at an interval that is just a bit bigger than the script takes to run
+      #- script.execute: light_chase_error
+
+binary_sensor:
+  # A "connected?" status sensor that - as long as sensor + mqtt + HA are working -
+  #   will always display "true". Allows for easy detection of connectivity failure to kick off local automations
+  # See: https://esphome.io/components/binary_sensor/status.html
+  - platform: status
+    name: "${friendly_name} Status"
+
+# See" https://esphome.io/components/light/binary.html
+light:
+  - id: light_red
+    platform: binary
+    name: "Red"
+    output: out_red
+    restore_mode: ALWAYS_OFF
+    ##
+    # There's a bug w/ the binary_light component and effects. Docs say this should work, but does not.
+    # See: https://github.com/esphome/issues/issues/811
+    effects:
+      - strobe:
+  - id: light_orange
+    platform: binary
+    name: "Orange"
+    output: out_orange
+    restore_mode: ALWAYS_OFF
+    effects:
+      - strobe:
+  - id: light_green
+    platform: binary
+    name: "Green"
+    output: out_green
+    restore_mode: ALWAYS_OFF
+    effects:
+      - strobe:
+  - id: light_blue
+    platform: binary
+    name: "Blue"
+    output: out_blue
+    restore_mode: ALWAYS_OFF
+    effects:
+      - strobe:
+  - id: light_white
+    platform: binary
+    name: "White"
+    output: out_white
+    restore_mode: ALWAYS_OFF
+    effects:
+      - strobe:
+
+# The 'extra' pin does not have a defined purpose, treat it like a switch and not a light.
+# Could do a PWM output for a buzzer / tone maker
+# Could also add an additional transistor to toggle the 12V supply on/off for whole light control
+# See: https://esphome.io/components/switch/gpio.html
+# See: https://community.home-assistant.io/t/help-with-esphome-and-passive-buzzer/129111/6
+##
+switch:
+  - id: out_extra
+    platform: gpio
+    restore_mode: ALWAYS_OFF
+    pin:
+      # GPIO33
+      number: ${OUT_extra}
+    name: "Extra"
+
+# See: https://esphome.io/components/output/gpio.html
+output:
+  - id: out_red
+    platform: gpio
+    pin:
+      # GPIO15
+      number: ${OUT_red}
+  - id: out_orange
+    platform: gpio
+    pin:
+      # GPIO14
+      number: ${OUT_orange}
+  - id: out_green
+    platform: gpio
+    pin:
+      # GPIO12
+      number: ${OUT_green}
+  - id: out_blue
+    platform: gpio
+    pin:
+      # GPIO04
+      number: ${OUT_blue}
+  - id: out_white
+    platform: gpio
+    pin:
+      # GPIO02
+      number: ${OUT_white}

@@ -1,4 +1,368 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>esphome on karl</title><link>https://karlquinsland.com/tags/esphome/</link><description>Recent content in esphome on karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 27 Aug 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/esphome/index.xml" rel="self" type="application/rss+xml"/><item><title>Adding an airborne particulate mater sensor to WS3 Weather Station</title><link>https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/</link><pubDate>Thu, 27 Aug 2020 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/</guid><description>&lt;p>A while back, I &lt;a href="https://github.com/kquinsland/ws3-to-esphome-bridge/">posted a small bit of code&lt;/a> that could decode the data from the ubiquitous WS3 Weather Station and make it accessible to the amazing &lt;a href="https://www.home-assistant.io/">HomeAssistant&lt;/a> via the wonderful &lt;a href="https://esphome.io/">ESPHome&lt;/a> project. Since then, my weather station has been dutifully collecting data that&amp;rsquo;s been invaluable for augmenting automation that deals with indoor climate.&lt;/p>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>ESPHome on karl</title><link>https://karlquinsland.com/tags/esphome/</link><description>Recent content in ESPHome on karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 28 Feb 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/esphome/index.xml" rel="self" type="application/rss+xml"/><item><title>PoE powered Stack Light</title><link>https://karlquinsland.com/2021/02/poe-powered-stack-light/</link><pubDate>Sun, 28 Feb 2021 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/2021/02/poe-powered-stack-light/</guid><description>&lt;figure >
+&lt;img src="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/complete/02_all_on.jpg" alt="Picture showing assembled light attached to enclosure from the front. All 5 lights are lit." />
+&lt;figcaption>
+&lt;p>
+The lights are much brighter than they appear in this picture; had to intentionally darken the image to prevent camera from blowing out the colors.
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>&lt;a href="https://en.wikipedia.org/wiki/Stack_light">Stack/signal lights&lt;/a> are &lt;em>everywhere&lt;/em> in industrial applications for good reason: they&amp;rsquo;re a compact and relatively information-dense indicator system. They always seemed like the kind of indicator that only people with expensive machines needed. Until I found that they can be had for just under $6/light from Ali Express, that is.&lt;/p>
+&lt;p>I don&amp;rsquo;t have any giant industrial machines to attach one to, but I do have a non-trivial number of containers/servers/networked-devices running and they all emit various notifications, usually through email. Who wouldn&amp;rsquo;t mind a novel way to move those notifications beyond email/push notifications into the physical world 🤔?&lt;/p>
+&lt;ul>
+&lt;li>🟢 =&amp;gt; Everything is nominal&lt;/li>
+&lt;li>🟠 =&amp;gt; Check your email; a &lt;code>WARN&lt;/code> level event has occurred&lt;/li>
+&lt;li>🔴 =&amp;gt; A &lt;code>WARN&lt;/code> or &lt;code>ERROR&lt;/code> level condition has occurred; something (ISP down?) is preventing delivery of notifications so check the logs/dashboards directly&lt;/li>
+&lt;li>🔵 =&amp;gt; A new &lt;code>INFO&lt;/code> level message available in Home Assistant&lt;/li>
+&lt;li>⚪ =&amp;gt; Not sure; either a &amp;ldquo;A HIGH priority task is past due&amp;rdquo; or a &amp;lsquo;modifier&amp;rsquo; for above status&lt;/li>
+&lt;/ul>
+&lt;p>While waiting for the light to arrive from China, I started to design something to drive it.
+It was immediately obvious that an ESP32 module would be &lt;strong>ideal&lt;/strong> to run the show, and just for the fun of it, I decided to make the entire thing (optionally) controlled and powered over Ethernet.&lt;/p>
+&lt;h2 id="home-assistant">Home Assistant&lt;/h2>
+&lt;p>It wouldn&amp;rsquo;t be an ESP32 powered project w/o the the &lt;em>fantastic&lt;/em> &lt;a href="https://esphome.io/">ESPHome&lt;/a> framework! With ESPHome comes trivial Home Assistant integration; each individual light / channel on the stack light is automatically configured via MQTT a a light:&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/home-assistant.png" alt="Screenshot showing the stack light automatically configured in Home Assistant." />
+&lt;figcaption>
+&lt;p>
+Stack light is controlled via MQTT making it easy to control from Home Assistant or any other program that can speak MQTT.
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>A slightly modified version of the ESPHome config that I use to build the firmware for the light is attached at the end of this post.&lt;/p>
+&lt;p>Unfortunately, the one Home Assistant integration that I had in mind is currently not feasible!
+I wanted to light the blue light when there is any new/unread Home Assistant &lt;a href="https://www.home-assistant.io/integrations/persistent_notification/">persistent notifications&lt;/a>;
+a real life &amp;ldquo;unread&amp;rdquo; badge of sorts.&lt;/p>
+&lt;p>There is no way to get the list / count of active notifications unless you&amp;rsquo;re a &lt;a href="https://github.com/home-assistant/core/blob/41b45c7f78f9937520b38126cedf228da7507d7d/homeassistant/components/persistent_notification/__init__.py#L203">websocket client&lt;/a>, however.&lt;/p>
+&lt;p>Using the &lt;a href="https://github.com/home-assistant/core/blob/41b45c7f78f9937520b38126cedf228da7507d7d/homeassistant/components/persistent_notification/__init__.py#L30">&lt;code>persistent_notifications_updated&lt;/code>&lt;/a> event as a trigger won&amp;rsquo;t work because the event payload lacks useful data; I can&amp;rsquo;t figure out the number of notifications or their state&amp;hellip; just that either notification has been created or dismissed.
+If I wanted the blue light on any time a notification was either created or destroyed, I could use this trigger. But the light is no longer a useful indicator; it would be on the first time a notification was created or destroyed and then it would never be off.&lt;/p>
+&lt;p>Manually trying to &lt;a href="https://community.home-assistant.io/t/dismiss-of-a-persistent-notification-as-trigger-for-automations/135621/5">keep track of the number of notification created/dismissed actions&lt;/a> just feels like a hacky workaround that could easily get out of sync, too.&lt;/p>
+&lt;p>Oh well 😔.&lt;/p>
+&lt;h2 id="bom">BOM&lt;/h2>
+&lt;p>I&amp;rsquo;ll cover the individual 3D printed and electronic components below. Beyond them, you&amp;rsquo;ll need some additional hardware:&lt;/p>
+&lt;ul>
+&lt;li>4x &lt;a href="https://www.mcmaster.com/catalog/91290A113">m3x8mm&lt;/a> screws&lt;/li>
+&lt;li>4x &lt;a href="https://www.mcmaster.com/catalog/91274A115">m4x8mm&lt;/a> screws&lt;/li>
+&lt;li>4x &lt;a href="https://www.mcmaster.com/catalog/91274A117">m4x10mm&lt;/a> screws&lt;/li>
+&lt;li>6x &lt;a href="https://www.kjmagnetics.com/proddetail.asp?prod=BC41">Neodymium magnets&lt;/a> sized 20mm x 6mm x 2mm. These are optional and are leftover magnets from this &lt;a href="https://www.google.com/search?client=firefox-b-1-d&amp;amp;q=prusa+mk3+enclosure+2">build&lt;/a>&lt;/li>
+&lt;li>10mm diameter &lt;a href="https://www.amazon.com/s?k=10mm+cabinet+door+pad">anti-slip pads&lt;/a>. Thees are optional but will keep the base from sliding around.&lt;/li>
+&lt;/ul>
+&lt;p>I&amp;rsquo;ve linked to the screws that I used, but any similar ones should work. Strong glue could also work, but is not recommended.&lt;/p>
+&lt;p>The m3 screws are for attaching the PCB to the printed part (in yellow, below)
+The shorter m4 screws are for attaching the base (yellow) to the lid (dark blue) and the longer screws are for attaching the stack light to the lid.&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/assemble/01_prep.jpg" alt="Picture showing some of the components and tools used in assembly." />
+&lt;figcaption>
+&lt;p>
+About to start melting threads into the 3D printed parts.
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;h4 id="stack-light">Stack light&lt;/h4>
+&lt;p>Looking quickly through Ali Express, it seems that the lights come in a few different styles, but all appear to be modular in construction.
+Regardless of lamp style, they all appear to come in 2-5 lamp variants and some have configuration switches that allow for customizing the behavior per lamp.&lt;/p>
+&lt;p>The ESPHome code and PCB are designed to accommodate up to 6 colors but will work with less.&lt;/p>
+&lt;p>No matter which style and colors you select, make sure you get one with a &lt;strong>positive &lt;a href="https://en.wikipedia.org/wiki/Anode">anode&lt;/a>&lt;/strong> rated for &lt;strong>12V DC&lt;/strong>.&lt;/p>
+&lt;p>The exact lamp that I used is &lt;a href="https://www.aliexpress.com/item/1005001391165850.html">here&lt;/a>.&lt;/p>
+&lt;h4 id="esp32-module">ESP32 Module&lt;/h4>
+&lt;p>I chose to use the &lt;a href="https://www.aliexpress.com/item/1005001739834076.html">WirelessTag WT32-eth01&lt;/a> module for the onboard Ethernet circuitry at a relatively cheap price: about $10/module. Bonus: it&amp;rsquo;s got a breadboard friendly footprint &lt;em>and&lt;/em> castellated pads!&lt;/p>
+&lt;p>You do not need to use Ethernet for control &lt;em>or&lt;/em> power; the ESPHome configuration below can be easily modified to use the WiFi.&lt;/p>
+&lt;p>In any case, you will need a dedicated UART programmer for the module as there is no built-in USB port on the WT32-eth01.&lt;/p>
+&lt;h4 id="pcb">PCB&lt;/h4>
+&lt;p>Nothing much to see here; just a simple board to consolidate connections for what would otherwise be a mess of wires.&lt;/p>
+&lt;p>Since I was already using Ethernet for the data, may as well use it for the power, too.
+Designing my own PoE circuitry was not in scope for this project, so I went with another off-the-shelf &lt;a href="https://www.aliexpress.com/item/32620368747.html">module&lt;/a>. I ordered the &lt;code>12V2A-Full 24W&lt;/code> version, but the others are likely to also have an identical internal PCB layout which should fit in the 3D printed parts. Make sure to get one that supplies the 12V that the stack light will need!&lt;/p>
+&lt;p>The PCB does not care &lt;em>where&lt;/em> the 12V DC supply comes from.
+It wouldn&amp;rsquo;t be difficult to modify the enclosure to accommodate a &lt;a href="https://www.aliexpress.com/item/1005001668143510.html">USB-C Power Delivery module&lt;/a> or even just a standard barrel jack / LED power supply.&lt;/p>
+&lt;p>Like the PoE module, I use an off the shelf DC to DC converter &lt;a href="https://www.aliexpress.com/item/32833398811.html">module&lt;/a> to step the 12V down from the PoE dongle to 5V which the ESP32 module requires. That link is to a whole-sale lot of 10 converters. You can order the same module in quantities of one from similar listings. I buy them in bulk because it&amp;rsquo;s more expensive to design and solder my own on each board that I build&amp;hellip;&lt;/p>
+&lt;p>My testing isn&amp;rsquo;t super through, but I see the total power draw (measured from the PoE supplying equipment) reaching about 4.5W when all lights are on and about 2W at at idle.&lt;/p>
+&lt;p>The ESP32 just drives some &lt;a href="https://lcsc.com/product-detail/MOSFET_Diodes-Incorporated-DMN1019USN-7_C145103.html">N-Channel MOSFETS&lt;/a> to switch the individual lights on/off.
+They&amp;rsquo;re the only surface mount (SOT-23-4) component; everything else can be done with through hole components. The board is designed for up to 6 colors/lights, but populate only as many MOSFETS as you need.&lt;/p>
+&lt;p>All of the screw terminals are optional; I had several spares left over from a different project, but soldering wires directly to the PCB would work as well.&lt;/p>
+&lt;p>The 6 pin screw terminal is LCSC part &lt;a href="https://lcsc.com/product-detail/Screw-terminal_JILN-JL301-50007U02_C409139.html">&lt;code>C409139&lt;/code>&lt;/a>&lt;/p>
+&lt;p>The 2 pin screw terminal is LCSC part &lt;a href="https://lcsc.com/product-detail/Screw-terminal_Ningbo-Kangnex-Elec-WJ129V-5-0-2P_C8463.html">&lt;code>C8463&lt;/code>&lt;/a>&lt;/p>
+&lt;p>The source and gerber files from EasyEDA are below. Upload them to your favorite PCB prototyping service or try your hand at making your own.&lt;/p>
+&lt;h4 id="printed-parts">Printed parts&lt;/h4>
+&lt;p>There are two parts: a &lt;code>lid&lt;/code> and a &lt;code>plate&lt;/code>. The electronics are attached to the plate and the stack light is attached to the lid. In the photos associated with this post, the &lt;code>lid&lt;/code> is dark blue and the &lt;code>plate&lt;/code> is yellow.&lt;/p>
+&lt;p>The plate has features for several attachment methods:&lt;/p>
+&lt;ul>
+&lt;li>magnets; meant for horizontal surfaces&lt;/li>
+&lt;li>3M command strip; probably wont be enough to do wall/ceilings, but should work in lieu of magnets on horizontal surfaces&lt;/li>
+&lt;li>4 circular indents (&lt;code>10mm&lt;/code> diameter) included for anti-slip pads&lt;/li>
+&lt;li>drywall screw/slot mounting for walls/ceilings&lt;/li>
+&lt;/ul>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/assemble/base_mounting_options.png" alt="Picture annotated to call out specific design features in the base for a variety of mounting options." />
+&lt;figcaption>
+&lt;p>
+I wasn&amp;#39;t sure where I&amp;#39;d want to install this, so there are a few options for attaching the base to surfaces.
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>Pause the print job at the correct layer if you intend to embed magnets:&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/slicer.png" alt="Screenshot showing 3D printed parts arranged on slicing software with annotation pointing out when to insert optional magnets." />
+&lt;figcaption>
+&lt;p>
+Insert your magnets before the layer covering thee 6 cavities is printed.
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>Both the &lt;code>lid&lt;/code> and &lt;code>base&lt;/code> are easy to print; material and color are up to you, as is layer height and quality settings. The &lt;code>stl&lt;/code> and &lt;code>step&lt;/code> files for both are at the end of this post.
+Should you want to make your own enclosure from scratch, I have also included the &lt;code>step&lt;/code> files for the PoE dongle and PCB below.&lt;/p>
+&lt;h2 id="assemble">Assemble&lt;/h2>
+&lt;p>Assembly is relatively straightforward; its mostly integrating a few components into a simple 3d printed enclosure.&lt;/p>
+&lt;h3 id="pcb-1">PCB&lt;/h3>
+&lt;p>Solder the electronic components to the PCB. If omitting screw terminals for the stack light wires, do not solder them to the PCB yet!&lt;/p>
+&lt;p>I created the castellated pad footprint for the ESP32 module by hand and, in the version of the PCB pictured, didn&amp;rsquo;t get the pads as close as they should be so there are some ugly solder blobs to compensate. The pads are correctly placed on the most recent PCB revision.&lt;/p>
+&lt;p>I have included two programming headers on the PCB to flash your firmware; one at &lt;code>2.54mm&lt;/code> pitch and the other at &lt;code>1.0mm&lt;/code> pitch, the latter of which is intended for use with &lt;a href="https://www.aliexpress.com/item/4001122992446.html">this&lt;/a> programmer.&lt;/p>
+&lt;p>There is a solder bridge labeled &lt;code>EXT 3v3&lt;/code>; short this out if you intend to use the programmer to power the ESP32 module. Leave it alone if you plan to use external DC to power the device during programming.&lt;/p>
+&lt;p>I suggest programming the module &lt;em>now&lt;/em> to verify that you&amp;rsquo;ve built the PCB correctly and that your stack light works as expected.
+Once you&amp;rsquo;ve confirmed the electronics and software all work together, proceed to final assembly.&lt;/p>
+&lt;h2 id="everything-else">Everything else&lt;/h2>
+&lt;p>The various holes designed to receive screw threads are intentionally undersized. If you&amp;rsquo;re not using self-tapping screws, you&amp;rsquo;ll find it MUCH EASER to insert a &lt;em>hot&lt;/em> screw for the first time.&lt;/p>
+&lt;p>With the screw on the end of the driver, hold the tip of the screw/threads under a flame for 5-10 seconds and then quickly rotate the screw into the plastic using a bit of extra &amp;lsquo;pushing&amp;rsquo; force.
+Once the screw is fully inserted, allow it to fully cool (~5min) so the softened plastic has a chance to solidify around the screw threads.&lt;/p>
+&lt;p>The screws that hold the base plate to the body of the enclosure are meant to sit flush. Ensure that you screw them in fully before the plastic cools!&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/assemble/00_flush_screws.jpg" alt="Picture showing assembly detail; the base plate is secured to the enclosure with screws." />
+&lt;figcaption>
+&lt;p>
+If the screws protrude even a fraction of a millimeter, the light can wobble and the magnetic attachment is weakened.
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>While waiting for the screws to cool, cut the Ethernet and power leads from the PoE dongle down to size. Desolder the leads from the dongle, trim to be as short as possible and re-solder.&lt;/p>
+&lt;p>The less &amp;lsquo;slack&amp;rsquo; cable in the enclosure, the easier it will be to finish assembly!&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/assemble/03_wire.jpg" alt="Picture showing all components secured to the base and wired together." />
+&lt;figcaption>
+&lt;p>
+I cut a few inches off the Ethernet cable and power leads so everything fits in the enclosure better.
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>After the screws have cooled, ensure that the PCB sits flush against the mounts.&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/assemble/02_pcb_attached.jpg" alt="Picture showing assembly detail; the PCB should be attached to the base plate with screws and should be flush against the mounting posts." />
+&lt;figcaption>
+&lt;p>
+PCB should be flush against the mounting posts.
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>With all wires connected, lift the PoE dongle off of the base plate slightly and align the RJ45 jack with the square hole in the enclosure.&lt;/p>
+&lt;p>Make sure the side of the base plate opposite the side with the RJ45 jack is securely mounts into the body of the enclosure!&lt;/p>
+&lt;p>Gently press the remaining side of the base plate into the enclosure. As the base plate gets closer to flush with the body, the RJ45 jack should slowly come into alignment with the wall.&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/assemble/04_close.jpg" alt="Picture showing assembly detail; the base plate acts like a lever to carefully line the PoE jack up with the enclosure body." />
+&lt;figcaption>
+&lt;p>
+Use the plate as a lever to carefully push, then hold, the PoE dongle in place.
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>When the base blate is completely installed into the body, the RJ45 jack should be flush with the external wall of the enclosure.&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/complete/00_plugged_in.jpg" alt="Picture showing assembled light attached to enclosure, focus is on the RJ45 port in the rear." />
+&lt;figcaption>
+&lt;p>
+RJ45 jack should be flush to the outer wall of the enclosure.
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>Attach the base plate to the enclosure body with the 4 screws, attach silicon feet or a 3M command strip and then you&amp;rsquo;re done!&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/complete/01_all_off.jpg" alt="Picture showing assembled light attached to enclosure from the front. No individual light is powered up, they all have the same translucent white color." />
+&lt;figcaption>
+&lt;p>
+Translucent white lenses for much less ambiguity than the stack lights with colored lenses.
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;h2 id="files">Files&lt;/h2>
+&lt;p>All files below are licensed under the &lt;a href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)&lt;/a> license unless otherwise explicitly noted.&lt;/p>
+&lt;p>&lt;strong>None of the files below may be used for commercial purposes&lt;/strong>&lt;/p>
+&lt;ul>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/complete/01_all_off.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/complete/01_all_off_hu84f091d21918fb28ffc476c083a4465b_2479126_300x0_resize_q75_box.jpg" width="300" height="533">
+&lt;/a>
+&lt;figcaption>
+&lt;small>Translucent white lenses for much less ambiguity than the stack lights with colored lenses.&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/assemble/base_mounting_options.png">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/assemble/base_mounting_options_hu0255bedc4865d595b96a27a21ce41057_6482507_300x0_resize_box_2.png" width="300" height="219">
+&lt;/a>
+&lt;figcaption>
+&lt;small>I wasn&amp;#39;t sure where I&amp;#39;d want to install this, so there are a few options for attaching the base to surfaces.&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/assemble/04_close.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/assemble/04_close_hubc1f23a45a7d66648fd74e7a8ca6d1fb_1183389_300x0_resize_q75_box.jpg" width="300" height="207">
+&lt;/a>
+&lt;figcaption>
+&lt;small>Use the plate as a lever to carefully push, then hold, the PoE dongle in place.&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/complete/02_all_on.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/complete/02_all_on_hu4a267d1b9fd60bea51ae86d52a8277a3_2512058_300x0_resize_q75_box.jpg" width="300" height="533">
+&lt;/a>
+&lt;figcaption>
+&lt;small>The lights are much brighter than they appear in this picture; had to intentionally darken the image to prevent camera from blowing out the colors.&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2021/02/poe-powered-stack-light/files/easy_eda_gerber.zip">
+&lt;i class="far fa-file-">&lt;/i>
+files/easy_eda_gerber.zip:
+&lt;br>
+&lt;small>sha1: d7686b0ad88a1686a5a11cb009632b53ca474c75&lt;/small>
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2021/02/poe-powered-stack-light/files/easy_eda_source.zip">
+&lt;i class="far fa-file-">&lt;/i>
+files/easy_eda_source.zip:
+&lt;br>
+&lt;small>sha1: e05a00cdca9af94dd0e8d1d8f3aa998b75c14a08&lt;/small>
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2021/02/poe-powered-stack-light/files/enclosure-lid-m1v2.stl">
+&lt;i class="far fa-file-code">&lt;/i>
+files/enclosure-lid-m1v2.stl:
+&lt;small style="font-family:'Lucida Console', monospace">stl&lt;/small> &lt;small>file&lt;/small>
+&lt;br>
+&lt;small>sha1: 3870a674d9cf08bf26e3607e42ee766e9816ac6c&lt;/small>
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2021/02/poe-powered-stack-light/files/enclosure-plate-m1v2.stl">
+&lt;i class="far fa-file-code">&lt;/i>
+files/enclosure-plate-m1v2.stl:
+&lt;small style="font-family:'Lucida Console', monospace">stl&lt;/small> &lt;small>file&lt;/small>
+&lt;br>
+&lt;small>sha1: 8f90b54be2a798cf87bc6ca4fc118b82669e0668&lt;/small>
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2021/02/poe-powered-stack-light/files/esphome_confg.yaml">
+&lt;i class="far fa-file-code">&lt;/i>
+files/esphome_confg.yaml:
+&lt;small style="font-family:'Lucida Console', monospace">yaml&lt;/small> &lt;small>file&lt;/small>
+&lt;br>
+&lt;small>sha1: aa0076b7bee08f09568536463c8794f15a2f59b2&lt;/small>
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2021/02/poe-powered-stack-light/files/pcb.step">
+&lt;i class="far fa-file-code">&lt;/i>
+files/pcb.step:
+&lt;small style="font-family:'Lucida Console', monospace">step&lt;/small> &lt;small>file&lt;/small>
+&lt;br>
+&lt;small>sha1: e212f3cd3d90a639e6518b7d11bc5cc20df09b67&lt;/small>
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2021/02/poe-powered-stack-light/files/poe-dongle.step">
+&lt;i class="far fa-file-code">&lt;/i>
+files/poe-dongle.step:
+&lt;small style="font-family:'Lucida Console', monospace">step&lt;/small> &lt;small>file&lt;/small>
+&lt;br>
+&lt;small>sha1: a698c249d89f2ab2c981427df49620cb09ce5f66&lt;/small>
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;a target="_blank" href="https://karlquinsland.com/2021/02/poe-powered-stack-light/files/stack-light-base.step">
+&lt;i class="far fa-file-code">&lt;/i>
+files/stack-light-base.step:
+&lt;small style="font-family:'Lucida Console', monospace">step&lt;/small> &lt;small>file&lt;/small>
+&lt;br>
+&lt;small>sha1: 3c3d0d6162a985b4f09d0f9a58fdacb3f08beb78&lt;/small>
+&lt;/a>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/assemble/00_flush_screws.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/assemble/00_flush_screws_hu18db716c238b723311721626527a5273_846653_300x0_resize_q75_box.jpg" width="300" height="174">
+&lt;/a>
+&lt;figcaption>
+&lt;small>If the screws protrude even a fraction of a millimeter, the light can wobble and the magnetic attachment is weakened.&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/home-assistant.png">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/home-assistant_hue2400f52af2e5683bcea0d6b26c960ad_49477_300x0_resize_box_2.png" width="300" height="620">
+&lt;/a>
+&lt;figcaption>
+&lt;small>Stack light is controlled via MQTT making it easy to control from Home Assistant or any other program that can speak MQTT.&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/assemble/02_pcb_attached.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/assemble/02_pcb_attached_hu5b86cc1ae1d4eb0e7da297e27c7c6e45_630086_300x0_resize_q75_box.jpg" width="300" height="196">
+&lt;/a>
+&lt;figcaption>
+&lt;small>PCB should be flush against the mounting posts.&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/complete/00_plugged_in.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/complete/00_plugged_in_hue44ce946944af7eac0fca70ddaff3b51_503633_300x0_resize_q75_box.jpg" width="300" height="237">
+&lt;/a>
+&lt;figcaption>
+&lt;small>RJ45 jack should be flush to the outer wall of the enclosure.&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/assemble/01_prep.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/assemble/01_prep_hufd56786e8b571605c37596e2d15f02f0_1406212_300x0_resize_q75_box.jpg" width="300" height="284">
+&lt;/a>
+&lt;figcaption>
+&lt;small>About to start melting threads into the 3D printed parts.&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/slicer.png">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/slicer_hu2585a2c3a0d5ec88fd8e2ca55641b8fa_1301722_300x0_resize_box_2.png" width="300" height="233">
+&lt;/a>
+&lt;figcaption>
+&lt;small>Insert your magnets before the layer covering thee 6 cavities is printed.&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;li>
+&lt;figure>
+&lt;a target="_blank" href="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/assemble/03_wire.jpg">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/assemble/03_wire_hu33054df258a5fc4cb91d7d64e8a6a076_1857284_300x0_resize_q75_box.jpg" width="300" height="186">
+&lt;/a>
+&lt;figcaption>
+&lt;small>I cut a few inches off the Ethernet cable and power leads so everything fits in the enclosure better.&lt;/small>
+&lt;/figcaption>
+&lt;/figure>
+&lt;/li>
+&lt;/ul></description></item><item><title>Adding an airborne particulate mater sensor to WS3 Weather Station</title><link>https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/</link><pubDate>Thu, 27 Aug 2020 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/2020/08/adding-an-airborne-particulate-mater-sensor-to-ws3-weather-station/</guid><description>&lt;p>A while back, I &lt;a href="https://github.com/kquinsland/ws3-to-esphome-bridge/">posted a small bit of code&lt;/a> that could decode the data from the ubiquitous WS3 Weather Station and make it accessible to the amazing &lt;a href="https://www.home-assistant.io/">HomeAssistant&lt;/a> via the wonderful &lt;a href="https://esphome.io/">ESPHome&lt;/a> project. Since then, my weather station has been dutifully collecting data that&amp;rsquo;s been invaluable for augmenting automation that deals with indoor climate.&lt;/p>
 &lt;p>As the numerous wild fires in California rage on, &lt;a href="https://www.forbes.com/sites/ericmack/2020/08/21/wildfire-smoke-blankets-the-west-as-california-records-worlds-worst-air-quality/">the air quality has gone from bad to dangerous&lt;/a>. Knowing that outside was warmer, but less humid, was no longer enough to make a smart decision about weather or not to open the windows for some cost-effective cooling. I now need HomeAssistant to be aware of how clean the outside air was before making the decision to pipe in outdoor air.&lt;/p>
 &lt;p>This post covers two things:&lt;/p>
 &lt;ul>
