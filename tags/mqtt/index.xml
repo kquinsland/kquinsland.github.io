@@ -195,7 +195,7 @@ Translucent white lenses for much less ambiguity than the stack lights with colo
 &lt;li>
 &lt;figure>
 &lt;a target="_blank" href="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/assemble/base_mounting_options.png">
-&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/assemble/base_mounting_options_hu0255bedc4865d595b96a27a21ce41057_6482507_300x0_resize_box_2.png" width="300" height="219">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/assemble/base_mounting_options_hu0255bedc4865d595b96a27a21ce41057_6482507_300x0_resize_box_3.png" width="300" height="219">
 &lt;/a>
 &lt;figcaption>
 &lt;small>I wasn&amp;#39;t sure where I&amp;#39;d want to install this, so there are a few options for attaching the base to surfaces.&lt;/small>
@@ -305,7 +305,7 @@ files/stack-light-base.step:
 &lt;li>
 &lt;figure>
 &lt;a target="_blank" href="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/home-assistant.png">
-&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/home-assistant_hue2400f52af2e5683bcea0d6b26c960ad_49477_300x0_resize_box_2.png" width="300" height="620">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/home-assistant_hue2400f52af2e5683bcea0d6b26c960ad_49477_300x0_resize_box_3.png" width="300" height="620">
 &lt;/a>
 &lt;figcaption>
 &lt;small>Stack light is controlled via MQTT making it easy to control from Home Assistant or any other program that can speak MQTT.&lt;/small>
@@ -345,7 +345,7 @@ files/stack-light-base.step:
 &lt;li>
 &lt;figure>
 &lt;a target="_blank" href="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/slicer.png">
-&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/slicer_hu2585a2c3a0d5ec88fd8e2ca55641b8fa_1301722_300x0_resize_box_2.png" width="300" height="233">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/slicer_hu2585a2c3a0d5ec88fd8e2ca55641b8fa_1301722_300x0_resize_box_3.png" width="300" height="233">
 &lt;/a>
 &lt;figcaption>
 &lt;small>Insert your magnets before the layer covering thee 6 cavities is printed.&lt;/small>

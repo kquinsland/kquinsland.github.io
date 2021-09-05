@@ -1,20 +1,148 @@
-<!doctype html><html lang=en><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta http-equiv=content-language content="en"><meta name=author content="karl quinsland"><meta name=description content="A quick tale of troubleshooting a bizarre PoE related problem"><meta name=keywords content="personal,blog,developer"><meta name=twitter:card content="summary"><meta name=twitter:title content="PoE at a distance caused terrible cat5 speeds"><meta name=twitter:description content="A quick tale of troubleshooting a bizarre PoE related problem"><meta property="og:title" content="PoE at a distance caused terrible cat5 speeds"><meta property="og:description" content="A quick tale of troubleshooting a bizarre PoE related problem"><meta property="og:type" content="article"><meta property="og:url" content="https://karlquinsland.com/2020/07/poe-at-a-distance-caused-terrible-cat5-speeds/"><meta property="article:section" content="posts"><meta property="article:published_time" content="2020-07-01T00:00:00+00:00"><meta property="article:modified_time" content="2020-07-01T00:00:00+00:00"><base href=https://karlquinsland.com/2020/07/poe-at-a-distance-caused-terrible-cat5-speeds/><title>PoE at a distance caused terrible cat5 speeds · karl</title><link rel=canonical href=https://karlquinsland.com/2020/07/poe-at-a-distance-caused-terrible-cat5-speeds/><link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700&display=swap" rel=stylesheet><link rel=stylesheet href=https://use.fontawesome.com/releases/v5.13.0/css/all.css integrity=sha384-Bfad6CLCknfcloXFOyFnlgtENryhrpZCe29RTifKEixXQZ38WheV+i/6YWSzkz3V crossorigin=anonymous><link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin=anonymous><link rel=stylesheet href=https://karlquinsland.com/css/coder.min.3219ef62ae52679b7a9c19043171c3cd9f523628c2a65f3ef247ee18836bc90b.css integrity="sha256-MhnvYq5SZ5t6nBkEMXHDzZ9SNijCpl8+8kfuGINryQs=" crossorigin=anonymous media=screen><link rel=stylesheet href=https://karlquinsland.com/css/coder-dark.min.e78e80fc3a585a4d1c8fc7f58623b6ff852411e38431a9cd1792877ecaa160f6.css integrity="sha256-546A/DpYWk0cj8f1hiO2/4UkEeOEManNF5KHfsqhYPY=" crossorigin=anonymous media=screen><link rel=stylesheet href=https://karlquinsland.com/css/custom.css><link rel=icon type=image/png href=https://karlquinsland.com/img/favicon-32x32.png sizes=32x32><link rel=icon type=image/png href=https://karlquinsland.com/img/favicon-16x16.png sizes=16x16><meta name=generator content="Hugo 0.83.1"></head><body class=colorscheme-auto><main class=wrapper><nav class=navigation><section class=container><a class=navigation-title href=https://karlquinsland.com/>karl</a>
+<!doctype html><html lang=en>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta http-equiv=content-language content="en">
+<meta name=author content="karl quinsland">
+<meta name=description content="A quick tale of troubleshooting a bizarre PoE related problem">
+<meta name=keywords content="personal,blog,developer">
+<meta name=twitter:card content="summary">
+<meta name=twitter:title content="PoE at a distance caused terrible cat5 speeds">
+<meta name=twitter:description content="A quick tale of troubleshooting a bizarre PoE related problem">
+<meta property="og:title" content="PoE at a distance caused terrible cat5 speeds">
+<meta property="og:description" content="A quick tale of troubleshooting a bizarre PoE related problem">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://karlquinsland.com/2020/07/poe-at-a-distance-caused-terrible-cat5-speeds/"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2020-07-01T00:00:00+00:00">
+<meta property="article:modified_time" content="2020-07-01T00:00:00+00:00">
+<base href=https://karlquinsland.com/2020/07/poe-at-a-distance-caused-terrible-cat5-speeds/>
+<title>
+PoE at a distance caused terrible cat5 speeds · karl
+</title>
+<link rel=canonical href=https://karlquinsland.com/2020/07/poe-at-a-distance-caused-terrible-cat5-speeds/>
+<link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700&display=swap" rel=stylesheet>
+<link rel=stylesheet href=https://use.fontawesome.com/releases/v5.13.0/css/all.css integrity=sha384-Bfad6CLCknfcloXFOyFnlgtENryhrpZCe29RTifKEixXQZ38WheV+i/6YWSzkz3V crossorigin=anonymous>
+<link rel=stylesheet href=https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU=" crossorigin=anonymous>
+<link rel=stylesheet href=https://karlquinsland.com/css/coder.min.3219ef62ae52679b7a9c19043171c3cd9f523628c2a65f3ef247ee18836bc90b.css integrity="sha256-MhnvYq5SZ5t6nBkEMXHDzZ9SNijCpl8+8kfuGINryQs=" crossorigin=anonymous media=screen>
+<link rel=stylesheet href=https://karlquinsland.com/css/coder-dark.min.e78e80fc3a585a4d1c8fc7f58623b6ff852411e38431a9cd1792877ecaa160f6.css integrity="sha256-546A/DpYWk0cj8f1hiO2/4UkEeOEManNF5KHfsqhYPY=" crossorigin=anonymous media=screen>
+<link rel=stylesheet href=https://karlquinsland.com/css/custom.css>
+<link rel=icon type=image/png href=https://karlquinsland.com/img/favicon-32x32.png sizes=32x32>
+<link rel=icon type=image/png href=https://karlquinsland.com/img/favicon-16x16.png sizes=16x16>
+<meta name=generator content="Hugo 0.88.1">
+</head>
+<body class=colorscheme-auto>
+<main class=wrapper>
+<nav class=navigation>
+<section class=container>
+<a class=navigation-title href=https://karlquinsland.com/>
+karl
+</a>
 <input type=checkbox id=menu-toggle>
-<label class="menu-button float-right" for=menu-toggle><i class="fas fa-bars"></i></label><ul class=navigation-list><li class=navigation-item><a class=navigation-link href=https://karlquinsland.com/posts/>Blog</a></li><li class=navigation-item><a class=navigation-link href=https://karlquinsland.com/resume/>Résumé</a></li><li class=navigation-item><a class=navigation-link href=https://karlquinsland.com/contact/>Contact</a></li></ul></section></nav><div class=content><section class="container post"><article><header><div class=post-title><h1 class=title>PoE at a distance caused terrible cat5 speeds</h1></div><div class=post-meta><div class=date><span class=posted-on><i class="fas fa-calendar"></i>
-<time datetime=2020-07-01T00:00:00Z>July 1, 2020</time></span>
-<span class=reading-time><i class="fas fa-clock"></i>
-5-minute read</span></div><div class=categories><i class="fas fa-folder"></i>
+<label class="menu-button float-right" for=menu-toggle><i class="fas fa-bars"></i></label>
+<ul class=navigation-list>
+<li class=navigation-item>
+<a class=navigation-link href=https://karlquinsland.com/posts/>Blog</a>
+</li>
+<li class=navigation-item>
+<a class=navigation-link href=https://karlquinsland.com/resume/>Résumé</a>
+</li>
+<li class=navigation-item>
+<a class=navigation-link href=https://karlquinsland.com/contact/>Contact</a>
+</li>
+</ul>
+</section>
+</nav>
+<div class=content>
+<section class="container post">
+<article>
+<header>
+<div class=post-title>
+<h1 class=title>PoE at a distance caused terrible cat5 speeds</h1>
+</div>
+<div class=post-meta>
+<div class=date>
+<span class=posted-on>
+<i class="fas fa-calendar"></i>
+<time datetime=2020-07-01T00:00:00Z>
+July 1, 2020
+</time>
+</span>
+<span class=reading-time>
+<i class="fas fa-clock"></i>
+5-minute read
+</span>
+</div>
+<div class=categories>
+<i class="fas fa-folder"></i>
 <a href=https://karlquinsland.com/categories/posts/>posts</a>
 <span class=separator>•</span>
-<a href=https://karlquinsland.com/categories/troubleshooting/>troubleshooting</a></div><div class=tags><i class="fas fa-tag"></i>
+<a href=https://karlquinsland.com/categories/troubleshooting/>troubleshooting</a></div>
+<div class=tags>
+<i class="fas fa-tag"></i>
 <a href=https://karlquinsland.com/tags/short-posts/>short-posts</a>
 <span class=separator>•</span>
 <a href=https://karlquinsland.com/tags/home-automation/>home-automation</a>
 <span class=separator>•</span>
 <a href=https://karlquinsland.com/tags/raspberry-pi/>raspberry-pi</a>
 <span class=separator>•</span>
-<a href=https://karlquinsland.com/tags/poe/>PoE</a></div></div></header><div><p>This is a quick post for made in the hopes that some poor soul in the future will find it and save themselves some time.</p><h2 id=background>Background</h2><p>I&rsquo;ve been experimenting with a few different ways to surface various home automation controls in the appropriate place and at a good time. One prototype host is deployed behind a small LCD under some cabinets in a high traffic area. This host is a raspberry pi 4 with a <a href=https://www.raspberrypi.org/products/poe-hat/>PoE hat</a>. It boots a very stripped down version of <a href=https://www.raspberrypi.org/downloads/raspberry-pi-os/>Raspberry Pi OS</a> into a web browser running in Kiosk mode.</p><p>It&rsquo;s pretty simple and does many things well. There&rsquo;s a few small issues that need to be addressed in the CAD files as well as some additional electronic improvements that should be made before I can publish the design / files.</p><p>In any event, this host has been trouble-free until recently. Simple <code>apt update</code> transfers would take <strong>DAYS</strong> to complete, simple <code>scp</code> operations to other hosts on the LAN would trickle by at tens of kB/s. The web app that the host is primarily responsible for displaying would time out or fail to completely load resulting in some &ldquo;a-for-effort&rdquo; <a href=https://www.mavenecommerce.com/2017/10/31/progressive-enhancement-vs-graceful-degradation/>graceful degradation</a>.</p><h2 id=the-facts>The Facts</h2><p>As soon as I bring up the <code>wlan0</code> interface and bring down the <code>eth0</code> interface performance is IMMEDIATELY restored. The web app is responsive and fully loads instantly, <code>scp</code> is fast like it should be on a LAN and <code>apt update</code> completes without any errors as fast as my internet connection will let it!</p><p><strong>Conclusion</strong>: The problem is <em>not</em> network related. Both the <code>eth0</code> and <code>wlan0</code> interface are on the same <code>vLan</code> so the bizarre behavior is not likely caused by a QoS policy or firewall rule.</p><p>The rPi and a few other hosts a powered via a a <a href=https://shop.poetexas.com/products/at-4-48v120w/>120 watt</a> which is in the same closet as my core switch. Two terminations and about 200 feet of cat5 cable later, you get to the rPi host on the other side of the house.</p><p>Continuity tester was used on every segment of the link to confirm the link is good. The segments of the link from the switch to the injector and to the patch-panel all use high quality pre-made cables, as does the final segment from the wall to the rPi. Shocker, they tested fine, just like the in-wall segment.</p><p>Additionally, no other host on the PoE injector is misbehaving. No other host on the PoE injector is indicating that there&rsquo;s not enough power, and the power supply feeding the injector isn&rsquo;t even warm.</p><p><strong>Conclusion</strong>: The cables are certainly fine and the PoE injector is <em>probably fine</em>.</p><p>Next, I disabled the PoE injector all together and use the USBC port on the rPi for power. It was just as performant as with WiFi! I did not expect this result, but it did certainly narrow down the possible problem areas.</p><p><strong>Conclusion</strong>: The problem is only present when the host is powered via PoE.</p><p>I was very confident that the PoE injector was not the problem, but in order to be certain, I used a second cheap PoE injector that lives on my bench power supply. Turns out, the same slow speeds manifested with the second injector, too.</p><p><strong>Conclusion</strong>: The problem is not in the network, nor is it in the cables, nor is it in the injectors.</p><p>This only leaves one candidate: the host. Unfortunately, there&rsquo;s nothing about the host that screams &ldquo;i&rsquo;m the problem!&rdquo;. The microSD card is new and very fast. There&rsquo;s nothing in the logs indicating a hardware failure. On-device performance (via non-networking benchmarks) is inline with what i&rsquo;d expect.</p><p>Here&rsquo;s two additional facts from some brief testing I did a few weeks ago. I had more or less forgotten about them and only really remembered that:</p><ul><li><p>When I tried a fresh install of Ubuntu on a fresh microSD card&mldr; same slow speeds.</p></li><li><p>The host performs <em>perfectly</em> when plugged into other networks.</p></li></ul><p>I was <em>confident</em> then, that the rPi was not the issue and that something about the network was. But I just spent 3 hours systematically testing out every component of the network and concluding that the network is fine!</p><p><strong>Conclusion</strong>: I&rsquo;m back where I started; angry and confused.</p><p>The &ldquo;ah ha!&rdquo; moment didn&rsquo;t come until i decided to try my second PoE injector <em>at the client</em>. Much to my surprise, <strong>it worked!</strong>.</p><p>After a bit more testing, I determined that the PoE HAT on the rPi is &lsquo;fine&rsquo; when the PoE source is CLOSE&mldr; which probably explains the &lsquo;works fine on other networks&rsquo; fact above.</p><p>That leaves just the &lsquo;problem is OS independent&rsquo; fact which - after thoroughly vetting every part of the network and PoE system - makes it pretty obvious that the problem must be between the rPi and the cat5 cable coming from the wall. There&rsquo;s <em>only</em> the PoE HAT between the rPi and the cat5 cable coming from the wall. I borrowed a PoE HAT from another host elsewhere on the network and the problematic rPi started behaving again. Network transfer speeds were appropriate and the web app / dashboard was performant again!</p><p><strong>Conclusion</strong>: the PoE HAT powering a home automation dashboard has failed in such a way that makes the <code>eth0</code> interface all but useless. replacing the HAT solved the problem.</p><h2 id=tldr>TL;DR:</h2><p>Several months ago, the home automation dashboard displayed on a PoE powered rPi 4 started to act up. Further investigation showed absolute crap network performance from the host to any other point on the LAN or WAN. After testing each component in isolation, the PoE HAT was the only reaming suspect. After further investigation, the failure mode is <em>not present</em> when the PoE source is <em>close</em> to the client, only when the source is far from the client.</p><p>So if you have a PoE powered rPi project out there w/ abysmal <code>eth0</code> performance, try replacing the PoE hat&mldr;</p><p>Also, if anybody knows <em>why</em> this happened, I&rsquo;d love to know.</p></div><footer></footer></article></section></div><footer class=footer><section class=container><p>¯\_(ツ)_/¯</p>©
+<a href=https://karlquinsland.com/tags/poe/>PoE</a></div>
+</div>
+</header>
+<div>
+<p>This is a quick post for made in the hopes that some poor soul in the future will find it and save themselves some time.</p>
+<h2 id=background>Background</h2>
+<p>I&rsquo;ve been experimenting with a few different ways to surface various home automation controls in the appropriate place and at a good time. One prototype host is deployed behind a small LCD under some cabinets in a high traffic area. This host is a raspberry pi 4 with a <a href=https://www.raspberrypi.org/products/poe-hat/>PoE hat</a>. It boots a very stripped down version of <a href=https://www.raspberrypi.org/downloads/raspberry-pi-os/>Raspberry Pi OS</a> into a web browser running in Kiosk mode.</p>
+<p>It&rsquo;s pretty simple and does many things well. There&rsquo;s a few small issues that need to be addressed in the CAD files as well as some additional electronic improvements that should be made before I can publish the design / files.</p>
+<p>In any event, this host has been trouble-free until recently. Simple <code>apt update</code> transfers would take <strong>DAYS</strong> to complete, simple <code>scp</code> operations to other hosts on the LAN would trickle by at tens of kB/s. The web app that the host is primarily responsible for displaying would time out or fail to completely load resulting in some &ldquo;a-for-effort&rdquo; <a href=https://www.mavenecommerce.com/2017/10/31/progressive-enhancement-vs-graceful-degradation/>graceful degradation</a>.</p>
+<h2 id=the-facts>The Facts</h2>
+<p>As soon as I bring up the <code>wlan0</code> interface and bring down the <code>eth0</code> interface performance is IMMEDIATELY restored. The web app is responsive and fully loads instantly, <code>scp</code> is fast like it should be on a LAN and <code>apt update</code> completes without any errors as fast as my internet connection will let it!</p>
+<p><strong>Conclusion</strong>: The problem is <em>not</em> network related. Both the <code>eth0</code> and <code>wlan0</code> interface are on the same <code>vLan</code> so the bizarre behavior is not likely caused by a QoS policy or firewall rule.</p>
+<p>The rPi and a few other hosts a powered via a a <a href=https://shop.poetexas.com/products/at-4-48v120w/>120 watt</a> which is in the same closet as my core switch. Two terminations and about 200 feet of cat5 cable later, you get to the rPi host on the other side of the house.</p>
+<p>Continuity tester was used on every segment of the link to confirm the link is good. The segments of the link from the switch to the injector and to the patch-panel all use high quality pre-made cables, as does the final segment from the wall to the rPi. Shocker, they tested fine, just like the in-wall segment.</p>
+<p>Additionally, no other host on the PoE injector is misbehaving. No other host on the PoE injector is indicating that there&rsquo;s not enough power, and the power supply feeding the injector isn&rsquo;t even warm.</p>
+<p><strong>Conclusion</strong>: The cables are certainly fine and the PoE injector is <em>probably fine</em>.</p>
+<p>Next, I disabled the PoE injector all together and use the USBC port on the rPi for power. It was just as performant as with WiFi! I did not expect this result, but it did certainly narrow down the possible problem areas.</p>
+<p><strong>Conclusion</strong>: The problem is only present when the host is powered via PoE.</p>
+<p>I was very confident that the PoE injector was not the problem, but in order to be certain, I used a second cheap PoE injector that lives on my bench power supply. Turns out, the same slow speeds manifested with the second injector, too.</p>
+<p><strong>Conclusion</strong>: The problem is not in the network, nor is it in the cables, nor is it in the injectors.</p>
+<p>This only leaves one candidate: the host. Unfortunately, there&rsquo;s nothing about the host that screams &ldquo;i&rsquo;m the problem!&rdquo;. The microSD card is new and very fast. There&rsquo;s nothing in the logs indicating a hardware failure. On-device performance (via non-networking benchmarks) is inline with what i&rsquo;d expect.</p>
+<p>Here&rsquo;s two additional facts from some brief testing I did a few weeks ago. I had more or less forgotten about them and only really remembered that:</p>
+<ul>
+<li>
+<p>When I tried a fresh install of Ubuntu on a fresh microSD card&mldr; same slow speeds.</p>
+</li>
+<li>
+<p>The host performs <em>perfectly</em> when plugged into other networks.</p>
+</li>
+</ul>
+<p>I was <em>confident</em> then, that the rPi was not the issue and that something about the network was. But I just spent 3 hours systematically testing out every component of the network and concluding that the network is fine!</p>
+<p><strong>Conclusion</strong>: I&rsquo;m back where I started; angry and confused.</p>
+<p>The &ldquo;ah ha!&rdquo; moment didn&rsquo;t come until i decided to try my second PoE injector <em>at the client</em>. Much to my surprise, <strong>it worked!</strong>.</p>
+<p>After a bit more testing, I determined that the PoE HAT on the rPi is &lsquo;fine&rsquo; when the PoE source is CLOSE&mldr; which probably explains the &lsquo;works fine on other networks&rsquo; fact above.</p>
+<p>That leaves just the &lsquo;problem is OS independent&rsquo; fact which - after thoroughly vetting every part of the network and PoE system - makes it pretty obvious that the problem must be between the rPi and the cat5 cable coming from the wall. There&rsquo;s <em>only</em> the PoE HAT between the rPi and the cat5 cable coming from the wall. I borrowed a PoE HAT from another host elsewhere on the network and the problematic rPi started behaving again. Network transfer speeds were appropriate and the web app / dashboard was performant again!</p>
+<p><strong>Conclusion</strong>: the PoE HAT powering a home automation dashboard has failed in such a way that makes the <code>eth0</code> interface all but useless. replacing the HAT solved the problem.</p>
+<h2 id=tldr>TL;DR:</h2>
+<p>Several months ago, the home automation dashboard displayed on a PoE powered rPi 4 started to act up. Further investigation showed absolute crap network performance from the host to any other point on the LAN or WAN. After testing each component in isolation, the PoE HAT was the only reaming suspect. After further investigation, the failure mode is <em>not present</em> when the PoE source is <em>close</em> to the client, only when the source is far from the client.</p>
+<p>So if you have a PoE powered rPi project out there w/ abysmal <code>eth0</code> performance, try replacing the PoE hat&mldr;</p>
+<p>Also, if anybody knows <em>why</em> this happened, I&rsquo;d love to know.</p>
+</div>
+<footer>
+</footer>
+</article>
+</section>
+</div>
+<footer class=footer>
+<section class=container>
+<p>¯\_(ツ)_/¯</p>
+©
 2021
 karl quinsland
 ·
-Powered by <a href=https://gohugo.io/>Hugo</a> & <a href=https://github.com/luizdepra/hugo-coder/>Coder</a>.</section><script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(a,e,f,g,b,c,d){a.GoogleAnalyticsObject=b,a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},a[b].l=1*new Date,c=e.createElement(f),d=e.getElementsByTagName(f)[0],c.async=1,c.src=g,d.parentNode.insertBefore(c,d)}(window,document,'script','https://www.google-analytics.com/analytics.js','ga'),ga('create','UA-173167356-1','auto'),ga('send','pageview'))</script></footer></main><script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(a,e,f,g,b,c,d){a.GoogleAnalyticsObject=b,a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},a[b].l=1*new Date,c=e.createElement(f),d=e.getElementsByTagName(f)[0],c.async=1,c.src=g,d.parentNode.insertBefore(c,d)}(window,document,'script','https://www.google-analytics.com/analytics.js','ga'),ga('create','UA-173167356-1','auto'),ga('send','pageview'))</script></body></html>
+Powered by <a href=https://gohugo.io/>Hugo</a> & <a href=https://github.com/luizdepra/hugo-coder/>Coder</a>.
+</section>
+<script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(a,e,f,g,b,c,d){a.GoogleAnalyticsObject=b,a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},a[b].l=1*new Date,c=e.createElement(f),d=e.getElementsByTagName(f)[0],c.async=1,c.src=g,d.parentNode.insertBefore(c,d)}(window,document,'script','https://www.google-analytics.com/analytics.js','ga'),ga('create','UA-173167356-1','auto'),ga('send','pageview'))</script>
+</footer>
+</main>
+<script type=application/javascript>var doNotTrack=!1;doNotTrack||(function(a,e,f,g,b,c,d){a.GoogleAnalyticsObject=b,a[b]=a[b]||function(){(a[b].q=a[b].q||[]).push(arguments)},a[b].l=1*new Date,c=e.createElement(f),d=e.getElementsByTagName(f)[0],c.async=1,c.src=g,d.parentNode.insertBefore(c,d)}(window,document,'script','https://www.google-analytics.com/analytics.js','ga'),ga('create','UA-173167356-1','auto'),ga('send','pageview'))</script>
+</body>
+</html>

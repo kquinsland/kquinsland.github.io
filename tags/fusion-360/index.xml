@@ -644,7 +644,7 @@ models/plate.stl:
 &lt;li>
 &lt;figure>
 &lt;a target="_blank" href="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/thermals/01.removed-side-rear.png">
-&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/thermals/01.removed-side-rear_hue7f3e3fe323889e9523fde0d0b16fc09_27411_300x0_resize_box_2.png" width="300" height="400">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/thermals/01.removed-side-rear_hue7f3e3fe323889e9523fde0d0b16fc09_27411_300x0_resize_box_3.png" width="300" height="400">
 &lt;/a>
 &lt;figcaption>
 &lt;small>HASP removed from electrical box, heat from the AC-DC converter radiating through the enclosure&lt;/small>
@@ -654,7 +654,7 @@ models/plate.stl:
 &lt;li>
 &lt;figure>
 &lt;a target="_blank" href="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/thermals/02.removed-top-side.png">
-&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/thermals/02.removed-top-side_hu7f7deb0d48ada52e65cf9d07af4f2d7b_31528_300x0_resize_box_2.png" width="300" height="400">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/thermals/02.removed-top-side_hu7f7deb0d48ada52e65cf9d07af4f2d7b_31528_300x0_resize_box_3.png" width="300" height="400">
 &lt;/a>
 &lt;figcaption>
 &lt;small>similar to first picture, parts inside enclosure radiate heat through the enclosure, bringing it to about 20 degrees above ambient temperature&lt;/small>
@@ -664,7 +664,7 @@ models/plate.stl:
 &lt;li>
 &lt;figure>
 &lt;a target="_blank" href="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/thermals/03.removed-rear-side.png">
-&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/thermals/03.removed-rear-side_huaf7d1f0412acd7326b9fbe2292beafc4_27688_300x0_resize_box_2.png" width="300" height="400">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/thermals/03.removed-rear-side_huaf7d1f0412acd7326b9fbe2292beafc4_27688_300x0_resize_box_3.png" width="300" height="400">
 &lt;/a>
 &lt;figcaption>
 &lt;small>there are clear hot-spots on the enclosure that match up with the location of the ESP and the AC-DC converter&lt;/small>
@@ -674,7 +674,7 @@ models/plate.stl:
 &lt;li>
 &lt;figure>
 &lt;a target="_blank" href="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/thermals/04.front-leds-on.png">
-&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/thermals/04.front-leds-on_hu2ffecc7e561aeb7b1635133e11faf738_23402_300x0_resize_box_2.png" width="300" height="400">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/thermals/04.front-leds-on_hu2ffecc7e561aeb7b1635133e11faf738_23402_300x0_resize_box_3.png" width="300" height="400">
 &lt;/a>
 &lt;figcaption>
 &lt;small>Less heat is radiated through the front of the HASP; the LCD backlight and embedded LEDs are clearly the warmest components&lt;/small>
@@ -684,7 +684,7 @@ models/plate.stl:
 &lt;li>
 &lt;figure>
 &lt;a target="_blank" href="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/thermals/05.internals.png">
-&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/thermals/05.internals_huce2a4f8e97e3ddbdf2b0b78056c76aa4_20396_300x0_resize_box_2.png" width="300" height="400">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/10/enhanced-home-assistant-switch-plate-hasp/images/thermals/05.internals_huce2a4f8e97e3ddbdf2b0b78056c76aa4_20396_300x0_resize_box_3.png" width="300" height="400">
 &lt;/a>
 &lt;figcaption>
 &lt;small>PNP Transistor is clearly warmest internal component, ESP8266 cooler than expected&lt;/small>
@@ -905,7 +905,7 @@ I suggest waiting until the end to glue on the optional roof and waiting until j
 &lt;p>Setting up and using ESPHome is outside the scope of this post but there are several &lt;a href="https://esphome.io/guides/getting_started_hassio.html">good guides&lt;/a> out there. Once you have that set up, &lt;a href="https://esphome.io/custom/custom_component.html">include&lt;/a> the &lt;code>ws3.h&lt;/code> file and set up your custom sensor as shown below. A working example and more detail is over on the
 &lt;a href="https://github.com/kquinsland/ws3-to-esphome-bridge/">github repo&lt;/a>.&lt;/p>
 &lt;p>It&amp;rsquo;ll look like this:&lt;/p>
-&lt;div class="highlight">&lt;pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="font-weight:bold">uart&lt;/span>:
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="font-weight:bold">uart&lt;/span>:
 &lt;span style="font-weight:bold">id&lt;/span>: uart_bus
 &lt;span style="font-style:italic"># At this time, ESP does not Transmit anything to the WS3&lt;/span>
 &lt;span style="font-weight:bold">tx_pin&lt;/span>: GPIO16
@@ -934,7 +934,7 @@ I suggest waiting until the end to glue on the optional roof and waiting until j
 &lt;/span>&lt;span style="font-style:italic"> ws3-&amp;gt;particles_100um,
 &lt;/span>&lt;span style="font-style:italic"> };&lt;/span>
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>With that, check the logs from your instance of ESPHome and you should see something like this:&lt;/p>
-&lt;div class="highlight">&lt;pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-fallback" data-lang="fallback">[D][ws3:157]: pkt_read_ok!
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-fallback" data-lang="fallback">[D][ws3:157]: pkt_read_ok!
 [D][WS3:410]: VALID! Packet: [c000s000g000t093r000p000h35b09880,050,080,088,502,056,065,*18
 ], Checksum: [18] chksum: [18]
 [E][WS3:342]: Validating: [c000s000g000t093r000p000h35b09880,050,080,088,502,056,065]

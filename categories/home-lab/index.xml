@@ -1,4 +1,144 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>home-lab on karl</title><link>https://karlquinsland.com/categories/home-lab/</link><description>Recent content in home-lab on karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 28 Feb 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/categories/home-lab/index.xml" rel="self" type="application/rss+xml"/><item><title>PoE powered Stack Light</title><link>https://karlquinsland.com/2021/02/poe-powered-stack-light/</link><pubDate>Sun, 28 Feb 2021 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/2021/02/poe-powered-stack-light/</guid><description>&lt;figure >
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>home-lab on karl</title><link>https://karlquinsland.com/categories/home-lab/</link><description>Recent content in home-lab on karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 05 Sep 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/categories/home-lab/index.xml" rel="self" type="application/rss+xml"/><item><title>Adding an APC UPS to Home Assistant energy dashboard</title><link>https://karlquinsland.com/2021/09/adding-an-apc-ups-to-home-assistant-energy-dashboard/</link><pubDate>Sun, 05 Sep 2021 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/2021/09/adding-an-apc-ups-to-home-assistant-energy-dashboard/</guid><description>&lt;p>This is another quick &amp;ldquo;here&amp;rsquo;s how I did it, hope this help&amp;rdquo; post.&lt;/p>
+&lt;hr>
+&lt;p>In preparation for the inevitable grid brownouts that summer 2021 would bring, I installed a rather beefy UPS for my home network / lab. After some browsing, I discovered a local eWaste liquidator with a really good deal on some second-hand APC UPSs.&lt;/p>
+&lt;p>A few hundred dollars and about 150 lbs later, the UPS was installed in the server rack. Despite being a newer generation, the software on the UPS has a &lt;em>&lt;strong>TON&lt;/strong>&lt;/em> of similarities to the &lt;a href="https://karlquinsland.com/2020/12/monitoring-apc-ap7900-switched-pdu-with-prometheus-and-grafana/">older style of PDU that I installed in my lab &lt;/a> a while back. This made it relatively straightforward to use the same
+pattern to start getting UPS metrics into Grafana as well.&lt;/p>
+&lt;p>After getting the basic monitoring up and running, I started to draft this post to serve as an &amp;lsquo;update&amp;rsquo; to the APC9700 post. Life got in the way and the post sat in the drafts branch where it was completely forgotten about&amp;hellip;. until &lt;a href="https://www.home-assistant.io/blog/2021/08/04/release-20218/">Home Assistant released their new Energy dashboard&lt;/a>. Now that HA could show the energy consumption of individual devices right next to the cumulative consumption and production data, the post was worth finishing and expanding on.&lt;/p>
+&lt;p>The configuration that I was &lt;em>going&lt;/em> to publish is &lt;a href="#current-and-voltage-independently">below&lt;/a> but after finding &lt;a href="https://old.reddit.com/r/homeassistant/comments/pi3pv2/how_to_use_an_apc_ups_as_an_energy_dashboard/hbpqzr6/">this&lt;/a> comment by &lt;a href="https://old.reddit.com/user/Laxarus">Laxarus&lt;/a> on &lt;a href="https://old.reddit.com/user/Navydevildoc">Navydevildoc&lt;/a>&amp;rsquo;s &lt;a href="https://old.reddit.com/r/homeassistant/comments/pi3pv2/how_to_use_an_apc_ups_as_an_energy_dashboard/">reddit post&lt;/a>, I&amp;rsquo;ve got a revised and simpler configuration to share!&lt;/p>
+&lt;h2 id="long-term-statistics-in-home-assistant">Long Term Statistics in Home Assistant&lt;/h2>
+&lt;p>Before diving into the configuration, a little bit of context. In preparation for the energy sub system, the Home Assistant developers have been working on a &amp;lsquo;&lt;a href="https://developers.home-assistant.io/docs/core/entity/sensor/#long-term-statistics">long term statistics&lt;/a>&amp;rsquo; (LTS) framework. The LTS framework is meant to give HA some improved speed and capabilities when dealing with a lot of data! The energy subsystem is the first &amp;lsquo;consumer&amp;rsquo; of the LTS framework.&lt;/p>
+&lt;p>Home Assistant will look for two &amp;lsquo;properties&amp;rsquo; on a given sensor to determine if that sensor will work with the LTS framework.
+For a sensor/entity to &amp;lsquo;work&amp;rsquo; with the long term stats system it must:&lt;/p>
+&lt;ul>
+&lt;li>have a property called &lt;code>device_class&lt;/code> with a value of &lt;code>energy&lt;/code>, &lt;code>gas&lt;/code>, or &lt;code>monetary&lt;/code>&lt;/li>
+&lt;li>have a property called &lt;code>state_class&lt;/code> with a value of either &lt;code>measurement&lt;/code> or &lt;code>total_increasing&lt;/code>&lt;/li>
+&lt;/ul>
+&lt;p>In testing, I was &lt;em>not&lt;/em> able to get a sensor with &lt;code>state_class: measurement&lt;/code> and &lt;code>device_class: energy&lt;/code> to &amp;lsquo;work&amp;rsquo; with the energy sub system. Fortunately, this does not apply with the concise configuration &lt;a href="#a-single-oid-for-power-consumption">below&lt;/a>!&lt;/p>
+&lt;p>As the LTS framework is still new, many platforms - including the SNMP platform - do not support the required properties:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-fallback" data-lang="fallback">Invalid config for [sensor.snmp]: [state_class] is an invalid option for [sensor.snmp]. Check: sensor.snmp-&amp;gt;state_class.
+Invalid config for [sensor.snmp]: [device_class] is an invalid option for [sensor.snmp]. Check: sensor.snmp-&amp;gt;device_class.
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>The &lt;code>template&lt;/code> platform &lt;em>has&lt;/em> been updated to work with the &lt;code>device_class&lt;/code> or &lt;code>state_class&lt;/code> properties though.
+So that&amp;rsquo;s the technique to use here; a &lt;code>template&lt;/code> sensor with the correct &lt;code>{device,state}_class&lt;/code> properties set will wrap the snmp sensor.&lt;/p>
+&lt;p>Hopefully a future release of HA will include &lt;code>{device,state}_class&lt;/code> support for the &lt;code>snmp&lt;/code> platform; the &lt;code>template&lt;/code> sensors in the configuration snips below won&amp;rsquo;t be needed!&lt;/p>
+&lt;h2 id="configure-home-assistant">Configure Home Assistant&lt;/h2>
+&lt;p>I have broken my &lt;code>configuration.yaml&lt;/code> up to make things easier to manage. Almost all entity/device/template/sensor..etc configuration is done through files placed in the &lt;code>devices/**/*&lt;/code> directory:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-shell" data-lang="shell">❯ cat configuration.yaml | grep -E &lt;span style="font-style:italic">&amp;#39;devices/sensor|template/&amp;#39;&lt;/span>
+sensor: !include_dir_merge_list devices/sensor/
+template: !include_dir_merge_list devices/template/
+&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="a-single-oid-for-power-consumption">A single OID for power consumption&lt;/h3>
+&lt;p>Thanks again to &lt;a href="https://old.reddit.com/user/Laxarus">Laxarus&lt;/a> for the &lt;a href="https://old.reddit.com/r/homeassistant/comments/pi3pv2/how_to_use_an_apc_ups_as_an_energy_dashboard/hbpqzr6/">tip&lt;/a> about the &lt;code>upsHighPrecOutputEnergyUsage&lt;/code> OID!&lt;/p>
+&lt;p>First, create the &amp;lsquo;raw&amp;rsquo; sensor using the &lt;code>snmp&lt;/code> platform:&lt;/p>
+&lt;p>&lt;code>devices/sensor/snmp.yaml&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-yaml" data-lang="yaml">- &lt;span style="font-weight:bold">platform&lt;/span>: snmp
+&lt;span style="font-weight:bold">name&lt;/span>: &lt;span style="font-style:italic">&amp;#34;UPS Energy (raw)&amp;#34;&lt;/span>
+&lt;span style="font-weight:bold">host&lt;/span>: 192.168.1.1
+&lt;span style="font-style:italic"># The current in tenths of amperes drawn by the load on the UPS.&lt;/span>
+&lt;span style="font-style:italic"># Contained in Module(s): PowerNet-MIB&lt;/span>
+&lt;span style="font-style:italic">##&lt;/span>
+&lt;span style="font-weight:bold">baseoid&lt;/span>: .1.3.6.1.4.1.318.1.1.1.4.3.6.0
+&lt;span style="font-style:italic"># Determines whether the sensor should start and keep working even if the SNMP host is unreachable or not responding.&lt;/span>
+&lt;span style="font-style:italic"># This allows the sensor to be initialized properly even if, for example, your printer is not on when you start Home Assistant.&lt;/span>
+&lt;span style="font-weight:bold">accept_errors&lt;/span>: &lt;span style="font-weight:bold">true&lt;/span>
+&lt;span style="font-style:italic"># UPS reports in tens of kWh so we&amp;#39;ll need to divide by 10 to get kWh; HA only accepts kWh or Wh for sensors&lt;/span>
+&lt;span style="font-style:italic"># that will &amp;#39;work&amp;#39; on the energy dashboard&lt;/span>
+&lt;span style="font-weight:bold">unit_of_measurement&lt;/span>: kWh
+&lt;span style="font-weight:bold">value_template&lt;/span>: &lt;span style="font-style:italic">&amp;#34;{{ ((value | int) / 10) | float}}&amp;#34;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Then, wrap the &lt;code>snmp&lt;/code> sensor with the necessary properties:&lt;/p>
+&lt;p>&lt;code>devices/template/ups_energy.yaml&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-yaml" data-lang="yaml">- &lt;span style="font-weight:bold">sensor&lt;/span>:
+- &lt;span style="font-weight:bold">name&lt;/span>: &lt;span style="font-style:italic">&amp;#34;UPS Energy&amp;#34;&lt;/span>
+&lt;span style="font-style:italic"># Unique ID is required for mgmt through the web UI&lt;/span>
+&lt;span style="font-weight:bold">unique_id&lt;/span>: tmpl-ups-energy
+&lt;span style="font-weight:bold">icon&lt;/span>: mdi:lightning-bolt
+&lt;span style="font-style:italic"># Required for Energy dashboard&lt;/span>
+&lt;span style="font-weight:bold">state_class&lt;/span>: total_increasing
+&lt;span style="font-weight:bold">device_class&lt;/span>: energy
+&lt;span style="font-weight:bold">unit_of_measurement&lt;/span>: kWh
+&lt;span style="font-weight:bold">state&lt;/span>: &lt;span style="font-style:italic">&amp;#34;{{ (states(&amp;#39;sensor.ups_energy_raw&amp;#39;) | float) }}&amp;#34;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Restart Home Assistant and you should now be able to add &lt;code>sensor.ups_energy&lt;/code> to the list of individual devices on your Energy Dashboard :D.&lt;/p>
+&lt;h3 id="current-and-voltage-independently">Current and Voltage independently&lt;/h3>
+&lt;p>After sorting through the &lt;em>massive&lt;/em> MIB file that APC publishes; I only found ways to measure the voltage and current via SNMP. I assumed that APC meant for you to calculate the power use on your own from the voltage and current.&lt;/p>
+&lt;p>As it turns out, APC has a &lt;code>upsHighPrecOutputEnergyUsage&lt;/code> field which reports: &lt;code>The output energy usage of the UPS in hundredths of kWh.&lt;/code> If your APC device publishes a value on the OID &lt;code>.1.3.6.1.4.1.318.1.1.1.4.3.6.0&lt;/code> then you can skip the configuration below; use the more concise configuration &lt;a href="#a-single-oid-for-power-consumption">above&lt;/a>. If your devices &lt;em>&lt;strong>does not&lt;/strong>&lt;/em> publish the cumulative energy consumption, it can still be calculated manually.&lt;/p>
+&lt;p>The manual approach below is a lot like the concise approach above; uses two &lt;code>snmp&lt;/code> sensors to collect the voltage and current from the UPS and then wrap everything in a LTS-compatible &lt;code>template&lt;/code> sensor to get the data to show up on the energy dashboard.&lt;/p>
+&lt;p>&lt;code>devices/sensor/snmp.yaml&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="font-style:italic"># Unfortunately, there is no direct &amp;#39;watt&amp;#39; field. We need to calculate this on our own&lt;/span>
+&lt;span style="font-style:italic"># P = IV so if we can get the current and voltage, we can figure out the power&lt;/span>
+&lt;span style="font-style:italic">##&lt;/span>
+- &lt;span style="font-weight:bold">platform&lt;/span>: snmp
+&lt;span style="font-weight:bold">name&lt;/span>: &lt;span style="font-style:italic">&amp;#34;UPS Output Current&amp;#34;&lt;/span>
+&lt;span style="font-weight:bold">host&lt;/span>: 192.168.1.1
+&lt;span style="font-style:italic"># The current in tenths of amperes drawn by the load on the UPS.&lt;/span>
+&lt;span style="font-style:italic"># Contained in Module(s): PowerNet-MIB&lt;/span>
+&lt;span style="font-style:italic">##&lt;/span>
+&lt;span style="font-weight:bold">baseoid&lt;/span>: .1.3.6.1.4.1.318.1.1.1.4.3.4.0
+&lt;span style="font-style:italic"># Determines whether the sensor should start and keep working even if the SNMP host is unreachable or not responding.&lt;/span>
+&lt;span style="font-style:italic"># This allows the sensor to be initialized properly even if, for example, your printer is not on when you start Home Assistant.&lt;/span>
+&lt;span style="font-weight:bold">accept_errors&lt;/span>: &lt;span style="font-weight:bold">true&lt;/span>
+&lt;span style="font-style:italic"># For reasons that I don&amp;#39;t understand... HA does not like it when i specify &amp;#39;device_class&amp;#39; :/&lt;/span>
+&lt;span style="font-style:italic">#device_class: current&lt;/span>
+&lt;span style="font-weight:bold">unit_of_measurement&lt;/span>: &lt;span style="font-style:italic">&amp;#34;A&amp;#34;&lt;/span>
+&lt;span style="font-style:italic"># Because the number is in 10ths of amps, we need to shift the decimal by 1 place&lt;/span>
+&lt;span style="font-style:italic"># 43 becomes 4.3&lt;/span>
+&lt;span style="font-style:italic">##&lt;/span>
+&lt;span style="font-weight:bold">value_template&lt;/span>: &lt;span style="font-style:italic">&amp;#34;{{((value | int) / 10) | float}}&amp;#34;&lt;/span>
+- &lt;span style="font-weight:bold">platform&lt;/span>: snmp
+&lt;span style="font-weight:bold">name&lt;/span>: &lt;span style="font-style:italic">&amp;#34;UPS Output Voltage&amp;#34;&lt;/span>
+&lt;span style="font-weight:bold">host&lt;/span>: 192.168.1.1
+&lt;span style="font-style:italic">#The output voltage of the UPS system in tenths of VAC.&lt;/span>
+&lt;span style="font-style:italic"># Contained in Module(s): PowerNet-MIB&lt;/span>
+&lt;span style="font-style:italic">##&lt;/span>
+&lt;span style="font-weight:bold">baseoid&lt;/span>: .1.3.6.1.4.1.318.1.1.1.4.3.1.0
+&lt;span style="font-style:italic"># Determines whether the sensor should start and keep working even if the SNMP host is unreachable or not responding.&lt;/span>
+&lt;span style="font-style:italic"># This allows the sensor to be initialized properly even if, for example, your printer is not on when you start Home Assistant.&lt;/span>
+&lt;span style="font-weight:bold">accept_errors&lt;/span>: &lt;span style="font-weight:bold">true&lt;/span>
+&lt;span style="font-weight:bold">unit_of_measurement&lt;/span>: &lt;span style="font-style:italic">&amp;#34;V&amp;#34;&lt;/span>
+&lt;span style="font-style:italic"># Because the number is in 10ths of volts, we need to shift the decimal by 1 place&lt;/span>
+&lt;span style="font-style:italic"># 1211 becomes 121.1&lt;/span>
+&lt;span style="font-style:italic">##&lt;/span>
+&lt;span style="font-weight:bold">value_template&lt;/span>: &lt;span style="font-style:italic">&amp;#34;{{((value | int) / 10) | float}}&amp;#34;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>devices/template/ups_energy.yaml&lt;/code>:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="font-style:italic"># The docs around the long term stats support for a sensor are not super clear and seem to be a bit contradictory.&lt;/span>
+&lt;span style="font-style:italic"># Both the power and current sensors are &amp;#39;point in time&amp;#39; sensors and DO NOT represent an &amp;#39;always increasing&amp;#39; value.&lt;/span>
+&lt;span style="font-style:italic"># The docs seem to imply that HA will do the integration for you if the sensor has `state_class` set to `measurement` or&lt;/span>
+&lt;span style="font-style:italic"># `total_increasing`. But elsewhere in the docs, you have this:&lt;/span>
+&lt;span style="font-style:italic"># Home Assistant tracks the min, max and mean value during the statistics period.&lt;/span>
+&lt;span style="font-style:italic"># The state_class property must be set to measurement, and the device_class must not be either of `energy`, `gas`, or `monetary`.&lt;/span>
+&lt;span style="font-style:italic">#&lt;/span>
+&lt;span style="font-style:italic"># In testing, I was only able to get sensors that had `total_increasing` and `energy` set to show up / work with the energy dashboard. It looks like a `measurement` sensor _could_ be used... but only if the `last_reset` property can be set to 0... and currently this can&amp;#39;t be done via YAML.&lt;/span>
+&lt;span style="font-style:italic">#&lt;/span>
+&lt;span style="font-style:italic"># So we lie about the sensor and tell HA that it&amp;#39;s a `total_increasing` sensor and we just hope that the value never drops more than 10% which appears to be the signal to HA that the meter has been reset :/&lt;/span>
+&lt;span style="font-style:italic">#&lt;/span>
+&lt;span style="font-style:italic"># https://developers.home-assistant.io/docs/core/entity/sensor/#long-term-statistics&lt;/span>
+&lt;span style="font-style:italic"># https://www.home-assistant.io/integrations/sensor/&lt;/span>
+&lt;span style="font-style:italic">##&lt;/span>
+- &lt;span style="font-weight:bold">sensor&lt;/span>:
+- &lt;span style="font-weight:bold">name&lt;/span>: &lt;span style="font-style:italic">&amp;#34;UPS Power&amp;#34;&lt;/span>
+&lt;span style="font-style:italic"># Unique ID is required for mgmt through the web UI&lt;/span>
+&lt;span style="font-weight:bold">unique_id&lt;/span>: tmpl-UPS-power-use
+&lt;span style="font-weight:bold">icon&lt;/span>: mdi:lightning-bolt
+&lt;span style="font-style:italic"># This sensor records the instantaneous power load on the UPS... it is a measurement at that point in time&lt;/span>
+&lt;span style="font-weight:bold">state_class&lt;/span>: measurement
+&lt;span style="font-weight:bold">device_class&lt;/span>: power
+&lt;span style="font-weight:bold">unit_of_measurement&lt;/span>: W
+&lt;span style="font-weight:bold">state&lt;/span>: &amp;gt;&lt;span style="font-style:italic">
+&lt;/span>&lt;span style="font-style:italic"> {% set current = states(&amp;#39;sensor.UPS_output_current&amp;#39;) | float %}
+&lt;/span>&lt;span style="font-style:italic"> {% set voltage = states(&amp;#39;sensor.UPS_output_voltage&amp;#39;) | float %}
+&lt;/span>&lt;span style="font-style:italic"> {{ (current * voltage) | round (2) }}&lt;/span>
+- &lt;span style="font-weight:bold">sensor&lt;/span>:
+- &lt;span style="font-weight:bold">name&lt;/span>: &lt;span style="font-style:italic">&amp;#34;UPS Energy&amp;#34;&lt;/span>
+&lt;span style="font-style:italic"># Unique ID is required for mgmt through the web UI&lt;/span>
+&lt;span style="font-weight:bold">unique_id&lt;/span>: tmpl-UPS-energy
+&lt;span style="font-weight:bold">icon&lt;/span>: mdi:lightning-bolt
+&lt;span style="font-style:italic"># Lie to HA about the type of sensor so we get values in the dashboard.&lt;/span>
+&lt;span style="font-weight:bold">state_class&lt;/span>: total_increasing
+&lt;span style="font-weight:bold">device_class&lt;/span>: energy
+&lt;span style="font-style:italic"># Since we are pretending to integrate over time, we are in Wh now.&lt;/span>
+&lt;span style="font-style:italic"># Good thing, too... because the energy dashboard WILL NOT use any sensor that does not report in kWh or Wh&lt;/span>
+&lt;span style="font-weight:bold">unit_of_measurement&lt;/span>: Wh
+&lt;span style="font-weight:bold">state&lt;/span>: &lt;span style="font-style:italic">&amp;#34;{{ (states(&amp;#39;sensor.UPS_power&amp;#39;) | float) }}&amp;#34;&lt;/span>
+&lt;span style="font-style:italic"># or, for kWh&lt;/span>
+&lt;span style="font-style:italic">#state: &amp;#34;{{ (states(&amp;#39;sensor.UPS_power&amp;#39;) | float)/1000 }}&amp;#34;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>PoE powered Stack Light</title><link>https://karlquinsland.com/2021/02/poe-powered-stack-light/</link><pubDate>Sun, 28 Feb 2021 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/2021/02/poe-powered-stack-light/</guid><description>&lt;figure >
 &lt;img src="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/complete/02_all_on.jpg" alt="Picture showing assembled light attached to enclosure from the front. All 5 lights are lit." />
 &lt;figcaption>
 &lt;p>
@@ -195,7 +335,7 @@ Translucent white lenses for much less ambiguity than the stack lights with colo
 &lt;li>
 &lt;figure>
 &lt;a target="_blank" href="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/assemble/base_mounting_options.png">
-&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/assemble/base_mounting_options_hu0255bedc4865d595b96a27a21ce41057_6482507_300x0_resize_box_2.png" width="300" height="219">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/assemble/base_mounting_options_hu0255bedc4865d595b96a27a21ce41057_6482507_300x0_resize_box_3.png" width="300" height="219">
 &lt;/a>
 &lt;figcaption>
 &lt;small>I wasn&amp;#39;t sure where I&amp;#39;d want to install this, so there are a few options for attaching the base to surfaces.&lt;/small>
@@ -305,7 +445,7 @@ files/stack-light-base.step:
 &lt;li>
 &lt;figure>
 &lt;a target="_blank" href="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/home-assistant.png">
-&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/home-assistant_hue2400f52af2e5683bcea0d6b26c960ad_49477_300x0_resize_box_2.png" width="300" height="620">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/home-assistant_hue2400f52af2e5683bcea0d6b26c960ad_49477_300x0_resize_box_3.png" width="300" height="620">
 &lt;/a>
 &lt;figcaption>
 &lt;small>Stack light is controlled via MQTT making it easy to control from Home Assistant or any other program that can speak MQTT.&lt;/small>
@@ -345,7 +485,7 @@ files/stack-light-base.step:
 &lt;li>
 &lt;figure>
 &lt;a target="_blank" href="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/slicer.png">
-&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/slicer_hu2585a2c3a0d5ec88fd8e2ca55641b8fa_1301722_300x0_resize_box_2.png" width="300" height="233">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2021/02/poe-powered-stack-light/images/slicer_hu2585a2c3a0d5ec88fd8e2ca55641b8fa_1301722_300x0_resize_box_3.png" width="300" height="233">
 &lt;/a>
 &lt;figcaption>
 &lt;small>Insert your magnets before the layer covering thee 6 cavities is printed.&lt;/small>
@@ -381,7 +521,7 @@ files/stack-light-base.step:
 &lt;p>Unfortunately, there&amp;rsquo;s no way around it; a map between the numerical paths and the &amp;lsquo;human friendly&amp;rsquo; names must be built so the prometheus exporter knows what to expose and how to categorize it.&lt;/p>
 &lt;p>The exporter comes with &lt;a href="https://github.com/prometheus/snmp_exporter/tree/master/generator">generator&lt;/a> to make this process a bit easier, but the process of obtaining MIB files isn&amp;rsquo;t quite so straightforward.
 I hit a few snags and below is an updated &lt;code>Dockerfile&lt;/code> that gave me a &lt;em>working&lt;/em> generator tool:&lt;/p>
-&lt;div class="highlight">&lt;pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-Dockerfile" data-lang="Dockerfile">&lt;span style="">
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-Dockerfile" data-lang="Dockerfile">&lt;span style="">
 &lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-weight:bold">FROM&lt;/span>&lt;span style="font-style:italic"> golang:latest&lt;/span>&lt;span style="">
 &lt;/span>&lt;span style="">
 &lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic">##&lt;/span>&lt;span style="">
@@ -463,7 +603,7 @@ I hit a few snags and below is an updated &lt;code>Dockerfile&lt;/code> that gav
 &lt;li>Percentage of used/remaining capacity&lt;/li>
 &lt;/ul>
 &lt;p>This makes for a simple generator config:&lt;/p>
-&lt;div class="highlight">&lt;pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="font-style:italic"># See: https://github.com/prometheus/snmp_exporter/tree/master/generator&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="font-style:italic"># See: https://github.com/prometheus/snmp_exporter/tree/master/generator&lt;/span>
 &lt;span style="font-style:italic">##&lt;/span>
 &lt;span style="font-weight:bold">modules&lt;/span>:
 &lt;span style="font-style:italic"># APC/Schneider UPS Network Management Cards&lt;/span>
@@ -533,7 +673,7 @@ I hit a few snags and below is an updated &lt;code>Dockerfile&lt;/code> that gav
 &lt;span style="font-weight:bold">ignore&lt;/span>: &lt;span style="font-weight:bold">true&lt;/span>
 &lt;span style="font-weight:bold">type&lt;/span>: EnumAsInfo
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>The resulting &lt;code>snmp.yml&lt;/code> is quite brief:&lt;/p>
-&lt;div class="highlight">&lt;pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="font-style:italic"># WARNING: This file was auto-generated using snmp_exporter generator, manual changes will be lost.&lt;/span>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="font-style:italic"># WARNING: This file was auto-generated using snmp_exporter generator, manual changes will be lost.&lt;/span>
 &lt;span style="font-weight:bold">apcups&lt;/span>:
 &lt;span style="font-weight:bold">walk&lt;/span>:
 - 1.3.6.1.4.1.318.1.1.12.2.3.1
@@ -599,7 +739,7 @@ Simple dashboard in grafana
 &lt;li>
 &lt;figure>
 &lt;a target="_blank" href="https://karlquinsland.com/2020/12/monitoring-apc-ap7900-switched-pdu-with-prometheus-and-grafana/images/ap7900.png">
-&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/12/monitoring-apc-ap7900-switched-pdu-with-prometheus-and-grafana/images/ap7900_hua86ef71d7c97469c72abcc8606f92a1f_30363_300x0_resize_box_2.png" width="300" height="300">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/12/monitoring-apc-ap7900-switched-pdu-with-prometheus-and-grafana/images/ap7900_hua86ef71d7c97469c72abcc8606f92a1f_30363_300x0_resize_box_3.png" width="300" height="300">
 &lt;/a>
 &lt;/figure>
 &lt;/li>
@@ -614,7 +754,7 @@ files/dashboard.json:
 &lt;li>
 &lt;figure>
 &lt;a target="_blank" href="https://karlquinsland.com/2020/12/monitoring-apc-ap7900-switched-pdu-with-prometheus-and-grafana/images/grafana.png">
-&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/12/monitoring-apc-ap7900-switched-pdu-with-prometheus-and-grafana/images/grafana_hu12e2e56abae7547e2e0002fa4ac227b7_229334_300x0_resize_box_2.png" width="300" height="147">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/12/monitoring-apc-ap7900-switched-pdu-with-prometheus-and-grafana/images/grafana_hu12e2e56abae7547e2e0002fa4ac227b7_229334_300x0_resize_box_3.png" width="300" height="147">
 &lt;/a>
 &lt;figcaption>
 &lt;small>Simple dashboard in grafana&lt;/small>

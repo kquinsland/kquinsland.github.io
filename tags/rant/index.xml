@@ -90,7 +90,7 @@ files/UpdateFail_PR-18DC-DAI-R-N_V150.zip:
 &lt;li>
 &lt;figure>
 &lt;a target="_blank" href="https://karlquinsland.com/2021/01/unbrick-a-rievtech-plc-after-failed-firmware-upgrade/images/recovery-01.png">
-&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2021/01/unbrick-a-rievtech-plc-after-failed-firmware-upgrade/images/recovery-01_hu656f8d998128e6c53b83359f6326ff82_16229_300x0_resize_box_2.png" width="300" height="314">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2021/01/unbrick-a-rievtech-plc-after-failed-firmware-upgrade/images/recovery-01_hu656f8d998128e6c53b83359f6326ff82_16229_300x0_resize_box_3.png" width="300" height="314">
 &lt;/a>
 &lt;figcaption>
 &lt;small>Able to flash Version 152 w/o issue!&lt;/small>
@@ -100,7 +100,7 @@ files/UpdateFail_PR-18DC-DAI-R-N_V150.zip:
 &lt;li>
 &lt;figure>
 &lt;a target="_blank" href="https://karlquinsland.com/2021/01/unbrick-a-rievtech-plc-after-failed-firmware-upgrade/images/update-01.png">
-&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2021/01/unbrick-a-rievtech-plc-after-failed-firmware-upgrade/images/update-01_hu06e722afe350a8459b354a9a55c31522_47082_300x0_resize_box_2.png" width="300" height="315">
+&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2021/01/unbrick-a-rievtech-plc-after-failed-firmware-upgrade/images/update-01_hu06e722afe350a8459b354a9a55c31522_47082_300x0_resize_box_3.png" width="300" height="315">
 &lt;/a>
 &lt;figcaption>
 &lt;small>SO close!&lt;/small>
@@ -132,7 +132,7 @@ FW for all Amcrest devices can be fetched from https://amcrest.com/firmwaredownl
 &lt;/figcaption>
 &lt;/figure>
 &lt;p>In the unlikely event that anybody sees this post and somehow gets Amcrest to correct their issues, the versions of software on the affected cameras are:&lt;/p>
-&lt;div class="highlight">&lt;pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-txt" data-lang="txt">Software Version: V2.620.00AC000.3.R, Build Date: 2019-12-18
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-txt" data-lang="txt">Software Version: V2.620.00AC000.3.R, Build Date: 2019-12-18
 WEB Version: 3.2.1.619604
 ONVIF Version: 16.12(V2.4.1.513183)
 &lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="web-ui">Web UI&lt;/h2>
@@ -160,7 +160,7 @@ I&amp;#39;ll leave you to determine if it&amp;#39;s a good idea for the web inte
 &lt;p>The inciting &amp;lsquo;incident&amp;rsquo; for this post was a &amp;lsquo;generic&amp;rsquo; error from Home Assistant while trying to connect the camera to HA.
 While going through the config flow, I&amp;rsquo;d get a super useful &lt;code>an unknown error occurred&lt;/code> message 🙃.&lt;/p>
 &lt;p>After a bit of digging through verbose HA logs, I started to suspect that the default port of &lt;code>5000&lt;/code> was not the correct port despite the port being &amp;lsquo;open&amp;rsquo; on the camera:&lt;/p>
-&lt;div class="highlight">&lt;pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ nmap -p1-6553 cameraIPv4Here
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-bash" data-lang="bash">$ nmap -p1-6553 cameraIPv4Here
 Starting Nmap 7.91 ( https://nmap.org ) at 2020-11-27 16:14 PST
 Nmap scan report &lt;span style="font-weight:bold">for&lt;/span> cameraIPv4Here
 Host is up (0.010s latency).
@@ -185,7 +185,7 @@ Nmap &lt;span style="font-weight:bold">done&lt;/span>: 1 IP address (1 host up) 
 &lt;/figcaption>
 &lt;/figure>
 &lt;p>That screenshot is from the PDF file &lt;a href="https://drive.google.com/file/d/1X-f5xH4aSjhd4vXpIT9yPN_y9-LSgVWN/view">here&lt;/a> which has this revision info:&lt;/p>
-&lt;div class="highlight">&lt;pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-fallback" data-lang="fallback">Amcrest IP4M-1051B / IP4M-1051W
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-fallback" data-lang="fallback">Amcrest IP4M-1051B / IP4M-1051W
 4MP ProHD Indoor Wi-Fi Camera
 User Manual
 Version 1.0.3
@@ -272,7 +272,7 @@ This is *literally* the first thing you see when unpacking the camera.
 &lt;/figcaption>
 &lt;/figure>
 &lt;p>which reads:&lt;/p>
-&lt;div class="highlight">&lt;pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-fallback" data-lang="fallback">IMPORTANT SECURITY NOTICE
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-fallback" data-lang="fallback">IMPORTANT SECURITY NOTICE
 Please make sure your device has the
 latest firmware as listed on:
 www.amcrest.com/firmware-subscribe

@@ -67,7 +67,7 @@ Credit: XKCD #1319
 &lt;/blockquote>
 &lt;h3 id="demo">Demo&lt;/h3>
 &lt;p>The full set of &lt;a href="https://github.com/kquinsland/the-missing-todoist-tools/blob/master/jobs/demo/">resources for the demo are here&lt;/a>, but the &amp;lsquo;meaningful&amp;rsquo; parts are below:&lt;/p>
-&lt;div class="highlight">&lt;pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-yaml" data-lang="yaml">
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-yaml" data-lang="yaml">
 &lt;span style="font-style:italic"># apply these labels...&lt;/span>
 &lt;span style="font-weight:bold">labels&lt;/span>:
 - &lt;span style="font-style:italic">&amp;#34;at_work&amp;#34;&lt;/span>
@@ -92,7 +92,7 @@ Credit: XKCD #1319
 &lt;span style="font-weight:bold">name&lt;/span>:
 &lt;span style="font-weight:bold">match&lt;/span>: &lt;span style="font-style:italic">&amp;#39;Inbox&amp;#39;&lt;/span>
 &lt;/code>&lt;/pre>&lt;/div>&lt;p>and&lt;/p>
-&lt;div class="highlight">&lt;pre style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-yaml" data-lang="yaml">
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-yaml" data-lang="yaml">
 &lt;span style="font-style:italic"># Create the projects...&lt;/span>
 &lt;span style="font-weight:bold">projects&lt;/span>:
 &lt;span style="font-style:italic"># ... as child projects of `Garage Sale 🏚️💵`&lt;/span>
