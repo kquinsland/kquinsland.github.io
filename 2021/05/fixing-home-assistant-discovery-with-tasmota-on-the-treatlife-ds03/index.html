@@ -87,6 +87,8 @@ May 12, 2021
 </div>
 </header>
 <div>
+<p><strong>UPDATE:</strong> (2021-09-19): Multiple have gotten in touch with me seeking some support with this post. At present, there is a <a href=https://github.com/arendst/Tasmota/issues/12684#event-5035253885>bug</a> with the Tasmota 9.5.0 release which breaks the automation outlined below. If you are having trouble getting the steps below to work <strong><em>either use Tasmota 9.4 or the latest development release of tasmota 9.5 if you&rsquo;re going to continue on with this post!</em></strong></p>
+<hr>
 <p>The Treatlife DS03 is one of only a few Tasmota compatible ceiling fan controllers available in the US. It&rsquo;s internal architecture splits the task of dimming the lights and switching the fan speed electronics from communicating over the network.</p>
 <p>A very resource constrained ESP8266 module handles the network comms while a dedicated microcontroller running it&rsquo;s own software manages the user-facing buttons/indicator-lights as well as dimming the light and adjusting the fan speed. The two components communicate over a simple UART.</p>
 <p>This is a totally reasonable way to build such a device, but for reasons that I don&rsquo;t fully understand, Tasmota does not publish a completely functional <a href=https://www.home-assistant.io/docs/mqtt/discovery/>auto-configuration</a> payload for Home Assistant.</p>
