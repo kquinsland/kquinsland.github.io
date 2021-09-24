@@ -149,7 +149,7 @@ the heater immediately stops producing heat. From the perspective of the smart r
 If something happened to the WiFi connection or the MQTT server or Home Assistant, there&amp;rsquo;s no way to disconnect power from the coffee maker; the relay will stay &amp;lsquo;on&amp;rsquo;.
 If the interlock failed, somehow, the heating element would immediately begin pumping out heat when it &lt;em>really&lt;/em> shouldn&amp;rsquo;t be!&lt;/p>
 &lt;p>Writing a simple &amp;ldquo;if power consumption drops below 1100 Watts, turn relay off&amp;rdquo; rule would be enough, except there&amp;rsquo;s no way to distinguish between the thermal interlock tripping
-and the carafe being removed for a quick pour. The simple rule is incompatible with the extra interlocks; it will prematurely send the brewing 100% of the time the carafe is removed.
+and the carafe being removed for a quick pour. The simple rule is incompatible with the extra interlocks; it will prematurely stop the brewing 100% of the time the carafe is removed.
 If you want to pour a cup of coffee while it&amp;rsquo;s still brewing, this is rather inconvenient.&lt;/p>
 &lt;p>Solution: give the user 30 seconds to return the carafe during brewing before turning the relay off.&lt;/p>
 &lt;p>From the perspective of the outlet, ignore any lulls in power consumption as long as they&amp;rsquo;re shorter than 30 seconds. Otherwise, assume that an interlock &lt;em>has&lt;/em> tripped.&lt;/p>
@@ -203,7 +203,9 @@ Once the power consumption goes back down to 0, reset the telemetry update perio
 Without the &lt;code>Rule2 0&lt;/code>, the console/logs for the device would be full of statements like this repeating every few seconds:&lt;/p>
 &lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-fallback" data-lang="fallback">RUL: ENERGY#POWER&amp;gt;1 performs &amp;#34;TelePeriod 10&amp;#34;
 MQT: stat/tasmota_kettle/RESULT = {&amp;#34;TelePeriod&amp;#34;:10}
-&lt;/code>&lt;/pre>&lt;/div>&lt;p>Hope that helped!&lt;/p></description></item><item><title>Systemd Resolved With Consul Agent</title><link>https://karlquinsland.com/2020/07/systemd-resolved-with-consul-agent/</link><pubDate>Tue, 21 Jul 2020 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/2020/07/systemd-resolved-with-consul-agent/</guid><description>&lt;p>I pieced this technique together a while back and created a gist for it. I&amp;rsquo;m creating &lt;em>this&lt;/em> post as a pointer to that gist so I have something that&amp;rsquo;s a bit easier to reference and refer others to.&lt;/p>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Hope that helped!&lt;/p>
+&lt;hr>
+&lt;p>&lt;strong>EDIT:&lt;/strong> 2021-09-24: small typo fixes. Thanks for pointing them out :).&lt;/p></description></item><item><title>Systemd Resolved With Consul Agent</title><link>https://karlquinsland.com/2020/07/systemd-resolved-with-consul-agent/</link><pubDate>Tue, 21 Jul 2020 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/2020/07/systemd-resolved-with-consul-agent/</guid><description>&lt;p>I pieced this technique together a while back and created a gist for it. I&amp;rsquo;m creating &lt;em>this&lt;/em> post as a pointer to that gist so I have something that&amp;rsquo;s a bit easier to reference and refer others to.&lt;/p>
 &lt;p>And i want to test out the &lt;a href="https://gohugo.io/content-management/shortcodes/#gist">hugo shortcode for embedding a gist&lt;/a> 😏.&lt;/p>
 &lt;p>The really short version:&lt;/p>
 &lt;ul>

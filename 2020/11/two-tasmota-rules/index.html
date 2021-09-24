@@ -107,7 +107,7 @@ the heater immediately stops producing heat. From the perspective of the smart r
 If something happened to the WiFi connection or the MQTT server or Home Assistant, there&rsquo;s no way to disconnect power from the coffee maker; the relay will stay &lsquo;on&rsquo;.
 If the interlock failed, somehow, the heating element would immediately begin pumping out heat when it <em>really</em> shouldn&rsquo;t be!</p>
 <p>Writing a simple &ldquo;if power consumption drops below 1100 Watts, turn relay off&rdquo; rule would be enough, except there&rsquo;s no way to distinguish between the thermal interlock tripping
-and the carafe being removed for a quick pour. The simple rule is incompatible with the extra interlocks; it will prematurely send the brewing 100% of the time the carafe is removed.
+and the carafe being removed for a quick pour. The simple rule is incompatible with the extra interlocks; it will prematurely stop the brewing 100% of the time the carafe is removed.
 If you want to pour a cup of coffee while it&rsquo;s still brewing, this is rather inconvenient.</p>
 <p>Solution: give the user 30 seconds to return the carafe during brewing before turning the relay off.</p>
 <p>From the perspective of the outlet, ignore any lulls in power consumption as long as they&rsquo;re shorter than 30 seconds. Otherwise, assume that an interlock <em>has</em> tripped.</p>
@@ -169,6 +169,8 @@ Without the <code>Rule2 0</code>, the console/logs for the device would be full 
 <div class=highlight><pre tabindex=0 style=background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-fallback data-lang=fallback>RUL: ENERGY#POWER&gt;1 performs &#34;TelePeriod 10&#34;
 MQT: stat/tasmota_kettle/RESULT = {&#34;TelePeriod&#34;:10}
 </code></pre></div><p>Hope that helped!</p>
+<hr>
+<p><strong>EDIT:</strong> 2021-09-24: small typo fixes. Thanks for pointing them out :).</p>
 </div>
 <footer>
 </footer>
