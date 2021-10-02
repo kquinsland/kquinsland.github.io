@@ -1,0 +1,395 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=robots content="noodp">
+<meta http-equiv=x-ua-compatible content="IE=edge, chrome=1">
+<title>Fixing Home Assistant discovery with Tasmota on the Treatlife DS03 - karl</title><meta name=Description content="A working Tasmota rule to automatically configure the DS03 as a 4 speed fan controller"><meta property="og:title" content="Fixing Home Assistant discovery with Tasmota on the Treatlife DS03">
+<meta property="og:description" content="A working Tasmota rule to automatically configure the DS03 as a 4 speed fan controller">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://karlquinsland.com/treatlife-ds03-tasmota-autoconfig-with-homeassistant/"><meta property="og:image" content="https://karlquinsland.com/images/avatar.png"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2021-05-12T00:00:00+00:00">
+<meta property="article:modified_time" content="2021-09-19T09:27:24-07:00">
+<meta name=twitter:card content="summary_large_image">
+<meta name=twitter:image content="https://karlquinsland.com/images/avatar.png">
+<meta name=twitter:title content="Fixing Home Assistant discovery with Tasmota on the Treatlife DS03">
+<meta name=twitter:description content="A working Tasmota rule to automatically configure the DS03 as a 4 speed fan controller">
+<meta name=application-name content="karl">
+<meta name=apple-mobile-web-app-title content="karl"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=https://karlquinsland.com/favicon.ico>
+<link rel=icon type=image/png sizes=32x32 href=https://karlquinsland.com/favicon-32x32.png>
+<link rel=icon type=image/png sizes=16x16 href=https://karlquinsland.com/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=https://karlquinsland.com/apple-touch-icon.png><link rel=mask-icon href=https://karlquinsland.com/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=https://karlquinsland.com/site.webmanifest><link rel=canonical href=https://karlquinsland.com/treatlife-ds03-tasmota-autoconfig-with-homeassistant/><link rel=prev href=https://karlquinsland.com/poe-stack-light/><link rel=next href=https://karlquinsland.com/apc-ups-energy-in-homeassistant/><link rel=stylesheet href=https://karlquinsland.com/lib/normalize/normalize.min.055364f5be272caa092b0e6654c165828707f8ab971e2656383a6d6392bc345e.css integrity="sha256-BVNk9b4nLKoJKw5mVMFlgocH+KuXHiZWODptY5K8NF4="><link rel=stylesheet href=https://karlquinsland.com/css/style.min.1e2694bed152fa2922dbe909a441838ed693d88b1330f97485bfa8ed78da42df.css integrity="sha256-HiaUvtFS+iki2+kJpEGDjtaT2IsTMPl0hb+o7XjaQt8="><link rel=stylesheet href=https://karlquinsland.com/lib/fontawesome-free/all.min.876d023d9d10c97941b80c3b03e2a5b94631ff7a4af9cee5604a6a2d39718d84.css integrity="sha256-h20CPZ0QyXlBuAw7A+KluUYx/3pK+c7lYEpqLTlxjYQ="><link rel=stylesheet href=https://karlquinsland.com/lib/animate/animate.min.3c770e90f98eb21b0c042fafb49755af93306fbaf42e449524f94fae9fc83295.css integrity="sha256-PHcOkPmOshsMBC+vtJdVr5Mwb7r0LkSVJPlPrp/IMpU="><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Fixing Home Assistant discovery with Tasmota on the Treatlife DS03","inLanguage":"en-us","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/karlquinsland.com\/treatlife-ds03-tasmota-autoconfig-with-homeassistant\/"},"genre":"posts","keywords":"tasmota, home-assistant, home-automation","wordcount":1704,"url":"https:\/\/karlquinsland.com\/treatlife-ds03-tasmota-autoconfig-with-homeassistant\/","datePublished":"2021-05-12T00:00:00+00:00","dateModified":"2021-09-19T09:27:24-07:00","publisher":{"@type":"Organization","name":""},"author":{"@type":"Person","name":"karl"},"description":"A working Tasmota rule to automatically configure the DS03 as a 4 speed fan controller"}</script></head>
+<body header-desktop=fixed header-mobile=auto><script type=text/javascript>(window.localStorage&&localStorage.getItem('theme')?localStorage.getItem('theme')==='dark':'auto'==='auto'?window.matchMedia('(prefers-color-scheme: dark)').matches:'auto'==='dark')&&document.body.setAttribute('theme','dark')</script>
+<div id=mask></div><div class=wrapper><header class=desktop id=header-desktop>
+<div class=header-wrapper>
+<div class=header-title>
+<a href=https://karlquinsland.com/ title=karl>Karl</a>
+</div>
+<div class=menu>
+<div class=menu-inner><a class=menu-item href=https://karlquinsland.com/posts/><i class="fas fa-blog"></i> Posts </a><a class=menu-item href=https://karlquinsland.com/resume/ title="Hire Me!"><i class="fas fa-briefcase"></i> Résumé </a><a class=menu-item href=https://karlquinsland.com/tags/ title="Can you tell that I don't have a super consistent or clear taxonomy?"><i class="fas fa-tags"></i> Tags </a><a class=menu-item href=https://karlquinsland.com/contact/><i class="fas fa-address-book"></i> Contact </a><span class="menu-item delimiter"></span><span class="menu-item search" id=search-desktop>
+<input type=text placeholder="Search titles or contents..." id=search-input-desktop>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=Search>
+<i class="fas fa-search fa-fw"></i>
+</a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=Clear>
+<i class="fas fa-times-circle fa-fw"></i>
+</a>
+<span class="search-button search-loading" id=search-loading-desktop>
+<i class="fas fa-spinner fa-fw fa-spin"></i>
+</span>
+</span><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw"></i>
+</a>
+</div>
+</div>
+</div>
+</header><header class=mobile id=header-mobile>
+<div class=header-container>
+<div class=header-wrapper>
+<div class=header-title>
+<a href=https://karlquinsland.com/ title=karl>Karl</a>
+</div>
+<div class=menu-toggle id=menu-toggle-mobile>
+<span></span><span></span><span></span>
+</div>
+</div>
+<div class=menu id=menu-mobile><div class=search-wrapper>
+<div class="search mobile" id=search-mobile>
+<input type=text placeholder="Search titles or contents..." id=search-input-mobile>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=Search>
+<i class="fas fa-search fa-fw"></i>
+</a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=Clear>
+<i class="fas fa-times-circle fa-fw"></i>
+</a>
+<span class="search-button search-loading" id=search-loading-mobile>
+<i class="fas fa-spinner fa-fw fa-spin"></i>
+</span>
+</div>
+<a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>
+Cancel
+</a>
+</div><a class=menu-item href=https://karlquinsland.com/posts/ title><i class="fas fa-blog"></i>Posts</a><a class=menu-item href=https://karlquinsland.com/resume/ title="Hire Me!"><i class="fas fa-briefcase"></i>Résumé</a><a class=menu-item href=https://karlquinsland.com/tags/ title="Can you tell that I don't have a super consistent or clear taxonomy?"><i class="fas fa-tags"></i>Tags</a><a class=menu-item href=https://karlquinsland.com/contact/ title><i class="fas fa-address-book"></i>Contact</a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw"></i>
+</a></div>
+</div>
+</header>
+<div class="search-dropdown desktop">
+<div id=search-dropdown-desktop></div>
+</div>
+<div class="search-dropdown mobile">
+<div id=search-dropdown-mobile></div>
+</div>
+<main class=main>
+<div class=container><div class=toc id=toc-auto>
+<h2 class=toc-title>Contents</h2>
+<div class=toc-content id=toc-content-auto></div>
+</div><article class="page single"><h1 class="single-title animated flipInX">Fixing Home Assistant discovery with Tasmota on the Treatlife DS03</h1><div class=post-meta>
+<div class=post-meta-line><span class=post-author><a href=https://karlquinsland.com/ title=Author rel=" author" class=author><i class="fas fa-user-circle fa-fw"></i>karl</a></span>&nbsp;<span class=post-category>included in <a href=https://karlquinsland.com/categories/gists/><i class="far fa-folder fa-fw"></i>gists</a>&nbsp;<a href=https://karlquinsland.com/categories/reference/><i class="far fa-folder fa-fw"></i>reference</a></span></div>
+<div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2021-05-12>2021-05-12</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;1704 words&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;8 minutes&nbsp;</div>
+</div><div class="details toc" id=toc-static kept=true>
+<div class="details-summary toc-title">
+<span>Contents</span>
+<span><i class="details-icon fas fa-angle-right"></i></span>
+</div>
+<div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents>
+<ul>
+<li>
+<ul>
+<li><a href=#how>How</a>
+<ul>
+<li>
+<ul>
+<li><a href=#updating-a-ds03-thats-already-integrated-with-home-assistant>Updating a DS03 that&rsquo;s already integrated with Home Assistant</a></li>
+<li><a href=#why-use-setoption19off-as-the-trigger>Why use <code>SetOption19:OFF</code> as the trigger?</a></li>
+</ul>
+</li>
+<li><a href=#side-note-rules-crash>Side note: Rules Crash!</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav></div>
+</div><div class=content id=content><p><strong>UPDATE:</strong> (2021-09-19): Multiple have gotten in touch with me seeking some support with this post. At present, there is a <a href=https://github.com/arendst/Tasmota/issues/12684#event-5035253885 target=_blank rel="noopener noreffer">bug</a> with the Tasmota 9.5.0 release which breaks the automation outlined below. If you are having trouble getting the steps below to work <strong><em>either use Tasmota 9.4 or the latest development release of tasmota 9.5 if you&rsquo;re going to continue on with this post!</em></strong></p>
+<hr>
+<p>The Treatlife DS03 is one of only a few Tasmota compatible ceiling fan controllers available in the US. It&rsquo;s internal architecture splits the task of dimming the lights and switching the fan speed electronics from communicating over the network.</p>
+<p>A very resource constrained ESP8266 module handles the network comms while a dedicated microcontroller running it&rsquo;s own software manages the user-facing buttons/indicator-lights as well as dimming the light and adjusting the fan speed. The two components communicate over a simple UART.</p>
+<p>This is a totally reasonable way to build such a device, but for reasons that I don&rsquo;t fully understand, Tasmota does not publish a completely functional <a href=https://www.home-assistant.io/docs/mqtt/discovery/ target=_blank rel="noopener noreffer">auto-configuration</a> payload for Home Assistant.</p>
+<p>Home Assistant automatically discovers the full light/dimmer capabilities of the DS03, but for some reason does not see that the DS03 is capable of running a fan at 4 different speeds; Home Assistant only allows for turning the fan on/off.</p>
+<figure>
+<img src=https://karlquinsland.com/treatlife-ds03-tasmota-autoconfig-with-homeassistant/images/ha_default.jpg alt="Screenshot showing DS03 device entity with the default binary switch control for the ceiling fan.">
+<figcaption>
+<p>
+The default auto-configuration leads Home Assistant to believe the fan can only be switched on/off.
+</p>
+</figcaption>
+</figure>
+<p>The <a href=https://templates.blakadder.com/treatlife_DS03.html target=_blank rel="noopener noreffer">existing</a> guides on <a href=https://www.digiblur.com/2020/07/the-tasmota-fan-controller-ive-been.html target=_blank rel="noopener noreffer">how to flash the device</a> with Tasmota and integrate it with Home Assistant all work around this limitation by <em><em>manually</em></em> configuring Home Assistant to see the device as a multi-speed fan 🤦.</p>
+<p>I&rsquo;m not a huge fan of doing things manually, especially when there&rsquo;s a well documented and robust protocol designed to make manual configuration unnecessary! Why ignore the almost completely working auto-configuration in favor of manual configuration? Why not just fix the auto-config payload so Home Assistant exposes the full functionality of the device?</p>
+<p>Both of the above guides were written long before <a href=https://www.home-assistant.io/blog/2021/03/03/release-20213/#fan-speeds-100 target=_blank rel="noopener noreffer">Home Assistant gained support</a> for fans with more than 3 speeds so even if I were to configure Home Assistant with a copy their example YAML, I&rsquo;d <em>still</em> be missing the ability to control the 4th speed!</p>
+<h2 id=how>How</h2>
+<p>In short, Tasmota supports some basic scripting, called <a href=https://tasmota.github.io/docs/Rules/ target=_blank rel="noopener noreffer">rules</a>. They work exactly as you&rsquo;re thinking: On <code>$someEvent</code> do <a href=https://tasmota.github.io/docs/Commands/ target=_blank rel="noopener noreffer"><code>$someAction</code></a>. One of the actions allows the Tasmota device to publish a message to a MQTT topic. I&rsquo;m going to have the DS03 broadcast a <em>proper</em> auto-configuration message to Home Assistant.</p>
+<p>The technique is basically the same one outlined in <a href=https://blakadder.com/pir-in-tasmota-integration/ target=_blank rel="noopener noreffer">this</a> article, but I&rsquo;m posting this to document a few of the subtle differences in my approach.</p>
+<p>I&rsquo;ll assume that you&rsquo;ve successfully flashed your DS03 with Tasmota and have already configured the module and issued the necessary <code>ledtable</code> commands. You will also need the native <a href=https://www.home-assistant.io/integrations/tasmota/ target=_blank rel="noopener noreffer">Tasmota</a> integration installed.</p>
+<p>If you&rsquo;re following either the blakadder or digiblur guides linked above, stop at the step where you&rsquo;re meant to configure <code>rule1</code>.</p>
+<p>Issue a slightly modified rule:</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback>Rule1 on TuyaReceived#Data=55AA03070005030400010016 do publish2 stat/%topic%/speed 25 endon
+    on TuyaReceived#Data=55AA03070005030400010117 do publish2 stat/%topic%/speed 50 endon
+    on TuyaReceived#Data=55AA03070005030400010218 do publish2 stat/%topic%/speed 75 endon
+    on TuyaReceived#Data=55AA03070005030400010319 do publish2 stat/%topic%/speed 100 endon
+</code></pre></td></tr></table>
+</div>
+</div><p>This tells Tasmota to publish an integer speed (25,50,75,100) when it receives a specific packet from the dedicated MCU over th UART.</p>
+<p>Then, issue a second rule to actually publish the configuration data:</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback>rule2 on SetOption19#Data=OFF do publish2 homeassistant/fan/%macaddr%/config {&#34;uniq_id&#34;:&#34;AABBCC&#34;,&#34;~&#34;:&#34;%topic%/POWER1&#34;,&#34;cmd_t&#34;:&#34;cmnd/~&#34;,&#34;pl_off&#34;:&#34;OFF&#34;,&#34;pl_on&#34;:&#34;ON&#34;,&#34;stat_t&#34;:&#34;stat/~&#34;,&#34;avty_t&#34;:&#34;tele/%topic%/LWT&#34;,&#34;pl_avail&#34;:&#34;Online&#34;,&#34;pl_not_avail&#34;:&#34;Offline&#34;,&#34;pct_cmd_t&#34;:&#34;cmnd/%topic%/tuyasend4&#34;,&#34;pct_cmd_tpl&#34;:&#34;{%set v=value|int%}{%if v&lt;=25%}3,0{%elif v&lt;=50%}3,1{%elif v&lt;=75%}3,2{%elif v&lt;=100%}3,3{%endif%}&#34;,&#34;pct_stat_t&#34;:&#34;stat/%topic%/speed&#34;,&#34;dev&#34;:{&#34;cns&#34;:[[&#34;mac&#34;,&#34;%macaddr%&#34;]]}} endon
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>Note:</strong> You&rsquo;ll probably want to modify the above payload so the occurrences of the placeholder string <code>AABBCC</code> are replaced with the last 6 characters of your own device&rsquo;s MAC address!</p>
+<p>For readability, here&rsquo;s the unminified JSON:</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=p>{</span>
+  <span class=nt>&#34;uniq_id&#34;</span><span class=p>:</span> <span class=s2>&#34;AABBCC&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;~&#34;</span><span class=p>:</span><span class=s2>&#34;%topic%/POWER1&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;cmd_t&#34;</span><span class=p>:</span> <span class=s2>&#34;cmnd/~&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;pl_off&#34;</span><span class=p>:</span> <span class=s2>&#34;OFF&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;pl_on&#34;</span><span class=p>:</span> <span class=s2>&#34;ON&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;stat_t&#34;</span><span class=p>:</span> <span class=s2>&#34;stat/~&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;avty_t&#34;</span><span class=p>:</span> <span class=s2>&#34;tele/%topic%/LWT&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;pl_avail&#34;</span><span class=p>:</span> <span class=s2>&#34;Online&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;pl_not_avail&#34;</span><span class=p>:</span> <span class=s2>&#34;Offline&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;pct_cmd_t&#34;</span><span class=p>:</span> <span class=s2>&#34;cmnd/%topic%/tuyasend4&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;pct_cmd_tpl&#34;</span><span class=p>:</span> <span class=s2>&#34;{%set v=value|int%}{%if v&lt;=25%}3,0{%elif v&lt;=50%}3,1{%elif v&lt;=75%}3,2{%elif v&lt;=100%}3,3{%endif%}&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;pct_stat_t&#34;</span><span class=p>:</span> <span class=s2>&#34;stat/%topic%/speed&#34;</span><span class=p>,</span>
+  <span class=nt>&#34;dev&#34;</span><span class=p>:</span> <span class=p>{</span>
+    <span class=nt>&#34;cns&#34;</span><span class=p>:</span> <span class=p>[</span>
+      <span class=p>[</span>
+        <span class=s2>&#34;mac&#34;</span><span class=p>,</span>
+        <span class=s2>&#34;%macaddr%&#34;</span>
+      <span class=p>]</span>
+    <span class=p>]</span>
+  <span class=p>}</span>
+<span class=p>}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>Note:</strong> The <code>dev</code> portion of the payload is the <a href=https://www.home-assistant.io/integrations/fan.mqtt/#device target=_blank rel="noopener noreffer">magic that convinces Home Assistant to combine the multiple entities under once device</a>. Without that portion of the document, you will still have a properly configured DS03, but it will exist as an &lsquo;orphaned&rsquo; entity that belongs to no device!</p>
+<p>All that&rsquo;s left is to enable <code>rule2</code> and then trigger it:</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback>rule2 1
+so19 0
+</code></pre></td></tr></table>
+</div>
+</div><p>Altogether, It&rsquo;ll look something like this:</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback>18:23:54.140 CMD: Rule1 on TuyaReceived#Data=55AA03070005030400010016 do publish2 stat/%topic%/speed 25 endon on TuyaReceived#Data=55AA03070005030400010117 do publish2 stat/%topic%/speed 50 endon on TuyaReceived#Data=55AA03070005030400010218 do publish2 stat/%topic%/speed 75 endon on TuyaReceived#Data=55AA03070005030400010319 do publish2 stat/%topic%/speed 100 endon
+18:23:54.149 RUL: Stored uncompressed, would compress from 344 to 98 (-72%)
+18:23:54.155 MQT: stat/living_room_ceiling_fan/RESULT = {&#34;Rule1&#34;:{&#34;State&#34;:&#34;ON&#34;,&#34;Once&#34;:&#34;OFF&#34;,&#34;StopOnError&#34;:&#34;OFF&#34;,&#34;Length&#34;:344,&#34;Free&#34;:167,&#34;Rules&#34;:&#34;on TuyaReceived#Data=55AA03070005030400010016 do publish2 stat/%topic%/speed 25 endon on TuyaReceived#Data=55AA03070005030400010117 do publish2 stat/%topic%/speed 50 endon on TuyaReceived#Data=55AA03070005030400010218 do publish2 stat/%topic%/speed 75 endon on TuyaReceived#Data=55AA03070005030400010319 do publish2 stat/%topic%/speed 100 endon&#34;}}
+
+18:24:05.061 CMD: rule2 on SetOption19#Data=OFF do publish2 homeassistant/fan/%macaddr%/config {&#34;uniq_id&#34;:&#34;AABBCC&#34;,&#34;~&#34;:&#34;%topic%/POWER1&#34;,&#34;cmd_t&#34;:&#34;cmnd/~&#34;,&#34;pl_off&#34;:&#34;OFF&#34;,&#34;pl_on&#34;:&#34;ON&#34;,&#34;stat_t&#34;:&#34;stat/~&#34;,&#34;avty_t&#34;:&#34;tele/%topic%/LWT&#34;,&#34;pl_avail&#34;:&#34;Online&#34;,&#34;pl_not_avail&#34;:&#34;Offline&#34;,&#34;pct_cmd_t&#34;:&#34;cmnd/%topic%/tuyasend4&#34;,&#34;pct_cmd_tpl&#34;:&#34;{%set v=value|int%}{%if v&lt;=25%}3,0{%elif v&lt;=50%}3,1{%elif v&lt;=75%}3,2{%elif v&lt;=100%}3,3{%endif%}&#34;,&#34;pct_stat_t&#34;:&#34;stat/%topic%/speed&#34;,&#34;dev&#34;:{&#34;cns&#34;:[[&#34;mac&#34;,&#34;%macaddr%&#34;]]}} endon
+18:24:05.093 RUL: Stored uncompressed, would compress from 473 to 351 (-26%)
+18:24:05.100 MQT: stat/living_room_ceiling_fan/RESULT = {&#34;Rule2&#34;:{&#34;State&#34;:&#34;OFF&#34;,&#34;Once&#34;:&#34;OFF&#34;,&#34;StopOnError&#34;:&#34;OFF&#34;,&#34;Length&#34;:473,&#34;Free&#34;:38,&#34;Rules&#34;:&#34;on SetOption19#Data=OFF do publish2 homeassistant/fan/%macaddr%/config {\&#34;uniq_id\&#34;:\&#34;AABBCC\&#34;,\&#34;~\&#34;:\&#34;%topic%/POWER1\&#34;,\&#34;cmd_t\&#34;:\&#34;cmnd/~\&#34;,\&#34;pl_off\&#34;:\&#34;OFF\&#34;,\&#34;pl_on\&#34;:\&#34;ON\&#34;,\&#34;stat_t\&#34;:\&#34;stat/~\&#34;,\&#34;avty_t\&#34;:\&#34;tele/%topic%/LWT\&#34;,\&#34;pl_avail\&#34;:\&#34;Online\&#34;,\&#34;pl_not_avail\&#34;:\&#34;Offline\&#34;,\&#34;pct_cmd_t\&#34;:\&#34;cmnd/%topic%/tuyasend4\&#34;,\&#34;pct_cmd_tpl\&#34;:\&#34;{%set v=value|int%}{%if v&lt;=25%}3,0{%elif v&lt;=50%}3,1{%elif v&lt;=75%}3,2{%elif v&lt;=100%}3,3{%endif%}\&#34;,\&#34;pct_stat_t\&#34;:\&#34;stat/%topic%/speed\&#34;,\&#34;dev\&#34;:{\&#34;cns\&#34;:[[\&#34;mac\&#34;,\&#34;%macaddr%\&#34;]]}} endon&#34;}}
+18:24:07.494 CMD: rule2 1
+18:24:07.503 MQT: stat/living_room_ceiling_fan/RESULT = {&#34;Rule2&#34;:{&#34;State&#34;:&#34;ON&#34;,&#34;Once&#34;:&#34;OFF&#34;,&#34;StopOnError&#34;:&#34;OFF&#34;,&#34;Length&#34;:473,&#34;Free&#34;:38,&#34;Rules&#34;:&#34;on SetOption19#Data=OFF do publish2 homeassistant/fan/%macaddr%/config {\&#34;uniq_id\&#34;:\&#34;AABBCC\&#34;,\&#34;~\&#34;:\&#34;%topic%/POWER1\&#34;,\&#34;cmd_t\&#34;:\&#34;cmnd/~\&#34;,\&#34;pl_off\&#34;:\&#34;OFF\&#34;,\&#34;pl_on\&#34;:\&#34;ON\&#34;,\&#34;stat_t\&#34;:\&#34;stat/~\&#34;,\&#34;avty_t\&#34;:\&#34;tele/%topic%/LWT\&#34;,\&#34;pl_avail\&#34;:\&#34;Online\&#34;,\&#34;pl_not_avail\&#34;:\&#34;Offline\&#34;,\&#34;pct_cmd_t\&#34;:\&#34;cmnd/%topic%/tuyasend4\&#34;,\&#34;pct_cmd_tpl\&#34;:\&#34;{%set v=value|int%}{%if v&lt;=25%}3,0{%elif v&lt;=50%}3,1{%elif v&lt;=75%}3,2{%elif v&lt;=100%}3,3{%endif%}\&#34;,\&#34;pct_stat_t\&#34;:\&#34;stat/%topic%/speed\&#34;,\&#34;dev\&#34;:{\&#34;cns\&#34;:[[\&#34;mac\&#34;,\&#34;%macaddr%\&#34;]]}} endon&#34;}}
+
+18:24:10.362 CMD: so19 0
+18:24:10.369 MQT: stat/living_room_ceiling_fan/RESULT = {&#34;SetOption19&#34;:&#34;OFF&#34;}
+18:24:10.414 RUL: SETOPTION19#DATA=OFF performs &#34;publish2 homeassistant/fan/DDEEFFAABBCC/config {&#34;uniq_id&#34;:&#34;AABBCC&#34;,&#34;~&#34;:&#34;living_room_ceiling_...
+18:24:10.421 MQT: home Assistant/fan/DDEEFFAABBCC/config = {&#34;uniq_id&#34;:&#34;AABBCC&#34;,&#34;~&#34;:&#34;living_room_ceiling_fan/POWER1&#34;,&#34;cmd_t&#34;:&#34;cmnd/~&#34;,&#34;pl_off&#34;:&#34;OFF&#34;,&#34;pl_on&#34;:&#34;ON&#34;,&#34;stat_t&#34;:&#34;stat/~&#34;,&#34;avty_t&#34;:&#34;tele/living_room_ceiling_fan/LWT&#34;,&#34;pl_avail&#34;:&#34;Online&#34;,&#34;pl_not_avail&#34;:&#34;Offline&#34;,&#34;pct_cmd_t&#34;:&#34;cmnd/living_room_ceiling_fan/tuyasend4&#34;,&#34;pct_cmd_tpl&#34;:&#34;{%set v=value|int%}{%if v&lt;=25%}3,0{%elif v&lt;=50%}3,1{%elif v&lt;=75%}3,2{%elif v&lt;=100%}3,3{%endif%}&#34;,&#34;pct_stat_t&#34;:&#34;stat/living_room_ceiling_fan/speed&#34;,&#34;dev&#34;:{&#34;cns&#34;:[[&#34;mac&#34;,&#34;DDEEFFAABBCC&#34;]]}} (retained)
+18:24:10.509 LOG: Home Assistant MQTT Discovery disabled.
+</code></pre></td></tr></table>
+</div>
+</div><p>If everything worked correctly, Home Assistant should now show a single device in the <a href=https://developers.home-assistant.io/docs/device_registry_index/ target=_blank rel="noopener noreffer">device registry</a> with a dimmable light entity and a variable-speed fan entity!</p>
+<figure>
+<img src=https://karlquinsland.com/treatlife-ds03-tasmota-autoconfig-with-homeassistant/images/ha_mqtt_fan.jpg alt="Screenshot showing DS03 device entity in Home Assistant with the multi-speed MQTT fan.">
+<figcaption>
+<p>
+The DS03 device entity after the variable speed configuration document is received by Home Assistant.
+</p>
+</figcaption>
+</figure>
+<p><strong>Note:</strong> Depending on weather or not Home Assistant has previously &lsquo;seen&rsquo; your DS03 via the native native <a href=https://www.home-assistant.io/integrations/tasmota/ target=_blank rel="noopener noreffer">Tasmota</a> integration, you may see <em>three</em> entities on the device page; the light/dimmer, the switch/fan and the variable speed fan. Just disable the &lsquo;basic&rsquo; fan switch entity that Tasmota publishes as discussed below.</p>
+<h4 id=updating-a-ds03-thats-already-integrated-with-home-assistant>Updating a DS03 that&rsquo;s already integrated with Home Assistant</h4>
+<p>If you&rsquo;ve already got a DS03 that&rsquo;s integrated with Home Assistant, you can still get the device to properly auto-configure. Just remove the YAML configuration for both the light and fan entities.</p>
+<p>You will likely need to restart HA to make sure all traces of the manual configurations are removed from the <a href=https://developers.home-assistant.io/docs/entity_registry_index/ target=_blank rel="noopener noreffer">entity registry</a>.</p>
+<p>Once Home Assistant has forgotten all about the manual entities and the native <a href=https://www.home-assistant.io/integrations/tasmota/ target=_blank rel="noopener noreffer">Tasmota</a> integration in installed, all of the MQTT-connected Tasmota devices <em>should</em> get picked up and configured in Home Assistant. At this point, you should have the single device with two entities; dimmable light and binary-switch fan as shown in the first picture on this post.</p>
+<p>If your DS03 was already configured with Home Assistant via the Tasmota integration, just disable the simple switch entity that Tasmota configures Home Assistant with:</p>
+<figure>
+<img src=https://karlquinsland.com/treatlife-ds03-tasmota-autoconfig-with-homeassistant/images/ha_disable_default_entity.jpg alt="Screenshot showing Home Assistant UX for disabling the default binary switch entity">
+<figcaption>
+<p>
+Toggle 'Enable entity' off to hide the basic binary switch that Tasmota configured Home Assistant with.
+</p>
+</figcaption>
+</figure>
+<p>After disabling the switch/fan entity, trigger <code>rule2</code> again and refresh the device entity page in Home Assistant to confirm that the device now has a <code>MQTT Fan</code> entity if it wasn&rsquo;t there already.</p>
+<p>Enjoy :)</p>
+<h4 id=why-use-setoption19off-as-the-trigger>Why use <code>SetOption19:OFF</code> as the trigger?</h4>
+<p>I run my MQTT broker on Kubernetes and do not have any persistance configured for that pod. This means that regardless of what retention settings a message was published with, every message on every topic is wiped out whenever the MQTT broker pod is rescheduled. As a result almost every device that Home Assistant monitors or controls via MQTT drifts into an <code>Unavailable</code> state whenever I do any maintenance on my K8s cluster.</p>
+<p>I&rsquo;m not the <a href=https://community.home-assistant.io/t/tasmota-going-offline-at-random-times/116299 target=_blank rel="noopener noreffer">only one</a> with <a href=https://community.home-assistant.io/t/sonoff-tasmota-started-regularly-showing-unavailable-on-home-assistant/90157/83 target=_blank rel="noopener noreffer">this issue</a>, even if the cause is different.</p>
+<p>To get around this, I have a small automation that pokes the Tasmota devices every hour and when Home Assistant starts up. Since the Home Assistant pod takes longer than the MQTT pod to initialize, having HA poke the devices on startup minimizes the time a given entity is <code>Unavailable</code> in HA.</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=nt>alias</span><span class=p>:</span><span class=w> </span><span class=l>Tasmotas Announce</span><span class=w>
+</span><span class=w></span><span class=nt>description</span><span class=p>:</span><span class=w> </span><span class=s1>&#39;Prevents devices from going Unavailable&#39;</span><span class=w>
+</span><span class=w></span><span class=nt>trigger</span><span class=p>:</span><span class=w>
+</span><span class=w>  </span>- <span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>home Assistant</span><span class=w>
+</span><span class=w>    </span><span class=nt>event</span><span class=p>:</span><span class=w> </span><span class=l>start</span><span class=w>
+</span><span class=w>  </span>- <span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>time_pattern</span><span class=w>
+</span><span class=w>    </span><span class=nt>hours</span><span class=p>:</span><span class=w> </span><span class=l>/1</span><span class=w>
+</span><span class=w></span><span class=nt>condition</span><span class=p>:</span><span class=w> </span><span class=p>[]</span><span class=w>
+</span><span class=w></span><span class=nt>action</span><span class=p>:</span><span class=w>
+</span><span class=w>  </span><span class=c># For reasons that I don&#39;t understand, different tasmota devices seem to </span><span class=w>
+</span><span class=w>  </span><span class=c>#     subscribe to a different group topic. cmnd/tas vs tas/cmnd</span><span class=w>
+</span><span class=w>  </span><span class=c>##</span><span class=w>
+</span><span class=w>  </span>- <span class=nt>service</span><span class=p>:</span><span class=w> </span><span class=l>mqtt.publish</span><span class=w>
+</span><span class=w>    </span><span class=nt>data</span><span class=p>:</span><span class=w>
+</span><span class=w>      </span><span class=nt>topic</span><span class=p>:</span><span class=w> </span><span class=l>cmnd/tasmotas/SetOption19</span><span class=w>
+</span><span class=w>      </span><span class=nt>payload</span><span class=p>:</span><span class=w> </span><span class=s1>&#39;0&#39;</span><span class=w>
+</span><span class=w>  </span>- <span class=nt>service</span><span class=p>:</span><span class=w> </span><span class=l>mqtt.publish</span><span class=w>
+</span><span class=w>    </span><span class=nt>data</span><span class=p>:</span><span class=w>
+</span><span class=w>      </span><span class=nt>topic</span><span class=p>:</span><span class=w> </span><span class=l>tasmotas/cmnd/SetOption19</span><span class=w>
+</span><span class=w>      </span><span class=nt>payload</span><span class=p>:</span><span class=w> </span><span class=s1>&#39;0&#39;</span><span class=w>
+</span><span class=w></span><span class=nt>mode</span><span class=p>:</span><span class=w> </span><span class=l>single</span><span class=w>
+</span></code></pre></td></tr></table>
+</div>
+</div><p>You could probably work around this whole thing by changing the trigger for <code>rule2</code> to something like <code>on Mqtt#Connected publish2</code>. Or storing the configuration payload as a <a href=https://tasmota.github.io/docs/Rules/#rule-variables target=_blank rel="noopener noreffer">variable</a> so you could write multiple triggers for the same <code>publish2 %mem1%</code> action 🤔.</p>
+<h3 id=side-note-rules-crash>Side note: Rules Crash!</h3>
+<p>While developing the configuration payload, I was able to reliably crash the ESP8266 module causing Tasmota to reboot. The crash / reboot symptoms are pretty similar to those outlined <a href=https://tasmota.github.io/docs/Troubleshooting/#running-out-of-ram target=_blank rel="noopener noreffer">here</a> so I assume that even though the rules &ldquo;fit&rdquo;, something about how the rule was parsed or the actions the rule drove caused the ESP to run out of RAM.</p>
+<p>When I say &ldquo;fit&rdquo; I mean that I&rsquo;d see lines like this in the console after configuring a test payload for <code>rule2</code>:</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback>MQT: stat/living_room_ceiling_fan/RESULT = {&#34;Rule2&#34;:{&#34;State&#34;:&#34;ON&#34;,...&#34;Free&#34;:9,&#34;Rules&#34;:&#34;on ... endon&#34;}}
+</code></pre></td></tr></table>
+</div>
+</div><p>I could technically make the rule <code>9</code> characters longer and it&rsquo;d still fit&mldr; right?</p>
+<p>Not quite. Looking at the result from issuing the <code>Rule1</code> command, it was clear that while <code>rule2</code> would have an absolute maximum length of 511 characters (<code>"Length":344,"Free":167</code>; 344+167=511) there was also a less well defined soft limit on rule length.</p>
+<p>For some versions of my <code>rule2</code> payload, I was able to solve the crashing just by switching to the &lsquo;lite&rsquo; version of Tasmota. While the &lsquo;lite&rsquo; version of Tasmota does work with Tuya MCU (<code>USE_TUYA_MCU</code>), it <a href=https://github.com/arendst/Tasmota/blob/v9.4.0/BUILDS.md target=_blank rel="noopener noreffer">does <em>not</em> support</a> Home Assistant configuration (<code>USE_HOME_ASSISTANT</code>)!</p>
+<p>After flashing back to the &lsquo;regular&rsquo; Tasmota build, I set out trying to compress the <code>rule2</code> payload as much as possible so that it would still work <em>and</em> not reliably crash the ESP8266 on the DS03.</p>
+<p>After testing several things, I managed to get a working <code>rule2</code> that didn&rsquo;t reliably crash when triggered.</p>
+</div><div class=post-footer id=post-footer>
+<div class=post-info>
+<div class=post-info-line>
+<div class=post-info-mod>
+<span>Updated on 2021-09-19&nbsp;<a class=git-hash href=https://github.com/kquinsland/kquinsland.github.io/commit/542ffe14edb824574aa28d71f4704746ae1d2096 target=_blank title="commit by Karl Quinsalnd(karl@karlquinsland.com) 542ffe14edb824574aa28d71f4704746ae1d2096: added an update">
+<i class="fas fa-hashtag fa-fw"></i>542ffe1</a></span>
+</div>
+<div class=post-info-license></div>
+</div>
+<div class=post-info-line>
+<div class=post-info-md><span>
+<a class=link-to-markdown href=https://karlquinsland.com/treatlife-ds03-tasmota-autoconfig-with-homeassistant/index.md target=_blank>Read Markdown</a>
+</span></div>
+<div class=post-info-share>
+<span></span>
+</div>
+</div>
+</div>
+<div class=post-info-more>
+<section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=https://karlquinsland.com/tags/tasmota/>tasmota</a>,&nbsp;<a href=https://karlquinsland.com/tags/home-assistant/>home assistant</a>,&nbsp;<a href=https://karlquinsland.com/tags/home-automation/>home-automation</a></section>
+<section>
+<span><a href=javascript:void(0); onclick=window.history.back()>Back</a></span>&nbsp;|&nbsp;<span><a href=https://karlquinsland.com/>Home</a></span>
+</section>
+</div>
+<div class=post-nav><a href=https://karlquinsland.com/poe-stack-light/ class=prev rel=prev title="PoE powered Stack Light"><i class="fas fa-angle-left fa-fw"></i>PoE powered Stack Light</a>
+<a href=https://karlquinsland.com/apc-ups-energy-in-homeassistant/ class=next rel=next title="Adding an APC UPS to Home Assistant energy dashboard">Adding an APC UPS to Home Assistant energy dashboard<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+</article></div>
+</main><footer class=footer>
+<div class=footer-container><div class=footer-line>¯\_(ツ)_/¯</div><div class=footer-line>Powered by <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.88.1">Hugo</a> | Theme - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+</div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2019 - 2021</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=https://karlquinsland.com/ target=_blank>karl</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div>
+</div>
+</footer></div>
+<div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top">
+<i class="fas fa-arrow-up fa-fw"></i>
+</a><a href=# id=view-comments class=fixed-button title="View Comments">
+<i class="fas fa-comment fa-fw"></i>
+</a>
+</div><link rel=stylesheet href=https://karlquinsland.com/lib/katex/katex.min.4710034e669c7ff17f823f9ba12cf8a36582d65b007f79cbc4a3c11d7db2e4ca.css integrity="sha256-RxADTmacf/F/gj+boSz4o2WC1lsAf3nLxKPBHX2y5Mo="><link rel=stylesheet href=https://karlquinsland.com/lib/katex/copy-tex.min.bf9ff4137fec38f6255419e142d0883c9c52090885d746f80eee12b273d9b3e0.css integrity="sha256-v5/0E3/sOPYlVBnhQtCIPJxSCQiF10b4Du4SsnPZs+A="><script type=text/javascript src=https://karlquinsland.com/lib/smooth-scroll/smooth-scroll.min.bcff85fb5e00d68802850b393ac7792c997f722f536f38e26638c46dca8e5eb6.js integrity="sha256-vP+F+14A1ogChQs5Osd5LJl/ci9TbzjiZjjEbcqOXrY="></script><script type=text/javascript src=https://karlquinsland.com/lib/autocomplete/autocomplete.min.615590a2ca2b667afa7c02ef396f5500b62e22795ddbb46448f90494605d09a5.js integrity="sha256-YVWQosorZnr6fALvOW9VALYuInld27RkSPkElGBdCaU="></script><script type=text/javascript src=https://karlquinsland.com/lib/lunr/lunr.min.df84a2d58ea594c04a3371b48d020b55ea10284c2ec636e4e331965d7313e29b.js integrity="sha256-34Si1Y6llMBKM3G0jQILVeoQKEwuxjbk4zGWXXMT4ps="></script><script type=text/javascript src=https://karlquinsland.com/lib/lazysizes/lazysizes.min.fb649fcae62177dfe63e67081ddceb830b5ce1f05a4184e9bbb7d87ac4b8f4e5.js integrity="sha256-+2SfyuYhd9/mPmcIHdzrgwtc4fBaQYTpu7fYesS49OU="></script><script type=text/javascript src=https://karlquinsland.com/lib/clipboard/clipboard.min.8a7739925f4c03586479852df840b7061948832a7fda30c8c812d2ea4dd4c4f2.js integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/katex.min.17f5dd6b9f123dd7140abfb18521b3f4c036cd004f6f40121182a8865f140877.js integrity="sha256-F/Xda58SPdcUCr+xhSGz9MA2zQBPb0ASEYKohl8UCHc="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/auto-render.min.f74776a677f0d2be0af0264058f928e2ba455d0b19bc985304660d922a43a6b2.js integrity="sha256-90d2pnfw0r4K8CZAWPko4rpFXQsZvJhTBGYNkipDprI="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/copy-tex.min.2ab2237329021bc443986c8327f6e61357fb68a54e5d233d224023718c02207d.js integrity="sha256-KrIjcykCG8RDmGyDJ/bmE1f7aKVOXSM9IkAjcYwCIH0="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/mhchem.min.5cea356d6025c5a2f18c454c83ec5674dbb04fab1cd1d75569e77788c6b6f888.js integrity="sha256-XOo1bWAlxaLxjEVMg+xWdNuwT6sc0ddVaed3iMa2+Ig="></script><script type=text/javascript>window.config={code:{copyTitle:"Copy to clipboard",maxShownLines:10},comment:{},math:{delimiters:[{display:!0,left:"$$",right:"$$"},{display:!0,left:"\\[",right:"\\]"},{display:!1,left:"$",right:"$"},{display:!1,left:"\\(",right:"\\)"}],strict:!1},search:{highlightTag:"em",lunrIndexURL:"/index.json",maxResultLength:10,noResultsFound:"No results found",snippetLength:30,type:"lunr"}}</script><script type=text/javascript src=https://karlquinsland.com/js/theme.min.f51938f3065a40ee841bcb558e4330e31fd26c0ea55343fff8770b88b0319a3c.js integrity="sha256-9Rk48wZaQO6EG8tVjkMw4x/SbA6lU0P/+HcLiLAxmjw="></script><script type=text/javascript>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date),gtag('config','UA-173167356-1',{anonymize_ip:!0})</script><script type=text/javascript src="https://www.googletagmanager.com/gtag/js?id=UA-173167356-1" async></script></body>
+</html>

@@ -19,11 +19,6 @@
         "url": "https://github.com/kquinsland/"
       },
       {
-        "network": "KeyBase",
-        "username": "kquinsland",
-        "url": "https://keybase.io/kquinsland/"
-      },
-      {
         "network": "LinkedIn",
         "username": "karlq",
         "url": "https://www.linkedin.com/in/karlq/"
@@ -31,6 +26,20 @@
     ]
   },
   "work": [
+    {
+      "company": "Kiddom",
+      "position": "Sr. Ops Engineer/SRE",
+      "website": "https://www.kiddom.co/",
+      "startDate": "2020-10-01",
+      "summary": "First dedicate Ops/Infra hire. Taming unwieldy infrastructure, modernizing infrastructure and leading efforts to instrument all layers of the stack.",
+      "highlights": [
+        "Tool-smith 🛠️. Wrote more than a few scripts/tools/lambda functions to automate everything from Cassandra cluster assembly to management of DNS entries and TLS Certificate provisioning",
+        "Contributed back to various Open Source Cassandra management tools",
+        "Deployed HashiCorp Vault for seamless secret management; integrated Vault into developer workflow",
+        "Deployed Infrastructure as Code to as many things as possible, automated deployment of IAC to the fullest extent possible with tools like Atlantis.",
+        "Led efforts to increase observability into applications and infrastructure"
+      ]
+    },
     {
       "company": "Touchpoint Restaurant Innovations",
       "position": "Sr. Production Engineer/SRE",
@@ -138,7 +147,6 @@
       "summary": "Everything needed to deploy, run, integrate Vault"
     }
   ],
-
   "skills": [
     {
       "name": "Programming Languages",
@@ -163,7 +171,10 @@
     {
       "name": "Containerization",
       "level": "",
-      "keywords": ["Docker: advanced", "kubernetes: intermediate"]
+      "keywords": [
+        "Docker: advanced",
+        "kubernetes: intermediate"
+      ]
     },
     {
       "name": "IaC/Ops Tools",
@@ -187,7 +198,10 @@
     }
   ],
   "languages": [
-    { "language": "🇺🇸English", "fluency": "Native" },
+    {
+      "language": "🇺🇸English",
+      "fluency": "Native"
+    },
     {
       "language": "🇪🇸Spanish",
       "fluency": "No asombroso, suficiente"
@@ -217,5 +231,10 @@
       ]
     }
   ],
-  "references": [{ "name": "", "reference": "Provided on request" }]
+  "references": [
+    {
+      "name": "",
+      "reference": "Provided on request"
+    }
+  ]
 }

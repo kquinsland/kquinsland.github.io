@@ -1,217 +1,442 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>reference on karl</title><link>https://karlquinsland.com/categories/reference/</link><description>Recent content in reference on karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 12 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/categories/reference/index.xml" rel="self" type="application/rss+xml"/><item><title>Fixing Home Assistant discovery with Tasmota on the Treatlife DS03</title><link>https://karlquinsland.com/2021/05/fixing-home-assistant-discovery-with-tasmota-on-the-treatlife-ds03/</link><pubDate>Wed, 12 May 2021 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/2021/05/fixing-home-assistant-discovery-with-tasmota-on-the-treatlife-ds03/</guid><description>&lt;p>&lt;strong>UPDATE:&lt;/strong> (2021-09-19): Multiple have gotten in touch with me seeking some support with this post. At present, there is a &lt;a href="https://github.com/arendst/Tasmota/issues/12684#event-5035253885">bug&lt;/a> with the Tasmota 9.5.0 release which breaks the automation outlined below. If you are having trouble getting the steps below to work &lt;strong>&lt;em>either use Tasmota 9.4 or the latest development release of tasmota 9.5 if you&amp;rsquo;re going to continue on with this post!&lt;/em>&lt;/strong>&lt;/p>
-&lt;hr>
-&lt;p>The Treatlife DS03 is one of only a few Tasmota compatible ceiling fan controllers available in the US. It&amp;rsquo;s internal architecture splits the task of dimming the lights and switching the fan speed electronics from communicating over the network.&lt;/p>
-&lt;p>A very resource constrained ESP8266 module handles the network comms while a dedicated microcontroller running it&amp;rsquo;s own software manages the user-facing buttons/indicator-lights as well as dimming the light and adjusting the fan speed. The two components communicate over a simple UART.&lt;/p>
-&lt;p>This is a totally reasonable way to build such a device, but for reasons that I don&amp;rsquo;t fully understand, Tasmota does not publish a completely functional &lt;a href="https://www.home-assistant.io/docs/mqtt/discovery/">auto-configuration&lt;/a> payload for Home Assistant.&lt;/p>
-&lt;p>Home Assistant automatically discovers the full light/dimmer capabilities of the DS03, but for some reason does not see that the DS03 is capable of running a fan at 4 different speeds; Home Assistant only allows for turning the fan on/off.&lt;/p>
-&lt;figure >
-&lt;img src="https://karlquinsland.com/2021/05/fixing-home-assistant-discovery-with-tasmota-on-the-treatlife-ds03/images/ha_default.jpg" alt="Screenshot showing DS03 device entity with the default binary switch control for the ceiling fan." />
-&lt;figcaption>
-&lt;p>
-The default auto-configuration leads Home Assistant to believe the fan can only be switched on/off.
-&lt;/p>
-&lt;/figcaption>
-&lt;/figure>
-&lt;p>The &lt;a href="https://templates.blakadder.com/treatlife_DS03.html">existing&lt;/a> guides on &lt;a href="https://www.digiblur.com/2020/07/the-tasmota-fan-controller-ive-been.html">how to flash the device&lt;/a> with Tasmota and integrate it with Home Assistant all work around this limitation by &lt;em>&lt;em>manually&lt;/em>&lt;/em> configuring Home Assistant to see the device as a multi-speed fan 🤦.&lt;/p>
-&lt;p>I&amp;rsquo;m not a huge fan of doing things manually, especially when there&amp;rsquo;s a well documented and robust protocol designed to make manual configuration unnecessary! Why ignore the almost completely working auto-configuration in favor of manual configuration? Why not just fix the auto-config payload so Home Assistant exposes the full functionality of the device?&lt;/p>
-&lt;p>Both of the above guides were written long before &lt;a href="https://www.home-assistant.io/blog/2021/03/03/release-20213/#fan-speeds-100">Home Assistant gained support&lt;/a> for fans with more than 3 speeds so even if I were to configure Home Assistant with a copy their example YAML, I&amp;rsquo;d &lt;em>still&lt;/em> be missing the ability to control the 4th speed!&lt;/p>
-&lt;h2 id="how">How&lt;/h2>
-&lt;p>In short, Tasmota supports some basic scripting, called &lt;a href="https://tasmota.github.io/docs/Rules/">rules&lt;/a>. They work exactly as you&amp;rsquo;re thinking: On &lt;code>$someEvent&lt;/code> do &lt;a href="https://tasmota.github.io/docs/Commands/">&lt;code>$someAction&lt;/code>&lt;/a>. One of the actions allows the Tasmota device to publish a message to a MQTT topic. I&amp;rsquo;m going to have the DS03 broadcast a &lt;em>proper&lt;/em> auto-configuration message to Home Assistant.&lt;/p>
-&lt;p>The technique is basically the same one outlined in &lt;a href="https://blakadder.com/pir-in-tasmota-integration/">this&lt;/a> article, but I&amp;rsquo;m posting this to document a few of the subtle differences in my approach.&lt;/p>
-&lt;p>I&amp;rsquo;ll assume that you&amp;rsquo;ve successfully flashed your DS03 with Tasmota and have already configured the module and issued the necessary &lt;code>ledtable&lt;/code> commands. You will also need the native &lt;a href="https://www.home-assistant.io/integrations/tasmota/">Tasmota&lt;/a> integration installed.&lt;/p>
-&lt;p>If you&amp;rsquo;re following either the blakadder or digiblur guides linked above, stop at the step where you&amp;rsquo;re meant to configure &lt;code>rule1&lt;/code>.&lt;/p>
-&lt;p>Issue a slightly modified rule:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-fallback" data-lang="fallback">Rule1 on TuyaReceived#Data=55AA03070005030400010016 do publish2 stat/%topic%/speed 25 endon
-on TuyaReceived#Data=55AA03070005030400010117 do publish2 stat/%topic%/speed 50 endon
-on TuyaReceived#Data=55AA03070005030400010218 do publish2 stat/%topic%/speed 75 endon
-on TuyaReceived#Data=55AA03070005030400010319 do publish2 stat/%topic%/speed 100 endon
-&lt;/code>&lt;/pre>&lt;/div>&lt;p>This tells Tasmota to publish an integer speed (25,50,75,100) when it receives a specific packet from the dedicated MCU over th UART.&lt;/p>
-&lt;p>Then, issue a second rule to actually publish the configuration data:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-fallback" data-lang="fallback">rule2 on SetOption19#Data=OFF do publish2 homeassistant/fan/%macaddr%/config {&amp;#34;uniq_id&amp;#34;:&amp;#34;AABBCC&amp;#34;,&amp;#34;~&amp;#34;:&amp;#34;%topic%/POWER1&amp;#34;,&amp;#34;cmd_t&amp;#34;:&amp;#34;cmnd/~&amp;#34;,&amp;#34;pl_off&amp;#34;:&amp;#34;OFF&amp;#34;,&amp;#34;pl_on&amp;#34;:&amp;#34;ON&amp;#34;,&amp;#34;stat_t&amp;#34;:&amp;#34;stat/~&amp;#34;,&amp;#34;avty_t&amp;#34;:&amp;#34;tele/%topic%/LWT&amp;#34;,&amp;#34;pl_avail&amp;#34;:&amp;#34;Online&amp;#34;,&amp;#34;pl_not_avail&amp;#34;:&amp;#34;Offline&amp;#34;,&amp;#34;pct_cmd_t&amp;#34;:&amp;#34;cmnd/%topic%/tuyasend4&amp;#34;,&amp;#34;pct_cmd_tpl&amp;#34;:&amp;#34;{%set v=value|int%}{%if v&amp;lt;=25%}3,0{%elif v&amp;lt;=50%}3,1{%elif v&amp;lt;=75%}3,2{%elif v&amp;lt;=100%}3,3{%endif%}&amp;#34;,&amp;#34;pct_stat_t&amp;#34;:&amp;#34;stat/%topic%/speed&amp;#34;,&amp;#34;dev&amp;#34;:{&amp;#34;cns&amp;#34;:[[&amp;#34;mac&amp;#34;,&amp;#34;%macaddr%&amp;#34;]]}} endon
-&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;strong>Note:&lt;/strong> You&amp;rsquo;ll probably want to modify the above payload so the occurrences of the placeholder string &lt;code>AABBCC&lt;/code> are replaced with the last 6 characters of your own device&amp;rsquo;s MAC address!&lt;/p>
-&lt;p>For readability, here&amp;rsquo;s the unminified JSON:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-json" data-lang="json">{
-&lt;span style="font-weight:bold">&amp;#34;uniq_id&amp;#34;&lt;/span>: &lt;span style="font-style:italic">&amp;#34;AABBCC&amp;#34;&lt;/span>,
-&lt;span style="font-weight:bold">&amp;#34;~&amp;#34;&lt;/span>:&lt;span style="font-style:italic">&amp;#34;%topic%/POWER1&amp;#34;&lt;/span>,
-&lt;span style="font-weight:bold">&amp;#34;cmd_t&amp;#34;&lt;/span>: &lt;span style="font-style:italic">&amp;#34;cmnd/~&amp;#34;&lt;/span>,
-&lt;span style="font-weight:bold">&amp;#34;pl_off&amp;#34;&lt;/span>: &lt;span style="font-style:italic">&amp;#34;OFF&amp;#34;&lt;/span>,
-&lt;span style="font-weight:bold">&amp;#34;pl_on&amp;#34;&lt;/span>: &lt;span style="font-style:italic">&amp;#34;ON&amp;#34;&lt;/span>,
-&lt;span style="font-weight:bold">&amp;#34;stat_t&amp;#34;&lt;/span>: &lt;span style="font-style:italic">&amp;#34;stat/~&amp;#34;&lt;/span>,
-&lt;span style="font-weight:bold">&amp;#34;avty_t&amp;#34;&lt;/span>: &lt;span style="font-style:italic">&amp;#34;tele/%topic%/LWT&amp;#34;&lt;/span>,
-&lt;span style="font-weight:bold">&amp;#34;pl_avail&amp;#34;&lt;/span>: &lt;span style="font-style:italic">&amp;#34;Online&amp;#34;&lt;/span>,
-&lt;span style="font-weight:bold">&amp;#34;pl_not_avail&amp;#34;&lt;/span>: &lt;span style="font-style:italic">&amp;#34;Offline&amp;#34;&lt;/span>,
-&lt;span style="font-weight:bold">&amp;#34;pct_cmd_t&amp;#34;&lt;/span>: &lt;span style="font-style:italic">&amp;#34;cmnd/%topic%/tuyasend4&amp;#34;&lt;/span>,
-&lt;span style="font-weight:bold">&amp;#34;pct_cmd_tpl&amp;#34;&lt;/span>: &lt;span style="font-style:italic">&amp;#34;{%set v=value|int%}{%if v&amp;lt;=25%}3,0{%elif v&amp;lt;=50%}3,1{%elif v&amp;lt;=75%}3,2{%elif v&amp;lt;=100%}3,3{%endif%}&amp;#34;&lt;/span>,
-&lt;span style="font-weight:bold">&amp;#34;pct_stat_t&amp;#34;&lt;/span>: &lt;span style="font-style:italic">&amp;#34;stat/%topic%/speed&amp;#34;&lt;/span>,
-&lt;span style="font-weight:bold">&amp;#34;dev&amp;#34;&lt;/span>: {
-&lt;span style="font-weight:bold">&amp;#34;cns&amp;#34;&lt;/span>: [
-[
-&lt;span style="font-style:italic">&amp;#34;mac&amp;#34;&lt;/span>,
-&lt;span style="font-style:italic">&amp;#34;%macaddr%&amp;#34;&lt;/span>
-]
-]
-}
-}
-&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;strong>Note:&lt;/strong> The &lt;code>dev&lt;/code> portion of the payload is the &lt;a href="https://www.home-assistant.io/integrations/fan.mqtt/#device">magic that convinces Home Assistant to combine the multiple entities under once device&lt;/a>. Without that portion of the document, you will still have a properly configured DS03, but it will exist as an &amp;lsquo;orphaned&amp;rsquo; entity that belongs to no device!&lt;/p>
-&lt;p>All that&amp;rsquo;s left is to enable &lt;code>rule2&lt;/code> and then trigger it:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-fallback" data-lang="fallback">rule2 1
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>reference - Category - karl</title><link>https://karlquinsland.com/categories/reference/</link><description>reference - Category - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 12 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/categories/reference/" rel="self" type="application/rss+xml"/><item><title>Fixing Home Assistant discovery with Tasmota on the Treatlife DS03</title><link>https://karlquinsland.com/treatlife-ds03-tasmota-autoconfig-with-homeassistant/</link><pubDate>Wed, 12 May 2021 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/treatlife-ds03-tasmota-autoconfig-with-homeassistant/</guid><description><![CDATA[<p><strong>UPDATE:</strong> (2021-09-19): Multiple have gotten in touch with me seeking some support with this post. At present, there is a <a href="https://github.com/arendst/Tasmota/issues/12684#event-5035253885" target="_blank" rel="noopener noreffer">bug</a> with the Tasmota 9.5.0 release which breaks the automation outlined below. If you are having trouble getting the steps below to work <strong><em>either use Tasmota 9.4 or the latest development release of tasmota 9.5 if you&rsquo;re going to continue on with this post!</em></strong></p>
+<hr>
+<p>The Treatlife DS03 is one of only a few Tasmota compatible ceiling fan controllers available in the US. It&rsquo;s internal architecture splits the task of dimming the lights and switching the fan speed electronics from communicating over the network.</p>
+<p>A very resource constrained ESP8266 module handles the network comms while a dedicated microcontroller running it&rsquo;s own software manages the user-facing buttons/indicator-lights as well as dimming the light and adjusting the fan speed. The two components communicate over a simple UART.</p>
+<p>This is a totally reasonable way to build such a device, but for reasons that I don&rsquo;t fully understand, Tasmota does not publish a completely functional <a href="https://www.home-assistant.io/docs/mqtt/discovery/" target="_blank" rel="noopener noreffer">auto-configuration</a> payload for Home Assistant.</p>
+<p>Home Assistant automatically discovers the full light/dimmer capabilities of the DS03, but for some reason does not see that the DS03 is capable of running a fan at 4 different speeds; Home Assistant only allows for turning the fan on/off.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        The default auto-configuration leads Home Assistant to believe the fan can only be switched on/off.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>The <a href="https://templates.blakadder.com/treatlife_DS03.html" target="_blank" rel="noopener noreffer">existing</a> guides on <a href="https://www.digiblur.com/2020/07/the-tasmota-fan-controller-ive-been.html" target="_blank" rel="noopener noreffer">how to flash the device</a> with Tasmota and integrate it with Home Assistant all work around this limitation by <em><em>manually</em></em> configuring Home Assistant to see the device as a multi-speed fan 🤦.</p>
+<p>I&rsquo;m not a huge fan of doing things manually, especially when there&rsquo;s a well documented and robust protocol designed to make manual configuration unnecessary! Why ignore the almost completely working auto-configuration in favor of manual configuration? Why not just fix the auto-config payload so Home Assistant exposes the full functionality of the device?</p>
+<p>Both of the above guides were written long before <a href="https://www.home-assistant.io/blog/2021/03/03/release-20213/#fan-speeds-100" target="_blank" rel="noopener noreffer">Home Assistant gained support</a> for fans with more than 3 speeds so even if I were to configure Home Assistant with a copy their example YAML, I&rsquo;d <em>still</em> be missing the ability to control the 4th speed!</p>
+<h2 id="how">How</h2>
+<p>In short, Tasmota supports some basic scripting, called <a href="https://tasmota.github.io/docs/Rules/" target="_blank" rel="noopener noreffer">rules</a>. They work exactly as you&rsquo;re thinking: On <code>$someEvent</code> do <a href="https://tasmota.github.io/docs/Commands/" target="_blank" rel="noopener noreffer"><code>$someAction</code></a>. One of the actions allows the Tasmota device to publish a message to a MQTT topic. I&rsquo;m going to have the DS03 broadcast a <em>proper</em> auto-configuration message to Home Assistant.</p>
+<p>The technique is basically the same one outlined in <a href="https://blakadder.com/pir-in-tasmota-integration/" target="_blank" rel="noopener noreffer">this</a> article, but I&rsquo;m posting this to document a few of the subtle differences in my approach.</p>
+<p>I&rsquo;ll assume that you&rsquo;ve successfully flashed your DS03 with Tasmota and have already configured the module and issued the necessary <code>ledtable</code> commands. You will also need the native <a href="https://www.home-assistant.io/integrations/tasmota/" target="_blank" rel="noopener noreffer">Tasmota</a> integration installed.</p>
+<p>If you&rsquo;re following either the blakadder or digiblur guides linked above, stop at the step where you&rsquo;re meant to configure <code>rule1</code>.</p>
+<p>Issue a slightly modified rule:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">Rule1 on TuyaReceived#Data=55AA03070005030400010016 do publish2 stat/%topic%/speed 25 endon
+    on TuyaReceived#Data=55AA03070005030400010117 do publish2 stat/%topic%/speed 50 endon
+    on TuyaReceived#Data=55AA03070005030400010218 do publish2 stat/%topic%/speed 75 endon
+    on TuyaReceived#Data=55AA03070005030400010319 do publish2 stat/%topic%/speed 100 endon
+</code></pre></td></tr></table>
+</div>
+</div><p>This tells Tasmota to publish an integer speed (25,50,75,100) when it receives a specific packet from the dedicated MCU over th UART.</p>
+<p>Then, issue a second rule to actually publish the configuration data:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">rule2 on SetOption19#Data=OFF do publish2 homeassistant/fan/%macaddr%/config {&#34;uniq_id&#34;:&#34;AABBCC&#34;,&#34;~&#34;:&#34;%topic%/POWER1&#34;,&#34;cmd_t&#34;:&#34;cmnd/~&#34;,&#34;pl_off&#34;:&#34;OFF&#34;,&#34;pl_on&#34;:&#34;ON&#34;,&#34;stat_t&#34;:&#34;stat/~&#34;,&#34;avty_t&#34;:&#34;tele/%topic%/LWT&#34;,&#34;pl_avail&#34;:&#34;Online&#34;,&#34;pl_not_avail&#34;:&#34;Offline&#34;,&#34;pct_cmd_t&#34;:&#34;cmnd/%topic%/tuyasend4&#34;,&#34;pct_cmd_tpl&#34;:&#34;{%set v=value|int%}{%if v&lt;=25%}3,0{%elif v&lt;=50%}3,1{%elif v&lt;=75%}3,2{%elif v&lt;=100%}3,3{%endif%}&#34;,&#34;pct_stat_t&#34;:&#34;stat/%topic%/speed&#34;,&#34;dev&#34;:{&#34;cns&#34;:[[&#34;mac&#34;,&#34;%macaddr%&#34;]]}} endon
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>Note:</strong> You&rsquo;ll probably want to modify the above payload so the occurrences of the placeholder string <code>AABBCC</code> are replaced with the last 6 characters of your own device&rsquo;s MAC address!</p>
+<p>For readability, here&rsquo;s the unminified JSON:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="p">{</span>
+  <span class="nt">&#34;uniq_id&#34;</span><span class="p">:</span> <span class="s2">&#34;AABBCC&#34;</span><span class="p">,</span>
+  <span class="nt">&#34;~&#34;</span><span class="p">:</span><span class="s2">&#34;%topic%/POWER1&#34;</span><span class="p">,</span>
+  <span class="nt">&#34;cmd_t&#34;</span><span class="p">:</span> <span class="s2">&#34;cmnd/~&#34;</span><span class="p">,</span>
+  <span class="nt">&#34;pl_off&#34;</span><span class="p">:</span> <span class="s2">&#34;OFF&#34;</span><span class="p">,</span>
+  <span class="nt">&#34;pl_on&#34;</span><span class="p">:</span> <span class="s2">&#34;ON&#34;</span><span class="p">,</span>
+  <span class="nt">&#34;stat_t&#34;</span><span class="p">:</span> <span class="s2">&#34;stat/~&#34;</span><span class="p">,</span>
+  <span class="nt">&#34;avty_t&#34;</span><span class="p">:</span> <span class="s2">&#34;tele/%topic%/LWT&#34;</span><span class="p">,</span>
+  <span class="nt">&#34;pl_avail&#34;</span><span class="p">:</span> <span class="s2">&#34;Online&#34;</span><span class="p">,</span>
+  <span class="nt">&#34;pl_not_avail&#34;</span><span class="p">:</span> <span class="s2">&#34;Offline&#34;</span><span class="p">,</span>
+  <span class="nt">&#34;pct_cmd_t&#34;</span><span class="p">:</span> <span class="s2">&#34;cmnd/%topic%/tuyasend4&#34;</span><span class="p">,</span>
+  <span class="nt">&#34;pct_cmd_tpl&#34;</span><span class="p">:</span> <span class="s2">&#34;{%set v=value|int%}{%if v&lt;=25%}3,0{%elif v&lt;=50%}3,1{%elif v&lt;=75%}3,2{%elif v&lt;=100%}3,3{%endif%}&#34;</span><span class="p">,</span>
+  <span class="nt">&#34;pct_stat_t&#34;</span><span class="p">:</span> <span class="s2">&#34;stat/%topic%/speed&#34;</span><span class="p">,</span>
+  <span class="nt">&#34;dev&#34;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&#34;cns&#34;</span><span class="p">:</span> <span class="p">[</span>
+      <span class="p">[</span>
+        <span class="s2">&#34;mac&#34;</span><span class="p">,</span>
+        <span class="s2">&#34;%macaddr%&#34;</span>
+      <span class="p">]</span>
+    <span class="p">]</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p><strong>Note:</strong> The <code>dev</code> portion of the payload is the <a href="https://www.home-assistant.io/integrations/fan.mqtt/#device" target="_blank" rel="noopener noreffer">magic that convinces Home Assistant to combine the multiple entities under once device</a>. Without that portion of the document, you will still have a properly configured DS03, but it will exist as an &lsquo;orphaned&rsquo; entity that belongs to no device!</p>
+<p>All that&rsquo;s left is to enable <code>rule2</code> and then trigger it:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">rule2 1
 so19 0
-&lt;/code>&lt;/pre>&lt;/div>&lt;p>Altogether, It&amp;rsquo;ll look something like this:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-fallback" data-lang="fallback">18:23:54.140 CMD: Rule1 on TuyaReceived#Data=55AA03070005030400010016 do publish2 stat/%topic%/speed 25 endon on TuyaReceived#Data=55AA03070005030400010117 do publish2 stat/%topic%/speed 50 endon on TuyaReceived#Data=55AA03070005030400010218 do publish2 stat/%topic%/speed 75 endon on TuyaReceived#Data=55AA03070005030400010319 do publish2 stat/%topic%/speed 100 endon
+</code></pre></td></tr></table>
+</div>
+</div><p>Altogether, It&rsquo;ll look something like this:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">18:23:54.140 CMD: Rule1 on TuyaReceived#Data=55AA03070005030400010016 do publish2 stat/%topic%/speed 25 endon on TuyaReceived#Data=55AA03070005030400010117 do publish2 stat/%topic%/speed 50 endon on TuyaReceived#Data=55AA03070005030400010218 do publish2 stat/%topic%/speed 75 endon on TuyaReceived#Data=55AA03070005030400010319 do publish2 stat/%topic%/speed 100 endon
 18:23:54.149 RUL: Stored uncompressed, would compress from 344 to 98 (-72%)
-18:23:54.155 MQT: stat/living_room_ceiling_fan/RESULT = {&amp;#34;Rule1&amp;#34;:{&amp;#34;State&amp;#34;:&amp;#34;ON&amp;#34;,&amp;#34;Once&amp;#34;:&amp;#34;OFF&amp;#34;,&amp;#34;StopOnError&amp;#34;:&amp;#34;OFF&amp;#34;,&amp;#34;Length&amp;#34;:344,&amp;#34;Free&amp;#34;:167,&amp;#34;Rules&amp;#34;:&amp;#34;on TuyaReceived#Data=55AA03070005030400010016 do publish2 stat/%topic%/speed 25 endon on TuyaReceived#Data=55AA03070005030400010117 do publish2 stat/%topic%/speed 50 endon on TuyaReceived#Data=55AA03070005030400010218 do publish2 stat/%topic%/speed 75 endon on TuyaReceived#Data=55AA03070005030400010319 do publish2 stat/%topic%/speed 100 endon&amp;#34;}}
-18:24:05.061 CMD: rule2 on SetOption19#Data=OFF do publish2 homeassistant/fan/%macaddr%/config {&amp;#34;uniq_id&amp;#34;:&amp;#34;AABBCC&amp;#34;,&amp;#34;~&amp;#34;:&amp;#34;%topic%/POWER1&amp;#34;,&amp;#34;cmd_t&amp;#34;:&amp;#34;cmnd/~&amp;#34;,&amp;#34;pl_off&amp;#34;:&amp;#34;OFF&amp;#34;,&amp;#34;pl_on&amp;#34;:&amp;#34;ON&amp;#34;,&amp;#34;stat_t&amp;#34;:&amp;#34;stat/~&amp;#34;,&amp;#34;avty_t&amp;#34;:&amp;#34;tele/%topic%/LWT&amp;#34;,&amp;#34;pl_avail&amp;#34;:&amp;#34;Online&amp;#34;,&amp;#34;pl_not_avail&amp;#34;:&amp;#34;Offline&amp;#34;,&amp;#34;pct_cmd_t&amp;#34;:&amp;#34;cmnd/%topic%/tuyasend4&amp;#34;,&amp;#34;pct_cmd_tpl&amp;#34;:&amp;#34;{%set v=value|int%}{%if v&amp;lt;=25%}3,0{%elif v&amp;lt;=50%}3,1{%elif v&amp;lt;=75%}3,2{%elif v&amp;lt;=100%}3,3{%endif%}&amp;#34;,&amp;#34;pct_stat_t&amp;#34;:&amp;#34;stat/%topic%/speed&amp;#34;,&amp;#34;dev&amp;#34;:{&amp;#34;cns&amp;#34;:[[&amp;#34;mac&amp;#34;,&amp;#34;%macaddr%&amp;#34;]]}} endon
+18:23:54.155 MQT: stat/living_room_ceiling_fan/RESULT = {&#34;Rule1&#34;:{&#34;State&#34;:&#34;ON&#34;,&#34;Once&#34;:&#34;OFF&#34;,&#34;StopOnError&#34;:&#34;OFF&#34;,&#34;Length&#34;:344,&#34;Free&#34;:167,&#34;Rules&#34;:&#34;on TuyaReceived#Data=55AA03070005030400010016 do publish2 stat/%topic%/speed 25 endon on TuyaReceived#Data=55AA03070005030400010117 do publish2 stat/%topic%/speed 50 endon on TuyaReceived#Data=55AA03070005030400010218 do publish2 stat/%topic%/speed 75 endon on TuyaReceived#Data=55AA03070005030400010319 do publish2 stat/%topic%/speed 100 endon&#34;}}
+
+18:24:05.061 CMD: rule2 on SetOption19#Data=OFF do publish2 homeassistant/fan/%macaddr%/config {&#34;uniq_id&#34;:&#34;AABBCC&#34;,&#34;~&#34;:&#34;%topic%/POWER1&#34;,&#34;cmd_t&#34;:&#34;cmnd/~&#34;,&#34;pl_off&#34;:&#34;OFF&#34;,&#34;pl_on&#34;:&#34;ON&#34;,&#34;stat_t&#34;:&#34;stat/~&#34;,&#34;avty_t&#34;:&#34;tele/%topic%/LWT&#34;,&#34;pl_avail&#34;:&#34;Online&#34;,&#34;pl_not_avail&#34;:&#34;Offline&#34;,&#34;pct_cmd_t&#34;:&#34;cmnd/%topic%/tuyasend4&#34;,&#34;pct_cmd_tpl&#34;:&#34;{%set v=value|int%}{%if v&lt;=25%}3,0{%elif v&lt;=50%}3,1{%elif v&lt;=75%}3,2{%elif v&lt;=100%}3,3{%endif%}&#34;,&#34;pct_stat_t&#34;:&#34;stat/%topic%/speed&#34;,&#34;dev&#34;:{&#34;cns&#34;:[[&#34;mac&#34;,&#34;%macaddr%&#34;]]}} endon
 18:24:05.093 RUL: Stored uncompressed, would compress from 473 to 351 (-26%)
-18:24:05.100 MQT: stat/living_room_ceiling_fan/RESULT = {&amp;#34;Rule2&amp;#34;:{&amp;#34;State&amp;#34;:&amp;#34;OFF&amp;#34;,&amp;#34;Once&amp;#34;:&amp;#34;OFF&amp;#34;,&amp;#34;StopOnError&amp;#34;:&amp;#34;OFF&amp;#34;,&amp;#34;Length&amp;#34;:473,&amp;#34;Free&amp;#34;:38,&amp;#34;Rules&amp;#34;:&amp;#34;on SetOption19#Data=OFF do publish2 homeassistant/fan/%macaddr%/config {\&amp;#34;uniq_id\&amp;#34;:\&amp;#34;AABBCC\&amp;#34;,\&amp;#34;~\&amp;#34;:\&amp;#34;%topic%/POWER1\&amp;#34;,\&amp;#34;cmd_t\&amp;#34;:\&amp;#34;cmnd/~\&amp;#34;,\&amp;#34;pl_off\&amp;#34;:\&amp;#34;OFF\&amp;#34;,\&amp;#34;pl_on\&amp;#34;:\&amp;#34;ON\&amp;#34;,\&amp;#34;stat_t\&amp;#34;:\&amp;#34;stat/~\&amp;#34;,\&amp;#34;avty_t\&amp;#34;:\&amp;#34;tele/%topic%/LWT\&amp;#34;,\&amp;#34;pl_avail\&amp;#34;:\&amp;#34;Online\&amp;#34;,\&amp;#34;pl_not_avail\&amp;#34;:\&amp;#34;Offline\&amp;#34;,\&amp;#34;pct_cmd_t\&amp;#34;:\&amp;#34;cmnd/%topic%/tuyasend4\&amp;#34;,\&amp;#34;pct_cmd_tpl\&amp;#34;:\&amp;#34;{%set v=value|int%}{%if v&amp;lt;=25%}3,0{%elif v&amp;lt;=50%}3,1{%elif v&amp;lt;=75%}3,2{%elif v&amp;lt;=100%}3,3{%endif%}\&amp;#34;,\&amp;#34;pct_stat_t\&amp;#34;:\&amp;#34;stat/%topic%/speed\&amp;#34;,\&amp;#34;dev\&amp;#34;:{\&amp;#34;cns\&amp;#34;:[[\&amp;#34;mac\&amp;#34;,\&amp;#34;%macaddr%\&amp;#34;]]}} endon&amp;#34;}}
+18:24:05.100 MQT: stat/living_room_ceiling_fan/RESULT = {&#34;Rule2&#34;:{&#34;State&#34;:&#34;OFF&#34;,&#34;Once&#34;:&#34;OFF&#34;,&#34;StopOnError&#34;:&#34;OFF&#34;,&#34;Length&#34;:473,&#34;Free&#34;:38,&#34;Rules&#34;:&#34;on SetOption19#Data=OFF do publish2 homeassistant/fan/%macaddr%/config {\&#34;uniq_id\&#34;:\&#34;AABBCC\&#34;,\&#34;~\&#34;:\&#34;%topic%/POWER1\&#34;,\&#34;cmd_t\&#34;:\&#34;cmnd/~\&#34;,\&#34;pl_off\&#34;:\&#34;OFF\&#34;,\&#34;pl_on\&#34;:\&#34;ON\&#34;,\&#34;stat_t\&#34;:\&#34;stat/~\&#34;,\&#34;avty_t\&#34;:\&#34;tele/%topic%/LWT\&#34;,\&#34;pl_avail\&#34;:\&#34;Online\&#34;,\&#34;pl_not_avail\&#34;:\&#34;Offline\&#34;,\&#34;pct_cmd_t\&#34;:\&#34;cmnd/%topic%/tuyasend4\&#34;,\&#34;pct_cmd_tpl\&#34;:\&#34;{%set v=value|int%}{%if v&lt;=25%}3,0{%elif v&lt;=50%}3,1{%elif v&lt;=75%}3,2{%elif v&lt;=100%}3,3{%endif%}\&#34;,\&#34;pct_stat_t\&#34;:\&#34;stat/%topic%/speed\&#34;,\&#34;dev\&#34;:{\&#34;cns\&#34;:[[\&#34;mac\&#34;,\&#34;%macaddr%\&#34;]]}} endon&#34;}}
 18:24:07.494 CMD: rule2 1
-18:24:07.503 MQT: stat/living_room_ceiling_fan/RESULT = {&amp;#34;Rule2&amp;#34;:{&amp;#34;State&amp;#34;:&amp;#34;ON&amp;#34;,&amp;#34;Once&amp;#34;:&amp;#34;OFF&amp;#34;,&amp;#34;StopOnError&amp;#34;:&amp;#34;OFF&amp;#34;,&amp;#34;Length&amp;#34;:473,&amp;#34;Free&amp;#34;:38,&amp;#34;Rules&amp;#34;:&amp;#34;on SetOption19#Data=OFF do publish2 homeassistant/fan/%macaddr%/config {\&amp;#34;uniq_id\&amp;#34;:\&amp;#34;AABBCC\&amp;#34;,\&amp;#34;~\&amp;#34;:\&amp;#34;%topic%/POWER1\&amp;#34;,\&amp;#34;cmd_t\&amp;#34;:\&amp;#34;cmnd/~\&amp;#34;,\&amp;#34;pl_off\&amp;#34;:\&amp;#34;OFF\&amp;#34;,\&amp;#34;pl_on\&amp;#34;:\&amp;#34;ON\&amp;#34;,\&amp;#34;stat_t\&amp;#34;:\&amp;#34;stat/~\&amp;#34;,\&amp;#34;avty_t\&amp;#34;:\&amp;#34;tele/%topic%/LWT\&amp;#34;,\&amp;#34;pl_avail\&amp;#34;:\&amp;#34;Online\&amp;#34;,\&amp;#34;pl_not_avail\&amp;#34;:\&amp;#34;Offline\&amp;#34;,\&amp;#34;pct_cmd_t\&amp;#34;:\&amp;#34;cmnd/%topic%/tuyasend4\&amp;#34;,\&amp;#34;pct_cmd_tpl\&amp;#34;:\&amp;#34;{%set v=value|int%}{%if v&amp;lt;=25%}3,0{%elif v&amp;lt;=50%}3,1{%elif v&amp;lt;=75%}3,2{%elif v&amp;lt;=100%}3,3{%endif%}\&amp;#34;,\&amp;#34;pct_stat_t\&amp;#34;:\&amp;#34;stat/%topic%/speed\&amp;#34;,\&amp;#34;dev\&amp;#34;:{\&amp;#34;cns\&amp;#34;:[[\&amp;#34;mac\&amp;#34;,\&amp;#34;%macaddr%\&amp;#34;]]}} endon&amp;#34;}}
+18:24:07.503 MQT: stat/living_room_ceiling_fan/RESULT = {&#34;Rule2&#34;:{&#34;State&#34;:&#34;ON&#34;,&#34;Once&#34;:&#34;OFF&#34;,&#34;StopOnError&#34;:&#34;OFF&#34;,&#34;Length&#34;:473,&#34;Free&#34;:38,&#34;Rules&#34;:&#34;on SetOption19#Data=OFF do publish2 homeassistant/fan/%macaddr%/config {\&#34;uniq_id\&#34;:\&#34;AABBCC\&#34;,\&#34;~\&#34;:\&#34;%topic%/POWER1\&#34;,\&#34;cmd_t\&#34;:\&#34;cmnd/~\&#34;,\&#34;pl_off\&#34;:\&#34;OFF\&#34;,\&#34;pl_on\&#34;:\&#34;ON\&#34;,\&#34;stat_t\&#34;:\&#34;stat/~\&#34;,\&#34;avty_t\&#34;:\&#34;tele/%topic%/LWT\&#34;,\&#34;pl_avail\&#34;:\&#34;Online\&#34;,\&#34;pl_not_avail\&#34;:\&#34;Offline\&#34;,\&#34;pct_cmd_t\&#34;:\&#34;cmnd/%topic%/tuyasend4\&#34;,\&#34;pct_cmd_tpl\&#34;:\&#34;{%set v=value|int%}{%if v&lt;=25%}3,0{%elif v&lt;=50%}3,1{%elif v&lt;=75%}3,2{%elif v&lt;=100%}3,3{%endif%}\&#34;,\&#34;pct_stat_t\&#34;:\&#34;stat/%topic%/speed\&#34;,\&#34;dev\&#34;:{\&#34;cns\&#34;:[[\&#34;mac\&#34;,\&#34;%macaddr%\&#34;]]}} endon&#34;}}
+
 18:24:10.362 CMD: so19 0
-18:24:10.369 MQT: stat/living_room_ceiling_fan/RESULT = {&amp;#34;SetOption19&amp;#34;:&amp;#34;OFF&amp;#34;}
-18:24:10.414 RUL: SETOPTION19#DATA=OFF performs &amp;#34;publish2 homeassistant/fan/DDEEFFAABBCC/config {&amp;#34;uniq_id&amp;#34;:&amp;#34;AABBCC&amp;#34;,&amp;#34;~&amp;#34;:&amp;#34;living_room_ceiling_...
-18:24:10.421 MQT: home Assistant/fan/DDEEFFAABBCC/config = {&amp;#34;uniq_id&amp;#34;:&amp;#34;AABBCC&amp;#34;,&amp;#34;~&amp;#34;:&amp;#34;living_room_ceiling_fan/POWER1&amp;#34;,&amp;#34;cmd_t&amp;#34;:&amp;#34;cmnd/~&amp;#34;,&amp;#34;pl_off&amp;#34;:&amp;#34;OFF&amp;#34;,&amp;#34;pl_on&amp;#34;:&amp;#34;ON&amp;#34;,&amp;#34;stat_t&amp;#34;:&amp;#34;stat/~&amp;#34;,&amp;#34;avty_t&amp;#34;:&amp;#34;tele/living_room_ceiling_fan/LWT&amp;#34;,&amp;#34;pl_avail&amp;#34;:&amp;#34;Online&amp;#34;,&amp;#34;pl_not_avail&amp;#34;:&amp;#34;Offline&amp;#34;,&amp;#34;pct_cmd_t&amp;#34;:&amp;#34;cmnd/living_room_ceiling_fan/tuyasend4&amp;#34;,&amp;#34;pct_cmd_tpl&amp;#34;:&amp;#34;{%set v=value|int%}{%if v&amp;lt;=25%}3,0{%elif v&amp;lt;=50%}3,1{%elif v&amp;lt;=75%}3,2{%elif v&amp;lt;=100%}3,3{%endif%}&amp;#34;,&amp;#34;pct_stat_t&amp;#34;:&amp;#34;stat/living_room_ceiling_fan/speed&amp;#34;,&amp;#34;dev&amp;#34;:{&amp;#34;cns&amp;#34;:[[&amp;#34;mac&amp;#34;,&amp;#34;DDEEFFAABBCC&amp;#34;]]}} (retained)
+18:24:10.369 MQT: stat/living_room_ceiling_fan/RESULT = {&#34;SetOption19&#34;:&#34;OFF&#34;}
+18:24:10.414 RUL: SETOPTION19#DATA=OFF performs &#34;publish2 homeassistant/fan/DDEEFFAABBCC/config {&#34;uniq_id&#34;:&#34;AABBCC&#34;,&#34;~&#34;:&#34;living_room_ceiling_...
+18:24:10.421 MQT: home Assistant/fan/DDEEFFAABBCC/config = {&#34;uniq_id&#34;:&#34;AABBCC&#34;,&#34;~&#34;:&#34;living_room_ceiling_fan/POWER1&#34;,&#34;cmd_t&#34;:&#34;cmnd/~&#34;,&#34;pl_off&#34;:&#34;OFF&#34;,&#34;pl_on&#34;:&#34;ON&#34;,&#34;stat_t&#34;:&#34;stat/~&#34;,&#34;avty_t&#34;:&#34;tele/living_room_ceiling_fan/LWT&#34;,&#34;pl_avail&#34;:&#34;Online&#34;,&#34;pl_not_avail&#34;:&#34;Offline&#34;,&#34;pct_cmd_t&#34;:&#34;cmnd/living_room_ceiling_fan/tuyasend4&#34;,&#34;pct_cmd_tpl&#34;:&#34;{%set v=value|int%}{%if v&lt;=25%}3,0{%elif v&lt;=50%}3,1{%elif v&lt;=75%}3,2{%elif v&lt;=100%}3,3{%endif%}&#34;,&#34;pct_stat_t&#34;:&#34;stat/living_room_ceiling_fan/speed&#34;,&#34;dev&#34;:{&#34;cns&#34;:[[&#34;mac&#34;,&#34;DDEEFFAABBCC&#34;]]}} (retained)
 18:24:10.509 LOG: Home Assistant MQTT Discovery disabled.
-&lt;/code>&lt;/pre>&lt;/div>&lt;p>If everything worked correctly, Home Assistant should now show a single device in the &lt;a href="https://developers.home-assistant.io/docs/device_registry_index/">device registry&lt;/a> with a dimmable light entity and a variable-speed fan entity!&lt;/p>
-&lt;figure >
-&lt;img src="https://karlquinsland.com/2021/05/fixing-home-assistant-discovery-with-tasmota-on-the-treatlife-ds03/images/ha_mqtt_fan.jpg" alt="Screenshot showing DS03 device entity in Home Assistant with the multi-speed MQTT fan." />
-&lt;figcaption>
-&lt;p>
-The DS03 device entity after the variable speed configuration document is received by Home Assistant.
-&lt;/p>
-&lt;/figcaption>
-&lt;/figure>
-&lt;p>&lt;strong>Note:&lt;/strong> Depending on weather or not Home Assistant has previously &amp;lsquo;seen&amp;rsquo; your DS03 via the native native &lt;a href="https://www.home-assistant.io/integrations/tasmota/">Tasmota&lt;/a> integration, you may see &lt;em>three&lt;/em> entities on the device page; the light/dimmer, the switch/fan and the variable speed fan. Just disable the &amp;lsquo;basic&amp;rsquo; fan switch entity that Tasmota publishes as discussed below.&lt;/p>
-&lt;h4 id="updating-a-ds03-thats-already-integrated-with-home-assistant">Updating a DS03 that&amp;rsquo;s already integrated with Home Assistant&lt;/h4>
-&lt;p>If you&amp;rsquo;ve already got a DS03 that&amp;rsquo;s integrated with Home Assistant, you can still get the device to properly auto-configure. Just remove the YAML configuration for both the light and fan entities.&lt;/p>
-&lt;p>You will likely need to restart HA to make sure all traces of the manual configurations are removed from the &lt;a href="https://developers.home-assistant.io/docs/entity_registry_index/">entity registry&lt;/a>.&lt;/p>
-&lt;p>Once Home Assistant has forgotten all about the manual entities and the native &lt;a href="https://www.home-assistant.io/integrations/tasmota/">Tasmota&lt;/a> integration in installed, all of the MQTT-connected Tasmota devices &lt;em>should&lt;/em> get picked up and configured in Home Assistant. At this point, you should have the single device with two entities; dimmable light and binary-switch fan as shown in the first picture on this post.&lt;/p>
-&lt;p>If your DS03 was already configured with Home Assistant via the Tasmota integration, just disable the simple switch entity that Tasmota configures Home Assistant with:&lt;/p>
-&lt;figure >
-&lt;img src="https://karlquinsland.com/2021/05/fixing-home-assistant-discovery-with-tasmota-on-the-treatlife-ds03/images/ha_disable_default_entity.jpg" alt="Screenshot showing Home Assistant UX for disabling the default binary switch entity" />
-&lt;figcaption>
-&lt;p>
-Toggle &amp;#39;Enable entity&amp;#39; off to hide the basic binary switch that Tasmota configured Home Assistant with.
-&lt;/p>
-&lt;/figcaption>
-&lt;/figure>
-&lt;p>After disabling the switch/fan entity, trigger &lt;code>rule2&lt;/code> again and refresh the device entity page in Home Assistant to confirm that the device now has a &lt;code>MQTT Fan&lt;/code> entity if it wasn&amp;rsquo;t there already.&lt;/p>
-&lt;p>Enjoy :)&lt;/p>
-&lt;h4 id="why-use-setoption19off-as-the-trigger">Why use &lt;code>SetOption19:OFF&lt;/code> as the trigger?&lt;/h4>
-&lt;p>I run my MQTT broker on Kubernetes and do not have any persistance configured for that pod. This means that regardless of what retention settings a message was published with, every message on every topic is wiped out whenever the MQTT broker pod is rescheduled. As a result almost every device that Home Assistant monitors or controls via MQTT drifts into an &lt;code>Unavailable&lt;/code> state whenever I do any maintenance on my K8s cluster.&lt;/p>
-&lt;p>I&amp;rsquo;m not the &lt;a href="https://community.home-assistant.io/t/tasmota-going-offline-at-random-times/116299">only one&lt;/a> with &lt;a href="https://community.home-assistant.io/t/sonoff-tasmota-started-regularly-showing-unavailable-on-home-assistant/90157/83">this issue&lt;/a>, even if the cause is different.&lt;/p>
-&lt;p>To get around this, I have a small automation that pokes the Tasmota devices every hour and when Home Assistant starts up. Since the Home Assistant pod takes longer than the MQTT pod to initialize, having HA poke the devices on startup minimizes the time a given entity is &lt;code>Unavailable&lt;/code> in HA.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="font-weight:bold">alias&lt;/span>: Tasmotas Announce
-&lt;span style="font-weight:bold">description&lt;/span>: &lt;span style="font-style:italic">&amp;#39;Prevents devices from going Unavailable&amp;#39;&lt;/span>
-&lt;span style="font-weight:bold">trigger&lt;/span>:
-- &lt;span style="font-weight:bold">platform&lt;/span>: home Assistant
-&lt;span style="font-weight:bold">event&lt;/span>: start
-- &lt;span style="font-weight:bold">platform&lt;/span>: time_pattern
-&lt;span style="font-weight:bold">hours&lt;/span>: /1
-&lt;span style="font-weight:bold">condition&lt;/span>: []
-&lt;span style="font-weight:bold">action&lt;/span>:
-&lt;span style="font-style:italic"># For reasons that I don&amp;#39;t understand, different tasmota devices seem to &lt;/span>
-&lt;span style="font-style:italic"># subscribe to a different group topic. cmnd/tas vs tas/cmnd&lt;/span>
-&lt;span style="font-style:italic">##&lt;/span>
-- &lt;span style="font-weight:bold">service&lt;/span>: mqtt.publish
-&lt;span style="font-weight:bold">data&lt;/span>:
-&lt;span style="font-weight:bold">topic&lt;/span>: cmnd/tasmotas/SetOption19
-&lt;span style="font-weight:bold">payload&lt;/span>: &lt;span style="font-style:italic">&amp;#39;0&amp;#39;&lt;/span>
-- &lt;span style="font-weight:bold">service&lt;/span>: mqtt.publish
-&lt;span style="font-weight:bold">data&lt;/span>:
-&lt;span style="font-weight:bold">topic&lt;/span>: tasmotas/cmnd/SetOption19
-&lt;span style="font-weight:bold">payload&lt;/span>: &lt;span style="font-style:italic">&amp;#39;0&amp;#39;&lt;/span>
-&lt;span style="font-weight:bold">mode&lt;/span>: single
-&lt;/code>&lt;/pre>&lt;/div>&lt;p>You could probably work around this whole thing by changing the trigger for &lt;code>rule2&lt;/code> to something like &lt;code>on Mqtt#Connected publish2&lt;/code>. Or storing the configuration payload as a &lt;a href="https://tasmota.github.io/docs/Rules/#rule-variables">variable&lt;/a> so you could write multiple triggers for the same &lt;code>publish2 %mem1%&lt;/code> action 🤔.&lt;/p>
-&lt;h3 id="side-note-rules-crash">Side note: Rules Crash!&lt;/h3>
-&lt;p>While developing the configuration payload, I was able to reliably crash the ESP8266 module causing Tasmota to reboot. The crash / reboot symptoms are pretty similar to those outlined &lt;a href="https://tasmota.github.io/docs/Troubleshooting/#running-out-of-ram">here&lt;/a> so I assume that even though the rules &amp;ldquo;fit&amp;rdquo;, something about how the rule was parsed or the actions the rule drove caused the ESP to run out of RAM.&lt;/p>
-&lt;p>When I say &amp;ldquo;fit&amp;rdquo; I mean that I&amp;rsquo;d see lines like this in the console after configuring a test payload for &lt;code>rule2&lt;/code>:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-fallback" data-lang="fallback">MQT: stat/living_room_ceiling_fan/RESULT = {&amp;#34;Rule2&amp;#34;:{&amp;#34;State&amp;#34;:&amp;#34;ON&amp;#34;,...&amp;#34;Free&amp;#34;:9,&amp;#34;Rules&amp;#34;:&amp;#34;on ... endon&amp;#34;}}
-&lt;/code>&lt;/pre>&lt;/div>&lt;p>I could technically make the rule &lt;code>9&lt;/code> characters longer and it&amp;rsquo;d still fit&amp;hellip; right?&lt;/p>
-&lt;p>Not quite. Looking at the result from issuing the &lt;code>Rule1&lt;/code> command, it was clear that while &lt;code>rule2&lt;/code> would have an absolute maximum length of 511 characters (&lt;code>&amp;quot;Length&amp;quot;:344,&amp;quot;Free&amp;quot;:167&lt;/code>; 344+167=511) there was also a less well defined soft limit on rule length.&lt;/p>
-&lt;p>For some versions of my &lt;code>rule2&lt;/code> payload, I was able to solve the crashing just by switching to the &amp;lsquo;lite&amp;rsquo; version of Tasmota. While the &amp;lsquo;lite&amp;rsquo; version of Tasmota does work with Tuya MCU (&lt;code>USE_TUYA_MCU&lt;/code>), it &lt;a href="https://github.com/arendst/Tasmota/blob/v9.4.0/BUILDS.md">does &lt;em>not&lt;/em> support&lt;/a> Home Assistant configuration (&lt;code>USE_HOME_ASSISTANT&lt;/code>)!&lt;/p>
-&lt;p>After flashing back to the &amp;lsquo;regular&amp;rsquo; Tasmota build, I set out trying to compress the &lt;code>rule2&lt;/code> payload as much as possible so that it would still work &lt;em>and&lt;/em> not reliably crash the ESP8266 on the DS03.&lt;/p>
-&lt;p>After testing several things, I managed to get a working &lt;code>rule2&lt;/code> that didn&amp;rsquo;t reliably crash when triggered.&lt;/p></description></item><item><title>Two Tasmota rules</title><link>https://karlquinsland.com/2020/11/two-tasmota-rules/</link><pubDate>Fri, 20 Nov 2020 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/2020/11/two-tasmota-rules/</guid><description>&lt;p>&lt;a href="https://tasmota.github.io/">Tasmota&lt;/a> is an incredibly powerful alternative/open source firmware for the ever popular Espressif family of WiFi equipped microcontrollers.
-This does not need to be another post espousing it&amp;rsquo;s many awesome qualities, so just trust me on this; Tasmota is AWESOME.&lt;/p>
-&lt;p>Tasmota supports user configurable &lt;a href="https://tasmota.github.io/docs/Rules/">rules&lt;/a> which are simple commands wired into various device triggers.
-In short; a device running Tasmota gains some autonomy to react to events without needing to report the event to, and wait for commands from, a remote server.&lt;/p>
-&lt;p>I find the rules syntax to be a bit awkward and the list of practical examples feels like autodoc with a few practical examples sprinkled in.
-I have &lt;em>never&lt;/em> been able to craft a Tasmota rule without also consulting the list of &lt;a href="https://tasmota.github.io/docs/Commands/">commands&lt;/a>
-and doing a few searches through the github issues looking for issues/questions similar to mine.&lt;/p>
-&lt;p>This post is a simple &amp;ldquo;here&amp;rsquo;s how i did it&amp;rdquo; that I wish I had found when I needed to solve the problem.
-Hopefully this will save you some trouble!&lt;/p>
-&lt;h3 id="mr-coffee">Mr. Coffee&lt;/h3>
-&lt;p>A $15 &amp;lsquo;&lt;a href="https://tasmota.github.io/docs/devices/Sonoff-Pow/">smart relay&lt;/a>&amp;rsquo; is all that&amp;rsquo;s needed to turn a simple drip-over coffee maker into a remote-controllable coffee maker.
+</code></pre></td></tr></table>
+</div>
+</div><p>If everything worked correctly, Home Assistant should now show a single device in the <a href="https://developers.home-assistant.io/docs/device_registry_index/" target="_blank" rel="noopener noreffer">device registry</a> with a dimmable light entity and a variable-speed fan entity!</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        The DS03 device entity after the variable speed configuration document is received by Home Assistant.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p><strong>Note:</strong> Depending on weather or not Home Assistant has previously &lsquo;seen&rsquo; your DS03 via the native native <a href="https://www.home-assistant.io/integrations/tasmota/" target="_blank" rel="noopener noreffer">Tasmota</a> integration, you may see <em>three</em> entities on the device page; the light/dimmer, the switch/fan and the variable speed fan. Just disable the &lsquo;basic&rsquo; fan switch entity that Tasmota publishes as discussed below.</p>
+<h4 id="updating-a-ds03-thats-already-integrated-with-home-assistant">Updating a DS03 that&rsquo;s already integrated with Home Assistant</h4>
+<p>If you&rsquo;ve already got a DS03 that&rsquo;s integrated with Home Assistant, you can still get the device to properly auto-configure. Just remove the YAML configuration for both the light and fan entities.</p>
+<p>You will likely need to restart HA to make sure all traces of the manual configurations are removed from the <a href="https://developers.home-assistant.io/docs/entity_registry_index/" target="_blank" rel="noopener noreffer">entity registry</a>.</p>
+<p>Once Home Assistant has forgotten all about the manual entities and the native <a href="https://www.home-assistant.io/integrations/tasmota/" target="_blank" rel="noopener noreffer">Tasmota</a> integration in installed, all of the MQTT-connected Tasmota devices <em>should</em> get picked up and configured in Home Assistant. At this point, you should have the single device with two entities; dimmable light and binary-switch fan as shown in the first picture on this post.</p>
+<p>If your DS03 was already configured with Home Assistant via the Tasmota integration, just disable the simple switch entity that Tasmota configures Home Assistant with:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Toggle &#39;Enable entity&#39; off to hide the basic binary switch that Tasmota configured Home Assistant with.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>After disabling the switch/fan entity, trigger <code>rule2</code> again and refresh the device entity page in Home Assistant to confirm that the device now has a <code>MQTT Fan</code> entity if it wasn&rsquo;t there already.</p>
+<p>Enjoy :)</p>
+<h4 id="why-use-setoption19off-as-the-trigger">Why use <code>SetOption19:OFF</code> as the trigger?</h4>
+<p>I run my MQTT broker on Kubernetes and do not have any persistance configured for that pod. This means that regardless of what retention settings a message was published with, every message on every topic is wiped out whenever the MQTT broker pod is rescheduled. As a result almost every device that Home Assistant monitors or controls via MQTT drifts into an <code>Unavailable</code> state whenever I do any maintenance on my K8s cluster.</p>
+<p>I&rsquo;m not the <a href="https://community.home-assistant.io/t/tasmota-going-offline-at-random-times/116299" target="_blank" rel="noopener noreffer">only one</a> with <a href="https://community.home-assistant.io/t/sonoff-tasmota-started-regularly-showing-unavailable-on-home-assistant/90157/83" target="_blank" rel="noopener noreffer">this issue</a>, even if the cause is different.</p>
+<p>To get around this, I have a small automation that pokes the Tasmota devices every hour and when Home Assistant starts up. Since the Home Assistant pod takes longer than the MQTT pod to initialize, having HA poke the devices on startup minimizes the time a given entity is <code>Unavailable</code> in HA.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l">Tasmotas Announce</span><span class="w">
+</span><span class="w"></span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;Prevents devices from going Unavailable&#39;</span><span class="w">
+</span><span class="w"></span><span class="nt">trigger</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span>- <span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">home Assistant</span><span class="w">
+</span><span class="w">    </span><span class="nt">event</span><span class="p">:</span><span class="w"> </span><span class="l">start</span><span class="w">
+</span><span class="w">  </span>- <span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">time_pattern</span><span class="w">
+</span><span class="w">    </span><span class="nt">hours</span><span class="p">:</span><span class="w"> </span><span class="l">/1</span><span class="w">
+</span><span class="w"></span><span class="nt">condition</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+</span><span class="w"></span><span class="nt">action</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="c"># For reasons that I don&#39;t understand, different tasmota devices seem to </span><span class="w">
+</span><span class="w">  </span><span class="c">#     subscribe to a different group topic. cmnd/tas vs tas/cmnd</span><span class="w">
+</span><span class="w">  </span><span class="c">##</span><span class="w">
+</span><span class="w">  </span>- <span class="nt">service</span><span class="p">:</span><span class="w"> </span><span class="l">mqtt.publish</span><span class="w">
+</span><span class="w">    </span><span class="nt">data</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="nt">topic</span><span class="p">:</span><span class="w"> </span><span class="l">cmnd/tasmotas/SetOption19</span><span class="w">
+</span><span class="w">      </span><span class="nt">payload</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;0&#39;</span><span class="w">
+</span><span class="w">  </span>- <span class="nt">service</span><span class="p">:</span><span class="w"> </span><span class="l">mqtt.publish</span><span class="w">
+</span><span class="w">    </span><span class="nt">data</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="nt">topic</span><span class="p">:</span><span class="w"> </span><span class="l">tasmotas/cmnd/SetOption19</span><span class="w">
+</span><span class="w">      </span><span class="nt">payload</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;0&#39;</span><span class="w">
+</span><span class="w"></span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l">single</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><p>You could probably work around this whole thing by changing the trigger for <code>rule2</code> to something like <code>on Mqtt#Connected publish2</code>. Or storing the configuration payload as a <a href="https://tasmota.github.io/docs/Rules/#rule-variables" target="_blank" rel="noopener noreffer">variable</a> so you could write multiple triggers for the same <code>publish2 %mem1%</code> action 🤔.</p>
+<h3 id="side-note-rules-crash">Side note: Rules Crash!</h3>
+<p>While developing the configuration payload, I was able to reliably crash the ESP8266 module causing Tasmota to reboot. The crash / reboot symptoms are pretty similar to those outlined <a href="https://tasmota.github.io/docs/Troubleshooting/#running-out-of-ram" target="_blank" rel="noopener noreffer">here</a> so I assume that even though the rules &ldquo;fit&rdquo;, something about how the rule was parsed or the actions the rule drove caused the ESP to run out of RAM.</p>
+<p>When I say &ldquo;fit&rdquo; I mean that I&rsquo;d see lines like this in the console after configuring a test payload for <code>rule2</code>:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">MQT: stat/living_room_ceiling_fan/RESULT = {&#34;Rule2&#34;:{&#34;State&#34;:&#34;ON&#34;,...&#34;Free&#34;:9,&#34;Rules&#34;:&#34;on ... endon&#34;}}
+</code></pre></td></tr></table>
+</div>
+</div><p>I could technically make the rule <code>9</code> characters longer and it&rsquo;d still fit&hellip; right?</p>
+<p>Not quite. Looking at the result from issuing the <code>Rule1</code> command, it was clear that while <code>rule2</code> would have an absolute maximum length of 511 characters (<code>&quot;Length&quot;:344,&quot;Free&quot;:167</code>; 344+167=511) there was also a less well defined soft limit on rule length.</p>
+<p>For some versions of my <code>rule2</code> payload, I was able to solve the crashing just by switching to the &lsquo;lite&rsquo; version of Tasmota. While the &lsquo;lite&rsquo; version of Tasmota does work with Tuya MCU (<code>USE_TUYA_MCU</code>), it <a href="https://github.com/arendst/Tasmota/blob/v9.4.0/BUILDS.md" target="_blank" rel="noopener noreffer">does <em>not</em> support</a> Home Assistant configuration (<code>USE_HOME_ASSISTANT</code>)!</p>
+<p>After flashing back to the &lsquo;regular&rsquo; Tasmota build, I set out trying to compress the <code>rule2</code> payload as much as possible so that it would still work <em>and</em> not reliably crash the ESP8266 on the DS03.</p>
+<p>After testing several things, I managed to get a working <code>rule2</code> that didn&rsquo;t reliably crash when triggered.</p>
+]]></description></item><item><title>Two Tasmota rules</title><link>https://karlquinsland.com/two-tasmota-rules/</link><pubDate>Fri, 20 Nov 2020 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/two-tasmota-rules/</guid><description><![CDATA[<p><a href="https://tasmota.github.io/" target="_blank" rel="noopener noreffer">Tasmota</a> is an incredibly powerful alternative/open source firmware for the ever popular Espressif family of WiFi equipped microcontrollers.
+This does not need to be another post espousing it&rsquo;s many awesome qualities, so just trust me on this; Tasmota is AWESOME.</p>
+<p>Tasmota supports user configurable <a href="https://tasmota.github.io/docs/Rules/" target="_blank" rel="noopener noreffer">rules</a> which are simple commands wired into various device triggers.
+In short; a device running Tasmota gains some autonomy to react to events without needing to report the event to, and wait for commands from, a remote server.</p>
+<p>I find the rules syntax to be a bit awkward and the list of practical examples feels like autodoc with a few practical examples sprinkled in.
+I have <em>never</em> been able to craft a Tasmota rule without also consulting the list of <a href="https://tasmota.github.io/docs/Commands/" target="_blank" rel="noopener noreffer">commands</a>
+and doing a few searches through the github issues looking for issues/questions similar to mine.</p>
+<p>This post is a simple &ldquo;here&rsquo;s how i did it&rdquo; that I wish I had found when I needed to solve the problem.
+Hopefully this will save you some trouble!</p>
+<h3 id="mr-coffee">Mr. Coffee</h3>
+<p>A $15 &lsquo;<a href="https://tasmota.github.io/docs/devices/Sonoff-Pow/" target="_blank" rel="noopener noreffer">smart relay</a>&rsquo; is all that&rsquo;s needed to turn a simple drip-over coffee maker into a remote-controllable coffee maker.
 Immediately, you gain the ability to start brewing coffee in the morning from bed.
-With a little extra integration work, start brewing coffee 10 minutes before your alarm is scheduled to go off. Simple quality of life improvement!&lt;/p>
-&lt;p>Every coffee maker has at least one safety interlock to disable the heating element if it gets too hot, but some have additional interlocks. Specifically,
+With a little extra integration work, start brewing coffee 10 minutes before your alarm is scheduled to go off. Simple quality of life improvement!</p>
+<p>Every coffee maker has at least one safety interlock to disable the heating element if it gets too hot, but some have additional interlocks. Specifically,
 my coffee maker has two more interlocks in series with the heating element; if the carafe is removed or the water tank is empty, the circuit is broken and
-the heater immediately stops producing heat. From the perspective of the smart relay, the power consumption is either 0 Watts or a bit over 1100 Watts.&lt;/p>
-&lt;p>I was not comfortable using Home Assistant to monitor power consumption and then toggle the relay off after observing an interlock kick in.
-If something happened to the WiFi connection or the MQTT server or Home Assistant, there&amp;rsquo;s no way to disconnect power from the coffee maker; the relay will stay &amp;lsquo;on&amp;rsquo;.
-If the interlock failed, somehow, the heating element would immediately begin pumping out heat when it &lt;em>really&lt;/em> shouldn&amp;rsquo;t be!&lt;/p>
-&lt;p>Writing a simple &amp;ldquo;if power consumption drops below 1100 Watts, turn relay off&amp;rdquo; rule would be enough, except there&amp;rsquo;s no way to distinguish between the thermal interlock tripping
+the heater immediately stops producing heat. From the perspective of the smart relay, the power consumption is either 0 Watts or a bit over 1100 Watts.</p>
+<p>I was not comfortable using Home Assistant to monitor power consumption and then toggle the relay off after observing an interlock kick in.
+If something happened to the WiFi connection or the MQTT server or Home Assistant, there&rsquo;s no way to disconnect power from the coffee maker; the relay will stay &lsquo;on&rsquo;.
+If the interlock failed, somehow, the heating element would immediately begin pumping out heat when it <em>really</em> shouldn&rsquo;t be!</p>
+<p>Writing a simple &ldquo;if power consumption drops below 1100 Watts, turn relay off&rdquo; rule would be enough, except there&rsquo;s no way to distinguish between the thermal interlock tripping
 and the carafe being removed for a quick pour. The simple rule is incompatible with the extra interlocks; it will prematurely stop the brewing 100% of the time the carafe is removed.
-If you want to pour a cup of coffee while it&amp;rsquo;s still brewing, this is rather inconvenient.&lt;/p>
-&lt;p>Solution: give the user 30 seconds to return the carafe during brewing before turning the relay off.&lt;/p>
-&lt;p>From the perspective of the outlet, ignore any lulls in power consumption as long as they&amp;rsquo;re shorter than 30 seconds. Otherwise, assume that an interlock &lt;em>has&lt;/em> tripped.&lt;/p>
-&lt;p>This is implemented with two rules:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-fallback" data-lang="fallback">Rule1
-# When relay1 (heater) is turned on, activate rule2
-ON Power1#state=1 DO Rule2 1 ENDON
-# and deactivate rule2 when the heater is turned off
-ON Power1#state=0 DO Rule2 0 ENDON
-# When Timer1 expires, turn the heater off
-ON Rules#Timer=1 DO Power1 off ENDON
-# When the current used by the heating element rises above 1 Amp, disable Timer1
-ON Energy#Current&amp;gt;1 DO RuleTimer1 0 ENDON
-# ... and enable rule 2
-ON Energy#Current&amp;gt;1 DO Rule2 1 ENDON
+If you want to pour a cup of coffee while it&rsquo;s still brewing, this is rather inconvenient.</p>
+<p>Solution: give the user 30 seconds to return the carafe during brewing before turning the relay off.</p>
+<p>From the perspective of the outlet, ignore any lulls in power consumption as long as they&rsquo;re shorter than 30 seconds. Otherwise, assume that an interlock <em>has</em> tripped.</p>
+<p>This is implemented with two rules:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">Rule1
+    # When relay1 (heater) is turned on, activate rule2
+    ON Power1#state=1 DO Rule2 1 ENDON
+
+    # and deactivate rule2 when the heater is turned off
+    ON Power1#state=0 DO Rule2 0 ENDON
+
+    # When Timer1 expires, turn the heater off
+    ON Rules#Timer=1 DO Power1 off ENDON
+
+    # When the current used by the heating element rises above 1 Amp, disable Timer1
+    ON Energy#Current&gt;1 DO RuleTimer1 0 ENDON
+
+    # ... and enable rule 2
+    ON Energy#Current&gt;1 DO Rule2 1 ENDON
+
 Rule2
-# Wait for power use to drop to 0; start counting down
-ON Energy#Current&amp;lt;.2 DO RuleTimer1 30 ENDON
-# and disable rule2 so the timer is not constantly reset
-ON Energy#Current&amp;lt;.2 DO Rule2 0 ENDON
-&lt;/code>&lt;/pre>&lt;/div>&lt;p>I chose &lt;code>.2&lt;/code> Amps as the trigger, but the logic works the exact same way with Power / Wattage.&lt;/p>
-&lt;h2 id="electric-kettle">Electric Kettle&lt;/h2>
-&lt;p>I wanted to detect when my electric kettle was done boiling the water so I could play a sound and flash the lights in whichever room I happened to be in at the time.
-This is trivial to do with a &amp;lsquo;&lt;a href="https://tasmota.github.io/docs/devices/Sonoff-S31/">smart outlet&lt;/a>&amp;rsquo; and a &lt;a href="https://www.home-assistant.io/integrations/binary_sensor.template/">template sensor&lt;/a> in Home Assistant:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-yaml" data-lang="yaml">- &lt;span style="font-weight:bold">platform&lt;/span>: template
-&lt;span style="font-weight:bold">sensors&lt;/span>:
-&lt;span style="font-weight:bold">kettle_running&lt;/span>:
-&lt;span style="font-weight:bold">friendly_name&lt;/span>: &lt;span style="font-style:italic">&amp;#34;Kettle Boiling&amp;#34;&lt;/span>
-&lt;span style="font-style:italic"># If the kettle is using more than 5w, assume its on / boiling water&lt;/span>
-&lt;span style="font-weight:bold">icon_template&lt;/span>: &amp;gt;-&lt;span style="font-style:italic">
-&lt;/span>&lt;span style="font-style:italic"> {% if states(&amp;#39;sensor.kettle_energy_power&amp;#39;) | float &amp;gt; 5 %}
-&lt;/span>&lt;span style="font-style:italic"> mdi:kettle-steam
-&lt;/span>&lt;span style="font-style:italic"> {% else %}
-&lt;/span>&lt;span style="font-style:italic"> mdi:kettle
-&lt;/span>&lt;span style="font-style:italic"> {% endif %}&lt;/span>
-&lt;span style="font-weight:bold">value_template&lt;/span>: &lt;span style="font-style:italic">&amp;#34;{{states(&amp;#39;sensor.kettle_energy_power&amp;#39;) | float &amp;gt; 5}}&amp;#34;&lt;/span>
-&lt;/code>&lt;/pre>&lt;/div>&lt;p>Only problem, Tasmota only publishes the kettle&amp;rsquo;s power once every 300 seconds. This means &lt;code>sensor.kettle_energy_power&lt;/code> only gets updated every 300s which makes it really hard
-to fire off a &lt;em>timely&lt;/em> notification when the kettle is done.
-The &amp;lsquo;brute-force&amp;rsquo; solution is to configure Tasmota to transmit the telemetry &lt;a href="https://github.com/arendst/Tasmota/issues/2567">continuously&lt;/a>.
-Except there&amp;rsquo;s no need for the Tasmota device on the kettle to be constantly informing Home Assistant that there&amp;rsquo;s no power being used whenever the kettle is not on; my application only cares about the &amp;lsquo;&lt;a href="https://en.wikipedia.org/wiki/Signal_edge">falling edge&lt;/a>&amp;rsquo;.&lt;/p>
-&lt;p>Borrow the trigger from the &lt;a href="#mr-coffee">Mr. Coffee&lt;/a> rule and shorten the &lt;a href="https://tasmota.github.io/docs/Commands/#teleperiod">telemetry period&lt;/a> only when the kettle
-is consuming more than 1 Watt. Like the coffee maker, it&amp;rsquo;s either consuming 0 Watts or about 1.1 Kilowatt.&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-fallback" data-lang="fallback">Rule1
-on ENERGY#Power&amp;gt;1 do Backlog TelePeriod 10; Rule2 1 endon
+    # Wait for power use to drop to 0; start counting down
+    ON Energy#Current&lt;.2 DO RuleTimer1 30 ENDON
+
+    # and disable rule2 so the timer is not constantly reset
+    ON Energy#Current&lt;.2 DO Rule2 0 ENDON
+</code></pre></td></tr></table>
+</div>
+</div><p>I chose <code>.2</code> Amps as the trigger, but the logic works the exact same way with Power / Wattage.</p>
+<h2 id="electric-kettle">Electric Kettle</h2>
+<p>I wanted to detect when my electric kettle was done boiling the water so I could play a sound and flash the lights in whichever room I happened to be in at the time.
+This is trivial to do with a &lsquo;<a href="https://tasmota.github.io/docs/devices/Sonoff-S31/" target="_blank" rel="noopener noreffer">smart outlet</a>&rsquo; and a <a href="https://www.home-assistant.io/integrations/binary_sensor.template/" target="_blank" rel="noopener noreffer">template sensor</a> in Home Assistant:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml">- <span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
+</span><span class="w">  </span><span class="nt">sensors</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="nt">kettle_running</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="nt">friendly_name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Kettle Boiling&#34;</span><span class="w">
+</span><span class="w">      </span><span class="c"># If the kettle is using more than 5w, assume its on / boiling water</span><span class="w">
+</span><span class="w">      </span><span class="nt">icon_template</span><span class="p">:</span><span class="w"> </span><span class="p">&gt;-</span><span class="sd">
+</span><span class="sd">        {% if states(&#39;sensor.kettle_energy_power&#39;) | float &gt; 5 %}
+</span><span class="sd">          mdi:kettle-steam
+</span><span class="sd">        {% else %}
+</span><span class="sd">          mdi:kettle
+</span><span class="sd">        {% endif %}</span><span class="w">        
+</span><span class="w">      </span><span class="nt">value_template</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;{{states(&#39;sensor.kettle_energy_power&#39;) | float &gt; 5}}&#34;</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><p>Only problem, Tasmota only publishes the kettle&rsquo;s power once every 300 seconds. This means <code>sensor.kettle_energy_power</code> only gets updated every 300s which makes it really hard
+to fire off a <em>timely</em> notification when the kettle is done.
+The &lsquo;brute-force&rsquo; solution is to configure Tasmota to transmit the telemetry <a href="https://github.com/arendst/Tasmota/issues/2567" target="_blank" rel="noopener noreffer">continuously</a>.
+Except there&rsquo;s no need for the Tasmota device on the kettle to be constantly informing Home Assistant that there&rsquo;s no power being used whenever the kettle is not on; my application only cares about the &lsquo;<a href="https://en.wikipedia.org/wiki/Signal_edge" target="_blank" rel="noopener noreffer">falling edge</a>&rsquo;.</p>
+<p>Borrow the trigger from the <a href="#mr-coffee" rel="">Mr. Coffee</a> rule and shorten the <a href="https://tasmota.github.io/docs/Commands/#teleperiod" target="_blank" rel="noopener noreffer">telemetry period</a> only when the kettle
+is consuming more than 1 Watt. Like the coffee maker, it&rsquo;s either consuming 0 Watts or about 1.1 Kilowatt.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">Rule1
+    on ENERGY#Power&gt;1 do Backlog TelePeriod 10; Rule2 1 endon
+
 Rule2
-on ENERGY#Power=0 do Backlog TelePeriod 1; Rule2 0 endon
-&lt;/code>&lt;/pre>&lt;/div>&lt;p>As soon as the kettle starts using more than 1 Watt, configure Tasmota to publish its sensor data every 10 seconds.
-I&amp;rsquo;ll get notified that the water is boiling within 10s; much better than 300s!
-Once the power consumption goes back down to 0, reset the telemetry update period and disable the rule.&lt;/p>
-&lt;p>The second rule must be disabled to prevent constant triggering of the rule when the kettle is not boiling.
-Without the &lt;code>Rule2 0&lt;/code>, the console/logs for the device would be full of statements like this repeating every few seconds:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-fallback" data-lang="fallback">RUL: ENERGY#POWER&amp;gt;1 performs &amp;#34;TelePeriod 10&amp;#34;
-MQT: stat/tasmota_kettle/RESULT = {&amp;#34;TelePeriod&amp;#34;:10}
-&lt;/code>&lt;/pre>&lt;/div>&lt;p>Hope that helped!&lt;/p>
-&lt;hr>
-&lt;p>&lt;strong>EDIT:&lt;/strong> 2021-09-24: small typo fixes. Thanks for pointing them out :).&lt;/p></description></item><item><title>Systemd Resolved With Consul Agent</title><link>https://karlquinsland.com/2020/07/systemd-resolved-with-consul-agent/</link><pubDate>Tue, 21 Jul 2020 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/2020/07/systemd-resolved-with-consul-agent/</guid><description>&lt;p>I pieced this technique together a while back and created a gist for it. I&amp;rsquo;m creating &lt;em>this&lt;/em> post as a pointer to that gist so I have something that&amp;rsquo;s a bit easier to reference and refer others to.&lt;/p>
-&lt;p>And i want to test out the &lt;a href="https://gohugo.io/content-management/shortcodes/#gist">hugo shortcode for embedding a gist&lt;/a> 😏.&lt;/p>
-&lt;p>The really short version:&lt;/p>
-&lt;ul>
-&lt;li>Create a dedicated interface that can only be accessed from the local system&lt;/li>
-&lt;li>Bind the consul-agent&amp;rsquo;s DNS service to this local only interface&lt;/li>
-&lt;li>Tell &lt;a href="https://www.freedesktop.org/software/systemd/man/systemd-resolved.service.html">&lt;code>systemd-resolved&lt;/code>&lt;/a> that all hostnames with the &lt;code>.consul&lt;/code> TLD can be resolved via a DNS server on this local interface&lt;/li>
-&lt;/ul>
-&lt;p>No need to disable &lt;code>resolved&lt;/code> and replace it with dnsmasq 😄&lt;/p>
-&lt;script type="application/javascript" src="https://gist.github.com/kquinsland/5cdc63614a581d9b392f435740b58729.js">&lt;/script></description></item></channel></rss>
+    on ENERGY#Power=0 do Backlog TelePeriod 1; Rule2 0 endon
+</code></pre></td></tr></table>
+</div>
+</div><p>As soon as the kettle starts using more than 1 Watt, configure Tasmota to publish its sensor data every 10 seconds.
+I&rsquo;ll get notified that the water is boiling within 10s; much better than 300s!
+Once the power consumption goes back down to 0, reset the telemetry update period and disable the rule.</p>
+<p>The second rule must be disabled to prevent constant triggering of the rule when the kettle is not boiling.
+Without the <code>Rule2 0</code>, the console/logs for the device would be full of statements like this repeating every few seconds:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">RUL: ENERGY#POWER&gt;1 performs &#34;TelePeriod 10&#34;
+MQT: stat/tasmota_kettle/RESULT = {&#34;TelePeriod&#34;:10}
+</code></pre></td></tr></table>
+</div>
+</div><p>Hope that helped!</p>
+<hr>
+<p><strong>EDIT:</strong> 2021-09-24: small typo fixes. Thanks for pointing them out :).</p>
+]]></description></item><item><title>Systemd Resolved With Consul Agent</title><link>https://karlquinsland.com/systemd-resolved-with-consul-agent/</link><pubDate>Tue, 21 Jul 2020 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/systemd-resolved-with-consul-agent/</guid><description><![CDATA[<p>I pieced this technique together a while back and created a gist for it. I&rsquo;m creating <em>this</em> post as a pointer to that gist so I have something that&rsquo;s a bit easier to reference and refer others to.</p>
+<p>And i want to test out the <a href="https://gohugo.io/content-management/shortcodes/#gist" target="_blank" rel="noopener noreffer">hugo shortcode for embedding a gist</a> 😏.</p>
+<p>The really short version:</p>
+<ul>
+<li>Create a dedicated interface that can only be accessed from the local system</li>
+<li>Bind the consul-agent&rsquo;s DNS service to this local only interface</li>
+<li>Tell <a href="https://www.freedesktop.org/software/systemd/man/systemd-resolved.service.html" target="_blank" rel="noopener noreffer"><code>systemd-resolved</code></a> that all hostnames with the <code>.consul</code> TLD can be resolved via a DNS server on this local interface</li>
+</ul>
+<p>No need to disable <code>resolved</code> and replace it with dnsmasq 😄</p>
+<script type="application/javascript" src="https://gist.github.com/kquinsland/5cdc63614a581d9b392f435740b58729.js"></script>
+
+]]></description></item></channel></rss>

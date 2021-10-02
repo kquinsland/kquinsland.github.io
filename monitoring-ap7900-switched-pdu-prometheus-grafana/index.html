@@ -1,0 +1,634 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=robots content="noodp">
+<meta http-equiv=x-ua-compatible content="IE=edge, chrome=1">
+<title>Monitoring APC AP7900 switched PDU with Prometheus and Grafana - karl</title><meta name=Description content="Monitor all the things!"><meta property="og:title" content="Monitoring APC AP7900 switched PDU with Prometheus and Grafana">
+<meta property="og:description" content="Monitor all the things!">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://karlquinsland.com/monitoring-ap7900-switched-pdu-prometheus-grafana/"><meta property="og:image" content="https://karlquinsland.com/images/avatar.png"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2020-12-27T00:00:00+00:00">
+<meta property="article:modified_time" content="2020-12-27T22:26:03-08:00">
+<meta name=twitter:card content="summary_large_image">
+<meta name=twitter:image content="https://karlquinsland.com/images/avatar.png">
+<meta name=twitter:title content="Monitoring APC AP7900 switched PDU with Prometheus and Grafana">
+<meta name=twitter:description content="Monitor all the things!">
+<meta name=application-name content="karl">
+<meta name=apple-mobile-web-app-title content="karl"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=https://karlquinsland.com/favicon.ico>
+<link rel=icon type=image/png sizes=32x32 href=https://karlquinsland.com/favicon-32x32.png>
+<link rel=icon type=image/png sizes=16x16 href=https://karlquinsland.com/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=https://karlquinsland.com/apple-touch-icon.png><link rel=mask-icon href=https://karlquinsland.com/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=https://karlquinsland.com/site.webmanifest><link rel=canonical href=https://karlquinsland.com/monitoring-ap7900-switched-pdu-prometheus-grafana/><link rel=prev href=https://karlquinsland.com/amcrest-ip-cam-security-isnt-a-feature-its-a-punchine/><link rel=next href=https://karlquinsland.com/unbrick-rievtech-plc-failed-firmware-update/><link rel=stylesheet href=https://karlquinsland.com/lib/normalize/normalize.min.055364f5be272caa092b0e6654c165828707f8ab971e2656383a6d6392bc345e.css integrity="sha256-BVNk9b4nLKoJKw5mVMFlgocH+KuXHiZWODptY5K8NF4="><link rel=stylesheet href=https://karlquinsland.com/css/style.min.1e2694bed152fa2922dbe909a441838ed693d88b1330f97485bfa8ed78da42df.css integrity="sha256-HiaUvtFS+iki2+kJpEGDjtaT2IsTMPl0hb+o7XjaQt8="><link rel=stylesheet href=https://karlquinsland.com/lib/fontawesome-free/all.min.876d023d9d10c97941b80c3b03e2a5b94631ff7a4af9cee5604a6a2d39718d84.css integrity="sha256-h20CPZ0QyXlBuAw7A+KluUYx/3pK+c7lYEpqLTlxjYQ="><link rel=stylesheet href=https://karlquinsland.com/lib/animate/animate.min.3c770e90f98eb21b0c042fafb49755af93306fbaf42e449524f94fae9fc83295.css integrity="sha256-PHcOkPmOshsMBC+vtJdVr5Mwb7r0LkSVJPlPrp/IMpU="><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Monitoring APC AP7900 switched PDU with Prometheus and Grafana","inLanguage":"en-us","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/karlquinsland.com\/monitoring-ap7900-switched-pdu-prometheus-grafana\/"},"genre":"posts","keywords":"prometheus, grafana, SNMP","wordcount":1778,"url":"https:\/\/karlquinsland.com\/monitoring-ap7900-switched-pdu-prometheus-grafana\/","datePublished":"2020-12-27T00:00:00+00:00","dateModified":"2020-12-27T22:26:03-08:00","publisher":{"@type":"Organization","name":""},"author":{"@type":"Person","name":"karl"},"description":"Monitor all the things!"}</script></head>
+<body header-desktop=fixed header-mobile=auto><script type=text/javascript>(window.localStorage&&localStorage.getItem('theme')?localStorage.getItem('theme')==='dark':'auto'==='auto'?window.matchMedia('(prefers-color-scheme: dark)').matches:'auto'==='dark')&&document.body.setAttribute('theme','dark')</script>
+<div id=mask></div><div class=wrapper><header class=desktop id=header-desktop>
+<div class=header-wrapper>
+<div class=header-title>
+<a href=https://karlquinsland.com/ title=karl>Karl</a>
+</div>
+<div class=menu>
+<div class=menu-inner><a class=menu-item href=https://karlquinsland.com/posts/><i class="fas fa-blog"></i> Posts </a><a class=menu-item href=https://karlquinsland.com/resume/ title="Hire Me!"><i class="fas fa-briefcase"></i> Résumé </a><a class=menu-item href=https://karlquinsland.com/tags/ title="Can you tell that I don't have a super consistent or clear taxonomy?"><i class="fas fa-tags"></i> Tags </a><a class=menu-item href=https://karlquinsland.com/contact/><i class="fas fa-address-book"></i> Contact </a><span class="menu-item delimiter"></span><span class="menu-item search" id=search-desktop>
+<input type=text placeholder="Search titles or contents..." id=search-input-desktop>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=Search>
+<i class="fas fa-search fa-fw"></i>
+</a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=Clear>
+<i class="fas fa-times-circle fa-fw"></i>
+</a>
+<span class="search-button search-loading" id=search-loading-desktop>
+<i class="fas fa-spinner fa-fw fa-spin"></i>
+</span>
+</span><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw"></i>
+</a>
+</div>
+</div>
+</div>
+</header><header class=mobile id=header-mobile>
+<div class=header-container>
+<div class=header-wrapper>
+<div class=header-title>
+<a href=https://karlquinsland.com/ title=karl>Karl</a>
+</div>
+<div class=menu-toggle id=menu-toggle-mobile>
+<span></span><span></span><span></span>
+</div>
+</div>
+<div class=menu id=menu-mobile><div class=search-wrapper>
+<div class="search mobile" id=search-mobile>
+<input type=text placeholder="Search titles or contents..." id=search-input-mobile>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=Search>
+<i class="fas fa-search fa-fw"></i>
+</a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=Clear>
+<i class="fas fa-times-circle fa-fw"></i>
+</a>
+<span class="search-button search-loading" id=search-loading-mobile>
+<i class="fas fa-spinner fa-fw fa-spin"></i>
+</span>
+</div>
+<a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>
+Cancel
+</a>
+</div><a class=menu-item href=https://karlquinsland.com/posts/ title><i class="fas fa-blog"></i>Posts</a><a class=menu-item href=https://karlquinsland.com/resume/ title="Hire Me!"><i class="fas fa-briefcase"></i>Résumé</a><a class=menu-item href=https://karlquinsland.com/tags/ title="Can you tell that I don't have a super consistent or clear taxonomy?"><i class="fas fa-tags"></i>Tags</a><a class=menu-item href=https://karlquinsland.com/contact/ title><i class="fas fa-address-book"></i>Contact</a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw"></i>
+</a></div>
+</div>
+</header>
+<div class="search-dropdown desktop">
+<div id=search-dropdown-desktop></div>
+</div>
+<div class="search-dropdown mobile">
+<div id=search-dropdown-mobile></div>
+</div>
+<main class=main>
+<div class=container><div class=toc id=toc-auto>
+<h2 class=toc-title>Contents</h2>
+<div class=toc-content id=toc-content-auto></div>
+</div><article class="page single"><h1 class="single-title animated flipInX">Monitoring APC AP7900 switched PDU with Prometheus and Grafana</h1><div class=post-meta>
+<div class=post-meta-line><span class=post-author><a href=https://karlquinsland.com/ title=Author rel=" author" class=author><i class="fas fa-user-circle fa-fw"></i>karl</a></span>&nbsp;<span class=post-category>included in <a href=https://karlquinsland.com/categories/home-lab/><i class="far fa-folder fa-fw"></i>home-lab</a></span></div>
+<div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2020-12-27>2020-12-27</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;1778 words&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;9 minutes&nbsp;</div>
+</div><div class="details toc" id=toc-static kept=true>
+<div class="details-summary toc-title">
+<span>Contents</span>
+<span><i class="details-icon fas fa-angle-right"></i></span>
+</div>
+<div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents>
+<ul>
+<li>
+<ul>
+<li><a href=#the-hardware>The Hardware</a></li>
+<li><a href=#the-metrics>The Metrics</a>
+<ul>
+<li><a href=#generating-a-config>Generating a config</a></li>
+</ul>
+</li>
+<li><a href=#the-dashboard>The Dashboard</a>
+<ul>
+<li><a href=#estimating-costs>estimating costs</a></li>
+</ul>
+</li>
+<li><a href=#files>Files</a></li>
+</ul>
+</li>
+</ul>
+</nav></div>
+</div><div class=content id=content><p>The APC AP7900 is a 1U single phase PDU with 8 switchable outlets and a network interface. It&rsquo;s been EoL&rsquo;d and can be had for less than 20% of it&rsquo;s original price on <a href="https://www.ebay.com/sch/i.html?_nkw=AP7900" target=_blank rel="noopener noreffer">eBay</a>. The network interface is so underpowered tha it can&rsquo;t <a href=http://origin-faq.pro-face.com/resources/sites/PROFACE/content/live/FAQS/300000/FA300635/en_US/APC%20AP7000%20Series%20End%20of%20Life%20Notice.pdf target=_blank rel="noopener noreffer">support any modern cryptographic ciphers</a>.</p>
+<p>So with that, here&rsquo;s a revised copy of my notes from the process of getting the device reset, updated and monitored.</p>
+<h2 id=the-hardware>The Hardware</h2>
+<figure>
+<img src=https://karlquinsland.com/monitoring-ap7900-switched-pdu-prometheus-grafana/images/ap7900.png alt="marketing photo of AP7900">
+<figcaption>
+</figcaption>
+</figure>
+<p>Unfortunately, there&rsquo;s no &ldquo;reset everything to defaults&rdquo; button or button sequence on the PDU. The unit I purchased had been configured with a manual IP assignment so it wasn&rsquo;t as straightforward as using an unfolded paperclip to press the reboot button at boot and wait for a successful DHCP negotiation. This process has been <a href=https://dan.langille.org/2015/01/13/apc-pdu-ap7900-resetting-the-password/ target=_blank rel="noopener noreffer">covered before</a>, so I&rsquo;ll omit it here. In short: connect to the local mgmt interface via the <a href=https://pinoutguide.com/UPS/apc_smart_cable_pinout.shtml target=_blank rel="noopener noreffer">serial port</a>, adjust the network configuration and other settings as needed.</p>
+<p>The firmware can be updated via FTP easily enough. The processor on the network interface is <em>really</em> slow so allow for <em>several minutes</em> between the bin file upload and the flashing to commence/end. I had to repeat this three times for each of the partitions / subsystem OSs.</p>
+<h2 id=the-metrics>The Metrics</h2>
+<p>Again, because the network interface has an ancient/slow CPU, any method that extracts metrics from the device must be light weight&mldr; enter <a href=https://en.wikipedia.org/wiki/Simple_Network_Management_Protocol target=_blank rel="noopener noreffer">SNMP</a>.</p>
+<p>SNMP is quite old and cumbersome but there&rsquo;s an <a href=https://github.com/prometheus/snmp_exporter target=_blank rel="noopener noreffer">exporter for prometheus</a> which, after some tedious configuration, can interface the complexity that is is legacy SNMP with prometheus.</p>
+<h3 id=generating-a-config>Generating a config</h3>
+<p>In short, SNMP identifies each setting/entity that can be monitored or set with a unique numerical ID. Each number is separated with a <code>.</code> and represents a specific edge/vertex on the graph of all settings that device supports.</p>
+<p>So, a setting known as <code>rPDUIdentDeviceLinetoLineVoltage</code> may be &lsquo;read&rsquo; at the following address: <code>1.3.6.1.4.1.318.1.1.12.1.15.0</code>. So if you have a few hundred parameters to monitor, you&rsquo;ll have a few hundred nondescript numerical paths. Keeping track of them all is a royal pain in the ass, even with <a href=https://en.wikipedia.org/wiki/Management_information_base target=_blank rel="noopener noreffer">lookup tables</a>; known as &ldquo;MIB files&rdquo;.</p>
+<p>Unfortunately, there&rsquo;s no way around it; a map between the numerical paths and the &lsquo;human friendly&rsquo; names must be built so the prometheus exporter knows what to expose and how to categorize it.</p>
+<p>The exporter comes with <a href=https://github.com/prometheus/snmp_exporter/tree/master/generator target=_blank rel="noopener noreffer">generator</a> to make this process a bit easier, but the process of obtaining MIB files isn&rsquo;t quite so straightforward.
+I hit a few snags and below is an updated <code>Dockerfile</code> that gave me a <em>working</em> generator tool:</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span><span class=lnt>70
+</span><span class=lnt>71
+</span><span class=lnt>72
+</span><span class=lnt>73
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-Dockerfile data-lang=Dockerfile><span class=err>
+</span><span class=err></span><span class=k>FROM</span><span class=s> golang:latest</span><span class=err>
+</span><span class=err>
+</span><span class=err></span><span class=c>##</span><span class=err>
+</span><span class=err></span><span class=c># The `mibs` target in the Makefile does not run to completion on OSX.</span><span class=err>
+</span><span class=err></span><span class=c># Somewhere, a `sed` command is run against some vendor&#39;s MIB file that&#39;s for hardware that I don&#39;t want to target.</span><span class=err>
+</span><span class=err></span><span class=c># I don&#39;t have the patience to resolve those issues and i&#39;d prefer that the _entire_ MIB parse and generate </span><span class=err>
+</span><span class=err></span><span class=c>#   process be 100% contained in the container image anyways.</span><span class=err>
+</span><span class=err></span><span class=c>#</span><span class=err>
+</span><span class=err></span><span class=c># There are a _variety_ of errors that cropped up when running `generator parse_errors`:</span><span class=err>
+</span><span class=err></span><span class=c>#</span><span class=err>
+</span><span class=err></span><span class=c># - level=warn ts=2020-12-27T21:40:42.988Z caller=main.go:120 msg=&#34;NetSNMP reported parse error(s)&#34; errors=16924</span><span class=err>
+</span><span class=err></span><span class=c># - Cannot find module (SNMPv2-SMI): At line 275 in mibs/apc-powernet-mib</span><span class=err>
+</span><span class=err></span><span class=c># - Did not find &#39;enterprises&#39; in module #-1 (mibs/apc-powernet-mib)</span><span class=err>
+</span><span class=err></span><span class=c># - Did not find &#39;DisplayString&#39; in module #-1 (mibs/apc-powernet-mib)</span><span class=err>
+</span><span class=err></span><span class=c># - Unlinked OID in PowerNet-MIB: apc ::= { enterprises 318 }</span><span class=err>
+</span><span class=err></span><span class=c># - Undefined identifier: enterprises near line 281 of mibs/apc-powernet-mib</span><span class=err>
+</span><span class=err></span><span class=c># - Cannot adopt OID in PowerNet-MIB: atsInputEntry ::= { atsInputTable 1 }</span><span class=err>
+</span><span class=err></span><span class=c># -   &lt;and hundreds more `Cannot adopt OID in PowerNet-MIB:` messages</span><span class=err>
+</span><span class=err></span><span class=c># - Bad operator (INTEGER): At line 73 in /usr/share/snmp/mibs/ietf/SNMPv2-PDU</span><span class=err>
+</span><span class=err></span><span class=c>#</span><span class=err>
+</span><span class=err></span><span class=c>#</span><span class=err>
+</span><span class=err></span><span class=c># After some searching, it appears that MIBs can refer to other MIBs and some set of &#39;base&#39; files is not present.</span><span class=err>
+</span><span class=err></span><span class=c># Due to licensing, the Debian docker image that the generator is based on does NOT ship w/ them or the </span><span class=err>
+</span><span class=err></span><span class=c>#   `snmp-mibs-downloader` tool which is used to fetch the base MIB files. This is easy enough to fix...</span><span class=err>
+</span><span class=err></span><span class=c>##</span><span class=err>
+</span><span class=err></span><span class=c># First, update the repos we&#39;ll pull packaged from</span><span class=err>
+</span><span class=err></span><span class=k>RUN</span> <span class=nb>echo</span> <span class=s2>&#34;deb http://deb.debian.org/debian/ buster main contrib non-free&#34;</span> <span class=p>|</span> tee -a /etc/apt/sources.list <span class=o>&amp;&amp;</span> <span class=se>\
+</span><span class=se></span>    <span class=nb>echo</span> <span class=s2>&#34;deb http://deb.debian.org/debian/ buster-updates main contrib non-free&#34;</span> <span class=p>|</span> tee -a /etc/apt/sources.list <span class=o>&amp;&amp;</span> <span class=se>\
+</span><span class=se></span>    <span class=nb>echo</span> <span class=s2>&#34;deb http://security.debian.org/debian-security buster/updates main contrib non-free&#34;</span> <span class=p>|</span> tee -a /etc/apt/sources.list<span class=err>
+</span><span class=err>
+</span><span class=err></span><span class=c># Then we run the &#39;original&#39; set of commands, adding in the `snmp-mibs-downloader` package.</span><span class=err>
+</span><span class=err></span><span class=c># As part of the post-install hook, snmp-mibs-downloader will fetch the base MIBs that appear to be</span><span class=err>
+</span><span class=err></span><span class=c>#   missing.</span><span class=err>
+</span><span class=err></span><span class=c>##</span><span class=err>
+</span><span class=err></span><span class=k>RUN</span> apt-get update <span class=o>&amp;&amp;</span> <span class=se>\
+</span><span class=se></span>    apt-get install -y libsnmp-dev p7zip-full snmp-mibs-downloader <span class=o>&amp;&amp;</span> <span class=se>\
+</span><span class=se></span>    go get github.com/prometheus/snmp_exporter/generator <span class=o>&amp;&amp;</span> <span class=se>\
+</span><span class=se></span>    <span class=nb>cd</span> /go/src/github.com/prometheus/snmp_exporter/generator <span class=o>&amp;&amp;</span> <span class=se>\
+</span><span class=se></span>    go get -v . <span class=o>&amp;&amp;</span> <span class=se>\
+</span><span class=se></span>    go install<span class=err>
+</span><span class=err>
+</span><span class=err></span><span class=c># To fix _this_ error:</span><span class=err>
+</span><span class=err></span><span class=c>#   Bad operator (INTEGER): At line 73 in /usr/share/snmp/mibs/ietf/SNMPv2-PDU</span><span class=err>
+</span><span class=err></span><span class=c>#</span><span class=err>
+</span><span class=err></span><span class=c># we install a &#39;patched&#39; version.</span><span class=err>
+</span><span class=err></span><span class=c># src: https://serverfault.com/questions/936119/snmp-mibs-on-ubuntu-error-in-mibs</span><span class=err>
+</span><span class=err></span><span class=c>##</span><span class=err>
+</span><span class=err></span><span class=k>RUN</span> wget http://pastebin.com/raw.php?i<span class=o>=</span>p3QyuXzZ -O /usr/share/snmp/mibs/ietf/SNMPv2-PDU<span class=err>
+</span><span class=err>
+</span><span class=err></span><span class=c>##</span><span class=err>
+</span><span class=err></span><span class=c># This command is not needed for generation, but IS needed for manual checking / use of `snmptranslate` within the</span><span class=err>
+</span><span class=err></span><span class=c>#   container. Add to the above RUN statement if needed.</span><span class=err>
+</span><span class=err></span><span class=c>#       sed -i &#34;s/^\(mibs *:\).*/#\1/&#34; /etc/snmp/snmp.conf</span><span class=err>
+</span><span class=err></span><span class=c>#</span><span class=err>
+</span><span class=err></span><span class=c># It simply comments out the `mibs:` line in `/etc/snmp/snmp.conf`</span><span class=err>
+</span><span class=err></span><span class=c>##</span><span class=err>
+</span><span class=err>
+</span><span class=err></span><span class=c># The &#39;stock&#39; generator expects the output of `make mibs` to be mounted into /opt/mibs.</span><span class=err>
+</span><span class=err></span><span class=c># Since we are no longer relying on the `make` target, we must tell the generator binary</span><span class=err>
+</span><span class=err></span><span class=c>#   to look in all of the &#39;system default&#39; locations *as well as* /opt/mibs</span><span class=err>
+</span><span class=err></span><span class=c>##</span><span class=err>
+</span><span class=err></span><span class=k>WORKDIR</span><span class=s> &#34;/opt&#34;</span><span class=err>
+</span><span class=err></span><span class=k>ENTRYPOINT</span> <span class=p>[</span><span class=s2>&#34;/go/bin/generator&#34;</span><span class=p>]</span><span class=err>
+</span><span class=err>
+</span><span class=err></span><span class=c># Rather than do something like this on the CLI every time the container is run</span><span class=err>
+</span><span class=err></span><span class=c>#   `-e MIBDIRS=&#34;/usr/share/snmp/mibs:/usr/share/snmp/mibs/iana:/usr/share/snmp/mibs/ietf:/opt/mibs&#34;`</span><span class=err>
+</span><span class=err></span><span class=c>#   we do it here...</span><span class=err>
+</span><span class=err></span><span class=c>##</span><span class=err>
+</span><span class=err></span><span class=k>ENV</span> MIBDIRS /usr/share/snmp/mibs:/usr/share/snmp/mibs/iana:/usr/share/snmp/mibs/ietf:/opt/mibs<span class=err>
+</span><span class=err>
+</span><span class=err></span><span class=k>CMD</span> <span class=p>[</span><span class=s2>&#34;generate&#34;</span><span class=p>]</span><span class=err>
+</span><span class=err>
+</span></code></pre></td></tr></table>
+</div>
+</div><p>In short, ditch the <code>make mibs</code> step from <a href=https://github.com/prometheus/snmp_exporter/tree/master/generator#docker-users target=_blank rel="noopener noreffer">here</a> and move it inside the <code>docker build</code> step; fetch all the MIB files, patching those that need it. Tell the tool where to find them.</p>
+<p>For my needs, I only care about the total amount of power being distributed through the PDU so, of the hundreds of different parameters that can be monitored, I&rsquo;m only interested in:</p>
+<ul>
+<li>Uptime</li>
+<li>Input Voltage</li>
+<li>Power in Watts and VoltAmps</li>
+<li>Percentage of used/remaining capacity</li>
+</ul>
+<p>This makes for a simple generator config:</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span><span class=lnt>70
+</span><span class=lnt>71
+</span><span class=lnt>72
+</span><span class=lnt>73
+</span><span class=lnt>74
+</span><span class=lnt>75
+</span><span class=lnt>76
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=c># See: https://github.com/prometheus/snmp_exporter/tree/master/generator</span><span class=w>
+</span><span class=w></span><span class=c>##</span><span class=w>
+</span><span class=w>
+</span><span class=w></span><span class=nt>modules</span><span class=p>:</span><span class=w>
+</span><span class=w>  </span><span class=c># APC/Schneider UPS Network Management Cards</span><span class=w>
+</span><span class=w>  </span><span class=c>#</span><span class=w>
+</span><span class=w>  </span><span class=c># Note: older management cards only support SNMP v1 (AP9606 and</span><span class=w>
+</span><span class=w>  </span><span class=c># AP9607, possibly others). Older versions of the firmware may only</span><span class=w>
+</span><span class=w>  </span><span class=c># support v1 as well. If you only have newer cards you can switch to</span><span class=w>
+</span><span class=w>  </span><span class=c># version v2c or v3.</span><span class=w>
+</span><span class=w>  </span><span class=c>#</span><span class=w>
+</span><span class=w>  </span><span class=c># The management cards have relatively slow processors so don&#39;t poll</span><span class=w>
+</span><span class=w>  </span><span class=c># very often and give a generous timeout to prevent spurious</span><span class=w>
+</span><span class=w>  </span><span class=c># errors. Alternatively you can eliminate the interface polling (OIDs</span><span class=w>
+</span><span class=w>  </span><span class=c># beginning with 1.3.6.1.2.1) to reduce the time taken for polling.</span><span class=w>
+</span><span class=w>  </span><span class=c>#</span><span class=w>
+</span><span class=w>  </span><span class=c># MIB: https://download.schneider-electric.com/files?p_File_Name=powernet426.mib</span><span class=w>
+</span><span class=w>  </span><span class=c># Guide: http://www.apc.com/salestools/ASTE-6Z5QEY/ASTE-6Z5QEY_R0_EN.pdf</span><span class=w>
+</span><span class=w>  </span><span class=c># Download site: http://www.apc.com/us/en/tools/download/index.cfm</span><span class=w>
+</span><span class=w>  </span><span class=c>##</span><span class=w>
+</span><span class=w>  </span><span class=nt>apcups</span><span class=p>:</span><span class=w>
+</span><span class=w>    </span><span class=c># Not 100% sure why, but APC firmware does not appear to properly authenticate with the</span><span class=w>
+</span><span class=w>    </span><span class=c>#   credentials that i&#39;ve set through the web UI. I&#39;ve disabled write/set via SNMP so </span><span class=w>
+</span><span class=w>    </span><span class=c>#   sticking w/ v2 (no auth) is fine.</span><span class=w>
+</span><span class=w>    </span><span class=nt>version</span><span class=p>:</span><span class=w> </span><span class=m>2</span><span class=w>
+</span><span class=w>
+</span><span class=w>    </span><span class=nt>walk</span><span class=p>:</span><span class=w>
+</span><span class=w>      </span><span class=c># Don&#39;t care about network stats on this guy...</span><span class=w>
+</span><span class=w>      </span><span class=c># - interfaces</span><span class=w>
+</span><span class=w>      </span><span class=c>##</span><span class=w>
+</span><span class=w>      </span><span class=c># Do care about uptime, tho</span><span class=w>
+</span><span class=w>      </span>- <span class=l>sysUpTime</span><span class=w>
+</span><span class=w>
+</span><span class=w>      </span><span class=c>##</span><span class=w>
+</span><span class=w>      </span><span class=c># For reasons that I don&#39;t understand, specifying the OID results in errors like this:</span><span class=w>
+</span><span class=w>      </span><span class=c>#   level=error caller=main.go:130 msg=&#34;Error generating config netsnmp&#34; err=&#34;cannot find oid &#39;.1.3.6.1.4.1.318.1.1.12.1.15.0&#39; to walk&#34;</span><span class=w>
+</span><span class=w>      </span><span class=c># But the path &#39;.1.3.6.1.4.1.318.1.1.12.1.15.0&#39; maps to rPDUIdentDeviceLinetoLineVoltage.0</span><span class=w>
+</span><span class=w>      </span><span class=c># So specify that by name and the error goes away :/</span><span class=w>
+</span><span class=w>      </span><span class=c>##</span><span class=w>
+</span><span class=w>      </span>- <span class=l>rPDUIdentDeviceLinetoLineVoltage</span><span class=w> </span><span class=c># .1.3.6.1.4.1.318.1.1.12.1.15.0</span><span class=w>
+</span><span class=w>      </span>- <span class=l>rPDUIdentDevicePowerWatts       </span><span class=w> </span><span class=c># .1.3.6.1.4.1.318.1.1.12.1.16.0</span><span class=w>
+</span><span class=w>      </span>- <span class=l>rPDUIdentDevicePowerVA          </span><span class=w> </span><span class=c># .1.3.6.1.4.1.318.1.1.12.1.18.0</span><span class=w>
+</span><span class=w>      </span>- <span class=l>rPDULoadStatusTable             </span><span class=w> </span><span class=c># .1.3.6.1.4.1.318.1.1.12.2.3.1</span><span class=w>
+</span><span class=w>
+</span><span class=w>    </span><span class=c>##</span><span class=w>
+</span><span class=w>    </span><span class=c># From `rPDULoadStatusTable`, I can get `rPDULoadStatusLoad` and `rPDULoadStatusLoadState`</span><span class=w>
+</span><span class=w>    </span><span class=c>#    which represent the percentage capacity as a percentage and a &#34;low, nominal, warn, critical&#34; flag.</span><span class=w>
+</span><span class=w>    </span><span class=c>#</span><span class=w>
+</span><span class=w>    </span><span class=c># Don&#39;t need to resort to the `lookup` mechanism as the PDU has only one bank and can just extract the values</span><span class=w>
+</span><span class=w>    </span><span class=c>#   by referring to them explicitly below. This would likely change w/ a 2U PDU</span><span class=w>
+</span><span class=w>
+</span><span class=w>    </span><span class=c># Allows for adjustment to how various SNMP endpoints are parsed (as info about a device vs a moving metric)</span><span class=w>
+</span><span class=w>    </span><span class=c># See: https://github.com/prometheus/snmp_exporter/tree/master/generator#enumasinfo-and-enumasstateset</span><span class=w>
+</span><span class=w>    </span><span class=c>##</span><span class=w>
+</span><span class=w>    </span><span class=nt>overrides</span><span class=p>:</span><span class=w>
+</span><span class=w>      </span><span class=c># Should be a percentage of load</span><span class=w>
+</span><span class=w>      </span><span class=nt>rPDULoadStatusLoad</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>gauge</span><span class=w>
+</span><span class=w>      </span><span class=c># In addition to a numerical load percentage, also handy to have the characterization _of_ that load, too</span><span class=w>
+</span><span class=w>      </span><span class=c># In this case, the load can be characterized one of 4 ways:</span><span class=w>
+</span><span class=w>      </span><span class=c>#   phaseLoadNormal (1),phaseLoadLow (2),phaseLoadNearOverload (3),phaseLoadOverload (4)</span><span class=w>
+</span><span class=w>      </span><span class=nt>rPDULoadStatusLoadState</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>EnumAsStateSet</span><span class=w>
+</span><span class=w>
+</span><span class=w>      </span><span class=c>##</span><span class=w>
+</span><span class=w>      </span><span class=c># There are a few &#39;constants&#39; that come from the table i don&#39;t need to track, so we drop them :)</span><span class=w>
+</span><span class=w>      </span><span class=nt>rPDULoadStatusBankNumber</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span><span class=nt>ignore</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span><span class=w>        </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>EnumAsInfo</span><span class=w>
+</span><span class=w>      </span><span class=nt>rPDULoadStatusIndex</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span><span class=nt>ignore</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span><span class=w>        </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>EnumAsInfo</span><span class=w>
+</span><span class=w>      </span><span class=nt>rPDULoadStatusPhaseNumber</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span><span class=nt>ignore</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span><span class=w>        </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>EnumAsInfo</span><span class=w>
+</span><span class=w>
+</span></code></pre></td></tr></table>
+</div>
+</div><p>The resulting <code>snmp.yml</code> is quite brief:</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=c># WARNING: This file was auto-generated using snmp_exporter generator, manual changes will be lost.</span><span class=w>
+</span><span class=w></span><span class=nt>apcups</span><span class=p>:</span><span class=w>
+</span><span class=w>  </span><span class=nt>walk</span><span class=p>:</span><span class=w>
+</span><span class=w>  </span>- <span class=m>1.3.6.1.4.1.318.1.1.12.2.3.1</span><span class=w>
+</span><span class=w>  </span><span class=nt>get</span><span class=p>:</span><span class=w>
+</span><span class=w>  </span>- <span class=m>1.3.6.1.2.1.1.3.0</span><span class=w>
+</span><span class=w>  </span>- <span class=m>1.3.6.1.4.1.318.1.1.12.1.15.0</span><span class=w>
+</span><span class=w>  </span>- <span class=m>1.3.6.1.4.1.318.1.1.12.1.16.0</span><span class=w>
+</span><span class=w>  </span>- <span class=m>1.3.6.1.4.1.318.1.1.12.1.18.0</span><span class=w>
+</span><span class=w>  </span><span class=nt>metrics</span><span class=p>:</span><span class=w>
+</span><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>sysUpTime</span><span class=w>
+</span><span class=w>    </span><span class=nt>oid</span><span class=p>:</span><span class=w> </span><span class=m>1.3.6.1.2.1.1.3</span><span class=w>
+</span><span class=w>    </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>gauge</span><span class=w>
+</span><span class=w>    </span><span class=nt>help</span><span class=p>:</span><span class=w> </span><span class=l>The time (in hundredths of a second) since the network management portion of the system was last re-initialized. - 1.3.6.1.2.1.1.3</span><span class=w>
+</span><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>rPDUIdentDeviceLinetoLineVoltage</span><span class=w>
+</span><span class=w>    </span><span class=nt>oid</span><span class=p>:</span><span class=w> </span><span class=m>1.3.6.1.4.1.318.1.1.12.1.15</span><span class=w>
+</span><span class=w>    </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>gauge</span><span class=w>
+</span><span class=w>    </span><span class=nt>help</span><span class=p>:</span><span class=w> </span><span class=l>Getting/Setting this OID will return/set the Line to Line Voltage - 1.3.6.1.4.1.318.1.1.12.1.15</span><span class=w>
+</span><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>rPDUIdentDevicePowerWatts</span><span class=w>
+</span><span class=w>    </span><span class=nt>oid</span><span class=p>:</span><span class=w> </span><span class=m>1.3.6.1.4.1.318.1.1.12.1.16</span><span class=w>
+</span><span class=w>    </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>gauge</span><span class=w>
+</span><span class=w>    </span><span class=nt>help</span><span class=p>:</span><span class=w> </span><span class=l>Getting this OID will return the Power in Watts. - 1.3.6.1.4.1.318.1.1.12.1.16</span><span class=w>
+</span><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>rPDUIdentDevicePowerVA</span><span class=w>
+</span><span class=w>    </span><span class=nt>oid</span><span class=p>:</span><span class=w> </span><span class=m>1.3.6.1.4.1.318.1.1.12.1.18</span><span class=w>
+</span><span class=w>    </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>gauge</span><span class=w>
+</span><span class=w>    </span><span class=nt>help</span><span class=p>:</span><span class=w> </span><span class=l>Getting this OID will return the Power in VA. - 1.3.6.1.4.1.318.1.1.12.1.18</span><span class=w>
+</span><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>rPDULoadStatusLoad</span><span class=w>
+</span><span class=w>    </span><span class=nt>oid</span><span class=p>:</span><span class=w> </span><span class=m>1.3.6.1.4.1.318.1.1.12.2.3.1.1.2</span><span class=w>
+</span><span class=w>    </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>gauge</span><span class=w>
+</span><span class=w>    </span><span class=nt>help</span><span class=p>:</span><span class=w> </span><span class=l>Getting this OID will return the phase/bank load measured in tenths of Amps. - 1.3.6.1.4.1.318.1.1.12.2.3.1.1.2</span><span class=w>
+</span><span class=w>    </span><span class=nt>indexes</span><span class=p>:</span><span class=w>
+</span><span class=w>    </span>- <span class=nt>labelname</span><span class=p>:</span><span class=w> </span><span class=l>rPDULoadStatusIndex</span><span class=w>
+</span><span class=w>      </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>EnumAsInfo</span><span class=w>
+</span><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>rPDULoadStatusLoadState</span><span class=w>
+</span><span class=w>    </span><span class=nt>oid</span><span class=p>:</span><span class=w> </span><span class=m>1.3.6.1.4.1.318.1.1.12.2.3.1.1.3</span><span class=w>
+</span><span class=w>    </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>EnumAsStateSet</span><span class=w>
+</span><span class=w>    </span><span class=nt>help</span><span class=p>:</span><span class=w> </span><span class=l>Getting this OID will return the phase/bank load state - 1.3.6.1.4.1.318.1.1.12.2.3.1.1.3</span><span class=w>
+</span><span class=w>    </span><span class=nt>indexes</span><span class=p>:</span><span class=w>
+</span><span class=w>    </span>- <span class=nt>labelname</span><span class=p>:</span><span class=w> </span><span class=l>rPDULoadStatusIndex</span><span class=w>
+</span><span class=w>      </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>EnumAsInfo</span><span class=w>
+</span><span class=w>    </span><span class=nt>enum_values</span><span class=p>:</span><span class=w>
+</span><span class=w>      </span><span class=nt>1</span><span class=p>:</span><span class=w> </span><span class=l>phaseLoadNormal</span><span class=w>
+</span><span class=w>      </span><span class=nt>2</span><span class=p>:</span><span class=w> </span><span class=l>phaseLoadLow</span><span class=w>
+</span><span class=w>      </span><span class=nt>3</span><span class=p>:</span><span class=w> </span><span class=l>phaseLoadNearOverload</span><span class=w>
+</span><span class=w>      </span><span class=nt>4</span><span class=p>:</span><span class=w> </span><span class=l>phaseLoadOverload</span><span class=w>
+</span><span class=w>  </span><span class=nt>version</span><span class=p>:</span><span class=w> </span><span class=m>2</span><span class=w>
+</span></code></pre></td></tr></table>
+</div>
+</div><h2 id=the-dashboard>The Dashboard</h2>
+<p>Once metrics are making their way into prometheus, it&rsquo;s only a bit of work to get a dashboard up and running.</p>
+<p>For sanity checking I fired up a load; a crypto-miner. See if you can spot when&mldr; :).</p>
+<figure>
+<img src=https://karlquinsland.com/monitoring-ap7900-switched-pdu-prometheus-grafana/images/grafana.png alt="screenshot showing simple grafana dashboard consuming some of the PDU metrics">
+<figcaption>
+<p>
+Simple dashboard in grafana
+</p>
+</figcaption>
+</figure>
+<p>The <code>json</code> file for the dashboard is about 750 lines long, so rather than embed it, I&rsquo;ve <a href=#files rel>attached</a> it as a file; the sha1 hash of <code>dashboard.json</code> is <code>400edb0c4064068f12e17c2f1f0d6862d3b8d449</code>.</p>
+<h3 id=estimating-costs>estimating costs</h3>
+<p>The dashboard just multiplies the average Wattage by the average cost of a kWh and then scales that to fit a 24h window.</p>
+<p>The rate I pay for electricity changes based on the hour in which the power is used; about 40% of the week, my power costs a few cents per kWh more. The cost shown in the image above is a rough approximation based on my average power rate of around 12.5 cents per kWh. This rate can be adjusted with the <code>avgkWH_Cost</code> variable, if needed.</p>
+<h2 id=files>Files</h2>
+<ul>
+<li>
+<figure>
+<a target=_blank href=https://karlquinsland.com/monitoring-ap7900-switched-pdu-prometheus-grafana/images/ap7900.png>
+<img style=width:auto;height:auto src=https://karlquinsland.com/monitoring-ap7900-switched-pdu-prometheus-grafana/images/ap7900_hua86ef71d7c97469c72abcc8606f92a1f_30363_300x0_resize_box_3.png width=300 height=300>
+</a>
+</figure>
+</li>
+<li>
+<a target=_blank href=https://karlquinsland.com/monitoring-ap7900-switched-pdu-prometheus-grafana/files/dashboard.json>
+<i class="far fa-file-file-code"></i>
+files/dashboard.json:
+<br>
+<small>sha1(dashboard.json): 400edb0c4064068f12e17c2f1f0d6862d3b8d449</small>
+</a>
+</li>
+<li>
+<figure>
+<a target=_blank href=https://karlquinsland.com/monitoring-ap7900-switched-pdu-prometheus-grafana/images/grafana.png>
+<img style=width:auto;height:auto src=https://karlquinsland.com/monitoring-ap7900-switched-pdu-prometheus-grafana/images/grafana_hu12e2e56abae7547e2e0002fa4ac227b7_229334_300x0_resize_box_3.png width=300 height=147>
+</a>
+<figcaption>
+<small>Simple dashboard in grafana</small>
+</figcaption>
+</figure>
+</li>
+</ul>
+</div><div class=post-footer id=post-footer>
+<div class=post-info>
+<div class=post-info-line>
+<div class=post-info-mod>
+<span>Updated on 2020-12-27&nbsp;<a class=git-hash href=https://github.com/kquinsland/kquinsland.github.io/commit/c4a04587e67461ba2c57d70a686ff4b14f109baa target=_blank title="commit by karl(karl@karlquinsland.com) c4a04587e67461ba2c57d70a686ff4b14f109baa: add draft and dashboard file">
+<i class="fas fa-hashtag fa-fw"></i>c4a0458</a></span>
+</div>
+<div class=post-info-license></div>
+</div>
+<div class=post-info-line>
+<div class=post-info-md><span>
+<a class=link-to-markdown href=https://karlquinsland.com/monitoring-ap7900-switched-pdu-prometheus-grafana/index.md target=_blank>Read Markdown</a>
+</span></div>
+<div class=post-info-share>
+<span></span>
+</div>
+</div>
+</div>
+<div class=post-info-more>
+<section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=https://karlquinsland.com/tags/prometheus/>prometheus</a>,&nbsp;<a href=https://karlquinsland.com/tags/grafana/>grafana</a>,&nbsp;<a href=https://karlquinsland.com/tags/snmp/>SNMP</a></section>
+<section>
+<span><a href=javascript:void(0); onclick=window.history.back()>Back</a></span>&nbsp;|&nbsp;<span><a href=https://karlquinsland.com/>Home</a></span>
+</section>
+</div>
+<div class=post-nav><a href=https://karlquinsland.com/amcrest-ip-cam-security-isnt-a-feature-its-a-punchine/ class=prev rel=prev title="Amcrest IP Cameras: security isn't a feature, it's a punchline"><i class="fas fa-angle-left fa-fw"></i>Amcrest IP Cameras: security isn't a feature, it's a punchline</a>
+<a href=https://karlquinsland.com/unbrick-rievtech-plc-failed-firmware-update/ class=next rel=next title="Unbrick a rievtech PLC after failed firmware upgrade">Unbrick a rievtech PLC after failed firmware upgrade<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+</article></div>
+</main><footer class=footer>
+<div class=footer-container><div class=footer-line>¯\_(ツ)_/¯</div><div class=footer-line>Powered by <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.88.1">Hugo</a> | Theme - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+</div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2019 - 2021</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=https://karlquinsland.com/ target=_blank>karl</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div>
+</div>
+</footer></div>
+<div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top">
+<i class="fas fa-arrow-up fa-fw"></i>
+</a><a href=# id=view-comments class=fixed-button title="View Comments">
+<i class="fas fa-comment fa-fw"></i>
+</a>
+</div><link rel=stylesheet href=https://karlquinsland.com/lib/katex/katex.min.4710034e669c7ff17f823f9ba12cf8a36582d65b007f79cbc4a3c11d7db2e4ca.css integrity="sha256-RxADTmacf/F/gj+boSz4o2WC1lsAf3nLxKPBHX2y5Mo="><link rel=stylesheet href=https://karlquinsland.com/lib/katex/copy-tex.min.bf9ff4137fec38f6255419e142d0883c9c52090885d746f80eee12b273d9b3e0.css integrity="sha256-v5/0E3/sOPYlVBnhQtCIPJxSCQiF10b4Du4SsnPZs+A="><script type=text/javascript src=https://karlquinsland.com/lib/smooth-scroll/smooth-scroll.min.bcff85fb5e00d68802850b393ac7792c997f722f536f38e26638c46dca8e5eb6.js integrity="sha256-vP+F+14A1ogChQs5Osd5LJl/ci9TbzjiZjjEbcqOXrY="></script><script type=text/javascript src=https://karlquinsland.com/lib/autocomplete/autocomplete.min.615590a2ca2b667afa7c02ef396f5500b62e22795ddbb46448f90494605d09a5.js integrity="sha256-YVWQosorZnr6fALvOW9VALYuInld27RkSPkElGBdCaU="></script><script type=text/javascript src=https://karlquinsland.com/lib/lunr/lunr.min.df84a2d58ea594c04a3371b48d020b55ea10284c2ec636e4e331965d7313e29b.js integrity="sha256-34Si1Y6llMBKM3G0jQILVeoQKEwuxjbk4zGWXXMT4ps="></script><script type=text/javascript src=https://karlquinsland.com/lib/lazysizes/lazysizes.min.fb649fcae62177dfe63e67081ddceb830b5ce1f05a4184e9bbb7d87ac4b8f4e5.js integrity="sha256-+2SfyuYhd9/mPmcIHdzrgwtc4fBaQYTpu7fYesS49OU="></script><script type=text/javascript src=https://karlquinsland.com/lib/clipboard/clipboard.min.8a7739925f4c03586479852df840b7061948832a7fda30c8c812d2ea4dd4c4f2.js integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/katex.min.17f5dd6b9f123dd7140abfb18521b3f4c036cd004f6f40121182a8865f140877.js integrity="sha256-F/Xda58SPdcUCr+xhSGz9MA2zQBPb0ASEYKohl8UCHc="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/auto-render.min.f74776a677f0d2be0af0264058f928e2ba455d0b19bc985304660d922a43a6b2.js integrity="sha256-90d2pnfw0r4K8CZAWPko4rpFXQsZvJhTBGYNkipDprI="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/copy-tex.min.2ab2237329021bc443986c8327f6e61357fb68a54e5d233d224023718c02207d.js integrity="sha256-KrIjcykCG8RDmGyDJ/bmE1f7aKVOXSM9IkAjcYwCIH0="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/mhchem.min.5cea356d6025c5a2f18c454c83ec5674dbb04fab1cd1d75569e77788c6b6f888.js integrity="sha256-XOo1bWAlxaLxjEVMg+xWdNuwT6sc0ddVaed3iMa2+Ig="></script><script type=text/javascript>window.config={code:{copyTitle:"Copy to clipboard",maxShownLines:10},comment:{},math:{delimiters:[{display:!0,left:"$$",right:"$$"},{display:!0,left:"\\[",right:"\\]"},{display:!1,left:"$",right:"$"},{display:!1,left:"\\(",right:"\\)"}],strict:!1},search:{highlightTag:"em",lunrIndexURL:"/index.json",maxResultLength:10,noResultsFound:"No results found",snippetLength:30,type:"lunr"}}</script><script type=text/javascript src=https://karlquinsland.com/js/theme.min.f51938f3065a40ee841bcb558e4330e31fd26c0ea55343fff8770b88b0319a3c.js integrity="sha256-9Rk48wZaQO6EG8tVjkMw4x/SbA6lU0P/+HcLiLAxmjw="></script><script type=text/javascript>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date),gtag('config','UA-173167356-1',{anonymize_ip:!0})</script><script type=text/javascript src="https://www.googletagmanager.com/gtag/js?id=UA-173167356-1" async></script></body>
+</html>

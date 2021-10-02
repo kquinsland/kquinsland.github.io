@@ -1,118 +1,223 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>tmtdt on karl</title><link>https://karlquinsland.com/tags/tmtdt/</link><description>Recent content in tmtdt on karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 26 Jul 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/tmtdt/index.xml" rel="self" type="application/rss+xml"/><item><title>Announcing The Missing ToDoist Tools</title><link>https://karlquinsland.com/2020/07/announcing-the-missing-todoist-tools/</link><pubDate>Sun, 26 Jul 2020 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/2020/07/announcing-the-missing-todoist-tools/</guid><description>&lt;h1 id="tmtdt-the-missing-todoist-tools-">TMTDT: The Missing ToDoist Tools 🎉&lt;/h1>
-&lt;p>As the name implies, TMTDT started as a small collection of scripts that I used to augment ToDoist with features they can&amp;rsquo;t/won&amp;rsquo;t implement. It&amp;rsquo;s grown quite a bit since then.&lt;/p>
-&lt;figure >
-&lt;img src="https://karlquinsland.com/2020/07/announcing-the-missing-todoist-tools/images/demo.gif" alt="I don&amp;#39;t know how to make flashy demo gifs." />
-&lt;figcaption>
-&lt;p>
-I don&amp;#39;t know how to make flashy demo gifs.
-&lt;a href="#demo">
-See the file driving the demo
-&lt;/a>
-&lt;/p>
-&lt;/figcaption>
-&lt;/figure>
-&lt;p>Those scripts started as simple idea and quickly morphed into a creaky, but essential, tool. As more features were added it continued too morph into an unmaintainable mess. Untangling that mess was on my todo list but never a high priority partly because of issues TMTDT was designed to solve 🤦.&lt;/p>
-&lt;p>I lost my day job right as the spring of 2020 &lt;a href="https://en.wikipedia.org/wiki/Stay-at-home_order#COVID-19_pandemic">shelter in place&lt;/a> order was put in place. TMTDT is certainly not how I &lt;em>thought&lt;/em> early summer was going to be spent, but a useful way nonetheless.&lt;/p>
-&lt;p>One significant chunk of my newly-freed time and a lengthy re-write later, I had something that looked promising. After a &lt;em>lot&lt;/em> more work and some tinkering, I&amp;rsquo;ve got something that feels like far more than a hacky tool for personal use.&lt;/p>
-&lt;h2 id="why">Why&lt;/h2>
-&lt;p>Why not?&lt;/p>
-&lt;p>I had several scripts that I would run on a regular basis to do things like:&lt;/p>
-&lt;ul>
-&lt;li>set up projects with multiple different types of templates based on things like the date&lt;/li>
-&lt;li>fix typos i routinely made while &lt;a href="https://get.todoist.help/hc/en-us/articles/115001745265-Task-Quick-Add">quick adding&lt;/a> tasks.&lt;/li>
-&lt;li>re-schedule certain daily tasks if they had been missed&lt;/li>
-&lt;/ul>
-&lt;p>No joke, I&amp;rsquo;d spend a &lt;em>lot&lt;/em> of time fixing typos, expanding ideas for a project into proper sub-tasks and sections and other routine administrative work:&lt;/p>
-&lt;figure >
-&lt;img src="https://karlquinsland.com/2020/07/announcing-the-missing-todoist-tools/images/time-report.jpg" alt="Representative of time spent during a typical week" />
-&lt;figcaption>
-&lt;p>
-Representative of time spent during a typical week
-&lt;/p>
-&lt;/figcaption>
-&lt;/figure>
-&lt;p>In that specific week, I kept track of how 37 hours were spent. Of those 37, about 4 were spent on general Inbox review / process. At least 3 of those 4 were spent &lt;em>directly&lt;/em> on task triage. 3/37 is about 8%. With no full time day job - &lt;a href="https://karlquinsland.com/contact/">hire me&lt;/a> - that&amp;rsquo;s a fairly representative breakdown for a given week; some time planning the things, lots of time doing the things.&lt;/p>
-&lt;p>What would you do with 8% of your time back each week?&lt;/p>
-&lt;p>I&amp;rsquo;m kidding.&lt;/p>
-&lt;p>We all know that I&amp;rsquo;m not getting any free time back from this.&lt;/p>
-&lt;figure >
-&lt;img src="https://karlquinsland.com/2020/07/announcing-the-missing-todoist-tools/images/xkcd-1319.png" />
-&lt;figcaption>
-&lt;p>
-&lt;a href="https://xkcd.com/1319/">
-Credit: XKCD #1319
-&lt;/a>
-&lt;/p>
-&lt;/figcaption>
-&lt;/figure>
-&lt;p>I&amp;rsquo;ve written this software to suit my needs, but the decision to make it a bit more robust and featured before release is because I&amp;rsquo;ve noticed a few &amp;lsquo;new&amp;rsquo; tools to better augment ToDoist:&lt;/p>
-&lt;ul>
-&lt;li>&lt;a href="https://github.com/Hoffelhas/autodoist">autodoist&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://chrome.google.com/webstore/detail/todoist-shortcuts-gmail-v/dehmghpdcahlffompjagejmgbcfahndp">shortcuts&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://github.com/6uhrmittag/taskbutler">taskbutler&lt;/a>&lt;/li>
-&lt;li>&lt;a href="https://planner-todo.web.app/">planner&lt;/a>. This is more of a UI, but it&amp;rsquo;s a &lt;strong>very&lt;/strong> pretty app.&lt;/li>
-&lt;/ul>
-&lt;p>And I&amp;rsquo;m genuinely curious about how other people will user it. I am always appreciative when somebody finds a smart way to save some time and shares their trick. I&amp;rsquo;m hoping somebody figures out how to use this tool in a way that I can learn from.&lt;/p>
-&lt;p>An announcement post for TMTDT is now on &lt;a href="https://old.reddit.com/r/todoist/comments/hyfl3o/introducing_the_missing_todoist_tools_a/">/r/todoist&lt;/a>.&lt;/p>
-&lt;h2 id="how">How&lt;/h2>
-&lt;p>The code and some documentation can be found on &lt;a href="https://github.com/kquinsland/the-missing-todoist-tools">GitHub&lt;/a>.&lt;/p>
-&lt;p>The demo gif at the top of this post illustrates a simple example, but more through (read: contrived) examples are included in the &lt;a href="https://github.com/kquinsland/the-missing-todoist-tools/tree/master/jobs/v1">jobs&lt;/a> directory.&lt;/p>
-&lt;p>The short version:&lt;/p>
-&lt;blockquote>
-&lt;p>Scriptable tools for building jobs to manage a TooDoist account&lt;/p>
-&lt;/blockquote>
-&lt;p>Slightly longer version:&lt;/p>
-&lt;blockquote>
-&lt;p>Architecture inspired by Elastic Search&amp;rsquo;s &lt;a href="https://github.com/elastic/curator/tree/master/curator">Curator&lt;/a>. Functionality built for ToDoist.&lt;/p>
-&lt;/blockquote>
-&lt;h3 id="demo">Demo&lt;/h3>
-&lt;p>The full set of &lt;a href="https://github.com/kquinsland/the-missing-todoist-tools/blob/master/jobs/demo/">resources for the demo are here&lt;/a>, but the &amp;lsquo;meaningful&amp;rsquo; parts are below:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-yaml" data-lang="yaml">
-&lt;span style="font-style:italic"># apply these labels...&lt;/span>
-&lt;span style="font-weight:bold">labels&lt;/span>:
-- &lt;span style="font-style:italic">&amp;#34;at_work&amp;#34;&lt;/span>
-&lt;span style="font-style:italic"># to tasks that...&lt;/span>
-&lt;span style="font-weight:bold">filters&lt;/span>:
-- &lt;span style="font-weight:bold">filter&lt;/span>:
-&lt;span style="font-style:italic"># Any task that...&lt;/span>
-&lt;span style="font-weight:bold">task&lt;/span>:
-&lt;span style="font-style:italic"># ... ends in &amp;#39;at work&amp;#39; or &amp;#39;the office&amp;#39;&lt;/span>
-&lt;span style="font-weight:bold">content&lt;/span>:
-&lt;span style="font-weight:bold">match&lt;/span>: &lt;span style="font-style:italic">&amp;#39;(at work$|at the office$)&amp;#39;&lt;/span>
-&lt;span style="font-weight:bold">option&lt;/span>:
-&lt;span style="font-style:italic"># remove portions of task content that match the query&lt;/span>
-&lt;span style="font-weight:bold">mutate&lt;/span>: &lt;span style="font-weight:bold">Yes&lt;/span>
-&lt;span style="font-style:italic"># *AND*&lt;/span>
-&lt;span style="font-style:italic"># ... has no labels&lt;/span>
-&lt;span style="font-weight:bold">labels&lt;/span>:
-&lt;span style="font-weight:bold">absent&lt;/span>: &lt;span style="font-weight:bold">Yes&lt;/span>
-&lt;span style="font-style:italic"># *AND*&lt;/span>
-&lt;span style="font-style:italic"># ... is in this project&lt;/span>
-&lt;span style="font-weight:bold">projects&lt;/span>:
-&lt;span style="font-weight:bold">name&lt;/span>:
-&lt;span style="font-weight:bold">match&lt;/span>: &lt;span style="font-style:italic">&amp;#39;Inbox&amp;#39;&lt;/span>
-&lt;/code>&lt;/pre>&lt;/div>&lt;p>and&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-yaml" data-lang="yaml">
-&lt;span style="font-style:italic"># Create the projects...&lt;/span>
-&lt;span style="font-weight:bold">projects&lt;/span>:
-&lt;span style="font-style:italic"># ... as child projects of `Garage Sale 🏚️💵`&lt;/span>
-- &lt;span style="font-weight:bold">parent&lt;/span>:
-&lt;span style="font-weight:bold">project&lt;/span>: Garage Sale 🏚️💵
-&lt;span style="font-style:italic"># ... populated with template tasks/sections&lt;/span>
-&lt;span style="font-weight:bold">template&lt;/span>:
-&lt;span style="font-weight:bold">file&lt;/span>: ./templates/garage-sale.csv
-&lt;span style="font-style:italic"># where the name of the projects to create comes from ...&lt;/span>
-&lt;span style="font-weight:bold">from&lt;/span>:
-&lt;span style="font-weight:bold">filters&lt;/span>:
-- &lt;span style="font-weight:bold">filter&lt;/span>:
-&lt;span style="font-style:italic"># Any task that...&lt;/span>
-&lt;span style="font-weight:bold">task&lt;/span>:
-&lt;span style="font-weight:bold">content&lt;/span>:
-&lt;span style="font-weight:bold">match&lt;/span>: &lt;span style="font-style:italic">&amp;#34;.&amp;#34;&lt;/span>
-&lt;span style="font-weight:bold">option&lt;/span>:
-&lt;span style="font-weight:bold">delete&lt;/span>: &lt;span style="font-weight:bold">yes&lt;/span>
-&lt;span style="font-weight:bold">projects&lt;/span>:
-&lt;span style="font-style:italic"># ... is in this project&lt;/span>
-&lt;span style="font-weight:bold">name&lt;/span>:
-&lt;span style="font-weight:bold">match&lt;/span>: &lt;span style="font-style:italic">&amp;#39;Garage Sale 🏚️💵&amp;#39;&lt;/span>
-&lt;/code>&lt;/pre>&lt;/div></description></item></channel></rss>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>tmtdt - Tag - karl</title><link>https://karlquinsland.com/tags/tmtdt/</link><description>tmtdt - Tag - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 26 Jul 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/tmtdt/" rel="self" type="application/rss+xml"/><item><title>Announcing The Missing ToDoist Tools</title><link>https://karlquinsland.com/the-missing-todoist-tools/</link><pubDate>Sun, 26 Jul 2020 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/the-missing-todoist-tools/</guid><description><![CDATA[<h1 id="tmtdt-the-missing-todoist-tools-">TMTDT: The Missing ToDoist Tools 🎉</h1>
+<p>As the name implies, TMTDT started as a small collection of scripts that I used to augment ToDoist with features they can&rsquo;t/won&rsquo;t implement. It&rsquo;s grown quite a bit since then.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        I don&#39;t know how to make flashy demo gifs.
+        <a href="#demo"> 
+            See the file driving the demo
+        </a> 
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>Those scripts started as simple idea and quickly morphed into a creaky, but essential, tool. As more features were added it continued too morph into an unmaintainable mess. Untangling that mess was on my todo list but never a high priority partly because of issues TMTDT was designed to solve 🤦.</p>
+<p>I lost my day job right as the spring of 2020 <a href="https://en.wikipedia.org/wiki/Stay-at-home_order#COVID-19_pandemic" target="_blank" rel="noopener noreffer">shelter in place</a> order was put in place. TMTDT is certainly not how I <em>thought</em> early summer was going to be spent, but a useful way nonetheless.</p>
+<p>One significant chunk of my newly-freed time and a lengthy re-write later, I had something that looked promising. After a <em>lot</em> more work and some tinkering, I&rsquo;ve got something that feels like far more than a hacky tool for personal use.</p>
+<h2 id="why">Why</h2>
+<p>Why not?</p>
+<p>I had several scripts that I would run on a regular basis to do things like:</p>
+<ul>
+<li>set up projects with multiple different types of templates based on things like the date</li>
+<li>fix typos i routinely made while <a href="https://get.todoist.help/hc/en-us/articles/115001745265-Task-Quick-Add" target="_blank" rel="noopener noreffer">quick adding</a> tasks.</li>
+<li>re-schedule certain daily tasks if they had been missed</li>
+</ul>
+<p>No joke, I&rsquo;d spend a <em>lot</em> of time fixing typos, expanding ideas for a project into proper sub-tasks and sections and other routine administrative work:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Representative of time spent during a typical week
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>In that specific week, I kept track of how 37 hours were spent. Of those 37, about 4 were spent on general Inbox review / process. At least 3 of those 4 were spent <em>directly</em> on task triage. 3/37 is about 8%. With no full time day job - <a href="/contact/" rel="">hire me</a> - that&rsquo;s a fairly representative breakdown for a given week; some time planning the things, lots of time doing the things.</p>
+<p>What would you do with 8% of your time back each week?</p>
+<p>I&rsquo;m kidding.</p>
+<p>We all know that I&rsquo;m not getting any free time back from this.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        
+        <a href="https://xkcd.com/1319/"> 
+             Credit: XKCD #1319
+        </a> 
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>I&rsquo;ve written this software to suit my needs, but the decision to make it a bit more robust and featured before release is because I&rsquo;ve noticed a few &lsquo;new&rsquo; tools to better augment ToDoist:</p>
+<ul>
+<li><a href="https://github.com/Hoffelhas/autodoist" target="_blank" rel="noopener noreffer">autodoist</a></li>
+<li><a href="https://chrome.google.com/webstore/detail/todoist-shortcuts-gmail-v/dehmghpdcahlffompjagejmgbcfahndp" target="_blank" rel="noopener noreffer">shortcuts</a></li>
+<li><a href="https://github.com/6uhrmittag/taskbutler" target="_blank" rel="noopener noreffer">taskbutler</a></li>
+<li><a href="https://planner-todo.web.app/" target="_blank" rel="noopener noreffer">planner</a>. This is more of a UI, but it&rsquo;s a <strong>very</strong> pretty app.</li>
+</ul>
+<p>And I&rsquo;m genuinely curious about how other people will user it. I am always appreciative when somebody finds a smart way to save some time and shares their trick. I&rsquo;m hoping somebody figures out how to use this tool in a way that I can learn from.</p>
+<p>An announcement post for TMTDT is now on <a href="https://old.reddit.com/r/todoist/comments/hyfl3o/introducing_the_missing_todoist_tools_a/" target="_blank" rel="noopener noreffer">/r/todoist</a>.</p>
+<h2 id="how">How</h2>
+<p>The code and some documentation can be found on <a href="https://github.com/kquinsland/the-missing-todoist-tools" target="_blank" rel="noopener noreffer">GitHub</a>.</p>
+<p>The demo gif at the top of this post illustrates a simple example, but more through (read: contrived) examples are included in the <a href="https://github.com/kquinsland/the-missing-todoist-tools/tree/master/jobs/v1" target="_blank" rel="noopener noreffer">jobs</a> directory.</p>
+<p>The short version:</p>
+<blockquote>
+<p>Scriptable tools for building jobs to manage a TooDoist account</p>
+</blockquote>
+<p>Slightly longer version:</p>
+<blockquote>
+<p>Architecture inspired by Elastic Search&rsquo;s <a href="https://github.com/elastic/curator/tree/master/curator" target="_blank" rel="noopener noreffer">Curator</a>. Functionality built for ToDoist.</p>
+</blockquote>
+<h3 id="demo">Demo</h3>
+<p>The full set of <a href="https://github.com/kquinsland/the-missing-todoist-tools/blob/master/jobs/demo/" target="_blank" rel="noopener noreffer">resources for the demo are here</a>, but the &lsquo;meaningful&rsquo; parts are below:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="w">
+</span><span class="w">    </span><span class="c"># apply these labels...</span><span class="w">
+</span><span class="w">    </span><span class="nt">labels</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span>- <span class="s2">&#34;at_work&#34;</span><span class="w">
+</span><span class="w">
+</span><span class="w">    </span><span class="c"># to tasks that...</span><span class="w">
+</span><span class="w">    </span><span class="nt">filters</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span>- <span class="nt">filter</span><span class="p">:</span><span class="w">
+</span><span class="w">          </span><span class="c"># Any task that...</span><span class="w">
+</span><span class="w">          </span><span class="nt">task</span><span class="p">:</span><span class="w">
+</span><span class="w">            </span><span class="c"># ... ends in &#39;at work&#39; or &#39;the office&#39;</span><span class="w">
+</span><span class="w">            </span><span class="nt">content</span><span class="p">:</span><span class="w">
+</span><span class="w">              </span><span class="nt">match</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;(at work$|at the office$)&#39;</span><span class="w">
+</span><span class="w">              </span><span class="nt">option</span><span class="p">:</span><span class="w">
+</span><span class="w">                </span><span class="c"># remove portions of task content that match the query</span><span class="w">
+</span><span class="w">                </span><span class="nt">mutate</span><span class="p">:</span><span class="w"> </span><span class="kc">Yes</span><span class="w">
+</span><span class="w">          </span><span class="c"># *AND*</span><span class="w">
+</span><span class="w">          </span><span class="c"># ... has no labels</span><span class="w">
+</span><span class="w">          </span><span class="nt">labels</span><span class="p">:</span><span class="w">
+</span><span class="w">            </span><span class="nt">absent</span><span class="p">:</span><span class="w"> </span><span class="kc">Yes</span><span class="w">
+</span><span class="w">
+</span><span class="w">          </span><span class="c"># *AND*</span><span class="w">
+</span><span class="w">          </span><span class="c"># ... is in this project</span><span class="w">
+</span><span class="w">          </span><span class="nt">projects</span><span class="p">:</span><span class="w">
+</span><span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w">
+</span><span class="w">              </span><span class="nt">match</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;Inbox&#39;</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><p>and</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="w">
+</span><span class="w">    </span><span class="c"># Create the projects...</span><span class="w">
+</span><span class="w">    </span><span class="nt">projects</span><span class="p">:</span><span class="w">
+</span><span class="w">        </span><span class="c"># ... as child projects of `Garage Sale 🏚️💵`</span><span class="w">
+</span><span class="w">      </span>- <span class="nt">parent</span><span class="p">:</span><span class="w">
+</span><span class="w">          </span><span class="nt">project</span><span class="p">:</span><span class="w"> </span><span class="l">Garage Sale 🏚️💵</span><span class="w">
+</span><span class="w">
+</span><span class="w">        </span><span class="c"># ... populated with template tasks/sections</span><span class="w">
+</span><span class="w">        </span><span class="nt">template</span><span class="p">:</span><span class="w">
+</span><span class="w">          </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l">./templates/garage-sale.csv</span><span class="w">
+</span><span class="w">        
+</span><span class="w">        </span><span class="c"># where the name of the projects to create comes from ...</span><span class="w">
+</span><span class="w">        </span><span class="nt">from</span><span class="p">:</span><span class="w">
+</span><span class="w">          </span><span class="nt">filters</span><span class="p">:</span><span class="w">
+</span><span class="w">            </span>- <span class="nt">filter</span><span class="p">:</span><span class="w">
+</span><span class="w">                </span><span class="c"># Any task that...</span><span class="w">
+</span><span class="w">                </span><span class="nt">task</span><span class="p">:</span><span class="w">
+</span><span class="w">                  </span><span class="nt">content</span><span class="p">:</span><span class="w">
+</span><span class="w">                    </span><span class="nt">match</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;.&#34;</span><span class="w">
+</span><span class="w">                    </span><span class="nt">option</span><span class="p">:</span><span class="w">
+</span><span class="w">                      </span><span class="nt">delete</span><span class="p">:</span><span class="w"> </span><span class="kc">yes</span><span class="w">
+</span><span class="w">
+</span><span class="w">                </span><span class="nt">projects</span><span class="p">:</span><span class="w">
+</span><span class="w">                  </span><span class="c"># ... is in this project</span><span class="w">
+</span><span class="w">                  </span><span class="nt">name</span><span class="p">:</span><span class="w">
+</span><span class="w">                    </span><span class="nt">match</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;Garage Sale 🏚️💵&#39;</span><span class="w">
+</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div>]]></description></item></channel></rss>

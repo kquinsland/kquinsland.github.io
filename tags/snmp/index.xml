@@ -1,411 +1,861 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>SNMP on karl</title><link>https://karlquinsland.com/tags/snmp/</link><description>Recent content in SNMP on karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 05 Sep 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/snmp/index.xml" rel="self" type="application/rss+xml"/><item><title>Adding an APC UPS to Home Assistant energy dashboard</title><link>https://karlquinsland.com/2021/09/adding-an-apc-ups-to-home-assistant-energy-dashboard/</link><pubDate>Sun, 05 Sep 2021 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/2021/09/adding-an-apc-ups-to-home-assistant-energy-dashboard/</guid><description>&lt;p>&lt;strong>EDIT:&lt;/strong> (2021-09-19): After some &lt;a href="https://old.reddit.com/r/homeassistant/comments/pi3pv2/how_to_use_an_apc_ups_as_an_energy_dashboard/hbqudh5/">back and forth&lt;/a> with &lt;a href="https://old.reddit.com/user/Laxarus">/u/Laxarus&lt;/a>, there is now a simpler method! The &lt;code>snmp&lt;/code> platform still does not support setting &lt;code>device_class&lt;/code>, but wrapping the sensor in another template sensor is not required; just do so in your &lt;a href="https://www.home-assistant.io/docs/configuration/customizing-devices/">&lt;code>customize.yaml&lt;/code>&lt;/a>. I have called this out &lt;a href="#edit-2021-09-19">below&lt;/a>.&lt;/p>
-&lt;hr>
-&lt;p>This is another quick &amp;ldquo;here&amp;rsquo;s how I did it, hope this help&amp;rdquo; post.&lt;/p>
-&lt;p>In preparation for the inevitable grid brownouts that summer 2021 would bring, I installed a rather beefy UPS for my home network / lab. After some browsing, I discovered a local eWaste liquidator with a really good deal on some second-hand APC UPSs.&lt;/p>
-&lt;p>A few hundred dollars and about 150 lbs later, the UPS was installed in the server rack. Despite being a newer generation, the software on the UPS has a &lt;em>&lt;strong>TON&lt;/strong>&lt;/em> of similarities to the &lt;a href="https://karlquinsland.com/2020/12/monitoring-apc-ap7900-switched-pdu-with-prometheus-and-grafana/">older style of PDU that I installed in my lab &lt;/a> a while back. This made it relatively straightforward to use the same
-pattern to start getting UPS metrics into Grafana as well.&lt;/p>
-&lt;p>After getting the basic monitoring up and running, I started to draft this post to serve as an &amp;lsquo;update&amp;rsquo; to the APC9700 post. Life got in the way and the post sat in the drafts branch where it was completely forgotten about&amp;hellip;. until &lt;a href="https://www.home-assistant.io/blog/2021/08/04/release-20218/">Home Assistant released their new Energy dashboard&lt;/a>. Now that HA could show the energy consumption of individual devices right next to the cumulative consumption and production data, the post was worth finishing and expanding on.&lt;/p>
-&lt;p>The configuration that I was &lt;em>going&lt;/em> to publish is &lt;a href="#current-and-voltage-independently">below&lt;/a> but after finding &lt;a href="https://old.reddit.com/r/homeassistant/comments/pi3pv2/how_to_use_an_apc_ups_as_an_energy_dashboard/hbpqzr6/">this&lt;/a> comment by &lt;a href="https://old.reddit.com/user/Laxarus">Laxarus&lt;/a> on &lt;a href="https://old.reddit.com/user/Navydevildoc">Navydevildoc&lt;/a>&amp;rsquo;s &lt;a href="https://old.reddit.com/r/homeassistant/comments/pi3pv2/how_to_use_an_apc_ups_as_an_energy_dashboard/">reddit post&lt;/a>, I&amp;rsquo;ve got a revised and simpler configuration to share!&lt;/p>
-&lt;h2 id="long-term-statistics-in-home-assistant">Long Term Statistics in Home Assistant&lt;/h2>
-&lt;p>Before diving into the configuration, a little bit of context. In preparation for the energy sub system, the Home Assistant developers have been working on a &amp;lsquo;&lt;a href="https://developers.home-assistant.io/docs/core/entity/sensor/#long-term-statistics">long term statistics&lt;/a>&amp;rsquo; (LTS) framework. The LTS framework is meant to give HA some improved speed and capabilities when dealing with a lot of data! The energy subsystem is the first &amp;lsquo;consumer&amp;rsquo; of the LTS framework.&lt;/p>
-&lt;p>Home Assistant will look for two &amp;lsquo;properties&amp;rsquo; on a given sensor to determine if that sensor will work with the LTS framework.
-For a sensor/entity to &amp;lsquo;work&amp;rsquo; with the long term stats system it must:&lt;/p>
-&lt;ul>
-&lt;li>have a property called &lt;code>device_class&lt;/code> with a value of &lt;code>energy&lt;/code>, &lt;code>gas&lt;/code>, or &lt;code>monetary&lt;/code>&lt;/li>
-&lt;li>have a property called &lt;code>state_class&lt;/code> with a value of either &lt;code>measurement&lt;/code> or &lt;code>total_increasing&lt;/code>&lt;/li>
-&lt;/ul>
-&lt;p>In testing, I was &lt;em>not&lt;/em> able to get a sensor with &lt;code>state_class: measurement&lt;/code> and &lt;code>device_class: energy&lt;/code> to &amp;lsquo;work&amp;rsquo; with the energy sub system. Fortunately, this does not apply with the concise configuration &lt;a href="#a-single-oid-for-power-consumption">below&lt;/a>!&lt;/p>
-&lt;p>As the LTS framework is still new, many platforms - including the SNMP platform - do not support the required properties:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-fallback" data-lang="fallback">Invalid config for [sensor.snmp]: [state_class] is an invalid option for [sensor.snmp]. Check: sensor.snmp-&amp;gt;state_class.
-Invalid config for [sensor.snmp]: [device_class] is an invalid option for [sensor.snmp]. Check: sensor.snmp-&amp;gt;device_class.
-&lt;/code>&lt;/pre>&lt;/div>&lt;p>The &lt;code>template&lt;/code> platform &lt;em>has&lt;/em> been updated to work with the &lt;code>device_class&lt;/code> or &lt;code>state_class&lt;/code> properties though.
-So that&amp;rsquo;s the technique to use here; a &lt;code>template&lt;/code> sensor with the correct &lt;code>{device,state}_class&lt;/code> properties set will wrap the snmp sensor.&lt;/p>
-&lt;p>Hopefully a future release of HA will include &lt;code>{device,state}_class&lt;/code> support for the &lt;code>snmp&lt;/code> platform; the &lt;code>template&lt;/code> sensors in the configuration snips below won&amp;rsquo;t be needed!&lt;/p>
-&lt;h4 id="edit-2021-09-19">EDIT (2021-09-19):&lt;/h4>
-&lt;p>You don&amp;rsquo;t need to wrap the snmp sensor in a template sensor. As of home assistant 2021.09, the &lt;code>snmp&lt;/code> platform does not allow you to set &lt;code>device_class: energy&lt;/code>&amp;hellip; however, you &lt;em>can&lt;/em> set the &lt;code>device_class&lt;/code> attribute on the snmp sensor through &lt;code>customize.yaml&lt;/code>:&lt;/p>
-&lt;p>Make sure your configuration file loads the customization file:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-shell" data-lang="shell">❯ cat configuration.yaml | grep customize
-customize: !include customize.yaml
-&lt;/code>&lt;/pre>&lt;/div>&lt;p>If your snmp sensor was called &lt;code>sensor.usp_energy&lt;/code>, then you would add an object called &lt;code>sensor.ups_energy&lt;/code> like so:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-shell" data-lang="shell">❯ cat customize.yaml | grep -a2 ups
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>SNMP - Tag - karl</title><link>https://karlquinsland.com/tags/snmp/</link><description>SNMP - Tag - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 05 Sep 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/snmp/" rel="self" type="application/rss+xml"/><item><title>Adding an APC UPS to Home Assistant energy dashboard</title><link>https://karlquinsland.com/apc-ups-energy-in-homeassistant/</link><pubDate>Sun, 05 Sep 2021 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/apc-ups-energy-in-homeassistant/</guid><description><![CDATA[<p><strong>EDIT:</strong> (2021-09-19): After some <a href="https://old.reddit.com/r/homeassistant/comments/pi3pv2/how_to_use_an_apc_ups_as_an_energy_dashboard/hbqudh5/" target="_blank" rel="noopener noreffer">back and forth</a> with <a href="https://old.reddit.com/user/Laxarus" target="_blank" rel="noopener noreffer">/u/Laxarus</a>, there is now a simpler method! The <code>snmp</code> platform still does not support setting <code>device_class</code>, but wrapping the sensor in another template sensor is not required; just do so in your <a href="https://www.home-assistant.io/docs/configuration/customizing-devices/" target="_blank" rel="noopener noreffer"><code>customize.yaml</code></a>. I have called this out <a href="#edit-2021-09-19" rel="">below</a>.</p>
+<hr>
+<p>This is another quick &ldquo;here&rsquo;s how I did it, hope this help&rdquo; post.</p>
+<p>In preparation for the inevitable grid brownouts that summer 2021 would bring, I installed a rather beefy UPS for my home network / lab. After some browsing, I discovered a local eWaste liquidator with a really good deal on some second-hand APC UPSs.</p>
+<p>A few hundred dollars and about 150 lbs later, the UPS was installed in the server rack. Despite being a newer generation, the software on the UPS has a <em><strong>TON</strong></em> of similarities to the <a href="https://karlquinsland.com/monitoring-ap7900-switched-pdu-prometheus-grafana/" rel="">older style of PDU that I installed in my lab </a> a while back. This made it relatively straightforward to use the same
+pattern to start getting UPS metrics into Grafana as well.</p>
+<p>After getting the basic monitoring up and running, I started to draft this post to serve as an &lsquo;update&rsquo; to the APC9700 post. Life got in the way and the post sat in the drafts branch where it was completely forgotten about&hellip;. until <a href="https://www.home-assistant.io/blog/2021/08/04/release-20218/" target="_blank" rel="noopener noreffer">Home Assistant released their new Energy dashboard</a>. Now that HA could show the energy consumption of individual devices right next to the cumulative consumption and production data, the post was worth finishing and expanding on.</p>
+<p>The configuration that I was <em>going</em> to publish is <a href="#current-and-voltage-independently" rel="">below</a> but after finding <a href="https://old.reddit.com/r/homeassistant/comments/pi3pv2/how_to_use_an_apc_ups_as_an_energy_dashboard/hbpqzr6/" target="_blank" rel="noopener noreffer">this</a> comment by <a href="https://old.reddit.com/user/Laxarus" target="_blank" rel="noopener noreffer">Laxarus</a> on <a href="https://old.reddit.com/user/Navydevildoc" target="_blank" rel="noopener noreffer">Navydevildoc</a>&rsquo;s <a href="https://old.reddit.com/r/homeassistant/comments/pi3pv2/how_to_use_an_apc_ups_as_an_energy_dashboard/" target="_blank" rel="noopener noreffer">reddit post</a>, I&rsquo;ve got a revised and simpler configuration to share!</p>
+<h2 id="long-term-statistics-in-home-assistant">Long Term Statistics in Home Assistant</h2>
+<p>Before diving into the configuration, a little bit of context. In preparation for the energy sub system, the Home Assistant developers have been working on a &lsquo;<a href="https://developers.home-assistant.io/docs/core/entity/sensor/#long-term-statistics" target="_blank" rel="noopener noreffer">long term statistics</a>&rsquo; (LTS) framework. The LTS framework is meant to give HA some improved speed and capabilities when dealing with a lot of data! The energy subsystem is the first &lsquo;consumer&rsquo; of the LTS framework.</p>
+<p>Home Assistant will look for two &lsquo;properties&rsquo; on a given sensor to determine if that sensor will work with the LTS framework.
+For a sensor/entity to &lsquo;work&rsquo; with the long term stats system it must:</p>
+<ul>
+<li>have a property called <code>device_class</code> with a value of <code>energy</code>, <code>gas</code>, or <code>monetary</code></li>
+<li>have a property called <code>state_class</code> with a value of either <code>measurement</code> or <code>total_increasing</code></li>
+</ul>
+<p>In testing, I was <em>not</em> able to get a sensor with <code>state_class: measurement</code> and <code>device_class: energy</code> to &lsquo;work&rsquo; with the energy sub system. Fortunately, this does not apply with the concise configuration <a href="#a-single-oid-for-power-consumption" rel="">below</a>!</p>
+<p>As the LTS framework is still new, many platforms - including the SNMP platform - do not support the required properties:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">Invalid config for [sensor.snmp]: [state_class] is an invalid option for [sensor.snmp]. Check: sensor.snmp-&gt;state_class.
+Invalid config for [sensor.snmp]: [device_class] is an invalid option for [sensor.snmp]. Check: sensor.snmp-&gt;device_class.
+</code></pre></td></tr></table>
+</div>
+</div><p>The <code>template</code> platform <em>has</em> been updated to work with the <code>device_class</code> or <code>state_class</code> properties though.
+So that&rsquo;s the technique to use here; a <code>template</code> sensor with the correct <code>{device,state}_class</code> properties set will wrap the snmp sensor.</p>
+<p>Hopefully a future release of HA will include <code>{device,state}_class</code> support for the <code>snmp</code> platform; the <code>template</code> sensors in the configuration snips below won&rsquo;t be needed!</p>
+<h4 id="edit-2021-09-19">EDIT (2021-09-19):</h4>
+<p>You don&rsquo;t need to wrap the snmp sensor in a template sensor. As of home assistant 2021.09, the <code>snmp</code> platform does not allow you to set <code>device_class: energy</code>&hellip; however, you <em>can</em> set the <code>device_class</code> attribute on the snmp sensor through <code>customize.yaml</code>:</p>
+<p>Make sure your configuration file loads the customization file:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">❯ cat configuration.yaml <span class="p">|</span> grep customize
+  customize: !include customize.yaml
+</code></pre></td></tr></table>
+</div>
+</div><p>If your snmp sensor was called <code>sensor.usp_energy</code>, then you would add an object called <code>sensor.ups_energy</code> like so:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">❯ cat customize.yaml <span class="p">|</span> grep -a2 ups
 sensor.ups_energy:
-state_class: total_increasing
-device_class: energy
-&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="configure-home-assistant">Configure Home Assistant&lt;/h2>
-&lt;p>I have broken my &lt;code>configuration.yaml&lt;/code> up to make things easier to manage. Almost all entity/device/template/sensor..etc configuration is done through files placed in the &lt;code>devices/**/*&lt;/code> directory:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-shell" data-lang="shell">❯ cat configuration.yaml | grep -E &lt;span style="font-style:italic">&amp;#39;devices/sensor|template/&amp;#39;&lt;/span>
+  state_class: total_increasing
+  device_class: energy
+</code></pre></td></tr></table>
+</div>
+</div><h2 id="configure-home-assistant">Configure Home Assistant</h2>
+<p>I have broken my <code>configuration.yaml</code> up to make things easier to manage. Almost all entity/device/template/sensor..etc configuration is done through files placed in the <code>devices/**/*</code> directory:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">❯ cat configuration.yaml <span class="p">|</span> grep -E <span class="s1">&#39;devices/sensor|template/&#39;</span>
 sensor: !include_dir_merge_list devices/sensor/
 template: !include_dir_merge_list devices/template/
-&lt;/code>&lt;/pre>&lt;/div>&lt;h3 id="a-single-oid-for-power-consumption">A single OID for power consumption&lt;/h3>
-&lt;p>Thanks again to &lt;a href="https://old.reddit.com/user/Laxarus">Laxarus&lt;/a> for the &lt;a href="https://old.reddit.com/r/homeassistant/comments/pi3pv2/how_to_use_an_apc_ups_as_an_energy_dashboard/hbpqzr6/">tip&lt;/a> about the &lt;code>upsHighPrecOutputEnergyUsage&lt;/code> OID!&lt;/p>
-&lt;p>First, create the &amp;lsquo;raw&amp;rsquo; sensor using the &lt;code>snmp&lt;/code> platform:&lt;/p>
-&lt;p>&lt;code>devices/sensor/snmp.yaml&lt;/code>:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-yaml" data-lang="yaml">- &lt;span style="font-weight:bold">platform&lt;/span>: snmp
-&lt;span style="font-weight:bold">name&lt;/span>: &lt;span style="font-style:italic">&amp;#34;UPS Energy (raw)&amp;#34;&lt;/span>
-&lt;span style="font-weight:bold">host&lt;/span>: 192.168.1.1
-&lt;span style="font-style:italic"># The current in tenths of amperes drawn by the load on the UPS.&lt;/span>
-&lt;span style="font-style:italic"># Contained in Module(s): PowerNet-MIB&lt;/span>
-&lt;span style="font-style:italic">##&lt;/span>
-&lt;span style="font-weight:bold">baseoid&lt;/span>: .1.3.6.1.4.1.318.1.1.1.4.3.6.0
-&lt;span style="font-style:italic"># Determines whether the sensor should start and keep working even if the SNMP host is unreachable or not responding.&lt;/span>
-&lt;span style="font-style:italic"># This allows the sensor to be initialized properly even if, for example, your printer is not on when you start Home Assistant.&lt;/span>
-&lt;span style="font-weight:bold">accept_errors&lt;/span>: &lt;span style="font-weight:bold">true&lt;/span>
-&lt;span style="font-style:italic"># UPS reports in tens of kWh so we&amp;#39;ll need to divide by 10 to get kWh; HA only accepts kWh or Wh for sensors&lt;/span>
-&lt;span style="font-style:italic"># that will &amp;#39;work&amp;#39; on the energy dashboard&lt;/span>
-&lt;span style="font-weight:bold">unit_of_measurement&lt;/span>: kWh
-&lt;span style="font-weight:bold">value_template&lt;/span>: &lt;span style="font-style:italic">&amp;#34;{{ ((value | int) / 10) | float}}&amp;#34;&lt;/span>
-&lt;/code>&lt;/pre>&lt;/div>&lt;p>Then, wrap the &lt;code>snmp&lt;/code> sensor with the necessary properties:&lt;/p>
-&lt;p>&lt;code>devices/template/ups_energy.yaml&lt;/code>:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-yaml" data-lang="yaml">- &lt;span style="font-weight:bold">sensor&lt;/span>:
-- &lt;span style="font-weight:bold">name&lt;/span>: &lt;span style="font-style:italic">&amp;#34;UPS Energy&amp;#34;&lt;/span>
-&lt;span style="font-style:italic"># Unique ID is required for mgmt through the web UI&lt;/span>
-&lt;span style="font-weight:bold">unique_id&lt;/span>: tmpl-ups-energy
-&lt;span style="font-weight:bold">icon&lt;/span>: mdi:lightning-bolt
-&lt;span style="font-style:italic"># Required for Energy dashboard&lt;/span>
-&lt;span style="font-weight:bold">state_class&lt;/span>: total_increasing
-&lt;span style="font-weight:bold">device_class&lt;/span>: energy
-&lt;span style="font-weight:bold">unit_of_measurement&lt;/span>: kWh
-&lt;span style="font-weight:bold">state&lt;/span>: &lt;span style="font-style:italic">&amp;#34;{{ (states(&amp;#39;sensor.ups_energy_raw&amp;#39;) | float) }}&amp;#34;&lt;/span>
-&lt;/code>&lt;/pre>&lt;/div>&lt;p>Restart Home Assistant and you should now be able to add &lt;code>sensor.ups_energy&lt;/code> to the list of individual devices on your Energy Dashboard :D.&lt;/p>
-&lt;h3 id="current-and-voltage-independently">Current and Voltage independently&lt;/h3>
-&lt;p>After sorting through the &lt;em>massive&lt;/em> MIB file that APC publishes; I only found ways to measure the voltage and current via SNMP. I assumed that APC meant for you to calculate the power use on your own from the voltage and current.&lt;/p>
-&lt;p>As it turns out, APC has a &lt;code>upsHighPrecOutputEnergyUsage&lt;/code> field which reports: &lt;code>The output energy usage of the UPS in hundredths of kWh.&lt;/code> If your APC device publishes a value on the OID &lt;code>.1.3.6.1.4.1.318.1.1.1.4.3.6.0&lt;/code> then you can skip the configuration below; use the more concise configuration &lt;a href="#a-single-oid-for-power-consumption">above&lt;/a>. If your devices &lt;em>&lt;strong>does not&lt;/strong>&lt;/em> publish the cumulative energy consumption, it can still be calculated manually.&lt;/p>
-&lt;p>The manual approach below is a lot like the concise approach above; uses two &lt;code>snmp&lt;/code> sensors to collect the voltage and current from the UPS and then wrap everything in a LTS-compatible &lt;code>template&lt;/code> sensor to get the data to show up on the energy dashboard.&lt;/p>
-&lt;p>&lt;code>devices/sensor/snmp.yaml&lt;/code>:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="font-style:italic"># Unfortunately, there is no direct &amp;#39;watt&amp;#39; field. We need to calculate this on our own&lt;/span>
-&lt;span style="font-style:italic"># P = IV so if we can get the current and voltage, we can figure out the power&lt;/span>
-&lt;span style="font-style:italic">##&lt;/span>
-- &lt;span style="font-weight:bold">platform&lt;/span>: snmp
-&lt;span style="font-weight:bold">name&lt;/span>: &lt;span style="font-style:italic">&amp;#34;UPS Output Current&amp;#34;&lt;/span>
-&lt;span style="font-weight:bold">host&lt;/span>: 192.168.1.1
-&lt;span style="font-style:italic"># The current in tenths of amperes drawn by the load on the UPS.&lt;/span>
-&lt;span style="font-style:italic"># Contained in Module(s): PowerNet-MIB&lt;/span>
-&lt;span style="font-style:italic">##&lt;/span>
-&lt;span style="font-weight:bold">baseoid&lt;/span>: .1.3.6.1.4.1.318.1.1.1.4.3.4.0
-&lt;span style="font-style:italic"># Determines whether the sensor should start and keep working even if the SNMP host is unreachable or not responding.&lt;/span>
-&lt;span style="font-style:italic"># This allows the sensor to be initialized properly even if, for example, your printer is not on when you start Home Assistant.&lt;/span>
-&lt;span style="font-weight:bold">accept_errors&lt;/span>: &lt;span style="font-weight:bold">true&lt;/span>
-&lt;span style="font-style:italic"># For reasons that I don&amp;#39;t understand... HA does not like it when i specify &amp;#39;device_class&amp;#39; :/&lt;/span>
-&lt;span style="font-style:italic">#device_class: current&lt;/span>
-&lt;span style="font-weight:bold">unit_of_measurement&lt;/span>: &lt;span style="font-style:italic">&amp;#34;A&amp;#34;&lt;/span>
-&lt;span style="font-style:italic"># Because the number is in 10ths of amps, we need to shift the decimal by 1 place&lt;/span>
-&lt;span style="font-style:italic"># 43 becomes 4.3&lt;/span>
-&lt;span style="font-style:italic">##&lt;/span>
-&lt;span style="font-weight:bold">value_template&lt;/span>: &lt;span style="font-style:italic">&amp;#34;{{((value | int) / 10) | float}}&amp;#34;&lt;/span>
-- &lt;span style="font-weight:bold">platform&lt;/span>: snmp
-&lt;span style="font-weight:bold">name&lt;/span>: &lt;span style="font-style:italic">&amp;#34;UPS Output Voltage&amp;#34;&lt;/span>
-&lt;span style="font-weight:bold">host&lt;/span>: 192.168.1.1
-&lt;span style="font-style:italic">#The output voltage of the UPS system in tenths of VAC.&lt;/span>
-&lt;span style="font-style:italic"># Contained in Module(s): PowerNet-MIB&lt;/span>
-&lt;span style="font-style:italic">##&lt;/span>
-&lt;span style="font-weight:bold">baseoid&lt;/span>: .1.3.6.1.4.1.318.1.1.1.4.3.1.0
-&lt;span style="font-style:italic"># Determines whether the sensor should start and keep working even if the SNMP host is unreachable or not responding.&lt;/span>
-&lt;span style="font-style:italic"># This allows the sensor to be initialized properly even if, for example, your printer is not on when you start Home Assistant.&lt;/span>
-&lt;span style="font-weight:bold">accept_errors&lt;/span>: &lt;span style="font-weight:bold">true&lt;/span>
-&lt;span style="font-weight:bold">unit_of_measurement&lt;/span>: &lt;span style="font-style:italic">&amp;#34;V&amp;#34;&lt;/span>
-&lt;span style="font-style:italic"># Because the number is in 10ths of volts, we need to shift the decimal by 1 place&lt;/span>
-&lt;span style="font-style:italic"># 1211 becomes 121.1&lt;/span>
-&lt;span style="font-style:italic">##&lt;/span>
-&lt;span style="font-weight:bold">value_template&lt;/span>: &lt;span style="font-style:italic">&amp;#34;{{((value | int) / 10) | float}}&amp;#34;&lt;/span>
-&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;code>devices/template/ups_energy.yaml&lt;/code>:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="font-style:italic"># The docs around the long term stats support for a sensor are not super clear and seem to be a bit contradictory.&lt;/span>
-&lt;span style="font-style:italic"># Both the power and current sensors are &amp;#39;point in time&amp;#39; sensors and DO NOT represent an &amp;#39;always increasing&amp;#39; value.&lt;/span>
-&lt;span style="font-style:italic"># The docs seem to imply that HA will do the integration for you if the sensor has `state_class` set to `measurement` or&lt;/span>
-&lt;span style="font-style:italic"># `total_increasing`. But elsewhere in the docs, you have this:&lt;/span>
-&lt;span style="font-style:italic"># Home Assistant tracks the min, max and mean value during the statistics period.&lt;/span>
-&lt;span style="font-style:italic"># The state_class property must be set to measurement, and the device_class must not be either of `energy`, `gas`, or `monetary`.&lt;/span>
-&lt;span style="font-style:italic">#&lt;/span>
-&lt;span style="font-style:italic"># In testing, I was only able to get sensors that had `total_increasing` and `energy` set to show up / work with the energy dashboard. It looks like a `measurement` sensor _could_ be used... but only if the `last_reset` property can be set to 0... and currently this can&amp;#39;t be done via YAML.&lt;/span>
-&lt;span style="font-style:italic">#&lt;/span>
-&lt;span style="font-style:italic"># So we lie about the sensor and tell HA that it&amp;#39;s a `total_increasing` sensor and we just hope that the value never drops more than 10% which appears to be the signal to HA that the meter has been reset :/&lt;/span>
-&lt;span style="font-style:italic">#&lt;/span>
-&lt;span style="font-style:italic"># https://developers.home-assistant.io/docs/core/entity/sensor/#long-term-statistics&lt;/span>
-&lt;span style="font-style:italic"># https://www.home-assistant.io/integrations/sensor/&lt;/span>
-&lt;span style="font-style:italic">##&lt;/span>
-- &lt;span style="font-weight:bold">sensor&lt;/span>:
-- &lt;span style="font-weight:bold">name&lt;/span>: &lt;span style="font-style:italic">&amp;#34;UPS Power&amp;#34;&lt;/span>
-&lt;span style="font-style:italic"># Unique ID is required for mgmt through the web UI&lt;/span>
-&lt;span style="font-weight:bold">unique_id&lt;/span>: tmpl-UPS-power-use
-&lt;span style="font-weight:bold">icon&lt;/span>: mdi:lightning-bolt
-&lt;span style="font-style:italic"># This sensor records the instantaneous power load on the UPS... it is a measurement at that point in time&lt;/span>
-&lt;span style="font-weight:bold">state_class&lt;/span>: measurement
-&lt;span style="font-weight:bold">device_class&lt;/span>: power
-&lt;span style="font-weight:bold">unit_of_measurement&lt;/span>: W
-&lt;span style="font-weight:bold">state&lt;/span>: &amp;gt;&lt;span style="font-style:italic">
-&lt;/span>&lt;span style="font-style:italic"> {% set current = states(&amp;#39;sensor.UPS_output_current&amp;#39;) | float %}
-&lt;/span>&lt;span style="font-style:italic"> {% set voltage = states(&amp;#39;sensor.UPS_output_voltage&amp;#39;) | float %}
-&lt;/span>&lt;span style="font-style:italic"> {{ (current * voltage) | round (2) }}&lt;/span>
-- &lt;span style="font-weight:bold">sensor&lt;/span>:
-- &lt;span style="font-weight:bold">name&lt;/span>: &lt;span style="font-style:italic">&amp;#34;UPS Energy&amp;#34;&lt;/span>
-&lt;span style="font-style:italic"># Unique ID is required for mgmt through the web UI&lt;/span>
-&lt;span style="font-weight:bold">unique_id&lt;/span>: tmpl-UPS-energy
-&lt;span style="font-weight:bold">icon&lt;/span>: mdi:lightning-bolt
-&lt;span style="font-style:italic"># Lie to HA about the type of sensor so we get values in the dashboard.&lt;/span>
-&lt;span style="font-weight:bold">state_class&lt;/span>: total_increasing
-&lt;span style="font-weight:bold">device_class&lt;/span>: energy
-&lt;span style="font-style:italic"># Since we are pretending to integrate over time, we are in Wh now.&lt;/span>
-&lt;span style="font-style:italic"># Good thing, too... because the energy dashboard WILL NOT use any sensor that does not report in kWh or Wh&lt;/span>
-&lt;span style="font-weight:bold">unit_of_measurement&lt;/span>: Wh
-&lt;span style="font-weight:bold">state&lt;/span>: &lt;span style="font-style:italic">&amp;#34;{{ (states(&amp;#39;sensor.UPS_power&amp;#39;) | float) }}&amp;#34;&lt;/span>
-&lt;span style="font-style:italic"># or, for kWh&lt;/span>
-&lt;span style="font-style:italic">#state: &amp;#34;{{ (states(&amp;#39;sensor.UPS_power&amp;#39;) | float)/1000 }}&amp;#34;&lt;/span>
-&lt;/code>&lt;/pre>&lt;/div></description></item><item><title>Monitoring APC AP7900 switched PDU with Prometheus and Grafana</title><link>https://karlquinsland.com/2020/12/monitoring-apc-ap7900-switched-pdu-with-prometheus-and-grafana/</link><pubDate>Sun, 27 Dec 2020 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/2020/12/monitoring-apc-ap7900-switched-pdu-with-prometheus-and-grafana/</guid><description>&lt;p>The APC AP7900 is a 1U single phase PDU with 8 switchable outlets and a network interface. It&amp;rsquo;s been EoL&amp;rsquo;d and can be had for less than 20% of it&amp;rsquo;s original price on &lt;a href="https://www.ebay.com/sch/i.html?_nkw=AP7900">eBay&lt;/a>. The network interface is so underpowered tha it can&amp;rsquo;t &lt;a href="http://origin-faq.pro-face.com/resources/sites/PROFACE/content/live/FAQS/300000/FA300635/en_US/APC%20AP7000%20Series%20End%20of%20Life%20Notice.pdf">support any modern cryptographic ciphers&lt;/a>.&lt;/p>
-&lt;p>So with that, here&amp;rsquo;s a revised copy of my notes from the process of getting the device reset, updated and monitored.&lt;/p>
-&lt;h2 id="the-hardware">The Hardware&lt;/h2>
-&lt;figure >
-&lt;img src="https://karlquinsland.com/2020/12/monitoring-apc-ap7900-switched-pdu-with-prometheus-and-grafana/images/ap7900.png" alt="marketing photo of AP7900" />
-&lt;figcaption>
-&lt;/figcaption>
-&lt;/figure>
-&lt;p>Unfortunately, there&amp;rsquo;s no &amp;ldquo;reset everything to defaults&amp;rdquo; button or button sequence on the PDU. The unit I purchased had been configured with a manual IP assignment so it wasn&amp;rsquo;t as straightforward as using an unfolded paperclip to press the reboot button at boot and wait for a successful DHCP negotiation. This process has been &lt;a href="https://dan.langille.org/2015/01/13/apc-pdu-ap7900-resetting-the-password/">covered before&lt;/a>, so I&amp;rsquo;ll omit it here. In short: connect to the local mgmt interface via the &lt;a href="https://pinoutguide.com/UPS/apc_smart_cable_pinout.shtml">serial port&lt;/a>, adjust the network configuration and other settings as needed.&lt;/p>
-&lt;p>The firmware can be updated via FTP easily enough. The processor on the network interface is &lt;em>really&lt;/em> slow so allow for &lt;em>several minutes&lt;/em> between the bin file upload and the flashing to commence/end. I had to repeat this three times for each of the partitions / subsystem OSs.&lt;/p>
-&lt;h2 id="the-metrics">The Metrics&lt;/h2>
-&lt;p>Again, because the network interface has an ancient/slow CPU, any method that extracts metrics from the device must be light weight&amp;hellip; enter &lt;a href="https://en.wikipedia.org/wiki/Simple_Network_Management_Protocol">SNMP&lt;/a>.&lt;/p>
-&lt;p>SNMP is quite old and cumbersome but there&amp;rsquo;s an &lt;a href="https://github.com/prometheus/snmp_exporter">exporter for prometheus&lt;/a> which, after some tedious configuration, can interface the complexity that is is legacy SNMP with prometheus.&lt;/p>
-&lt;h3 id="generating-a-config">Generating a config&lt;/h3>
-&lt;p>In short, SNMP identifies each setting/entity that can be monitored or set with a unique numerical ID. Each number is separated with a &lt;code>.&lt;/code> and represents a specific edge/vertex on the graph of all settings that device supports.&lt;/p>
-&lt;p>So, a setting known as &lt;code>rPDUIdentDeviceLinetoLineVoltage&lt;/code> may be &amp;lsquo;read&amp;rsquo; at the following address: &lt;code>1.3.6.1.4.1.318.1.1.12.1.15.0&lt;/code>. So if you have a few hundred parameters to monitor, you&amp;rsquo;ll have a few hundred nondescript numerical paths. Keeping track of them all is a royal pain in the ass, even with &lt;a href="https://en.wikipedia.org/wiki/Management_information_base">lookup tables&lt;/a>; known as &amp;ldquo;MIB files&amp;rdquo;.&lt;/p>
-&lt;p>Unfortunately, there&amp;rsquo;s no way around it; a map between the numerical paths and the &amp;lsquo;human friendly&amp;rsquo; names must be built so the prometheus exporter knows what to expose and how to categorize it.&lt;/p>
-&lt;p>The exporter comes with &lt;a href="https://github.com/prometheus/snmp_exporter/tree/master/generator">generator&lt;/a> to make this process a bit easier, but the process of obtaining MIB files isn&amp;rsquo;t quite so straightforward.
-I hit a few snags and below is an updated &lt;code>Dockerfile&lt;/code> that gave me a &lt;em>working&lt;/em> generator tool:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-Dockerfile" data-lang="Dockerfile">&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-weight:bold">FROM&lt;/span>&lt;span style="font-style:italic"> golang:latest&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic">##&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># The `mibs` target in the Makefile does not run to completion on OSX.&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># Somewhere, a `sed` command is run against some vendor&amp;#39;s MIB file that&amp;#39;s for hardware that I don&amp;#39;t want to target.&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># I don&amp;#39;t have the patience to resolve those issues and i&amp;#39;d prefer that the _entire_ MIB parse and generate &lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># process be 100% contained in the container image anyways.&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic">#&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># There are a _variety_ of errors that cropped up when running `generator parse_errors`:&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic">#&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># - level=warn ts=2020-12-27T21:40:42.988Z caller=main.go:120 msg=&amp;#34;NetSNMP reported parse error(s)&amp;#34; errors=16924&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># - Cannot find module (SNMPv2-SMI): At line 275 in mibs/apc-powernet-mib&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># - Did not find &amp;#39;enterprises&amp;#39; in module #-1 (mibs/apc-powernet-mib)&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># - Did not find &amp;#39;DisplayString&amp;#39; in module #-1 (mibs/apc-powernet-mib)&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># - Unlinked OID in PowerNet-MIB: apc ::= { enterprises 318 }&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># - Undefined identifier: enterprises near line 281 of mibs/apc-powernet-mib&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># - Cannot adopt OID in PowerNet-MIB: atsInputEntry ::= { atsInputTable 1 }&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># - &amp;lt;and hundreds more `Cannot adopt OID in PowerNet-MIB:` messages&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># - Bad operator (INTEGER): At line 73 in /usr/share/snmp/mibs/ietf/SNMPv2-PDU&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic">#&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic">#&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># After some searching, it appears that MIBs can refer to other MIBs and some set of &amp;#39;base&amp;#39; files is not present.&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># Due to licensing, the Debian docker image that the generator is based on does NOT ship w/ them or the &lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># `snmp-mibs-downloader` tool which is used to fetch the base MIB files. This is easy enough to fix...&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic">##&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># First, update the repos we&amp;#39;ll pull packaged from&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-weight:bold">RUN&lt;/span> echo &lt;span style="font-style:italic">&amp;#34;deb http://deb.debian.org/debian/ buster main contrib non-free&amp;#34;&lt;/span> | tee -a /etc/apt/sources.list &amp;amp;&amp;amp; &lt;span style="font-weight:bold;font-style:italic">\
-&lt;/span>&lt;span style="font-weight:bold;font-style:italic">&lt;/span> echo &lt;span style="font-style:italic">&amp;#34;deb http://deb.debian.org/debian/ buster-updates main contrib non-free&amp;#34;&lt;/span> | tee -a /etc/apt/sources.list &amp;amp;&amp;amp; &lt;span style="font-weight:bold;font-style:italic">\
-&lt;/span>&lt;span style="font-weight:bold;font-style:italic">&lt;/span> echo &lt;span style="font-style:italic">&amp;#34;deb http://security.debian.org/debian-security buster/updates main contrib non-free&amp;#34;&lt;/span> | tee -a /etc/apt/sources.list&lt;span style="">
-&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># Then we run the &amp;#39;original&amp;#39; set of commands, adding in the `snmp-mibs-downloader` package.&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># As part of the post-install hook, snmp-mibs-downloader will fetch the base MIBs that appear to be&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># missing.&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic">##&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-weight:bold">RUN&lt;/span> apt-get update &amp;amp;&amp;amp; &lt;span style="font-weight:bold;font-style:italic">\
-&lt;/span>&lt;span style="font-weight:bold;font-style:italic">&lt;/span> apt-get install -y libsnmp-dev p7zip-full snmp-mibs-downloader &amp;amp;&amp;amp; &lt;span style="font-weight:bold;font-style:italic">\
-&lt;/span>&lt;span style="font-weight:bold;font-style:italic">&lt;/span> go get github.com/prometheus/snmp_exporter/generator &amp;amp;&amp;amp; &lt;span style="font-weight:bold;font-style:italic">\
-&lt;/span>&lt;span style="font-weight:bold;font-style:italic">&lt;/span> cd /go/src/github.com/prometheus/snmp_exporter/generator &amp;amp;&amp;amp; &lt;span style="font-weight:bold;font-style:italic">\
-&lt;/span>&lt;span style="font-weight:bold;font-style:italic">&lt;/span> go get -v . &amp;amp;&amp;amp; &lt;span style="font-weight:bold;font-style:italic">\
-&lt;/span>&lt;span style="font-weight:bold;font-style:italic">&lt;/span> go install&lt;span style="">
-&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># To fix _this_ error:&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># Bad operator (INTEGER): At line 73 in /usr/share/snmp/mibs/ietf/SNMPv2-PDU&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic">#&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># we install a &amp;#39;patched&amp;#39; version.&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># src: https://serverfault.com/questions/936119/snmp-mibs-on-ubuntu-error-in-mibs&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic">##&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-weight:bold">RUN&lt;/span> wget http://pastebin.com/raw.php?i=p3QyuXzZ -O /usr/share/snmp/mibs/ietf/SNMPv2-PDU&lt;span style="">
-&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic">##&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># This command is not needed for generation, but IS needed for manual checking / use of `snmptranslate` within the&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># container. Add to the above RUN statement if needed.&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># sed -i &amp;#34;s/^\(mibs *:\).*/#\1/&amp;#34; /etc/snmp/snmp.conf&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic">#&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># It simply comments out the `mibs:` line in `/etc/snmp/snmp.conf`&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic">##&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># The &amp;#39;stock&amp;#39; generator expects the output of `make mibs` to be mounted into /opt/mibs.&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># Since we are no longer relying on the `make` target, we must tell the generator binary&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># to look in all of the &amp;#39;system default&amp;#39; locations *as well as* /opt/mibs&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic">##&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-weight:bold">WORKDIR&lt;/span>&lt;span style="font-style:italic"> &amp;#34;/opt&amp;#34;&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-weight:bold">ENTRYPOINT&lt;/span> [&lt;span style="font-style:italic">&amp;#34;/go/bin/generator&amp;#34;&lt;/span>]&lt;span style="">
-&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># Rather than do something like this on the CLI every time the container is run&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># `-e MIBDIRS=&amp;#34;/usr/share/snmp/mibs:/usr/share/snmp/mibs/iana:/usr/share/snmp/mibs/ietf:/opt/mibs&amp;#34;`&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic"># we do it here...&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-style:italic">##&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-weight:bold">ENV&lt;/span> MIBDIRS /usr/share/snmp/mibs:/usr/share/snmp/mibs/iana:/usr/share/snmp/mibs/ietf:/opt/mibs&lt;span style="">
-&lt;/span>&lt;span style="">
-&lt;/span>&lt;span style="">&lt;/span>&lt;span style="font-weight:bold">CMD&lt;/span> [&lt;span style="font-style:italic">&amp;#34;generate&amp;#34;&lt;/span>]&lt;span style="">
-&lt;/span>&lt;span style="">
-&lt;/span>&lt;/code>&lt;/pre>&lt;/div>&lt;p>In short, ditch the &lt;code>make mibs&lt;/code> step from &lt;a href="https://github.com/prometheus/snmp_exporter/tree/master/generator#docker-users">here&lt;/a> and move it inside the &lt;code>docker build&lt;/code> step; fetch all the MIB files, patching those that need it. Tell the tool where to find them.&lt;/p>
-&lt;p>For my needs, I only care about the total amount of power being distributed through the PDU so, of the hundreds of different parameters that can be monitored, I&amp;rsquo;m only interested in:&lt;/p>
-&lt;ul>
-&lt;li>Uptime&lt;/li>
-&lt;li>Input Voltage&lt;/li>
-&lt;li>Power in Watts and VoltAmps&lt;/li>
-&lt;li>Percentage of used/remaining capacity&lt;/li>
-&lt;/ul>
-&lt;p>This makes for a simple generator config:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="font-style:italic"># See: https://github.com/prometheus/snmp_exporter/tree/master/generator&lt;/span>
-&lt;span style="font-style:italic">##&lt;/span>
-&lt;span style="font-weight:bold">modules&lt;/span>:
-&lt;span style="font-style:italic"># APC/Schneider UPS Network Management Cards&lt;/span>
-&lt;span style="font-style:italic">#&lt;/span>
-&lt;span style="font-style:italic"># Note: older management cards only support SNMP v1 (AP9606 and&lt;/span>
-&lt;span style="font-style:italic"># AP9607, possibly others). Older versions of the firmware may only&lt;/span>
-&lt;span style="font-style:italic"># support v1 as well. If you only have newer cards you can switch to&lt;/span>
-&lt;span style="font-style:italic"># version v2c or v3.&lt;/span>
-&lt;span style="font-style:italic">#&lt;/span>
-&lt;span style="font-style:italic"># The management cards have relatively slow processors so don&amp;#39;t poll&lt;/span>
-&lt;span style="font-style:italic"># very often and give a generous timeout to prevent spurious&lt;/span>
-&lt;span style="font-style:italic"># errors. Alternatively you can eliminate the interface polling (OIDs&lt;/span>
-&lt;span style="font-style:italic"># beginning with 1.3.6.1.2.1) to reduce the time taken for polling.&lt;/span>
-&lt;span style="font-style:italic">#&lt;/span>
-&lt;span style="font-style:italic"># MIB: https://download.schneider-electric.com/files?p_File_Name=powernet426.mib&lt;/span>
-&lt;span style="font-style:italic"># Guide: http://www.apc.com/salestools/ASTE-6Z5QEY/ASTE-6Z5QEY_R0_EN.pdf&lt;/span>
-&lt;span style="font-style:italic"># Download site: http://www.apc.com/us/en/tools/download/index.cfm&lt;/span>
-&lt;span style="font-style:italic">##&lt;/span>
-&lt;span style="font-weight:bold">apcups&lt;/span>:
-&lt;span style="font-style:italic"># Not 100% sure why, but APC firmware does not appear to properly authenticate with the&lt;/span>
-&lt;span style="font-style:italic"># credentials that i&amp;#39;ve set through the web UI. I&amp;#39;ve disabled write/set via SNMP so &lt;/span>
-&lt;span style="font-style:italic"># sticking w/ v2 (no auth) is fine.&lt;/span>
-&lt;span style="font-weight:bold">version&lt;/span>: 2
-&lt;span style="font-weight:bold">walk&lt;/span>:
-&lt;span style="font-style:italic"># Don&amp;#39;t care about network stats on this guy...&lt;/span>
-&lt;span style="font-style:italic"># - interfaces&lt;/span>
-&lt;span style="font-style:italic">##&lt;/span>
-&lt;span style="font-style:italic"># Do care about uptime, tho&lt;/span>
-- sysUpTime
-&lt;span style="font-style:italic">##&lt;/span>
-&lt;span style="font-style:italic"># For reasons that I don&amp;#39;t understand, specifying the OID results in errors like this:&lt;/span>
-&lt;span style="font-style:italic"># level=error caller=main.go:130 msg=&amp;#34;Error generating config netsnmp&amp;#34; err=&amp;#34;cannot find oid &amp;#39;.1.3.6.1.4.1.318.1.1.12.1.15.0&amp;#39; to walk&amp;#34;&lt;/span>
-&lt;span style="font-style:italic"># But the path &amp;#39;.1.3.6.1.4.1.318.1.1.12.1.15.0&amp;#39; maps to rPDUIdentDeviceLinetoLineVoltage.0&lt;/span>
-&lt;span style="font-style:italic"># So specify that by name and the error goes away :/&lt;/span>
-&lt;span style="font-style:italic">##&lt;/span>
-- rPDUIdentDeviceLinetoLineVoltage &lt;span style="font-style:italic"># .1.3.6.1.4.1.318.1.1.12.1.15.0&lt;/span>
-- rPDUIdentDevicePowerWatts &lt;span style="font-style:italic"># .1.3.6.1.4.1.318.1.1.12.1.16.0&lt;/span>
-- rPDUIdentDevicePowerVA &lt;span style="font-style:italic"># .1.3.6.1.4.1.318.1.1.12.1.18.0&lt;/span>
-- rPDULoadStatusTable &lt;span style="font-style:italic"># .1.3.6.1.4.1.318.1.1.12.2.3.1&lt;/span>
-&lt;span style="font-style:italic">##&lt;/span>
-&lt;span style="font-style:italic"># From `rPDULoadStatusTable`, I can get `rPDULoadStatusLoad` and `rPDULoadStatusLoadState`&lt;/span>
-&lt;span style="font-style:italic"># which represent the percentage capacity as a percentage and a &amp;#34;low, nominal, warn, critical&amp;#34; flag.&lt;/span>
-&lt;span style="font-style:italic">#&lt;/span>
-&lt;span style="font-style:italic"># Don&amp;#39;t need to resort to the `lookup` mechanism as the PDU has only one bank and can just extract the values&lt;/span>
-&lt;span style="font-style:italic"># by referring to them explicitly below. This would likely change w/ a 2U PDU&lt;/span>
-&lt;span style="font-style:italic"># Allows for adjustment to how various SNMP endpoints are parsed (as info about a device vs a moving metric)&lt;/span>
-&lt;span style="font-style:italic"># See: https://github.com/prometheus/snmp_exporter/tree/master/generator#enumasinfo-and-enumasstateset&lt;/span>
-&lt;span style="font-style:italic">##&lt;/span>
-&lt;span style="font-weight:bold">overrides&lt;/span>:
-&lt;span style="font-style:italic"># Should be a percentage of load&lt;/span>
-&lt;span style="font-weight:bold">rPDULoadStatusLoad&lt;/span>:
-&lt;span style="font-weight:bold">type&lt;/span>: gauge
-&lt;span style="font-style:italic"># In addition to a numerical load percentage, also handy to have the characterization _of_ that load, too&lt;/span>
-&lt;span style="font-style:italic"># In this case, the load can be characterized one of 4 ways:&lt;/span>
-&lt;span style="font-style:italic"># phaseLoadNormal (1),phaseLoadLow (2),phaseLoadNearOverload (3),phaseLoadOverload (4)&lt;/span>
-&lt;span style="font-weight:bold">rPDULoadStatusLoadState&lt;/span>:
-&lt;span style="font-weight:bold">type&lt;/span>: EnumAsStateSet
-&lt;span style="font-style:italic">##&lt;/span>
-&lt;span style="font-style:italic"># There are a few &amp;#39;constants&amp;#39; that come from the table i don&amp;#39;t need to track, so we drop them :)&lt;/span>
-&lt;span style="font-weight:bold">rPDULoadStatusBankNumber&lt;/span>:
-&lt;span style="font-weight:bold">ignore&lt;/span>: &lt;span style="font-weight:bold">true&lt;/span>
-&lt;span style="font-weight:bold">type&lt;/span>: EnumAsInfo
-&lt;span style="font-weight:bold">rPDULoadStatusIndex&lt;/span>:
-&lt;span style="font-weight:bold">ignore&lt;/span>: &lt;span style="font-weight:bold">true&lt;/span>
-&lt;span style="font-weight:bold">type&lt;/span>: EnumAsInfo
-&lt;span style="font-weight:bold">rPDULoadStatusPhaseNumber&lt;/span>:
-&lt;span style="font-weight:bold">ignore&lt;/span>: &lt;span style="font-weight:bold">true&lt;/span>
-&lt;span style="font-weight:bold">type&lt;/span>: EnumAsInfo
-&lt;/code>&lt;/pre>&lt;/div>&lt;p>The resulting &lt;code>snmp.yml&lt;/code> is quite brief:&lt;/p>
-&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-yaml" data-lang="yaml">&lt;span style="font-style:italic"># WARNING: This file was auto-generated using snmp_exporter generator, manual changes will be lost.&lt;/span>
-&lt;span style="font-weight:bold">apcups&lt;/span>:
-&lt;span style="font-weight:bold">walk&lt;/span>:
-- 1.3.6.1.4.1.318.1.1.12.2.3.1
-&lt;span style="font-weight:bold">get&lt;/span>:
-- 1.3.6.1.2.1.1.3.0
-- 1.3.6.1.4.1.318.1.1.12.1.15.0
-- 1.3.6.1.4.1.318.1.1.12.1.16.0
-- 1.3.6.1.4.1.318.1.1.12.1.18.0
-&lt;span style="font-weight:bold">metrics&lt;/span>:
-- &lt;span style="font-weight:bold">name&lt;/span>: sysUpTime
-&lt;span style="font-weight:bold">oid&lt;/span>: 1.3.6.1.2.1.1.3
-&lt;span style="font-weight:bold">type&lt;/span>: gauge
-&lt;span style="font-weight:bold">help&lt;/span>: The time (in hundredths of a second) since the network management portion of the system was last re-initialized. - 1.3.6.1.2.1.1.3
-- &lt;span style="font-weight:bold">name&lt;/span>: rPDUIdentDeviceLinetoLineVoltage
-&lt;span style="font-weight:bold">oid&lt;/span>: 1.3.6.1.4.1.318.1.1.12.1.15
-&lt;span style="font-weight:bold">type&lt;/span>: gauge
-&lt;span style="font-weight:bold">help&lt;/span>: Getting/Setting this OID will return/set the Line to Line Voltage - 1.3.6.1.4.1.318.1.1.12.1.15
-- &lt;span style="font-weight:bold">name&lt;/span>: rPDUIdentDevicePowerWatts
-&lt;span style="font-weight:bold">oid&lt;/span>: 1.3.6.1.4.1.318.1.1.12.1.16
-&lt;span style="font-weight:bold">type&lt;/span>: gauge
-&lt;span style="font-weight:bold">help&lt;/span>: Getting this OID will return the Power in Watts. - 1.3.6.1.4.1.318.1.1.12.1.16
-- &lt;span style="font-weight:bold">name&lt;/span>: rPDUIdentDevicePowerVA
-&lt;span style="font-weight:bold">oid&lt;/span>: 1.3.6.1.4.1.318.1.1.12.1.18
-&lt;span style="font-weight:bold">type&lt;/span>: gauge
-&lt;span style="font-weight:bold">help&lt;/span>: Getting this OID will return the Power in VA. - 1.3.6.1.4.1.318.1.1.12.1.18
-- &lt;span style="font-weight:bold">name&lt;/span>: rPDULoadStatusLoad
-&lt;span style="font-weight:bold">oid&lt;/span>: 1.3.6.1.4.1.318.1.1.12.2.3.1.1.2
-&lt;span style="font-weight:bold">type&lt;/span>: gauge
-&lt;span style="font-weight:bold">help&lt;/span>: Getting this OID will return the phase/bank load measured in tenths of Amps. - 1.3.6.1.4.1.318.1.1.12.2.3.1.1.2
-&lt;span style="font-weight:bold">indexes&lt;/span>:
-- &lt;span style="font-weight:bold">labelname&lt;/span>: rPDULoadStatusIndex
-&lt;span style="font-weight:bold">type&lt;/span>: EnumAsInfo
-- &lt;span style="font-weight:bold">name&lt;/span>: rPDULoadStatusLoadState
-&lt;span style="font-weight:bold">oid&lt;/span>: 1.3.6.1.4.1.318.1.1.12.2.3.1.1.3
-&lt;span style="font-weight:bold">type&lt;/span>: EnumAsStateSet
-&lt;span style="font-weight:bold">help&lt;/span>: Getting this OID will return the phase/bank load state - 1.3.6.1.4.1.318.1.1.12.2.3.1.1.3
-&lt;span style="font-weight:bold">indexes&lt;/span>:
-- &lt;span style="font-weight:bold">labelname&lt;/span>: rPDULoadStatusIndex
-&lt;span style="font-weight:bold">type&lt;/span>: EnumAsInfo
-&lt;span style="font-weight:bold">enum_values&lt;/span>:
-&lt;span style="font-weight:bold">1&lt;/span>: phaseLoadNormal
-&lt;span style="font-weight:bold">2&lt;/span>: phaseLoadLow
-&lt;span style="font-weight:bold">3&lt;/span>: phaseLoadNearOverload
-&lt;span style="font-weight:bold">4&lt;/span>: phaseLoadOverload
-&lt;span style="font-weight:bold">version&lt;/span>: 2
-&lt;/code>&lt;/pre>&lt;/div>&lt;h2 id="the-dashboard">The Dashboard&lt;/h2>
-&lt;p>Once metrics are making their way into prometheus, it&amp;rsquo;s only a bit of work to get a dashboard up and running.&lt;/p>
-&lt;p>For sanity checking I fired up a load; a crypto-miner. See if you can spot when&amp;hellip; :).&lt;/p>
-&lt;figure >
-&lt;img src="https://karlquinsland.com/2020/12/monitoring-apc-ap7900-switched-pdu-with-prometheus-and-grafana/images/grafana.png" alt="screenshot showing simple grafana dashboard consuming some of the PDU metrics" />
-&lt;figcaption>
-&lt;p>
-Simple dashboard in grafana
-&lt;/p>
-&lt;/figcaption>
-&lt;/figure>
-&lt;p>The &lt;code>json&lt;/code> file for the dashboard is about 750 lines long, so rather than embed it, I&amp;rsquo;ve &lt;a href="#files">attached&lt;/a> it as a file; the sha1 hash of &lt;code>dashboard.json&lt;/code> is &lt;code>400edb0c4064068f12e17c2f1f0d6862d3b8d449&lt;/code>.&lt;/p>
-&lt;h3 id="estimating-costs">estimating costs&lt;/h3>
-&lt;p>The dashboard just multiplies the average Wattage by the average cost of a kWh and then scales that to fit a 24h window.&lt;/p>
-&lt;p>The rate I pay for electricity changes based on the hour in which the power is used; about 40% of the week, my power costs a few cents per kWh more. The cost shown in the image above is a rough approximation based on my average power rate of around 12.5 cents per kWh. This rate can be adjusted with the &lt;code>avgkWH_Cost&lt;/code> variable, if needed.&lt;/p>
-&lt;h2 id="files">Files&lt;/h2>
-&lt;ul>
-&lt;li>
-&lt;figure>
-&lt;a target="_blank" href="https://karlquinsland.com/2020/12/monitoring-apc-ap7900-switched-pdu-with-prometheus-and-grafana/images/ap7900.png">
-&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/12/monitoring-apc-ap7900-switched-pdu-with-prometheus-and-grafana/images/ap7900_hua86ef71d7c97469c72abcc8606f92a1f_30363_300x0_resize_box_3.png" width="300" height="300">
-&lt;/a>
-&lt;/figure>
-&lt;/li>
-&lt;li>
-&lt;a target="_blank" href="https://karlquinsland.com/2020/12/monitoring-apc-ap7900-switched-pdu-with-prometheus-and-grafana/files/dashboard.json">
-&lt;i class="far fa-file-file-code">&lt;/i>
-files/dashboard.json:
-&lt;br>
-&lt;small>sha1(dashboard.json): 400edb0c4064068f12e17c2f1f0d6862d3b8d449&lt;/small>
-&lt;/a>
-&lt;/li>
-&lt;li>
-&lt;figure>
-&lt;a target="_blank" href="https://karlquinsland.com/2020/12/monitoring-apc-ap7900-switched-pdu-with-prometheus-and-grafana/images/grafana.png">
-&lt;img style="width: auto; height: auto;" src="https://karlquinsland.com/2020/12/monitoring-apc-ap7900-switched-pdu-with-prometheus-and-grafana/images/grafana_hu12e2e56abae7547e2e0002fa4ac227b7_229334_300x0_resize_box_3.png" width="300" height="147">
-&lt;/a>
-&lt;figcaption>
-&lt;small>Simple dashboard in grafana&lt;/small>
-&lt;/figcaption>
-&lt;/figure>
-&lt;/li>
-&lt;/ul></description></item></channel></rss>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id="a-single-oid-for-power-consumption">A single OID for power consumption</h3>
+<p>Thanks again to <a href="https://old.reddit.com/user/Laxarus" target="_blank" rel="noopener noreffer">Laxarus</a> for the <a href="https://old.reddit.com/r/homeassistant/comments/pi3pv2/how_to_use_an_apc_ups_as_an_energy_dashboard/hbpqzr6/" target="_blank" rel="noopener noreffer">tip</a> about the <code>upsHighPrecOutputEnergyUsage</code> OID!</p>
+<p>First, create the &lsquo;raw&rsquo; sensor using the <code>snmp</code> platform:</p>
+<p><code>devices/sensor/snmp.yaml</code>:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml">- <span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">snmp</span><span class="w">
+</span><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;UPS Energy (raw)&#34;</span><span class="w">
+</span><span class="w">  </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="m">192.168.1.1</span><span class="w">
+</span><span class="w">  </span><span class="c"># The current in tenths of amperes drawn by the load on the UPS.</span><span class="w">
+</span><span class="w">  </span><span class="c"># Contained in Module(s): PowerNet-MIB</span><span class="w">
+</span><span class="w">  </span><span class="c">##</span><span class="w">
+</span><span class="w">  </span><span class="nt">baseoid</span><span class="p">:</span><span class="w"> </span><span class="l">.1.3.6.1.4.1.318.1.1.1.4.3.6.0</span><span class="w">
+</span><span class="w">
+</span><span class="w">  </span><span class="c"># Determines whether the sensor should start and keep working even if the SNMP host is unreachable or not responding.</span><span class="w">
+</span><span class="w">  </span><span class="c"># This allows the sensor to be initialized properly even if, for example, your printer is not on when you start Home Assistant.</span><span class="w">
+</span><span class="w">  </span><span class="nt">accept_errors</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="w">
+</span><span class="w">  </span><span class="c"># UPS reports in tens of kWh so we&#39;ll need to divide by 10 to get kWh; HA only accepts kWh or Wh for sensors</span><span class="w">
+</span><span class="w">  </span><span class="c">#   that will &#39;work&#39; on the energy dashboard</span><span class="w">
+</span><span class="w">  </span><span class="nt">unit_of_measurement</span><span class="p">:</span><span class="w"> </span><span class="l">kWh</span><span class="w">
+</span><span class="w">  </span><span class="nt">value_template</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;{{ ((value | int) / 10) | float}}&#34;</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><p>Then, wrap the <code>snmp</code> sensor with the necessary properties:</p>
+<p><code>devices/template/ups_energy.yaml</code>:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml">- <span class="nt">sensor</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;UPS Energy&#34;</span><span class="w">
+</span><span class="w">      </span><span class="c"># Unique ID is required for mgmt through the web UI</span><span class="w">
+</span><span class="w">      </span><span class="nt">unique_id</span><span class="p">:</span><span class="w"> </span><span class="l">tmpl-ups-energy</span><span class="w">
+</span><span class="w">      </span><span class="nt">icon</span><span class="p">:</span><span class="w"> </span><span class="l">mdi:lightning-bolt</span><span class="w">
+</span><span class="w">      </span><span class="c"># Required for Energy dashboard</span><span class="w">
+</span><span class="w">      </span><span class="nt">state_class</span><span class="p">:</span><span class="w"> </span><span class="l">total_increasing</span><span class="w">
+</span><span class="w">      </span><span class="nt">device_class</span><span class="p">:</span><span class="w"> </span><span class="l">energy</span><span class="w">
+</span><span class="w">      </span><span class="nt">unit_of_measurement</span><span class="p">:</span><span class="w"> </span><span class="l">kWh</span><span class="w">
+</span><span class="w">      </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;{{ (states(&#39;sensor.ups_energy_raw&#39;) | float) }}&#34;</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><p>Restart Home Assistant and you should now be able to add <code>sensor.ups_energy</code> to the list of individual devices on your Energy Dashboard :D.</p>
+<h3 id="current-and-voltage-independently">Current and Voltage independently</h3>
+<p>After sorting through the <em>massive</em> MIB file that APC publishes; I only found ways to measure the voltage and current via SNMP. I assumed that APC meant for you to calculate the power use on your own from the voltage and current.</p>
+<p>As it turns out, APC has a <code>upsHighPrecOutputEnergyUsage</code> field which reports: <code>The output energy usage of the UPS in hundredths of kWh.</code> If your APC device publishes a value on the OID <code>.1.3.6.1.4.1.318.1.1.1.4.3.6.0</code> then you can skip the configuration below; use the more concise configuration <a href="#a-single-oid-for-power-consumption" rel="">above</a>. If your devices <em><strong>does not</strong></em> publish the cumulative energy consumption, it can still be calculated manually.</p>
+<p>The manual approach below is a lot like the concise approach above; uses two <code>snmp</code> sensors to collect the voltage and current from the UPS and then wrap everything in a LTS-compatible <code>template</code> sensor to get the data to show up on the energy dashboard.</p>
+<p><code>devices/sensor/snmp.yaml</code>:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="c"># Unfortunately, there is no direct &#39;watt&#39; field. We need to calculate this on our own</span><span class="w">
+</span><span class="w"></span><span class="c"># P = IV so if we can get the current and voltage, we can figure out the power</span><span class="w">
+</span><span class="w"></span><span class="c">##</span><span class="w">
+</span><span class="w"></span>- <span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">snmp</span><span class="w">
+</span><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;UPS Output Current&#34;</span><span class="w">
+</span><span class="w">  </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="m">192.168.1.1</span><span class="w">
+</span><span class="w">  </span><span class="c"># The current in tenths of amperes drawn by the load on the UPS.</span><span class="w">
+</span><span class="w">  </span><span class="c"># Contained in Module(s): PowerNet-MIB</span><span class="w">
+</span><span class="w">  </span><span class="c">##</span><span class="w">
+</span><span class="w">  </span><span class="nt">baseoid</span><span class="p">:</span><span class="w"> </span><span class="l">.1.3.6.1.4.1.318.1.1.1.4.3.4.0</span><span class="w">
+</span><span class="w">
+</span><span class="w">  </span><span class="c"># Determines whether the sensor should start and keep working even if the SNMP host is unreachable or not responding.</span><span class="w">
+</span><span class="w">  </span><span class="c"># This allows the sensor to be initialized properly even if, for example, your printer is not on when you start Home Assistant.</span><span class="w">
+</span><span class="w">  </span><span class="nt">accept_errors</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="w">  </span><span class="c"># For reasons that I don&#39;t understand... HA does not like it when i specify &#39;device_class&#39; :/</span><span class="w">
+</span><span class="w">  </span><span class="c">#device_class: current</span><span class="w">
+</span><span class="w">  </span><span class="nt">unit_of_measurement</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;A&#34;</span><span class="w">
+</span><span class="w">  </span><span class="c"># Because the number is in 10ths of amps, we need to shift the decimal by 1 place</span><span class="w">
+</span><span class="w">  </span><span class="c">#   43 becomes 4.3</span><span class="w">
+</span><span class="w">  </span><span class="c">##</span><span class="w">
+</span><span class="w">  </span><span class="nt">value_template</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;{{((value | int) / 10) | float}}&#34;</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span>- <span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">snmp</span><span class="w">
+</span><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;UPS Output Voltage&#34;</span><span class="w">
+</span><span class="w">  </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="m">192.168.1.1</span><span class="w">
+</span><span class="w">  </span><span class="c">#The output voltage of the UPS system in tenths of VAC.</span><span class="w">
+</span><span class="w">  </span><span class="c"># Contained in Module(s): PowerNet-MIB</span><span class="w">
+</span><span class="w">  </span><span class="c">##</span><span class="w">
+</span><span class="w">  </span><span class="nt">baseoid</span><span class="p">:</span><span class="w"> </span><span class="l">.1.3.6.1.4.1.318.1.1.1.4.3.1.0</span><span class="w">
+</span><span class="w">
+</span><span class="w">  </span><span class="c"># Determines whether the sensor should start and keep working even if the SNMP host is unreachable or not responding.</span><span class="w">
+</span><span class="w">  </span><span class="c"># This allows the sensor to be initialized properly even if, for example, your printer is not on when you start Home Assistant.</span><span class="w">
+</span><span class="w">  </span><span class="nt">accept_errors</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="w">  </span><span class="nt">unit_of_measurement</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;V&#34;</span><span class="w">
+</span><span class="w">  </span><span class="c"># Because the number is in 10ths of volts, we need to shift the decimal by 1 place</span><span class="w">
+</span><span class="w">  </span><span class="c">#   1211 becomes 121.1</span><span class="w">
+</span><span class="w">  </span><span class="c">##</span><span class="w">
+</span><span class="w">  </span><span class="nt">value_template</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;{{((value | int) / 10) | float}}&#34;</span><span class="w">
+</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><p><code>devices/template/ups_energy.yaml</code>:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="c"># The docs around the long term stats support for a sensor are not super clear and seem to be a bit contradictory.</span><span class="w">
+</span><span class="w"></span><span class="c"># Both the power and current sensors are &#39;point in time&#39; sensors and DO NOT represent an &#39;always increasing&#39; value.</span><span class="w">
+</span><span class="w"></span><span class="c"># The docs seem to imply that HA will do the integration for you if the sensor has `state_class` set to `measurement` or</span><span class="w">
+</span><span class="w"></span><span class="c">#   `total_increasing`. But elsewhere in the docs, you have this:</span><span class="w">
+</span><span class="w"></span><span class="c">#         Home Assistant tracks the min, max and mean value during the statistics period.</span><span class="w">
+</span><span class="w"></span><span class="c">#         The state_class property must be set to measurement, and the device_class must not be either of `energy`, `gas`, or `monetary`.</span><span class="w">
+</span><span class="w"></span><span class="c">#</span><span class="w">
+</span><span class="w"></span><span class="c"># In testing, I was only able to get sensors that had `total_increasing` and `energy` set to show up / work with the energy dashboard. It looks like a `measurement` sensor _could_ be used... but only if the `last_reset` property can be set to 0... and currently this can&#39;t be done via YAML.</span><span class="w">
+</span><span class="w"></span><span class="c">#</span><span class="w">
+</span><span class="w"></span><span class="c"># So we lie about the sensor and tell HA that it&#39;s a `total_increasing` sensor and we just hope that the value never drops more than 10% which appears to be the signal to HA that the meter has been reset :/</span><span class="w">
+</span><span class="w"></span><span class="c">#</span><span class="w">
+</span><span class="w"></span><span class="c"># https://developers.home-assistant.io/docs/core/entity/sensor/#long-term-statistics</span><span class="w">
+</span><span class="w"></span><span class="c"># https://www.home-assistant.io/integrations/sensor/</span><span class="w">
+</span><span class="w"></span><span class="c">##</span><span class="w">
+</span><span class="w"></span>- <span class="nt">sensor</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;UPS Power&#34;</span><span class="w">
+</span><span class="w">      </span><span class="c"># Unique ID is required for mgmt through the web UI</span><span class="w">
+</span><span class="w">      </span><span class="nt">unique_id</span><span class="p">:</span><span class="w"> </span><span class="l">tmpl-UPS-power-use</span><span class="w">
+</span><span class="w">      </span><span class="nt">icon</span><span class="p">:</span><span class="w"> </span><span class="l">mdi:lightning-bolt</span><span class="w">
+</span><span class="w">
+</span><span class="w">      </span><span class="c"># This sensor records the instantaneous power load on the UPS... it is a measurement at that point in time</span><span class="w">
+</span><span class="w">      </span><span class="nt">state_class</span><span class="p">:</span><span class="w"> </span><span class="l">measurement</span><span class="w">
+</span><span class="w">      </span><span class="nt">device_class</span><span class="p">:</span><span class="w"> </span><span class="l">power</span><span class="w">
+</span><span class="w">      </span><span class="nt">unit_of_measurement</span><span class="p">:</span><span class="w"> </span><span class="l">W</span><span class="w">
+</span><span class="w">      </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="p">&gt;</span><span class="sd">
+</span><span class="sd">        {% set current = states(&#39;sensor.UPS_output_current&#39;) | float %}
+</span><span class="sd">        {% set voltage = states(&#39;sensor.UPS_output_voltage&#39;) | float %}
+</span><span class="sd">        {{ (current * voltage) | round (2) }}</span><span class="w">        
+</span><span class="w">
+</span><span class="w"></span>- <span class="nt">sensor</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;UPS Energy&#34;</span><span class="w">
+</span><span class="w">      </span><span class="c"># Unique ID is required for mgmt through the web UI</span><span class="w">
+</span><span class="w">      </span><span class="nt">unique_id</span><span class="p">:</span><span class="w"> </span><span class="l">tmpl-UPS-energy</span><span class="w">
+</span><span class="w">      </span><span class="nt">icon</span><span class="p">:</span><span class="w"> </span><span class="l">mdi:lightning-bolt</span><span class="w">
+</span><span class="w">      </span><span class="c"># Lie to HA about the type of sensor so we get values in the dashboard.</span><span class="w">
+</span><span class="w">      </span><span class="nt">state_class</span><span class="p">:</span><span class="w"> </span><span class="l">total_increasing</span><span class="w">
+</span><span class="w">      </span><span class="nt">device_class</span><span class="p">:</span><span class="w"> </span><span class="l">energy</span><span class="w">
+</span><span class="w">      </span><span class="c"># Since we are pretending to integrate over time, we are in Wh now.</span><span class="w">
+</span><span class="w">      </span><span class="c"># Good thing, too... because the energy dashboard WILL NOT use any sensor that does not report in kWh or Wh</span><span class="w">
+</span><span class="w">      </span><span class="nt">unit_of_measurement</span><span class="p">:</span><span class="w"> </span><span class="l">Wh</span><span class="w">
+</span><span class="w">      </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;{{ (states(&#39;sensor.UPS_power&#39;) | float) }}&#34;</span><span class="w">
+</span><span class="w">      </span><span class="c"># or, for kWh</span><span class="w">
+</span><span class="w">      </span><span class="c">#state: &#34;{{ (states(&#39;sensor.UPS_power&#39;) | float)/1000 }}&#34;</span><span class="w">
+</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div>]]></description></item><item><title>Monitoring APC AP7900 switched PDU with Prometheus and Grafana</title><link>https://karlquinsland.com/monitoring-ap7900-switched-pdu-prometheus-grafana/</link><pubDate>Sun, 27 Dec 2020 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/monitoring-ap7900-switched-pdu-prometheus-grafana/</guid><description><![CDATA[<p>The APC AP7900 is a 1U single phase PDU with 8 switchable outlets and a network interface. It&rsquo;s been EoL&rsquo;d and can be had for less than 20% of it&rsquo;s original price on <a href="https://www.ebay.com/sch/i.html?_nkw=AP7900" target="_blank" rel="noopener noreffer">eBay</a>. The network interface is so underpowered tha it can&rsquo;t <a href="http://origin-faq.pro-face.com/resources/sites/PROFACE/content/live/FAQS/300000/FA300635/en_US/APC%20AP7000%20Series%20End%20of%20Life%20Notice.pdf" target="_blank" rel="noopener noreffer">support any modern cryptographic ciphers</a>.</p>
+<p>So with that, here&rsquo;s a revised copy of my notes from the process of getting the device reset, updated and monitored.</p>
+<h2 id="the-hardware">The Hardware</h2>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Unfortunately, there&rsquo;s no &ldquo;reset everything to defaults&rdquo; button or button sequence on the PDU. The unit I purchased had been configured with a manual IP assignment so it wasn&rsquo;t as straightforward as using an unfolded paperclip to press the reboot button at boot and wait for a successful DHCP negotiation. This process has been <a href="https://dan.langille.org/2015/01/13/apc-pdu-ap7900-resetting-the-password/" target="_blank" rel="noopener noreffer">covered before</a>, so I&rsquo;ll omit it here. In short: connect to the local mgmt interface via the <a href="https://pinoutguide.com/UPS/apc_smart_cable_pinout.shtml" target="_blank" rel="noopener noreffer">serial port</a>, adjust the network configuration and other settings as needed.</p>
+<p>The firmware can be updated via FTP easily enough. The processor on the network interface is <em>really</em> slow so allow for <em>several minutes</em> between the bin file upload and the flashing to commence/end. I had to repeat this three times for each of the partitions / subsystem OSs.</p>
+<h2 id="the-metrics">The Metrics</h2>
+<p>Again, because the network interface has an ancient/slow CPU, any method that extracts metrics from the device must be light weight&hellip; enter <a href="https://en.wikipedia.org/wiki/Simple_Network_Management_Protocol" target="_blank" rel="noopener noreffer">SNMP</a>.</p>
+<p>SNMP is quite old and cumbersome but there&rsquo;s an <a href="https://github.com/prometheus/snmp_exporter" target="_blank" rel="noopener noreffer">exporter for prometheus</a> which, after some tedious configuration, can interface the complexity that is is legacy SNMP with prometheus.</p>
+<h3 id="generating-a-config">Generating a config</h3>
+<p>In short, SNMP identifies each setting/entity that can be monitored or set with a unique numerical ID. Each number is separated with a <code>.</code> and represents a specific edge/vertex on the graph of all settings that device supports.</p>
+<p>So, a setting known as <code>rPDUIdentDeviceLinetoLineVoltage</code> may be &lsquo;read&rsquo; at the following address: <code>1.3.6.1.4.1.318.1.1.12.1.15.0</code>. So if you have a few hundred parameters to monitor, you&rsquo;ll have a few hundred nondescript numerical paths. Keeping track of them all is a royal pain in the ass, even with <a href="https://en.wikipedia.org/wiki/Management_information_base" target="_blank" rel="noopener noreffer">lookup tables</a>; known as &ldquo;MIB files&rdquo;.</p>
+<p>Unfortunately, there&rsquo;s no way around it; a map between the numerical paths and the &lsquo;human friendly&rsquo; names must be built so the prometheus exporter knows what to expose and how to categorize it.</p>
+<p>The exporter comes with <a href="https://github.com/prometheus/snmp_exporter/tree/master/generator" target="_blank" rel="noopener noreffer">generator</a> to make this process a bit easier, but the process of obtaining MIB files isn&rsquo;t quite so straightforward.
+I hit a few snags and below is an updated <code>Dockerfile</code> that gave me a <em>working</em> generator tool:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-Dockerfile" data-lang="Dockerfile"><span class="err">
+</span><span class="err"></span><span class="k">FROM</span><span class="s"> golang:latest</span><span class="err">
+</span><span class="err">
+</span><span class="err"></span><span class="c">##</span><span class="err">
+</span><span class="err"></span><span class="c"># The `mibs` target in the Makefile does not run to completion on OSX.</span><span class="err">
+</span><span class="err"></span><span class="c"># Somewhere, a `sed` command is run against some vendor&#39;s MIB file that&#39;s for hardware that I don&#39;t want to target.</span><span class="err">
+</span><span class="err"></span><span class="c"># I don&#39;t have the patience to resolve those issues and i&#39;d prefer that the _entire_ MIB parse and generate </span><span class="err">
+</span><span class="err"></span><span class="c">#   process be 100% contained in the container image anyways.</span><span class="err">
+</span><span class="err"></span><span class="c">#</span><span class="err">
+</span><span class="err"></span><span class="c"># There are a _variety_ of errors that cropped up when running `generator parse_errors`:</span><span class="err">
+</span><span class="err"></span><span class="c">#</span><span class="err">
+</span><span class="err"></span><span class="c"># - level=warn ts=2020-12-27T21:40:42.988Z caller=main.go:120 msg=&#34;NetSNMP reported parse error(s)&#34; errors=16924</span><span class="err">
+</span><span class="err"></span><span class="c"># - Cannot find module (SNMPv2-SMI): At line 275 in mibs/apc-powernet-mib</span><span class="err">
+</span><span class="err"></span><span class="c"># - Did not find &#39;enterprises&#39; in module #-1 (mibs/apc-powernet-mib)</span><span class="err">
+</span><span class="err"></span><span class="c"># - Did not find &#39;DisplayString&#39; in module #-1 (mibs/apc-powernet-mib)</span><span class="err">
+</span><span class="err"></span><span class="c"># - Unlinked OID in PowerNet-MIB: apc ::= { enterprises 318 }</span><span class="err">
+</span><span class="err"></span><span class="c"># - Undefined identifier: enterprises near line 281 of mibs/apc-powernet-mib</span><span class="err">
+</span><span class="err"></span><span class="c"># - Cannot adopt OID in PowerNet-MIB: atsInputEntry ::= { atsInputTable 1 }</span><span class="err">
+</span><span class="err"></span><span class="c"># -   &lt;and hundreds more `Cannot adopt OID in PowerNet-MIB:` messages</span><span class="err">
+</span><span class="err"></span><span class="c"># - Bad operator (INTEGER): At line 73 in /usr/share/snmp/mibs/ietf/SNMPv2-PDU</span><span class="err">
+</span><span class="err"></span><span class="c">#</span><span class="err">
+</span><span class="err"></span><span class="c">#</span><span class="err">
+</span><span class="err"></span><span class="c"># After some searching, it appears that MIBs can refer to other MIBs and some set of &#39;base&#39; files is not present.</span><span class="err">
+</span><span class="err"></span><span class="c"># Due to licensing, the Debian docker image that the generator is based on does NOT ship w/ them or the </span><span class="err">
+</span><span class="err"></span><span class="c">#   `snmp-mibs-downloader` tool which is used to fetch the base MIB files. This is easy enough to fix...</span><span class="err">
+</span><span class="err"></span><span class="c">##</span><span class="err">
+</span><span class="err"></span><span class="c"># First, update the repos we&#39;ll pull packaged from</span><span class="err">
+</span><span class="err"></span><span class="k">RUN</span> <span class="nb">echo</span> <span class="s2">&#34;deb http://deb.debian.org/debian/ buster main contrib non-free&#34;</span> <span class="p">|</span> tee -a /etc/apt/sources.list <span class="o">&amp;&amp;</span> <span class="se">\
+</span><span class="se"></span>    <span class="nb">echo</span> <span class="s2">&#34;deb http://deb.debian.org/debian/ buster-updates main contrib non-free&#34;</span> <span class="p">|</span> tee -a /etc/apt/sources.list <span class="o">&amp;&amp;</span> <span class="se">\
+</span><span class="se"></span>    <span class="nb">echo</span> <span class="s2">&#34;deb http://security.debian.org/debian-security buster/updates main contrib non-free&#34;</span> <span class="p">|</span> tee -a /etc/apt/sources.list<span class="err">
+</span><span class="err">
+</span><span class="err"></span><span class="c"># Then we run the &#39;original&#39; set of commands, adding in the `snmp-mibs-downloader` package.</span><span class="err">
+</span><span class="err"></span><span class="c"># As part of the post-install hook, snmp-mibs-downloader will fetch the base MIBs that appear to be</span><span class="err">
+</span><span class="err"></span><span class="c">#   missing.</span><span class="err">
+</span><span class="err"></span><span class="c">##</span><span class="err">
+</span><span class="err"></span><span class="k">RUN</span> apt-get update <span class="o">&amp;&amp;</span> <span class="se">\
+</span><span class="se"></span>    apt-get install -y libsnmp-dev p7zip-full snmp-mibs-downloader <span class="o">&amp;&amp;</span> <span class="se">\
+</span><span class="se"></span>    go get github.com/prometheus/snmp_exporter/generator <span class="o">&amp;&amp;</span> <span class="se">\
+</span><span class="se"></span>    <span class="nb">cd</span> /go/src/github.com/prometheus/snmp_exporter/generator <span class="o">&amp;&amp;</span> <span class="se">\
+</span><span class="se"></span>    go get -v . <span class="o">&amp;&amp;</span> <span class="se">\
+</span><span class="se"></span>    go install<span class="err">
+</span><span class="err">
+</span><span class="err"></span><span class="c"># To fix _this_ error:</span><span class="err">
+</span><span class="err"></span><span class="c">#   Bad operator (INTEGER): At line 73 in /usr/share/snmp/mibs/ietf/SNMPv2-PDU</span><span class="err">
+</span><span class="err"></span><span class="c">#</span><span class="err">
+</span><span class="err"></span><span class="c"># we install a &#39;patched&#39; version.</span><span class="err">
+</span><span class="err"></span><span class="c"># src: https://serverfault.com/questions/936119/snmp-mibs-on-ubuntu-error-in-mibs</span><span class="err">
+</span><span class="err"></span><span class="c">##</span><span class="err">
+</span><span class="err"></span><span class="k">RUN</span> wget http://pastebin.com/raw.php?i<span class="o">=</span>p3QyuXzZ -O /usr/share/snmp/mibs/ietf/SNMPv2-PDU<span class="err">
+</span><span class="err">
+</span><span class="err"></span><span class="c">##</span><span class="err">
+</span><span class="err"></span><span class="c"># This command is not needed for generation, but IS needed for manual checking / use of `snmptranslate` within the</span><span class="err">
+</span><span class="err"></span><span class="c">#   container. Add to the above RUN statement if needed.</span><span class="err">
+</span><span class="err"></span><span class="c">#       sed -i &#34;s/^\(mibs *:\).*/#\1/&#34; /etc/snmp/snmp.conf</span><span class="err">
+</span><span class="err"></span><span class="c">#</span><span class="err">
+</span><span class="err"></span><span class="c"># It simply comments out the `mibs:` line in `/etc/snmp/snmp.conf`</span><span class="err">
+</span><span class="err"></span><span class="c">##</span><span class="err">
+</span><span class="err">
+</span><span class="err"></span><span class="c"># The &#39;stock&#39; generator expects the output of `make mibs` to be mounted into /opt/mibs.</span><span class="err">
+</span><span class="err"></span><span class="c"># Since we are no longer relying on the `make` target, we must tell the generator binary</span><span class="err">
+</span><span class="err"></span><span class="c">#   to look in all of the &#39;system default&#39; locations *as well as* /opt/mibs</span><span class="err">
+</span><span class="err"></span><span class="c">##</span><span class="err">
+</span><span class="err"></span><span class="k">WORKDIR</span><span class="s"> &#34;/opt&#34;</span><span class="err">
+</span><span class="err"></span><span class="k">ENTRYPOINT</span> <span class="p">[</span><span class="s2">&#34;/go/bin/generator&#34;</span><span class="p">]</span><span class="err">
+</span><span class="err">
+</span><span class="err"></span><span class="c"># Rather than do something like this on the CLI every time the container is run</span><span class="err">
+</span><span class="err"></span><span class="c">#   `-e MIBDIRS=&#34;/usr/share/snmp/mibs:/usr/share/snmp/mibs/iana:/usr/share/snmp/mibs/ietf:/opt/mibs&#34;`</span><span class="err">
+</span><span class="err"></span><span class="c">#   we do it here...</span><span class="err">
+</span><span class="err"></span><span class="c">##</span><span class="err">
+</span><span class="err"></span><span class="k">ENV</span> MIBDIRS /usr/share/snmp/mibs:/usr/share/snmp/mibs/iana:/usr/share/snmp/mibs/ietf:/opt/mibs<span class="err">
+</span><span class="err">
+</span><span class="err"></span><span class="k">CMD</span> <span class="p">[</span><span class="s2">&#34;generate&#34;</span><span class="p">]</span><span class="err">
+</span><span class="err">
+</span></code></pre></td></tr></table>
+</div>
+</div><p>In short, ditch the <code>make mibs</code> step from <a href="https://github.com/prometheus/snmp_exporter/tree/master/generator#docker-users" target="_blank" rel="noopener noreffer">here</a> and move it inside the <code>docker build</code> step; fetch all the MIB files, patching those that need it. Tell the tool where to find them.</p>
+<p>For my needs, I only care about the total amount of power being distributed through the PDU so, of the hundreds of different parameters that can be monitored, I&rsquo;m only interested in:</p>
+<ul>
+<li>Uptime</li>
+<li>Input Voltage</li>
+<li>Power in Watts and VoltAmps</li>
+<li>Percentage of used/remaining capacity</li>
+</ul>
+<p>This makes for a simple generator config:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="c"># See: https://github.com/prometheus/snmp_exporter/tree/master/generator</span><span class="w">
+</span><span class="w"></span><span class="c">##</span><span class="w">
+</span><span class="w">
+</span><span class="w"></span><span class="nt">modules</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="c"># APC/Schneider UPS Network Management Cards</span><span class="w">
+</span><span class="w">  </span><span class="c">#</span><span class="w">
+</span><span class="w">  </span><span class="c"># Note: older management cards only support SNMP v1 (AP9606 and</span><span class="w">
+</span><span class="w">  </span><span class="c"># AP9607, possibly others). Older versions of the firmware may only</span><span class="w">
+</span><span class="w">  </span><span class="c"># support v1 as well. If you only have newer cards you can switch to</span><span class="w">
+</span><span class="w">  </span><span class="c"># version v2c or v3.</span><span class="w">
+</span><span class="w">  </span><span class="c">#</span><span class="w">
+</span><span class="w">  </span><span class="c"># The management cards have relatively slow processors so don&#39;t poll</span><span class="w">
+</span><span class="w">  </span><span class="c"># very often and give a generous timeout to prevent spurious</span><span class="w">
+</span><span class="w">  </span><span class="c"># errors. Alternatively you can eliminate the interface polling (OIDs</span><span class="w">
+</span><span class="w">  </span><span class="c"># beginning with 1.3.6.1.2.1) to reduce the time taken for polling.</span><span class="w">
+</span><span class="w">  </span><span class="c">#</span><span class="w">
+</span><span class="w">  </span><span class="c"># MIB: https://download.schneider-electric.com/files?p_File_Name=powernet426.mib</span><span class="w">
+</span><span class="w">  </span><span class="c"># Guide: http://www.apc.com/salestools/ASTE-6Z5QEY/ASTE-6Z5QEY_R0_EN.pdf</span><span class="w">
+</span><span class="w">  </span><span class="c"># Download site: http://www.apc.com/us/en/tools/download/index.cfm</span><span class="w">
+</span><span class="w">  </span><span class="c">##</span><span class="w">
+</span><span class="w">  </span><span class="nt">apcups</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span><span class="c"># Not 100% sure why, but APC firmware does not appear to properly authenticate with the</span><span class="w">
+</span><span class="w">    </span><span class="c">#   credentials that i&#39;ve set through the web UI. I&#39;ve disabled write/set via SNMP so </span><span class="w">
+</span><span class="w">    </span><span class="c">#   sticking w/ v2 (no auth) is fine.</span><span class="w">
+</span><span class="w">    </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="m">2</span><span class="w">
+</span><span class="w">
+</span><span class="w">    </span><span class="nt">walk</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="c"># Don&#39;t care about network stats on this guy...</span><span class="w">
+</span><span class="w">      </span><span class="c"># - interfaces</span><span class="w">
+</span><span class="w">      </span><span class="c">##</span><span class="w">
+</span><span class="w">      </span><span class="c"># Do care about uptime, tho</span><span class="w">
+</span><span class="w">      </span>- <span class="l">sysUpTime</span><span class="w">
+</span><span class="w">
+</span><span class="w">      </span><span class="c">##</span><span class="w">
+</span><span class="w">      </span><span class="c"># For reasons that I don&#39;t understand, specifying the OID results in errors like this:</span><span class="w">
+</span><span class="w">      </span><span class="c">#   level=error caller=main.go:130 msg=&#34;Error generating config netsnmp&#34; err=&#34;cannot find oid &#39;.1.3.6.1.4.1.318.1.1.12.1.15.0&#39; to walk&#34;</span><span class="w">
+</span><span class="w">      </span><span class="c"># But the path &#39;.1.3.6.1.4.1.318.1.1.12.1.15.0&#39; maps to rPDUIdentDeviceLinetoLineVoltage.0</span><span class="w">
+</span><span class="w">      </span><span class="c"># So specify that by name and the error goes away :/</span><span class="w">
+</span><span class="w">      </span><span class="c">##</span><span class="w">
+</span><span class="w">      </span>- <span class="l">rPDUIdentDeviceLinetoLineVoltage</span><span class="w"> </span><span class="c"># .1.3.6.1.4.1.318.1.1.12.1.15.0</span><span class="w">
+</span><span class="w">      </span>- <span class="l">rPDUIdentDevicePowerWatts       </span><span class="w"> </span><span class="c"># .1.3.6.1.4.1.318.1.1.12.1.16.0</span><span class="w">
+</span><span class="w">      </span>- <span class="l">rPDUIdentDevicePowerVA          </span><span class="w"> </span><span class="c"># .1.3.6.1.4.1.318.1.1.12.1.18.0</span><span class="w">
+</span><span class="w">      </span>- <span class="l">rPDULoadStatusTable             </span><span class="w"> </span><span class="c"># .1.3.6.1.4.1.318.1.1.12.2.3.1</span><span class="w">
+</span><span class="w">
+</span><span class="w">    </span><span class="c">##</span><span class="w">
+</span><span class="w">    </span><span class="c"># From `rPDULoadStatusTable`, I can get `rPDULoadStatusLoad` and `rPDULoadStatusLoadState`</span><span class="w">
+</span><span class="w">    </span><span class="c">#    which represent the percentage capacity as a percentage and a &#34;low, nominal, warn, critical&#34; flag.</span><span class="w">
+</span><span class="w">    </span><span class="c">#</span><span class="w">
+</span><span class="w">    </span><span class="c"># Don&#39;t need to resort to the `lookup` mechanism as the PDU has only one bank and can just extract the values</span><span class="w">
+</span><span class="w">    </span><span class="c">#   by referring to them explicitly below. This would likely change w/ a 2U PDU</span><span class="w">
+</span><span class="w">
+</span><span class="w">    </span><span class="c"># Allows for adjustment to how various SNMP endpoints are parsed (as info about a device vs a moving metric)</span><span class="w">
+</span><span class="w">    </span><span class="c"># See: https://github.com/prometheus/snmp_exporter/tree/master/generator#enumasinfo-and-enumasstateset</span><span class="w">
+</span><span class="w">    </span><span class="c">##</span><span class="w">
+</span><span class="w">    </span><span class="nt">overrides</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="c"># Should be a percentage of load</span><span class="w">
+</span><span class="w">      </span><span class="nt">rPDULoadStatusLoad</span><span class="p">:</span><span class="w">
+</span><span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">gauge</span><span class="w">
+</span><span class="w">      </span><span class="c"># In addition to a numerical load percentage, also handy to have the characterization _of_ that load, too</span><span class="w">
+</span><span class="w">      </span><span class="c"># In this case, the load can be characterized one of 4 ways:</span><span class="w">
+</span><span class="w">      </span><span class="c">#   phaseLoadNormal (1),phaseLoadLow (2),phaseLoadNearOverload (3),phaseLoadOverload (4)</span><span class="w">
+</span><span class="w">      </span><span class="nt">rPDULoadStatusLoadState</span><span class="p">:</span><span class="w">
+</span><span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">EnumAsStateSet</span><span class="w">
+</span><span class="w">
+</span><span class="w">      </span><span class="c">##</span><span class="w">
+</span><span class="w">      </span><span class="c"># There are a few &#39;constants&#39; that come from the table i don&#39;t need to track, so we drop them :)</span><span class="w">
+</span><span class="w">      </span><span class="nt">rPDULoadStatusBankNumber</span><span class="p">:</span><span class="w">
+</span><span class="w">        </span><span class="nt">ignore</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">EnumAsInfo</span><span class="w">
+</span><span class="w">      </span><span class="nt">rPDULoadStatusIndex</span><span class="p">:</span><span class="w">
+</span><span class="w">        </span><span class="nt">ignore</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">EnumAsInfo</span><span class="w">
+</span><span class="w">      </span><span class="nt">rPDULoadStatusPhaseNumber</span><span class="p">:</span><span class="w">
+</span><span class="w">        </span><span class="nt">ignore</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span><span class="w">        </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">EnumAsInfo</span><span class="w">
+</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><p>The resulting <code>snmp.yml</code> is quite brief:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="c"># WARNING: This file was auto-generated using snmp_exporter generator, manual changes will be lost.</span><span class="w">
+</span><span class="w"></span><span class="nt">apcups</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span><span class="nt">walk</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span>- <span class="m">1.3.6.1.4.1.318.1.1.12.2.3.1</span><span class="w">
+</span><span class="w">  </span><span class="nt">get</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span>- <span class="m">1.3.6.1.2.1.1.3.0</span><span class="w">
+</span><span class="w">  </span>- <span class="m">1.3.6.1.4.1.318.1.1.12.1.15.0</span><span class="w">
+</span><span class="w">  </span>- <span class="m">1.3.6.1.4.1.318.1.1.12.1.16.0</span><span class="w">
+</span><span class="w">  </span>- <span class="m">1.3.6.1.4.1.318.1.1.12.1.18.0</span><span class="w">
+</span><span class="w">  </span><span class="nt">metrics</span><span class="p">:</span><span class="w">
+</span><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">sysUpTime</span><span class="w">
+</span><span class="w">    </span><span class="nt">oid</span><span class="p">:</span><span class="w"> </span><span class="m">1.3.6.1.2.1.1.3</span><span class="w">
+</span><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">gauge</span><span class="w">
+</span><span class="w">    </span><span class="nt">help</span><span class="p">:</span><span class="w"> </span><span class="l">The time (in hundredths of a second) since the network management portion of the system was last re-initialized. - 1.3.6.1.2.1.1.3</span><span class="w">
+</span><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">rPDUIdentDeviceLinetoLineVoltage</span><span class="w">
+</span><span class="w">    </span><span class="nt">oid</span><span class="p">:</span><span class="w"> </span><span class="m">1.3.6.1.4.1.318.1.1.12.1.15</span><span class="w">
+</span><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">gauge</span><span class="w">
+</span><span class="w">    </span><span class="nt">help</span><span class="p">:</span><span class="w"> </span><span class="l">Getting/Setting this OID will return/set the Line to Line Voltage - 1.3.6.1.4.1.318.1.1.12.1.15</span><span class="w">
+</span><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">rPDUIdentDevicePowerWatts</span><span class="w">
+</span><span class="w">    </span><span class="nt">oid</span><span class="p">:</span><span class="w"> </span><span class="m">1.3.6.1.4.1.318.1.1.12.1.16</span><span class="w">
+</span><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">gauge</span><span class="w">
+</span><span class="w">    </span><span class="nt">help</span><span class="p">:</span><span class="w"> </span><span class="l">Getting this OID will return the Power in Watts. - 1.3.6.1.4.1.318.1.1.12.1.16</span><span class="w">
+</span><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">rPDUIdentDevicePowerVA</span><span class="w">
+</span><span class="w">    </span><span class="nt">oid</span><span class="p">:</span><span class="w"> </span><span class="m">1.3.6.1.4.1.318.1.1.12.1.18</span><span class="w">
+</span><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">gauge</span><span class="w">
+</span><span class="w">    </span><span class="nt">help</span><span class="p">:</span><span class="w"> </span><span class="l">Getting this OID will return the Power in VA. - 1.3.6.1.4.1.318.1.1.12.1.18</span><span class="w">
+</span><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">rPDULoadStatusLoad</span><span class="w">
+</span><span class="w">    </span><span class="nt">oid</span><span class="p">:</span><span class="w"> </span><span class="m">1.3.6.1.4.1.318.1.1.12.2.3.1.1.2</span><span class="w">
+</span><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">gauge</span><span class="w">
+</span><span class="w">    </span><span class="nt">help</span><span class="p">:</span><span class="w"> </span><span class="l">Getting this OID will return the phase/bank load measured in tenths of Amps. - 1.3.6.1.4.1.318.1.1.12.2.3.1.1.2</span><span class="w">
+</span><span class="w">    </span><span class="nt">indexes</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span>- <span class="nt">labelname</span><span class="p">:</span><span class="w"> </span><span class="l">rPDULoadStatusIndex</span><span class="w">
+</span><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">EnumAsInfo</span><span class="w">
+</span><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">rPDULoadStatusLoadState</span><span class="w">
+</span><span class="w">    </span><span class="nt">oid</span><span class="p">:</span><span class="w"> </span><span class="m">1.3.6.1.4.1.318.1.1.12.2.3.1.1.3</span><span class="w">
+</span><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">EnumAsStateSet</span><span class="w">
+</span><span class="w">    </span><span class="nt">help</span><span class="p">:</span><span class="w"> </span><span class="l">Getting this OID will return the phase/bank load state - 1.3.6.1.4.1.318.1.1.12.2.3.1.1.3</span><span class="w">
+</span><span class="w">    </span><span class="nt">indexes</span><span class="p">:</span><span class="w">
+</span><span class="w">    </span>- <span class="nt">labelname</span><span class="p">:</span><span class="w"> </span><span class="l">rPDULoadStatusIndex</span><span class="w">
+</span><span class="w">      </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">EnumAsInfo</span><span class="w">
+</span><span class="w">    </span><span class="nt">enum_values</span><span class="p">:</span><span class="w">
+</span><span class="w">      </span><span class="nt">1</span><span class="p">:</span><span class="w"> </span><span class="l">phaseLoadNormal</span><span class="w">
+</span><span class="w">      </span><span class="nt">2</span><span class="p">:</span><span class="w"> </span><span class="l">phaseLoadLow</span><span class="w">
+</span><span class="w">      </span><span class="nt">3</span><span class="p">:</span><span class="w"> </span><span class="l">phaseLoadNearOverload</span><span class="w">
+</span><span class="w">      </span><span class="nt">4</span><span class="p">:</span><span class="w"> </span><span class="l">phaseLoadOverload</span><span class="w">
+</span><span class="w">  </span><span class="nt">version</span><span class="p">:</span><span class="w"> </span><span class="m">2</span><span class="w">
+</span></code></pre></td></tr></table>
+</div>
+</div><h2 id="the-dashboard">The Dashboard</h2>
+<p>Once metrics are making their way into prometheus, it&rsquo;s only a bit of work to get a dashboard up and running.</p>
+<p>For sanity checking I fired up a load; a crypto-miner. See if you can spot when&hellip; :).</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Simple dashboard in grafana
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>The <code>json</code> file for the dashboard is about 750 lines long, so rather than embed it, I&rsquo;ve <a href="#files" rel="">attached</a> it as a file; the sha1 hash of <code>dashboard.json</code> is <code>400edb0c4064068f12e17c2f1f0d6862d3b8d449</code>.</p>
+<h3 id="estimating-costs">estimating costs</h3>
+<p>The dashboard just multiplies the average Wattage by the average cost of a kWh and then scales that to fit a 24h window.</p>
+<p>The rate I pay for electricity changes based on the hour in which the power is used; about 40% of the week, my power costs a few cents per kWh more. The cost shown in the image above is a rough approximation based on my average power rate of around 12.5 cents per kWh. This rate can be adjusted with the <code>avgkWH_Cost</code> variable, if needed.</p>
+<h2 id="files">Files</h2>
+<ul>
+    
+    <li>
+        
+
+            
+            
+        
+            <figure>
+                <a target="_blank" href="https://karlquinsland.com/monitoring-ap7900-switched-pdu-prometheus-grafana/images/ap7900.png">
+                    
+                </a>
+                
+                
+            </figure>
+
+        
+    </li>
+    
+    <li>
+        
+            <a target="_blank" href="https://karlquinsland.com/monitoring-ap7900-switched-pdu-prometheus-grafana/files/dashboard.json">
+                <i class="far fa-file-file-code"></i>
+                files/dashboard.json:
+                
+                
+                <br>
+                <small>sha1(dashboard.json): 400edb0c4064068f12e17c2f1f0d6862d3b8d449</small>
+                
+            </a>
+        
+    </li>
+    
+    <li>
+        
+
+            
+            
+        
+            <figure>
+                <a target="_blank" href="https://karlquinsland.com/monitoring-ap7900-switched-pdu-prometheus-grafana/images/grafana.png">
+                    
+                </a>
+                
+                <figcaption>
+                    <small>Simple dashboard in grafana</small>
+                </figcaption>
+                
+            </figure>
+
+        
+    </li>
+    
+</ul>
+
+]]></description></item></channel></rss>

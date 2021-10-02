@@ -1,0 +1,489 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=robots content="noodp">
+<meta http-equiv=x-ua-compatible content="IE=edge, chrome=1">
+<title>Adding an APC UPS to Home Assistant energy dashboard - karl</title><meta name=Description content="Karl's little corner of the internet"><meta property="og:title" content="Adding an APC UPS to Home Assistant energy dashboard">
+<meta property="og:description" content="EDIT: (2021-09-19): After some back and forth with /u/Laxarus, there is now a simpler method! The snmp platform still does not support setting device_class, but wrapping the sensor in another template sensor is not required; just do so in your customize.yaml. I have called this out below.
+ This is another quick &ldquo;here&rsquo;s how I did it, hope this help&rdquo; post.
+In preparation for the inevitable grid brownouts that summer 2021 would bring, I installed a rather beefy UPS for my home network / lab.">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://karlquinsland.com/apc-ups-energy-in-homeassistant/"><meta property="og:image" content="https://karlquinsland.com/images/avatar.png"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2021-09-05T00:00:00+00:00">
+<meta property="article:modified_time" content="2021-09-19T09:46:31-07:00">
+<meta name=twitter:card content="summary_large_image">
+<meta name=twitter:image content="https://karlquinsland.com/images/avatar.png">
+<meta name=twitter:title content="Adding an APC UPS to Home Assistant energy dashboard">
+<meta name=twitter:description content="EDIT: (2021-09-19): After some back and forth with /u/Laxarus, there is now a simpler method! The snmp platform still does not support setting device_class, but wrapping the sensor in another template sensor is not required; just do so in your customize.yaml. I have called this out below.
+ This is another quick &ldquo;here&rsquo;s how I did it, hope this help&rdquo; post.
+In preparation for the inevitable grid brownouts that summer 2021 would bring, I installed a rather beefy UPS for my home network / lab.">
+<meta name=application-name content="karl">
+<meta name=apple-mobile-web-app-title content="karl"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=https://karlquinsland.com/favicon.ico>
+<link rel=icon type=image/png sizes=32x32 href=https://karlquinsland.com/favicon-32x32.png>
+<link rel=icon type=image/png sizes=16x16 href=https://karlquinsland.com/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=https://karlquinsland.com/apple-touch-icon.png><link rel=mask-icon href=https://karlquinsland.com/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=https://karlquinsland.com/site.webmanifest><link rel=canonical href=https://karlquinsland.com/apc-ups-energy-in-homeassistant/><link rel=prev href=https://karlquinsland.com/treatlife-ds03-tasmota-autoconfig-with-homeassistant/><link rel=next href=https://karlquinsland.com/skyhole-expired-lets-encrypt-ca/><link rel=stylesheet href=https://karlquinsland.com/lib/normalize/normalize.min.055364f5be272caa092b0e6654c165828707f8ab971e2656383a6d6392bc345e.css integrity="sha256-BVNk9b4nLKoJKw5mVMFlgocH+KuXHiZWODptY5K8NF4="><link rel=stylesheet href=https://karlquinsland.com/css/style.min.1e2694bed152fa2922dbe909a441838ed693d88b1330f97485bfa8ed78da42df.css integrity="sha256-HiaUvtFS+iki2+kJpEGDjtaT2IsTMPl0hb+o7XjaQt8="><link rel=stylesheet href=https://karlquinsland.com/lib/fontawesome-free/all.min.876d023d9d10c97941b80c3b03e2a5b94631ff7a4af9cee5604a6a2d39718d84.css integrity="sha256-h20CPZ0QyXlBuAw7A+KluUYx/3pK+c7lYEpqLTlxjYQ="><link rel=stylesheet href=https://karlquinsland.com/lib/animate/animate.min.3c770e90f98eb21b0c042fafb49755af93306fbaf42e449524f94fae9fc83295.css integrity="sha256-PHcOkPmOshsMBC+vtJdVr5Mwb7r0LkSVJPlPrp/IMpU="><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Adding an APC UPS to Home Assistant energy dashboard","inLanguage":"en-us","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/karlquinsland.com\/apc-ups-energy-in-homeassistant\/"},"genre":"posts","keywords":"SNMP, home-assistant","wordcount":1686,"url":"https:\/\/karlquinsland.com\/apc-ups-energy-in-homeassistant\/","datePublished":"2021-09-05T00:00:00+00:00","dateModified":"2021-09-19T09:46:31-07:00","publisher":{"@type":"Organization","name":""},"author":{"@type":"Person","name":"karl"},"description":""}</script></head>
+<body header-desktop=fixed header-mobile=auto><script type=text/javascript>(window.localStorage&&localStorage.getItem('theme')?localStorage.getItem('theme')==='dark':'auto'==='auto'?window.matchMedia('(prefers-color-scheme: dark)').matches:'auto'==='dark')&&document.body.setAttribute('theme','dark')</script>
+<div id=mask></div><div class=wrapper><header class=desktop id=header-desktop>
+<div class=header-wrapper>
+<div class=header-title>
+<a href=https://karlquinsland.com/ title=karl>Karl</a>
+</div>
+<div class=menu>
+<div class=menu-inner><a class=menu-item href=https://karlquinsland.com/posts/><i class="fas fa-blog"></i> Posts </a><a class=menu-item href=https://karlquinsland.com/resume/ title="Hire Me!"><i class="fas fa-briefcase"></i> Résumé </a><a class=menu-item href=https://karlquinsland.com/tags/ title="Can you tell that I don't have a super consistent or clear taxonomy?"><i class="fas fa-tags"></i> Tags </a><a class=menu-item href=https://karlquinsland.com/contact/><i class="fas fa-address-book"></i> Contact </a><span class="menu-item delimiter"></span><span class="menu-item search" id=search-desktop>
+<input type=text placeholder="Search titles or contents..." id=search-input-desktop>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=Search>
+<i class="fas fa-search fa-fw"></i>
+</a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=Clear>
+<i class="fas fa-times-circle fa-fw"></i>
+</a>
+<span class="search-button search-loading" id=search-loading-desktop>
+<i class="fas fa-spinner fa-fw fa-spin"></i>
+</span>
+</span><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw"></i>
+</a>
+</div>
+</div>
+</div>
+</header><header class=mobile id=header-mobile>
+<div class=header-container>
+<div class=header-wrapper>
+<div class=header-title>
+<a href=https://karlquinsland.com/ title=karl>Karl</a>
+</div>
+<div class=menu-toggle id=menu-toggle-mobile>
+<span></span><span></span><span></span>
+</div>
+</div>
+<div class=menu id=menu-mobile><div class=search-wrapper>
+<div class="search mobile" id=search-mobile>
+<input type=text placeholder="Search titles or contents..." id=search-input-mobile>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=Search>
+<i class="fas fa-search fa-fw"></i>
+</a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=Clear>
+<i class="fas fa-times-circle fa-fw"></i>
+</a>
+<span class="search-button search-loading" id=search-loading-mobile>
+<i class="fas fa-spinner fa-fw fa-spin"></i>
+</span>
+</div>
+<a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>
+Cancel
+</a>
+</div><a class=menu-item href=https://karlquinsland.com/posts/ title><i class="fas fa-blog"></i>Posts</a><a class=menu-item href=https://karlquinsland.com/resume/ title="Hire Me!"><i class="fas fa-briefcase"></i>Résumé</a><a class=menu-item href=https://karlquinsland.com/tags/ title="Can you tell that I don't have a super consistent or clear taxonomy?"><i class="fas fa-tags"></i>Tags</a><a class=menu-item href=https://karlquinsland.com/contact/ title><i class="fas fa-address-book"></i>Contact</a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw"></i>
+</a></div>
+</div>
+</header>
+<div class="search-dropdown desktop">
+<div id=search-dropdown-desktop></div>
+</div>
+<div class="search-dropdown mobile">
+<div id=search-dropdown-mobile></div>
+</div>
+<main class=main>
+<div class=container><div class=toc id=toc-auto>
+<h2 class=toc-title>Contents</h2>
+<div class=toc-content id=toc-content-auto></div>
+</div><article class="page single"><h1 class="single-title animated flipInX">Adding an APC UPS to Home Assistant energy dashboard</h1><div class=post-meta>
+<div class=post-meta-line><span class=post-author><a href=https://karlquinsland.com/ title=Author rel=" author" class=author><i class="fas fa-user-circle fa-fw"></i>karl</a></span>&nbsp;<span class=post-category>included in <a href=https://karlquinsland.com/categories/home-lab/><i class="far fa-folder fa-fw"></i>home-lab</a>&nbsp;<a href=https://karlquinsland.com/categories/observability/><i class="far fa-folder fa-fw"></i>observability</a></span></div>
+<div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2021-09-05>2021-09-05</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;1686 words&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;8 minutes&nbsp;</div>
+</div><div class="details toc" id=toc-static kept=true>
+<div class="details-summary toc-title">
+<span>Contents</span>
+<span><i class="details-icon fas fa-angle-right"></i></span>
+</div>
+<div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents>
+<ul>
+<li>
+<ul>
+<li><a href=#long-term-statistics-in-home-assistant>Long Term Statistics in Home Assistant</a>
+<ul>
+<li>
+<ul>
+<li><a href=#edit-2021-09-19>EDIT (2021-09-19):</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href=#configure-home-assistant>Configure Home Assistant</a>
+<ul>
+<li><a href=#a-single-oid-for-power-consumption>A single OID for power consumption</a></li>
+<li><a href=#current-and-voltage-independently>Current and Voltage independently</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav></div>
+</div><div class=content id=content><p><strong>EDIT:</strong> (2021-09-19): After some <a href=https://old.reddit.com/r/homeassistant/comments/pi3pv2/how_to_use_an_apc_ups_as_an_energy_dashboard/hbqudh5/ target=_blank rel="noopener noreffer">back and forth</a> with <a href=https://old.reddit.com/user/Laxarus target=_blank rel="noopener noreffer">/u/Laxarus</a>, there is now a simpler method! The <code>snmp</code> platform still does not support setting <code>device_class</code>, but wrapping the sensor in another template sensor is not required; just do so in your <a href=https://www.home-assistant.io/docs/configuration/customizing-devices/ target=_blank rel="noopener noreffer"><code>customize.yaml</code></a>. I have called this out <a href=#edit-2021-09-19 rel>below</a>.</p>
+<hr>
+<p>This is another quick &ldquo;here&rsquo;s how I did it, hope this help&rdquo; post.</p>
+<p>In preparation for the inevitable grid brownouts that summer 2021 would bring, I installed a rather beefy UPS for my home network / lab. After some browsing, I discovered a local eWaste liquidator with a really good deal on some second-hand APC UPSs.</p>
+<p>A few hundred dollars and about 150 lbs later, the UPS was installed in the server rack. Despite being a newer generation, the software on the UPS has a <em><strong>TON</strong></em> of similarities to the <a href=https://karlquinsland.com/monitoring-ap7900-switched-pdu-prometheus-grafana/ rel>older style of PDU that I installed in my lab </a> a while back. This made it relatively straightforward to use the same
+pattern to start getting UPS metrics into Grafana as well.</p>
+<p>After getting the basic monitoring up and running, I started to draft this post to serve as an &lsquo;update&rsquo; to the APC9700 post. Life got in the way and the post sat in the drafts branch where it was completely forgotten about&mldr;. until <a href=https://www.home-assistant.io/blog/2021/08/04/release-20218/ target=_blank rel="noopener noreffer">Home Assistant released their new Energy dashboard</a>. Now that HA could show the energy consumption of individual devices right next to the cumulative consumption and production data, the post was worth finishing and expanding on.</p>
+<p>The configuration that I was <em>going</em> to publish is <a href=#current-and-voltage-independently rel>below</a> but after finding <a href=https://old.reddit.com/r/homeassistant/comments/pi3pv2/how_to_use_an_apc_ups_as_an_energy_dashboard/hbpqzr6/ target=_blank rel="noopener noreffer">this</a> comment by <a href=https://old.reddit.com/user/Laxarus target=_blank rel="noopener noreffer">Laxarus</a> on <a href=https://old.reddit.com/user/Navydevildoc target=_blank rel="noopener noreffer">Navydevildoc</a>&rsquo;s <a href=https://old.reddit.com/r/homeassistant/comments/pi3pv2/how_to_use_an_apc_ups_as_an_energy_dashboard/ target=_blank rel="noopener noreffer">reddit post</a>, I&rsquo;ve got a revised and simpler configuration to share!</p>
+<h2 id=long-term-statistics-in-home-assistant>Long Term Statistics in Home Assistant</h2>
+<p>Before diving into the configuration, a little bit of context. In preparation for the energy sub system, the Home Assistant developers have been working on a &lsquo;<a href=https://developers.home-assistant.io/docs/core/entity/sensor/#long-term-statistics target=_blank rel="noopener noreffer">long term statistics</a>&rsquo; (LTS) framework. The LTS framework is meant to give HA some improved speed and capabilities when dealing with a lot of data! The energy subsystem is the first &lsquo;consumer&rsquo; of the LTS framework.</p>
+<p>Home Assistant will look for two &lsquo;properties&rsquo; on a given sensor to determine if that sensor will work with the LTS framework.
+For a sensor/entity to &lsquo;work&rsquo; with the long term stats system it must:</p>
+<ul>
+<li>have a property called <code>device_class</code> with a value of <code>energy</code>, <code>gas</code>, or <code>monetary</code></li>
+<li>have a property called <code>state_class</code> with a value of either <code>measurement</code> or <code>total_increasing</code></li>
+</ul>
+<p>In testing, I was <em>not</em> able to get a sensor with <code>state_class: measurement</code> and <code>device_class: energy</code> to &lsquo;work&rsquo; with the energy sub system. Fortunately, this does not apply with the concise configuration <a href=#a-single-oid-for-power-consumption rel>below</a>!</p>
+<p>As the LTS framework is still new, many platforms - including the SNMP platform - do not support the required properties:</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback>Invalid config for [sensor.snmp]: [state_class] is an invalid option for [sensor.snmp]. Check: sensor.snmp-&gt;state_class.
+Invalid config for [sensor.snmp]: [device_class] is an invalid option for [sensor.snmp]. Check: sensor.snmp-&gt;device_class.
+</code></pre></td></tr></table>
+</div>
+</div><p>The <code>template</code> platform <em>has</em> been updated to work with the <code>device_class</code> or <code>state_class</code> properties though.
+So that&rsquo;s the technique to use here; a <code>template</code> sensor with the correct <code>{device,state}_class</code> properties set will wrap the snmp sensor.</p>
+<p>Hopefully a future release of HA will include <code>{device,state}_class</code> support for the <code>snmp</code> platform; the <code>template</code> sensors in the configuration snips below won&rsquo;t be needed!</p>
+<h4 id=edit-2021-09-19>EDIT (2021-09-19):</h4>
+<p>You don&rsquo;t need to wrap the snmp sensor in a template sensor. As of home assistant 2021.09, the <code>snmp</code> platform does not allow you to set <code>device_class: energy</code>&mldr; however, you <em>can</em> set the <code>device_class</code> attribute on the snmp sensor through <code>customize.yaml</code>:</p>
+<p>Make sure your configuration file loads the customization file:</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-shell data-lang=shell>❯ cat configuration.yaml <span class=p>|</span> grep customize
+  customize: !include customize.yaml
+</code></pre></td></tr></table>
+</div>
+</div><p>If your snmp sensor was called <code>sensor.usp_energy</code>, then you would add an object called <code>sensor.ups_energy</code> like so:</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-shell data-lang=shell>❯ cat customize.yaml <span class=p>|</span> grep -a2 ups
+sensor.ups_energy:
+  state_class: total_increasing
+  device_class: energy
+</code></pre></td></tr></table>
+</div>
+</div><h2 id=configure-home-assistant>Configure Home Assistant</h2>
+<p>I have broken my <code>configuration.yaml</code> up to make things easier to manage. Almost all entity/device/template/sensor..etc configuration is done through files placed in the <code>devices/**/*</code> directory:</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-shell data-lang=shell>❯ cat configuration.yaml <span class=p>|</span> grep -E <span class=s1>&#39;devices/sensor|template/&#39;</span>
+sensor: !include_dir_merge_list devices/sensor/
+template: !include_dir_merge_list devices/template/
+</code></pre></td></tr></table>
+</div>
+</div><h3 id=a-single-oid-for-power-consumption>A single OID for power consumption</h3>
+<p>Thanks again to <a href=https://old.reddit.com/user/Laxarus target=_blank rel="noopener noreffer">Laxarus</a> for the <a href=https://old.reddit.com/r/homeassistant/comments/pi3pv2/how_to_use_an_apc_ups_as_an_energy_dashboard/hbpqzr6/ target=_blank rel="noopener noreffer">tip</a> about the <code>upsHighPrecOutputEnergyUsage</code> OID!</p>
+<p>First, create the &lsquo;raw&rsquo; sensor using the <code>snmp</code> platform:</p>
+<p><code>devices/sensor/snmp.yaml</code>:</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml>- <span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>snmp</span><span class=w>
+</span><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;UPS Energy (raw)&#34;</span><span class=w>
+</span><span class=w>  </span><span class=nt>host</span><span class=p>:</span><span class=w> </span><span class=m>192.168.1.1</span><span class=w>
+</span><span class=w>  </span><span class=c># The current in tenths of amperes drawn by the load on the UPS.</span><span class=w>
+</span><span class=w>  </span><span class=c># Contained in Module(s): PowerNet-MIB</span><span class=w>
+</span><span class=w>  </span><span class=c>##</span><span class=w>
+</span><span class=w>  </span><span class=nt>baseoid</span><span class=p>:</span><span class=w> </span><span class=l>.1.3.6.1.4.1.318.1.1.1.4.3.6.0</span><span class=w>
+</span><span class=w>
+</span><span class=w>  </span><span class=c># Determines whether the sensor should start and keep working even if the SNMP host is unreachable or not responding.</span><span class=w>
+</span><span class=w>  </span><span class=c># This allows the sensor to be initialized properly even if, for example, your printer is not on when you start Home Assistant.</span><span class=w>
+</span><span class=w>  </span><span class=nt>accept_errors</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span><span class=w>
+</span><span class=w>  </span><span class=c># UPS reports in tens of kWh so we&#39;ll need to divide by 10 to get kWh; HA only accepts kWh or Wh for sensors</span><span class=w>
+</span><span class=w>  </span><span class=c>#   that will &#39;work&#39; on the energy dashboard</span><span class=w>
+</span><span class=w>  </span><span class=nt>unit_of_measurement</span><span class=p>:</span><span class=w> </span><span class=l>kWh</span><span class=w>
+</span><span class=w>  </span><span class=nt>value_template</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;{{ ((value | int) / 10) | float}}&#34;</span><span class=w>
+</span></code></pre></td></tr></table>
+</div>
+</div><p>Then, wrap the <code>snmp</code> sensor with the necessary properties:</p>
+<p><code>devices/template/ups_energy.yaml</code>:</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml>- <span class=nt>sensor</span><span class=p>:</span><span class=w>
+</span><span class=w>    </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;UPS Energy&#34;</span><span class=w>
+</span><span class=w>      </span><span class=c># Unique ID is required for mgmt through the web UI</span><span class=w>
+</span><span class=w>      </span><span class=nt>unique_id</span><span class=p>:</span><span class=w> </span><span class=l>tmpl-ups-energy</span><span class=w>
+</span><span class=w>      </span><span class=nt>icon</span><span class=p>:</span><span class=w> </span><span class=l>mdi:lightning-bolt</span><span class=w>
+</span><span class=w>      </span><span class=c># Required for Energy dashboard</span><span class=w>
+</span><span class=w>      </span><span class=nt>state_class</span><span class=p>:</span><span class=w> </span><span class=l>total_increasing</span><span class=w>
+</span><span class=w>      </span><span class=nt>device_class</span><span class=p>:</span><span class=w> </span><span class=l>energy</span><span class=w>
+</span><span class=w>      </span><span class=nt>unit_of_measurement</span><span class=p>:</span><span class=w> </span><span class=l>kWh</span><span class=w>
+</span><span class=w>      </span><span class=nt>state</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;{{ (states(&#39;sensor.ups_energy_raw&#39;) | float) }}&#34;</span><span class=w>
+</span></code></pre></td></tr></table>
+</div>
+</div><p>Restart Home Assistant and you should now be able to add <code>sensor.ups_energy</code> to the list of individual devices on your Energy Dashboard :D.</p>
+<h3 id=current-and-voltage-independently>Current and Voltage independently</h3>
+<p>After sorting through the <em>massive</em> MIB file that APC publishes; I only found ways to measure the voltage and current via SNMP. I assumed that APC meant for you to calculate the power use on your own from the voltage and current.</p>
+<p>As it turns out, APC has a <code>upsHighPrecOutputEnergyUsage</code> field which reports: <code>The output energy usage of the UPS in hundredths of kWh.</code> If your APC device publishes a value on the OID <code>.1.3.6.1.4.1.318.1.1.1.4.3.6.0</code> then you can skip the configuration below; use the more concise configuration <a href=#a-single-oid-for-power-consumption rel>above</a>. If your devices <em><strong>does not</strong></em> publish the cumulative energy consumption, it can still be calculated manually.</p>
+<p>The manual approach below is a lot like the concise approach above; uses two <code>snmp</code> sensors to collect the voltage and current from the UPS and then wrap everything in a LTS-compatible <code>template</code> sensor to get the data to show up on the energy dashboard.</p>
+<p><code>devices/sensor/snmp.yaml</code>:</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=c># Unfortunately, there is no direct &#39;watt&#39; field. We need to calculate this on our own</span><span class=w>
+</span><span class=w></span><span class=c># P = IV so if we can get the current and voltage, we can figure out the power</span><span class=w>
+</span><span class=w></span><span class=c>##</span><span class=w>
+</span><span class=w></span>- <span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>snmp</span><span class=w>
+</span><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;UPS Output Current&#34;</span><span class=w>
+</span><span class=w>  </span><span class=nt>host</span><span class=p>:</span><span class=w> </span><span class=m>192.168.1.1</span><span class=w>
+</span><span class=w>  </span><span class=c># The current in tenths of amperes drawn by the load on the UPS.</span><span class=w>
+</span><span class=w>  </span><span class=c># Contained in Module(s): PowerNet-MIB</span><span class=w>
+</span><span class=w>  </span><span class=c>##</span><span class=w>
+</span><span class=w>  </span><span class=nt>baseoid</span><span class=p>:</span><span class=w> </span><span class=l>.1.3.6.1.4.1.318.1.1.1.4.3.4.0</span><span class=w>
+</span><span class=w>
+</span><span class=w>  </span><span class=c># Determines whether the sensor should start and keep working even if the SNMP host is unreachable or not responding.</span><span class=w>
+</span><span class=w>  </span><span class=c># This allows the sensor to be initialized properly even if, for example, your printer is not on when you start Home Assistant.</span><span class=w>
+</span><span class=w>  </span><span class=nt>accept_errors</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span><span class=w>  </span><span class=c># For reasons that I don&#39;t understand... HA does not like it when i specify &#39;device_class&#39; :/</span><span class=w>
+</span><span class=w>  </span><span class=c>#device_class: current</span><span class=w>
+</span><span class=w>  </span><span class=nt>unit_of_measurement</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;A&#34;</span><span class=w>
+</span><span class=w>  </span><span class=c># Because the number is in 10ths of amps, we need to shift the decimal by 1 place</span><span class=w>
+</span><span class=w>  </span><span class=c>#   43 becomes 4.3</span><span class=w>
+</span><span class=w>  </span><span class=c>##</span><span class=w>
+</span><span class=w>  </span><span class=nt>value_template</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;{{((value | int) / 10) | float}}&#34;</span><span class=w>
+</span><span class=w>
+</span><span class=w></span>- <span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>snmp</span><span class=w>
+</span><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;UPS Output Voltage&#34;</span><span class=w>
+</span><span class=w>  </span><span class=nt>host</span><span class=p>:</span><span class=w> </span><span class=m>192.168.1.1</span><span class=w>
+</span><span class=w>  </span><span class=c>#The output voltage of the UPS system in tenths of VAC.</span><span class=w>
+</span><span class=w>  </span><span class=c># Contained in Module(s): PowerNet-MIB</span><span class=w>
+</span><span class=w>  </span><span class=c>##</span><span class=w>
+</span><span class=w>  </span><span class=nt>baseoid</span><span class=p>:</span><span class=w> </span><span class=l>.1.3.6.1.4.1.318.1.1.1.4.3.1.0</span><span class=w>
+</span><span class=w>
+</span><span class=w>  </span><span class=c># Determines whether the sensor should start and keep working even if the SNMP host is unreachable or not responding.</span><span class=w>
+</span><span class=w>  </span><span class=c># This allows the sensor to be initialized properly even if, for example, your printer is not on when you start Home Assistant.</span><span class=w>
+</span><span class=w>  </span><span class=nt>accept_errors</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span><span class=w>  </span><span class=nt>unit_of_measurement</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;V&#34;</span><span class=w>
+</span><span class=w>  </span><span class=c># Because the number is in 10ths of volts, we need to shift the decimal by 1 place</span><span class=w>
+</span><span class=w>  </span><span class=c>#   1211 becomes 121.1</span><span class=w>
+</span><span class=w>  </span><span class=c>##</span><span class=w>
+</span><span class=w>  </span><span class=nt>value_template</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;{{((value | int) / 10) | float}}&#34;</span><span class=w>
+</span><span class=w>
+</span></code></pre></td></tr></table>
+</div>
+</div><p><code>devices/template/ups_energy.yaml</code>:</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=c># The docs around the long term stats support for a sensor are not super clear and seem to be a bit contradictory.</span><span class=w>
+</span><span class=w></span><span class=c># Both the power and current sensors are &#39;point in time&#39; sensors and DO NOT represent an &#39;always increasing&#39; value.</span><span class=w>
+</span><span class=w></span><span class=c># The docs seem to imply that HA will do the integration for you if the sensor has `state_class` set to `measurement` or</span><span class=w>
+</span><span class=w></span><span class=c>#   `total_increasing`. But elsewhere in the docs, you have this:</span><span class=w>
+</span><span class=w></span><span class=c>#         Home Assistant tracks the min, max and mean value during the statistics period.</span><span class=w>
+</span><span class=w></span><span class=c>#         The state_class property must be set to measurement, and the device_class must not be either of `energy`, `gas`, or `monetary`.</span><span class=w>
+</span><span class=w></span><span class=c>#</span><span class=w>
+</span><span class=w></span><span class=c># In testing, I was only able to get sensors that had `total_increasing` and `energy` set to show up / work with the energy dashboard. It looks like a `measurement` sensor _could_ be used... but only if the `last_reset` property can be set to 0... and currently this can&#39;t be done via YAML.</span><span class=w>
+</span><span class=w></span><span class=c>#</span><span class=w>
+</span><span class=w></span><span class=c># So we lie about the sensor and tell HA that it&#39;s a `total_increasing` sensor and we just hope that the value never drops more than 10% which appears to be the signal to HA that the meter has been reset :/</span><span class=w>
+</span><span class=w></span><span class=c>#</span><span class=w>
+</span><span class=w></span><span class=c># https://developers.home-assistant.io/docs/core/entity/sensor/#long-term-statistics</span><span class=w>
+</span><span class=w></span><span class=c># https://www.home-assistant.io/integrations/sensor/</span><span class=w>
+</span><span class=w></span><span class=c>##</span><span class=w>
+</span><span class=w></span>- <span class=nt>sensor</span><span class=p>:</span><span class=w>
+</span><span class=w>    </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;UPS Power&#34;</span><span class=w>
+</span><span class=w>      </span><span class=c># Unique ID is required for mgmt through the web UI</span><span class=w>
+</span><span class=w>      </span><span class=nt>unique_id</span><span class=p>:</span><span class=w> </span><span class=l>tmpl-UPS-power-use</span><span class=w>
+</span><span class=w>      </span><span class=nt>icon</span><span class=p>:</span><span class=w> </span><span class=l>mdi:lightning-bolt</span><span class=w>
+</span><span class=w>
+</span><span class=w>      </span><span class=c># This sensor records the instantaneous power load on the UPS... it is a measurement at that point in time</span><span class=w>
+</span><span class=w>      </span><span class=nt>state_class</span><span class=p>:</span><span class=w> </span><span class=l>measurement</span><span class=w>
+</span><span class=w>      </span><span class=nt>device_class</span><span class=p>:</span><span class=w> </span><span class=l>power</span><span class=w>
+</span><span class=w>      </span><span class=nt>unit_of_measurement</span><span class=p>:</span><span class=w> </span><span class=l>W</span><span class=w>
+</span><span class=w>      </span><span class=nt>state</span><span class=p>:</span><span class=w> </span><span class=p>&gt;</span><span class=sd>
+</span><span class=sd>        {% set current = states(&#39;sensor.UPS_output_current&#39;) | float %}
+</span><span class=sd>        {% set voltage = states(&#39;sensor.UPS_output_voltage&#39;) | float %}
+</span><span class=sd>        {{ (current * voltage) | round (2) }}</span><span class=w>        
+</span><span class=w>
+</span><span class=w></span>- <span class=nt>sensor</span><span class=p>:</span><span class=w>
+</span><span class=w>    </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;UPS Energy&#34;</span><span class=w>
+</span><span class=w>      </span><span class=c># Unique ID is required for mgmt through the web UI</span><span class=w>
+</span><span class=w>      </span><span class=nt>unique_id</span><span class=p>:</span><span class=w> </span><span class=l>tmpl-UPS-energy</span><span class=w>
+</span><span class=w>      </span><span class=nt>icon</span><span class=p>:</span><span class=w> </span><span class=l>mdi:lightning-bolt</span><span class=w>
+</span><span class=w>      </span><span class=c># Lie to HA about the type of sensor so we get values in the dashboard.</span><span class=w>
+</span><span class=w>      </span><span class=nt>state_class</span><span class=p>:</span><span class=w> </span><span class=l>total_increasing</span><span class=w>
+</span><span class=w>      </span><span class=nt>device_class</span><span class=p>:</span><span class=w> </span><span class=l>energy</span><span class=w>
+</span><span class=w>      </span><span class=c># Since we are pretending to integrate over time, we are in Wh now.</span><span class=w>
+</span><span class=w>      </span><span class=c># Good thing, too... because the energy dashboard WILL NOT use any sensor that does not report in kWh or Wh</span><span class=w>
+</span><span class=w>      </span><span class=nt>unit_of_measurement</span><span class=p>:</span><span class=w> </span><span class=l>Wh</span><span class=w>
+</span><span class=w>      </span><span class=nt>state</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;{{ (states(&#39;sensor.UPS_power&#39;) | float) }}&#34;</span><span class=w>
+</span><span class=w>      </span><span class=c># or, for kWh</span><span class=w>
+</span><span class=w>      </span><span class=c>#state: &#34;{{ (states(&#39;sensor.UPS_power&#39;) | float)/1000 }}&#34;</span><span class=w>
+</span><span class=w>
+</span></code></pre></td></tr></table>
+</div>
+</div></div><div class=post-footer id=post-footer>
+<div class=post-info>
+<div class=post-info-line>
+<div class=post-info-mod>
+<span>Updated on 2021-09-19&nbsp;<a class=git-hash href=https://github.com/kquinsland/kquinsland.github.io/commit/7ca17f5f536ac1538f80c000adb0a554c68536fa target=_blank title="commit by Karl Quinsalnd(karl@karlquinsland.com) 7ca17f5f536ac1538f80c000adb0a554c68536fa: update the ups post">
+<i class="fas fa-hashtag fa-fw"></i>7ca17f5</a></span>
+</div>
+<div class=post-info-license></div>
+</div>
+<div class=post-info-line>
+<div class=post-info-md><span>
+<a class=link-to-markdown href=https://karlquinsland.com/apc-ups-energy-in-homeassistant/index.md target=_blank>Read Markdown</a>
+</span></div>
+<div class=post-info-share>
+<span></span>
+</div>
+</div>
+</div>
+<div class=post-info-more>
+<section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=https://karlquinsland.com/tags/snmp/>SNMP</a>,&nbsp;<a href=https://karlquinsland.com/tags/home-assistant/>home assistant</a></section>
+<section>
+<span><a href=javascript:void(0); onclick=window.history.back()>Back</a></span>&nbsp;|&nbsp;<span><a href=https://karlquinsland.com/>Home</a></span>
+</section>
+</div>
+<div class=post-nav><a href=https://karlquinsland.com/treatlife-ds03-tasmota-autoconfig-with-homeassistant/ class=prev rel=prev title="Fixing Home Assistant discovery with Tasmota on the Treatlife DS03"><i class="fas fa-angle-left fa-fw"></i>Fixing Home Assistant discovery with Tasmota on the Treatlife DS03</a>
+<a href=https://karlquinsland.com/skyhole-expired-lets-encrypt-ca/ class=next rel=next title="Using new Lets Encrypt intermediate chain with SkyHole">Using new Lets Encrypt intermediate chain with SkyHole<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+</article></div>
+</main><footer class=footer>
+<div class=footer-container><div class=footer-line>¯\_(ツ)_/¯</div><div class=footer-line>Powered by <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.88.1">Hugo</a> | Theme - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+</div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2019 - 2021</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=https://karlquinsland.com/ target=_blank>karl</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div>
+</div>
+</footer></div>
+<div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top">
+<i class="fas fa-arrow-up fa-fw"></i>
+</a><a href=# id=view-comments class=fixed-button title="View Comments">
+<i class="fas fa-comment fa-fw"></i>
+</a>
+</div><link rel=stylesheet href=https://karlquinsland.com/lib/katex/katex.min.4710034e669c7ff17f823f9ba12cf8a36582d65b007f79cbc4a3c11d7db2e4ca.css integrity="sha256-RxADTmacf/F/gj+boSz4o2WC1lsAf3nLxKPBHX2y5Mo="><link rel=stylesheet href=https://karlquinsland.com/lib/katex/copy-tex.min.bf9ff4137fec38f6255419e142d0883c9c52090885d746f80eee12b273d9b3e0.css integrity="sha256-v5/0E3/sOPYlVBnhQtCIPJxSCQiF10b4Du4SsnPZs+A="><script type=text/javascript src=https://karlquinsland.com/lib/smooth-scroll/smooth-scroll.min.bcff85fb5e00d68802850b393ac7792c997f722f536f38e26638c46dca8e5eb6.js integrity="sha256-vP+F+14A1ogChQs5Osd5LJl/ci9TbzjiZjjEbcqOXrY="></script><script type=text/javascript src=https://karlquinsland.com/lib/autocomplete/autocomplete.min.615590a2ca2b667afa7c02ef396f5500b62e22795ddbb46448f90494605d09a5.js integrity="sha256-YVWQosorZnr6fALvOW9VALYuInld27RkSPkElGBdCaU="></script><script type=text/javascript src=https://karlquinsland.com/lib/lunr/lunr.min.df84a2d58ea594c04a3371b48d020b55ea10284c2ec636e4e331965d7313e29b.js integrity="sha256-34Si1Y6llMBKM3G0jQILVeoQKEwuxjbk4zGWXXMT4ps="></script><script type=text/javascript src=https://karlquinsland.com/lib/lazysizes/lazysizes.min.fb649fcae62177dfe63e67081ddceb830b5ce1f05a4184e9bbb7d87ac4b8f4e5.js integrity="sha256-+2SfyuYhd9/mPmcIHdzrgwtc4fBaQYTpu7fYesS49OU="></script><script type=text/javascript src=https://karlquinsland.com/lib/clipboard/clipboard.min.8a7739925f4c03586479852df840b7061948832a7fda30c8c812d2ea4dd4c4f2.js integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/katex.min.17f5dd6b9f123dd7140abfb18521b3f4c036cd004f6f40121182a8865f140877.js integrity="sha256-F/Xda58SPdcUCr+xhSGz9MA2zQBPb0ASEYKohl8UCHc="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/auto-render.min.f74776a677f0d2be0af0264058f928e2ba455d0b19bc985304660d922a43a6b2.js integrity="sha256-90d2pnfw0r4K8CZAWPko4rpFXQsZvJhTBGYNkipDprI="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/copy-tex.min.2ab2237329021bc443986c8327f6e61357fb68a54e5d233d224023718c02207d.js integrity="sha256-KrIjcykCG8RDmGyDJ/bmE1f7aKVOXSM9IkAjcYwCIH0="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/mhchem.min.5cea356d6025c5a2f18c454c83ec5674dbb04fab1cd1d75569e77788c6b6f888.js integrity="sha256-XOo1bWAlxaLxjEVMg+xWdNuwT6sc0ddVaed3iMa2+Ig="></script><script type=text/javascript>window.config={code:{copyTitle:"Copy to clipboard",maxShownLines:10},comment:{},math:{delimiters:[{display:!0,left:"$$",right:"$$"},{display:!0,left:"\\[",right:"\\]"},{display:!1,left:"$",right:"$"},{display:!1,left:"\\(",right:"\\)"}],strict:!1},search:{highlightTag:"em",lunrIndexURL:"/index.json",maxResultLength:10,noResultsFound:"No results found",snippetLength:30,type:"lunr"}}</script><script type=text/javascript src=https://karlquinsland.com/js/theme.min.f51938f3065a40ee841bcb558e4330e31fd26c0ea55343fff8770b88b0319a3c.js integrity="sha256-9Rk48wZaQO6EG8tVjkMw4x/SbA6lU0P/+HcLiLAxmjw="></script><script type=text/javascript>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date),gtag('config','UA-173167356-1',{anonymize_ip:!0})</script><script type=text/javascript src="https://www.googletagmanager.com/gtag/js?id=UA-173167356-1" async></script></body>
+</html>

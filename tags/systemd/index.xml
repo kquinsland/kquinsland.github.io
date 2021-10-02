@@ -1,10 +1,12 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>systemd on karl</title><link>https://karlquinsland.com/tags/systemd/</link><description>Recent content in systemd on karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 21 Jul 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/systemd/index.xml" rel="self" type="application/rss+xml"/><item><title>Systemd Resolved With Consul Agent</title><link>https://karlquinsland.com/2020/07/systemd-resolved-with-consul-agent/</link><pubDate>Tue, 21 Jul 2020 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/2020/07/systemd-resolved-with-consul-agent/</guid><description>&lt;p>I pieced this technique together a while back and created a gist for it. I&amp;rsquo;m creating &lt;em>this&lt;/em> post as a pointer to that gist so I have something that&amp;rsquo;s a bit easier to reference and refer others to.&lt;/p>
-&lt;p>And i want to test out the &lt;a href="https://gohugo.io/content-management/shortcodes/#gist">hugo shortcode for embedding a gist&lt;/a> 😏.&lt;/p>
-&lt;p>The really short version:&lt;/p>
-&lt;ul>
-&lt;li>Create a dedicated interface that can only be accessed from the local system&lt;/li>
-&lt;li>Bind the consul-agent&amp;rsquo;s DNS service to this local only interface&lt;/li>
-&lt;li>Tell &lt;a href="https://www.freedesktop.org/software/systemd/man/systemd-resolved.service.html">&lt;code>systemd-resolved&lt;/code>&lt;/a> that all hostnames with the &lt;code>.consul&lt;/code> TLD can be resolved via a DNS server on this local interface&lt;/li>
-&lt;/ul>
-&lt;p>No need to disable &lt;code>resolved&lt;/code> and replace it with dnsmasq 😄&lt;/p>
-&lt;script type="application/javascript" src="https://gist.github.com/kquinsland/5cdc63614a581d9b392f435740b58729.js">&lt;/script></description></item></channel></rss>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>systemd - Tag - karl</title><link>https://karlquinsland.com/tags/systemd/</link><description>systemd - Tag - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 21 Jul 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/systemd/" rel="self" type="application/rss+xml"/><item><title>Systemd Resolved With Consul Agent</title><link>https://karlquinsland.com/systemd-resolved-with-consul-agent/</link><pubDate>Tue, 21 Jul 2020 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/systemd-resolved-with-consul-agent/</guid><description><![CDATA[<p>I pieced this technique together a while back and created a gist for it. I&rsquo;m creating <em>this</em> post as a pointer to that gist so I have something that&rsquo;s a bit easier to reference and refer others to.</p>
+<p>And i want to test out the <a href="https://gohugo.io/content-management/shortcodes/#gist" target="_blank" rel="noopener noreffer">hugo shortcode for embedding a gist</a> 😏.</p>
+<p>The really short version:</p>
+<ul>
+<li>Create a dedicated interface that can only be accessed from the local system</li>
+<li>Bind the consul-agent&rsquo;s DNS service to this local only interface</li>
+<li>Tell <a href="https://www.freedesktop.org/software/systemd/man/systemd-resolved.service.html" target="_blank" rel="noopener noreffer"><code>systemd-resolved</code></a> that all hostnames with the <code>.consul</code> TLD can be resolved via a DNS server on this local interface</li>
+</ul>
+<p>No need to disable <code>resolved</code> and replace it with dnsmasq 😄</p>
+<script type="application/javascript" src="https://gist.github.com/kquinsland/5cdc63614a581d9b392f435740b58729.js"></script>
+
+]]></description></item></channel></rss>

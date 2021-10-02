@@ -1,0 +1,284 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=robots content="noodp">
+<meta http-equiv=x-ua-compatible content="IE=edge, chrome=1">
+<title>RSS and Home Assistant: early warning for grid blackouts - karl</title><meta name=Description content="California Electric Grid Regulators publish alerts indicating a pending blackout"><meta property="og:title" content="RSS and Home Assistant: early warning for grid blackouts">
+<meta property="og:description" content="California Electric Grid Regulators publish alerts indicating a pending blackout">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://karlquinsland.com/rss-and-homeassistant-for-early-blackout-warning/"><meta property="og:image" content="https://karlquinsland.com/images/avatar.png"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2020-08-16T00:00:00+00:00">
+<meta property="article:modified_time" content="2020-08-16T15:27:33-07:00">
+<meta name=twitter:card content="summary_large_image">
+<meta name=twitter:image content="https://karlquinsland.com/images/avatar.png">
+<meta name=twitter:title content="RSS and Home Assistant: early warning for grid blackouts">
+<meta name=twitter:description content="California Electric Grid Regulators publish alerts indicating a pending blackout">
+<meta name=application-name content="karl">
+<meta name=apple-mobile-web-app-title content="karl"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=https://karlquinsland.com/favicon.ico>
+<link rel=icon type=image/png sizes=32x32 href=https://karlquinsland.com/favicon-32x32.png>
+<link rel=icon type=image/png sizes=16x16 href=https://karlquinsland.com/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=https://karlquinsland.com/apple-touch-icon.png><link rel=mask-icon href=https://karlquinsland.com/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=https://karlquinsland.com/site.webmanifest><link rel=canonical href=https://karlquinsland.com/rss-and-homeassistant-for-early-blackout-warning/><link rel=prev href=https://karlquinsland.com/the-missing-todoist-tools/><link rel=next href=https://karlquinsland.com/ws3-weather-station-pm25-sensor/><link rel=stylesheet href=https://karlquinsland.com/lib/normalize/normalize.min.055364f5be272caa092b0e6654c165828707f8ab971e2656383a6d6392bc345e.css integrity="sha256-BVNk9b4nLKoJKw5mVMFlgocH+KuXHiZWODptY5K8NF4="><link rel=stylesheet href=https://karlquinsland.com/css/style.min.1e2694bed152fa2922dbe909a441838ed693d88b1330f97485bfa8ed78da42df.css integrity="sha256-HiaUvtFS+iki2+kJpEGDjtaT2IsTMPl0hb+o7XjaQt8="><link rel=stylesheet href=https://karlquinsland.com/lib/fontawesome-free/all.min.876d023d9d10c97941b80c3b03e2a5b94631ff7a4af9cee5604a6a2d39718d84.css integrity="sha256-h20CPZ0QyXlBuAw7A+KluUYx/3pK+c7lYEpqLTlxjYQ="><link rel=stylesheet href=https://karlquinsland.com/lib/animate/animate.min.3c770e90f98eb21b0c042fafb49755af93306fbaf42e449524f94fae9fc83295.css integrity="sha256-PHcOkPmOshsMBC+vtJdVr5Mwb7r0LkSVJPlPrp/IMpU="><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"RSS and Home Assistant: early warning for grid blackouts","inLanguage":"en-us","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/karlquinsland.com\/rss-and-homeassistant-for-early-blackout-warning\/"},"genre":"posts","keywords":"home assistant, automation","wordcount":599,"url":"https:\/\/karlquinsland.com\/rss-and-homeassistant-for-early-blackout-warning\/","datePublished":"2020-08-16T00:00:00+00:00","dateModified":"2020-08-16T15:27:33-07:00","publisher":{"@type":"Organization","name":""},"author":{"@type":"Person","name":"karl"},"description":"California Electric Grid Regulators publish alerts indicating a pending blackout"}</script></head>
+<body header-desktop=fixed header-mobile=auto><script type=text/javascript>(window.localStorage&&localStorage.getItem('theme')?localStorage.getItem('theme')==='dark':'auto'==='auto'?window.matchMedia('(prefers-color-scheme: dark)').matches:'auto'==='dark')&&document.body.setAttribute('theme','dark')</script>
+<div id=mask></div><div class=wrapper><header class=desktop id=header-desktop>
+<div class=header-wrapper>
+<div class=header-title>
+<a href=https://karlquinsland.com/ title=karl>Karl</a>
+</div>
+<div class=menu>
+<div class=menu-inner><a class=menu-item href=https://karlquinsland.com/posts/><i class="fas fa-blog"></i> Posts </a><a class=menu-item href=https://karlquinsland.com/resume/ title="Hire Me!"><i class="fas fa-briefcase"></i> Résumé </a><a class=menu-item href=https://karlquinsland.com/tags/ title="Can you tell that I don't have a super consistent or clear taxonomy?"><i class="fas fa-tags"></i> Tags </a><a class=menu-item href=https://karlquinsland.com/contact/><i class="fas fa-address-book"></i> Contact </a><span class="menu-item delimiter"></span><span class="menu-item search" id=search-desktop>
+<input type=text placeholder="Search titles or contents..." id=search-input-desktop>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=Search>
+<i class="fas fa-search fa-fw"></i>
+</a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=Clear>
+<i class="fas fa-times-circle fa-fw"></i>
+</a>
+<span class="search-button search-loading" id=search-loading-desktop>
+<i class="fas fa-spinner fa-fw fa-spin"></i>
+</span>
+</span><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw"></i>
+</a>
+</div>
+</div>
+</div>
+</header><header class=mobile id=header-mobile>
+<div class=header-container>
+<div class=header-wrapper>
+<div class=header-title>
+<a href=https://karlquinsland.com/ title=karl>Karl</a>
+</div>
+<div class=menu-toggle id=menu-toggle-mobile>
+<span></span><span></span><span></span>
+</div>
+</div>
+<div class=menu id=menu-mobile><div class=search-wrapper>
+<div class="search mobile" id=search-mobile>
+<input type=text placeholder="Search titles or contents..." id=search-input-mobile>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=Search>
+<i class="fas fa-search fa-fw"></i>
+</a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=Clear>
+<i class="fas fa-times-circle fa-fw"></i>
+</a>
+<span class="search-button search-loading" id=search-loading-mobile>
+<i class="fas fa-spinner fa-fw fa-spin"></i>
+</span>
+</div>
+<a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>
+Cancel
+</a>
+</div><a class=menu-item href=https://karlquinsland.com/posts/ title><i class="fas fa-blog"></i>Posts</a><a class=menu-item href=https://karlquinsland.com/resume/ title="Hire Me!"><i class="fas fa-briefcase"></i>Résumé</a><a class=menu-item href=https://karlquinsland.com/tags/ title="Can you tell that I don't have a super consistent or clear taxonomy?"><i class="fas fa-tags"></i>Tags</a><a class=menu-item href=https://karlquinsland.com/contact/ title><i class="fas fa-address-book"></i>Contact</a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw"></i>
+</a></div>
+</div>
+</header>
+<div class="search-dropdown desktop">
+<div id=search-dropdown-desktop></div>
+</div>
+<div class="search-dropdown mobile">
+<div id=search-dropdown-mobile></div>
+</div>
+<main class=main>
+<div class=container><div class=toc id=toc-auto>
+<h2 class=toc-title>Contents</h2>
+<div class=toc-content id=toc-content-auto></div>
+</div><article class="page single"><h1 class="single-title animated flipInX">RSS and Home Assistant: early warning for grid blackouts</h1><div class=post-meta>
+<div class=post-meta-line><span class=post-author><a href=https://karlquinsland.com/ title=Author rel=" author" class=author><i class="fas fa-user-circle fa-fw"></i>karl</a></span></div>
+<div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2020-08-16>2020-08-16</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;599 words&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;3 minutes&nbsp;</div>
+</div><div class="details toc" id=toc-static kept=true>
+<div class="details-summary toc-title">
+<span>Contents</span>
+<span><i class="details-icon fas fa-angle-right"></i></span>
+</div>
+<div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents>
+<ul>
+<li>
+<ul>
+<li><a href=#how-to-do-it>How to do it</a></li>
+</ul>
+</li>
+</ul>
+</nav></div>
+</div><div class=content id=content><p>California, like most of the West Coast, is currently in the middle of a prolonged and serious heat-wave. Record breaking temperatures results in a distribution grid stressed beyond it&rsquo;s abilities which guarantees blackouts.</p>
+<p>The <a href=https://en.wikipedia.org/wiki/California_Independent_System_Operator target=_blank rel="noopener noreffer">organization that oversees the electric grid</a> in California publishes RSS feeds for various types of grid related news and events. All the CA ISO RSS feeds are published <a href=http://www.caiso.com/Pages/GlobalRSS.aspx target=_blank rel="noopener noreffer">here</a>, but the two feed that I&rsquo;m using are:</p>
+<ul>
+<li><a href=http://content.caiso.com/awe/noticeRSS.xml target=_blank rel="noopener noreffer">http://content.caiso.com/awe/noticeRSS.xml</a></li>
+<li><a href=http://content.caiso.com/awe/noticeflexRSS.xml target=_blank rel="noopener noreffer">http://content.caiso.com/awe/noticeflexRSS.xml</a></li>
+</ul>
+<p>As energy demand ramps up, <code>flex</code> alerts are issued as a call to reduce energy consumption. If demand continues to rise <code>warnings</code> and, finally, <code>stage3</code> events are issued. A <code>warning</code> does not guarantee a <code>stage3</code> event, but a <code>stage3</code> event mans that blackouts are all but inevitable in the coming hours. The <em>exact</em> meaning of each alert type is outlined in <a href=https://www.caiso.com/Documents/SystemAlertsWarningsandEmergenciesFactSheet.pdf target=_blank rel="noopener noreffer">this PDF</a>.</p>
+<p>The <code>noticeRSS.xml</code> feed, has <em>early</em> warning notifications that look like this:</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-xml data-lang=xml><span class=nt>&lt;item&gt;</span>
+\n
+<span class=nt>&lt;title&gt;</span>NOTICE 202002440: CAISO Grid Warning Issued <span class=nt>&lt;/title&gt;</span>
+\n
+<span class=nt>&lt;link&gt;</span>http://www.caiso.com/awe/noticelog.html#202002440<span class=nt>&lt;/link&gt;</span>
+\n
+<span class=nt>&lt;description&gt;</span>Effective: 16-Aug-2020 12:00 PM Terminates: 16-Aug-2020 11:59 PM<span class=nt>&lt;/description&gt;</span>
+\n
+<span class=nt>&lt;/item&gt;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>Note: there&rsquo;s nothing wrong w/ your browser, the <code>\n</code> characters <em>are</em> in the actual feed. No matter, the <a href=https://github.com/home-assistant/core/tree/dev/homeassistant/components/feedreader target=_blank rel="noopener noreffer">RSS parser</a> in Home Assistant <em>can</em> tolerate them.</p>
+<p>I use the alerts/warnings to do a few simple tasks, but there&rsquo;s so much potential beyond the automation I currently have:</p>
+<ul>
+<li>bumps thermostats up by a few degrees to lighten demand*</li>
+<li>re-schedule a few routine activities that are usually done in the evening to as soon as possible (cooking, for example)</li>
+<li>notify me to immediately go check that the generator has fuel</li>
+</ul>
+<ul>
+<li>Currently in &lsquo;unarmed&rsquo; mode as I tweak the logic driving the decision</li>
+</ul>
+<h2 id=how-to-do-it>How to do it</h2>
+<p>Basically, add the two feeds above to the <a href=https://www.home-assistant.io/integrations/feedreader/ target=_blank rel="noopener noreffer">feedreader</a> integration and use the <code>feedreader</code> type of <a href=https://www.home-assistant.io/docs/automation/trigger/#event-trigger target=_blank rel="noopener noreffer">event</a> to trigger your automation.</p>
+<p>Somewhere in <code>configuration.yaml</code>, load the <code>feedreader</code> component.</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=nt>feedreader</span><span class=p>:</span><span class=w> </span>!<span class=l>include feedreader/rss.yaml</span><span class=w>
+</span><span class=w>
+</span></code></pre></td></tr></table>
+</div>
+</div><p>and in the <code>feedreader/rss.yaml</code> file, add the URLs:</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=nt>urls</span><span class=p>:</span><span class=w>
+</span><span class=w>  </span>- <span class=l>http://content.caiso.com/awe/noticeRSS.xml</span><span class=w>
+</span><span class=w>  </span>- <span class=l>http://content.caiso.com/awe/noticeflexRSS.xml</span><span class=w>
+</span><span class=w></span><span class=c># Pull down the feed 2x/ hour</span><span class=w>
+</span><span class=w></span><span class=nt>scan_interval</span><span class=p>:</span><span class=w>
+</span><span class=w>  </span><span class=nt>minutes</span><span class=p>:</span><span class=w> </span><span class=m>30</span><span class=w>
+</span></code></pre></td></tr></table>
+</div>
+</div><p>Unfortunately, Home Assistant does not support setting the <code>scan_interval</code> per feed, so you&rsquo;ll have to figure out a happy middle ground if you&rsquo;ve already got a few RSS feeds you monitor. Likewise, don&rsquo;t pull the feed down excessively&mldr; I don&rsquo;t see a lot of evidence that the feed is cached well and the CA ISO does occasionally have to put banners on the top of their site saying that the site is under heavy load. Don&rsquo;t be the reason the site goes down because <em>you</em> wanted <strong>instant</strong> notification.</p>
+<p>If you&rsquo;re not in a position to do any sophisticated automation based on the notification, it&rsquo;s still simple to fire off a notification to <em>manually</em> prepare:</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=c>##</span><span class=w>
+</span><span class=w></span>- <span class=nt>alias</span><span class=p>:</span><span class=w> </span><span class=l>Notify when new Flex or Warning issued</span><span class=w>
+</span><span class=w>  </span><span class=nt>trigger</span><span class=p>:</span><span class=w>
+</span><span class=w>    </span><span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>event</span><span class=w>
+</span><span class=w>    </span><span class=nt>event_type</span><span class=p>:</span><span class=w> </span><span class=l>feedreader</span><span class=w>
+</span><span class=w>  </span><span class=nt>action</span><span class=p>:</span><span class=w>
+</span><span class=w>    </span><span class=nt>service</span><span class=p>:</span><span class=w> </span><span class=l>persistent_notification.create</span><span class=w>
+</span><span class=w>    </span><span class=nt>data_template</span><span class=p>:</span><span class=w>
+</span><span class=w>      </span><span class=nt>notification_id</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;{{ trigger.event.data.title }}&#34;</span><span class=w>
+</span><span class=w>      </span><span class=nt>title</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;FlexAlert&#34;</span><span class=w>
+</span><span class=w>      </span><span class=nt>message</span><span class=p>:</span><span class=w> </span><span class=p>&gt;</span><span class=sd>
+</span><span class=sd>        {% set tokens = trigger.event.data.description.split(&#39; &#39;) %}
+</span><span class=sd>        {% set start_str = &#34;{} {} {}&#34;.format(tokens[1], tokens[2], tokens[3]) %}
+</span><span class=sd>        {% set start = strptime(start_str, &#39;%d-%b-%Y %I:%M %p&#39;) %}
+</span><span class=sd>        {% set end_str = &#34;{} {} {}&#34;.format(tokens[5], tokens[6], tokens[7]) %}
+</span><span class=sd>        {% set end = strptime(end_str, &#39;%d-%b-%Y %I:%M %p&#39;) %}
+</span><span class=sd>        &#34;Heads up, electricity demand is likely to exceed production from {{ start.isoformat() }} to {{ end.isoformat() }}&#34;</span><span class=w>        
+</span></code></pre></td></tr></table>
+</div>
+</div><p>Which should create a simple notification that&rsquo;ll look something like this:</p>
+<figure>
+<img src=https://karlquinsland.com/rss-and-homeassistant-for-early-blackout-warning/images/notification.jpg alt="Ignore the sample text from my testing">
+<figcaption>
+<p>
+Ignore the sample text from my testing
+</p>
+</figcaption>
+</figure>
+<p>The <code>strptime</code> function yields <code>start</code> and <code>end</code> objects that can be manipulated further:</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback>{% set now = now() %}
+{% if start.day &gt; now.day -%}
+  It looks like demand will be high *tomorrow*
+{%- endif %}
+</code></pre></td></tr></table>
+</div>
+</div><p>Happy automating.</p>
+</div><div class=post-footer id=post-footer>
+<div class=post-info>
+<div class=post-info-line>
+<div class=post-info-mod>
+<span>Updated on 2020-08-16&nbsp;<a class=git-hash href=https://github.com/kquinsland/kquinsland.github.io/commit/cfa00cbce499813b4055f26edad0b1fc74ae43eb target=_blank title="commit by karl(karl@karlquinsland.com) cfa00cbce499813b4055f26edad0b1fc74ae43eb: publish post">
+<i class="fas fa-hashtag fa-fw"></i>cfa00cb</a></span>
+</div>
+<div class=post-info-license></div>
+</div>
+<div class=post-info-line>
+<div class=post-info-md><span>
+<a class=link-to-markdown href=https://karlquinsland.com/rss-and-homeassistant-for-early-blackout-warning/index.md target=_blank>Read Markdown</a>
+</span></div>
+<div class=post-info-share>
+<span></span>
+</div>
+</div>
+</div>
+<div class=post-info-more>
+<section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=https://karlquinsland.com/tags/home-assistant/>home assistant</a>,&nbsp;<a href=https://karlquinsland.com/tags/automation/>automation</a></section>
+<section>
+<span><a href=javascript:void(0); onclick=window.history.back()>Back</a></span>&nbsp;|&nbsp;<span><a href=https://karlquinsland.com/>Home</a></span>
+</section>
+</div>
+<div class=post-nav><a href=https://karlquinsland.com/the-missing-todoist-tools/ class=prev rel=prev title="Announcing The Missing ToDoist Tools"><i class="fas fa-angle-left fa-fw"></i>Announcing The Missing ToDoist Tools</a>
+<a href=https://karlquinsland.com/ws3-weather-station-pm25-sensor/ class=next rel=next title="Adding an airborne particulate mater sensor to WS3 Weather Station">Adding an airborne particulate mater sensor to WS3 Weather Station<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+</article></div>
+</main><footer class=footer>
+<div class=footer-container><div class=footer-line>¯\_(ツ)_/¯</div><div class=footer-line>Powered by <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.88.1">Hugo</a> | Theme - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+</div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2019 - 2021</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=https://karlquinsland.com/ target=_blank>karl</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div>
+</div>
+</footer></div>
+<div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top">
+<i class="fas fa-arrow-up fa-fw"></i>
+</a><a href=# id=view-comments class=fixed-button title="View Comments">
+<i class="fas fa-comment fa-fw"></i>
+</a>
+</div><link rel=stylesheet href=https://karlquinsland.com/lib/katex/katex.min.4710034e669c7ff17f823f9ba12cf8a36582d65b007f79cbc4a3c11d7db2e4ca.css integrity="sha256-RxADTmacf/F/gj+boSz4o2WC1lsAf3nLxKPBHX2y5Mo="><link rel=stylesheet href=https://karlquinsland.com/lib/katex/copy-tex.min.bf9ff4137fec38f6255419e142d0883c9c52090885d746f80eee12b273d9b3e0.css integrity="sha256-v5/0E3/sOPYlVBnhQtCIPJxSCQiF10b4Du4SsnPZs+A="><script type=text/javascript src=https://karlquinsland.com/lib/smooth-scroll/smooth-scroll.min.bcff85fb5e00d68802850b393ac7792c997f722f536f38e26638c46dca8e5eb6.js integrity="sha256-vP+F+14A1ogChQs5Osd5LJl/ci9TbzjiZjjEbcqOXrY="></script><script type=text/javascript src=https://karlquinsland.com/lib/autocomplete/autocomplete.min.615590a2ca2b667afa7c02ef396f5500b62e22795ddbb46448f90494605d09a5.js integrity="sha256-YVWQosorZnr6fALvOW9VALYuInld27RkSPkElGBdCaU="></script><script type=text/javascript src=https://karlquinsland.com/lib/lunr/lunr.min.df84a2d58ea594c04a3371b48d020b55ea10284c2ec636e4e331965d7313e29b.js integrity="sha256-34Si1Y6llMBKM3G0jQILVeoQKEwuxjbk4zGWXXMT4ps="></script><script type=text/javascript src=https://karlquinsland.com/lib/lazysizes/lazysizes.min.fb649fcae62177dfe63e67081ddceb830b5ce1f05a4184e9bbb7d87ac4b8f4e5.js integrity="sha256-+2SfyuYhd9/mPmcIHdzrgwtc4fBaQYTpu7fYesS49OU="></script><script type=text/javascript src=https://karlquinsland.com/lib/clipboard/clipboard.min.8a7739925f4c03586479852df840b7061948832a7fda30c8c812d2ea4dd4c4f2.js integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/katex.min.17f5dd6b9f123dd7140abfb18521b3f4c036cd004f6f40121182a8865f140877.js integrity="sha256-F/Xda58SPdcUCr+xhSGz9MA2zQBPb0ASEYKohl8UCHc="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/auto-render.min.f74776a677f0d2be0af0264058f928e2ba455d0b19bc985304660d922a43a6b2.js integrity="sha256-90d2pnfw0r4K8CZAWPko4rpFXQsZvJhTBGYNkipDprI="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/copy-tex.min.2ab2237329021bc443986c8327f6e61357fb68a54e5d233d224023718c02207d.js integrity="sha256-KrIjcykCG8RDmGyDJ/bmE1f7aKVOXSM9IkAjcYwCIH0="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/mhchem.min.5cea356d6025c5a2f18c454c83ec5674dbb04fab1cd1d75569e77788c6b6f888.js integrity="sha256-XOo1bWAlxaLxjEVMg+xWdNuwT6sc0ddVaed3iMa2+Ig="></script><script type=text/javascript>window.config={code:{copyTitle:"Copy to clipboard",maxShownLines:10},comment:{},math:{delimiters:[{display:!0,left:"$$",right:"$$"},{display:!0,left:"\\[",right:"\\]"},{display:!1,left:"$",right:"$"},{display:!1,left:"\\(",right:"\\)"}],strict:!1},search:{highlightTag:"em",lunrIndexURL:"/index.json",maxResultLength:10,noResultsFound:"No results found",snippetLength:30,type:"lunr"}}</script><script type=text/javascript src=https://karlquinsland.com/js/theme.min.f51938f3065a40ee841bcb558e4330e31fd26c0ea55343fff8770b88b0319a3c.js integrity="sha256-9Rk48wZaQO6EG8tVjkMw4x/SbA6lU0P/+HcLiLAxmjw="></script><script type=text/javascript>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date),gtag('config','UA-173167356-1',{anonymize_ip:!0})</script><script type=text/javascript src="https://www.googletagmanager.com/gtag/js?id=UA-173167356-1" async></script></body>
+</html>

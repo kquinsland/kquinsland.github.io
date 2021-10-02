@@ -1,0 +1,397 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=robots content="noodp">
+<meta http-equiv=x-ua-compatible content="IE=edge, chrome=1">
+<title>Amcrest IP Cameras: security isn't a feature, it's a punchline - karl</title><meta name=Description content="Seriously, why is this so hard?"><meta property="og:title" content="Amcrest IP Cameras: security isn't a feature, it's a punchline">
+<meta property="og:description" content="Seriously, why is this so hard?">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://karlquinsland.com/amcrest-ip-cam-security-isnt-a-feature-its-a-punchine/"><meta property="og:image" content="https://karlquinsland.com/images/avatar.png"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2020-11-27T00:00:00+00:00">
+<meta property="article:modified_time" content="2020-11-27T17:25:49-08:00">
+<meta name=twitter:card content="summary_large_image">
+<meta name=twitter:image content="https://karlquinsland.com/images/avatar.png">
+<meta name=twitter:title content="Amcrest IP Cameras: security isn't a feature, it's a punchline">
+<meta name=twitter:description content="Seriously, why is this so hard?">
+<meta name=application-name content="karl">
+<meta name=apple-mobile-web-app-title content="karl"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=https://karlquinsland.com/favicon.ico>
+<link rel=icon type=image/png sizes=32x32 href=https://karlquinsland.com/favicon-32x32.png>
+<link rel=icon type=image/png sizes=16x16 href=https://karlquinsland.com/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=https://karlquinsland.com/apple-touch-icon.png><link rel=mask-icon href=https://karlquinsland.com/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=https://karlquinsland.com/site.webmanifest><link rel=canonical href=https://karlquinsland.com/amcrest-ip-cam-security-isnt-a-feature-its-a-punchine/><link rel=prev href=https://karlquinsland.com/two-tasmota-rules/><link rel=next href=https://karlquinsland.com/monitoring-ap7900-switched-pdu-prometheus-grafana/><link rel=stylesheet href=https://karlquinsland.com/lib/normalize/normalize.min.055364f5be272caa092b0e6654c165828707f8ab971e2656383a6d6392bc345e.css integrity="sha256-BVNk9b4nLKoJKw5mVMFlgocH+KuXHiZWODptY5K8NF4="><link rel=stylesheet href=https://karlquinsland.com/css/style.min.1e2694bed152fa2922dbe909a441838ed693d88b1330f97485bfa8ed78da42df.css integrity="sha256-HiaUvtFS+iki2+kJpEGDjtaT2IsTMPl0hb+o7XjaQt8="><link rel=stylesheet href=https://karlquinsland.com/lib/fontawesome-free/all.min.876d023d9d10c97941b80c3b03e2a5b94631ff7a4af9cee5604a6a2d39718d84.css integrity="sha256-h20CPZ0QyXlBuAw7A+KluUYx/3pK+c7lYEpqLTlxjYQ="><link rel=stylesheet href=https://karlquinsland.com/lib/animate/animate.min.3c770e90f98eb21b0c042fafb49755af93306fbaf42e449524f94fae9fc83295.css integrity="sha256-PHcOkPmOshsMBC+vtJdVr5Mwb7r0LkSVJPlPrp/IMpU="><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Amcrest IP Cameras: security isn't a feature, it's a punchline","inLanguage":"en-us","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/karlquinsland.com\/amcrest-ip-cam-security-isnt-a-feature-its-a-punchine\/"},"genre":"posts","keywords":"onvif, home assistant, rant, security","wordcount":1278,"url":"https:\/\/karlquinsland.com\/amcrest-ip-cam-security-isnt-a-feature-its-a-punchine\/","datePublished":"2020-11-27T00:00:00+00:00","dateModified":"2020-11-27T17:25:49-08:00","publisher":{"@type":"Organization","name":""},"author":{"@type":"Person","name":"karl"},"description":"Seriously, why is this so hard?"}</script></head>
+<body header-desktop=fixed header-mobile=auto><script type=text/javascript>(window.localStorage&&localStorage.getItem('theme')?localStorage.getItem('theme')==='dark':'auto'==='auto'?window.matchMedia('(prefers-color-scheme: dark)').matches:'auto'==='dark')&&document.body.setAttribute('theme','dark')</script>
+<div id=mask></div><div class=wrapper><header class=desktop id=header-desktop>
+<div class=header-wrapper>
+<div class=header-title>
+<a href=https://karlquinsland.com/ title=karl>Karl</a>
+</div>
+<div class=menu>
+<div class=menu-inner><a class=menu-item href=https://karlquinsland.com/posts/><i class="fas fa-blog"></i> Posts </a><a class=menu-item href=https://karlquinsland.com/resume/ title="Hire Me!"><i class="fas fa-briefcase"></i> Résumé </a><a class=menu-item href=https://karlquinsland.com/tags/ title="Can you tell that I don't have a super consistent or clear taxonomy?"><i class="fas fa-tags"></i> Tags </a><a class=menu-item href=https://karlquinsland.com/contact/><i class="fas fa-address-book"></i> Contact </a><span class="menu-item delimiter"></span><span class="menu-item search" id=search-desktop>
+<input type=text placeholder="Search titles or contents..." id=search-input-desktop>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=Search>
+<i class="fas fa-search fa-fw"></i>
+</a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=Clear>
+<i class="fas fa-times-circle fa-fw"></i>
+</a>
+<span class="search-button search-loading" id=search-loading-desktop>
+<i class="fas fa-spinner fa-fw fa-spin"></i>
+</span>
+</span><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw"></i>
+</a>
+</div>
+</div>
+</div>
+</header><header class=mobile id=header-mobile>
+<div class=header-container>
+<div class=header-wrapper>
+<div class=header-title>
+<a href=https://karlquinsland.com/ title=karl>Karl</a>
+</div>
+<div class=menu-toggle id=menu-toggle-mobile>
+<span></span><span></span><span></span>
+</div>
+</div>
+<div class=menu id=menu-mobile><div class=search-wrapper>
+<div class="search mobile" id=search-mobile>
+<input type=text placeholder="Search titles or contents..." id=search-input-mobile>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=Search>
+<i class="fas fa-search fa-fw"></i>
+</a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=Clear>
+<i class="fas fa-times-circle fa-fw"></i>
+</a>
+<span class="search-button search-loading" id=search-loading-mobile>
+<i class="fas fa-spinner fa-fw fa-spin"></i>
+</span>
+</div>
+<a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>
+Cancel
+</a>
+</div><a class=menu-item href=https://karlquinsland.com/posts/ title><i class="fas fa-blog"></i>Posts</a><a class=menu-item href=https://karlquinsland.com/resume/ title="Hire Me!"><i class="fas fa-briefcase"></i>Résumé</a><a class=menu-item href=https://karlquinsland.com/tags/ title="Can you tell that I don't have a super consistent or clear taxonomy?"><i class="fas fa-tags"></i>Tags</a><a class=menu-item href=https://karlquinsland.com/contact/ title><i class="fas fa-address-book"></i>Contact</a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw"></i>
+</a></div>
+</div>
+</header>
+<div class="search-dropdown desktop">
+<div id=search-dropdown-desktop></div>
+</div>
+<div class="search-dropdown mobile">
+<div id=search-dropdown-mobile></div>
+</div>
+<main class=main>
+<div class=container><div class=toc id=toc-auto>
+<h2 class=toc-title>Contents</h2>
+<div class=toc-content id=toc-content-auto></div>
+</div><article class="page single"><h1 class="single-title animated flipInX">Amcrest IP Cameras: security isn't a feature, it's a punchline</h1><div class=post-meta>
+<div class=post-meta-line><span class=post-author><a href=https://karlquinsland.com/ title=Author rel=" author" class=author><i class="fas fa-user-circle fa-fw"></i>karl</a></span></div>
+<div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2020-11-27>2020-11-27</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;1278 words&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;6 minutes&nbsp;</div>
+</div><div class="details toc" id=toc-static kept=true>
+<div class="details-summary toc-title">
+<span>Contents</span>
+<span><i class="details-icon fas fa-angle-right"></i></span>
+</div>
+<div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents>
+<ul>
+<li>
+<ul>
+<li>
+<ul>
+<li><a href=#firmware>Firmware</a></li>
+</ul>
+</li>
+<li><a href=#web-ui>Web UI</a></li>
+<li><a href=#onvif-over-port-80>ONVIF over port 80</a></li>
+<li><a href=#onvif-only-supports-authentication-with-the-admin-user>ONVIF only supports authentication with the Admin user</a>
+<ul>
+<li><a href=#password-length>Password length</a></li>
+</ul>
+</li>
+<li><a href=#tldr>TL;DR:</a></li>
+</ul>
+</li>
+</ul>
+</nav></div>
+</div><div class=content id=content><p>This is part rant, part &ldquo;reference&rdquo; for anybody else that&rsquo;s struggling to get their Amcrest IP Camera to work with <a href=https://www.home-assistant.io/integrations/onvif/ target=_blank rel="noopener noreffer">Home Assistant</a> via ONVIF. Skip to <a href=#tldr rel>TL;DR</a> for a working Home Assistant config.</p>
+<p>Briefly, <a href=https://www.onvif.org/profiles/ target=_blank rel="noopener noreffer">ONVIF</a> is an industry group that maintains a set of standards to allow for interoperability between IP Cameras and related devices from multiple vendors. One set of protocols so your cameras from <code>$vendorA</code> will work with with the recording/analytics software from <code>$vendorB</code> which can then pipe events into software from <code>$vendorC</code>.
+How ONVIF works and how it&rsquo;s implemented are beyond the scope of this rant, but, like most standards that haven&rsquo;t aged well, <a href=https://en.wikipedia.org/wiki/SOAP target=_blank rel="noopener noreffer">SOAP</a> is involved. 🤮.</p>
+<p>The IP Camera in question is the <code>Amcrest IP4M-1051</code>, though it does appear that other devices from Amcrest are effected by some of the same issues I&rsquo;ll detail below.
+Additionally, Amcrest appears to be a budget brand offering cheaper versions of <a href=https://en.wikipedia.org/wiki/Dahua_Technology target=_blank rel="noopener noreffer">DaHua</a> hardware, so the firmware Amcrest uses likely originates from DaHua.</p>
+<p>The hardware is pretty good for the price. About $80 and you get a camera with a pretty wide field of view, 4K resolution, automatic IR leds/filter, PTZ servos, 10/100 Ethernet <em>and</em> 2.4/5ghz WiFi. The software, however is scarry 😱.</p>
+<p>I&rsquo;ve only spent a few hours with the camera so far, but here&rsquo;s an incomplete list of the security-related issues i&rsquo;ve noticed in that time:</p>
+<ul>
+<li>There&rsquo;s no way to require the web interface be served over HTTPS. You can turn on HTTPS support, but you can&rsquo;t turn of HTTP support!</li>
+<li>ONVIF runs over HTTP &mldr; on port 80!</li>
+<li>Only the ADMIN user is supported for ONVIF</li>
+<li>Passwords are limited to 32 characters in length&mldr; but the web UI won&rsquo;t inform you about this.</li>
+</ul>
+<h3 id=firmware>Firmware</h3>
+<p>Before anybody asks, yes, I did update the firmware to the latest version immediately after unboxing.
+As of writing, the latest firmware available is version <code>V2.620.00AC000.3.R.20191218</code> which can be downloaded <a href=https://sup-files.s3.us-east-2.amazonaws.com/Firmware/IP4M-1051/Amcrest_IPC-AWXX-V2-Rhea_Eng_NP_AMCREST_V2.620.00AC000.3.R.20191218.bin target=_blank rel="noopener noreffer">here</a>.</p>
+<figure>
+<img src=https://karlquinsland.com/amcrest-ip-cam-security-isnt-a-feature-its-a-punchine/images/fw-update-download.png alt="Screenshot showing the Amcrest Firmware page">
+<figcaption>
+<p>
+FW for all Amcrest devices can be fetched from https://amcrest.com/firmwaredownloads.
+</p>
+</figcaption>
+</figure>
+<p>In the unlikely event that anybody sees this post and somehow gets Amcrest to correct their issues, the versions of software on the affected cameras are:</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-txt data-lang=txt>Software Version:       V2.620.00AC000.3.R, Build Date: 2019-12-18
+WEB Version:            3.2.1.619604
+ONVIF Version:          16.12(V2.4.1.513183)
+</code></pre></td></tr></table>
+</div>
+</div><h2 id=web-ui>Web UI</h2>
+<p>Nothing shocking about a networking equipped, consumer-grade bit of electronics with a web based management interface. The only reason I&rsquo;m noting it here is because I can&rsquo;t find a way to
+force the web UI to be served over HTTPS 😢.</p>
+<figure>
+<img src=https://karlquinsland.com/amcrest-ip-cam-security-isnt-a-feature-its-a-punchine/images/network_port-conflict.png alt="Screenshot showing the port assignment page on the camera management interface">
+<figcaption>
+<p>
+*sigh*
+</p>
+</figcaption>
+</figure>
+<p>And the <code>HTTPS</code> tab has no way to disable the web server on port 80 or at least do a simple redirect to the HTTPS URL 😞.</p>
+<figure>
+<img src=https://karlquinsland.com/amcrest-ip-cam-security-isnt-a-feature-its-a-punchine/images/network_https.png alt="Screenshot showing the HTTPS / certificate configuration on the camera management interface">
+<figcaption>
+<p>
+I'll leave you to determine if it's a good idea for the web interface to generate a self-signed certificate or not.
+</p>
+</figcaption>
+</figure>
+<p>I suspect that the next issue might have something to do with the &lsquo;always on&rsquo; HTTP server&mldr; 🤔</p>
+<h2 id=onvif-over-port-80>ONVIF over port 80</h2>
+<p>The inciting &lsquo;incident&rsquo; for this post was a &lsquo;generic&rsquo; error from Home Assistant while trying to connect the camera to HA.
+While going through the config flow, I&rsquo;d get a super useful <code>an unknown error occurred</code> message 🙃.</p>
+<p>After a bit of digging through verbose HA logs, I started to suspect that the default port of <code>5000</code> was not the correct port despite the port being &lsquo;open&rsquo; on the camera:</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-bash data-lang=bash>$ nmap -p1-6553 cameraIPv4Here
+Starting Nmap 7.91 <span class=o>(</span> https://nmap.org <span class=o>)</span> at 2020-11-27 16:14 PST
+Nmap scan report <span class=k>for</span> cameraIPv4Here
+Host is up <span class=o>(</span>0.010s latency<span class=o>)</span>.
+Not shown: <span class=m>6547</span> closed ports
+PORT     STATE    SERVICE
+53/tcp   open     domain
+80/tcp   open     http
+123/tcp  filtered ntp
+443/tcp  open     https
+554/tcp  open     rtsp
+5000/tcp open     upnp
+
+Nmap <span class=k>done</span>: <span class=m>1</span> IP address <span class=o>(</span><span class=m>1</span> host up<span class=o>)</span> scanned in 2.21 seconds
+</code></pre></td></tr></table>
+</div>
+</div><p>Sure enough, Home Assistant found a responsive ONVIF endpoint on port 80. Repeated testing showed that port 80 is the ONLY port with a responsive ONVIF endpoint 🤦.</p>
+<p>So yeah. ONVIF traffic, just like the web UI traffic, can be sniffed by anybody between the client and the camera. That&rsquo;s not OK for a device that&rsquo;s intended to be used for security.</p>
+<p>So this little setting is basically useless:</p>
+<figure>
+<img src=https://karlquinsland.com/amcrest-ip-cam-security-isnt-a-feature-its-a-punchine/images/manual_onvif_auth.png alt="Screenshot showing the 'authentication' setting for the ONVIF service on the camera management interface">
+<figcaption>
+<p>
+'Authentication' is misleading. It should be labeled something along the lines of 'allow just ADMIN to use onvif or allow anybody to use onvif'
+</p>
+</figcaption>
+</figure>
+<p>That screenshot is from the PDF file <a href=https://drive.google.com/file/d/1X-f5xH4aSjhd4vXpIT9yPN_y9-LSgVWN/view target=_blank rel="noopener noreffer">here</a> which has this revision info:</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback>Amcrest IP4M-1051B / IP4M-1051W
+4MP ProHD Indoor Wi-Fi Camera
+
+User Manual
+
+Version 1.0.3
+Revised April 4th, 2019
+</code></pre></td></tr></table>
+</div>
+</div><h2 id=onvif-only-supports-authentication-with-the-admin-user>ONVIF only supports authentication with the Admin user</h2>
+<p>After discovering that ONVIF only &lsquo;works&rsquo; over port 80, I took a moment to get over my disappointment and then tried to set up a second user with minimal authority on the camera; read only and limited permission to move the camera around.</p>
+<p>Except I was never able to get HA to successfully connect to the camera when using the secondary user. Home Assistant still failed to connect to the camera over ONVIF even after elevating the secondary user to the privilege level of an admin:</p>
+<figure>
+<img src=https://karlquinsland.com/amcrest-ip-cam-security-isnt-a-feature-its-a-punchine/images/web_ui-admin_user.png alt="Screenshot showing the admin user and its entitlements on the camera web UI">
+<figcaption>
+<p>
+Admin users have all 34 permissions enabled
+</p>
+</figcaption>
+</figure>
+<p>My secondary user permissions:</p>
+<figure>
+<img src=https://karlquinsland.com/amcrest-ip-cam-security-isnt-a-feature-its-a-punchine/images/web_ui-ha_user.png alt="Screenshot showing the secondary/home-assistant user and its entitlements on the camera web UI">
+<figcaption>
+</figcaption>
+</figure>
+<p>As Home Assistant really does not expose a ton of debugging information, I tried the secondary user credentials with the <a href="https://play.google.com/store/apps/details?id=net.biyee.onvifer&hl=en_US&gl=US" target=_blank rel="noopener noreffer"><code>Onvifer</code></a> app. The debugging logs from that app confirmed that only the <code>admin</code> credential set &lsquo;worked&rsquo; with ONVIF.</p>
+<p>After a bit more research, it turns out that I&rsquo;m not the first person to discover this:</p>
+<figure>
+<img src=https://karlquinsland.com/amcrest-ip-cam-security-isnt-a-feature-its-a-punchine/images/forum01.png alt="Screenshot showing a post on the amcrest support forums where other people have noticed the lack of multi-user authentication for ONVIF authentication">
+<figcaption>
+<p>
+Source: https://amcrest.com/forum/ip-cameras-f18/firmware-security-bug-regarding-onvif--t13445-s10.html
+</p>
+</figcaption>
+</figure>
+<figure>
+<img src=https://karlquinsland.com/amcrest-ip-cam-security-isnt-a-feature-its-a-punchine/images/forum02.png alt="Screenshot showing a post on the amcrest support forums where other people have noticed the lack of multi-user authentication for ONVIF authentication">
+<figcaption>
+<p>
+Source: https://amcrest.com/forum/ip-cameras-f18/ip3m-941b-onvif-and-user-management-t12647.html
+</p>
+</figcaption>
+</figure>
+<p>Now i&rsquo;m embarrassed that it took me so long to discover an issue that&rsquo;s been documented since AT LEAST summer of 2019! 😳</p>
+<h3 id=password-length>Password length</h3>
+<p>Can we <em>please</em> <a href=https://security.stackexchange.com/questions/33470/what-technical-reasons-are-there-to-have-low-maximum-password-lengths target=_blank rel="noopener noreffer">stop putting ceilings on password length</a>?</p>
+<p>Or, at least if you&rsquo;re going to set an upper bound on password length, please make sure that:</p>
+<ul>
+<li>You&rsquo;re consistent about enforcing the length</li>
+<li>You tell the user when their password is longer than allowed.</li>
+</ul>
+<p>The very first time the default credentials are used to sign into the camera, you&rsquo;re prompted to change the default password. Good! Only problem: the password generated by my password was, apparently, longer than the camera supports. The new admin password was <em><strong>silently</strong> truncated</em> as I was logged in.</p>
+<p>I didn&rsquo;t realize that the password stored in the manager wouldn&rsquo;t let me in until after the camera applied it&rsquo;s FW update and rebooted. After a factory reset, I figured out what happened.</p>
+<p>The <code>maxlength</code> property of the login form differs from the password set form. In any case, there&rsquo;s no warning that the input exceeds the length!</p>
+<figure>
+<img src=https://karlquinsland.com/amcrest-ip-cam-security-isnt-a-feature-its-a-punchine/images/pw_login.png alt="Screenshot showing the HTML for the password field on the login page">
+<figcaption>
+<p>
+...
+</p>
+</figcaption>
+</figure>
+<figure>
+<img src=https://karlquinsland.com/amcrest-ip-cam-security-isnt-a-feature-its-a-punchine/images/pw_reset.png alt="Screenshot showing the HTML for the password field on the password reset page">
+<figcaption>
+<p>
+...
+</p>
+</figcaption>
+</figure>
+<p><em>sigh</em></p>
+<h2 id=tldr>TL;DR:</h2>
+<ul>
+<li>
+<p>It&rsquo;s almost 2021, but we still have IP Cameras shipping with 2011&rsquo;s security issues. <strong>Absolutely</strong> do not expose your IP Cameras directly to the internet or otherwise allow them to contact the internet. Keep cameras on their <em>own</em> dedicated and isolated network and consider the admin credentials for the camera to be compromised. Seriously re-consider using WiFi for your cameras.</p>
+</li>
+<li>
+<p>If you&rsquo;re trying to use the <a href=https://www.home-assistant.io/integrations/onvif/ target=_blank rel="noopener noreffer">Home Assistant ONVIF integration</a> to control an <code>Amcrest IP4M-1051</code>, you must use the <code>admin</code> credentials and change the port from <code>5000</code> to <code>80</code>.</p>
+</li>
+</ul>
+<p>The first bit of documentation you see when unboxing the camera is this little guy:</p>
+<figure>
+<img src=https://karlquinsland.com/amcrest-ip-cam-security-isnt-a-feature-its-a-punchine/images/unboxing_security_warning.jpg alt="Picture of an ironic leaflet urging the customer to use long, complex passwords and up to date firmware.">
+<figcaption>
+<p>
+This is *literally* the first thing you see when unpacking the camera.
+</p>
+</figcaption>
+</figure>
+<p>which reads:</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback>IMPORTANT SECURITY NOTICE
+
+Please make sure your device has the
+latest firmware as listed on:
+
+www.amcrest.com/firmware-subscribe
+
+Never use the default password for
+your device. Always ensure your
+password contains a combination
+of lowercase and uppercase
+characters and numbers.
+</code></pre></td></tr></table>
+</div>
+</div><p>A for effort, though, Amcrest! 👏🌟</p>
+<p>🙃</p>
+</div><div class=post-footer id=post-footer>
+<div class=post-info>
+<div class=post-info-line>
+<div class=post-info-mod>
+<span>Updated on 2020-11-27&nbsp;<a class=git-hash href=https://github.com/kquinsland/kquinsland.github.io/commit/a14ad96773f320eebba972a68a750863588c8e51 target=_blank title="commit by karl(karl@karlquinsland.com) a14ad96773f320eebba972a68a750863588c8e51: added post and spelling">
+<i class="fas fa-hashtag fa-fw"></i>a14ad96</a></span>
+</div>
+<div class=post-info-license></div>
+</div>
+<div class=post-info-line>
+<div class=post-info-md><span>
+<a class=link-to-markdown href=https://karlquinsland.com/amcrest-ip-cam-security-isnt-a-feature-its-a-punchine/index.md target=_blank>Read Markdown</a>
+</span></div>
+<div class=post-info-share>
+<span></span>
+</div>
+</div>
+</div>
+<div class=post-info-more>
+<section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=https://karlquinsland.com/tags/onvif/>onvif</a>,&nbsp;<a href=https://karlquinsland.com/tags/home-assistant/>home assistant</a>,&nbsp;<a href=https://karlquinsland.com/tags/rant/>rant</a>,&nbsp;<a href=https://karlquinsland.com/tags/security/>security</a></section>
+<section>
+<span><a href=javascript:void(0); onclick=window.history.back()>Back</a></span>&nbsp;|&nbsp;<span><a href=https://karlquinsland.com/>Home</a></span>
+</section>
+</div>
+<div class=post-nav><a href=https://karlquinsland.com/two-tasmota-rules/ class=prev rel=prev title="Two Tasmota rules"><i class="fas fa-angle-left fa-fw"></i>Two Tasmota rules</a>
+<a href=https://karlquinsland.com/monitoring-ap7900-switched-pdu-prometheus-grafana/ class=next rel=next title="Monitoring APC AP7900 switched PDU with Prometheus and Grafana">Monitoring APC AP7900 switched PDU with Prometheus and Grafana<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+</article></div>
+</main><footer class=footer>
+<div class=footer-container><div class=footer-line>¯\_(ツ)_/¯</div><div class=footer-line>Powered by <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.88.1">Hugo</a> | Theme - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+</div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2019 - 2021</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=https://karlquinsland.com/ target=_blank>karl</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div>
+</div>
+</footer></div>
+<div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top">
+<i class="fas fa-arrow-up fa-fw"></i>
+</a><a href=# id=view-comments class=fixed-button title="View Comments">
+<i class="fas fa-comment fa-fw"></i>
+</a>
+</div><link rel=stylesheet href=https://karlquinsland.com/lib/katex/katex.min.4710034e669c7ff17f823f9ba12cf8a36582d65b007f79cbc4a3c11d7db2e4ca.css integrity="sha256-RxADTmacf/F/gj+boSz4o2WC1lsAf3nLxKPBHX2y5Mo="><link rel=stylesheet href=https://karlquinsland.com/lib/katex/copy-tex.min.bf9ff4137fec38f6255419e142d0883c9c52090885d746f80eee12b273d9b3e0.css integrity="sha256-v5/0E3/sOPYlVBnhQtCIPJxSCQiF10b4Du4SsnPZs+A="><script type=text/javascript src=https://karlquinsland.com/lib/smooth-scroll/smooth-scroll.min.bcff85fb5e00d68802850b393ac7792c997f722f536f38e26638c46dca8e5eb6.js integrity="sha256-vP+F+14A1ogChQs5Osd5LJl/ci9TbzjiZjjEbcqOXrY="></script><script type=text/javascript src=https://karlquinsland.com/lib/autocomplete/autocomplete.min.615590a2ca2b667afa7c02ef396f5500b62e22795ddbb46448f90494605d09a5.js integrity="sha256-YVWQosorZnr6fALvOW9VALYuInld27RkSPkElGBdCaU="></script><script type=text/javascript src=https://karlquinsland.com/lib/lunr/lunr.min.df84a2d58ea594c04a3371b48d020b55ea10284c2ec636e4e331965d7313e29b.js integrity="sha256-34Si1Y6llMBKM3G0jQILVeoQKEwuxjbk4zGWXXMT4ps="></script><script type=text/javascript src=https://karlquinsland.com/lib/lazysizes/lazysizes.min.fb649fcae62177dfe63e67081ddceb830b5ce1f05a4184e9bbb7d87ac4b8f4e5.js integrity="sha256-+2SfyuYhd9/mPmcIHdzrgwtc4fBaQYTpu7fYesS49OU="></script><script type=text/javascript src=https://karlquinsland.com/lib/clipboard/clipboard.min.8a7739925f4c03586479852df840b7061948832a7fda30c8c812d2ea4dd4c4f2.js integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/katex.min.17f5dd6b9f123dd7140abfb18521b3f4c036cd004f6f40121182a8865f140877.js integrity="sha256-F/Xda58SPdcUCr+xhSGz9MA2zQBPb0ASEYKohl8UCHc="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/auto-render.min.f74776a677f0d2be0af0264058f928e2ba455d0b19bc985304660d922a43a6b2.js integrity="sha256-90d2pnfw0r4K8CZAWPko4rpFXQsZvJhTBGYNkipDprI="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/copy-tex.min.2ab2237329021bc443986c8327f6e61357fb68a54e5d233d224023718c02207d.js integrity="sha256-KrIjcykCG8RDmGyDJ/bmE1f7aKVOXSM9IkAjcYwCIH0="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/mhchem.min.5cea356d6025c5a2f18c454c83ec5674dbb04fab1cd1d75569e77788c6b6f888.js integrity="sha256-XOo1bWAlxaLxjEVMg+xWdNuwT6sc0ddVaed3iMa2+Ig="></script><script type=text/javascript>window.config={code:{copyTitle:"Copy to clipboard",maxShownLines:10},comment:{},math:{delimiters:[{display:!0,left:"$$",right:"$$"},{display:!0,left:"\\[",right:"\\]"},{display:!1,left:"$",right:"$"},{display:!1,left:"\\(",right:"\\)"}],strict:!1},search:{highlightTag:"em",lunrIndexURL:"/index.json",maxResultLength:10,noResultsFound:"No results found",snippetLength:30,type:"lunr"}}</script><script type=text/javascript src=https://karlquinsland.com/js/theme.min.f51938f3065a40ee841bcb558e4330e31fd26c0ea55343fff8770b88b0319a3c.js integrity="sha256-9Rk48wZaQO6EG8tVjkMw4x/SbA6lU0P/+HcLiLAxmjw="></script><script type=text/javascript>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date),gtag('config','UA-173167356-1',{anonymize_ip:!0})</script><script type=text/javascript src="https://www.googletagmanager.com/gtag/js?id=UA-173167356-1" async></script></body>
+</html>

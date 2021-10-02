@@ -1,0 +1,195 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>LetsEncrypt - Tag - karl</title><link>https://karlquinsland.com/tags/letsencrypt/</link><description>LetsEncrypt - Tag - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 01 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/letsencrypt/" rel="self" type="application/rss+xml"/><item><title>Using new Lets Encrypt intermediate chain with SkyHole</title><link>https://karlquinsland.com/skyhole-expired-lets-encrypt-ca/</link><pubDate>Fri, 01 Oct 2021 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/skyhole-expired-lets-encrypt-ca/</guid><description><![CDATA[<p>If you somehow missed it, one of the certificates used by Lets Encrypt chain of trust <a href="https://letsencrypt.org/docs/dst-root-ca-x3-expiration-september-2021/" target="_blank" rel="noopener noreffer">expired</a> this week.
+As expected, things broke&hellip;. including my private, filtered DNS over TLS server - <a href="https://github.com/kquinsland/skyhole/" target="_blank" rel="noopener noreffer">SkyHole</a>. Below is a condensed form of my notes to create the exact document that I wish I had while trying to triage broken DNS on my phone.</p>
+<p><strong>TL;DR:</strong> Implement solution 3 from <a href="https://www.openssl.org/blog/blog/2021/09/13/LetsEncryptRootCertExpire/" target="_blank" rel="noopener noreffer">this</a> post.</p>
+<hr>
+<p><strong>Note:</strong> After releasing the initial version of SkyHole, I re-factored most of the code to eliminate the dependency on Docker. This was to make the project easier to deploy on resource constrained hardware.
+At the time, I was working with <a href="https://saltproject.io/" target="_blank" rel="noopener noreffer">SaltStack</a> a lot and took the opportunity to re-do the entire thing as a salt state for a bit of practice. The <em>exact</em> steps and commands shown below are unique to my particular instance. Use them as <em>guidance</em> for fixing an issue with the publicly released version of SkyHole.</p>
+<h1 id="symptoms">Symptoms</h1>
+<p>My current daily driver runs Android 11. When configured to use a <a href="https://android-developers.googleblog.com/2018/04/dns-over-tls-support-in-android-p.html" target="_blank" rel="noopener noreffer">private DNS server</a>, Android essentially behaves as if you&rsquo;ve turned WiFi/Cell data off if there is any issue when talking to the DoT server.
+While this &lsquo;fail private&rsquo; approach is commendable, the lack of debug info in the UI is not; no details are given about the failure other than a generic &lsquo;the private dns server could not be reached&rsquo; message.</p>
+<p>I have seen this behavior once before when the certificate renewal timer failed to fire off&hellip; except I implemented email based notifications after that incident and had recently received a notification from the renewal script.</p>
+<p>Just to be sure, I checked the <code>notAfter</code> in each certificate and they all had plenty of life left:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">me@dot-host:/etc/coredns/tls# gawk <span class="s1">&#39;BEGIN { pipe=&#34;openssl x509 -noout -subject -dates&#34;} \
+</span><span class="s1">&gt;   /^-+BEGIN CERT/,/^-+END CERT/ { print | pipe }
+</span><span class="s1">&gt;   /^-+END CERT/                 { close(pipe); printf(&#34;\n&#34;)}  &#39;</span> chain.pem
+<span class="nv">subject</span><span class="o">=</span><span class="nv">CN</span> <span class="o">=</span> dot.my-test-domain.tld
+<span class="nv">notBefore</span><span class="o">=</span>Oct  <span class="m">1</span> 01:50:58 <span class="m">2021</span> GMT
+<span class="nv">notAfter</span><span class="o">=</span>Dec <span class="m">30</span> 01:50:57 <span class="m">2021</span> GMT
+
+<span class="nv">subject</span><span class="o">=</span><span class="nv">C</span> <span class="o">=</span> US, <span class="nv">O</span> <span class="o">=</span> Let<span class="err">&#39;</span>s Encrypt, <span class="nv">CN</span> <span class="o">=</span> R3
+<span class="nv">notBefore</span><span class="o">=</span>Sep  <span class="m">4</span> 00:00:00 <span class="m">2020</span> GMT
+<span class="nv">notAfter</span><span class="o">=</span>Sep <span class="m">15</span> 16:00:00 <span class="m">2025</span> GMT
+
+<span class="nv">subject</span><span class="o">=</span><span class="nv">C</span> <span class="o">=</span> US, <span class="nv">O</span> <span class="o">=</span> Internet Security Research Group, <span class="nv">CN</span> <span class="o">=</span> ISRG Root X1
+<span class="nv">notBefore</span><span class="o">=</span>Jan <span class="m">20</span> 19:14:03 <span class="m">2021</span> GMT
+<span class="nv">notAfter</span><span class="o">=</span>Sep <span class="m">30</span> 18:14:03 <span class="m">2024</span> GMT
+</code></pre></td></tr></table>
+</div>
+</div><p>Borrowed that command from <a href="https://serverfault.com/questions/541262/checking-the-issued-and-expiry-dates-for-the-certificates-involved-a-certificate" target="_blank" rel="noopener noreffer">this</a> post.</p>
+<p>Looking for more information, <code>adb</code> yielded something:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">❯ adb logcat <span class="p">|</span> grep resolv
+09-30 21:28:12.995   <span class="m">962</span> <span class="m">15448</span> W resolv  : Validating DnsTlsServer 12.34.56.78 with mark 0xf0084
+09-30 21:28:13.085   <span class="m">962</span> <span class="m">15448</span> W resolv  : SSL_connect ssl <span class="nv">error</span> <span class="o">=</span>1, mark 0xf0084: No such file or directory
+09-30 21:28:13.085   <span class="m">962</span> <span class="m">15448</span> W resolv  : TLS Handshake failed
+09-30 21:28:13.085   <span class="m">962</span> <span class="m">15448</span> W resolv  : query failed
+09-30 21:28:13.085   <span class="m">962</span> <span class="m">15448</span> W resolv  : validateDnsTlsServer returned <span class="m">0</span> <span class="k">for</span> 12.34.56.78
+</code></pre></td></tr></table>
+</div>
+</div><p>The <code>No such file or directory</code> message came from <a href="https://android.googlesource.com/platform/packages/modules/DnsResolver/&#43;/refs/heads/master/DnsTlsSocket.cpp" target="_blank" rel="noopener noreffer">here</a>.</p>
+<p>Google uses their own fork of openSSL in Android so spent some time trying to figure out what an error code of <code>1</code> means in the openSSL project.
+I <em>think</em> <code>1</code> is <a href="https://github.com/OneSignal/openssl/blob/main/include/openssl/ssl.h#L1168" target="_blank" rel="noopener noreffer"><code>SSL_ERROR_SSL</code></a> but that seems to be a relatively <a href="https://www.openssl.org/docs/man1.1.1/man3/SSL_get_error.html" target="_blank" rel="noopener noreffer">&lsquo;generic&rsquo;</a> error.
+Furthermore, in context of <code>No such file or directory</code> &hellip; it makes even less sense.</p>
+<p>Oh well. So much for that theory. From this point on, I&rsquo;m treating all of the TLS connection stuff as a black box.</p>
+<h1 id="investigating">Investigating</h1>
+<p>I was able to confirm that the TLS certificates on the skyhole instance had not expired and the intermediate chain was not using any of the depreciated certificates.
+I had also not made any changes to the skyhole instance in close to a year and <code>kdig</code> didn&rsquo;t throw any warnings when querying against the DoT server.
+I could see the manual query from <code>kdig</code> in the DNS query/filter logs &hellip; so it seemed like the problem was not in either the TLS portion or the DNS portion.</p>
+<p>That left Android as the culprit.</p>
+<p>But I was also fairly sure that Google hadn&rsquo;t changed anything on the phone w/r/t how the DoT client worked&hellip;🤔</p>
+<p>If in doubt, turn to the wires!</p>
+<p>I ran <code>tcpdump</code> on the skyhole instance and did notice traffic from Android that was <em>not</em> showing up in the DNS server logs.
+I compared the traffic with a working manual query from <code>kdig</code> and noticed that the traffic from the Android client stopped shortly before where the <code>kdig</code> traffic would have turned into a regular DNS query.</p>
+<p>So the problem was happening during the TLS setup. Whatever Android was choking on was happening before any DNS queries were sent.</p>
+<p>I quickly configured the phone to use a known good / working DNS over TLS server and it was immediately accepted. The triumphant <code>logcat</code> output confirmed that everything on the TLS layer has happy: <code> W resolv  : Validation success</code>.</p>
+<p>Android worked instantly when configured to use a different server but immediately failed when used with the skyhole instance. This points to a problem on the server.</p>
+<p>Nothing about the skyhole instance had changed and the certificates that it was offering up were totally valid; other clients worked w/o issue. This points to a problem on the phone.</p>
+<p>Even though the certificates appear fine, the timing with the recent Lets Encrypt certificate expiration is too suspicious 🤨.</p>
+<p>Looking for another data point, I moved to a different computer with a different version of openSSL installed.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">❯ openssl version
+LibreSSL 2.8.3
+
+❯ openssl s_client -connect dot.my-test-domain.tld:853 -servername dot.my-test-domain.tld <span class="p">|</span>
+    openssl crl2pkcs7 -nocrl -certfile /dev/stdin <span class="p">|</span>
+    openssl pkcs7 -print_certs -noout -text <span class="p">|</span>
+    egrep <span class="s1">&#39;not(Before|After)&#39;</span>
+<span class="nv">depth</span><span class="o">=</span><span class="m">1</span> <span class="nv">O</span> <span class="o">=</span> Digital Signature Trust Co., <span class="nv">CN</span> <span class="o">=</span> DST Root CA X3
+verify error:num<span class="o">=</span>10:certificate has expired
+<span class="nv">notAfter</span><span class="o">=</span>Sep <span class="m">30</span> 14:01:15 <span class="m">2021</span> GMT
+verify <span class="k">return</span>:0
+<span class="nv">depth</span><span class="o">=</span><span class="m">1</span> <span class="nv">O</span> <span class="o">=</span> Digital Signature Trust Co., <span class="nv">CN</span> <span class="o">=</span> DST Root CA X3
+verify error:num<span class="o">=</span>10:certificate has expired
+<span class="nv">notAfter</span><span class="o">=</span>Sep <span class="m">30</span> 14:01:15 <span class="m">2021</span> GMT
+verify <span class="k">return</span>:0
+<span class="nv">depth</span><span class="o">=</span><span class="m">3</span> <span class="nv">O</span> <span class="o">=</span> Digital Signature Trust Co., <span class="nv">CN</span> <span class="o">=</span> DST Root CA X3
+verify error:num<span class="o">=</span>10:certificate has expired
+<span class="nv">notAfter</span><span class="o">=</span>Sep <span class="m">30</span> 14:01:15 <span class="m">2021</span> GMT
+verify <span class="k">return</span>:0
+</code></pre></td></tr></table>
+</div>
+</div><p>Huh. That sure looks like a problem!</p>
+<p>After a <a href="https://www.mail-archive.com/openssl-users@openssl.org/msg90068.html" target="_blank" rel="noopener noreffer">bit</a> of google, I found that the different versions of openSSL (and their forks&hellip;) behave differently when validating certificate chains:</p>
+<blockquote>
+<p>The currently recommended certificate chain as presented to Let’s Encrypt ACME clients when new certificates are issued contains an intermediate certificate (ISRG Root X1) that is signed by an old DST Root CA X3 certificate that expires on 2021-09-30. In some cases the OpenSSL 1.0.2 version will regard the certificates issued by the Let’s Encrypt CA as having an expired trust chain.</p>
+<p>Most up-to-date CA cert trusted bundles, as provided by operating systems, contain this soon-to-be-expired certificate. The current CA cert bundles also contain an ISRG Root X1 self-signed certificate. This means that clients verifying certificate chains can find the alternative non-expired path to the ISRG Root X1 self-signed certificate in their trust store.</p>
+<p>Unfortunately this does not apply to OpenSSL 1.0.2 which always prefers the untrusted chain and if that chain contains a path that leads to an expired trusted root certificate (DST Root CA X3), it will be selected for the certificate verification and the expiration will be reported.</p>
+</blockquote>
+<p><a href="https://www.openssl.org/blog/blog/2021/09/13/LetsEncryptRootCertExpire/" target="_blank" rel="noopener noreffer">Source</a>.</p>
+<p>That would certainly explain the behavior I observed when checking the skyhole certificates on the second computer.
+I don&rsquo;t know <em>exactly</em> what version of OpenSSL the BoringSSL in my phone is based off of, but, assuming that it&rsquo;s got the same bug as OpenSSL 1.0.2, that would explain everything.</p>
+<p>The openSSL blog post pointed out three possible fixes; two of which are applied client side.
+My phone is not rooted so I just assumed that I would have access to the portions of the file system needed for a &lsquo;client side&rsquo; fix. That left the third solution; use a different intermediate chain.</p>
+<p>I was not aware that there was an alternate intermediate chain for Lets Encrypt. I didn&rsquo;t even know that was a thing let alone <em>why</em> somebody would do that.</p>
+<h1 id="alternate-intermediate">Alternate Intermediate</h1>
+<p>Turns out, it&rsquo;s a very clever trick meant to <a href="https://letsencrypt.org/2020/12/21/extending-android-compatibility.html" target="_blank" rel="noopener noreffer">prevent Lets Encrypt certificates from breaking on <em>older</em> versions</a>. Ironic that a &lsquo;newer&rsquo; android device got screwed in the process 😬.</p>
+<p>The two valid chains of trust for Lets Encrypt certificates look like this:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Image credit/source:
+        <a href="https://letsencrypt.org/2020/12/21/extending-android-compatibility.html"> 
+            LetsEncrypt
+        </a> 
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>With the help of <a href="https://github.com/certbot/certbot/issues/8577" target="_blank" rel="noopener noreffer">this</a> GitHub issue, the revised CertBot <code>cli.ini</code> file becomes:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">me@dot-host:~# cat /etc/letsencrypt/cli.ini <span class="p">|</span> grep chain
+preferred-chain<span class="o">=</span><span class="s1">&#39;ISRG Root X1&#39;</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>After running certbot with the new config, <code>logcat</code> shows success:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">❯ adb logcat <span class="p">|</span> grep resolv
+10-01 09:41:01.190   <span class="m">962</span>  <span class="m">7711</span> W resolv  : Validating DnsTlsServer 12.34.56.78 with mark 0xf0084
+10-01 09:41:01.734   <span class="m">962</span>  <span class="m">7711</span> W resolv  : validateDnsTlsServer returned <span class="m">1</span> <span class="k">for</span> 12.34.56.78
+10-01 09:41:01.734   <span class="m">962</span>  <span class="m">7711</span> W resolv  : Validation success
+</code></pre></td></tr></table>
+</div>
+</div><p>Android no longer shows an unhelpful &ldquo;can&rsquo;t connect&rdquo; message and I can see DNS queries being filtered!</p>
+<p>🎊</p>
+]]></description></item></channel></rss>
