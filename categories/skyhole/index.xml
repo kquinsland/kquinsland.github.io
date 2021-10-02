@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>skyhole on karl</title><link>https://karlquinsland.com/categories/skyhole/</link><description>Recent content in skyhole on karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 01 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/categories/skyhole/index.xml" rel="self" type="application/rss+xml"/><item><title>Using new Lets Encrypt intermediate chain with SkyHole</title><link>https://karlquinsland.com/2021/10/using-new-lets-encrypt-intermediate-chain-with-skyhole/</link><pubDate>Fri, 01 Oct 2021 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/2021/10/using-new-lets-encrypt-intermediate-chain-with-skyhole/</guid><description>&lt;p>If you somehow missed it, one of the certificates used by Lets Encrypt chain of trust &lt;a href="https://letsencrypt.org/docs/dst-root-ca-x3-expiration-september-2021/">expired&lt;/a> this week.
+As expected, things broke&amp;hellip;. including my private, filtered DNS over TLS server - &lt;a href="https://github.com/kquinsland/skyhole/">SkyHole&lt;/a>. Below is a condensed form of my notes to create the exact document that I wish I had while trying to triage broken DNS on my phone.&lt;/p>
+&lt;p>&lt;strong>TL;DR:&lt;/strong> Implement solution 3 from &lt;a href="https://www.openssl.org/blog/blog/2021/09/13/LetsEncryptRootCertExpire/">this&lt;/a> post.&lt;/p>
+&lt;hr>
+&lt;p>&lt;strong>Note:&lt;/strong> After releasing the initial version of SkyHole, I re-factored most of the code to eliminate the dependency on Docker. This was to make the project easier to deploy on resource constrained hardware.
+At the time, I was working with &lt;a href="https://saltproject.io/">SaltStack&lt;/a> a lot and took the opportunity to re-do the entire thing as a salt state for a bit of practice. The &lt;em>exact&lt;/em> steps and commands shown below are unique to my particular instance. Use them as &lt;em>guidance&lt;/em> for fixing an issue with the publicly released version of SkyHole.&lt;/p>
+&lt;h1 id="symptoms">Symptoms&lt;/h1>
+&lt;p>My current daily driver runs Android 11. When configured to use a &lt;a href="https://android-developers.googleblog.com/2018/04/dns-over-tls-support-in-android-p.html">private DNS server&lt;/a>, Android essentially behaves as if you&amp;rsquo;ve turned WiFi/Cell data off if there is any issue when talking to the DoT server.
+While this &amp;lsquo;fail private&amp;rsquo; approach is commendable, the lack of debug info in the UI is not; no details are given about the failure other than a generic &amp;lsquo;the private dns server could not be reached&amp;rsquo; message.&lt;/p>
+&lt;p>I have seen this behavior once before when the certificate renewal timer failed to fire off&amp;hellip; except I implemented email based notifications after that incident and had recently received a notification from the renewal script.&lt;/p>
+&lt;p>Just to be sure, I checked the &lt;code>notAfter&lt;/code> in each certificate and they all had plenty of life left:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-shell" data-lang="shell">me@dot-host:/etc/coredns/tls# gawk &lt;span style="font-style:italic">&amp;#39;BEGIN { pipe=&amp;#34;openssl x509 -noout -subject -dates&amp;#34;} \
+&lt;/span>&lt;span style="font-style:italic">&amp;gt; /^-+BEGIN CERT/,/^-+END CERT/ { print | pipe }
+&lt;/span>&lt;span style="font-style:italic">&amp;gt; /^-+END CERT/ { close(pipe); printf(&amp;#34;\n&amp;#34;)} &amp;#39;&lt;/span> chain.pem
+subject=CN = dot.my-test-domain.tld
+notBefore=Oct 1 01:50:58 2021 GMT
+notAfter=Dec 30 01:50:57 2021 GMT
+subject=C = US, O = Let&lt;span style="">&amp;#39;&lt;/span>s Encrypt, CN = R3
+notBefore=Sep 4 00:00:00 2020 GMT
+notAfter=Sep 15 16:00:00 2025 GMT
+subject=C = US, O = Internet Security Research Group, CN = ISRG Root X1
+notBefore=Jan 20 19:14:03 2021 GMT
+notAfter=Sep 30 18:14:03 2024 GMT
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Borrowed that command from &lt;a href="https://serverfault.com/questions/541262/checking-the-issued-and-expiry-dates-for-the-certificates-involved-a-certificate">this&lt;/a> post.&lt;/p>
+&lt;p>Looking for more information, &lt;code>adb&lt;/code> yielded something:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-shell" data-lang="shell">❯ adb logcat | grep resolv
+09-30 21:28:12.995 962 15448 W resolv : Validating DnsTlsServer 12.34.56.78 with mark 0xf0084
+09-30 21:28:13.085 962 15448 W resolv : SSL_connect ssl error =1, mark 0xf0084: No such file or directory
+09-30 21:28:13.085 962 15448 W resolv : TLS Handshake failed
+09-30 21:28:13.085 962 15448 W resolv : query failed
+09-30 21:28:13.085 962 15448 W resolv : validateDnsTlsServer returned 0 &lt;span style="font-weight:bold">for&lt;/span> 12.34.56.78
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>The &lt;code>No such file or directory&lt;/code> message came from &lt;a href="https://android.googlesource.com/platform/packages/modules/DnsResolver/+/refs/heads/master/DnsTlsSocket.cpp">here&lt;/a>.&lt;/p>
+&lt;p>Google uses their own fork of openSSL in Android so spent some time trying to figure out what an error code of &lt;code>1&lt;/code> means in the openSSL project.
+I &lt;em>think&lt;/em> &lt;code>1&lt;/code> is &lt;a href="https://github.com/OneSignal/openssl/blob/main/include/openssl/ssl.h#L1168">&lt;code>SSL_ERROR_SSL&lt;/code>&lt;/a> but that seems to be a relatively &lt;a href="https://www.openssl.org/docs/man1.1.1/man3/SSL_get_error.html">&amp;lsquo;generic&amp;rsquo;&lt;/a> error.
+Furthermore, in context of &lt;code>No such file or directory&lt;/code> &amp;hellip; it makes even less sense.&lt;/p>
+&lt;p>Oh well. So much for that theory. From this point on, I&amp;rsquo;m treating all of the TLS connection stuff as a black box.&lt;/p>
+&lt;h1 id="investigating">Investigating&lt;/h1>
+&lt;p>I was able to confirm that the TLS certificates on the skyhole instance had not expired and the intermediate chain was not using any of the depreciated certificates.
+I had also not made any changes to the skyhole instance in close to a year and &lt;code>kdig&lt;/code> didn&amp;rsquo;t throw any warnings when querying against the DoT server.
+I could see the manual query from &lt;code>kdig&lt;/code> in the DNS query/filter logs &amp;hellip; so it seemed like the problem was not in either the TLS portion or the DNS portion.&lt;/p>
+&lt;p>That left Android as the culprit.&lt;/p>
+&lt;p>But I was also fairly sure that Google hadn&amp;rsquo;t changed anything on the phone w/r/t how the DoT client worked&amp;hellip;🤔&lt;/p>
+&lt;p>If in doubt, turn to the wires!&lt;/p>
+&lt;p>I ran &lt;code>tcpdump&lt;/code> on the skyhole instance and did notice traffic from Android that was &lt;em>not&lt;/em> showing up in the DNS server logs.
+I compared the traffic with a working manual query from &lt;code>kdig&lt;/code> and noticed that the traffic from the Android client stopped shortly before where the &lt;code>kdig&lt;/code> traffic would have turned into a regular DNS query.&lt;/p>
+&lt;p>So the problem was happening during the TLS setup. Whatever Android was choking on was happening before any DNS queries were sent.&lt;/p>
+&lt;p>I quickly configured the phone to use a known good / working DNS over TLS server and it was immediately accepted. The triumphant &lt;code>logcat&lt;/code> output confirmed that everything on the TLS layer has happy: &lt;code> W resolv : Validation success&lt;/code>.&lt;/p>
+&lt;p>Android worked instantly when configured to use a different server but immediately failed when used with the skyhole instance. This points to a problem on the server.&lt;/p>
+&lt;p>Nothing about the skyhole instance had changed and the certificates that it was offering up were totally valid; other clients worked w/o issue. This points to a problem on the phone.&lt;/p>
+&lt;p>Even though the certificates appear fine, the timing with the recent Lets Encrypt certificate expiration is too suspicious 🤨.&lt;/p>
+&lt;p>Looking for another data point, I moved to a different computer with a different version of openSSL installed.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-shell" data-lang="shell">❯ openssl version
+LibreSSL 2.8.3
+❯ openssl s_client -connect dot.my-test-domain.tld:853 -servername dot.my-test-domain.tld |
+openssl crl2pkcs7 -nocrl -certfile /dev/stdin |
+openssl pkcs7 -print_certs -noout -text |
+egrep &lt;span style="font-style:italic">&amp;#39;not(Before|After)&amp;#39;&lt;/span>
+depth=1 O = Digital Signature Trust Co., CN = DST Root CA X3
+verify error:num=10:certificate has expired
+notAfter=Sep 30 14:01:15 2021 GMT
+verify &lt;span style="font-weight:bold">return&lt;/span>:0
+depth=1 O = Digital Signature Trust Co., CN = DST Root CA X3
+verify error:num=10:certificate has expired
+notAfter=Sep 30 14:01:15 2021 GMT
+verify &lt;span style="font-weight:bold">return&lt;/span>:0
+depth=3 O = Digital Signature Trust Co., CN = DST Root CA X3
+verify error:num=10:certificate has expired
+notAfter=Sep 30 14:01:15 2021 GMT
+verify &lt;span style="font-weight:bold">return&lt;/span>:0
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Huh. That sure looks like a problem!&lt;/p>
+&lt;p>After a &lt;a href="https://www.mail-archive.com/openssl-users@openssl.org/msg90068.html">bit&lt;/a> of google, I found that the different versions of openSSL (and their forks&amp;hellip;) behave differently when validating certificate chains:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-fallback" data-lang="fallback">The currently recommended certificate chain as presented to Let’s Encrypt ACME clients when new certificates are issued contains an intermediate certificate (ISRG Root X1) that is signed by an old DST Root CA X3 certificate that expires on 2021-09-30. In some cases the OpenSSL 1.0.2 version will regard the certificates issued by the Let’s Encrypt CA as having an expired trust chain.
+Most up-to-date CA cert trusted bundles, as provided by operating systems, contain this soon-to-be-expired certificate. The current CA cert bundles also contain an ISRG Root X1 self-signed certificate. This means that clients verifying certificate chains can find the alternative non-expired path to the ISRG Root X1 self-signed certificate in their trust store.
+Unfortunately this does not apply to OpenSSL 1.0.2 which always prefers the untrusted chain and if that chain contains a path that leads to an expired trusted root certificate (DST Root CA X3), it will be selected for the certificate verification and the expiration will be reported.
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>&lt;a href="https://www.openssl.org/blog/blog/2021/09/13/LetsEncryptRootCertExpire/">Source&lt;/a>.&lt;/p>
+&lt;p>That would certainly explain the behavior I observed when checking the skyhole certificates on the second computer.
+I don&amp;rsquo;t know &lt;em>exactly&lt;/em> what version of OpenSSL the BoringSSL in my phone is based off of, but, assuming that it&amp;rsquo;s got the same bug as OpenSSL 1.0.2, that would explain everything.&lt;/p>
+&lt;p>The openSSL blog post pointed out three possible fixes; two of which are applied client side.
+My phone is not rooted so I just assumed that I would have access to the portions of the file system needed for a &amp;lsquo;client side&amp;rsquo; fix. That left the third solution; use a different intermediate chain.&lt;/p>
+&lt;p>I was not aware that there was an alternate intermediate chain for Lets Encrypt. I didn&amp;rsquo;t even know that was a thing let alone &lt;em>why&lt;/em> somebody would do that.&lt;/p>
+&lt;h1 id="alternate-intermediate">Alternate Intermediate&lt;/h1>
+&lt;p>Turns out, it&amp;rsquo;s a very clever trick meant to &lt;a href="https://letsencrypt.org/2020/12/21/extending-android-compatibility.html">prevent Lets Encrypt certificates from breaking on &lt;em>older&lt;/em> versions&lt;/a>. Ironic that a &amp;lsquo;newer&amp;rsquo; android device got screwed in the process 😬.&lt;/p>
+&lt;p>The two valid chains of trust for Lets Encrypt certificates look like this:&lt;/p>
+&lt;figure >
+&lt;img src="https://karlquinsland.com/2021/10/using-new-lets-encrypt-intermediate-chain-with-skyhole/2020.12.21-android-compat-cert-chain.png" alt="Picture from LetsEncrypt blog post showing logical relationship between end-user certificates, the intermediate certificate chains and root certificates" />
+&lt;figcaption>
+&lt;p>
+Image credit/source:
+&lt;a href="https://letsencrypt.org/2020/12/21/extending-android-compatibility.html">
+LetsEncrypt
+&lt;/a>
+&lt;/p>
+&lt;/figcaption>
+&lt;/figure>
+&lt;p>With the help of &lt;a href="https://github.com/certbot/certbot/issues/8577">this&lt;/a> GitHub issue, the revised CertBot &lt;code>cli.ini&lt;/code> file becomes:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-shell" data-lang="shell">me@dot-host:~# cat /etc/letsencrypt/cli.ini | grep chain
+preferred-chain=&lt;span style="font-style:italic">&amp;#39;ISRG Root X1&amp;#39;&lt;/span>
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>After running certbot with the new config, &lt;code>logcat&lt;/code> shows success:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="background-color:#fff;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-shell" data-lang="shell">❯ adb logcat | grep resolv
+10-01 09:41:01.190 962 7711 W resolv : Validating DnsTlsServer 12.34.56.78 with mark 0xf0084
+10-01 09:41:01.734 962 7711 W resolv : validateDnsTlsServer returned 1 &lt;span style="font-weight:bold">for&lt;/span> 12.34.56.78
+10-01 09:41:01.734 962 7711 W resolv : Validation success
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Android no longer shows an unhelpful &amp;ldquo;can&amp;rsquo;t connect&amp;rdquo; message and I can see DNS queries being filtered!&lt;/p>
+&lt;p>🎊&lt;/p></description></item></channel></rss>
