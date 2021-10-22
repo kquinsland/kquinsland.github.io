@@ -1,7 +1,9 @@
 # Fixing Home Assistant discovery with Tasmota on the Treatlife DS03
 
 
-**UPDATE:** (2021-09-19): Multiple have gotten in touch with me seeking some support with this post. At present, there is a [bug](https://github.com/arendst/Tasmota/issues/12684#event-5035253885) with the Tasmota 9.5.0 release which breaks the automation outlined below. If you are having trouble getting the steps below to work **_either use Tasmota 9.4 or the latest development release of tasmota 9.5 if you're going to continue on with this post!_**
+**UPDATE:** (2021-10-22): Tasmota 9.5.0 has been superseded by the new [Tasmota 10.0.0 release](https://github.com/arendst/Tasmota/releases/tag/v10.0.0). This release works perfectly with the rules/automation outlined below; you no longer need to avoid the problematic 9.5 release with the DS03. I am extremely grateful to every one of the people that contributes to the Tasmota project to keep it improving!
+
+~~**UPDATE:** (2021-09-19): Multiple have gotten in touch with me seeking some support with this post. At present, there is a [bug](https://github.com/arendst/Tasmota/issues/12684#event-5035253885) with the Tasmota 9.5.0 release which breaks the automation outlined below. If you are having trouble getting the steps below to work **_either use Tasmota 9.4 or the latest development release of tasmota 9.5 if you're going to continue on with this post!_**~~
 
 -----
 
