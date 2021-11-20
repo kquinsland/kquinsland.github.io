@@ -4,12 +4,6 @@
 
 The [HASwitchPlate](https://github.com/aderusha/HASwitchPlate/) project by `aderusha` is brilliant. He's managed to arrange some relatively cheap commodity hardware into a package that conveniently fits into a prime location for interacting with Home Automation - the light switch. The entire package sips power off of the already present mains wiring and connects to any MQTT broker via the esp8266 chip. As the HASP was designed to be used with Home Assistant, the humble 2.4 inch LCD transforms into an accessible control surface for an incredibly powerful home automation platform!
 
-Within moments of discovering the project and browsing through a few examples, my mind ran wild with possibilities. After double checking the relatively low [B.O.M.](https://github.com/aderusha/HASwitchPlate#bill-of-materials) cost, 
-
-
-While shopping for the parts to make my own version, I got a few ideas.
-
-{{< figure name="installed" >}}
 
 
 ## Modifications

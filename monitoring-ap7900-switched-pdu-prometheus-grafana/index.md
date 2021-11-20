@@ -258,7 +258,7 @@ Once metrics are making their way into prometheus, it's only a bit of work to ge
 
 For sanity checking I fired up a load; a crypto-miner. See if you can spot when... :).
 
-{{< figure name="grafana_dashboard" >}}
+{{< figure name="grafana_dashboard_featured" >}}
 
 The `json` file for the dashboard is about 750 lines long, so rather than embed it, I've [attached]({{< ref "#files" >}}) it as a file; the sha1 hash of `dashboard.json` is `400edb0c4064068f12e17c2f1f0d6862d3b8d449`.
 

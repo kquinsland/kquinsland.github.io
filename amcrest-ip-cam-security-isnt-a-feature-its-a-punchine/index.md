@@ -161,7 +161,7 @@ The `maxlength` property of the login form differs from the password set form. I
 
 The first bit of documentation you see when unboxing the camera is this little guy:
 
-{{< figure name="security_advisory" >}}
+{{< figure name="security_advisory_feature" >}}
 
 which reads:
 

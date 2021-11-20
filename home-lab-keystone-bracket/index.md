@@ -9,7 +9,7 @@ This is another brief "i made a thing!" posts.
 
 {{< figure name="v2_front" >}}
 
-{{< figure name="v2_rear" >}}
+{{< figure name="v2_rear_featured" >}}
 
 
 ## What

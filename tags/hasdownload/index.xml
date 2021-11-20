@@ -673,29 +673,6 @@ Once the screw is fully inserted, allow it to fully cool (~5min) so the softened
 </ul>
 
 ]]></description></item><item><title>Enhanced Home Assistant Switch Plate (HASP)</title><link>https://karlquinsland.com/enhanced-homeassistantswitchplate/</link><pubDate>Thu, 01 Oct 2020 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/enhanced-homeassistantswitchplate/</guid><description><![CDATA[<p>The <a href="https://github.com/aderusha/HASwitchPlate/" target="_blank" rel="noopener noreffer">HASwitchPlate</a> project by <code>aderusha</code> is brilliant. He&rsquo;s managed to arrange some relatively cheap commodity hardware into a package that conveniently fits into a prime location for interacting with Home Automation - the light switch. The entire package sips power off of the already present mains wiring and connects to any MQTT broker via the esp8266 chip. As the HASP was designed to be used with Home Assistant, the humble 2.4 inch LCD transforms into an accessible control surface for an incredibly powerful home automation platform!</p>
-<p>Within moments of discovering the project and browsing through a few examples, my mind ran wild with possibilities. After double checking the relatively low <a href="https://github.com/aderusha/HASwitchPlate#bill-of-materials" target="_blank" rel="noopener noreffer">B.O.M.</a> cost,</p>
-<p>While shopping for the parts to make my own version, I got a few ideas.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        If the LEDs weren&#39;t on, you&#39;d never know they were there 😊
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
 <h2 id="modifications">Modifications</h2>
 <p>First, a brief word about indemnification:</p>
 <blockquote>

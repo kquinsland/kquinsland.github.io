@@ -17,7 +17,7 @@ Hoping to squash a small bug, I chose to upgrade the firmware to version `152` w
 I am _speculating_ but it looks like something significant changed around firmware version `150`. If you try to update a device from a version prior to `150` - like I did - something in memory is not properly migrated to the format required by versions after `150` and this causes the update process to fail before completion:
 
 
-{{< figure name="update_fail" >}}
+{{< figure name="update_fail-feature" >}}
 
 That failure message came from the [Update_Net_V152_20201205.zip](https://www.rievtech.com/phoenix/admin/download?fileId=jGUKpAvYWcQE&dp=GvUApKfKKUAU) file which is meant for the ethernet equipped PLCs in the `PR` line. The failure apparently soft bricks the PLC.
 

@@ -12,7 +12,7 @@ This post covers two things:
 
 When deployed, it looks like this:
 
-{{< figure name="installed" >}}
+{{< figure name="installed_feature" >}}
 
 Please ignore the awkward camera angle as the sensor is deployed in a location where there's not quite enough room for proper camera placement.
 

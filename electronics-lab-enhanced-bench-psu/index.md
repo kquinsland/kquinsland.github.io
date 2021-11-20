@@ -77,7 +77,7 @@ Just prior to seating the 'lid' you should have something like this:
 
 When all said and done, you'll get this:
 
-{{< figure name="assembled" >}}
+{{< figure name="assembled-feature" >}}
 
 
 ## Files

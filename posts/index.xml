@@ -1,4 +1,184 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>All Posts - karl</title><link>https://karlquinsland.com/posts/</link><description>All Posts | karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 01 Oct 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/posts/" rel="self" type="application/rss+xml"/><item><title>Using new Lets Encrypt intermediate chain with SkyHole</title><link>https://karlquinsland.com/skyhole-expired-lets-encrypt-ca/</link><pubDate>Fri, 01 Oct 2021 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/skyhole-expired-lets-encrypt-ca/</guid><description><![CDATA[<p>If you somehow missed it, one of the certificates used by Lets Encrypt chain of trust <a href="https://letsencrypt.org/docs/dst-root-ca-x3-expiration-september-2021/" target="_blank" rel="noopener noreffer">expired</a> this week.
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>All Posts - karl</title><link>https://karlquinsland.com/posts/</link><description>All Posts | karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 20 Nov 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/posts/" rel="self" type="application/rss+xml"/><item><title>Hardware accelerated graphics on the raspberry pi4 for a speedier KDS</title><link>https://karlquinsland.com/hardware-accelerated-graphics-on-the-raspberry-pi-4-a-snappier-kds/</link><pubDate>Sat, 20 Nov 2021 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/hardware-accelerated-graphics-on-the-raspberry-pi-4-a-snappier-kds/</guid><description><![CDATA[<p>Surfacing the right information at the right time in the right place is a difficult but essential task for any credible automation system.</p>
+<p>I have been experimenting with the concept of a Home Assistant powered <a href="https://www.qsrautomations.com/blog/kitchen-automation/what-is-a-kds/" target="_blank" rel="noopener noreffer">KDS</a> for a few years now and have found that the refrigerator happens to be an especially good place to surface some information and device controls.</p>
+<br>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Yes, it&#39;s over-exposed and shot at an awkward angle but that&#39;s what it took to minimize glare!
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<br>
+<p>This <strong>is not</strong> a post about how to build the KDS pictured above; you can follow any of the numerous &ldquo;how to use a raspberry pi as a kiosk&rdquo; guides out there and you&rsquo;d be 90% of the way there.
+The last 10% is highly application specific; the hardware <em>you</em> design and 3d-print or otherwise fabricate will depend on your particular screen and selected mounting location.</p>
+<p>This <strong>is</strong> a post about solving a performance issue with the dashboard hosted on the device.
+Earlier versions of this KDS were powered by a raspberry pi 3 B (not even the <code>+</code> variant!) with 1 GB of ram.
+The <a href="https://www.home-assistant.io/lovelace/" target="_blank" rel="noopener noreffer">Lovelace</a> dashboard that the KDS displays is quite javascript heavy and would frequently hang on the pi3b.</p>
+<p>I use this dashboard to adjust grocery lists, control lights, set appliance timers and more. If the dashboard is sluggish or otherwise unresponsive, it&rsquo;s worse than useless!</p>
+<p>As soon as I swapped in a raspberry pi 4 with 4 GB ram, things got &hellip;. marginally better 😑.</p>
+<p>Sure, it booted much faster and the JS heavy graphs didn&rsquo;t cause the box to wedge anymore, but manipulating things on screen still was still a choppy experience.
+Animations didn&rsquo;t show at all or had all but a few frames dropped :(.</p>
+<p>I know that the <a href="https://medium.com/@ghalfacree/benchmarking-the-raspberry-pi-4-73e5afbcd54b" target="_blank" rel="noopener noreffer">raspberry pi 4 is more than capable</a> of running a single web page in a headless browser so <em>something</em> is wrong.</p>
+<p>After a bit of digging, it turns out that chromium does NOT use hardware acceleration by default on the raspberry pi.</p>
+<p>Ok, that&rsquo;s an easy fix. Just enable the gpu and reboot:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">pi@kds:~ $ cat /boot/config.txt 
+&lt;...&gt;
+<span class="c1"># Enable DRM VC4 V3D driver for much more performant chrome</span>
+<span class="nv">dtoverlay</span><span class="o">=</span>vc4-kms-v3d
+&lt;...&gt;
+pi@kds:~ $ sudo reboot
+</code></pre></td></tr></table>
+</div>
+</div><p>&hellip; right?</p>
+<p><strong>No.</strong></p>
+<p>Turning on the gpu acceleration broke the various screen rotation / resolution directives that I had configured in <code>/boot/config.txt</code>:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">pi@kds:~ $ cat /boot/config.txt 
+&lt;...&gt;
+<span class="o">[</span>all<span class="o">]</span>
+<span class="c1"># We need to rotate the display 90degrees as the &#39;default&#39; orientation from the manufacturer assumes a horizontal orientation, not a vertical one</span>
+<span class="c1"># See: https://www.waveshare.com/wiki/13.3inch_HDMI_LCD_(H)</span>
+<span class="nv">display_rotate</span><span class="o">=</span><span class="m">1</span>
+
+<span class="c1"># Force correct resolution</span>
+<span class="c1"># Use &#39;DMT/Display Monitor Timings</span>
+<span class="c1"># See: https://www.raspberrypi.com/documentation/computers/config_txt.html#video-options</span>
+<span class="nv">hdmi_group</span><span class="o">=</span><span class="m">2</span>
+<span class="nv">hdmi_mode</span><span class="o">=</span><span class="m">82</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>One of the Raspberry Pi Engineers <a href="https://forums.raspberrypi.com/viewtopic.php?t=267954#p1626774" target="_blank" rel="noopener noreffer">explains why</a>:</p>
+<blockquote>
+<p>display_rotate only does anything if the firmware is in charge of the display, which isn&rsquo;t the case when using vc4-kms-v3d.</p>
+</blockquote>
+<p>Even when the video out could be configured with <code>config.txt</code>, the firmware offers no such mechanism to rotate input events to match the orientation.
+Fortunately, the LCD manufacturer <a href="https://www.waveshare.com/wiki/13.3inch_HDMI_LCD_%28H%29#Rotation.28Working_with_Raspberry_Pi.29" target="_blank" rel="noopener noreffer">provides good documentation about how to configure the touch inputs with X11</a></p>
+<p>Unfortunately, the manufacturer <em>does <strong>not</strong></em> provide corresponding documentation about how to configure the display with X11. Not that I can blame them! Configuring X11 has always been&hellip; tedious &hellip; to use a &lsquo;polite&rsquo; term for the experience!</p>
+<h2 id="xorg-and-ssh">Xorg and SSH</h2>
+<p>I&rsquo;ll spare you the bulk of the rant and summarize with this:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">Can&#39;t open display :0.0
+</code></pre></td></tr></table>
+</div>
+</div><p>For reasons that don&rsquo;t make a ton of sense to me, <em>all</em> of the command line tools for probing display hardware and creating X11 configurations really don&rsquo;t like working over SSH 🤔. Yes, I of course tried the <code>export DISPLAY=:0.0</code> <a href="https://www.linuxquestions.org/questions/linux-general-1/xrandr-from-remote-through-ssh-869084/page2.html" target="_blank" rel="noopener noreffer">trick</a>.</p>
+<p><code>xrandr</code> and friends are fine when running in a <em>local</em> shell, but just don&rsquo;t play nice when a local user connects via SSH.
+This makes things a lot harder than they needed to be as the location of the KDS does not lend its self to easily hooking up a keyboard and mouse.</p>
+<p>Furthermore, the <em>intended</em> purpose of this install is to display a web page. <strong>Thats it.</strong>
+There is next to no desktop environment installed because one is not needed for a full screen headless chrome instance.</p>
+<p>Installing a virtual console application was going to involve a lot of bloat and other unnecessary packages which is <em>overkill</em> for a few CLI utilities that <strong>should just work over any console weather that be local PTY or ssh!</strong></p>
+<p>After a few hours of anguish and trial/error later, I had everything working as expected! But before we get there and while i&rsquo;m still ranting, <a href="https://unix.stackexchange.com/questions/435702/check-syntax-of-conf-file-in-etc-x11-xorg-conf-d" target="_blank" rel="noopener noreffer">why is there no <code>xorg -checkconf ...</code> command</a>?!</p>
+<p>Ok. Now it&rsquo;s all out of my system.</p>
+<p><code>&lt;/rant&gt;</code></p>
+<h2 id="solution">Solution</h2>
+<p>Every tap registers instantly and there&rsquo;s no jank or stutter in any animation. Likewise, graphs animate as quickly as they load&hellip; Perfect!</p>
+<p>This is the X11 configuration that rotated the display and would &lsquo;see&rsquo; the display attached to the GPU:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">pi@kds:~ $ cat /etc/X11/xorg.conf.d/monitor.conf
+<span class="c1"># Device = GPU</span>
+<span class="c1"># When using rPi 4 with GPU instead of software render, the `modesetting` driver is the one to use... apparently.</span>
+Section <span class="s2">&#34;Device&#34;</span>
+        Identifier      <span class="s2">&#34;default&#34;</span>
+        Driver          <span class="s2">&#34;modesetting&#34;</span>
+EndSection
+
+Section <span class="s2">&#34;Monitor&#34;</span>
+        Identifier <span class="s2">&#34;default&#34;</span>
+        <span class="c1"># equivalent to `display_rotate = 1` in config.txt </span>
+        Option <span class="s2">&#34;Rotate&#34;</span> <span class="s2">&#34;right&#34;</span>
+EndSection
+
+Section <span class="s2">&#34;Screen&#34;</span>
+        Identifier <span class="s2">&#34;default&#34;</span>
+        Monitor <span class="s2">&#34;default&#34;</span>
+EndSection
+</code></pre></td></tr></table>
+</div>
+</div><p>In addition to the X11 config, some ram needs to be allocated as dedicated graphics memory:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">pi@kds:~ $ cat /boot/config.txt <span class="p">|</span> grep -B2 gpu_mem
+<span class="o">[</span>all<span class="o">]</span>
+<span class="c1"># Allocate 256MB of ram for the GPU</span>
+<span class="nv">gpu_mem</span><span class="o">=</span><span class="m">256</span>
+pi@kds:~ $ sudo reboot
+</code></pre></td></tr></table>
+</div>
+</div><p>Chrome did not automatically switch over to the GPU backed rendering pipe but it&rsquo;s easy enough to <a href="https://lemariva.com/blog/2020/08/raspberry-pi-4-video-acceleration-decode-chromium" target="_blank" rel="noopener noreffer">configure chrome to use the GPU</a> manually.</p>
+<p>And with all that in place, a quick <code>sudo systemctl restart lightdm</code> and a brief screen flicker later, chromium launched in full screen mode with the correct orientation. After the dashboard finished loading, the scroll/tap/animation performance was as good as it would be on any competent computer!</p>
+<p>I really don&rsquo;t know why I couldn&rsquo;t easily find a working X11 configuration example for use with the rPi 4 GPU, but I wasn&rsquo;t able to 🤷.</p>
+<p>Hopefully the above helps somebody else!</p>
+]]></description></item><item><title>Using new Lets Encrypt intermediate chain with SkyHole</title><link>https://karlquinsland.com/skyhole-expired-lets-encrypt-ca/</link><pubDate>Fri, 01 Oct 2021 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/skyhole-expired-lets-encrypt-ca/</guid><description><![CDATA[<p>If you somehow missed it, one of the certificates used by Lets Encrypt chain of trust <a href="https://letsencrypt.org/docs/dst-root-ca-x3-expiration-september-2021/" target="_blank" rel="noopener noreffer">expired</a> this week.
 As expected, things broke&hellip;. including my private, filtered DNS over TLS server - <a href="https://github.com/kquinsland/skyhole/" target="_blank" rel="noopener noreffer">SkyHole</a>. Below is a condensed form of my notes to create the exact document that I wish I had while trying to triage broken DNS on my phone.</p>
 <p><strong>TL;DR:</strong> Implement solution 3 from <a href="https://www.openssl.org/blog/blog/2021/09/13/LetsEncryptRootCertExpire/" target="_blank" rel="noopener noreffer">this</a> post.</p>
 <hr>
@@ -2757,29 +2937,6 @@ MQT: stat/tasmota_kettle/RESULT = {&#34;TelePeriod&#34;:10}
 <hr>
 <p><strong>EDIT:</strong> 2021-09-24: small typo fixes. Thanks for pointing them out :).</p>
 ]]></description></item><item><title>Enhanced Home Assistant Switch Plate (HASP)</title><link>https://karlquinsland.com/enhanced-homeassistantswitchplate/</link><pubDate>Thu, 01 Oct 2020 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/enhanced-homeassistantswitchplate/</guid><description><![CDATA[<p>The <a href="https://github.com/aderusha/HASwitchPlate/" target="_blank" rel="noopener noreffer">HASwitchPlate</a> project by <code>aderusha</code> is brilliant. He&rsquo;s managed to arrange some relatively cheap commodity hardware into a package that conveniently fits into a prime location for interacting with Home Automation - the light switch. The entire package sips power off of the already present mains wiring and connects to any MQTT broker via the esp8266 chip. As the HASP was designed to be used with Home Assistant, the humble 2.4 inch LCD transforms into an accessible control surface for an incredibly powerful home automation platform!</p>
-<p>Within moments of discovering the project and browsing through a few examples, my mind ran wild with possibilities. After double checking the relatively low <a href="https://github.com/aderusha/HASwitchPlate#bill-of-materials" target="_blank" rel="noopener noreffer">B.O.M.</a> cost,</p>
-<p>While shopping for the parts to make my own version, I got a few ideas.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        If the LEDs weren&#39;t on, you&#39;d never know they were there 😊
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
 <h2 id="modifications">Modifications</h2>
 <p>First, a brief word about indemnification:</p>
 <blockquote>
@@ -4145,692 +4302,6 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
                 
                 <figcaption>
                     <small>HomeSeer&#39;s WS200 has a delightful innovation... RGB LEDs!</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-</ul>
-
-]]></description></item><item><title>Adding an airborne particulate mater sensor to WS3 Weather Station</title><link>https://karlquinsland.com/ws3-weather-station-pm25-sensor/</link><pubDate>Thu, 27 Aug 2020 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/ws3-weather-station-pm25-sensor/</guid><description><![CDATA[<p>A while back, I <a href="https://github.com/kquinsland/ws3-to-esphome-bridge/" target="_blank" rel="noopener noreffer">posted a small bit of code</a> that could decode the data from the ubiquitous WS3 Weather Station and make it accessible to the amazing <a href="https://www.home-assistant.io/" target="_blank" rel="noopener noreffer">HomeAssistant</a> via the wonderful <a href="https://esphome.io/" target="_blank" rel="noopener noreffer">ESPHome</a> project. Since then, my weather station has been dutifully collecting data that&rsquo;s been invaluable for augmenting automation that deals with indoor climate.</p>
-<p>As the numerous wild fires in California rage on, <a href="https://www.forbes.com/sites/ericmack/2020/08/21/wildfire-smoke-blankets-the-west-as-california-records-worlds-worst-air-quality/" target="_blank" rel="noopener noreffer">the air quality has gone from bad to dangerous</a>. Knowing that outside was warmer, but less humid, was no longer enough to make a smart decision about weather or not to open the windows for some cost-effective cooling. I now need HomeAssistant to be aware of how clean the outside air was before making the decision to pipe in outdoor air.</p>
-<p>This post covers two things:</p>
-<ul>
-<li>A small update to the existing WS3 -&gt; ESPHome -&gt; HomeAssistant bridge code to take advantage of the WS3s' support for the ubiquitous <code>PMS5003T</code> sensor.</li>
-<li>A simple 3d-printable enclosure for deploying the particulate matter sensor outdoors</li>
-</ul>
-<p>When deployed, it looks like this:</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Excuse the awkward camera angle; sensor is deployed in an awkward to photograph location.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>Please ignore the awkward camera angle as the sensor is deployed in a location where there&rsquo;s not quite enough room for proper camera placement.</p>
-<p>And results in graphs that look like this:</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Smoke particles are between .4μm to .7μm in size... which explains the elevated red line relative to other particle sizes.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>A simplified copy of this post appears on <a href="https://www.thingiverse.com/thing:4581351" target="_blank" rel="noopener noreffer">thingiverse</a> and <a href="https://www.prusaprinters.org/prints/39560-outdoor-enclosure-for-pms5003-particulate-matter-s" target="_blank" rel="noopener noreffer">prusaprinters</a>.</p>
-<h2 id="the-enclosure">The enclosure</h2>
-<p>As of writing, there&rsquo;s <a href="https://www.thingiverse.com/thing:4044492" target="_blank" rel="noopener noreffer">one existing enclosure</a> for the sensor on thingiverse. Unfortunately, the enclosure does not appear to have any design features for mounting to a pole nor does it have any bug-proofing design elements. I took this opportunity to design my own that could be easily mounted, features a slanted &lsquo;roof&rsquo; to prevent standing moisture ingress and could use standard size tobacco pipe filters to keep all but the tiniest of insects/particles out.</p>
-<p>The sensor uses a small fan to draw ambient air past an infrared laser. As airborne particles cross the laser beam, they reflect a certain amount of light which can be correlated with the size of the particle. This data can then be turned into fairly accurate counts of how many particles of a given size are in the sampled air. The enclosure is a basic box with two circular air channels pointed downwards to prevent moisture ingress. The intake and exhaust ports are at staggered heights and pointed in opposite directions and to minimize the chance of recirculating the same air.</p>
-<p>The lower port is the intake which connects to a few small holes on the front of the sensor and the exhaust port is the raised port which connects directly to the exhaust fan. If you could remove the first few mm from the front, it would look something like this:</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>From the side, you can see the two air channels and the few mm of room in the back for wiring. The sensor sits on a &lsquo;pedestal&rsquo; to keep it elevated away from any moisture that may collect on the bottom of the enclosure.</p>
-<p>The base plate/pedestal are secured to the &lsquo;body&rsquo; with two M3 screws. I used <code>10mm</code> as that&rsquo;s what I had on hand, but screws between 6-12mm should work as well. The holes are sized for a M3, but any similar sized screw will work. Use a lighter or similar to heat the screw as you drive it into the plastic to create your own threads if using a larger/longer screw.</p>
-<p>Besides the &lsquo;pedestal&rsquo; there are a few contact surfaces that hold on to the sensor with a friction fit. The &lsquo;ceiling&rsquo; is a few mm thick and shouldn&rsquo;t permit much moisture ingress but an optional slanted roof component can be printed as an extra precaution.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Upper and lower chambers for exhaust and intake.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>While designing the enclosure, I used this <a href="https://grabcad.com/library/pms5003-2" target="_blank" rel="noopener noreffer"><code>PMS5003</code> model</a> from Leclercq Gregory. 🙏</p>
-<h3 id="printing">Printing</h3>
-<p>This is a functional part with only three small surfaces that require reasonably tight precision to properly hold onto the sensor. The <code>SPEED</code> setting with a <code>.2mm</code> layer height and a reasonable 20% infill gave me part that works and feels water tight. The walls and ceiling need to keep water out so dipping below 15% infill or otherwise using settings that wont give solid layer adhesion is not advised. I printed using ABS for durability, but PLA will probably work if you can deploy into a shaded environment.</p>
-<p>The shroud and the base are not optional, the triangle shaped block is intended to turn the flat roof of the shroud into a slanted roof so water can&rsquo;t collect. It is optional but shown below.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        No raft/support when printed in this orientation.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<h2 id="assemble">Assemble</h2>
-<p>Briefly:</p>
-<ul>
-<li>collect materials</li>
-<li>press-fit the PM2.5 sensor into the enclosure</li>
-<li>make a wire that can interface the PM2.5 sensor to the WS3 board via RJ11</li>
-<li>seal everything up</li>
-<li>glue on mesh screens and angled roof</li>
-<li>plug into WS3</li>
-<li>flash ESPHome onto</li>
-</ul>
-<h3 id="bill-of-materials">Bill of Materials</h3>
-<p>More or less everything that is needed for assembly is pictured below.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        More or less everything needed to assemble.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>Components:</p>
-<ul>
-<li>
-<p><a href="https://www.aliexpress.com/item/32921725022.html" target="_blank" rel="noopener noreffer">WS3 Weather Station</a> - Essential / Foundational</p>
-</li>
-<li>
-<p><a href="https://rover.ebay.com/rover/1/711-53200-19255-0/1?mpre=https%3A%2F%2Fwww.ebay.com%2Fitm%2FDigital-Universal-Particle-Concentration-Laser-Sensor-PMS5003-PM1-0-PM2-5-PM10%2F254616699639&amp;campid=5338734064&amp;toolid=10001&amp;customid=" target="_blank" rel="noopener noreffer">ST5003T PM2.5 Sensor</a> - Essential / Foundational</p>
-</li>
-<li>
-<p><a href="https://rover.ebay.com/rover/1/711-53200-19255-0/1?mpre=https%3A%2F%2Fwww.ebay.com%2Fitm%2FTTGO-Wemos-MINI-D1-ESP32-WiFi-Bluetooth-Wemos-D1-Mini-ESP8266-ESP-32-Module%2F183413480551&amp;campid=5338734064&amp;toolid=10001&amp;customid=" target="_blank" rel="noopener noreffer">ESP32 Device</a> - A link to the ESP32 based device that I use but any ESP platform with a spare GPIO that can be used as a UART will work.</p>
-</li>
-<li>
-<p><a href="https://rover.ebay.com/rover/1/711-53200-19255-0/1?mpre=https%3A%2F%2Fwww.ebay.com%2Fitm%2F25-Stainless-Steel-Smoking-Pipe-Screens-3-4-19mm-Tobacco-HOOKAH-FILTER-Heavy%2F183969079809&amp;campid=5338734064&amp;toolid=10001&amp;customid=" target="_blank" rel="noopener noreffer">3/4 inch tobacco pipe screens</a> - For bug/critter proofing the enclosure. Strongly suggested for outdoor deployments.</p>
-</li>
-<li>
-<p><a href="https://www.mcmaster.com/91292A113/" target="_blank" rel="noopener noreffer">2x M3 x 10mm screws</a> - Optional. The base can be glued to the shroud or any similar screw will work</p>
-</li>
-</ul>
-<p><strong>Note</strong>: Where possible, I&rsquo;ve used referral links. The links don&rsquo;t raise the price of any item, they simply let the retailer know that I sent you and, in return, I get a small cut of your purchase. If you&rsquo;re not comfortable with that, you can use a URL unwinding service to get the &lsquo;raw&rsquo; product link and drop the attribution/commission part.</p>
-<p>General bits:</p>
-<ul>
-<li>Superglue</li>
-<li>Waterproofing caulk/sealant</li>
-<li>Drill/Screwdriver</li>
-<li>Driver bit for the screws</li>
-</ul>
-<p>The stepped drill bit in the above picture is not a requirement if you assemble things in the correct oder. The cable egress hole is sized for a &lsquo;typical&rsquo; 3 pair <a href="https://en.wikipedia.org/wiki/Registered_jack#RJ11,_RJ14,_RJ25_wiring" target="_blank" rel="noopener noreffer">RJ11 cable</a> plus a tiny bit of wiggle room. I needed a working cable to test the code while the parts were printing so the hole in the printed base needed to be enlarged slightly to fit the head of the cable.</p>
-<h3 id="wiring">Wiring</h3>
-<p>There&rsquo;s no ready-made cable out there that&rsquo;ll join the two devices so one must be made. Fortunately, there&rsquo;s only 6 wires to deal with&hellip; 4 of them are distinct.</p>
-<p>Sacrifice the cable that comes with the PM2.5 sensor and the RJ11 cable by cutting them in half and solder the correct wires together. The <em>color</em> of the wires that come in both the RJ11 cable and the PM2.5 cable are likely going to differ from the ones I used so I&rsquo;ve left those details out and provided a table showing which pins are to be joined together:</p>
-<table>
-<thead>
-<tr>
-<th>Pin #</th>
-<th>PM2.5 Sensor Pin</th>
-<th>WS3 Pin</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-<td>VCC</td>
-<td>5V</td>
-</tr>
-<tr>
-<td>2</td>
-<td>GND</td>
-<td>GND</td>
-</tr>
-<tr>
-<td>3</td>
-<td>SET</td>
-<td>ENABLE</td>
-</tr>
-<tr>
-<td>4</td>
-<td>RX</td>
-<td>RX</td>
-</tr>
-<tr>
-<td>5</td>
-<td>TX</td>
-<td>GND</td>
-</tr>
-<tr>
-<td>6</td>
-<td>RESET</td>
-<td>5V</td>
-</tr>
-<tr>
-<td>7</td>
-<td>NC</td>
-<td></td>
-</tr>
-<tr>
-<td>8</td>
-<td>NC</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p>For reference, Pin 1 on both the WS3 and PM2.5 Sensor:</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>With the wiring done, the sensor just needs to be stuffed into the enclosure. Don&rsquo;t forget to thread the RJ11 cable through the hole in the base plate <em>BEFORE</em> soldering it to the cable for the PM2.5 sensor&hellip; otherwise you&rsquo;ll need that stepped drill bit! 🙃</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Sensor has been press-fit into the enclosure and wire fed through the base plate.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>To finish, secure the base with screws and a bit of water-proofing caulk for good measure:</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        I suggest waiting until the end to glue on the optional roof and waiting until just before that to glue on the optional mesh screens.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<h2 id="the-code">The code</h2>
-<p>Setting up and using ESPHome is outside the scope of this post but there are several <a href="https://esphome.io/guides/getting_started_hassio.html" target="_blank" rel="noopener noreffer">good guides</a> out there. Once you have that set up, <a href="https://esphome.io/custom/custom_component.html" target="_blank" rel="noopener noreffer">include</a> the <code>ws3.h</code> file and set up your custom sensor as shown below. A working example and more detail is over on the
-<a href="https://github.com/kquinsland/ws3-to-esphome-bridge/" target="_blank" rel="noopener noreffer">github repo</a>.</p>
-<p>It&rsquo;ll look like this:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="nt">uart</span><span class="p">:</span><span class="w">
-</span><span class="w">  </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">uart_bus</span><span class="w">
-</span><span class="w">  </span><span class="c"># At this time, ESP does not Transmit anything to the WS3</span><span class="w">
-</span><span class="w">  </span><span class="nt">tx_pin</span><span class="p">:</span><span class="w"> </span><span class="l">GPIO16</span><span class="w">
-</span><span class="w">  </span><span class="nt">rx_pin</span><span class="p">:</span><span class="w"> </span><span class="l">GPIO17</span><span class="w">
-</span><span class="w">  </span><span class="nt">baud_rate</span><span class="p">:</span><span class="w"> </span><span class="m">2400</span><span class="w">
-</span><span class="w">
-</span><span class="w"></span><span class="nt">sensor</span><span class="p">:</span><span class="w">
-</span><span class="w">  </span>- <span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">custom</span><span class="w">
-</span><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span><span class="sd">      auto ws3 = new WS3(id(uart_bus));
-</span><span class="sd">      App.register_component(ws3);
-</span><span class="sd">      return {
-</span><span class="sd">        ws3-&gt;temperature_sensor, 
-</span><span class="sd">        ws3-&gt;pressure_sensor, 
-</span><span class="sd">        ws3-&gt;humidity_sensor, 
-</span><span class="sd">        ws3-&gt;wind_speed_current_sensor,
-</span><span class="sd">        ws3-&gt;wind_speed_peak_5m_sensor,
-</span><span class="sd">        ws3-&gt;wind_direction_sensor,
-</span><span class="sd">        ws3-&gt;rain_fall_1h_sensor, 
-</span><span class="sd">        ws3-&gt;rain_fall_24h_sensor,
-</span><span class="sd">
-</span><span class="sd">        ws3-&gt;particles_03um,
-</span><span class="sd">        ws3-&gt;particles_05um,
-</span><span class="sd">        ws3-&gt;particles_10um,
-</span><span class="sd">        ws3-&gt;particles_25um,
-</span><span class="sd">        ws3-&gt;particles_50um,
-</span><span class="sd">        ws3-&gt;particles_100um,
-</span><span class="sd">      };</span><span class="w">      
-</span></code></pre></td></tr></table>
-</div>
-</div><p>With that, check the logs from your instance of ESPHome and you should see something like this:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">[D][ws3:157]: pkt_read_ok!
-[D][WS3:410]: VALID! Packet: [c000s000g000t093r000p000h35b09880,050,080,088,502,056,065,*18
-], Checksum: [18] chksum: [18]
-[E][WS3:342]: Validating: [c000s000g000t093r000p000h35b09880,050,080,088,502,056,065]
-</code></pre></td></tr></table>
-</div>
-</div><p>indicating that the WS3 has detected the PM2.5 sensor and is reporting it&rsquo;s readings in addition to the temperature/wind data. Then just check your HomeAssistant install for the data.</p>
-<h2 id="files">Files</h2>
-<p>For archive / posterity, all source files are included here. All files are licensed as <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreffer">Creative Commons Attribution-NonCommercial-ShareAlike</a> (CC BY-NC-SA).</p>
-<ul>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/02.assemble.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Sensor has been press-fit into the enclosure and wire fed through the base plate.</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/03.glue.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>I suggest waiting until the end to glue on the optional roof and waiting until just before that to glue on the optional mesh screens.</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/example_dashboard.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Smoke particles are between .4μm to .7μm in size... which explains the elevated red line relative to other particle sizes.</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/04.installed.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Excuse the awkward camera angle; sensor is deployed in an awkward to photograph location.</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/BASE.step">
-                <i class="far fa-file-code"></i>
-                models/BASE.step:
-                
-                <small style="font-family:'Lucida Console', monospace">step</small> <small>file</small>
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/BODY.step">
-                <i class="far fa-file-code"></i>
-                models/BODY.step:
-                
-                <small style="font-family:'Lucida Console', monospace">step</small> <small>file</small>
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/LID.step">
-                <i class="far fa-file-code"></i>
-                models/LID.step:
-                
-                <small style="font-family:'Lucida Console', monospace">step</small> <small>file</small>
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/base.stl">
-                <i class="far fa-file-code"></i>
-                models/base.stl:
-                
-                <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/body.stl">
-                <i class="far fa-file-code"></i>
-                models/body.stl:
-                
-                <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/combined.3mf">
-                <i class="far fa-file-archive"></i>
-                models/combined.3mf:
-                
-                <small style="font-family:'Lucida Console', monospace">3mf</small> <small>file</small>
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/lid.stl">
-                <i class="far fa-file-code"></i>
-                models/lid.stl:
-                
-                <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/pin_out/PM2.5_Pins.jpg">
-                    
-                </a>
-                
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/pin_out/WS3_Pins.jpg">
-                    
-                </a>
-                
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/01.collect.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>More or less everything needed to assemble.</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/suggested_print_orientation.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>No raft/support when printed in this orientation.</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/f360_air_channels.jpg">
-                    
-                </a>
-                
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/f360_side_profile.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Upper and lower chambers for exhaust and intake.</small>
                 </figcaption>
                 
             </figure>
