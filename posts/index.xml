@@ -1,4 +1,455 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>All Posts - karl</title><link>https://karlquinsland.com/posts/</link><description>All Posts | karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 20 Nov 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/posts/" rel="self" type="application/rss+xml"/><item><title>Hardware accelerated graphics on the raspberry pi4 for a speedier KDS</title><link>https://karlquinsland.com/hardware-accelerated-graphics-on-the-raspberry-pi-4-a-snappier-kds/</link><pubDate>Sat, 20 Nov 2021 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/hardware-accelerated-graphics-on-the-raspberry-pi-4-a-snappier-kds/</guid><description><![CDATA[<p>Surfacing the right information at the right time in the right place is a difficult but essential task for any credible automation system.</p>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>All Posts - karl</title><link>https://karlquinsland.com/posts/</link><description>All Posts | karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 11 Dec 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/posts/" rel="self" type="application/rss+xml"/><item><title>Tuya Smart Curtain Driver Robot Teardown</title><link>https://karlquinsland.com/tuya-smart-curtain-driver-robot-teardown/</link><pubDate>Sat, 11 Dec 2021 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/tuya-smart-curtain-driver-robot-teardown/</guid><description><![CDATA[<p>I am trying something new out with this post; some mix of hardware teardown and a brief product review.</p>
+<hr>
+<h1 id="why">Why</h1>
+<p>I was looking for a way to actuate some heavy blackout curtains.</p>
+<p>There have been <em>several</em> DIY projects out there that manipulate curtains but they all appear to be relatively involved as they are often designed for a very specific type of curtain; servos that fit on the &lsquo;tilt rod&rsquo; or motors that can manipulate the pull chain&hellip; etc.</p>
+<p>The specific curtains that I wanted to power-actuate  are curtains that do not have a pull string or a set of wheels/track to facilitate their movement. Just folds of fabric hanging directly from a telescopic metal rod.</p>
+<p>After a quick review of hte existing commercial solutions for my application/style of curtains, it became clear that they all work in about the same way: some battery powered motor mechanically couples to the curtain rod and moves along the rod dragging / pushing the curtain as it does so.</p>
+<p>Since they all more or less use the same design, I figured that most of the differentiation between products would be in the software side of things. No product immediately stood out as having <strong>local</strong> Home Assistant integration so it didn&rsquo;t matter which product I selected; I will inevitably have to do some reverse engineering / hacking to get <strong>local</strong> Home Assistant integration.</p>
+<p>I selected the <code>Tuya Smart Curtain Driver Robot</code> because:</p>
+<ol>
+<li>Cheap</li>
+<li>Appeared to use USB-C for charging</li>
+<li>I was vaguely aware that <a href="https://github.com/ct-Open-Source/tuya-convert" target="_blank" rel="noopener noreffer">TuYa was pumping out a <em>ton</em> of ESP8266 based hardware</a> and hoped that I&rsquo;d find the familiar microcontroller inside.</li>
+</ol>
+<p>Below is a collection of photos and some thoughts that are - roughly - what I wish I had been able to find when doing the product research.
+If I had found the equivalent of this post while doing my research, I would have been able to save myself a purchase!</p>
+<h1 id="what">What</h1>
+<p>Searching for rod-based curtain actuators will turn up a <em>ton</em> of results. A fair number of them use product images very similar to these:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Official marketing photo
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>How well the robot performs will depend on how well the little white wheel is held against the bottom of the curtain rod.
+The arms that the upper sled attaches to are spring loaded for additional clamping force.</p>
+<p>The case seems to be fairly generic and used across multiple brands so it&rsquo;s safe to say that depending on the version / hardware variant, you may or may not have all of the featured inputs/sensors.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Only one of the two units in a pair comes equipped with the light sensor.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>The light sensor is a nice touch. I will absolutely be borrowing that idea when designing my own solution 💡🤔!</p>
+<h2 id="teardown">Teardown</h2>
+<p>I&rsquo;m not a huge fan of unboxing videos. The box is rather unremarkable; it sustained some damage in transit, but that&rsquo;s what it&rsquo;s supposed to do.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Relatively well packaged. The seller that I purchased from had explicit listings for different curtain rod styles so I am not sure why I received hardware for all styles. There does not appear to be any easy way to install this hardware.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>The upper sled is coupled to the main body through two spring-loaded arms with a ratchet and paw setup. The arms can be easily removed from the main body if needed.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        I am getting some vague Portal2 Turret vibes...
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>Since the entire weight of the robot will be hanging from the upper sled, the springs are the only thing that will pull the actuator wheel into the curtain rod. I don&rsquo;t know how the springs will last over time, but I absolutely can forsee needing to re-tension things as the springs inevitably stretch out.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        The ratchet/paws seem to indicate compatibility with some comically large diameter curtain rods!
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Obligatory &#39;i void warranties&#39; reference.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>Use a Philips style <code>J00</code> or <code>J000</code> screwdriver to remove the four screws holding the thing together. Use any flat pry tool to crack the two halves apart.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Screw hiding under warranty void sticker and obvious mechanical/snap seam make it pretty obvious how this will come apart.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>And with that, our first real look at the electronics inside!</p>
+<p>I expected a simple PCB that contained a charge controller circuit for the battery and a simple motor driver with over current protection&hellip; and nothing else. I was sure that <em>everything</em> else would be handled directly by a the radio-on-module.</p>
+<p>I <em>absolutely</em> did not expect the PCB to have provisions for &hellip; <strong>two</strong> radio modules!</p>
+<p>A few other quick observations:</p>
+<ul>
+<li>The unpopulated radio module footprint does not match any ESP-8266 modules that I am familiar with.</li>
+<li>The populated radio module <em>does</em> look like a common ESP-12E module footprint&hellip; but the module is <em>clearly</em> not an ESP.</li>
+<li>The markings have been erased from all the interesting ICs 🤬.</li>
+<li>The 20 pin chip closest to the unpopulated module footprint could be anything but is likely the &lsquo;housekeeping&rsquo; CPU. The populated radio module likely communicates with this chip to command the motor and check the sensors</li>
+<li>The product marketing photos indicated that there would be a light sensor. The PCB appears to have a foot print for an LDR&hellip; but it&rsquo;s not populated&hellip;
+only a few passive components besides some radio-on-module</li>
+<li>The USB-C port does not have any active electronics connected to it. The port likely does not speak any power delivery protocols and certainly does not have a hidden UART for talking to either of the microcontrollers.</li>
+<li>No motor is visible so that means that it must be embedded in the comically small drive wheel&hellip;</li>
+</ul>
+<p>Some more technical details are discussed <a href="#technical-details" rel="">below</a>.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Huh. Was not expecting the PCB to be quite so big or complex!
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>Lifting up the PCB reveals the battery pack. I did not slice the pack open to see which brand of cells went into the pack.
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Grateful that they didn&#39;t solder the battery directly to the PCB.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        I have not tested the battery to see accurate the labeled capacity is.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>I was still looking for that elusive light sensor so I opened up the second unit&hellip; and found it!</p>
+<p>Other than the populated second radio module, <code>R20</code> and the LDR, the PCBs appear identical.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Something tells me that the PCB with two radio modules is the &#39;leader&#39; out of the two.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>On the rear we can see an obvious programming / debug port and a PCB/product designator: <code>ZNCL_TY_V1.5</code>.</p>
+<p>Giving that a quick google returns almost nothing.
+I did find <a href="https://old.reddit.com/r/esp32/comments/q3omwh/can_somebody_tell_me_what_were_looking_at_here/hft52t1/" target="_blank" rel="noopener noreffer">this</a> post from <a href="https://old.reddit.com/user/coned_miro" target="_blank" rel="noopener noreffer">/u/coned_miro</a> asking about a very similar PCB revision:</p>
+<pre><code>    ...The main board says 'ZNCL_TY_V1.3' on the back
+</code></pre>
+<p>Nothing new to be learned about the tuya device from that thread, sadly.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        No, I didn&#39;t hook a scope up or trace out the obvious programming/debug header.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<h2 id="the-app">The App</h2>
+<p>I never intended to use the manufacturer provided app for anything other than the initial setup so this will be a very brief section. The robot was quickly discovered and provisioned through the app.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        BTLE Pair/Provisioning was straightforward
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>The device calibration process is pretty rudimentary and does not have an easy &ldquo;undo&rdquo; process.</p>
+<p>If you make a mistake in configuring the direction/distance that the robot needs to travel for curtain open/close, you have to factory reset the device. Fortunately this is easy to do in app and discovering/re-provisioning the device takes only a few seconds.</p>
+<p>The <em>two</em> firmware version strings strongly hints at a &ldquo;two processors for two domains&rdquo; architecture: the anonymous 20pin chip runs everything on the PCB and the <code>BT7L</code> module deals with external communications and is only abstractly aware of the PCB/motor/sensor/battery state.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        I have only skimmed the TuYa developer documentation but I think that the VirtualID is common to _all_ of the curtain robots.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<h1 id="verdict">Verdict</h1>
+<p>While disappointing that there was no easily hackable ESP microcontroller running the show, it doesn&rsquo;t matter.
+I can&rsquo;t use this product as is for my intended application; the motor is just too puny for the task.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        The brains(?)
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>My curtains are rather thick and heavy. A tiny motor can&rsquo;t <em>possibly</em> have enough power to do this on it&rsquo;s own&hellip; especially with a sub-optimal coupling mechanism!</p>
+<p>To give the motor a fighting chance, the engineers went with a TON of reduction-gearing.
+The gearbox allows a wimpy but fast motor to become a more grunty motor at the expense of speed.
+Almost anything small that rotates at high speed will come with some unpleasant sounds. This is ESPECIALLY true for cheaply made gearbox full of small gears.</p>
+<p>This means that any invocation of the robot will be noisy.
+You can expect the noisy little device to <em>slowly</em> move across the curtain rod. 🙄</p>
+<p>The robot struggled to push the curtains together towards the end of an opening cycle&hellip; it would often skip in place as the drive wheel struggled to keep enough traction on the curtin rod.</p>
+<p>Likewise, asking the robot to pull the bucked up curtains closed was out of the question without some sort of an assist.</p>
+<p>Because the robot has no fixed position sensor, it can&rsquo;t really measure where on the curtain rod it is.
+Every time the drive wheel skips, the difference between where the robot thinks it is and where it <em>actually</em> is will grow.</p>
+<p>If you can stand the whiny/slow movement, expect frequent re-calibrations 👎.</p>
+<br>
+<p><strong>TL;DR</strong>: Looks like there&rsquo;s a reason why the hobbyist/DIY community has produced such a <em>wide variety</em> of bespoke curtain/drape actuators&hellip; most of the commercial ones have sacrificed too much in order to be widely usable.
+The solution that I end up implementing will be designed with my heavy drapes in mind and will use an appropriately sized and quiet motor!</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        A simple brushed DC motor with no position encoder and what is probably a cheaply made gearbox. What could go wrong?
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<h1 id="technical-details">Technical Details</h1>
+<p>A highly condensed version of my initial notes from setup/teardown:</p>
+<ul>
+<li>
+<p>Was not expecting multiple radio units. The blue radio-module that both PCBs have in common appears to be a <code>JDY-25M</code>.</p>
+</li>
+<li>
+<p>There is a SDK for the <code>JDY-25M</code> available <a href="https://github.com/Edragon/JDY-MESH/tree/main/JDY-25M/SDK" target="_blank" rel="noopener noreffer">here</a>. It contains some english documentation.</p>
+</li>
+<li>
+<p>The <code>JDY-25M</code> SDK does not appear to contain any information about how to program the chip or build a custom firmware. You are meant to interface with the &lsquo;stock&rsquo; firmware via <code>AT+</code> commands. The firmware appears to support multiple modes&hellip; including a bi-directional communication link. I suspect that the unique radio module is the connection to the outside world and the the two identical radio modules are used to coordinate movement between the two pods</p>
+</li>
+<li>
+<p>I was never able to get the &lsquo;follower&rsquo; unit to pair or otherwise command the second unit.</p>
+</li>
+<li>
+<p>The unique radio module is a module made specifically by/for TuYa: <a href="https://developer.tuya.com/en/docs/iot/bt7l?id=K96gqp1dp6iiw" target="_blank" rel="noopener noreffer">https://developer.tuya.com/en/docs/iot/bt7l?id=K96gqp1dp6iiw</a></p>
+</li>
+</ul>
+<h2 id="pcb-markings">PCB Markings</h2>
+<p>AKA SEO optimization 😉</p>
+<ul>
+<li>PCB is marked: <code>ZNCL_TY_V1.5</code></li>
+<li>&ldquo;primary&rdquo; radio: <a href="https://developer.tuya.com/en/docs/iot/bt7l?id=K96gqp1dp6iiw" target="_blank" rel="noopener noreffer"><code>BT7L</code></a></li>
+<li>&ldquo;secondary&rdquo; radio <a href="https://github.com/Edragon/JDY-MESH/tree/main/JDY-25M/SDK" target="_blank" rel="noopener noreffer"><code>JDY-25M</code></a></li>
+</ul>
+]]></description></item><item><title>Hardware accelerated graphics on the raspberry pi4 for a speedier KDS</title><link>https://karlquinsland.com/hardware-accelerated-graphics-on-the-raspberry-pi-4-a-snappier-kds/</link><pubDate>Sat, 20 Nov 2021 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/hardware-accelerated-graphics-on-the-raspberry-pi-4-a-snappier-kds/</guid><description><![CDATA[<p>Surfacing the right information at the right time in the right place is a difficult but essential task for any credible automation system.</p>
 <p>I have been experimenting with the concept of a Home Assistant powered <a href="https://www.qsrautomations.com/blog/kitchen-automation/what-is-a-kds/" target="_blank" rel="noopener noreffer">KDS</a> for a few years now and have found that the refrigerator happens to be an especially good place to surface some information and device controls.</p>
 <br>
 <figure >
@@ -2936,1379 +3387,4 @@ MQT: stat/tasmota_kettle/RESULT = {&#34;TelePeriod&#34;:10}
 </div><p>Hope that helped!</p>
 <hr>
 <p><strong>EDIT:</strong> 2021-09-24: small typo fixes. Thanks for pointing them out :).</p>
-]]></description></item><item><title>Enhanced Home Assistant Switch Plate (HASP)</title><link>https://karlquinsland.com/enhanced-homeassistantswitchplate/</link><pubDate>Thu, 01 Oct 2020 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/enhanced-homeassistantswitchplate/</guid><description><![CDATA[<p>The <a href="https://github.com/aderusha/HASwitchPlate/" target="_blank" rel="noopener noreffer">HASwitchPlate</a> project by <code>aderusha</code> is brilliant. He&rsquo;s managed to arrange some relatively cheap commodity hardware into a package that conveniently fits into a prime location for interacting with Home Automation - the light switch. The entire package sips power off of the already present mains wiring and connects to any MQTT broker via the esp8266 chip. As the HASP was designed to be used with Home Assistant, the humble 2.4 inch LCD transforms into an accessible control surface for an incredibly powerful home automation platform!</p>
-<h2 id="modifications">Modifications</h2>
-<p>First, a brief word about indemnification:</p>
-<blockquote>
-<p>All instructions and information on this page is purely for informational purposes.</p>
-<p>The original HASP and my modifications come with neither an expressed or implied warranty. By constructing your own, you assume all risk.</p>
-</blockquote>
-<h3 id="software">Software</h3>
-<p>The few software modifications I&rsquo;ve made to the HASP project are relatively small and don&rsquo;t implement anything significant or new; they are &lsquo;quality of life&rsquo; improvements that target small portions of the code.</p>
-<p>I strongly believe that the hardest part of using a given piece automation technology should be taking it out of the box. To wit, Home Assistant has robust - <a href="https://community.home-assistant.io/t/ability-to-set-entity-icon-through-mqtt-discovery/224538" target="_blank" rel="noopener noreffer">but not perfect</a> - support for <a href="Https://www.home-assistant.io/docs/mqtt/discovery/" target="_blank" rel="noopener noreffer">automatic device discovery and configuration via MQTT</a>. Once a device has connected to the MQTT broker, it simply publishes a document detailing how HA should interface with the device. It&rsquo;s a wonderful experience to see a new device connect to the network for the first time and just a few seconds later the new device is registered in HA, waiting for you to start integrating it into automations 🤩🤤.</p>
-<p>While there are quite a few sensors/stateful-attributes in the original HASP code, none of them automatically present themselves to Home Assistant 😔. I set about fixing that to the best of my abilities. Unfortunately, the LCD backlight is the only peripheral that could be &lsquo;upgraded&rsquo; to automatic configuration without making a ton of changes to the original code base.</p>
-<p>All of the hardware modifications detailed below automatically configure themselves with Home Assistant.</p>
-<p>The original HASP code base uses allocates too little memory for storing MQTT credentials. Any username or password longer than 31 bytes/characters would be <strong>silently</strong> truncated on save. Despite the &lsquo;credentials saved, rebooting&rsquo; message, the next screen was always a &lsquo;failure to connect&rsquo; message. Frustrating! The pull request to address this is <a href="https://github.com/aderusha/HASwitchPlate/pull/117" target="_blank" rel="noopener noreffer">here</a>.</p>
-<h3 id="hardware">Hardware</h3>
-<p>The HASP does support dimming the LCD, but it has no awareness of ambient light levels. This makes it rather difficult to deploy a HASP in any &lsquo;light sensitive&rsquo; location like a bedroom or media room without another device to cue Home Assistant and lower the LCD brightness. Workable, but too high friction to be ideal.</p>
-<p>Light Dependent Resistors - <a href="https://en.wikipedia.org/wiki/Photoresistor" target="_blank" rel="noopener noreffer">LDR</a> for short - are a very cheap and compact way to get an approximate light level. Fortunately, the analogue pin is broken out on the <a href="https://github.com/aderusha/HASwitchPlate/tree/master/PCB" target="_blank" rel="noopener noreffer">PCB</a> so a simple <a href="https://en.wikipedia.org/wiki/Voltage_divider#Resistive_divider" target="_blank" rel="noopener noreffer">resistive divider</a> and a few lines of code are all that&rsquo;s needed to get a a number that linearly correlates to the level of light hitting the face plate.</p>
-<p>It just so happens that there is <em>just enough</em> room to fit a LDR beneath the surface of the decor plate and out of the way of the LCD. As (not) shown in the picture above, there is no way to tell that the LDR is embedded beneath the surface.</p>
-<p>The range of values from the LDR isn&rsquo;t great, but they are adequate enough to reliably detect if the HASP is in a darkened room.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        ignore the spikes just before noon, those are due to to testing with a flash light
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>While researching potential ways to measure the ambient brightness, I stumbled across the <a href="https://shop.homeseer.com/products/z-wave-dimmer-switch" target="_blank" rel="noopener noreffer">HomeSeer HS-WD200+</a> which features a rather novel way to convey additional information to a user; seven RGB leds 😍. It&rsquo;s a brilliant use of such a simple and ubiquitous technology that I&rsquo;m not really sure why every smart switch doesn&rsquo;t do this!</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        HomeSeer&#39;s WS200 has a delightful innovation... RGB LEDs!
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>With <em>zero</em> room to spare, four LEDs can fit into a small cavity between the LCD and decor plate surface. Like with the LDR, there is no visual &lsquo;tell&rsquo; that there are LEDs beneath the surface&hellip; unless they&rsquo;re on, of course.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Ignore the dirt on the switch. Notice how you can&#39;t tell there&#39;s an LDR beneath the surface
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<h4 id="the-enclosure">The enclosure</h4>
-<p>Without consuming more than 1 <a href="https://diy.stackexchange.com/questions/11654/what-does-1-gang-2-gang-and-so-forth-mean-when-talking-about-electrical-bo" target="_blank" rel="noopener noreffer">gang</a>, the only realistic way to get the wires for the new components to the HASP PCB is to go around the edge of the LCD&rsquo;s PCB. This is accomplished with two small &lsquo;channels&rsquo; that slightly protrude in the vertical directions from the lip around the LCD and into the box that encloses the electronics.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Section analysis from f360 showing small channels around the LCD for wires to LDR and LEDs
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>Additionally, I found that the original printed parts do not properly fit in the <a href="https://www.amazon.com/Thomas-Betts-B232A-UPC-Carlon-Bulk/dp/B000GAWYZ8/" target="_blank" rel="noopener noreffer">two gang electrical box</a> where I intended to deploy the HASP.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        The only way to fit the HASP in my 2-gang electric boxes is to cut out a small section
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>In total, the modifications required to accommodate the LDR and LED tape are relatively small, but <a href="https://github.com/aderusha/HASwitchPlate/issues/116" target="_blank" rel="noopener noreffer">I had to re-create the model from scratch</a> so several things are likely a bit different from the original model. It should be relatively easy to port the modifications to the other multi-gang configurations that the original HASP supports.</p>
-<p>The <code>.step</code> and <code>.f3z</code> files are available should you want to make the necessary modifications to other switch plate configurations.
-The <code>.stl</code> and <code>.3mf</code> files are available for easy printing.</p>
-<p>All files available <a href="#files" rel="">below</a> and on <a href="https://github.com/kquinsland/HASwitchPlate/tree/master/3D_Printable_Models/enhanced-HASP" target="_blank" rel="noopener noreffer">github</a>.</p>
-<h2 id="assembly">Assembly</h2>
-<p>The steps below are meant to be followed between the original steps <a href="https://github.com/aderusha/HASwitchPlate/blob/master/Documentation/03_Electronics_Assembly.md" target="_blank" rel="noopener noreffer"><code>03_Electronics_Assembly</code></a> and <a href="https://github.com/aderusha/HASwitchPlate/blob/master/Documentation/04_Project_Enclosure.md" target="_blank" rel="noopener noreffer"><code>04_Project_Enclosure</code></a>.</p>
-<p>In short, you&rsquo;ll want to assemble and test the HASP PCB as in the original instructions, but use the steps below as a substitute for the enclosure assembly process.</p>
-<h3 id="additional-materials">Additional Materials</h3>
-<p>In addition to everything in the original BOM, you&rsquo;ll need:</p>
-<ul>
-<li>
-<p>A LDR. Be aware that LDRs come in many different shapes and sizes and have different resistance values. Space is rather tight, so the form factor matters a lot more than the resistance values or band of light that the LDR responds to. If you use a different LDR, you may need to adjust the resistor value to better match your LDR. You can get 50 of the exact model GL5516 that I used for less than $2 <a href="https://s.click.aliexpress.com/e/_dUjV8Rn" target="_blank" rel="noopener noreffer">here</a>.</p>
-</li>
-<li>
-<p>A 10KΩ resistor to form a simple resistive divider with the LDR. This will better map the the full range of the LDR to the 0-1 volt range that the ESP8266 ADC uses. Space is rather limited so the smaller the resistor, the better; no need for anything larger than 1/4 Watt. You can get a 10-pack of 10KΩ resistors <a href="https://rover.ebay.com/rover/1/711-53200-19255-0/1?mpre=https%3A%2F%2Fwww.ebay.com%2Fitm%2F10-Pcs-1-8-Watt-1-Metal-Film-Resistor-Choose-you-own-values-USA-SELLER%2F302971259661&amp;campid=5338745533&amp;toolid=10001&amp;customid=" target="_blank" rel="noopener noreffer">here</a></p>
-</li>
-<li>
-<p>WS2812B LED tape <strong>featuring the 3535SMD package</strong>. The &lsquo;regular size&rsquo; LED package <em>will <strong>not</strong> fit</em> so make sure you use the smaller <code>3535SMD</code> package! Beyond that, aim for LED tape that is no wider than ~8mm and has highest density possible. After quite some searching, the best that I could find is 8mm wide tape with a density of 144 LEDs per meter. Unfortunately, they don&rsquo;t sell LEDs 4 at a time, so you can pick up 1 meter of the exact LEDs I used <a href="https://rover.ebay.com/rover/1/711-53200-19255-0/1?mpre=https%3A%2F%2Fwww.ebay.com%2Fitm%2FNarrow-DC-5V-WS2812B-Led-Strip-Individually-Addressable-WS2812-Led-pixel-Light%2F254647279915%3Fhash%3Ditem3b4a29212b%3Ag%3A9D8AAOSwIZ5fBTn7&amp;campid=5338745533&amp;toolid=10001&amp;customid=pixel_tape" target="_blank" rel="noopener noreffer">here</a>.</p>
-</li>
-<li>
-<p>Several centimeters of very fine gauge wire. Ideally, multiple colors so you can keep organized but this is not required. Again, space is rather tight, so AWG 28 or 30 is ideal. Much bigger than that and you&rsquo;ll likely have issues fitting everything together. You can get a 1m length of multiple colors <a href="https://rover.ebay.com/rover/1/711-53200-19255-0/1?mpre=https%3A%2F%2Fwww.ebay.com%2Fitm%2FNarrow-DC-5V-WS2812B-Led-Strip-Individually-Addressable-WS2812-Led-pixel-Light%2F254647279915%3Fhash%3Ditem3b4a29212b%3Ag%3A9D8AAOSwIZ5fBTn7&amp;campid=5338745533&amp;toolid=10001" target="_blank" rel="noopener noreffer">here</a>.</p>
-</li>
-<li>
-<p>HeatShrink Tubing (HST). The exact diameter needed will depend on how compact your soldering is and the size of resistor used. Multiple colors will help keep things organized, but that&rsquo;s not required. I suggest a kit so you can get the  perfect diameter  and length. You can get a kit <a href="https://rover.ebay.com/rover/1/711-53200-19255-0/1?mpre=https%3A%2F%2Fwww.ebay.com%2Fitm%2F360pcs-2-1-Heat-Shrink-Tube-Tubing-Sleeving-Wrap-Wire-cable-Insulated-Assorted%2F224122863249%3Fhash%3Ditem342ec37e91%3Ag%3AMbcAAOSwXGhfPCNK&amp;campid=5338745533&amp;toolid=10001" target="_blank" rel="noopener noreffer">here</a>.</p>
-</li>
-<li>
-<p>Standard 2.54mm pin headers. You can get a set of male and female headers <a href="https://rover.ebay.com/rover/1/711-53200-19255-0/1?mpre=https%3A%2F%2Fwww.ebay.com%2Fitm%2F10pcs-Male-Header-1x40-2-54mm-40-Pin-PCB-Through-Hole-Arduino-and-Pi%2F223105297271%3Fepid%3D28022683725%26hash%3Ditem33f21cab77%3Ag%3A~X8AAOSwvFpbdZWA&amp;campid=5338745533&amp;toolid=10001" target="_blank" rel="noopener noreffer">here</a>.</p>
-</li>
-</ul>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        All the components needed for assembly
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p><strong>Note</strong>: Where possible, I&rsquo;ve used commission links. The links don&rsquo;t raise the price of any item, they simply let the retailer know that I&rsquo;m the reason for your business. In return, I get a small cut of your purchase as a &lsquo;thanks&rsquo; from the retailer. If you&rsquo;re not comfortable with that, you can use a URL unwinding service to get the &lsquo;raw&rsquo; product link and drop the attribution/commission part.</p>
-<h3 id="brass-inserts">Brass inserts</h3>
-<p>The original instructions suggest using glue to secure the brass inserts to the face plate, but I suggest using either a lighter or a very fine tip soldering iron to heat up the brass insert. A hot insert will melt the surrounding plastic which will make for a much stronger joint.  The modified version of the HASP face plate used in this guide intentionally features holes slightly too small for the brass inserts so glue won&rsquo;t be enough.</p>
-<p>Fully insert the 20mm screw into the brass insert, use pliers to grasp the screw and apply heat with a lighter for a few seconds and then insert into the face plate. Make sure that the screw is <strong>completely</strong> inserted into the insert so that molten plastic can&rsquo;t flow into the insert. If molten plastic enters and cools on the threads, it will be rather difficult to later screw things together!</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Molten plastic can&#39;t flow into a filled insert
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>As the inserts cool, you&rsquo;ll have a few seconds to make adjustments to their orientation before they become fixed. Make sure that each screw is vertical and cool to the touch before moving on to the wiring harness.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        screws make it easy to perform final alignment on inserts and act as a heatsink
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<h3 id="wire-harness">Wire Harness</h3>
-<p>There are only six wires for the two components and the LED tape is the only component where polarity matters. A table mapping each pin on the HASP PCB to each component lead is below.</p>
-<table>
-<thead>
-<tr>
-<th>HASP PCB Pin</th>
-<th>Component</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>GND</td>
-<td>LED Tape, 10KΩ resistor</td>
-</tr>
-<tr>
-<td>+5V</td>
-<td>LED Tape VCC in</td>
-</tr>
-<tr>
-<td>+3.3V</td>
-<td>LDR</td>
-</tr>
-<tr>
-<td>A0</td>
-<td>LDR &amp; 10KΩ resistor junction</td>
-</tr>
-<tr>
-<td>D0</td>
-<td>N/A</td>
-</tr>
-<tr>
-<td>D1</td>
-<td>LED Tape CLK/DTA  in</td>
-</tr>
-<tr>
-<td>D2</td>
-<td>N/A</td>
-</tr>
-<tr>
-<td>DBG</td>
-<td>N/A</td>
-</tr>
-</tbody>
-</table>
-<p>You are <strong>strongly</strong> encouraged to test / check your work after each step with a simple multimeter. Complete assembly involves irreversible steps, like shrinking HST. If you make a mistake, it&rsquo;s best to catch it before &lsquo;finalizing&rsquo; things as you&rsquo;re almost certainly going to have to destroy the component and or wiring harness to repair it.</p>
-<p>Additionally, you can flash my <a href="https://github.com/kquinsland/HASwitchPlate" target="_blank" rel="noopener noreffer">modified HASP firmware</a> to a fully assembled HASP device and use that as a testing device. On boot up, the modified firmware briefly flashes each LED in sequence. About every 10 seconds after boot, the LDR value will be read and published to MQTT. Cover the LDR with your hand and check your MQTT broker or HA to confirm that the value changes significantly between exposed and covered states.</p>
-<h5 id="ldr">LDR</h5>
-<p>Fit the LDR into the face plate and position the leads in the channel under and to the top of the LCD PCB. Then trim the excess length off of the LDR leads so that they extend &lsquo;beyond&rsquo; the LCD by about 8mm or so.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        LDR under the LCD w/ trimmed leads...
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>Remove the LDR from the face plate and straighten the leads out. Lay the LDR, resistor, and wire out as shown below. Use this time to cut the HST down to size so everything but the leg of the LDR that joins the resistor can be covered. <strong>Note:</strong> the leads on the resistor have also been trimmed down to ~15mm to better fit.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        rough layout of LDR harness
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>It&rsquo;s probably going to be easiest to start with the &lsquo;supply&rsquo; wire which runs directly from the HASP PCB&rsquo;s +3.3v pin to the LDR. As space is exceedingly tight, there is no room for overly large solder joints. Carefully wrap the wire around the lead and apply just enough solder to make good electrical contact. Once the supply wire has been soldered to the LDR, affix the HST so the entirety of the lead and solder joint are protected.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        strip ~1cm off the end of the wire, wrap around the lead, then solder
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>Repeat the same procedure with the lead of the resistor that will go directly to the ground. Affix the HST after the solder joint has cooled.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        No room for mechanically strong solder joints
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>Use the same &lsquo;wrap&rsquo; technique with the remaining leads from the LDR and the resistor. Apply just enough solder for good electrical contact between the signal wire and the two leads of the LDR and resistor.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        same wrapping technique, just with two leads this time
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>After the solder joint cools, cover the entire LDR/Resistor assembly in HST so there is no exposed wire or component lead.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        get everything nicely protected behind HST
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>Set the LDR component aside for now and move on to the LED tape.</p>
-<h5 id="leds">LEDs</h5>
-<p>If you&rsquo;ve not already trimmed the LED tape to fit in the face plate, do so now. Leave yourself as much room as needed to solder on the one side where you&rsquo;ll need to feed power and data in.</p>
-<p>The LED tape has incredibly small pads so take your time on this. You have about 5 cubic millimeters <em>total</em> for the three solder joints on the LED tape. Solder just enough for electrical contact, there will be no significant mechanical stress. <strong>Note:</strong> The arrows printed on the strip point in the direction of data flow; combined with the off-center placement of the LED packages, there is only one way to properly install the LED tape in  the decor plate.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        know which way the LED tape wires will need to point to make it into the &#39;channel&#39; prior to soldering
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>After soldering the power, signal and ground wires, flatten them and gently shape them so they align and flow into the channel on the face plate in a manner similar to the LDR. For a bit of mechanical robustness, consider braiding the wires together.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        twist the wires together for a more compact and robust cable
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<h5 id="pin-header">Pin Header</h5>
-<p>After soldering wires onto the two components, all that&rsquo;s left is soldering the wires to the correct pins on the pin header.</p>
-<p>One at a time, carefully take the pins out of the plastic &lsquo;frame&rsquo;. This is to prevent the heat from the soldering and HST steps from melting the plastic. Consider marking the pin with the location of the &lsquo;frame&rsquo; so you don&rsquo;t take up too much room with the solder joint. You will need the &lsquo;business end&rsquo; of the pin to make good contact with the socket on the HASP board; this is quite difficult if most of the pin can&rsquo;t be slid through the &lsquo;frame&rsquo; because of an excessively large solder joint!</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        remove the pin from the plastic &#39;frame&#39; and carefully solder the wires to the pins
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>Make sure that HST is on the wire(s) <em>before</em> soldering! After the solder joint cools, slip the HST over the solder joint and apply heat until the joint is covered. Repeat this process for the remaining pins. There will be three &lsquo;unused&rsquo; pins that you can just ignore.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        A few pins are not needed
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>When all the wires have been soldered and covered,  you&rsquo;ll have something that looks like this:</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>Double check electrical connections and then combine the PCB, enclosure, plate and harness. Carefully align the &lsquo;channels&rsquo; for LDR and LED wires:</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Align and ensure no pinched wires!
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<h3 id="printing">Printing</h3>
-<p>In the electrical boxes there&rsquo;s absolutely no room to spare, so all parts are designed to fit together with <strong>very</strong> tight clearances. Print as slow as you need to in order too achieve very good dimensional accuracy. Like with the brass inserts, the various screw holes are intentionally undersized for better thread engagement.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        The obvious orientation is the best, no supports needed
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>The HASP does run a bit warm, but not any warmer than other smart switches with similar form-factor. PLA will likely be fine unless you in tend to deploy the HASP in a particularly hot location.</p>
-<h4 id="thermals">Thermals</h4>
-<p>In testing, the parts of the HASP ran ~20º above ambient. Most of that heat comes from the small AC-&gt;DC converter and the LCD. Surprisingly, the ESP8266 does not emit that much heat. Overall, nothing particularly alarming, especially when the HASP is deployed into a larger multi-gang electrical box with with plenty of air to radiate heat into. Apologies in advance for the mixed ºC/ºF units.</p>
-<p><figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        HASP removed from electrical box, heat from the AC-DC converter radiating through the enclosure
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        similar to first picture, parts inside enclosure radiate heat through the enclosure, bringing it to about 20 degrees above ambient temperature
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        there are clear hot-spots on the enclosure that match up with the location of the ESP and the AC-DC converter
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Less heat is radiated through the front of the HASP; the LCD backlight and embedded LEDs are clearly the warmest components
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-</p>
-<p>The tiny PNP transistor that toggles the LCD power is the hottest component, by far. Everything else has a relatively consistent temperature:</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        PNP Transistor is clearly warmest internal component, ESP8266 cooler than expected
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>When installed in wall, the HASP is radiating heat into the electrical box and through neighboring switches:</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        a little bit of ambient heat radiating through the gap between LCD and switch as well as through the switch
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<h2 id="future-work">Future work</h2>
-<p>I did accomplish my two main goals:</p>
-<ol>
-<li>Ambient light sensor for more responsive backlight control</li>
-<li>HomeSeer-like LEDs for additional information display</li>
-</ol>
-<p>However, there&rsquo;s a few aspects of the HASP that i&rsquo;d like to further improve:</p>
-<ul>
-<li>
-<p>Increased automatic configuration w/ the HASP. There&rsquo;s still a non-trivial amount of work required to set up a HASP with Home Assistant. The HASP device has many different attributes that could be exposed to Home Assistant automatically. E.G.: The HASP will periodically check for a firmware update; the HASP should configure Home Assistant with a <a href="https://www.home-assistant.io/integrations/binary_sensor.mqtt/#configuration" target="_blank" rel="noopener noreffer"><code>binary_sensor</code></a> that indicates if there&rsquo;s a firmware update available.</p>
-</li>
-<li>
-<p>Some of the automations that live in Home Assistant to manage button presses / update screen content could  probably be re-factored down to a few generic scripts and services.</p>
-</li>
-<li>
-<p>The display uses a <a href="https://forum.digikey.com/t/resistive-touch-vs-capacitive-touch-whats-the-difference/1063" target="_blank" rel="noopener noreffer">resistive matrix</a> to detect touch events. Resistive screens, while cheap, are a bit finnicky and inferior to the more consistent and precise capacitive touch screen tech. If Nextion ever makes a capacitive version of the NX3224T024, then it would be an instant upgrade!</p>
-</li>
-<li>
-<p>Similarly, the viewing angle on the LCD is&hellip; not great. The HASP, like most light switches, is at a convenient height for hands&hellip; not eyes. If you&rsquo;re standing relatively close to the HASP, you&rsquo;ll be looking down at the screen with quite a steep angle. Depending on the current screen brightness and colors, this may result in a washed out and illegible screen.</p>
-</li>
-<li>
-<p>Better LED diffusion. There&rsquo;s not a lot of space for light pipes or similar, but I would like to find a better way of diffusing the LEDs. Or even to fit a masking layer between the LEDs and the plate, so the effect would be akin to a back-lit silhouette.</p>
-</li>
-<li>
-<p>Effects for the LEDs. Right now, the LEDs only support on/off/brightness commands. Their ability to passively indicate information would be enhanced if Home Assistant could send &lsquo;effect&rsquo; commands, too. E.G.: Rather than HA having to send a constant stream of color/brightness commands to fade between blue, green, yellow, purple, simply send a <code>fade(2s) blue, green, yellow, purple</code> command.</p>
-</li>
-<li>
-<p>There&rsquo;s plenty of spare room on the HASP PCB for the 10KΩ resistor. This would simplify the creation of the wiring harness. I&rsquo;ve been meaning to learn KiKad, this might be a very gentle way to start learning it. 🤔</p>
-</li>
-<li>
-<p>Enclose the LED tape 100% inside the HASP. This version works well and the small &lsquo;hole&rsquo; in the enclosure. I don&rsquo;t think there&rsquo;s any safety concern w/ the current design, but I&rsquo;d still like to have the low voltage stuff 100% blocked off from thee electrical box&hellip;</p>
-</li>
-</ul>
-<h2 id="files">Files</h2>
-<p>For archive / posterity, all source files are included here. Unless otherwise explicitly stated otherwise, all files below are licensed as <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreffer">Creative Commons Attribution-NonCommercial-ShareAlike</a> (CC BY-NC-SA).</p>
-<ul>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/CAD-channel-profile.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Section analysis from f360 showing small channels around the LCD for wires to LDR and LEDs</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/electric-box-clearance.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>The only way to fit the HASP in my 2-gang electric boxes is to cut out a small section</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/00.prep-electronics.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>All the components needed for assembly</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/01.prep-brass-inserts.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Molten plastic can&#39;t flow into a filled insert</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/02.inserts-cooling.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>screws make it easy to perform final alignment on inserts and act as a heatsink</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/03.ldr-position.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>LDR under the LCD w/ trimmed leads...</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/04.wire-harness.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>rough layout of LDR harness</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/05.ldr-wire-wrap.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>strip ~1cm off the end of the wire, wrap around the lead, then solder</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/06.ldr-ground.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>No room for mechanically strong solder joints</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/07.ldr-signal.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>same wrapping technique, just with two leads this time</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/08.hst.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>get everything nicely protected behind HST</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/09.wire-alignment.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>know which way the LED tape wires will need to point to make it into the &#39;channel&#39; prior to soldering</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/10.twisted-cable.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>twist the wires together for a more compact and robust cable</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/11.process.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>remove the pin from the plastic &#39;frame&#39; and carefully solder the wires to the pins</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/12.unused-pins.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>A few pins are not needed</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/13.harness-finished.jpg">
-                    
-                </a>
-                
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/14.finished.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Align and ensure no pinched wires!</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/installed.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>If the LEDs weren&#39;t on, you&#39;d never know they were there 😊</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/ldr-graph.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>ignore the spikes just before noon, those are due to to testing with a flash light</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/models/box.step">
-                <i class="far fa-file-code"></i>
-                models/box.step:
-                
-                <small style="font-family:'Lucida Console', monospace">step</small> <small>file</small>
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/models/box.stl">
-                <i class="far fa-file-code"></i>
-                models/box.stl:
-                
-                <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/models/combined.3mf">
-                <i class="far fa-file-archive"></i>
-                models/combined.3mf:
-                
-                <small style="font-family:'Lucida Console', monospace">3mf</small> <small>file</small>
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/models/combined.step">
-                <i class="far fa-file-code"></i>
-                models/combined.step:
-                
-                <small style="font-family:'Lucida Console', monospace">step</small> <small>file</small>
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/models/enhanced-HASP.f3z">
-                <i class="far fa-file-"></i>
-                models/enhanced-HASP.f3z:
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/models/plate.step">
-                <i class="far fa-file-code"></i>
-                models/plate.step:
-                
-                <small style="font-family:'Lucida Console', monospace">step</small> <small>file</small>
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/models/plate.stl">
-                <i class="far fa-file-code"></i>
-                models/plate.stl:
-                
-                <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/prototype-leds.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Ignore the dirt on the switch. Notice how you can&#39;t tell there&#39;s an LDR beneath the surface</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/suggested-print.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>The obvious orientation is the best, no supports needed</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/thermals/01.removed-side-rear.png">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>HASP removed from electrical box, heat from the AC-DC converter radiating through the enclosure</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/thermals/02.removed-top-side.png">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>similar to first picture, parts inside enclosure radiate heat through the enclosure, bringing it to about 20 degrees above ambient temperature</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/thermals/03.removed-rear-side.png">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>there are clear hot-spots on the enclosure that match up with the location of the ESP and the AC-DC converter</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/thermals/04.front-leds-on.png">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Less heat is radiated through the front of the HASP; the LCD backlight and embedded LEDs are clearly the warmest components</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/thermals/05.internals.png">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>PNP Transistor is clearly warmest internal component, ESP8266 cooler than expected</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/thermals/06.installed-markup.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>a little bit of ambient heat radiating through the gap between LCD and switch as well as through the switch</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/HS-WD200-Modes.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>HomeSeer&#39;s WS200 has a delightful innovation... RGB LEDs!</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-</ul>
-
 ]]></description></item></channel></rss>

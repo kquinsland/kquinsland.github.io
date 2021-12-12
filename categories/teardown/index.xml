@@ -1,0 +1,452 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>teardown - Category - karl</title><link>https://karlquinsland.com/categories/teardown/</link><description>teardown - Category - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 11 Dec 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/categories/teardown/" rel="self" type="application/rss+xml"/><item><title>Tuya Smart Curtain Driver Robot Teardown</title><link>https://karlquinsland.com/tuya-smart-curtain-driver-robot-teardown/</link><pubDate>Sat, 11 Dec 2021 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/tuya-smart-curtain-driver-robot-teardown/</guid><description><![CDATA[<p>I am trying something new out with this post; some mix of hardware teardown and a brief product review.</p>
+<hr>
+<h1 id="why">Why</h1>
+<p>I was looking for a way to actuate some heavy blackout curtains.</p>
+<p>There have been <em>several</em> DIY projects out there that manipulate curtains but they all appear to be relatively involved as they are often designed for a very specific type of curtain; servos that fit on the &lsquo;tilt rod&rsquo; or motors that can manipulate the pull chain&hellip; etc.</p>
+<p>The specific curtains that I wanted to power-actuate  are curtains that do not have a pull string or a set of wheels/track to facilitate their movement. Just folds of fabric hanging directly from a telescopic metal rod.</p>
+<p>After a quick review of hte existing commercial solutions for my application/style of curtains, it became clear that they all work in about the same way: some battery powered motor mechanically couples to the curtain rod and moves along the rod dragging / pushing the curtain as it does so.</p>
+<p>Since they all more or less use the same design, I figured that most of the differentiation between products would be in the software side of things. No product immediately stood out as having <strong>local</strong> Home Assistant integration so it didn&rsquo;t matter which product I selected; I will inevitably have to do some reverse engineering / hacking to get <strong>local</strong> Home Assistant integration.</p>
+<p>I selected the <code>Tuya Smart Curtain Driver Robot</code> because:</p>
+<ol>
+<li>Cheap</li>
+<li>Appeared to use USB-C for charging</li>
+<li>I was vaguely aware that <a href="https://github.com/ct-Open-Source/tuya-convert" target="_blank" rel="noopener noreffer">TuYa was pumping out a <em>ton</em> of ESP8266 based hardware</a> and hoped that I&rsquo;d find the familiar microcontroller inside.</li>
+</ol>
+<p>Below is a collection of photos and some thoughts that are - roughly - what I wish I had been able to find when doing the product research.
+If I had found the equivalent of this post while doing my research, I would have been able to save myself a purchase!</p>
+<h1 id="what">What</h1>
+<p>Searching for rod-based curtain actuators will turn up a <em>ton</em> of results. A fair number of them use product images very similar to these:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Official marketing photo
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>How well the robot performs will depend on how well the little white wheel is held against the bottom of the curtain rod.
+The arms that the upper sled attaches to are spring loaded for additional clamping force.</p>
+<p>The case seems to be fairly generic and used across multiple brands so it&rsquo;s safe to say that depending on the version / hardware variant, you may or may not have all of the featured inputs/sensors.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Only one of the two units in a pair comes equipped with the light sensor.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>The light sensor is a nice touch. I will absolutely be borrowing that idea when designing my own solution 💡🤔!</p>
+<h2 id="teardown">Teardown</h2>
+<p>I&rsquo;m not a huge fan of unboxing videos. The box is rather unremarkable; it sustained some damage in transit, but that&rsquo;s what it&rsquo;s supposed to do.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Relatively well packaged. The seller that I purchased from had explicit listings for different curtain rod styles so I am not sure why I received hardware for all styles. There does not appear to be any easy way to install this hardware.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>The upper sled is coupled to the main body through two spring-loaded arms with a ratchet and paw setup. The arms can be easily removed from the main body if needed.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        I am getting some vague Portal2 Turret vibes...
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>Since the entire weight of the robot will be hanging from the upper sled, the springs are the only thing that will pull the actuator wheel into the curtain rod. I don&rsquo;t know how the springs will last over time, but I absolutely can forsee needing to re-tension things as the springs inevitably stretch out.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        The ratchet/paws seem to indicate compatibility with some comically large diameter curtain rods!
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Obligatory &#39;i void warranties&#39; reference.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>Use a Philips style <code>J00</code> or <code>J000</code> screwdriver to remove the four screws holding the thing together. Use any flat pry tool to crack the two halves apart.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Screw hiding under warranty void sticker and obvious mechanical/snap seam make it pretty obvious how this will come apart.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>And with that, our first real look at the electronics inside!</p>
+<p>I expected a simple PCB that contained a charge controller circuit for the battery and a simple motor driver with over current protection&hellip; and nothing else. I was sure that <em>everything</em> else would be handled directly by a the radio-on-module.</p>
+<p>I <em>absolutely</em> did not expect the PCB to have provisions for &hellip; <strong>two</strong> radio modules!</p>
+<p>A few other quick observations:</p>
+<ul>
+<li>The unpopulated radio module footprint does not match any ESP-8266 modules that I am familiar with.</li>
+<li>The populated radio module <em>does</em> look like a common ESP-12E module footprint&hellip; but the module is <em>clearly</em> not an ESP.</li>
+<li>The markings have been erased from all the interesting ICs 🤬.</li>
+<li>The 20 pin chip closest to the unpopulated module footprint could be anything but is likely the &lsquo;housekeeping&rsquo; CPU. The populated radio module likely communicates with this chip to command the motor and check the sensors</li>
+<li>The product marketing photos indicated that there would be a light sensor. The PCB appears to have a foot print for an LDR&hellip; but it&rsquo;s not populated&hellip;
+only a few passive components besides some radio-on-module</li>
+<li>The USB-C port does not have any active electronics connected to it. The port likely does not speak any power delivery protocols and certainly does not have a hidden UART for talking to either of the microcontrollers.</li>
+<li>No motor is visible so that means that it must be embedded in the comically small drive wheel&hellip;</li>
+</ul>
+<p>Some more technical details are discussed <a href="#technical-details" rel="">below</a>.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Huh. Was not expecting the PCB to be quite so big or complex!
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>Lifting up the PCB reveals the battery pack. I did not slice the pack open to see which brand of cells went into the pack.
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Grateful that they didn&#39;t solder the battery directly to the PCB.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        I have not tested the battery to see accurate the labeled capacity is.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>I was still looking for that elusive light sensor so I opened up the second unit&hellip; and found it!</p>
+<p>Other than the populated second radio module, <code>R20</code> and the LDR, the PCBs appear identical.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Something tells me that the PCB with two radio modules is the &#39;leader&#39; out of the two.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>On the rear we can see an obvious programming / debug port and a PCB/product designator: <code>ZNCL_TY_V1.5</code>.</p>
+<p>Giving that a quick google returns almost nothing.
+I did find <a href="https://old.reddit.com/r/esp32/comments/q3omwh/can_somebody_tell_me_what_were_looking_at_here/hft52t1/" target="_blank" rel="noopener noreffer">this</a> post from <a href="https://old.reddit.com/user/coned_miro" target="_blank" rel="noopener noreffer">/u/coned_miro</a> asking about a very similar PCB revision:</p>
+<pre><code>    ...The main board says 'ZNCL_TY_V1.3' on the back
+</code></pre>
+<p>Nothing new to be learned about the tuya device from that thread, sadly.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        No, I didn&#39;t hook a scope up or trace out the obvious programming/debug header.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<h2 id="the-app">The App</h2>
+<p>I never intended to use the manufacturer provided app for anything other than the initial setup so this will be a very brief section. The robot was quickly discovered and provisioned through the app.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        BTLE Pair/Provisioning was straightforward
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>The device calibration process is pretty rudimentary and does not have an easy &ldquo;undo&rdquo; process.</p>
+<p>If you make a mistake in configuring the direction/distance that the robot needs to travel for curtain open/close, you have to factory reset the device. Fortunately this is easy to do in app and discovering/re-provisioning the device takes only a few seconds.</p>
+<p>The <em>two</em> firmware version strings strongly hints at a &ldquo;two processors for two domains&rdquo; architecture: the anonymous 20pin chip runs everything on the PCB and the <code>BT7L</code> module deals with external communications and is only abstractly aware of the PCB/motor/sensor/battery state.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        I have only skimmed the TuYa developer documentation but I think that the VirtualID is common to _all_ of the curtain robots.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<h1 id="verdict">Verdict</h1>
+<p>While disappointing that there was no easily hackable ESP microcontroller running the show, it doesn&rsquo;t matter.
+I can&rsquo;t use this product as is for my intended application; the motor is just too puny for the task.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        The brains(?)
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>My curtains are rather thick and heavy. A tiny motor can&rsquo;t <em>possibly</em> have enough power to do this on it&rsquo;s own&hellip; especially with a sub-optimal coupling mechanism!</p>
+<p>To give the motor a fighting chance, the engineers went with a TON of reduction-gearing.
+The gearbox allows a wimpy but fast motor to become a more grunty motor at the expense of speed.
+Almost anything small that rotates at high speed will come with some unpleasant sounds. This is ESPECIALLY true for cheaply made gearbox full of small gears.</p>
+<p>This means that any invocation of the robot will be noisy.
+You can expect the noisy little device to <em>slowly</em> move across the curtain rod. 🙄</p>
+<p>The robot struggled to push the curtains together towards the end of an opening cycle&hellip; it would often skip in place as the drive wheel struggled to keep enough traction on the curtin rod.</p>
+<p>Likewise, asking the robot to pull the bucked up curtains closed was out of the question without some sort of an assist.</p>
+<p>Because the robot has no fixed position sensor, it can&rsquo;t really measure where on the curtain rod it is.
+Every time the drive wheel skips, the difference between where the robot thinks it is and where it <em>actually</em> is will grow.</p>
+<p>If you can stand the whiny/slow movement, expect frequent re-calibrations 👎.</p>
+<br>
+<p><strong>TL;DR</strong>: Looks like there&rsquo;s a reason why the hobbyist/DIY community has produced such a <em>wide variety</em> of bespoke curtain/drape actuators&hellip; most of the commercial ones have sacrificed too much in order to be widely usable.
+The solution that I end up implementing will be designed with my heavy drapes in mind and will use an appropriately sized and quiet motor!</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        A simple brushed DC motor with no position encoder and what is probably a cheaply made gearbox. What could go wrong?
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<h1 id="technical-details">Technical Details</h1>
+<p>A highly condensed version of my initial notes from setup/teardown:</p>
+<ul>
+<li>
+<p>Was not expecting multiple radio units. The blue radio-module that both PCBs have in common appears to be a <code>JDY-25M</code>.</p>
+</li>
+<li>
+<p>There is a SDK for the <code>JDY-25M</code> available <a href="https://github.com/Edragon/JDY-MESH/tree/main/JDY-25M/SDK" target="_blank" rel="noopener noreffer">here</a>. It contains some english documentation.</p>
+</li>
+<li>
+<p>The <code>JDY-25M</code> SDK does not appear to contain any information about how to program the chip or build a custom firmware. You are meant to interface with the &lsquo;stock&rsquo; firmware via <code>AT+</code> commands. The firmware appears to support multiple modes&hellip; including a bi-directional communication link. I suspect that the unique radio module is the connection to the outside world and the the two identical radio modules are used to coordinate movement between the two pods</p>
+</li>
+<li>
+<p>I was never able to get the &lsquo;follower&rsquo; unit to pair or otherwise command the second unit.</p>
+</li>
+<li>
+<p>The unique radio module is a module made specifically by/for TuYa: <a href="https://developer.tuya.com/en/docs/iot/bt7l?id=K96gqp1dp6iiw" target="_blank" rel="noopener noreffer">https://developer.tuya.com/en/docs/iot/bt7l?id=K96gqp1dp6iiw</a></p>
+</li>
+</ul>
+<h2 id="pcb-markings">PCB Markings</h2>
+<p>AKA SEO optimization 😉</p>
+<ul>
+<li>PCB is marked: <code>ZNCL_TY_V1.5</code></li>
+<li>&ldquo;primary&rdquo; radio: <a href="https://developer.tuya.com/en/docs/iot/bt7l?id=K96gqp1dp6iiw" target="_blank" rel="noopener noreffer"><code>BT7L</code></a></li>
+<li>&ldquo;secondary&rdquo; radio <a href="https://github.com/Edragon/JDY-MESH/tree/main/JDY-25M/SDK" target="_blank" rel="noopener noreffer"><code>JDY-25M</code></a></li>
+</ul>
+]]></description></item></channel></rss>
