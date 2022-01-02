@@ -1,4 +1,213 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>tuya - Tag - karl</title><link>https://karlquinsland.com/tags/tuya/</link><description>tuya - Tag - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 11 Dec 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/tuya/" rel="self" type="application/rss+xml"/><item><title>Tuya Smart Curtain Driver Robot Teardown</title><link>https://karlquinsland.com/tuya-smart-curtain-driver-robot-teardown/</link><pubDate>Sat, 11 Dec 2021 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/tuya-smart-curtain-driver-robot-teardown/</guid><description><![CDATA[<p>I am trying something new out with this post; some mix of hardware teardown and a brief product review.</p>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>tuya - Tag - karl</title><link>https://karlquinsland.com/tags/tuya/</link><description>tuya - Tag - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 01 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/tuya/" rel="self" type="application/rss+xml"/><item><title>Generic RGB Wall Switch teardown</title><link>https://karlquinsland.com/rgb-wall-switch-teardown/</link><pubDate>Sat, 01 Jan 2022 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/rgb-wall-switch-teardown/</guid><description><![CDATA[<p>Yep! Another teardown post! This one was also a cheap &ldquo;because i&rsquo;m curious&rdquo; post.</p>
+<hr>
+<h1 id="what">What</h1>
+<p>It&rsquo;s a &lsquo;decora&rsquo; style wall switch with WiFI and an RGB color changing paddle.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>The product listing was very non specific:</p>
+<blockquote>
+<p>EU US WiFi Smart Wall Switch Push Button Timer Relay Switch Voice Remote Control RGB LED Night Light Lamp TUYA Alexa Google Home</p>
+</blockquote>
+<p>I saw <code>TuYa</code> in the item description and hoped that it would be based on an ESP8266 module or at least use a pin-compatible module. After all, there are a few such devices on the <a href="https://templates.blakadder.com/switch.html" target="_blank" rel="noopener noreffer">Wall Switches and Dimmers section</a> of the tasmota templates repository.</p>
+<h2 id="teardown">Teardown</h2>
+<p>Almost immediately after opening it became clear: the item is a variant of the <a href="https://templates.blakadder.com/moko_SSMS118-01AI.html" target="_blank" rel="noopener noreffer"><code>SSMS118-01AI</code></a> switch.</p>
+<p>Other than that, the internals are pretty predictable / standard.</p>
+<p>From the side you can see plastic clips holding the paddle to the Aluminum substrate.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>No screws on the back, so we probably open it from the front.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Not sure about how code compliant those wire terminal/lugs are.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>If the paddle was removed, the philips screws would be unobstructed.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>RGB leds on a thin PCB with a reflective sticker attached. The sticker probably makes the LEDs appear brighter.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Philips screws removed and the switch immediately splits in half. I wish everything was this easy to get into!</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Almost textbook design at this point; keep the mains voltage on it&rsquo;s own PCB and only send back low voltage / signal to the controller PCB.</p>
+<p>The mains PCB attaches to the controller PCB via 3 sets of three male/female pin headers along the top and bottom of the left edge and one side of the right edge.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Sparsely populated and a generic no-name relay. But at least there&rsquo;s a fuse!</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Mains PCB is marked <code>HYS-00-004-MAIN_V1.1</code> with a datecode of <code>2019-5-7</code>.</p>
+<p>Equally sparse controller PCB. Aside from the <em>massive</em> mechanical switch and the three transistors for the RGB leds, everything lives on the ESP module.
+At first glance, the module looks like a standard ESP-12&hellip; but it isn&rsquo;t! There are 6 pins on each of the three edges, not the 8 that would be present on an ESP-12 module.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Controller PCB is marked <code>HYS-00-004-WIFI_V1.1</code> with a datecode of <code>2019-4-11</code>.</p>
+<p>After a bit of reverse image searching, the ESP based module appears to be a WT8266-S1s. The datasheet can be found <a href="https://www.seeedstudio.com/document/word/WT8266-S1%20DataSheet%20V1.0.pdf" target="_blank" rel="noopener noreffer">here</a>.</p>
+<p>To save you a click, here&rsquo;s the useful bit:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>I checked a few of the pins listed on the  <a href="https://templates.blakadder.com/moko_SSMS118-01AI.html" target="_blank" rel="noopener noreffer"><code>SSMS118-01AI template</code></a> switch and they appeared to match the PCB shown above.</p>
+<p>Thats all for this one!</p>
+]]></description></item><item><title>Tuya Smart Curtain Driver Robot Teardown</title><link>https://karlquinsland.com/tuya-smart-curtain-driver-robot-teardown/</link><pubDate>Sat, 11 Dec 2021 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/tuya-smart-curtain-driver-robot-teardown/</guid><description><![CDATA[<p>I am trying something new out with this post; some mix of hardware teardown and a brief product review.</p>
 <hr>
 <h1 id="why">Why</h1>
 <p>I was looking for a way to actuate some heavy blackout curtains.</p>
