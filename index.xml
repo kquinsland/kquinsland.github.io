@@ -1,4 +1,211 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>karl</title><link>https://karlquinsland.com/</link><description>Karl's little corner of the internet</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 11 Dec 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Tuya Smart Curtain Driver Robot Teardown</title><link>https://karlquinsland.com/tuya-smart-curtain-driver-robot-teardown/</link><pubDate>Sat, 11 Dec 2021 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/tuya-smart-curtain-driver-robot-teardown/</guid><description><![CDATA[<p>I am trying something new out with this post; some mix of hardware teardown and a brief product review.</p>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>karl</title><link>https://karlquinsland.com/</link><description>Karl's little corner of the internet</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 01 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Shelly Pro 4PM teardown</title><link>https://karlquinsland.com/shelly-pro-4pm-teardown/</link><pubDate>Sat, 01 Jan 2022 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/shelly-pro-4pm-teardown/</guid><description><![CDATA[<p>Yet another teardown post!</p>
+<p>Curiosity got the better of me while putting together a BOM for a project and I decided to add one of the new Shelly devices to my order to bump the total over the threshold for a nice discount.</p>
+<p>I have not seen a ton of discussion about what&rsquo;s inside of a any of the new Shelly Pro devices.
+These &lsquo;next generation&rsquo; devices appear to all use a <a href="https://shelly-api-docs.shelly.cloud/gen2/" target="_blank" rel="noopener noreffer">common and more <em>uniform</em> API</a> which, apparently, is too demanding of the ESP8266 based hardware so it won&rsquo;t be backported.</p>
+<p>A cursory google only reveals some light technical details from a <a href="https://www.shelly-support.eu/forum/index.php?thread/10795-shelly-pro-4pm-teardown/" target="_blank" rel="noopener noreffer">teardown post on a german site</a>. All of the pictures attached ot that post require a login 🙁.</p>
+<p>So here is <em>my</em> teardown. No login required!</p>
+<hr>
+<h1 id="what">What</h1>
+<p>The Shelly Pro 4 PM is a rather compact DIN mounted relay/power monitoring module with some connectivity. The <code>4</code> is for the number of channels that can be independently switches and monitored.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>As for connectivity, the <a href="https://shelly.cloud/knowledge-base/devices/shelly-pro-4pm/" target="_blank" rel="noopener noreffer">official product page</a> sums it up nicely:</p>
+<blockquote>
+<p>Professional 4 channels relay with Wi-Fi, LAN, and Bluetooth connection, suitable for home and facility automation with remote control and precise power management. DIN rail mountable inside a breaker box. Enhanced safety features and compatible with most used home automation platforms.</p>
+</blockquote>
+<h2 id="teardown">Teardown</h2>
+<p>This Shelly 4PM feels like a step backwards in terms of build quality. The prior generation of devices were very dense little pucks and this feels pretty hollow; the plastic DIN case creaks and squeaks.</p>
+<p>The internal layout isn&rsquo;t my favorite and it made both disassembly and reassembly a bit tenuous at a few points.
+The layout may be inevitable, though, as DIN case is more or less a standard shape and size.
+Layouts are almost always a bit weird when the electronics have to be designed to fit the case rather than the other way around.</p>
+<p>Other than the layout quirks, the Shelly team continues to go with what they know: the <a href="https://www.espressif.com/" target="_blank" rel="noopener noreffer">espressif</a> line of chips. This time the ESP826x series is out and the much more capable ESP32 series is in&hellip; which allows for both the color LCD and the ethernet interface.</p>
+<p>As is common with these types of devices, the ESP runs the show&hellip; but it has a few deputies: dedicated power monitoring ICs and an ethernet PHY.</p>
+<p>And with that, let&rsquo;s get into it:</p>
+<p>The main body of the shelly is clipped to the rear &lsquo;plate&rsquo; which houses the DIN rail attachment mechanism. You can see the clips on the very top and bottom along the left edge:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        40A at 240V is a _lot_ of power to fit into a fairly compact device!
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>Viewed from the rear, the clips are easier to see in the four corners:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>The rear plate lifts off to reveal the largest PCB. There are 4 copies of the same circuit. Very nice to see big traces with extra solder and some beefy current shunts!</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Just behind the &lsquo;input trigger&rsquo; terminals on the main PCB is a <code>2x10 @ 2.54mm pitch</code> female header. Into which slides the &lsquo;smarts&rsquo; PCB which hosts the main ESP32 MCU as well as the ethernet jack.</p>
+<p>On this smaller PCB and next to the ethernet jack is a very small <code>1x6 @ 1mm pitch</code> female header block. It is cleverly hidden next to the jack but could probably be accessed with the case on if you&rsquo;re careful.</p>
+<p>If I had to guess, this is a debug/programming header for at least the main MCU.</p>
+<p>It&rsquo;s not pictured until later, but there is a <code>2x2 @ 2.54mm pitch</code> male header block on the other side of the smarts PCB. This is where a small daughterboard containing only the 3 buttons connects.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        How much do you want to bet that the pins on the debug header are the usual &#43;3.3, GND, IO0, RX, TX for ESP flashing?
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>On the main PCB, behind the &lsquo;smarts&rsquo; PCB is a set of two ICs marked with <code>ADE7953ACPZ</code>. As expected, these are <a href="https://www.digikey.com/en/products/detail/analog-devices-inc/ADE7953ACPZ/2700176" target="_blank" rel="noopener noreffer">the energy management / monitoring ICs</a>.</p>
+<p>Why two crystals, though?</p>
+<p>The IC marked <code>MCP23S17</code> is a simple SPI based IO expander&hellip; almost certainly used to drive the relays and possibly command the power management ICs.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>On the rear of the &lsquo;smarts&rsquo; PCB is the star of the show: <a href="https://www.mouser.com/ProductDetail/Espressif-Systems/ESP32-D0WDQ6?qs=chTDxNqvsykWgzfXx0gR%252BQ%3D%3D" target="_blank" rel="noopener noreffer">ESP32-D0WDQ6</a>.</p>
+<p>In addition to the passives and the flat flex socket for the LCD, we have:</p>
+<ul>
+<li>cFeon QH64-104HIP 64 Megabit flash chip</li>
+<li>SMSC8720A: 10/100 Megabit ethernet PHY</li>
+</ul>
+<p>There is also <em>another</em> daughterboard covered in kapton tape. This is soldered to the main PCB and just has a few electrolytic caps. I guess this arrangement was easier than trying to clear some room on the back of the main PCB so the heavy current traces could be kept simple 🤔?</p>
+<p>In the top right corner you can see the 4 pin header where the button daughter board attaches&hellip; just next to the ethernet phy.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>From this angle, still in the top right corner, you can see the button daughter board attached to the 4 pin header.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Just a few very tiny passives!
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>Electrically, nothing unusual or bizarre. Layout was a bit &lsquo;inventive&rsquo; but the unusual but standard shape of the case probably drove at least some of the decision to have 4 different PCBs that all have to be tediously connected by hand during manufacture!</p>
+<p>Thats all for this one!</p>
+<h2 id="pcbic-markings">PCB/IC Markings</h2>
+<p>AKA SEO optimization 😉</p>
+<ul>
+<li>
+<p><code>ADE7953ACPZ</code>: Power monitoring</p>
+</li>
+<li>
+<p><code>MCP23S17</code>: IO expansion</p>
+</li>
+<li>
+<p><code>ESP32-D0WDQ6</code>: main CPU</p>
+</li>
+<li>
+<p><code>EN25QH64</code>: 8 MB flash chip</p>
+</li>
+<li>
+<p>Primary PCB is marked: <code>Shelly4ProPM_Relays_v0.1.2</code></p>
+</li>
+<li>
+<p>Daughter boards not really marked with anything other than the usual component IDs and the date code of <code>211015</code></p>
+</li>
+</ul>
+]]></description></item><item><title>Tuya Smart Curtain Driver Robot Teardown</title><link>https://karlquinsland.com/tuya-smart-curtain-driver-robot-teardown/</link><pubDate>Sat, 11 Dec 2021 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/tuya-smart-curtain-driver-robot-teardown/</guid><description><![CDATA[<p>I am trying something new out with this post; some mix of hardware teardown and a brief product review.</p>
 <hr>
 <h1 id="why">Why</h1>
 <p>I was looking for a way to actuate some heavy blackout curtains.</p>
@@ -3238,153 +3445,4 @@ characters and numbers.
 </div>
 </div><p>A for effort, though, Amcrest! 👏🌟</p>
 <p>🙃</p>
-]]></description></item><item><title>Two Tasmota rules</title><link>https://karlquinsland.com/two-tasmota-rules/</link><pubDate>Fri, 20 Nov 2020 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/two-tasmota-rules/</guid><description><![CDATA[<p><a href="https://tasmota.github.io/" target="_blank" rel="noopener noreffer">Tasmota</a> is an incredibly powerful alternative/open source firmware for the ever popular Espressif family of WiFi equipped microcontrollers.
-This does not need to be another post espousing it&rsquo;s many awesome qualities, so just trust me on this; Tasmota is AWESOME.</p>
-<p>Tasmota supports user configurable <a href="https://tasmota.github.io/docs/Rules/" target="_blank" rel="noopener noreffer">rules</a> which are simple commands wired into various device triggers.
-In short; a device running Tasmota gains some autonomy to react to events without needing to report the event to, and wait for commands from, a remote server.</p>
-<p>I find the rules syntax to be a bit awkward and the list of practical examples feels like autodoc with a few practical examples sprinkled in.
-I have <em>never</em> been able to craft a Tasmota rule without also consulting the list of <a href="https://tasmota.github.io/docs/Commands/" target="_blank" rel="noopener noreffer">commands</a>
-and doing a few searches through the github issues looking for issues/questions similar to mine.</p>
-<p>This post is a simple &ldquo;here&rsquo;s how i did it&rdquo; that I wish I had found when I needed to solve the problem.
-Hopefully this will save you some trouble!</p>
-<h3 id="mr-coffee">Mr. Coffee</h3>
-<p>A $15 &lsquo;<a href="https://tasmota.github.io/docs/devices/Sonoff-Pow/" target="_blank" rel="noopener noreffer">smart relay</a>&rsquo; is all that&rsquo;s needed to turn a simple drip-over coffee maker into a remote-controllable coffee maker.
-Immediately, you gain the ability to start brewing coffee in the morning from bed.
-With a little extra integration work, start brewing coffee 10 minutes before your alarm is scheduled to go off. Simple quality of life improvement!</p>
-<p>Every coffee maker has at least one safety interlock to disable the heating element if it gets too hot, but some have additional interlocks. Specifically,
-my coffee maker has two more interlocks in series with the heating element; if the carafe is removed or the water tank is empty, the circuit is broken and
-the heater immediately stops producing heat. From the perspective of the smart relay, the power consumption is either 0 Watts or a bit over 1100 Watts.</p>
-<p>I was not comfortable using Home Assistant to monitor power consumption and then toggle the relay off after observing an interlock kick in.
-If something happened to the WiFi connection or the MQTT server or Home Assistant, there&rsquo;s no way to disconnect power from the coffee maker; the relay will stay &lsquo;on&rsquo;.
-If the interlock failed, somehow, the heating element would immediately begin pumping out heat when it <em>really</em> shouldn&rsquo;t be!</p>
-<p>Writing a simple &ldquo;if power consumption drops below 1100 Watts, turn relay off&rdquo; rule would be enough, except there&rsquo;s no way to distinguish between the thermal interlock tripping
-and the carafe being removed for a quick pour. The simple rule is incompatible with the extra interlocks; it will prematurely stop the brewing 100% of the time the carafe is removed.
-If you want to pour a cup of coffee while it&rsquo;s still brewing, this is rather inconvenient.</p>
-<p>Solution: give the user 30 seconds to return the carafe during brewing before turning the relay off.</p>
-<p>From the perspective of the outlet, ignore any lulls in power consumption as long as they&rsquo;re shorter than 30 seconds. Otherwise, assume that an interlock <em>has</em> tripped.</p>
-<p>This is implemented with two rules:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">Rule1
-    # When relay1 (heater) is turned on, activate rule2
-    ON Power1#state=1 DO Rule2 1 ENDON
-
-    # and deactivate rule2 when the heater is turned off
-    ON Power1#state=0 DO Rule2 0 ENDON
-
-    # When Timer1 expires, turn the heater off
-    ON Rules#Timer=1 DO Power1 off ENDON
-
-    # When the current used by the heating element rises above 1 Amp, disable Timer1
-    ON Energy#Current&gt;1 DO RuleTimer1 0 ENDON
-
-    # ... and enable rule 2
-    ON Energy#Current&gt;1 DO Rule2 1 ENDON
-
-Rule2
-    # Wait for power use to drop to 0; start counting down
-    ON Energy#Current&lt;.2 DO RuleTimer1 30 ENDON
-
-    # and disable rule2 so the timer is not constantly reset
-    ON Energy#Current&lt;.2 DO Rule2 0 ENDON
-</code></pre></td></tr></table>
-</div>
-</div><p>I chose <code>.2</code> Amps as the trigger, but the logic works the exact same way with Power / Wattage.</p>
-<h2 id="electric-kettle">Electric Kettle</h2>
-<p>I wanted to detect when my electric kettle was done boiling the water so I could play a sound and flash the lights in whichever room I happened to be in at the time.
-This is trivial to do with a &lsquo;<a href="https://tasmota.github.io/docs/devices/Sonoff-S31/" target="_blank" rel="noopener noreffer">smart outlet</a>&rsquo; and a <a href="https://www.home-assistant.io/integrations/binary_sensor.template/" target="_blank" rel="noopener noreffer">template sensor</a> in Home Assistant:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml">- <span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
-</span><span class="w">  </span><span class="nt">sensors</span><span class="p">:</span><span class="w">
-</span><span class="w">    </span><span class="nt">kettle_running</span><span class="p">:</span><span class="w">
-</span><span class="w">      </span><span class="nt">friendly_name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Kettle Boiling&#34;</span><span class="w">
-</span><span class="w">      </span><span class="c"># If the kettle is using more than 5w, assume its on / boiling water</span><span class="w">
-</span><span class="w">      </span><span class="nt">icon_template</span><span class="p">:</span><span class="w"> </span><span class="p">&gt;-</span><span class="sd">
-</span><span class="sd">        {% if states(&#39;sensor.kettle_energy_power&#39;) | float &gt; 5 %}
-</span><span class="sd">          mdi:kettle-steam
-</span><span class="sd">        {% else %}
-</span><span class="sd">          mdi:kettle
-</span><span class="sd">        {% endif %}</span><span class="w">        
-</span><span class="w">      </span><span class="nt">value_template</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;{{states(&#39;sensor.kettle_energy_power&#39;) | float &gt; 5}}&#34;</span><span class="w">
-</span></code></pre></td></tr></table>
-</div>
-</div><p>Only problem, Tasmota only publishes the kettle&rsquo;s power once every 300 seconds. This means <code>sensor.kettle_energy_power</code> only gets updated every 300s which makes it really hard
-to fire off a <em>timely</em> notification when the kettle is done.
-The &lsquo;brute-force&rsquo; solution is to configure Tasmota to transmit the telemetry <a href="https://github.com/arendst/Tasmota/issues/2567" target="_blank" rel="noopener noreffer">continuously</a>.
-Except there&rsquo;s no need for the Tasmota device on the kettle to be constantly informing Home Assistant that there&rsquo;s no power being used whenever the kettle is not on; my application only cares about the &lsquo;<a href="https://en.wikipedia.org/wiki/Signal_edge" target="_blank" rel="noopener noreffer">falling edge</a>&rsquo;.</p>
-<p>Borrow the trigger from the <a href="#mr-coffee" rel="">Mr. Coffee</a> rule and shorten the <a href="https://tasmota.github.io/docs/Commands/#teleperiod" target="_blank" rel="noopener noreffer">telemetry period</a> only when the kettle
-is consuming more than 1 Watt. Like the coffee maker, it&rsquo;s either consuming 0 Watts or about 1.1 Kilowatt.</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">Rule1
-    on ENERGY#Power&gt;1 do Backlog TelePeriod 10; Rule2 1 endon
-
-Rule2
-    on ENERGY#Power=0 do Backlog TelePeriod 1; Rule2 0 endon
-</code></pre></td></tr></table>
-</div>
-</div><p>As soon as the kettle starts using more than 1 Watt, configure Tasmota to publish its sensor data every 10 seconds.
-I&rsquo;ll get notified that the water is boiling within 10s; much better than 300s!
-Once the power consumption goes back down to 0, reset the telemetry update period and disable the rule.</p>
-<p>The second rule must be disabled to prevent constant triggering of the rule when the kettle is not boiling.
-Without the <code>Rule2 0</code>, the console/logs for the device would be full of statements like this repeating every few seconds:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">RUL: ENERGY#POWER&gt;1 performs &#34;TelePeriod 10&#34;
-MQT: stat/tasmota_kettle/RESULT = {&#34;TelePeriod&#34;:10}
-</code></pre></td></tr></table>
-</div>
-</div><p>Hope that helped!</p>
-<hr>
-<p><strong>EDIT:</strong> 2021-09-24: small typo fixes. Thanks for pointing them out :).</p>
 ]]></description></item></channel></rss>
