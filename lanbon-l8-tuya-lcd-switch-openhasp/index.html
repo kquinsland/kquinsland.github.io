@@ -1,0 +1,1329 @@
+<!doctype html><html lang=en-us>
+<head>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=robots content="noodp">
+<meta http-equiv=x-ua-compatible content="IE=edge, chrome=1">
+<title>Using Home Assistant to dynamically layout openHasp widgets - karl</title><meta name=Description content="And a tangential update to a blakadder.com post about a mystery device that turned out to be the Lanbon L8"><meta property="og:title" content="Using Home Assistant to dynamically layout openHasp widgets">
+<meta property="og:description" content="And a tangential update to a blakadder.com post about a mystery device that turned out to be the Lanbon L8">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://karlquinsland.com/lanbon-l8-tuya-lcd-switch-openhasp/"><meta property="og:image" content="https://karlquinsland.com/lanbon-l8-tuya-lcd-switch-openhasp/images/wt32-sc01_portrait.jpg"><meta property="article:section" content="posts">
+<meta property="article:published_time" content="2022-01-01T00:00:00+00:00">
+<meta property="article:modified_time" content="2022-01-18T17:23:38-08:00">
+<meta name=twitter:card content="summary_large_image">
+<meta name=twitter:image content="https://karlquinsland.com/lanbon-l8-tuya-lcd-switch-openhasp/images/wt32-sc01_portrait.jpg">
+<meta name=twitter:title content="Using Home Assistant to dynamically layout openHasp widgets">
+<meta name=twitter:description content="And a tangential update to a blakadder.com post about a mystery device that turned out to be the Lanbon L8">
+<meta name=application-name content="karl">
+<meta name=apple-mobile-web-app-title content="karl"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=https://karlquinsland.com/favicon.ico>
+<link rel=icon type=image/png sizes=32x32 href=https://karlquinsland.com/favicon-32x32.png>
+<link rel=icon type=image/png sizes=16x16 href=https://karlquinsland.com/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=https://karlquinsland.com/apple-touch-icon.png><link rel=mask-icon href=https://karlquinsland.com/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=https://karlquinsland.com/site.webmanifest><link rel=canonical href=https://karlquinsland.com/lanbon-l8-tuya-lcd-switch-openhasp/><link rel=prev href=https://karlquinsland.com/tuya-smart-curtain-driver-robot-teardown/><link rel=next href=https://karlquinsland.com/shelly-pro-4pm-teardown/><link rel=stylesheet href=https://karlquinsland.com/lib/normalize/normalize.min.055364f5be272caa092b0e6654c165828707f8ab971e2656383a6d6392bc345e.css integrity="sha256-BVNk9b4nLKoJKw5mVMFlgocH+KuXHiZWODptY5K8NF4="><link rel=stylesheet href=https://karlquinsland.com/css/style.min.1e2694bed152fa2922dbe909a441838ed693d88b1330f97485bfa8ed78da42df.css integrity="sha256-HiaUvtFS+iki2+kJpEGDjtaT2IsTMPl0hb+o7XjaQt8="><link rel=stylesheet href=https://karlquinsland.com/lib/fontawesome-free/all.min.876d023d9d10c97941b80c3b03e2a5b94631ff7a4af9cee5604a6a2d39718d84.css integrity="sha256-h20CPZ0QyXlBuAw7A+KluUYx/3pK+c7lYEpqLTlxjYQ="><link rel=stylesheet href=https://karlquinsland.com/lib/animate/animate.min.3c770e90f98eb21b0c042fafb49755af93306fbaf42e449524f94fae9fc83295.css integrity="sha256-PHcOkPmOshsMBC+vtJdVr5Mwb7r0LkSVJPlPrp/IMpU="><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Using Home Assistant to dynamically layout openHasp widgets","inLanguage":"en-us","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/karlquinsland.com\/lanbon-l8-tuya-lcd-switch-openhasp\/"},"genre":"posts","keywords":"TuYa, openHasp","wordcount":4148,"url":"https:\/\/karlquinsland.com\/lanbon-l8-tuya-lcd-switch-openhasp\/","datePublished":"2022-01-01T00:00:00+00:00","dateModified":"2022-01-18T17:23:38-08:00","publisher":{"@type":"Organization","name":""},"author":{"@type":"Person","name":"karl"},"description":"And a tangential update to a blakadder.com post about a mystery device that turned out to be the Lanbon L8"}</script></head>
+<body header-desktop=fixed header-mobile=auto><script type=text/javascript>(window.localStorage&&localStorage.getItem('theme')?localStorage.getItem('theme')==='dark':'auto'==='auto'?window.matchMedia('(prefers-color-scheme: dark)').matches:'auto'==='dark')&&document.body.setAttribute('theme','dark')</script>
+<div id=mask></div><div class=wrapper><header class=desktop id=header-desktop>
+<div class=header-wrapper>
+<div class=header-title>
+<a href=https://karlquinsland.com/ title=karl>Karl</a>
+</div>
+<div class=menu>
+<div class=menu-inner><a class=menu-item href=https://karlquinsland.com/posts/><i class="fas fa-blog"></i> Posts </a><a class=menu-item href=https://karlquinsland.com/resume/ title="Hire Me!"><i class="fas fa-briefcase"></i> Résumé </a><a class=menu-item href=https://karlquinsland.com/tags/ title="Can you tell that I don't have a super consistent or clear taxonomy?"><i class="fas fa-tags"></i> Tags </a><a class=menu-item href=https://karlquinsland.com/contact/><i class="fas fa-address-book"></i> Contact </a><span class="menu-item delimiter"></span><span class="menu-item search" id=search-desktop>
+<input type=text placeholder="Search titles or contents..." id=search-input-desktop>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=Search>
+<i class="fas fa-search fa-fw"></i>
+</a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=Clear>
+<i class="fas fa-times-circle fa-fw"></i>
+</a>
+<span class="search-button search-loading" id=search-loading-desktop>
+<i class="fas fa-spinner fa-fw fa-spin"></i>
+</span>
+</span><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw"></i>
+</a>
+</div>
+</div>
+</div>
+</header><header class=mobile id=header-mobile>
+<div class=header-container>
+<div class=header-wrapper>
+<div class=header-title>
+<a href=https://karlquinsland.com/ title=karl>Karl</a>
+</div>
+<div class=menu-toggle id=menu-toggle-mobile>
+<span></span><span></span><span></span>
+</div>
+</div>
+<div class=menu id=menu-mobile><div class=search-wrapper>
+<div class="search mobile" id=search-mobile>
+<input type=text placeholder="Search titles or contents..." id=search-input-mobile>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=Search>
+<i class="fas fa-search fa-fw"></i>
+</a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=Clear>
+<i class="fas fa-times-circle fa-fw"></i>
+</a>
+<span class="search-button search-loading" id=search-loading-mobile>
+<i class="fas fa-spinner fa-fw fa-spin"></i>
+</span>
+</div>
+<a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>
+Cancel
+</a>
+</div><a class=menu-item href=https://karlquinsland.com/posts/ title><i class="fas fa-blog"></i>Posts</a><a class=menu-item href=https://karlquinsland.com/resume/ title="Hire Me!"><i class="fas fa-briefcase"></i>Résumé</a><a class=menu-item href=https://karlquinsland.com/tags/ title="Can you tell that I don't have a super consistent or clear taxonomy?"><i class="fas fa-tags"></i>Tags</a><a class=menu-item href=https://karlquinsland.com/contact/ title><i class="fas fa-address-book"></i>Contact</a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw"></i>
+</a></div>
+</div>
+</header>
+<div class="search-dropdown desktop">
+<div id=search-dropdown-desktop></div>
+</div>
+<div class="search-dropdown mobile">
+<div id=search-dropdown-mobile></div>
+</div>
+<main class=main>
+<div class=container><div class=toc id=toc-auto>
+<h2 class=toc-title>Contents</h2>
+<div class=toc-content id=toc-content-auto></div>
+</div><article class="page single"><h1 class="single-title animated flipInX">Using Home Assistant to dynamically layout openHasp widgets</h1><div class=post-meta>
+<div class=post-meta-line><span class=post-author><a href=https://karlquinsland.com/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw"></i>karl</a></span>&nbsp;<span class=post-category>included in <a href=https://karlquinsland.com/categories/teardown/><i class="far fa-folder fa-fw"></i>teardown</a></span></div>
+<div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2022-01-01>2022-01-01</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;4148 words&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;20 minutes&nbsp;</div>
+</div><div class="details toc" id=toc-static kept=true>
+<div class="details-summary toc-title">
+<span>Contents</span>
+<span><i class="details-icon fas fa-angle-right"></i></span>
+</div>
+<div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents>
+<ul>
+<li><a href=#background>Background</a>
+<ul>
+<li><a href=#generic-becomes-lanbon>Generic becomes Lanbon</a></li>
+</ul>
+</li>
+<li><a href=#openhasp>openHasp</a>
+<ul>
+<li><a href=#dynamic-layouts-with-home-assistant>Dynamic Layouts with Home Assistant</a>
+<ul>
+<li><a href=#two-devices-one-pagesjsonl>Two devices, one <code>pages.jsonl</code></a></li>
+<li><a href=#building-a-pagesjsonl>building a <code>pages.jsonl</code></a>
+<ul>
+<li><a href=#headerfragjsonl><code>header.frag.jsonl</code></a></li>
+<li><a href=#footerfragjsonl><code>footer.frag.jsonl</code></a></li>
+<li><a href=#roomfragjson><code>room.frag.json</code></a></li>
+</ul>
+</li>
+<li><a href=#configure-home-assistant>Configure Home Assistant</a></li>
+</ul>
+</li>
+<li><a href=#teardown>Teardown</a>
+<ul>
+<li><a href=#product-packaging>Product packaging</a></li>
+<li><a href=#internals>Internals</a></li>
+<li><a href=#pcbic-markings>PCB/IC Markings</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav></div>
+</div><div class=content id=content><h1 id=background>Background</h1>
+<p>This is one of those posts that sat in the <code>Drafts</code> folder for <em>way</em> too long.
+Just before release, I&rsquo;d discover something new that would warrant substantial rewrites.
+After several delays, false starts and re-writes, I finally have something that is mostly new <em>and</em> worth sharing with the world.</p>
+<p>Like with the past few <a href=https://karlquinsland.com/categories/teardown/ rel>teardown</a> posts, this one also started off as a &lsquo;cart-stuffer&rsquo; item so I could unlock a more generous discount on the total purchase. The listing that caught my eye had the generic title:</p>
+<pre><code>EU US Wifi LCD Smart Wall Light Touch Switch Tuya Smart Life App Remote Control ON OFF Timer Voice Control For Google Home Alexa
+</code></pre>
+<figure>
+<img src=https://karlquinsland.com/lanbon-l8-tuya-lcd-switch-openhasp/images/ali_exp_listing.png alt="Picture showing...">
+<figcaption>
+</figcaption>
+</figure>
+<p>Naturally, a cursory check for existing writeups / teardowns didn&rsquo;t yield much.</p>
+<p>I did have some hope that the <code>Tuya</code> compatibility meant an easily hacked ESP module running the show and not a proprietary module.
+It was unlikely that the device would be Android powered at that price-point and an ESP8266 series would be woefully under powered for direct LCD control so &mldr; fingers crossed for an ESP32 module!
+Or, at the very least there might be a way to retrofit in an ESP module like with the recent Mi-Boxer LED controller that <a href=https://github.com/arendst/Tasmota/issues/7385#issuecomment-991848762 target=_blank rel="noopener noreffer">I helped to integrate with Tasmota</a>.</p>
+<p>The <em>plan</em> was to do a teardown and dump as much technical data as I could possibly gather in an evening or two and conclude with a feasibility assessment of hacking the device for use with Home Assistant.</p>
+<h2 id=generic-becomes-lanbon>Generic becomes Lanbon</h2>
+<p>Immediately after opening the shipping box and getting eyes on the actual product packaging, it was clear that this was a Lanbon L8 series module.</p>
+<p>A quick google later and it turns out that the venerable blakadder.com has <a href=https://blakadder.com/lanbon-L8/ target=_blank rel="noopener noreffer">already covered this device</a>&mldr; <em>and</em> documented <a href=https://blakadder.com/lanbon-L8-custom-firmware/ target=_blank rel="noopener noreffer">it&rsquo;s Tasmota compatibility</a>!</p>
+<p>So much for publishing a teardown and trying to figure out if Home Assistant integration was feasible 😕.</p>
+<p>Funny how once you have the &lsquo;magic query string&rsquo;, google starts to yield <em>a ton</em> of relevant results!
+Just after finding the aforementioned blakadder.com posts on the L8 device, I found two <em>very</em> helpful sources of more information:</p>
+<ul>
+<li>Somebody by the name of Jan Newmarch has published a <a href=https://jan.newmarch.name/IoT/Home/Lanbon/ target=_blank rel="noopener noreffer">comprehensive dive</a> into the protocol(s) used by the stock firmware / other devices in the Lanbon family.</li>
+<li>This <a href=https://haswitchplate.github.io/openHASP-docs/latest/devices/lanbon-l8/ target=_blank rel="noopener noreffer">page dedicated to the Lanbon L8</a> from a project called openHasp.</li>
+</ul>
+<p>I thought that second link seemed familiar&mldr;🤔.</p>
+<p>Turns out, the <a href=https://haswitchplate.github.io/openHASP-docs/latest/ target=_blank rel="noopener noreffer">openHASP project</a> is a <em>substantial</em> rewrite of the initial software that powered my <a href=https://karlquinsland.com/enhanced-homeassistantswitchplate/ rel>Enhanced HomeAssistant Switch Plate (eHasp)</a> project.</p>
+<div class="details admonition info open">
+<div class="details-summary admonition-title">
+<i class="icon fas fa-info-circle fa-fw"></i>Info<i class="details-icon fas fa-angle-right fa-fw"></i>
+</div>
+<div class=details-content>
+<div class=admonition-content>While digging through the above links, I realized that the model I had opened up had a different PCB layout.
+In the interest of adding to the collective internet KB, photos and some other technical details from the model I tore apart are <a href=#teardown rel>below</a>.</div>
+</div>
+</div>
+<h1 id=openhasp>openHasp</h1>
+<p>As opposed to the <a href=https://github.com/aderusha/HASwitchPlate target=_blank rel="noopener noreffer">old HASP project</a>, openHasp leverages more powerful processors that can drive the LCD directly; graphical assets no longer need to be compiled down to a LCD-specific firmware before use and the content of the <em>entire</em> display <strong>can be arbitrarily manipulated at runtime</strong>!</p>
+<p>openHasp <a href=https://haswitchplate.github.io/openHASP-docs/0.6/design/pages/ target=_blank rel="noopener noreffer">uses <code>json</code> like files</a> to store the UI/widgets layout and configuration.
+On boot, the content of the <code>jsonl</code> is parsed and turned into the actual UI widgets that are displayed on screen.
+For example, <a href=https://haswitchplate.github.io/openHASP-docs/0.6/design/objects/#button target=_blank rel="noopener noreffer">here is the example <code>jsonl</code></a> that renders two buttons:</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=p>{</span><span class=nt>&#34;page&#34;</span><span class=p>:</span><span class=mi>1</span><span class=p>,</span><span class=nt>&#34;id&#34;</span><span class=p>:</span><span class=mi>2</span><span class=p>,</span><span class=nt>&#34;obj&#34;</span><span class=p>:</span><span class=s2>&#34;btn&#34;</span><span class=p>,</span><span class=nt>&#34;x&#34;</span><span class=p>:</span><span class=mi>10</span><span class=p>,</span><span class=nt>&#34;y&#34;</span><span class=p>:</span><span class=mi>40</span><span class=p>,</span><span class=nt>&#34;w&#34;</span><span class=p>:</span><span class=mi>105</span><span class=p>,</span><span class=nt>&#34;h&#34;</span><span class=p>:</span><span class=mi>90</span><span class=p>,</span><span class=nt>&#34;toggle&#34;</span><span class=p>:</span><span class=kc>false</span><span class=p>,</span><span class=nt>&#34;text&#34;</span><span class=p>:</span><span class=s2>&#34;Button&#34;</span><span class=p>,</span><span class=nt>&#34;mode&#34;</span><span class=p>:</span><span class=s2>&#34;break&#34;</span><span class=p>,</span><span class=nt>&#34;align&#34;</span><span class=p>:</span><span class=s2>&#34;center&#34;</span><span class=p>}</span>
+
+<span class=p>{</span><span class=nt>&#34;page&#34;</span><span class=p>:</span><span class=mi>1</span><span class=p>,</span><span class=nt>&#34;id&#34;</span><span class=p>:</span><span class=mi>3</span><span class=p>,</span><span class=nt>&#34;obj&#34;</span><span class=p>:</span><span class=s2>&#34;btn&#34;</span><span class=p>,</span><span class=nt>&#34;x&#34;</span><span class=p>:</span><span class=mi>125</span><span class=p>,</span><span class=nt>&#34;y&#34;</span><span class=p>:</span><span class=mi>40</span><span class=p>,</span><span class=nt>&#34;w&#34;</span><span class=p>:</span><span class=mi>105</span><span class=p>,</span><span class=nt>&#34;h&#34;</span><span class=p>:</span><span class=mi>90</span><span class=p>,</span><span class=nt>&#34;toggle&#34;</span><span class=p>:</span><span class=kc>true</span><span class=p>,</span><span class=nt>&#34;text&#34;</span><span class=p>:</span><span class=s2>&#34;#FFD700 Toggle# Button&#34;</span><span class=p>,</span><span class=nt>&#34;mode&#34;</span><span class=p>:</span><span class=s2>&#34;break&#34;</span><span class=p>,</span><span class=nt>&#34;align&#34;</span><span class=p>:</span><span class=s2>&#34;center&#34;</span><span class=p>}</span>
+</code></pre></td></tr></table>
+</div>
+</div><figure>
+<img src=https://karlquinsland.com/lanbon-l8-tuya-lcd-switch-openhasp/images/lv_ex_btn_1.png alt="Picture showing...">
+<figcaption>
+<p>
+Image credit/source:
+<a href=https://haswitchplate.github.io/openHASP-docs/0.6/design/objects/#button>
+openHasp Docs
+</a>
+</p>
+</figcaption>
+</figure>
+<p>Notice how the absolute coordinates on screen (<code>x</code> and <code>y</code>) and and absolute width (<code>w</code>) and height (<code>w</code>) properties are explicitly declared.
+The only reason the buttons look appropriately sized/positioned in the above screenshot is because someone took the time to calculate the appropriate values for the particular screen resolution and orientation.</p>
+<p>The above <code>jsonl</code> example would look different on any openHasp device with a different screen orientation or resolution!
+Manually calculating the exact size and position of every widget for <em>each</em> class of device isn&rsquo;t so bad if you&rsquo;re planning on deploying the same file to several instances of the same device&mldr; but it starts be become a real headache if you want to deploy the same layout to 2+ different types of device.</p>
+<p>The L8 devices are designed to be installed into a wall electrical box; they don&rsquo;t sit well on my desk so prototyping various interface files on a L8 device isn&rsquo;t the easiest.
+Instead, I am using a <a href=https://haswitchplate.github.io/openHASP-docs/latest/devices/wt32-sc01/ target=_blank rel="noopener noreffer">device with a higher resolution</a> and bigger screen that <em>does</em> work well on a desk to prototype the various <code>jsonl</code> files.</p>
+<p>If you&rsquo;re thinking that calculating the appropriate location for various UI widgets on one device and then having to re-do the math for the intended deploy targets sounds like a task better suited to a computer&mldr; you&rsquo;re right!</p>
+<h2 id=dynamic-layouts-with-home-assistant>Dynamic Layouts with Home Assistant</h2>
+<p>Fortunately, the properties of <em>every</em> UI widget can be modified over the network even <em>after</em> the <code>jsonl</code> file has been parsed and the initial display has been painted!</p>
+<p>My C++ skills are pretty weak so contributing new code to enable dynamic layouts directly to the openHasp codebase is not immediately practical.
+There is, however, a robust <a href=https://haswitchplate.github.io/openHASP-docs/latest/integrations/home-assistant/howto/ target=_blank rel="noopener noreffer">Home Assistant integration</a> published in the form of a <a href=https://github.com/HASwitchPlate/openHASP-custom-component target=_blank rel="noopener noreffer">custom component</a>.
+Home Assistant means Python and some Python code to calculate the appropriate position/size for a given element <em>is</em> immediately within my means.</p>
+<div class="details admonition warning open">
+<div class="details-summary admonition-title">
+<i class="icon fas fa-exclamation-triangle fa-fw"></i>Warning<i class="details-icon fas fa-angle-right fa-fw"></i>
+</div>
+<div class=details-content>
+<div class=admonition-content>A few <a href=https://github.com/HASwitchPlate/openHASP/issues/278 target=_blank rel="noopener noreffer">(small) changes to the openHasp firmware</a> were required to make this work.
+Any <em>recent</em> build of <code>0.7</code> should work.
+As of 2022-01, there is no release of the custom component that works with <code>0.7</code> out of the box so if installing through <a href=https://hacs.xyz/ target=_blank rel="noopener noreffer">HACS</a>, <a href=https://github.com/HASwitchPlate/openHASP-custom-component/issues/87 target=_blank rel="noopener noreffer">you will need to patch the custom component</a> so devices running <code>.0.7</code> can be controlled via Home Assistant.</div>
+</div>
+</div>
+<p>Please see the <a href=https://haswitchplate.github.io/openHASP-docs/latest/integrations/home-assistant/sampl_conf/ target=_blank rel="noopener noreffer">openHasp &lt;-> Home Assistant docs</a> for background information, examples and a lot more detail on how Home Assistant and openHasp work together or if any of the <code>jsonl</code> and <code>yaml</code> below does not make sense.</p>
+<div class="details admonition warning open">
+<div class="details-summary admonition-title">
+<i class="icon fas fa-exclamation-triangle fa-fw"></i>Warning<i class="details-icon fas fa-angle-right fa-fw"></i>
+</div>
+<div class=details-content>
+<div class=admonition-content>Please make sure that your openHasp device can connect to your MQTT broker and that the openHasp custom integration can discover and &lsquo;register&rsquo; your device with Home Assistant before proceeding!</div>
+</div>
+</div>
+<h3 id=two-devices-one-pagesjsonl>Two devices, one <code>pages.jsonl</code></h3>
+<p>The <code>pages.jsonl</code> file used for this post and the screenshots below is a (lightly) modified versions of the <a href=https://haswitchplate.github.io/openHASP-docs/latest/integrations/home-assistant/sampl_conf/#display-clock-and-temperature target=_blank rel="noopener noreffer">clock and temperature example</a> and the
+<a href=https://haswitchplate.github.io/openHASP-docs/latest/integrations/examples/example-pagination/ target=_blank rel="noopener noreffer">simple page navigation</a> examples with a room specific set of ui widgets.</p>
+<p>That <em>singular</em> <code>pages.jsonl</code> file was uploaded it to two devices:</p>
+<ul>
+<li>Lanbon L8 with a 240x320 resolution</li>
+<li>WT32-SC01 module with a 320x480 resolution</li>
+</ul>
+<p>Each screenshot was taken with the device display configured to 0º and 90º of rotation.
+A reboot was required for the configuration change to take effect but I made <em>zero</em> changes to the <code>pages.jsonl</code> file on the device between changing the screen orientation.</p>
+<p><figure>
+<img src=https://karlquinsland.com/lanbon-l8-tuya-lcd-switch-openhasp/images/l8_landscape.jpg alt="Picture showing...">
+<figcaption>
+<p>
+Lanbon L8 in it's rotated 'landscape' orientation
+</p>
+</figcaption>
+</figure>
+<figure>
+<img src=https://karlquinsland.com/lanbon-l8-tuya-lcd-switch-openhasp/images/l8_portrait.jpg alt="Picture showing...">
+<figcaption>
+<p>
+Lanbon L8 in it's default 'portrait' orientation
+</p>
+</figcaption>
+</figure>
+</p>
+<p><figure>
+<img src=https://karlquinsland.com/lanbon-l8-tuya-lcd-switch-openhasp/images/wt32-sc01_landscape.jpg alt="Picture showing...">
+<figcaption>
+<p>
+wt32-sc01 in 'landscape' orientation.
+</p>
+</figcaption>
+</figure>
+<figure>
+<img src=https://karlquinsland.com/lanbon-l8-tuya-lcd-switch-openhasp/images/wt32-sc01_portrait.jpg alt="Picture showing...">
+<figcaption>
+<p>
+wt32-sc01 in 'portrait' orientation.
+</p>
+</figcaption>
+</figure>
+</p>
+<h3 id=building-a-pagesjsonl>building a <code>pages.jsonl</code></h3>
+<p>You don&rsquo;t need to use this <em>exact</em> technique to build the <code>pages.jsonl</code> file; it works well for my needs / development flow.
+All that matters is that you get every UI element for every page into a single <code>pages.jsonl</code> file and then get that file uploaded to the device(s) in question.
+The page/id values declared in your <code>jsonl</code> file <em>must match</em> the object IDs that you will use to configure the Home Assistant integration.</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-shell data-lang=shell>❯ cat header.frag.jsonl footer.frag.jsonl room.frag.jsonl &gt; pages.jsonl
+❯ curl http://roomPlateIpv4Here/edit --form <span class=nv>name</span><span class=o>=</span>data --form <span class=nv>data</span><span class=o>=</span>@pages.jsonl
+</code></pre></td></tr></table>
+</div>
+</div><div class="details admonition info open">
+<div class="details-summary admonition-title">
+<i class="icon fas fa-info-circle fa-fw"></i>Info<i class="details-icon fas fa-angle-right fa-fw"></i>
+</div>
+<div class=details-content>
+<div class=admonition-content><p>I store the combined files in <code>pages.jsonl</code> because this is the default page that an openHasp device will render.
+You can change this setting via the web UI: <code>http://roomPlateIpv4Here/config/hasp</code> or via telnet:</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-shell data-lang=shell>❯ telnet roomPlateIpv4Here
+&lt;...&gt;
+prompt&gt; config/hasp <span class=o>{</span><span class=s2>&#34;pages&#34;</span>:<span class=s2>&#34;/foo.jsonl&#34;</span><span class=o>}</span>
+</code></pre></td></tr></table>
+</div>
+</div></div>
+</div>
+</div>
+<h4 id=headerfragjsonl><code>header.frag.jsonl</code></h4>
+<p>This contains the three text labels that I wish to have at the top of <em>every</em> openHasp device I deploy.</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=p>{</span>
+    <span class=nt>&#34;page&#34;</span><span class=p>:</span> <span class=mi>0</span><span class=p>,</span>
+    <span class=nt>&#34;comment&#34;</span><span class=p>:</span> <span class=s2>&#34;Default to page0 as the header and page/layout&#34;</span>
+<span class=p>}</span>
+<span class=p>{</span>
+    <span class=nt>&#34;id&#34;</span><span class=p>:</span> <span class=mi>1</span><span class=p>,</span>
+    <span class=nt>&#34;comment&#34;</span><span class=p>:</span> <span class=s2>&#34;Time in the top left&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;obj&#34;</span><span class=p>:</span> <span class=s2>&#34;label&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;text&#34;</span><span class=p>:</span> <span class=s2>&#34;00:00&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;align&#34;</span><span class=p>:</span> <span class=s2>&#34;center&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;bg_color&#34;</span><span class=p>:</span> <span class=s2>&#34;#2C3E50&#34;</span>
+<span class=p>}</span>
+<span class=p>{</span>
+    <span class=nt>&#34;id&#34;</span><span class=p>:</span> <span class=mi>2</span><span class=p>,</span>
+    <span class=nt>&#34;comment&#34;</span><span class=p>:</span> <span class=s2>&#34;Temp in the middle&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;obj&#34;</span><span class=p>:</span> <span class=s2>&#34;label&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;text&#34;</span><span class=p>:</span> <span class=s2>&#34;00.0°C&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;align&#34;</span><span class=p>:</span> <span class=s2>&#34;center&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;bg_color&#34;</span><span class=p>:</span> <span class=s2>&#34;#2C3E50&#34;</span>
+<span class=p>}</span>
+<span class=p>{</span>
+    <span class=nt>&#34;id&#34;</span><span class=p>:</span> <span class=mi>3</span><span class=p>,</span>
+    <span class=nt>&#34;comment&#34;</span><span class=p>:</span> <span class=s2>&#34;Humidity in the top right&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;obj&#34;</span><span class=p>:</span> <span class=s2>&#34;label&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;text&#34;</span><span class=p>:</span> <span class=s2>&#34;00.0%&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;align&#34;</span><span class=p>:</span> <span class=s2>&#34;right&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;bg_color&#34;</span><span class=p>:</span> <span class=s2>&#34;#2C3E50&#34;</span>
+<span class=p>}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h4 id=footerfragjsonl><code>footer.frag.jsonl</code></h4>
+<p>This contains the three page navigation buttons that I wish to have at the bottom of <em>every</em> openHasp device that I deploy.</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=p>{</span>
+    <span class=nt>&#34;id&#34;</span><span class=p>:</span> <span class=mi>6</span><span class=p>,</span>
+    <span class=nt>&#34;comment&#34;</span><span class=p>:</span> <span class=s2>&#34;tab nav on the bottom, prev&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;obj&#34;</span><span class=p>:</span> <span class=s2>&#34;btn&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;action&#34;</span><span class=p>:</span> <span class=s2>&#34;prev&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;bg_color&#34;</span><span class=p>:</span> <span class=s2>&#34;#2C3E50&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;text&#34;</span><span class=p>:</span> <span class=s2>&#34;\uE141&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;text_color&#34;</span><span class=p>:</span> <span class=s2>&#34;#FFFFFF&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;radius&#34;</span><span class=p>:</span> <span class=mi>0</span><span class=p>,</span>
+    <span class=nt>&#34;border_side&#34;</span><span class=p>:</span> <span class=mi>0</span><span class=p>,</span>
+    <span class=nt>&#34;text_font&#34;</span><span class=p>:</span> <span class=mi>28</span>
+<span class=p>}</span>
+<span class=p>{</span>
+    <span class=nt>&#34;id&#34;</span><span class=p>:</span> <span class=mi>7</span><span class=p>,</span>
+    <span class=nt>&#34;obj&#34;</span><span class=p>:</span> <span class=s2>&#34;btn&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;action&#34;</span><span class=p>:</span> <span class=s2>&#34;back&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;bg_color&#34;</span><span class=p>:</span> <span class=s2>&#34;#2C3E50&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;text&#34;</span><span class=p>:</span> <span class=s2>&#34;\uE2DC&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;text_color&#34;</span><span class=p>:</span> <span class=s2>&#34;#FFFFFF&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;radius&#34;</span><span class=p>:</span> <span class=mi>0</span><span class=p>,</span>
+    <span class=nt>&#34;border_side&#34;</span><span class=p>:</span> <span class=mi>0</span><span class=p>,</span>
+    <span class=nt>&#34;text_font&#34;</span><span class=p>:</span> <span class=mi>22</span>
+<span class=p>}</span>
+<span class=p>{</span>
+    <span class=nt>&#34;id&#34;</span><span class=p>:</span> <span class=mi>8</span><span class=p>,</span>
+    <span class=nt>&#34;obj&#34;</span><span class=p>:</span> <span class=s2>&#34;btn&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;action&#34;</span><span class=p>:</span> <span class=s2>&#34;next&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;bg_color&#34;</span><span class=p>:</span> <span class=s2>&#34;#2C3E50&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;text&#34;</span><span class=p>:</span> <span class=s2>&#34;\uE142&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;text_color&#34;</span><span class=p>:</span> <span class=s2>&#34;#FFFFFF&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;radius&#34;</span><span class=p>:</span> <span class=mi>0</span><span class=p>,</span>
+    <span class=nt>&#34;border_side&#34;</span><span class=p>:</span> <span class=mi>0</span><span class=p>,</span>
+    <span class=nt>&#34;text_font&#34;</span><span class=p>:</span> <span class=mi>28</span>
+<span class=p>}</span>
+
+</code></pre></td></tr></table>
+</div>
+</div><h4 id=roomfragjson><code>room.frag.json</code></h4>
+<p>This file should contain all the page(s) and UI widgets that are unique to the openHasp device deployed into the room that I will call <code>room</code> for the purposes of this post.
+As a <strong>demonstration</strong>, I have set up three buttons that control each of the three relays on a L8 device; you will almost certainly want to add multiple pages / other UI widgets as needed.</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=p>{</span>
+    <span class=nt>&#34;page&#34;</span><span class=p>:</span> <span class=mi>1</span><span class=p>,</span>
+    <span class=nt>&#34;comment&#34;</span><span class=p>:</span> <span class=s2>&#34;primary controls for the 3 relays&#34;</span>
+<span class=p>}</span>
+<span class=p>{</span>
+    <span class=nt>&#34;id&#34;</span><span class=p>:</span> <span class=mi>101</span><span class=p>,</span>
+    <span class=nt>&#34;comment&#34;</span><span class=p>:</span> <span class=s2>&#34;relay1&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;obj&#34;</span><span class=p>:</span> <span class=s2>&#34;btn&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;toggle&#34;</span><span class=p>:</span> <span class=kc>true</span><span class=p>,</span>
+    <span class=nt>&#34;text&#34;</span><span class=p>:</span> <span class=s2>&#34;relay1&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;mode&#34;</span><span class=p>:</span> <span class=s2>&#34;break&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;align&#34;</span><span class=p>:</span> <span class=s2>&#34;center&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;groupid&#34;</span><span class=p>:</span> <span class=mi>1</span>
+<span class=p>}</span>
+<span class=p>{</span>
+    <span class=nt>&#34;id&#34;</span><span class=p>:</span> <span class=mi>102</span><span class=p>,</span>
+    <span class=nt>&#34;comment&#34;</span><span class=p>:</span> <span class=s2>&#34;relay2&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;obj&#34;</span><span class=p>:</span> <span class=s2>&#34;btn&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;toggle&#34;</span><span class=p>:</span> <span class=kc>true</span><span class=p>,</span>
+    <span class=nt>&#34;text&#34;</span><span class=p>:</span> <span class=s2>&#34;relay2&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;mode&#34;</span><span class=p>:</span> <span class=s2>&#34;break&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;align&#34;</span><span class=p>:</span> <span class=s2>&#34;center&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;groupid&#34;</span><span class=p>:</span> <span class=mi>2</span>
+<span class=p>}</span>
+<span class=p>{</span>
+    <span class=nt>&#34;id&#34;</span><span class=p>:</span> <span class=mi>103</span><span class=p>,</span>
+    <span class=nt>&#34;comment&#34;</span><span class=p>:</span> <span class=s2>&#34;relay3&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;obj&#34;</span><span class=p>:</span> <span class=s2>&#34;btn&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;toggle&#34;</span><span class=p>:</span> <span class=kc>true</span><span class=p>,</span>
+    <span class=nt>&#34;text&#34;</span><span class=p>:</span> <span class=s2>&#34;relay3&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;mode&#34;</span><span class=p>:</span> <span class=s2>&#34;break&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;align&#34;</span><span class=p>:</span> <span class=s2>&#34;center&#34;</span><span class=p>,</span>
+    <span class=nt>&#34;groupid&#34;</span><span class=p>:</span> <span class=mi>3</span>
+<span class=p>}</span>
+</code></pre></td></tr></table>
+</div>
+</div><h3 id=configure-home-assistant>Configure Home Assistant</h3>
+<p>After the <code>pages.jsonl</code> is deployed to <em>each</em> of the openHasp devices, you will need to create a configuration file for Home Assistant.
+For the above screenshots, I created two <em>identical</em> ⃰ copies of the yaml below</p>
+<p>⃰ Other than the device name; in one file, the name was changed from <code>plate00</code> to <code>plate01</code>.</p>
+<div class=highlight><div class=chroma>
+<table class=lntable><tr><td class=lntd>
+<pre tabindex=0 class=chroma><code><span class=lnt>  1
+</span><span class=lnt>  2
+</span><span class=lnt>  3
+</span><span class=lnt>  4
+</span><span class=lnt>  5
+</span><span class=lnt>  6
+</span><span class=lnt>  7
+</span><span class=lnt>  8
+</span><span class=lnt>  9
+</span><span class=lnt> 10
+</span><span class=lnt> 11
+</span><span class=lnt> 12
+</span><span class=lnt> 13
+</span><span class=lnt> 14
+</span><span class=lnt> 15
+</span><span class=lnt> 16
+</span><span class=lnt> 17
+</span><span class=lnt> 18
+</span><span class=lnt> 19
+</span><span class=lnt> 20
+</span><span class=lnt> 21
+</span><span class=lnt> 22
+</span><span class=lnt> 23
+</span><span class=lnt> 24
+</span><span class=lnt> 25
+</span><span class=lnt> 26
+</span><span class=lnt> 27
+</span><span class=lnt> 28
+</span><span class=lnt> 29
+</span><span class=lnt> 30
+</span><span class=lnt> 31
+</span><span class=lnt> 32
+</span><span class=lnt> 33
+</span><span class=lnt> 34
+</span><span class=lnt> 35
+</span><span class=lnt> 36
+</span><span class=lnt> 37
+</span><span class=lnt> 38
+</span><span class=lnt> 39
+</span><span class=lnt> 40
+</span><span class=lnt> 41
+</span><span class=lnt> 42
+</span><span class=lnt> 43
+</span><span class=lnt> 44
+</span><span class=lnt> 45
+</span><span class=lnt> 46
+</span><span class=lnt> 47
+</span><span class=lnt> 48
+</span><span class=lnt> 49
+</span><span class=lnt> 50
+</span><span class=lnt> 51
+</span><span class=lnt> 52
+</span><span class=lnt> 53
+</span><span class=lnt> 54
+</span><span class=lnt> 55
+</span><span class=lnt> 56
+</span><span class=lnt> 57
+</span><span class=lnt> 58
+</span><span class=lnt> 59
+</span><span class=lnt> 60
+</span><span class=lnt> 61
+</span><span class=lnt> 62
+</span><span class=lnt> 63
+</span><span class=lnt> 64
+</span><span class=lnt> 65
+</span><span class=lnt> 66
+</span><span class=lnt> 67
+</span><span class=lnt> 68
+</span><span class=lnt> 69
+</span><span class=lnt> 70
+</span><span class=lnt> 71
+</span><span class=lnt> 72
+</span><span class=lnt> 73
+</span><span class=lnt> 74
+</span><span class=lnt> 75
+</span><span class=lnt> 76
+</span><span class=lnt> 77
+</span><span class=lnt> 78
+</span><span class=lnt> 79
+</span><span class=lnt> 80
+</span><span class=lnt> 81
+</span><span class=lnt> 82
+</span><span class=lnt> 83
+</span><span class=lnt> 84
+</span><span class=lnt> 85
+</span><span class=lnt> 86
+</span><span class=lnt> 87
+</span><span class=lnt> 88
+</span><span class=lnt> 89
+</span><span class=lnt> 90
+</span><span class=lnt> 91
+</span><span class=lnt> 92
+</span><span class=lnt> 93
+</span><span class=lnt> 94
+</span><span class=lnt> 95
+</span><span class=lnt> 96
+</span><span class=lnt> 97
+</span><span class=lnt> 98
+</span><span class=lnt> 99
+</span><span class=lnt>100
+</span><span class=lnt>101
+</span><span class=lnt>102
+</span><span class=lnt>103
+</span><span class=lnt>104
+</span><span class=lnt>105
+</span><span class=lnt>106
+</span><span class=lnt>107
+</span><span class=lnt>108
+</span><span class=lnt>109
+</span><span class=lnt>110
+</span><span class=lnt>111
+</span><span class=lnt>112
+</span><span class=lnt>113
+</span><span class=lnt>114
+</span><span class=lnt>115
+</span><span class=lnt>116
+</span><span class=lnt>117
+</span><span class=lnt>118
+</span><span class=lnt>119
+</span><span class=lnt>120
+</span><span class=lnt>121
+</span><span class=lnt>122
+</span><span class=lnt>123
+</span><span class=lnt>124
+</span><span class=lnt>125
+</span><span class=lnt>126
+</span><span class=lnt>127
+</span><span class=lnt>128
+</span><span class=lnt>129
+</span><span class=lnt>130
+</span><span class=lnt>131
+</span><span class=lnt>132
+</span><span class=lnt>133
+</span><span class=lnt>134
+</span><span class=lnt>135
+</span><span class=lnt>136
+</span><span class=lnt>137
+</span><span class=lnt>138
+</span><span class=lnt>139
+</span><span class=lnt>140
+</span><span class=lnt>141
+</span><span class=lnt>142
+</span><span class=lnt>143
+</span><span class=lnt>144
+</span><span class=lnt>145
+</span><span class=lnt>146
+</span><span class=lnt>147
+</span><span class=lnt>148
+</span><span class=lnt>149
+</span><span class=lnt>150
+</span><span class=lnt>151
+</span><span class=lnt>152
+</span><span class=lnt>153
+</span><span class=lnt>154
+</span><span class=lnt>155
+</span><span class=lnt>156
+</span><span class=lnt>157
+</span><span class=lnt>158
+</span><span class=lnt>159
+</span><span class=lnt>160
+</span><span class=lnt>161
+</span><span class=lnt>162
+</span><span class=lnt>163
+</span><span class=lnt>164
+</span><span class=lnt>165
+</span><span class=lnt>166
+</span><span class=lnt>167
+</span><span class=lnt>168
+</span><span class=lnt>169
+</span><span class=lnt>170
+</span><span class=lnt>171
+</span><span class=lnt>172
+</span><span class=lnt>173
+</span><span class=lnt>174
+</span><span class=lnt>175
+</span><span class=lnt>176
+</span><span class=lnt>177
+</span><span class=lnt>178
+</span><span class=lnt>179
+</span><span class=lnt>180
+</span><span class=lnt>181
+</span><span class=lnt>182
+</span><span class=lnt>183
+</span><span class=lnt>184
+</span><span class=lnt>185
+</span><span class=lnt>186
+</span><span class=lnt>187
+</span><span class=lnt>188
+</span><span class=lnt>189
+</span><span class=lnt>190
+</span><span class=lnt>191
+</span><span class=lnt>192
+</span><span class=lnt>193
+</span><span class=lnt>194
+</span><span class=lnt>195
+</span><span class=lnt>196
+</span><span class=lnt>197
+</span><span class=lnt>198
+</span><span class=lnt>199
+</span><span class=lnt>200
+</span><span class=lnt>201
+</span><span class=lnt>202
+</span><span class=lnt>203
+</span><span class=lnt>204
+</span><span class=lnt>205
+</span><span class=lnt>206
+</span><span class=lnt>207
+</span><span class=lnt>208
+</span><span class=lnt>209
+</span><span class=lnt>210
+</span><span class=lnt>211
+</span><span class=lnt>212
+</span><span class=lnt>213
+</span><span class=lnt>214
+</span><span class=lnt>215
+</span><span class=lnt>216
+</span><span class=lnt>217
+</span><span class=lnt>218
+</span><span class=lnt>219
+</span><span class=lnt>220
+</span><span class=lnt>221
+</span><span class=lnt>222
+</span><span class=lnt>223
+</span><span class=lnt>224
+</span><span class=lnt>225
+</span><span class=lnt>226
+</span><span class=lnt>227
+</span><span class=lnt>228
+</span><span class=lnt>229
+</span><span class=lnt>230
+</span><span class=lnt>231
+</span><span class=lnt>232
+</span><span class=lnt>233
+</span><span class=lnt>234
+</span><span class=lnt>235
+</span><span class=lnt>236
+</span><span class=lnt>237
+</span><span class=lnt>238
+</span><span class=lnt>239
+</span><span class=lnt>240
+</span><span class=lnt>241
+</span><span class=lnt>242
+</span><span class=lnt>243
+</span><span class=lnt>244
+</span><span class=lnt>245
+</span><span class=lnt>246
+</span><span class=lnt>247
+</span><span class=lnt>248
+</span><span class=lnt>249
+</span><span class=lnt>250
+</span><span class=lnt>251
+</span><span class=lnt>252
+</span><span class=lnt>253
+</span><span class=lnt>254
+</span><span class=lnt>255
+</span><span class=lnt>256
+</span><span class=lnt>257
+</span><span class=lnt>258
+</span><span class=lnt>259
+</span><span class=lnt>260
+</span><span class=lnt>261
+</span><span class=lnt>262
+</span><span class=lnt>263
+</span><span class=lnt>264
+</span><span class=lnt>265
+</span><span class=lnt>266
+</span><span class=lnt>267
+</span><span class=lnt>268
+</span><span class=lnt>269
+</span><span class=lnt>270
+</span><span class=lnt>271
+</span><span class=lnt>272
+</span><span class=lnt>273
+</span><span class=lnt>274
+</span><span class=lnt>275
+</span><span class=lnt>276
+</span><span class=lnt>277
+</span><span class=lnt>278
+</span><span class=lnt>279
+</span><span class=lnt>280
+</span><span class=lnt>281
+</span><span class=lnt>282
+</span><span class=lnt>283
+</span><span class=lnt>284
+</span><span class=lnt>285
+</span><span class=lnt>286
+</span><span class=lnt>287
+</span><span class=lnt>288
+</span><span class=lnt>289
+</span><span class=lnt>290
+</span><span class=lnt>291
+</span><span class=lnt>292
+</span><span class=lnt>293
+</span><span class=lnt>294
+</span><span class=lnt>295
+</span><span class=lnt>296
+</span><span class=lnt>297
+</span><span class=lnt>298
+</span><span class=lnt>299
+</span><span class=lnt>300
+</span><span class=lnt>301
+</span><span class=lnt>302
+</span><span class=lnt>303
+</span><span class=lnt>304
+</span><span class=lnt>305
+</span><span class=lnt>306
+</span><span class=lnt>307
+</span><span class=lnt>308
+</span><span class=lnt>309
+</span><span class=lnt>310
+</span><span class=lnt>311
+</span><span class=lnt>312
+</span><span class=lnt>313
+</span><span class=lnt>314
+</span><span class=lnt>315
+</span><span class=lnt>316
+</span><span class=lnt>317
+</span><span class=lnt>318
+</span><span class=lnt>319
+</span><span class=lnt>320
+</span><span class=lnt>321
+</span><span class=lnt>322
+</span><span class=lnt>323
+</span><span class=lnt>324
+</span><span class=lnt>325
+</span><span class=lnt>326
+</span><span class=lnt>327
+</span><span class=lnt>328
+</span></code></pre></td>
+<td class=lntd>
+<pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=c># plate00 is a test L8 module</span><span class=w>
+</span><span class=w></span><span class=c># Has a resolution of 240x320</span><span class=w>
+</span><span class=w></span><span class=c># The top left corner is 0,0, X grows positive to the right and Y grows positive down</span><span class=w>
+</span><span class=w></span><span class=c>##</span><span class=w>
+</span><span class=w></span><span class=nt>plate00</span><span class=p>:</span><span class=w>
+</span><span class=w>  </span><span class=c>## TODO: is there a way to fix this? Maybe a HA feature request or openHasp/CC change...</span><span class=w>
+</span><span class=w>  </span><span class=c># Would be really nice if HA had some way to save templates and load them</span><span class=w>
+</span><span class=w>  </span><span class=c>#   that way I don&#39;t have to declare the same variables over and over...</span><span class=w>
+</span><span class=w>  </span><span class=nt>objects</span><span class=p>:</span><span class=w>
+</span><span class=w>    </span><span class=c>###</span><span class=w>
+</span><span class=w>    </span><span class=c># COMMON</span><span class=w>
+</span><span class=w>    </span><span class=c>###</span><span class=w>
+</span><span class=w>    </span><span class=c># Header: Time</span><span class=w>
+</span><span class=w>    </span>- <span class=nt>obj</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;p0b1&#34;</span><span class=w>
+</span><span class=w>      </span><span class=nt>properties</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span><span class=c># Align left most, If we do go over our permitted length, loop</span><span class=w>
+</span><span class=w>        </span><span class=nt>&#34;align&#34;: </span><span class=s2>&#34;left&#34;</span><span class=w>
+</span><span class=w>        </span><span class=nt>&#34;text&#34;: </span><span class=s2>&#34;{{ states(&#39;sensor.time&#39;) }}&#34;</span><span class=w>
+</span><span class=w>        </span><span class=nt>&#34;mode&#34;: </span><span class=s2>&#34;loop&#34;</span><span class=w>
+</span><span class=w>        </span><span class=c>##</span><span class=w>
+</span><span class=w>        </span><span class=c># Draw the labels with a 1% margin from the top and sides</span><span class=w>
+</span><span class=w>        </span><span class=nt>&#34;x&#34;: </span><span class=p>&gt;-</span><span class=sd>
+</span><span class=sd>          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
+</span><span class=sd>          {% set hdrHorMargin = (scnWd*0.01) | int %}
+</span><span class=sd>          {{hdrHorMargin}}</span><span class=w>          
+</span><span class=w>
+</span><span class=w>        </span><span class=nt>&#34;y&#34;: </span><span class=p>&gt;-</span><span class=sd>
+</span><span class=sd>          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
+</span><span class=sd>          {% set hdrVrtMargin = (scnHt*0.01) | int %}
+</span><span class=sd>          {{hdrVrtMargin}}</span><span class=w>          
+</span><span class=w>
+</span><span class=w>        </span><span class=c># Width is 1/3 of the screen width after subtracting margins</span><span class=w>
+</span><span class=w>        </span><span class=c>##</span><span class=w>
+</span><span class=w>        </span><span class=nt>&#34;w&#34;: </span><span class=p>&gt;-</span><span class=sd>
+</span><span class=sd>          {% set numObj = 3 %}
+</span><span class=sd>          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
+</span><span class=sd>          {% set hdrHorMargin = (scnWd*0.01) | int %}
+</span><span class=sd>          {% set usableHdrWd = scnWd-(2*hdrHorMargin) %}
+</span><span class=sd>          {% set hdrLblWd = (usableHdrWd/numObj) | int %}
+</span><span class=sd>          {{hdrLblWd}}</span><span class=w>          
+</span><span class=w>
+</span><span class=w>        </span><span class=c># Height is 10% of the screen, after margin</span><span class=w>
+</span><span class=w>        </span><span class=c>##</span><span class=w>
+</span><span class=w>        </span><span class=nt>&#34;h&#34;: </span><span class=p>&gt;-</span><span class=sd>
+</span><span class=sd>          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
+</span><span class=sd>          {% set hdrVrtMargin = (scnHt*0.01) | int %}
+</span><span class=sd>          {% set hdrHt = (scnHt*0.1) | int %}
+</span><span class=sd>          {% set hdrLblHt = hdrHt-hdrVrtMargin %}
+</span><span class=sd>          {{hdrLblHt}}</span><span class=w>          
+</span><span class=w>
+</span><span class=w>    </span><span class=c># Header: Temp</span><span class=w>
+</span><span class=w>    </span>- <span class=nt>obj</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;p0b2&#34;</span><span class=w>
+</span><span class=w>      </span><span class=nt>properties</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span><span class=c># Align center, If we do go over our permitted length, loop</span><span class=w>
+</span><span class=w>        </span><span class=nt>&#34;align&#34;: </span><span class=s2>&#34;center&#34;</span><span class=w>
+</span><span class=w>        </span><span class=nt>&#34;text&#34;: </span><span class=s2>&#34;{{ states(&#39;sensor.room_temperature&#39;) }}°C&#34;</span><span class=w>
+</span><span class=w>        </span><span class=nt>&#34;mode&#34;: </span><span class=s2>&#34;loop&#34;</span><span class=w>
+</span><span class=w>        </span><span class=c>##</span><span class=w>
+</span><span class=w>        </span><span class=c># Draw the labels with a 1% margin from the top and sides</span><span class=w>
+</span><span class=w>        </span><span class=nt>&#34;x&#34;: </span><span class=p>&gt;-</span><span class=sd>
+</span><span class=sd>          {% set numObj = 3 %}
+</span><span class=sd>          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
+</span><span class=sd>          {% set hdrHorMargin = (scnWd*0.01) | int %}
+</span><span class=sd>          {% set usableHdrWd = scnWd-(2*hdrHorMargin) %}
+</span><span class=sd>          {% set hdrLblWd = (usableHdrWd/numObj) | int %}
+</span><span class=sd>          {% set hdrHorMargin = (scnWd*0.01) | int %}
+</span><span class=sd>          {{hdrHorMargin+hdrLblWd}}</span><span class=w>          
+</span><span class=w>
+</span><span class=w>        </span><span class=nt>&#34;y&#34;: </span><span class=p>&gt;-</span><span class=sd>
+</span><span class=sd>          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
+</span><span class=sd>          {% set hdrVrtMargin = (scnHt*0.01) | int %}
+</span><span class=sd>          {{hdrVrtMargin}}</span><span class=w>          
+</span><span class=w>
+</span><span class=w>        </span><span class=c># Width is 1/3 of the screen width after subtracting margins</span><span class=w>
+</span><span class=w>        </span><span class=c>##</span><span class=w>
+</span><span class=w>        </span><span class=nt>&#34;w&#34;: </span><span class=p>&gt;-</span><span class=sd>
+</span><span class=sd>          {% set numObj = 3 %}
+</span><span class=sd>          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
+</span><span class=sd>          {% set hdrHorMargin = (scnWd*0.01) | int %}
+</span><span class=sd>          {% set usableHdrWd = scnWd-(2*hdrHorMargin) %}
+</span><span class=sd>          {% set hdrLblWd = (usableHdrWd/numObj) | int %}
+</span><span class=sd>          {{hdrLblWd}}</span><span class=w>          
+</span><span class=w>
+</span><span class=w>        </span><span class=c># Height is 10% of the screen, after margin</span><span class=w>
+</span><span class=w>        </span><span class=c>##</span><span class=w>
+</span><span class=w>        </span><span class=nt>&#34;h&#34;: </span><span class=p>&gt;-</span><span class=sd>
+</span><span class=sd>          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
+</span><span class=sd>          {% set hdrVrtMargin = (scnHt*0.01) | int %}
+</span><span class=sd>          {% set hdrHt = (scnHt*0.1) | int %}
+</span><span class=sd>          {% set hdrLblHt = hdrHt-hdrVrtMargin %}
+</span><span class=sd>          {{hdrLblHt}}</span><span class=w>          
+</span><span class=w>
+</span><span class=w>    </span><span class=c># Header: Humidity</span><span class=w>
+</span><span class=w>    </span>- <span class=nt>obj</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;p0b3&#34;</span><span class=w>
+</span><span class=w>      </span><span class=nt>properties</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span><span class=c># Align right most, If we do go over our permitted length, loop</span><span class=w>
+</span><span class=w>        </span><span class=nt>&#34;align&#34;: </span><span class=s2>&#34;right&#34;</span><span class=w>
+</span><span class=w>        </span><span class=nt>&#34;text&#34;: </span><span class=s2>&#34;{{ states(&#39;sensor.room_humidity&#39;) }}%&#34;</span><span class=w>
+</span><span class=w>        </span><span class=nt>&#34;mode&#34;: </span><span class=s2>&#34;loop&#34;</span><span class=w>
+</span><span class=w>        </span><span class=c>##</span><span class=w>
+</span><span class=w>        </span><span class=c># Draw the labels with a 1% margin from the top and sides</span><span class=w>
+</span><span class=w>        </span><span class=nt>&#34;x&#34;: </span><span class=p>&gt;-</span><span class=sd>
+</span><span class=sd>          {% set numObj = 3 %}
+</span><span class=sd>          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
+</span><span class=sd>          {% set hdrHorMargin = (scnWd*0.01) | int %}
+</span><span class=sd>          {% set usableHdrWd = scnWd-(2*hdrHorMargin) %}
+</span><span class=sd>          {% set hdrLblWd = (usableHdrWd/numObj) | int %}
+</span><span class=sd>          {% set hdrHorMargin = (scnWd*0.01) | int %}
+</span><span class=sd>          {{hdrHorMargin+(2*hdrLblWd)}}</span><span class=w>          
+</span><span class=w>
+</span><span class=w>        </span><span class=nt>&#34;y&#34;: </span><span class=p>&gt;-</span><span class=sd>
+</span><span class=sd>          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
+</span><span class=sd>          {% set hdrVrtMargin = (scnHt*0.01) | int %}
+</span><span class=sd>          {{hdrVrtMargin}}</span><span class=w>          
+</span><span class=w>
+</span><span class=w>        </span><span class=c># Width is 1/3 of the screen width after subtracting margins</span><span class=w>
+</span><span class=w>        </span><span class=c>##</span><span class=w>
+</span><span class=w>        </span><span class=nt>&#34;w&#34;: </span><span class=p>&gt;-</span><span class=sd>
+</span><span class=sd>          {% set numObj = 3 %}
+</span><span class=sd>          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
+</span><span class=sd>          {% set hdrHorMargin = (scnWd*0.01) | int %}
+</span><span class=sd>          {% set usableHdrWd = scnWd-(2*hdrHorMargin) %}
+</span><span class=sd>          {% set hdrLblWd = (usableHdrWd/numObj) | int %}
+</span><span class=sd>          {{hdrLblWd}}</span><span class=w>          
+</span><span class=w>
+</span><span class=w>        </span><span class=c># Height is 10% of the screen, after margin</span><span class=w>
+</span><span class=w>        </span><span class=c>##</span><span class=w>
+</span><span class=w>        </span><span class=nt>&#34;h&#34;: </span><span class=p>&gt;-</span><span class=sd>
+</span><span class=sd>          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
+</span><span class=sd>          {% set hdrVrtMargin = (scnHt*0.01) | int %}
+</span><span class=sd>          {% set hdrHt = (scnHt*0.1) | int %}
+</span><span class=sd>          {% set hdrLblHt = hdrHt-hdrVrtMargin %}
+</span><span class=sd>          {{hdrLblHt}}</span><span class=w>          
+</span><span class=w>
+</span><span class=w>    </span><span class=c># bottom nav: previous</span><span class=w>
+</span><span class=w>    </span>- <span class=nt>obj</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;p0b6&#34;</span><span class=w>
+</span><span class=w>      </span><span class=nt>properties</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span><span class=c># Left most button sits all the way up against the left side of the screen</span><span class=w>
+</span><span class=w>        </span><span class=nt>&#34;x&#34;: </span><span class=m>0</span><span class=w>
+</span><span class=w>        </span><span class=c># Start drawing the button from the bottom most pixel</span><span class=w>
+</span><span class=w>        </span><span class=nt>&#34;y&#34;: </span><span class=p>&gt;-</span><span class=sd>
+</span><span class=sd>          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
+</span><span class=sd>          {% set hdrHt = (scnHt*0.1) | int %}
+</span><span class=sd>          {{scnHt-hdrHt}}</span><span class=w>          
+</span><span class=w>        </span><span class=c># And since we have 3 buttons, 1/3 of the width</span><span class=w>
+</span><span class=w>        </span><span class=nt>&#34;w&#34;: </span><span class=p>&gt;-</span><span class=sd>
+</span><span class=sd>          {% set numObj = 3 %}
+</span><span class=sd>          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
+</span><span class=sd>          {% set ftrBtnWd = (scnWd/numObj) | int %}
+</span><span class=sd>          {{ftrBtnWd-1}}</span><span class=w>          
+</span><span class=w>        </span><span class=c># We want the bottom nav buttons to consume the bottom 10% of the screen</span><span class=w>
+</span><span class=w>        </span><span class=nt>&#34;h&#34;: </span><span class=p>&gt;-</span><span class=sd>
+</span><span class=sd>          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
+</span><span class=sd>          {% set ftrHt = (scnHt*0.1) | int %}
+</span><span class=sd>          {{ftrHt}}</span><span class=w>          
+</span><span class=w>
+</span><span class=w>    </span><span class=c># bottom nav: home</span><span class=w>
+</span><span class=w>    </span>- <span class=nt>obj</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;p0b7&#34;</span><span class=w>
+</span><span class=w>      </span><span class=nt>properties</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span><span class=c># Start drawing exactly the next pixel over from where the first button stopped</span><span class=w>
+</span><span class=w>        </span><span class=nt>&#34;x&#34;: </span><span class=p>&gt;-</span><span class=sd>
+</span><span class=sd>          {% set numObj = 3 %}
+</span><span class=sd>          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
+</span><span class=sd>          {% set ftrBtnWd = (scnWd/numObj) | int %}
+</span><span class=sd>          {{ftrBtnWd}}</span><span class=w>          
+</span><span class=w>        </span><span class=c># Start drawing the button from the bottom most pixel</span><span class=w>
+</span><span class=w>        </span><span class=nt>&#34;y&#34;: </span><span class=p>&gt;-</span><span class=sd>
+</span><span class=sd>          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
+</span><span class=sd>          {% set hdrHt = (scnHt*0.1) | int %}
+</span><span class=sd>          {{scnHt-hdrHt}}</span><span class=w>          
+</span><span class=w>        </span><span class=c># And since we have 3 buttons, 1/3 of the width</span><span class=w>
+</span><span class=w>        </span><span class=nt>&#34;w&#34;: </span><span class=p>&gt;-</span><span class=sd>
+</span><span class=sd>          {% set numObj = 3 %}
+</span><span class=sd>          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
+</span><span class=sd>          {% set ftrBtnWd = (scnWd/numObj) | int %}
+</span><span class=sd>          {{ftrBtnWd-1}}</span><span class=w>          
+</span><span class=w>        </span><span class=c># We want the bottom nav buttons to consume the bottom 10% of the screen</span><span class=w>
+</span><span class=w>        </span><span class=nt>&#34;h&#34;: </span><span class=p>&gt;-</span><span class=sd>
+</span><span class=sd>          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
+</span><span class=sd>          {% set ftrHt = (scnHt*0.1) | int %}
+</span><span class=sd>          {{ftrHt}}</span><span class=w>          
+</span><span class=w>
+</span><span class=w>    </span><span class=c># bottom nav: next</span><span class=w>
+</span><span class=w>    </span>- <span class=nt>obj</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;p0b8&#34;</span><span class=w>
+</span><span class=w>      </span><span class=nt>properties</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span><span class=c># Start drawing exactly the next pixel over from where the first button stopped</span><span class=w>
+</span><span class=w>        </span><span class=nt>&#34;x&#34;: </span><span class=p>&gt;-</span><span class=sd>
+</span><span class=sd>          {% set numObj = 3 %}
+</span><span class=sd>          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
+</span><span class=sd>          {% set ftrBtnWd = (scnWd/numObj) | int %}
+</span><span class=sd>          {{ftrBtnWd*2}}</span><span class=w>          
+</span><span class=w>        </span><span class=c># Start drawing the button from the bottom most pixel</span><span class=w>
+</span><span class=w>        </span><span class=nt>&#34;y&#34;: </span><span class=p>&gt;-</span><span class=sd>
+</span><span class=sd>          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
+</span><span class=sd>          {% set hdrHt = (scnHt*0.1) | int %}
+</span><span class=sd>          {{scnHt-hdrHt}}</span><span class=w>          
+</span><span class=w>        </span><span class=c># And since we have 3 buttons, 1/3 of the width</span><span class=w>
+</span><span class=w>        </span><span class=nt>&#34;w&#34;: </span><span class=p>&gt;-</span><span class=sd>
+</span><span class=sd>          {% set numObj = 3 %}
+</span><span class=sd>          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
+</span><span class=sd>          {% set ftrBtnWd = (scnWd/numObj) | int %}
+</span><span class=sd>          {{ftrBtnWd}}</span><span class=w>          
+</span><span class=w>        </span><span class=c># We want the bottom nav buttons to consume the bottom 10% of the screen</span><span class=w>
+</span><span class=w>        </span><span class=nt>&#34;h&#34;: </span><span class=p>&gt;-</span><span class=sd>
+</span><span class=sd>          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
+</span><span class=sd>          {% set ftrHt = (scnHt*0.1) | int %}
+</span><span class=sd>          {{ftrHt}}</span><span class=w>          
+</span><span class=w>
+</span><span class=w>    </span><span class=c># ###</span><span class=w>
+</span><span class=w>    </span><span class=c># # Room Specific</span><span class=w>
+</span><span class=w>    </span><span class=c># ###</span><span class=w>
+</span><span class=w>    </span><span class=c># relay toggle 1</span><span class=w>
+</span><span class=w>    </span>- <span class=nt>obj</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;p1b101&#34;</span><span class=w>
+</span><span class=w>      </span><span class=nt>properties</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span><span class=nt>&#34;x&#34;: </span><span class=p>&gt;-</span><span class=sd>
+</span><span class=sd>          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
+</span><span class=sd>          {% set hdrHorMargin = (scnWd*0.01) | int %}
+</span><span class=sd>          {{hdrHorMargin}}</span><span class=w>          
+</span><span class=w>        </span><span class=c># Figure out how tall the display is, subtract out the height of the header/footer and that&#39;s the usable</span><span class=w>
+</span><span class=w>        </span><span class=c>#   space. Within that usable space, we will want small margins.</span><span class=w>
+</span><span class=w>        </span><span class=c>##</span><span class=w>
+</span><span class=w>        </span><span class=nt>&#34;y&#34;: </span><span class=p>&gt;-</span><span class=sd>
+</span><span class=sd>          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
+</span><span class=sd>          {% set hdrVrtMargin = (scnHt*0.01) | int %}
+</span><span class=sd>          {% set hdrHt = (scnHt*0.1) | int %}
+</span><span class=sd>          {{hdrHt+hdrVrtMargin}}</span><span class=w>          
+</span><span class=w>
+</span><span class=w>        </span><span class=nt>&#34;w&#34;: </span><span class=p>&gt;-</span><span class=sd>
+</span><span class=sd>          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
+</span><span class=sd>          {% set hdrHorMargin = (scnWd*0.01) | int %}
+</span><span class=sd>          {% set usableHdrWd = scnWd-(2*hdrHorMargin) %}
+</span><span class=sd>          {% set bdyWd = usableHdrWd %}
+</span><span class=sd>          {{bdyWd}}</span><span class=w>          
+</span><span class=w>
+</span><span class=w>        </span><span class=c># We want the bottom nav buttons to consume the bottom 10% of the screen</span><span class=w>
+</span><span class=w>        </span><span class=nt>&#34;h&#34;: </span><span class=p>&gt;-</span><span class=sd>
+</span><span class=sd>          {% set numObj = 3 %}
+</span><span class=sd>          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
+</span><span class=sd>          {% set hdrHt = (scnHt*0.1) | int %}
+</span><span class=sd>          {% set ftrHt = (scnHt*0.1) | int %}
+</span><span class=sd>          {% set hdrVrtMargin = (scnHt*0.01) | int %}
+</span><span class=sd>          {% set bdyHt = (scnHt - (hdrHt+ftrHt) - (2*hdrVrtMargin)) | int %}
+</span><span class=sd>          {% set bdyBtnVrtMargin = (bdyHt * 0.02) | int %}
+</span><span class=sd>          {% set bdyBtnHt = ((bdyHt-((numObj-1)*bdyBtnVrtMargin))/numObj) | int %}
+</span><span class=sd>          {{bdyBtnHt}}</span><span class=w>          
+</span><span class=w>
+</span><span class=w>    </span><span class=c># relay toggle 2</span><span class=w>
+</span><span class=w>    </span>- <span class=nt>obj</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;p1b102&#34;</span><span class=w>
+</span><span class=w>      </span><span class=nt>properties</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span><span class=nt>&#34;x&#34;: </span><span class=p>&gt;-</span><span class=sd>
+</span><span class=sd>          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
+</span><span class=sd>          {% set hdrHorMargin = (scnWd*0.01) | int %}
+</span><span class=sd>          {{hdrHorMargin}}</span><span class=w>          
+</span><span class=w>
+</span><span class=w>        </span><span class=c># Figure out how tall the display is, subtract out the height of the header/footer and that&#39;s the usable</span><span class=w>
+</span><span class=w>        </span><span class=c>#   space. Within that usable space, we will want small margins.</span><span class=w>
+</span><span class=w>        </span><span class=c>##</span><span class=w>
+</span><span class=w>        </span><span class=nt>&#34;y&#34;: </span><span class=p>&gt;-</span><span class=sd>
+</span><span class=sd>          {% set numObj = 3 %}
+</span><span class=sd>          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
+</span><span class=sd>          {% set hdrVrtMargin = (scnHt*0.01) | int %}
+</span><span class=sd>          {% set hdrHt = (scnHt*0.1) | int %}
+</span><span class=sd>          {% set ftrHt = (scnHt*0.1) | int %}
+</span><span class=sd>          {% set bdyHt = (scnHt - (hdrHt+ftrHt) - (2*hdrVrtMargin)) | int %}
+</span><span class=sd>          {% set bdyBtnVrtMargin = (bdyHt * 0.02) | int %}
+</span><span class=sd>          {% set bdyBtnHt = ((bdyHt-((numObj-1)*bdyBtnVrtMargin))/numObj) | int %}
+</span><span class=sd>          {{hdrHt+hdrVrtMargin+(1*bdyBtnHt+bdyBtnVrtMargin)}}</span><span class=w>          
+</span><span class=w>
+</span><span class=w>        </span><span class=nt>&#34;w&#34;: </span><span class=p>&gt;-</span><span class=sd>
+</span><span class=sd>          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
+</span><span class=sd>          {% set hdrHorMargin = (scnWd*0.01) | int %}
+</span><span class=sd>          {% set usableHdrWd = scnWd-(2*hdrHorMargin) %}
+</span><span class=sd>          {% set bdyWd = usableHdrWd %}
+</span><span class=sd>          {{bdyWd}}</span><span class=w>          
+</span><span class=w>
+</span><span class=w>        </span><span class=c># We want the bottom nav buttons to consume the bottom 10% of the screen</span><span class=w>
+</span><span class=w>        </span><span class=nt>&#34;h&#34;: </span><span class=p>&gt;-</span><span class=sd>
+</span><span class=sd>          {% set numObj = 3 %}
+</span><span class=sd>          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
+</span><span class=sd>          {% set hdrHt = (scnHt*0.1) | int %}
+</span><span class=sd>          {% set ftrHt = (scnHt*0.1) | int %}
+</span><span class=sd>          {% set hdrVrtMargin = (scnHt*0.01) | int %}
+</span><span class=sd>          {% set bdyHt = (scnHt - (hdrHt+ftrHt) - (2*hdrVrtMargin)) | int %}
+</span><span class=sd>          {% set bdyBtnVrtMargin = (bdyHt * 0.02) | int %}
+</span><span class=sd>          {% set bdyBtnHt = ((bdyHt-((numObj-1)*bdyBtnVrtMargin))/numObj) | int %}
+</span><span class=sd>          {{bdyBtnHt}}</span><span class=w>          
+</span><span class=w>
+</span><span class=w>    </span><span class=c># relay toggle 3</span><span class=w>
+</span><span class=w>    </span>- <span class=nt>obj</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;p1b103&#34;</span><span class=w>
+</span><span class=w>      </span><span class=nt>properties</span><span class=p>:</span><span class=w>
+</span><span class=w>        </span><span class=nt>&#34;x&#34;: </span><span class=p>&gt;-</span><span class=sd>
+</span><span class=sd>          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
+</span><span class=sd>          {% set hdrHorMargin = (scnWd*0.01) | int %}
+</span><span class=sd>          {{hdrHorMargin}}</span><span class=w>          
+</span><span class=w>
+</span><span class=w>        </span><span class=c># Figure out how tall the display is, subtract out the height of the header/footer and that&#39;s the usable</span><span class=w>
+</span><span class=w>        </span><span class=c>#   space. Within that usable space, we will want small margins.</span><span class=w>
+</span><span class=w>        </span><span class=c>##</span><span class=w>
+</span><span class=w>        </span><span class=nt>&#34;y&#34;: </span><span class=p>&gt;-</span><span class=sd>
+</span><span class=sd>          {% set numObj = 3 %}
+</span><span class=sd>          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
+</span><span class=sd>          {% set hdrVrtMargin = (scnHt*0.01) | int %}
+</span><span class=sd>          {% set hdrHt = (scnHt*0.1) | int %}
+</span><span class=sd>          {% set ftrHt = (scnHt*0.1) | int %}
+</span><span class=sd>          {% set bdyHt = (scnHt - (hdrHt+ftrHt) - (2*hdrVrtMargin)) | int %}
+</span><span class=sd>          {% set bdyBtnVrtMargin = (bdyHt * 0.02) | int %}
+</span><span class=sd>          {% set bdyBtnHt = ((bdyHt-((numObj-1)*bdyBtnVrtMargin))/numObj) | int %}
+</span><span class=sd>          {{hdrHt+hdrVrtMargin+(2*(bdyBtnHt+bdyBtnVrtMargin))}}</span><span class=w>          
+</span><span class=w>
+</span><span class=w>        </span><span class=nt>&#34;w&#34;: </span><span class=p>&gt;-</span><span class=sd>
+</span><span class=sd>          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
+</span><span class=sd>          {% set hdrHorMargin = (scnWd*0.01) | int %}
+</span><span class=sd>          {% set usableHdrWd = scnWd-(2*hdrHorMargin) %}
+</span><span class=sd>          {% set bdyWd = usableHdrWd %}
+</span><span class=sd>          {{bdyWd}}</span><span class=w>          
+</span><span class=w>
+</span><span class=w>        </span><span class=c># We want the bottom nav buttons to consume the bottom 10% of the screen</span><span class=w>
+</span><span class=w>        </span><span class=nt>&#34;h&#34;: </span><span class=p>&gt;-</span><span class=sd>
+</span><span class=sd>          {% set numObj = 3 %}
+</span><span class=sd>          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
+</span><span class=sd>          {% set hdrHt = (scnHt*0.1) | int %}
+</span><span class=sd>          {% set ftrHt = (scnHt*0.1) | int %}
+</span><span class=sd>          {% set hdrVrtMargin = (scnHt*0.01) | int %}
+</span><span class=sd>          {% set bdyHt = (scnHt - (hdrHt+ftrHt) - (2*hdrVrtMargin)) | int %}
+</span><span class=sd>          {% set bdyBtnVrtMargin = (bdyHt * 0.02) | int %}
+</span><span class=sd>          {% set bdyBtnHt = ((bdyHt-((numObj-1)*bdyBtnVrtMargin))/numObj) | int %}
+</span><span class=sd>          {{bdyBtnHt}}</span><span class=w>          
+</span><span class=w>
+</span></code></pre></td></tr></table>
+</div>
+</div><p>And you&rsquo;re done!
+You might need to restart Home Assistant or reload the openHasp component/configuration so your update YAML is picked up.
+Assuming everything works, you should see a flurry of activity on your MQTT broker or the plate telnet console as the openHasp component renders each template and commands the plate to re-draw each UI element.</p>
+<p>You can then re-configure your device with a new display orientation and then reboot it. As it connects back to your MQTT broker, Home Assistant will re-evaluate the templates with the inverted screen height/width and each UI widget should get re-painted.</p>
+<p>If I had a way to reliably capture the content of the framebuffer as a video rather than a screenshot, I&rsquo;d include it here.
+You&rsquo;ll just have to trust me when I say that It&rsquo;s kinda neat to watch this happen in real time.</p>
+<h2 id=teardown>Teardown</h2>
+<h3 id=product-packaging>Product packaging</h3>
+<p>Since it&rsquo;s all but impossible to find any photos of the product packaging online, here&rsquo;s a few of those:</p>
+<figure>
+<img src=https://karlquinsland.com/lanbon-l8-tuya-lcd-switch-openhasp/images/unbox00.jpg alt="Photo showing the product package from the front.">
+<figcaption>
+</figcaption>
+</figure>
+<figure>
+<img src=https://karlquinsland.com/lanbon-l8-tuya-lcd-switch-openhasp/images/unbox01.jpg alt="Photo showing the product package from the rear.">
+<figcaption>
+</figcaption>
+</figure>
+<figure>
+<img src=https://karlquinsland.com/lanbon-l8-tuya-lcd-switch-openhasp/images/unbox02.jpg alt="Photo showing the inner product package opened to reveal the main switch.">
+<figcaption>
+<p>
+Minimal instructions and wasteful packaging. Other than the small foam insert, this entire package can be recycled!
+</p>
+</figcaption>
+</figure>
+<figure>
+<img src=https://karlquinsland.com/lanbon-l8-tuya-lcd-switch-openhasp/images/unbox03.jpg alt="Picture showing the main switch and provided installation screws.">
+<figcaption>
+<p>
+The provided screws are NOT the US standard #6 32 thread-per-inch. They are slightly larger and will strip out any screw holes in an electrical box!
+</p>
+</figcaption>
+</figure>
+<h3 id=internals>Internals</h3>
+<figure>
+<img src=https://karlquinsland.com/lanbon-l8-tuya-lcd-switch-openhasp/images/td01.jpg alt="Picture showing the front of the switch next to the portion of the switch that is mean to be installed in the wall">
+<figcaption>
+<p>
+This particular model is the 3 relay version. Packaging claims 200W power. It's not clear if that is per channel or total. My money is on total.
+</p>
+</figcaption>
+</figure>
+<figure>
+<img src=https://karlquinsland.com/lanbon-l8-tuya-lcd-switch-openhasp/images/td02.jpg alt="Picture showing the rear of the switch screen panel and the front of the power module that would be installed in the wall.">
+<figcaption>
+</figcaption>
+</figure>
+<p>You can clearly see the revised PCB that is substantially different from the one featured on <a href=https://blakadder.com/lanbon-L8-custom-firmware/#disassembly target=_blank rel="noopener noreffer">this blakadder post</a>.
+My PCB has a parasitic TuYa module also attached.
+Almost none of the pins are connected to the PCB so the TuYa module is 100% self contained and commands the main ESP module via UART.</p>
+<p>Removing the TuYa module is pretty painless with some hot air.
+It can also be left alone and the openHasp binaries will just ignore it.
+You can also place an order directly with Lanbon for units that do not have the TuYa module populated but this will require a minimum order quantity.</p>
+<figure>
+<img src=https://karlquinsland.com/lanbon-l8-tuya-lcd-switch-openhasp/images/td03.jpg alt="Picture showing the internal circuit board of the low-voltage switch screen. There are two system on modules present. One is an ESP32 that runs the show and the other is a minimally connected TuYa module.">
+<figcaption>
+</figcaption>
+</figure>
+<figure>
+<img src=https://karlquinsland.com/lanbon-l8-tuya-lcd-switch-openhasp/images/td04.jpg alt="Picture showing the power / switch module PCB from the front.">
+<figcaption>
+<p>
+Generic relays, generic caps, generic transformers... don't switch any critical loads with this!
+</p>
+</figcaption>
+</figure>
+<figure>
+<img src=https://karlquinsland.com/lanbon-l8-tuya-lcd-switch-openhasp/images/td05.jpg alt="Picture showing a smaller PCB attached to the main power module">
+<figcaption>
+<p>
+A closer look at what appears to be a dedicated power monitoring IC. It appears to monitor the aggregate of all three channels, not each individually. Very likely to make sure no more than 200W is switched at one time...
+</p>
+</figcaption>
+</figure>
+<figure>
+<img src=https://karlquinsland.com/lanbon-l8-tuya-lcd-switch-openhasp/images/td06.jpg alt="Another picture of the power module PCB from the rear. A single unlabeled IC and several passive components are present">
+<figcaption>
+</figcaption>
+</figure>
+<h3 id=pcbic-markings>PCB/IC Markings</h3>
+<p>Some of the interesting ICs and PCB markings:</p>
+<ul>
+<li>
+<p><code>CB3S</code>: TuYa <a href="https://developer.tuya.com/en/docs/iot/cb3s?id=Kai94mec0s076" target=_blank rel="noopener noreffer">wifi module</a></p>
+</li>
+<li>
+<p><code>HLW8012</code>: Single phase energy monitor chip</p>
+</li>
+<li>
+<p><code>ESP32-WROVER-IB</code>: the primary ESP32 module that runs the show</p>
+</li>
+<li>
+<p>Primary PCB is marked: <code>L8-HS_CB_V1.17(20210805)</code></p>
+</li>
+<li>
+<p>Daughter / &lsquo;power&rsquo; board <code>L8-HS MB V1,14</code></p>
+</li>
+</ul>
+</div><div class=post-footer id=post-footer>
+<div class=post-info>
+<div class=post-info-line>
+<div class=post-info-mod>
+<span>Updated on 2022-01-18&nbsp;<a class=git-hash href=https://github.com/kquinsland/kquinsland.github.io/commit/ea829a5b9d05c4459c2d5c7309d5d96b1e496942 target=_blank title="commit by karl(github@karlquinsland.com) ea829a5b9d05c4459c2d5c7309d5d96b1e496942: More work on post">
+<i class="fas fa-hashtag fa-fw"></i>ea829a5</a></span>
+</div>
+<div class=post-info-license></div>
+</div>
+<div class=post-info-line>
+<div class=post-info-md><span>
+<a class=link-to-markdown href=https://karlquinsland.com/lanbon-l8-tuya-lcd-switch-openhasp/index.md target=_blank>Read Markdown</a>
+</span></div>
+<div class=post-info-share>
+<span></span>
+</div>
+</div>
+</div>
+<div class=post-info-more>
+<section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=https://karlquinsland.com/tags/tuya/>TuYa</a>,&nbsp;<a href=https://karlquinsland.com/tags/openhasp/>openHasp</a></section>
+<section>
+<span><a href=javascript:void(0); onclick=window.history.back()>Back</a></span>&nbsp;|&nbsp;<span><a href=https://karlquinsland.com/>Home</a></span>
+</section>
+</div>
+<div class=post-nav><a href=https://karlquinsland.com/tuya-smart-curtain-driver-robot-teardown/ class=prev rel=prev title="Tuya Smart Curtain Driver Robot Teardown"><i class="fas fa-angle-left fa-fw"></i>Tuya Smart Curtain Driver Robot Teardown</a>
+<a href=https://karlquinsland.com/shelly-pro-4pm-teardown/ class=next rel=next title="Shelly Pro 4PM teardown">Shelly Pro 4PM teardown<i class="fas fa-angle-right fa-fw"></i></a></div>
+</div>
+</article></div>
+</main><footer class=footer>
+<div class=footer-container><div class=footer-line>¯\_(ツ)_/¯</div><div class=footer-line>Powered by <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.92.0">Hugo</a> | Theme - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
+</div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2019 - 2022</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=https://karlquinsland.com/ target=_blank>karl</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div>
+</div>
+</footer></div>
+<div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top">
+<i class="fas fa-arrow-up fa-fw"></i>
+</a><a href=# id=view-comments class=fixed-button title="View Comments">
+<i class="fas fa-comment fa-fw"></i>
+</a>
+</div><link rel=stylesheet href=https://karlquinsland.com/lib/katex/katex.min.4710034e669c7ff17f823f9ba12cf8a36582d65b007f79cbc4a3c11d7db2e4ca.css integrity="sha256-RxADTmacf/F/gj+boSz4o2WC1lsAf3nLxKPBHX2y5Mo="><link rel=stylesheet href=https://karlquinsland.com/lib/katex/copy-tex.min.bf9ff4137fec38f6255419e142d0883c9c52090885d746f80eee12b273d9b3e0.css integrity="sha256-v5/0E3/sOPYlVBnhQtCIPJxSCQiF10b4Du4SsnPZs+A="><script type=text/javascript src=https://karlquinsland.com/lib/smooth-scroll/smooth-scroll.min.bcff85fb5e00d68802850b393ac7792c997f722f536f38e26638c46dca8e5eb6.js integrity="sha256-vP+F+14A1ogChQs5Osd5LJl/ci9TbzjiZjjEbcqOXrY="></script><script type=text/javascript src=https://karlquinsland.com/lib/autocomplete/autocomplete.min.615590a2ca2b667afa7c02ef396f5500b62e22795ddbb46448f90494605d09a5.js integrity="sha256-YVWQosorZnr6fALvOW9VALYuInld27RkSPkElGBdCaU="></script><script type=text/javascript src=https://karlquinsland.com/lib/lunr/lunr.min.df84a2d58ea594c04a3371b48d020b55ea10284c2ec636e4e331965d7313e29b.js integrity="sha256-34Si1Y6llMBKM3G0jQILVeoQKEwuxjbk4zGWXXMT4ps="></script><script type=text/javascript src=https://karlquinsland.com/lib/lazysizes/lazysizes.min.fb649fcae62177dfe63e67081ddceb830b5ce1f05a4184e9bbb7d87ac4b8f4e5.js integrity="sha256-+2SfyuYhd9/mPmcIHdzrgwtc4fBaQYTpu7fYesS49OU="></script><script type=text/javascript src=https://karlquinsland.com/lib/clipboard/clipboard.min.8a7739925f4c03586479852df840b7061948832a7fda30c8c812d2ea4dd4c4f2.js integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/katex.min.17f5dd6b9f123dd7140abfb18521b3f4c036cd004f6f40121182a8865f140877.js integrity="sha256-F/Xda58SPdcUCr+xhSGz9MA2zQBPb0ASEYKohl8UCHc="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/auto-render.min.f74776a677f0d2be0af0264058f928e2ba455d0b19bc985304660d922a43a6b2.js integrity="sha256-90d2pnfw0r4K8CZAWPko4rpFXQsZvJhTBGYNkipDprI="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/copy-tex.min.2ab2237329021bc443986c8327f6e61357fb68a54e5d233d224023718c02207d.js integrity="sha256-KrIjcykCG8RDmGyDJ/bmE1f7aKVOXSM9IkAjcYwCIH0="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/mhchem.min.5cea356d6025c5a2f18c454c83ec5674dbb04fab1cd1d75569e77788c6b6f888.js integrity="sha256-XOo1bWAlxaLxjEVMg+xWdNuwT6sc0ddVaed3iMa2+Ig="></script><script type=text/javascript>window.config={code:{copyTitle:"Copy to clipboard",maxShownLines:10},comment:{},math:{delimiters:[{display:!0,left:"$$",right:"$$"},{display:!0,left:"\\[",right:"\\]"},{display:!1,left:"$",right:"$"},{display:!1,left:"\\(",right:"\\)"}],strict:!1},search:{highlightTag:"em",lunrIndexURL:"/index.json",maxResultLength:10,noResultsFound:"No results found",snippetLength:30,type:"lunr"}}</script><script type=text/javascript src=https://karlquinsland.com/js/theme.min.f51938f3065a40ee841bcb558e4330e31fd26c0ea55343fff8770b88b0319a3c.js integrity="sha256-9Rk48wZaQO6EG8tVjkMw4x/SbA6lU0P/+HcLiLAxmjw="></script><script type=text/javascript>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date),gtag('config','UA-173167356-1',{anonymize_ip:!0})</script><script type=text/javascript src="https://www.googletagmanager.com/gtag/js?id=UA-173167356-1" async></script></body>
+</html>
