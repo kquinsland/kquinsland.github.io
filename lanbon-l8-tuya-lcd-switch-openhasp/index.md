@@ -600,11 +600,11 @@ plate00:
 
 
 {{< admonition tip >}}
-This technique _could_ be considered overkill. Each template incurs some additional memory/cpu overhead in the Home Assistant instance.
+This technique _could_ be considered overkill. Each template incurs some additional memory/cpu overhead on the Home Assistant instance.
 
 While this technique is pretty helpful during rapid prototyping, at some point the additional resource usage is hard to justify for layouts that do not change often.
 
-A reasonable compromise would be to leverage the template evaluation functionality via the Home Assistant Developer tools to calculate the positions and locations for each UI elements while building out your interface(s) and then Copy the computed values into your `pages.jsonl` file once the layout has been more or less finalized.
+A reasonable compromise would be to leverage the template evaluation functionality via the Home Assistant Developer tools to calculate the positions and locations for each UI elements while building out your interface(s) and then copy the computed values into your `pages.jsonl` file once the layout has been more or less finalized.
 {{< /admonition >}}
 
 
