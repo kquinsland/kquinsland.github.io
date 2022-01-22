@@ -1,4 +1,707 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>home assistant - Tag - karl</title><link>https://karlquinsland.com/tags/home-assistant/</link><description>home assistant - Tag - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 05 Sep 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/home-assistant/" rel="self" type="application/rss+xml"/><item><title>Adding an APC UPS to Home Assistant energy dashboard</title><link>https://karlquinsland.com/apc-ups-energy-in-homeassistant/</link><pubDate>Sun, 05 Sep 2021 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/apc-ups-energy-in-homeassistant/</guid><description><![CDATA[<p><strong>EDIT:</strong> (2021-09-19): After some <a href="https://old.reddit.com/r/homeassistant/comments/pi3pv2/how_to_use_an_apc_ups_as_an_energy_dashboard/hbqudh5/" target="_blank" rel="noopener noreffer">back and forth</a> with <a href="https://old.reddit.com/user/Laxarus" target="_blank" rel="noopener noreffer">/u/Laxarus</a>, there is now a simpler method! The <code>snmp</code> platform still does not support setting <code>device_class</code>, but wrapping the sensor in another template sensor is not required; just do so in your <a href="https://www.home-assistant.io/docs/configuration/customizing-devices/" target="_blank" rel="noopener noreffer"><code>customize.yaml</code></a>. I have called this out <a href="#edit-2021-09-19" rel="">below</a>.</p>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>home assistant - Tag - karl</title><link>https://karlquinsland.com/tags/home-assistant/</link><description>home assistant - Tag - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 22 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/home-assistant/" rel="self" type="application/rss+xml"/><item><title>Installing Tasmota on the Xiaomi Desk Lamp</title><link>https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/</link><pubDate>Sat, 22 Jan 2022 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/</guid><description><![CDATA[<p>If you&rsquo;re here just for &ldquo;how do I flash tasmota&rdquo; bit, skip to the <a href="#tasmota" rel="">Tasmota</a> section below.</p>
+<hr>
+<p>I was looking for a way to light my desk my desk without screen glare.
+The easiest way to prevent glare on a screen is to change the orientation of the light relative to the screen either from under or behind the screen.
+This is not practical for ceiling mounted lights or for any floor lamps.</p>
+<p>You can get a nearly glare free light if you mount the light to the top of the screen and direct the light away from the screen at a <em>slight</em> angle.
+Light hitting the screen and bouncing into eyes is minimized and the majority of the light ends up directed down onto the desk where it&rsquo;s needed.</p>
+<p>This isn&rsquo;t a new problem; a quick search of any online retailor will reveal that there are <em>many</em> different options out there at all sorts of price points.
+As this light source would be heavily used for all sorts of work, the <em>quality</em> of the light is incredibly important; a high General CRI (Ra) and adjustable color temperature are <em>requirements</em>.</p>
+<p>I also wanted one that had some basic remote control functions so I don&rsquo;t have to reach to the top of my monitor and risk destabilizing whatever I am working on or getting finger prints on the panel.
+A wired remote would be simpler and thus cheaper but my desk is already too crowded with wires and cords; if the cost difference between a wired and wireless remote was marginal, opt for wireless.</p>
+<p>After a bit of searching, I found the <code>2021 Xiaomi Mijia Lite Desk Lamp 1S</code> which fit the bill exactly.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Beyond the basic puck shaped wireless remote, the listing indicated that the &lsquo;new 1s version&rsquo; could be controlled with the <code>Xiaomi</code> app.</p>
+<p>🤔</p>
+<p>Instead of some very basic 433Mhz radio, the lamp/remote probably used BTLE.
+In some ways, that&rsquo;s even better; the lamp only has a few simple functions and those shouldn&rsquo;t be that hard to reverse engineer from the Android app.</p>
+<p>Once I know what data to send for on/off/dim/bright/ww/cw selection, I can use an ESP chip as a MQTT &lt;-&gt; BTLE gateway for relatively easy integration into my home automation system.
+Worst case, the fall back plan of using a microcontroller to emulate interacting with the remote and then integrating that microcontroller with my home automation system would work.</p>
+<p>Once the lamp showed up, I of course opened up the remote to see what type of wireless system I was going to be dealing with.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<div class="details admonition note open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-pencil-alt fa-fw"></i>Note<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">More photos of the remote are <a href="#teardown" rel="">below</a></div>
+        </div>
+    </div>
+<p>Giving the model number <code>MHCB07P</code> a quick google didn&rsquo;t reveal much information other than confirm that it was using BTLE.
+This almost certainly means that the phone app will <em>also</em> use BTLE to control the lamp!
+If I&rsquo;m lucky, I can capture the entire discovery/pair/command packets using a rooted android device and then I won&rsquo;t have to bother with the puck at all.</p>
+<h1 id="lamp---phone">Lamp &lt;-&gt; Phone</h1>
+<p>After getting the app setup, it did discover the lamp and began to walk me through the setup flow.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>WiFi!? Really!? But why? This must be some generic screen shown for all devices, right?</p>
+<p><strong>Nope</strong>.</p>
+<p>There really is a simple access point inside this lamp!</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Well now I&rsquo;m curious.</p>
+<p>What could this lamp <em>possibly need</em> WiFi credentials for? The remote used BTLE and every conceivable phone that will also control the lamp supports BTLE&hellip; so why spend the extra money for a WiFi enabled microcontroller at all!?</p>
+<h1 id="et-lamp-phone-home"><del>ET</del> Lamp Phone Home:</h1>
+<p>I threw the lamp behind an isolated access point and it sure is <em>chatty</em>&hellip;
+After getting an IP address, the lamp looks up the <code>A</code> record for <code>dk.io.mi.com</code> and then attempts to open a TCP connection and send some bytes:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Now I&rsquo;m more than a little bit curious.</p>
+<p>Why send raw bytes to TCP/80 without at least the typical HTTP request headers?
+Why even use WiFi at all for a <em>lamp</em>? Is there no way to use my phone to control the lamp over BTLE?</p>
+<h2 id="dumping-the-fw">Dumping the FW</h2>
+<p>Fortunately, this was pretty easy. After a cursory analysis, the dumped firmware did not appear to be encrypted or otherwise protected.
+I did a quick search for a few things that I hoped would show up in the dumped OEM firmware and was not disappointed:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">❯ cat lamp.bin.strings <span class="p">|</span> grep --ignore-case -E <span class="s1">&#39;certificate|encrypt|tls|agent|http|post|get|verify|remote|{&#34;&#39;</span> &gt; interesting_strings.txt
+❯ cat interesting_strings.txt<span class="p">|</span> wc -l
+<span class="m">710</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>🤨</p>
+<p>Here are some of the highlights:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">[I] bluetooth_remote_double_click
+[E] %s: verify root cert is not valid! (%s,%d)
+[W] %s: Fail to get gatt db from connection %04x, ret = %d  (%s,%d)
+[E] %s: mbedtls_ecdh_calc_secret error %d (%s,%d)
+miio_signature_verify
+[E] %s: --&gt;login verify send failed. (%s,%d)
+-----BEGIN CERTIFICATE-----
+[E] %s: https need root cert. (%s,%d)
+User-Agent: MIoT
+http://dlg.io.mi.com/v1/ot/upload
+[W] %s: httpdns new resolve start failed, %d (%s,%d)
+</code></pre></td></tr></table>
+</div>
+</div><p>There&rsquo;s a lot more interesting things in the dump but they&rsquo;ll have to wait for another day as
+immediately after getting eyes on the PCB, I saw an ESP32 chip!</p>
+<h2 id="a-change-of-plans">A change of plans</h2>
+<p>Reverse engineering the firmware to figure out how/why the phone method of remote control was different from the remotes' method no longer really mattered.
+An ESP based chip means Tasmota or ESPHome should be possible.</p>
+<p>If I could get either of those alternative firmwares running on the lamp, then cluttering up the desk with yet another remote and/or hacking MQTT support into the lamp via the remote was no longer necessary!</p>
+<h1 id="teardown">Teardown</h1>
+<div class="details admonition warning open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-exclamation-triangle fa-fw"></i>Warning<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">The plastic end caps on either end of the lamp tube are <em>glued in</em>.
+You will need some force to break the glue.
+Even with all possible precautions, getting access to the lamp PCB <em>is a <strong>destructive</strong> process</em>.
+If you are <em>careful</em> you can keep the destruction and cosmetic damage to a minimum.</div>
+        </div>
+    </div>
+<p>I did this teardown the hard way and damaged more of the lamp than necessary.
+Some of the photos below reflect this.</p>
+<p>Now that I know how it all is <em>meant</em> to come apart, you will hopefully have an easier time and incur less damage!</p>
+<h2 id="the-lamp">The lamp</h2>
+<p>A closer look at the marked device information before we move <em>into</em> the lamp.
+The ESP that we will soon flash with Tasmota is just behind this product information.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Product info and regulatory markings
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>Locate the small rectangle shaped protrusion from the lamp tube that mates with the magnetic mount. The protrusion has two small pogo pins on it.
+You can see the protrusion in the middle of the tube facing the coiled USB power cable:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Everything that came in the box
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>With the protrusion facing you, locate the plastic cap closest to the product information.
+This should be plastic cap on the <em>left</em> side of the tube.</p>
+<p>Use non-marring pliers or similar to grip the plastic cap and twist with enough force to break the glue.
+Do not twist more than a few degrees!
+The plastic cap has some features that will come into contact with and could damage the PCB if rotated too far!</p>
+<p>Use a razor blade or similar to peel back the grip-tape sticker on the protrusion.
+If you&rsquo;re careful and manage to remove the sticker in one piece you might be able to re-apply it during reassembly.
+The lamp functions fine without the sticker, though.</p>
+<p>Underneath the sticker will be two small philips screws.
+Remove them and the metal protrusion and small plastic part containing the two pogo pins should come free.
+Set these aside.</p>
+<p>Gently remove the clear plastic diffuser from the lamp tube and set aside.</p>
+<p>The matte finish on the interior side of the diffuser is a fingerprint magnet.
+Consider using gloves for this step.</p>
+<p>Carefully slide the PCB out of the aluminum tube.
+Be mindful of the two spring like contacts on the back of the PCB that mated with the pogo pins!</p>
+<p>You can see the small black plastic bracket holding the pogo pins and the protrusion bit with some of the grip-tape still attached:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        If it feels like you&#39;re using too much force to open the lamp... you probably are!
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>If you try to remove the PCB without first detaching the pogo pins, you&rsquo;ll damage one or both of the spring contacts that mate the PCB to the pogo pins!</p>
+<p>You <em>don&rsquo;t</em> want your <code>GND</code> spring to look like mine!</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Before realizing that the pogo pins could be removed from the lamp, I removed <em>both</em> caps and tried push/pull the PCB out.</p>
+<p>The PCB is supported inside the tube with a few black plastic &lsquo;sleds&rsquo; which are heat-staked on to the PCB.</p>
+<p>The &lsquo;sled&rsquo; closest to the ESP partially covers the <code>3V3</code> test point.
+Rather than use a dedicated 3V power supply during flashing, I found it easiest to use this pin to bring the <code>EN</code> pin up high.</p>
+<p>If you&rsquo;re going to use the <code>3V3</code> test pin instead of a dedicated external power supply, you will probably want to remove the &lsquo;sled&rsquo; to get easy access to the test point.</p>
+<p>You can do this with some flush-cut snips.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Be careful to not scratch the solder mask / PCB with the sharp edges of the snips
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>The sled isn&rsquo;t technically required for re-assembly but it&rsquo;s pretty easy to re-attach to the PCB with some hotglue. Discard it at your peril!</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Here&rsquo;s a closeup of the PCB with most of the test points labeled.
+You can see the <code>3V3</code> test point immediately to the left of <code>R6</code> in the shadow of the &lsquo;sled&rsquo;.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Repeat these steps in reverse order to re-assemble the lamp.</p>
+<h3 id="the-puck">The puck</h3>
+<p>Fortunately, opening up the remote is not difficult.</p>
+<p>Remove the two philips screws under the bottom cap.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>The main body / rotary knob lifts away from the midframe.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Like with the lamp PCB, there are a few test points:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<h1 id="tasmota">Tasmota</h1>
+<div class="details admonition warning open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-exclamation-triangle fa-fw"></i>Warning<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>It is likely that both the WW and CW LEDs <em>will</em> briefly light up during the flashing process. When this happens, you <em>will</em> draw more current than a typical USB &lt;-&gt; Serial adapter can provide. At <em>best</em> you&rsquo;ll cause a brownout and the flash will be interrupted.</p>
+<p><strong>Use a dedicated 5V supply that can provide <em>at least</em> 10W of power</strong> while flashing the lamp! Make sure that the <code>GND</code> wire from your serial programmer <em>and</em> the <code>GND</code> wire for your dedicated 5V@2A/10W supply are tied together or you will likely destroy some of the electronics on both the lamp, your serial adapter <em>and</em> possibly your computer!</p>
+</div>
+        </div>
+    </div>
+<p>Having said all that, it&rsquo;s totally worth it:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        When all is said and done, the lamp is easily integrated and controlled with Home Assistant
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<h2 id="flashing">Flashing</h2>
+<div class="details admonition info open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-info-circle fa-fw"></i>Info<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">The ESP32 chip on this PCB is a <em>single core</em> version.
+Follow the <a href="https://tasmota.github.io/docs/ESP32/#flashing" target="_blank" rel="noopener noreffer">instructions for flashing the ESP32 version of Tasmota</a>, specifically the <code>tasmota32solo1</code> version!</div>
+        </div>
+    </div>
+<p>Solder wires to the usual <code>RX</code>, <code>TX</code>, <code>GPIO0</code> and <code>GND</code> test points.
+The <code>GPIO0</code> test point is the test point nearest to the ESP32 chip; directly off the bottom right corner.
+I used some solid-core cable from a length of cat5 cable but any similarly high gauge wire will work.</p>
+<p>Solder a jumper between the <code>EN</code> and <code>3V3</code> test point. I used a small yellow wire for this.
+The solid blue wire attached to <code>GPIO0</code> and the blue/white wire attached to <code>GND</code> are joined together just out of frame.
+The ESP will not boot into programming mode unless <code>GPIO0</code> is tied to ground.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Leads from a dedicated 5V power supply are attached to the main contacts with reg/green alligator clips</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>After confirming that each point is soldered sufficiently and wired to the correct pin on your USB &lt;-&gt; Serial programmer, turn the dedicated power supply on and you should be able to flash.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">❯ esptool.py --chip esp32 --port /dev/ttyUSB0 --baud <span class="m">921600</span> --before default_reset --after hard_reset write_flash -z --flash_mode dout --flash_freq 40m --flash_size detect 0x1000 bootloader_dout_40m.bin 0x8000 partitions.bin 0xe000 boot_app0.bin 0x10000 tasmota32solo1.bin
+esptool.py v3.2
+Serial port /dev/ttyUSB0
+Connecting.....
+&lt;...&gt;
+Stub running...
+Changing baud rate to <span class="m">921600</span>
+Changed.
+Configuring flash size...
+Auto-detected Flash size: 4MB
+Flash will be erased from 0x00001000 to 0x00004fff...
+Flash will be erased from 0x00008000 to 0x00008fff...
+Flash will be erased from 0x0000e000 to 0x0000ffff...
+Flash will be erased from 0x00010000 to 0x00157fff...
+Compressed <span class="m">15536</span> bytes to 10862...
+Wrote <span class="m">15536</span> bytes <span class="o">(</span><span class="m">10862</span> compressed<span class="o">)</span> at 0x00001000 in 0.4 seconds <span class="o">(</span>effective 353.8 kbit/s<span class="o">)</span>...
+&lt;...&gt;
+Hash of data verified.
+
+Leaving...
+Hard resetting via RTS pin...
+</code></pre></td></tr></table>
+</div>
+</div><p>Turn off the dedicated 5V supply and desolder the <code>GPIO0</code> wire and the <code>3V3</code> &lt;-&gt; <code>EN</code> jumper.
+Leave the <code>RX</code>, <code>TX</code>, and <code>GND</code> wires in place so you can easily check the boot logs to confirm Tasmota flashed OK:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">❯ screen /dev/ttyUSB0 <span class="m">115200</span>
+ets Jun  <span class="m">8</span> <span class="m">2016</span> 00:22:57
+
+rst:0x1 <span class="o">(</span>POWERON_RESET<span class="o">)</span>,boot:0x13 <span class="o">(</span>SPI_FAST_FLASH_BOOT<span class="o">)</span>
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DOUT, clock div:2
+load:0x3fff0030,len:184
+load:0x40078000,len:12352
+load:0x40080400,len:2912
+entry 0x400805c4
+
+00:00:00.002-228/73 HDW: ESP32-S0WD-OEM 
+./components/esp_littlefs/src/littlefs/lfs.c:1071:error: Corrupted dir pair at <span class="o">{</span>0x0, 0x1<span class="o">}</span>
+00:00:00.777-231/73 UFS: FlashFS mounted with <span class="m">312</span> kB free
+00:00:00.782-231/73 CFG: Use defaults
+00:00:00.893 QPC: Reset
+00:00:00.941 BRY: Berry initialized, RAM <span class="nv">used</span><span class="o">=</span><span class="m">3849</span>
+00:00:00.950 BRY: no <span class="s1">&#39;preinit.be&#39;</span>
+00:00:00.963 Project tasmota - Tasmota Version 10.1.0<span class="o">(</span>tasmota<span class="o">)</span>-2_0_1_1<span class="o">(</span>2021-12-08T14:50:34<span class="o">)</span>
+00:00:00.984 BRY: no <span class="s1">&#39;autoexec.be&#39;</span>
+00:00:00.243 WIF: WifiManager active <span class="k">for</span> <span class="m">3</span> minutes
+00:00:01.200 HTP: Web server active on tasmota-197907-6407 with IP address 192.168.4.1
+
+</code></pre></td></tr></table>
+</div>
+</div><p>After confirming a successful flash/boot, you can continue to configure Tasmota via the serial console or just power off and de-solder all wires and finish configuration after you re-assemble.</p>
+<h2 id="templates">Templates</h2>
+<p>The ESP32 controls the lamp via 3 GPIO pins:</p>
+<ul>
+<li><code>GPIO04</code>: Global light enable/disable.</li>
+<li><code>GPIO19</code>: Cold White channel</li>
+<li><code>GPIO21</code>: Warm White channel</li>
+</ul>
+<p>Irrespective of what the WW or CW channel are doing, there will be no light if <code>GPIO4</code> is not high.
+This means you have two choices for how to configure the GPIO.</p>
+<p>Tasmota will disable both <code>GPIO19</code> and <code>GPIO21</code> when the light is switched off so there really is no need for independent control via <code>GPIO4</code>.
+This template keeps <code>GPIO4</code> high and relies on Tasmota setting  to fully off to shut the light off.</p>
+<p>Most people should use this template.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="p">{</span><span class="nt">&#34;NAME&#34;</span><span class="p">:</span><span class="s2">&#34;Mijia Desk Lamp 1S (MJGJD02YL)&#34;</span><span class="p">,</span><span class="nt">&#34;GPIO&#34;</span><span class="p">:[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">3840</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">416</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">417</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="nt">&#34;FLAG&#34;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="nt">&#34;BASE&#34;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="nt">&#34;CMND&#34;</span><span class="p">:</span><span class="s2">&#34;DimmerRange 45,255&#34;</span><span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>If, for some reason, you want to control the global on/off (<code>GPIO04</code>) independently of the WW/CW channels, use this template:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="p">{</span><span class="nt">&#34;NAME&#34;</span><span class="p">:</span><span class="s2">&#34;Mijia Desk Lamp 1S (MJGJD02YL)&#34;</span><span class="p">,</span><span class="nt">&#34;GPIO&#34;</span><span class="p">:[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">224</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">416</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">417</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="nt">&#34;FLAG&#34;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="nt">&#34;BASE&#34;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="nt">&#34;CMND&#34;</span><span class="p">:</span><span class="s2">&#34;DimmerRange 45,255&#34;</span><span class="p">}</span>
+</code></pre></td></tr></table>
+</div>
+</div><p>If you do not need dimmer control and only need full on/off control, you can adjust the module so <code>GPIO{04,19,21}</code> are always high, low or simple on/off outputs by configuring them to be of type <code>Relay</code> instead of <code>PWM</code> outputs.</p>
+<h3 id="dimmer-range">Dimmer Range</h3>
+<p>In testing, extremely low brightness values for both the WW and CW channel had some undesirable behavior:</p>
+<ul>
+<li>Values lower than ~30 didn&rsquo;t light at all</li>
+<li>Values between 30-35 caused unpleasant flicker</li>
+<li>Values lower than ~40 would also cause flicker when attempting to light the WW <em>and</em> CW channels together</li>
+</ul>
+<p>For this reason, a <code>DimmerRange</code> of 45-255 is suggested.
+Tasmota will let you dim the light as low as possible without flicker.</p>
+<p>Your lamp, eyes and needs will differ so feel free to see if a lower <code>dimmer</code> value will work for you by unlocking the full dimmer range with <code>DimmerRange 0,255</code> and then playing with the <code>ct</code> and <code>dimmer</code> commands to find the lowest tolerable brightness for your needs.</p>
+<p>That is why you see the <code>DimmerRange 45,255</code> command in the above templates.</p>
+<h3 id="pcbic-markings">PCB/IC Markings</h3>
+<p>Some of the interesting ICs and PCB markings</p>
+<h4 id="lamp">Lamp</h4>
+<ul>
+<li>PCB is labeled <code>Yeelight Spider 1S V06</code>, <code>20210714 by XJD</code>, <code>94V-0</code>,  <code>Y Y21M09D13</code>, <code>JUl 7.820.0874-1</code></li>
+<li>PCB has a QR code / sticker with <code>WF-E32-RWY1</code>, <code>Spider1S</code>, and the device mac address</li>
+<li><code>SGM4065</code>: <a href="https://www.sg-micro.de/show-product-611.html" target="_blank" rel="noopener noreffer">Over-Voltage Protection IC and Li+ Charger Front-End Protection IC with LDO Mode</a></li>
+<li>Some DFN-10 package that is marked with either <code>WRDPA</code> or <code>WRQPA</code> or <code>WR0PA</code>. It&rsquo;s a little hard to tell as the markings are super faint and I can&rsquo;t get them super clear even with high contrast / inverted color image filters. There are several of them with identical circuitry through the length of the board so this IC is some sort of pwm dimmable constant current LED driver.</li>
+<li><code>ESP32-D0WD</code>: the star of the show</li>
+<li><code>GD25Q32(B)</code>: a 4096 kB SPI flash chip</li>
+<li>The lamp body is marked with <code>CMIT ID: 2021DP11423</code></li>
+</ul>
+<h4 id="remote">Remote</h4>
+<ul>
+<li>PCB labeled with <code>100-P806D1-1B-A1</code>, <code>Yeelight Spider 1S RC Board V02</code>, <code>20210716 by XJD</code></li>
+<li><code>MHCB07P</code>. This is marked on the tiny BTLE module inside the remote. Not too many search <a href="https://twitter.com/simransingh931/status/1418120923568246786" target="_blank" rel="noopener noreffer">results</a> show <a href="https://www.ec.ust.hk/hackathon/2021/document/xiaomi_0319_eng.pdf" target="_blank" rel="noopener noreffer">up</a>.</li>
+<li><code>CMIT ID: 2020DP3172(M)</code></li>
+</ul>
+]]></description></item><item><title>Adding an APC UPS to Home Assistant energy dashboard</title><link>https://karlquinsland.com/apc-ups-energy-in-homeassistant/</link><pubDate>Sun, 05 Sep 2021 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/apc-ups-energy-in-homeassistant/</guid><description><![CDATA[<p><strong>EDIT:</strong> (2021-09-19): After some <a href="https://old.reddit.com/r/homeassistant/comments/pi3pv2/how_to_use_an_apc_ups_as_an_energy_dashboard/hbqudh5/" target="_blank" rel="noopener noreffer">back and forth</a> with <a href="https://old.reddit.com/user/Laxarus" target="_blank" rel="noopener noreffer">/u/Laxarus</a>, there is now a simpler method! The <code>snmp</code> platform still does not support setting <code>device_class</code>, but wrapping the sensor in another template sensor is not required; just do so in your <a href="https://www.home-assistant.io/docs/configuration/customizing-devices/" target="_blank" rel="noopener noreffer"><code>customize.yaml</code></a>. I have called this out <a href="#edit-2021-09-19" rel="">below</a>.</p>
 <hr>
 <p>This is another quick &ldquo;here&rsquo;s how I did it, hope this help&rdquo; post.</p>
 <p>In preparation for the inevitable grid brownouts that summer 2021 would bring, I installed a rather beefy UPS for my home network / lab. After some browsing, I discovered a local eWaste liquidator with a really good deal on some second-hand APC UPSs.</p>
