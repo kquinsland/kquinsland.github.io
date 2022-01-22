@@ -1834,7 +1834,18 @@ For the above screenshots, I created two <em>identical</em> ⃰ copies of the ya
 </span><span class="w">
 </span></code></pre></td></tr></table>
 </div>
-</div><p>And you&rsquo;re done!
+</div><div class="details admonition tip open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-lightbulb fa-fw"></i>Tip<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>This technique <em>could</em> be considered overkill. Each template incurs some additional memory/cpu overhead in the Home Assistant instance.</p>
+<p>While this technique is pretty helpful during rapid prototyping, at some point the additional resource usage is hard to justify for layouts that do not change often.</p>
+<p>A reasonable compromise would be to leverage the template evaluation functionality via the Home Assistant Developer tools to calculate the positions and locations for each UI elements while building out your interface(s) and then Copy the computed values into your <code>pages.jsonl</code> file once the layout has been more or less finalized.</p>
+</div>
+        </div>
+    </div>
+<p>And you&rsquo;re done!
 You might need to restart Home Assistant or reload the openHasp component/configuration so your update YAML is picked up.
 Assuming everything works, you should see a flurry of activity on your MQTT broker or the plate telnet console as the openHasp component renders each template and commands the plate to re-draw each UI element.</p>
 <p>You can then re-configure your device with a new display orientation and then reboot it. As it connects back to your MQTT broker, Home Assistant will re-evaluate the templates with the inverted screen height/width and each UI widget should get re-painted.</p>
