@@ -1,6 +1,15 @@
 # Installing Tasmota on the Xiaomi Desk Lamp
 
 
+
+{{< admonition note "MJGJD02YL vs MUGJD01YL" >}}
+
+There are _at least two_ versions of this lamp. Thanks to `@htvekov` for confirming that the `MUGJD01YL` variant **does _not_ contain an ESP32**. It contains a `TLSR8368`.
+Some photos of the `MUGJD01YL` internals are provided [below](#mugjd01yl).
+
+{{< /admonition >}}
+
+
 If you're here just for "how do I flash tasmota" bit, skip to the [Tasmota](#tasmota) section below.
 
 -----
@@ -387,4 +396,14 @@ Some of the interesting ICs and PCB markings
 - PCB labeled with `100-P806D1-1B-A1`, `Yeelight Spider 1S RC Board V02`, `20210716 by XJD`
 - `MHCB07P`. This is marked on the tiny BTLE module inside the remote. Not too many search [results](https://twitter.com/simransingh931/status/1418120923568246786) show [up](https://www.ec.ust.hk/hackathon/2021/document/xiaomi_0319_eng.pdf).
 - `CMIT ID: 2020DP3172(M)`
+
+
+
+## MUGJD01YL
+
+
+{{< figure name="MUGJD01YL_04" >}}
+{{< figure name="MUGJD01YL_03" >}}
+{{< figure name="MUGJD01YL_02" >}}
+{{< figure name="MUGJD01YL_01" >}}
 

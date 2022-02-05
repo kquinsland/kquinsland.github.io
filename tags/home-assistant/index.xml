@@ -1,4 +1,13 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>home assistant - Tag - karl</title><link>https://karlquinsland.com/tags/home-assistant/</link><description>home assistant - Tag - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 22 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/home-assistant/" rel="self" type="application/rss+xml"/><item><title>Installing Tasmota on the Xiaomi Desk Lamp</title><link>https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/</link><pubDate>Sat, 22 Jan 2022 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/</guid><description><![CDATA[<p>If you&rsquo;re here just for &ldquo;how do I flash tasmota&rdquo; bit, skip to the <a href="#tasmota" rel="">Tasmota</a> section below.</p>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>home assistant - Tag - karl</title><link>https://karlquinsland.com/tags/home-assistant/</link><description>home assistant - Tag - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 22 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/home-assistant/" rel="self" type="application/rss+xml"/><item><title>Installing Tasmota on the Xiaomi Desk Lamp</title><link>https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/</link><pubDate>Sat, 22 Jan 2022 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/</guid><description><![CDATA[<div class="details admonition note open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-pencil-alt fa-fw"></i>MJGJD02YL vs MUGJD01YL<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">There are <em>at least two</em> versions of this lamp. Thanks to <code>@htvekov</code> for confirming that the <code>MUGJD01YL</code> variant <strong>does <em>not</em> contain an ESP32</strong>. It contains a <code>TLSR8368</code>.
+Some photos of the <code>MUGJD01YL</code> internals are provided <a href="#mugjd01yl" rel="">below</a>.</div>
+        </div>
+    </div>
+<p>If you&rsquo;re here just for &ldquo;how do I flash tasmota&rdquo; bit, skip to the <a href="#tasmota" rel="">Tasmota</a> section below.</p>
 <hr>
 <p>I was looking for a way to light my desk my desk without screen glare.
 The easiest way to prevent glare on a screen is to change the orientation of the light relative to the screen either from under or behind the screen.
@@ -701,6 +710,91 @@ Tasmota will let you dim the light as low as possible without flicker.</p>
 <li><code>MHCB07P</code>. This is marked on the tiny BTLE module inside the remote. Not too many search <a href="https://twitter.com/simransingh931/status/1418120923568246786" target="_blank" rel="noopener noreffer">results</a> show <a href="https://www.ec.ust.hk/hackathon/2021/document/xiaomi_0319_eng.pdf" target="_blank" rel="noopener noreffer">up</a>.</li>
 <li><code>CMIT ID: 2020DP3172(M)</code></li>
 </ul>
+<h2 id="mugjd01yl">MUGJD01YL</h2>
+<p><figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Product details for the lamp that can&#39;t be converted to run Tasmota.
+        
+            Courtesy of @htvekov
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        The PCB is held in the tube with similar plastic &#39;sleds&#39;. They are secured with screws rather than heatstake so they are easier to remove. The move to heatstake in the revised edition was likely to reduce costs.
+        
+            Courtesy of @htvekov
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        
+        
+            Courtesy of @htvekov
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        
+        
+            Courtesy of @htvekov
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+</p>
 ]]></description></item><item><title>Adding an APC UPS to Home Assistant energy dashboard</title><link>https://karlquinsland.com/apc-ups-energy-in-homeassistant/</link><pubDate>Sun, 05 Sep 2021 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/apc-ups-energy-in-homeassistant/</guid><description><![CDATA[<p><strong>EDIT:</strong> (2021-09-19): After some <a href="https://old.reddit.com/r/homeassistant/comments/pi3pv2/how_to_use_an_apc_ups_as_an_energy_dashboard/hbqudh5/" target="_blank" rel="noopener noreffer">back and forth</a> with <a href="https://old.reddit.com/user/Laxarus" target="_blank" rel="noopener noreffer">/u/Laxarus</a>, there is now a simpler method! The <code>snmp</code> platform still does not support setting <code>device_class</code>, but wrapping the sensor in another template sensor is not required; just do so in your <a href="https://www.home-assistant.io/docs/configuration/customizing-devices/" target="_blank" rel="noopener noreffer"><code>customize.yaml</code></a>. I have called this out <a href="#edit-2021-09-19" rel="">below</a>.</p>
 <hr>
 <p>This is another quick &ldquo;here&rsquo;s how I did it, hope this help&rdquo; post.</p>
