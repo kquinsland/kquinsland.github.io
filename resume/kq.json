@@ -31,13 +31,14 @@
       "position": "Sr. Ops Engineer/SRE",
       "website": "https://www.kiddom.co/",
       "startDate": "2020-10-01",
-      "summary": "First dedicate Ops/Infra hire. Taming unwieldy infrastructure, modernizing infrastructure and leading efforts to instrument all layers of the stack.",
+      "summary": "First dedicated Ops/Infra/SRE hire. Taming unwieldy infrastructure, porting legacy Terraform, developing/modernizing tooling and practices and leading efforts to instrument all layers of the stack.",
       "highlights": [
-        "Tool-smith 🛠️. Wrote more than a few scripts/tools/lambda functions to automate everything from Cassandra cluster assembly to management of DNS entries and TLS Certificate provisioning",
-        "Contributed back to various Open Source Cassandra management tools",
-        "Deployed HashiCorp Vault for seamless secret management; integrated Vault into developer workflow",
-        "Deployed Infrastructure as Code to as many things as possible, automated deployment of IAC to the fullest extent possible with tools like Atlantis.",
-        "Led efforts to increase observability into applications and infrastructure"
+        "Tool-smith 🛠️. Wrote more than a few scripts/tools/lambda functions to automate everything from Cassandra cluster assembly to management of DNS entries and TLS Certificate provisioning to documentation generation",
+        "OSS contributor: new features and bug fixes merged into various Cassandra management tools and Terraform providers.",
+        "Led efforts to increase observability into applications and infrastructure and build out a mature incident reporting and management apparatus.",
+        "Overhauled IAM and introduced best practices for cross-account resource utilization... and managed it with Terraform.",
+        "Brought IaC practices to as many things as possible including external services; onboarding new Eng. hires was done with a few PRs and tools like Atlantis did the heavy lifting.",
+        "Developed extensive corpus of documentation around IaC driven processes as well as legacy infrastructure and it's replacement - both planned and implemented."
       ]
     },
     {
