@@ -93,7 +93,7 @@ It looks like this is a pretty modular design:
   - Each plane uses dedicated ASICs to route the signals.
   - A minimal number of microprocessors / wires coordinating between the PCBs.
 
-{{< figure name="teardown.first-full-view" >}}
+{{< figure name="feature-teardown.first-full-view" >}}
 
 The LAN module plugs into the HDMI PCB very close to where the RS232 port is and the protocol specific documentation from the seller indicates that the payloads to control the switch are the same irrespective of the transport.
 
