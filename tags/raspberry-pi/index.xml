@@ -45,13 +45,13 @@ Animations didn&rsquo;t show at all or had all but a few frames dropped :(.</p>
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">pi@kds:~ $ cat /boot/config.txt 
-&lt;...&gt;
-<span class="c1"># Enable DRM VC4 V3D driver for much more performant chrome</span>
-<span class="nv">dtoverlay</span><span class="o">=</span>vc4-kms-v3d
-&lt;...&gt;
-pi@kds:~ $ sudo reboot
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">pi@kds:~ $ cat /boot/config.txt 
+</span></span><span class="line"><span class="cl">&lt;...&gt;
+</span></span><span class="line"><span class="cl"><span class="c1"># Enable DRM VC4 V3D driver for much more performant chrome</span>
+</span></span><span class="line"><span class="cl"><span class="nv">dtoverlay</span><span class="o">=</span>vc4-kms-v3d
+</span></span><span class="line"><span class="cl">&lt;...&gt;
+</span></span><span class="line"><span class="cl">pi@kds:~ $ sudo reboot
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>&hellip; right?</p>
 <p><strong>No.</strong></p>
@@ -72,19 +72,19 @@ pi@kds:~ $ sudo reboot
 </span><span class="lnt">12
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">pi@kds:~ $ cat /boot/config.txt 
-&lt;...&gt;
-<span class="o">[</span>all<span class="o">]</span>
-<span class="c1"># We need to rotate the display 90degrees as the &#39;default&#39; orientation from the manufacturer assumes a horizontal orientation, not a vertical one</span>
-<span class="c1"># See: https://www.waveshare.com/wiki/13.3inch_HDMI_LCD_(H)</span>
-<span class="nv">display_rotate</span><span class="o">=</span><span class="m">1</span>
-
-<span class="c1"># Force correct resolution</span>
-<span class="c1"># Use &#39;DMT/Display Monitor Timings</span>
-<span class="c1"># See: https://www.raspberrypi.com/documentation/computers/config_txt.html#video-options</span>
-<span class="nv">hdmi_group</span><span class="o">=</span><span class="m">2</span>
-<span class="nv">hdmi_mode</span><span class="o">=</span><span class="m">82</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">pi@kds:~ $ cat /boot/config.txt 
+</span></span><span class="line"><span class="cl">&lt;...&gt;
+</span></span><span class="line"><span class="cl"><span class="o">[</span>all<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># We need to rotate the display 90degrees as the &#39;default&#39; orientation from the manufacturer assumes a horizontal orientation, not a vertical one</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># See: https://www.waveshare.com/wiki/13.3inch_HDMI_LCD_(H)</span>
+</span></span><span class="line"><span class="cl"><span class="nv">display_rotate</span><span class="o">=</span><span class="m">1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c1"># Force correct resolution</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Use &#39;DMT/Display Monitor Timings</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># See: https://www.raspberrypi.com/documentation/computers/config_txt.html#video-options</span>
+</span></span><span class="line"><span class="cl"><span class="nv">hdmi_group</span><span class="o">=</span><span class="m">2</span>
+</span></span><span class="line"><span class="cl"><span class="nv">hdmi_mode</span><span class="o">=</span><span class="m">82</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>One of the Raspberry Pi Engineers <a href="https://forums.raspberrypi.com/viewtopic.php?t=267954#p1626774" target="_blank" rel="noopener noreffer">explains why</a>:</p>
 <blockquote>
@@ -100,8 +100,8 @@ Fortunately, the LCD manufacturer <a href="https://www.waveshare.com/wiki/13.3in
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">Can&#39;t open display :0.0
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Can&#39;t open display :0.0
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>For reasons that don&rsquo;t make a ton of sense to me, <em>all</em> of the command line tools for probing display hardware and creating X11 configurations really don&rsquo;t like working over SSH 🤔. Yes, I of course tried the <code>export DISPLAY=:0.0</code> <a href="https://www.linuxquestions.org/questions/linux-general-1/xrandr-from-remote-through-ssh-869084/page2.html" target="_blank" rel="noopener noreffer">trick</a>.</p>
 <p><code>xrandr</code> and friends are fine when running in a <em>local</em> shell, but just don&rsquo;t play nice when a local user connects via SSH.
@@ -137,25 +137,25 @@ There is next to no desktop environment installed because one is not needed for 
 </span><span class="lnt">18
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">pi@kds:~ $ cat /etc/X11/xorg.conf.d/monitor.conf
-<span class="c1"># Device = GPU</span>
-<span class="c1"># When using rPi 4 with GPU instead of software render, the `modesetting` driver is the one to use... apparently.</span>
-Section <span class="s2">&#34;Device&#34;</span>
-        Identifier      <span class="s2">&#34;default&#34;</span>
-        Driver          <span class="s2">&#34;modesetting&#34;</span>
-EndSection
-
-Section <span class="s2">&#34;Monitor&#34;</span>
-        Identifier <span class="s2">&#34;default&#34;</span>
-        <span class="c1"># equivalent to `display_rotate = 1` in config.txt </span>
-        Option <span class="s2">&#34;Rotate&#34;</span> <span class="s2">&#34;right&#34;</span>
-EndSection
-
-Section <span class="s2">&#34;Screen&#34;</span>
-        Identifier <span class="s2">&#34;default&#34;</span>
-        Monitor <span class="s2">&#34;default&#34;</span>
-EndSection
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">pi@kds:~ $ cat /etc/X11/xorg.conf.d/monitor.conf
+</span></span><span class="line"><span class="cl"><span class="c1"># Device = GPU</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># When using rPi 4 with GPU instead of software render, the `modesetting` driver is the one to use... apparently.</span>
+</span></span><span class="line"><span class="cl">Section <span class="s2">&#34;Device&#34;</span>
+</span></span><span class="line"><span class="cl">        Identifier      <span class="s2">&#34;default&#34;</span>
+</span></span><span class="line"><span class="cl">        Driver          <span class="s2">&#34;modesetting&#34;</span>
+</span></span><span class="line"><span class="cl">EndSection
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Section <span class="s2">&#34;Monitor&#34;</span>
+</span></span><span class="line"><span class="cl">        Identifier <span class="s2">&#34;default&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># equivalent to `display_rotate = 1` in config.txt </span>
+</span></span><span class="line"><span class="cl">        Option <span class="s2">&#34;Rotate&#34;</span> <span class="s2">&#34;right&#34;</span>
+</span></span><span class="line"><span class="cl">EndSection
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Section <span class="s2">&#34;Screen&#34;</span>
+</span></span><span class="line"><span class="cl">        Identifier <span class="s2">&#34;default&#34;</span>
+</span></span><span class="line"><span class="cl">        Monitor <span class="s2">&#34;default&#34;</span>
+</span></span><span class="line"><span class="cl">EndSection
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>In addition to the X11 config, some ram needs to be allocated as dedicated graphics memory:</p>
 <div class="highlight"><div class="chroma">
@@ -167,12 +167,12 @@ EndSection
 </span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">pi@kds:~ $ cat /boot/config.txt <span class="p">|</span> grep -B2 gpu_mem
-<span class="o">[</span>all<span class="o">]</span>
-<span class="c1"># Allocate 256MB of ram for the GPU</span>
-<span class="nv">gpu_mem</span><span class="o">=</span><span class="m">256</span>
-pi@kds:~ $ sudo reboot
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">pi@kds:~ $ cat /boot/config.txt <span class="p">|</span> grep -B2 gpu_mem
+</span></span><span class="line"><span class="cl"><span class="o">[</span>all<span class="o">]</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Allocate 256MB of ram for the GPU</span>
+</span></span><span class="line"><span class="cl"><span class="nv">gpu_mem</span><span class="o">=</span><span class="m">256</span>
+</span></span><span class="line"><span class="cl">pi@kds:~ $ sudo reboot
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>Chrome did not automatically switch over to the GPU backed rendering pipe but it&rsquo;s easy enough to <a href="https://lemariva.com/blog/2020/08/raspberry-pi-4-video-acceleration-decode-chromium" target="_blank" rel="noopener noreffer">configure chrome to use the GPU</a> manually.</p>
 <p>And with all that in place, a quick <code>sudo systemctl restart lightdm</code> and a brief screen flicker later, chromium launched in full screen mode with the correct orientation. After the dashboard finished loading, the scroll/tap/animation performance was as good as it would be on any competent computer!</p>

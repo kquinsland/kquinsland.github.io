@@ -2,7 +2,7 @@
 <hr>
 <h1 id="why">Why</h1>
 <p>I was looking for a way to actuate some heavy blackout curtains.</p>
-<p>There have been <em>several</em> DIY projects out there that manipulate curtains but they all appear to be relatively involved as they are often designed for a very specific type of curtain; servos that fit on the &lsquo;tilt rod&rsquo; or motors that can manipulate the pull chain&hellip; etc.</p>
+<p>There have been <em>several</em> DIY projects out there that manipulate curtains but they all appear to be relatively involved as they are often designed for a very specific type of curtain; servos that fit on the &rsquo;tilt rod&rsquo; or motors that can manipulate the pull chain&hellip; etc.</p>
 <p>The specific curtains that I wanted to power-actuate  are curtains that do not have a pull string or a set of wheels/track to facilitate their movement. Just folds of fabric hanging directly from a telescopic metal rod.</p>
 <p>After a quick review of hte existing commercial solutions for my application/style of curtains, it became clear that they all work in about the same way: some battery powered motor mechanically couples to the curtain rod and moves along the rod dragging / pushing the curtain as it does so.</p>
 <p>Since they all more or less use the same design, I figured that most of the differentiation between products would be in the software side of things. No product immediately stood out as having <strong>local</strong> Home Assistant integration so it didn&rsquo;t matter which product I selected; I will inevitably have to do some reverse engineering / hacking to get <strong>local</strong> Home Assistant integration.</p>

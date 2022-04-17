@@ -1,231 +1,34 @@
-<!doctype html><html lang=en-us>
-<head>
-<meta charset=utf-8>
-<meta name=viewport content="width=device-width,initial-scale=1">
-<meta name=robots content="noodp">
-<meta http-equiv=x-ua-compatible content="IE=edge, chrome=1">
-<title>Installing Tasmota on the Xiaomi Desk Lamp - karl</title><meta name=Description content="Assimilate all the things into Home Assistant!"><meta property="og:title" content="Installing Tasmota on the Xiaomi Desk Lamp">
-<meta property="og:description" content="Assimilate all the things into Home Assistant!">
-<meta property="og:type" content="article">
-<meta property="og:url" content="https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/"><meta property="og:image" content="https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/td02.jpg"><meta property="article:section" content="posts">
-<meta property="article:published_time" content="2022-01-22T00:00:00+00:00">
-<meta property="article:modified_time" content="2022-02-05T11:41:04-08:00">
-<meta name=twitter:card content="summary_large_image">
-<meta name=twitter:image content="https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/td02.jpg">
-<meta name=twitter:title content="Installing Tasmota on the Xiaomi Desk Lamp">
-<meta name=twitter:description content="Assimilate all the things into Home Assistant!">
-<meta name=application-name content="karl">
-<meta name=apple-mobile-web-app-title content="karl"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=https://karlquinsland.com/favicon.ico>
-<link rel=icon type=image/png sizes=32x32 href=https://karlquinsland.com/favicon-32x32.png>
-<link rel=icon type=image/png sizes=16x16 href=https://karlquinsland.com/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=https://karlquinsland.com/apple-touch-icon.png><link rel=mask-icon href=https://karlquinsland.com/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=https://karlquinsland.com/site.webmanifest><link rel=canonical href=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/><link rel=prev href=https://karlquinsland.com/lanbon-l8-tuya-lcd-switch-openhasp/><link rel=stylesheet href=https://karlquinsland.com/lib/normalize/normalize.min.055364f5be272caa092b0e6654c165828707f8ab971e2656383a6d6392bc345e.css integrity="sha256-BVNk9b4nLKoJKw5mVMFlgocH+KuXHiZWODptY5K8NF4="><link rel=stylesheet href=https://karlquinsland.com/css/style.min.1e2694bed152fa2922dbe909a441838ed693d88b1330f97485bfa8ed78da42df.css integrity="sha256-HiaUvtFS+iki2+kJpEGDjtaT2IsTMPl0hb+o7XjaQt8="><link rel=stylesheet href=https://karlquinsland.com/lib/fontawesome-free/all.min.876d023d9d10c97941b80c3b03e2a5b94631ff7a4af9cee5604a6a2d39718d84.css integrity="sha256-h20CPZ0QyXlBuAw7A+KluUYx/3pK+c7lYEpqLTlxjYQ="><link rel=stylesheet href=https://karlquinsland.com/lib/animate/animate.min.3c770e90f98eb21b0c042fafb49755af93306fbaf42e449524f94fae9fc83295.css integrity="sha256-PHcOkPmOshsMBC+vtJdVr5Mwb7r0LkSVJPlPrp/IMpU="><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Installing Tasmota on the Xiaomi Desk Lamp","inLanguage":"en-us","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/karlquinsland.com\/xaomi-s1-monitor-lamp-teardown-and-tasmota\/"},"genre":"posts","keywords":"tasmota, home assistant","wordcount":2862,"url":"https:\/\/karlquinsland.com\/xaomi-s1-monitor-lamp-teardown-and-tasmota\/","datePublished":"2022-01-22T00:00:00+00:00","dateModified":"2022-02-05T11:41:04-08:00","publisher":{"@type":"Organization","name":""},"author":{"@type":"Person","name":"karl"},"description":"Assimilate all the things into Home Assistant!"}</script></head>
-<body header-desktop=fixed header-mobile=auto><script type=text/javascript>(window.localStorage&&localStorage.getItem('theme')?localStorage.getItem('theme')==='dark':'auto'==='auto'?window.matchMedia('(prefers-color-scheme: dark)').matches:'auto'==='dark')&&document.body.setAttribute('theme','dark')</script>
-<div id=mask></div><div class=wrapper><header class=desktop id=header-desktop>
-<div class=header-wrapper>
-<div class=header-title>
-<a href=https://karlquinsland.com/ title=karl>Karl</a>
-</div>
-<div class=menu>
-<div class=menu-inner><a class=menu-item href=https://karlquinsland.com/posts/><i class="fas fa-blog"></i> Posts </a><a class=menu-item href=https://karlquinsland.com/resume/ title="Hire Me!"><i class="fas fa-briefcase"></i> Résumé </a><a class=menu-item href=https://karlquinsland.com/tags/ title="Can you tell that I don't have a super consistent or clear taxonomy?"><i class="fas fa-tags"></i> Tags </a><a class=menu-item href=https://karlquinsland.com/contact/><i class="fas fa-address-book"></i> Contact </a><span class="menu-item delimiter"></span><span class="menu-item search" id=search-desktop>
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><meta http-equiv=x-ua-compatible content="IE=edge, chrome=1"><title>Installing Tasmota on the Xiaomi Desk Lamp - karl</title><meta name=Description content="Assimilate all the things into Home Assistant!"><meta property="og:title" content="Installing Tasmota on the Xiaomi Desk Lamp"><meta property="og:description" content="Assimilate all the things into Home Assistant!"><meta property="og:type" content="article"><meta property="og:url" content="https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/"><meta property="og:image" content="https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/td02.jpg"><meta property="article:section" content="posts"><meta property="article:published_time" content="2022-01-22T00:00:00+00:00"><meta property="article:modified_time" content="2022-02-05T11:41:04-08:00"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/td02.jpg"><meta name=twitter:title content="Installing Tasmota on the Xiaomi Desk Lamp"><meta name=twitter:description content="Assimilate all the things into Home Assistant!"><meta name=application-name content="karl"><meta name=apple-mobile-web-app-title content="karl"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=https://karlquinsland.com/favicon.ico><link rel=icon type=image/png sizes=32x32 href=https://karlquinsland.com/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=https://karlquinsland.com/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=https://karlquinsland.com/apple-touch-icon.png><link rel=mask-icon href=https://karlquinsland.com/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=https://karlquinsland.com/site.webmanifest><link rel=canonical href=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/><link rel=prev href=https://karlquinsland.com/lanbon-l8-tuya-lcd-switch-openhasp/><link rel=next href=https://karlquinsland.com/hdmi-kvm-teardown-and-esphome/><link rel=stylesheet href=https://karlquinsland.com/lib/normalize/normalize.min.055364f5be272caa092b0e6654c165828707f8ab971e2656383a6d6392bc345e.css integrity="sha256-BVNk9b4nLKoJKw5mVMFlgocH+KuXHiZWODptY5K8NF4="><link rel=stylesheet href=https://karlquinsland.com/css/style.min.1e2694bed152fa2922dbe909a441838ed693d88b1330f97485bfa8ed78da42df.css integrity="sha256-HiaUvtFS+iki2+kJpEGDjtaT2IsTMPl0hb+o7XjaQt8="><link rel=stylesheet href=https://karlquinsland.com/lib/fontawesome-free/all.min.876d023d9d10c97941b80c3b03e2a5b94631ff7a4af9cee5604a6a2d39718d84.css integrity="sha256-h20CPZ0QyXlBuAw7A+KluUYx/3pK+c7lYEpqLTlxjYQ="><link rel=stylesheet href=https://karlquinsland.com/lib/animate/animate.min.3c770e90f98eb21b0c042fafb49755af93306fbaf42e449524f94fae9fc83295.css integrity="sha256-PHcOkPmOshsMBC+vtJdVr5Mwb7r0LkSVJPlPrp/IMpU="><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Installing Tasmota on the Xiaomi Desk Lamp","inLanguage":"en-us","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/karlquinsland.com\/xaomi-s1-monitor-lamp-teardown-and-tasmota\/"},"genre":"posts","keywords":"tasmota, home assistant","wordcount":2861,"url":"https:\/\/karlquinsland.com\/xaomi-s1-monitor-lamp-teardown-and-tasmota\/","datePublished":"2022-01-22T00:00:00+00:00","dateModified":"2022-02-05T11:41:04-08:00","publisher":{"@type":"Organization","name":""},"author":{"@type":"Person","name":"karl"},"description":"Assimilate all the things into Home Assistant!"}</script></head><body header-desktop=fixed header-mobile=auto><script type=text/javascript>(window.localStorage&&localStorage.getItem("theme")?localStorage.getItem("theme")==="dark":"auto"==="auto"?window.matchMedia("(prefers-color-scheme: dark)").matches:"auto"==="dark")&&document.body.setAttribute("theme","dark")</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=https://karlquinsland.com/ title=karl>Karl</a></div><div class=menu><div class=menu-inner><a class=menu-item href=https://karlquinsland.com/posts/><i class="fas fa-blog"></i> Posts </a><a class=menu-item href=https://karlquinsland.com/resume/ title="Hire Me!"><i class="fas fa-briefcase"></i> Résumé </a><a class=menu-item href=https://karlquinsland.com/tags/ title="Can you tell that I don't have a super consistent or clear taxonomy?"><i class="fas fa-tags"></i> Tags </a><a class=menu-item href=https://karlquinsland.com/contact/><i class="fas fa-address-book"></i> Contact </a><span class="menu-item delimiter"></span><span class="menu-item search" id=search-desktop>
 <input type=text placeholder="Search titles or contents..." id=search-input-desktop>
-<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=Search>
-<i class="fas fa-search fa-fw"></i>
-</a>
-<a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=Clear>
-<i class="fas fa-times-circle fa-fw"></i>
-</a>
-<span class="search-button search-loading" id=search-loading-desktop>
-<i class="fas fa-spinner fa-fw fa-spin"></i>
-</span>
-</span><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
-<i class="fas fa-adjust fa-fw"></i>
-</a>
-</div>
-</div>
-</div>
-</header><header class=mobile id=header-mobile>
-<div class=header-container>
-<div class=header-wrapper>
-<div class=header-title>
-<a href=https://karlquinsland.com/ title=karl>Karl</a>
-</div>
-<div class=menu-toggle id=menu-toggle-mobile>
-<span></span><span></span><span></span>
-</div>
-</div>
-<div class=menu id=menu-mobile><div class=search-wrapper>
-<div class="search mobile" id=search-mobile>
-<input type=text placeholder="Search titles or contents..." id=search-input-mobile>
-<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=Search>
-<i class="fas fa-search fa-fw"></i>
-</a>
-<a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=Clear>
-<i class="fas fa-times-circle fa-fw"></i>
-</a>
-<span class="search-button search-loading" id=search-loading-mobile>
-<i class="fas fa-spinner fa-fw fa-spin"></i>
-</span>
-</div>
-<a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>
-Cancel
-</a>
-</div><a class=menu-item href=https://karlquinsland.com/posts/ title><i class="fas fa-blog"></i>Posts</a><a class=menu-item href=https://karlquinsland.com/resume/ title="Hire Me!"><i class="fas fa-briefcase"></i>Résumé</a><a class=menu-item href=https://karlquinsland.com/tags/ title="Can you tell that I don't have a super consistent or clear taxonomy?"><i class="fas fa-tags"></i>Tags</a><a class=menu-item href=https://karlquinsland.com/contact/ title><i class="fas fa-address-book"></i>Contact</a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
-<i class="fas fa-adjust fa-fw"></i>
-</a></div>
-</div>
-</header>
-<div class="search-dropdown desktop">
-<div id=search-dropdown-desktop></div>
-</div>
-<div class="search-dropdown mobile">
-<div id=search-dropdown-mobile></div>
-</div>
-<main class=main>
-<div class=container><div class=toc id=toc-auto>
-<h2 class=toc-title>Contents</h2>
-<div class=toc-content id=toc-content-auto></div>
-</div><article class="page single"><h1 class="single-title animated flipInX">Installing Tasmota on the Xiaomi Desk Lamp</h1><div class=post-meta>
-<div class=post-meta-line><span class=post-author><a href=https://karlquinsland.com/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw"></i>karl</a></span>&nbsp;<span class=post-category>included in <a href=https://karlquinsland.com/categories/teardown/><i class="far fa-folder fa-fw"></i>teardown</a></span></div>
-<div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2022-01-22>2022-01-22</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;2862 words&nbsp;
-<i class="far fa-clock fa-fw"></i>&nbsp;14 minutes&nbsp;</div>
-</div><div class="details toc" id=toc-static kept=true>
-<div class="details-summary toc-title">
-<span>Contents</span>
-<span><i class="details-icon fas fa-angle-right"></i></span>
-</div>
-<div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents>
-<ul>
-<li><a href=#lamp---phone>Lamp &lt;-> Phone</a></li>
-<li><a href=#et-lamp-phone-home>ET Lamp Phone Home:</a>
-<ul>
-<li><a href=#dumping-the-fw>Dumping the FW</a></li>
-<li><a href=#a-change-of-plans>A change of plans</a></li>
-</ul>
-</li>
-<li><a href=#teardown>Teardown</a>
-<ul>
-<li><a href=#the-lamp>The lamp</a>
-<ul>
-<li><a href=#the-puck>The puck</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href=#tasmota>Tasmota</a>
-<ul>
-<li><a href=#flashing>Flashing</a></li>
-<li><a href=#templates>Templates</a>
-<ul>
-<li><a href=#dimmer-range>Dimmer Range</a></li>
-<li><a href=#pcbic-markings>PCB/IC Markings</a>
-<ul>
-<li><a href=#lamp>Lamp</a></li>
-<li><a href=#remote>Remote</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li><a href=#mugjd01yl>MUGJD01YL</a></li>
-</ul>
-</li>
-</ul>
-</nav></div>
-</div><div class=content id=content><div class="details admonition note open">
-<div class="details-summary admonition-title">
-<i class="icon fas fa-pencil-alt fa-fw"></i>MJGJD02YL vs MUGJD01YL<i class="details-icon fas fa-angle-right fa-fw"></i>
-</div>
-<div class=details-content>
-<div class=admonition-content>There are <em>at least two</em> versions of this lamp. Thanks to <code>@htvekov</code> for confirming that the <code>MUGJD01YL</code> variant <strong>does <em>not</em> contain an ESP32</strong>. It contains a <code>TLSR8368</code>.
-Some photos of the <code>MUGJD01YL</code> internals are provided <a href=#mugjd01yl rel>below</a>.</div>
-</div>
-</div>
-<p>If you&rsquo;re here just for &ldquo;how do I flash tasmota&rdquo; bit, skip to the <a href=#tasmota rel>Tasmota</a> section below.</p>
-<hr>
-<p>I was looking for a way to light my desk my desk without screen glare.
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=Search><i class="fas fa-search fa-fw"></i></a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=Clear><i class="fas fa-times-circle fa-fw"></i></a>
+<span class="search-button search-loading" id=search-loading-desktop><i class="fas fa-spinner fa-fw fa-spin"></i></span>
+</span><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme"><i class="fas fa-adjust fa-fw"></i></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=https://karlquinsland.com/ title=karl>Karl</a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><div class=search-wrapper><div class="search mobile" id=search-mobile><input type=text placeholder="Search titles or contents..." id=search-input-mobile>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=Search><i class="fas fa-search fa-fw"></i></a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=Clear><i class="fas fa-times-circle fa-fw"></i></a>
+<span class="search-button search-loading" id=search-loading-mobile><i class="fas fa-spinner fa-fw fa-spin"></i></span></div><a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>Cancel</a></div><a class=menu-item href=https://karlquinsland.com/posts/ title><i class="fas fa-blog"></i>Posts</a><a class=menu-item href=https://karlquinsland.com/resume/ title="Hire Me!"><i class="fas fa-briefcase"></i>Résumé</a><a class=menu-item href=https://karlquinsland.com/tags/ title="Can you tell that I don't have a super consistent or clear taxonomy?"><i class="fas fa-tags"></i>Tags</a><a class=menu-item href=https://karlquinsland.com/contact/ title><i class="fas fa-address-book"></i>Contact</a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw"></i></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>Contents</h2><div class=toc-content id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animated flipInX">Installing Tasmota on the Xiaomi Desk Lamp</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=https://karlquinsland.com/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw"></i>karl</a></span>&nbsp;<span class=post-category>included in <a href=https://karlquinsland.com/categories/teardown/><i class="far fa-folder fa-fw"></i>teardown</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2022-01-22>2022-01-22</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;2861 words&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;14 minutes&nbsp;</div></div><div class="details toc" id=toc-static kept=true><div class="details-summary toc-title"><span>Contents</span>
+<span><i class="details-icon fas fa-angle-right"></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><a href=#lamp---phone>Lamp &lt;-> Phone</a></li><li><a href=#et-lamp-phone-home>ET Lamp Phone Home:</a><ul><li><a href=#dumping-the-fw>Dumping the FW</a></li><li><a href=#a-change-of-plans>A change of plans</a></li></ul></li><li><a href=#teardown>Teardown</a><ul><li><a href=#the-lamp>The lamp</a><ul><li><a href=#the-puck>The puck</a></li></ul></li></ul></li><li><a href=#tasmota>Tasmota</a><ul><li><a href=#flashing>Flashing</a></li><li><a href=#templates>Templates</a><ul><li><a href=#dimmer-range>Dimmer Range</a></li><li><a href=#pcbic-markings>PCB/IC Markings</a><ul><li><a href=#lamp>Lamp</a></li><li><a href=#remote>Remote</a></li></ul></li></ul></li><li><a href=#mugjd01yl>MUGJD01YL</a></li></ul></li></ul></nav></div></div><div class=content id=content><div class="details admonition note open"><div class="details-summary admonition-title"><i class="icon fas fa-pencil-alt fa-fw"></i>MJGJD02YL vs MUGJD01YL<i class="details-icon fas fa-angle-right fa-fw"></i></div><div class=details-content><div class=admonition-content>There are <em>at least two</em> versions of this lamp. Thanks to <code>@htvekov</code> for confirming that the <code>MUGJD01YL</code> variant <strong>does <em>not</em> contain an ESP32</strong>. It contains a <code>TLSR8368</code>.
+Some photos of the <code>MUGJD01YL</code> internals are provided <a href=#mugjd01yl rel>below</a>.</div></div></div><p>If you&rsquo;re here just for &ldquo;how do I flash tasmota&rdquo; bit, skip to the <a href=#tasmota rel>Tasmota</a> section below.</p><hr><p>I was looking for a way to light my desk my desk without screen glare.
 The easiest way to prevent glare on a screen is to change the orientation of the light relative to the screen either from under or behind the screen.
-This is not practical for ceiling mounted lights or for any floor lamps.</p>
-<p>You can get a nearly glare free light if you mount the light to the top of the screen and direct the light away from the screen at a <em>slight</em> angle.
-Light hitting the screen and bouncing into eyes is minimized and the majority of the light ends up directed down onto the desk where it&rsquo;s needed.</p>
-<p>This isn&rsquo;t a new problem; a quick search of any online retailor will reveal that there are <em>many</em> different options out there at all sorts of price points.
-As this light source would be heavily used for all sorts of work, the <em>quality</em> of the light is incredibly important; a high General CRI (Ra) and adjustable color temperature are <em>requirements</em>.</p>
-<p>I also wanted one that had some basic remote control functions so I don&rsquo;t have to reach to the top of my monitor and risk destabilizing whatever I am working on or getting finger prints on the panel.
-A wired remote would be simpler and thus cheaper but my desk is already too crowded with wires and cords; if the cost difference between a wired and wireless remote was marginal, opt for wireless.</p>
-<p>After a bit of searching, I found the <code>2021 Xiaomi Mijia Lite Desk Lamp 1S</code> which fit the bill exactly.</p>
-<figure>
-<img src=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/ali_exp_listing.png alt="Screenshot showing the Aliexpress.com listing that I purchased the lamp from.">
-<figcaption>
-</figcaption>
-</figure>
-<p>Beyond the basic puck shaped wireless remote, the listing indicated that the &lsquo;new 1s version&rsquo; could be controlled with the <code>Xiaomi</code> app.</p>
-<p>🤔</p>
-<p>Instead of some very basic 433Mhz radio, the lamp/remote probably used BTLE.
-In some ways, that&rsquo;s even better; the lamp only has a few simple functions and those shouldn&rsquo;t be that hard to reverse engineer from the Android app.</p>
-<p>Once I know what data to send for on/off/dim/bright/ww/cw selection, I can use an ESP chip as a MQTT &lt;-> BTLE gateway for relatively easy integration into my home automation system.
-Worst case, the fall back plan of using a microcontroller to emulate interacting with the remote and then integrating that microcontroller with my home automation system would work.</p>
-<p>Once the lamp showed up, I of course opened up the remote to see what type of wireless system I was going to be dealing with.</p>
-<figure>
-<img src=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/puck05-module_closeup.jpg alt="Even closer shot of the tiny system on module that powers the remote puck.">
-<figcaption>
-</figcaption>
-</figure>
-<div class="details admonition note open">
-<div class="details-summary admonition-title">
-<i class="icon fas fa-pencil-alt fa-fw"></i>Note<i class="details-icon fas fa-angle-right fa-fw"></i>
-</div>
-<div class=details-content>
-<div class=admonition-content>More photos of the remote are <a href=#teardown rel>below</a></div>
-</div>
-</div>
-<p>Giving the model number <code>MHCB07P</code> a quick google didn&rsquo;t reveal much information other than confirm that it was using BTLE.
+This is not practical for ceiling mounted lights or for any floor lamps.</p><p>You can get a nearly glare free light if you mount the light to the top of the screen and direct the light away from the screen at a <em>slight</em> angle.
+Light hitting the screen and bouncing into eyes is minimized and the majority of the light ends up directed down onto the desk where it&rsquo;s needed.</p><p>This isn&rsquo;t a new problem; a quick search of any online retailor will reveal that there are <em>many</em> different options out there at all sorts of price points.
+As this light source would be heavily used for all sorts of work, the <em>quality</em> of the light is incredibly important; a high General CRI (Ra) and adjustable color temperature are <em>requirements</em>.</p><p>I also wanted one that had some basic remote control functions so I don&rsquo;t have to reach to the top of my monitor and risk destabilizing whatever I am working on or getting finger prints on the panel.
+A wired remote would be simpler and thus cheaper but my desk is already too crowded with wires and cords; if the cost difference between a wired and wireless remote was marginal, opt for wireless.</p><p>After a bit of searching, I found the <code>2021 Xiaomi Mijia Lite Desk Lamp 1S</code> which fit the bill exactly.</p><figure><img src=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/ali_exp_listing.png alt="Screenshot showing the Aliexpress.com listing that I purchased the lamp from."><figcaption></figcaption></figure><p>Beyond the basic puck shaped wireless remote, the listing indicated that the &rsquo;new 1s version&rsquo; could be controlled with the <code>Xiaomi</code> app.</p><p>🤔</p><p>Instead of some very basic 433Mhz radio, the lamp/remote probably used BTLE.
+In some ways, that&rsquo;s even better; the lamp only has a few simple functions and those shouldn&rsquo;t be that hard to reverse engineer from the Android app.</p><p>Once I know what data to send for on/off/dim/bright/ww/cw selection, I can use an ESP chip as a MQTT &lt;-> BTLE gateway for relatively easy integration into my home automation system.
+Worst case, the fall back plan of using a microcontroller to emulate interacting with the remote and then integrating that microcontroller with my home automation system would work.</p><p>Once the lamp showed up, I of course opened up the remote to see what type of wireless system I was going to be dealing with.</p><figure><img src=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/puck05-module_closeup.jpg alt="Even closer shot of the tiny system on module that powers the remote puck."><figcaption></figcaption></figure><div class="details admonition note open"><div class="details-summary admonition-title"><i class="icon fas fa-pencil-alt fa-fw"></i>Note<i class="details-icon fas fa-angle-right fa-fw"></i></div><div class=details-content><div class=admonition-content>More photos of the remote are <a href=#teardown rel>below</a></div></div></div><p>Giving the model number <code>MHCB07P</code> a quick google didn&rsquo;t reveal much information other than confirm that it was using BTLE.
 This almost certainly means that the phone app will <em>also</em> use BTLE to control the lamp!
-If I&rsquo;m lucky, I can capture the entire discovery/pair/command packets using a rooted android device and then I won&rsquo;t have to bother with the puck at all.</p>
-<h1 id=lamp---phone>Lamp &lt;-> Phone</h1>
-<p>After getting the app setup, it did discover the lamp and began to walk me through the setup flow.</p>
-<figure>
-<img src=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/app01_wifi_provision.png alt="Screenshot from the Xiaomi app showing that the phone needed to connect to the lamp over WiFi.">
-<figcaption>
-</figcaption>
-</figure>
-<p>WiFi!? Really!? But why? This must be some generic screen shown for all devices, right?</p>
-<p><strong>Nope</strong>.</p>
-<p>There really is a simple access point inside this lamp!</p>
-<figure>
-<img src=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/app02_yep_wifi.png alt="Screenshot from android connection settings confirming that phone was connected to a WiFi access point">
-<figcaption>
-</figcaption>
-</figure>
-<p>Well now I&rsquo;m curious.</p>
-<p>What could this lamp <em>possibly need</em> WiFi credentials for? The remote used BTLE and every conceivable phone that will also control the lamp supports BTLE&mldr; so why spend the extra money for a WiFi enabled microcontroller at all!?</p>
-<h1 id=et-lamp-phone-home><del>ET</del> Lamp Phone Home:</h1>
-<p>I threw the lamp behind an isolated access point and it sure is <em>chatty</em>&mldr;
-After getting an IP address, the lamp looks up the <code>A</code> record for <code>dk.io.mi.com</code> and then attempts to open a TCP connection and send some bytes:</p>
-<figure>
-<img src=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/wireshark.png alt="Screenshot from Wireshark showing the packet payload that the lamp tried to send to a remote server during setup / pairing with phone.">
-<figcaption>
-</figcaption>
-</figure>
-<p>Now I&rsquo;m more than a little bit curious.</p>
-<p>Why send raw bytes to TCP/80 without at least the typical HTTP request headers?
-Why even use WiFi at all for a <em>lamp</em>? Is there no way to use my phone to control the lamp over BTLE?</p>
-<h2 id=dumping-the-fw>Dumping the FW</h2>
-<p>Fortunately, this was pretty easy. After a cursory analysis, the dumped firmware did not appear to be encrypted or otherwise protected.
-I did a quick search for a few things that I hoped would show up in the dumped OEM firmware and was not disappointed:</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
+If I&rsquo;m lucky, I can capture the entire discovery/pair/command packets using a rooted android device and then I won&rsquo;t have to bother with the puck at all.</p><h1 id=lamp---phone>Lamp &lt;-> Phone</h1><p>After getting the app setup, it did discover the lamp and began to walk me through the setup flow.</p><figure><img src=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/app01_wifi_provision.png alt="Screenshot from the Xiaomi app showing that the phone needed to connect to the lamp over WiFi."><figcaption></figcaption></figure><p>WiFi!? Really!? But why? This must be some generic screen shown for all devices, right?</p><p><strong>Nope</strong>.</p><p>There really is a simple access point inside this lamp!</p><figure><img src=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/app02_yep_wifi.png alt="Screenshot from android connection settings confirming that phone was connected to a WiFi access point"><figcaption></figcaption></figure><p>Well now I&rsquo;m curious.</p><p>What could this lamp <em>possibly need</em> WiFi credentials for? The remote used BTLE and every conceivable phone that will also control the lamp supports BTLE&mldr; so why spend the extra money for a WiFi enabled microcontroller at all!?</p><h1 id=et-lamp-phone-home><del>ET</del> Lamp Phone Home:</h1><p>I threw the lamp behind an isolated access point and it sure is <em>chatty</em>&mldr;
+After getting an IP address, the lamp looks up the <code>A</code> record for <code>dk.io.mi.com</code> and then attempts to open a TCP connection and send some bytes:</p><figure><img src=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/wireshark.png alt="Screenshot from Wireshark showing the packet payload that the lamp tried to send to a remote server during setup / pairing with phone."><figcaption></figcaption></figure><p>Now I&rsquo;m more than a little bit curious.</p><p>Why send raw bytes to TCP/80 without at least the typical HTTP request headers?
+Why even use WiFi at all for a <em>lamp</em>? Is there no way to use my phone to control the lamp over BTLE?</p><h2 id=dumping-the-fw>Dumping the FW</h2><p>Fortunately, this was pretty easy. After a cursory analysis, the dumped firmware did not appear to be encrypted or otherwise protected.
+I did a quick search for a few things that I hoped would show up in the dumped OEM firmware and was not disappointed:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
 </span><span class=lnt>2
 </span><span class=lnt>3
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-shell data-lang=shell>❯ cat lamp.bin.strings <span class=p>|</span> grep --ignore-case -E <span class=s1>&#39;certificate|encrypt|tls|agent|http|post|get|verify|remote|{&#34;&#39;</span> &gt; interesting_strings.txt
-❯ cat interesting_strings.txt<span class=p>|</span> wc -l
-<span class=m>710</span>
-</code></pre></td></tr></table>
-</div>
-</div><p>🤨</p>
-<p>Here are some of the highlights:</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>❯ cat lamp.bin.strings <span class=p>|</span> grep --ignore-case -E <span class=s1>&#39;certificate|encrypt|tls|agent|http|post|get|verify|remote|{&#34;&#39;</span> &gt; interesting_strings.txt
+</span></span><span class=line><span class=cl>❯ cat interesting_strings.txt<span class=p>|</span> wc -l
+</span></span><span class=line><span class=cl><span class=m>710</span>
+</span></span></code></pre></td></tr></table></div></div><p>🤨</p><p>Here are some of the highlights:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
@@ -236,209 +39,42 @@ I did a quick search for a few things that I hoped would show up in the dumped O
 </span><span class=lnt> 9
 </span><span class=lnt>10
 </span><span class=lnt>11
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-text data-lang=text>[I] bluetooth_remote_double_click
-[E] %s: verify root cert is not valid! (%s,%d)
-[W] %s: Fail to get gatt db from connection %04x, ret = %d  (%s,%d)
-[E] %s: mbedtls_ecdh_calc_secret error %d (%s,%d)
-miio_signature_verify
-[E] %s: --&gt;login verify send failed. (%s,%d)
------BEGIN CERTIFICATE-----
-[E] %s: https need root cert. (%s,%d)
-User-Agent: MIoT
-http://dlg.io.mi.com/v1/ot/upload
-[W] %s: httpdns new resolve start failed, %d (%s,%d)
-</code></pre></td></tr></table>
-</div>
-</div><p>There&rsquo;s a lot more interesting things in the dump but they&rsquo;ll have to wait for another day as
-immediately after getting eyes on the PCB, I saw an ESP32 chip!</p>
-<h2 id=a-change-of-plans>A change of plans</h2>
-<p>Reverse engineering the firmware to figure out how/why the phone method of remote control was different from the remotes' method no longer really mattered.
-An ESP based chip means Tasmota or ESPHome should be possible.</p>
-<p>If I could get either of those alternative firmwares running on the lamp, then cluttering up the desk with yet another remote and/or hacking MQTT support into the lamp via the remote was no longer necessary!</p>
-<h1 id=teardown>Teardown</h1>
-<div class="details admonition warning open">
-<div class="details-summary admonition-title">
-<i class="icon fas fa-exclamation-triangle fa-fw"></i>Warning<i class="details-icon fas fa-angle-right fa-fw"></i>
-</div>
-<div class=details-content>
-<div class=admonition-content>The plastic end caps on either end of the lamp tube are <em>glued in</em>.
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-text data-lang=text><span class=line><span class=cl>[I] bluetooth_remote_double_click
+</span></span><span class=line><span class=cl>[E] %s: verify root cert is not valid! (%s,%d)
+</span></span><span class=line><span class=cl>[W] %s: Fail to get gatt db from connection %04x, ret = %d  (%s,%d)
+</span></span><span class=line><span class=cl>[E] %s: mbedtls_ecdh_calc_secret error %d (%s,%d)
+</span></span><span class=line><span class=cl>miio_signature_verify
+</span></span><span class=line><span class=cl>[E] %s: --&gt;login verify send failed. (%s,%d)
+</span></span><span class=line><span class=cl>-----BEGIN CERTIFICATE-----
+</span></span><span class=line><span class=cl>[E] %s: https need root cert. (%s,%d)
+</span></span><span class=line><span class=cl>User-Agent: MIoT
+</span></span><span class=line><span class=cl>http://dlg.io.mi.com/v1/ot/upload
+</span></span><span class=line><span class=cl>[W] %s: httpdns new resolve start failed, %d (%s,%d)
+</span></span></code></pre></td></tr></table></div></div><p>There&rsquo;s a lot more interesting things in the dump but they&rsquo;ll have to wait for another day as
+immediately after getting eyes on the PCB, I saw an ESP32 chip!</p><h2 id=a-change-of-plans>A change of plans</h2><p>Reverse engineering the firmware to figure out how/why the phone method of remote control was different from the remotes&rsquo; method no longer really mattered.
+An ESP based chip means Tasmota or ESPHome should be possible.</p><p>If I could get either of those alternative firmwares running on the lamp, then cluttering up the desk with yet another remote and/or hacking MQTT support into the lamp via the remote was no longer necessary!</p><h1 id=teardown>Teardown</h1><div class="details admonition warning open"><div class="details-summary admonition-title"><i class="icon fas fa-exclamation-triangle fa-fw"></i>Warning<i class="details-icon fas fa-angle-right fa-fw"></i></div><div class=details-content><div class=admonition-content>The plastic end caps on either end of the lamp tube are <em>glued in</em>.
 You will need some force to break the glue.
 Even with all possible precautions, getting access to the lamp PCB <em>is a <strong>destructive</strong> process</em>.
-If you are <em>careful</em> you can keep the destruction and cosmetic damage to a minimum.</div>
-</div>
-</div>
-<p>I did this teardown the hard way and damaged more of the lamp than necessary.
-Some of the photos below reflect this.</p>
-<p>Now that I know how it all is <em>meant</em> to come apart, you will hopefully have an easier time and incur less damage!</p>
-<h2 id=the-lamp>The lamp</h2>
-<p>A closer look at the marked device information before we move <em>into</em> the lamp.
-The ESP that we will soon flash with Tasmota is just behind this product information.</p>
-<figure>
-<img src=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/lamp01.jpg alt="Photo showing the various product info and regulatory markings on the lamp">
-<figcaption>
-<p>
-Product info and regulatory markings
-</p>
-</figcaption>
-</figure>
-<p>Locate the small rectangle shaped protrusion from the lamp tube that mates with the magnetic mount. The protrusion has two small pogo pins on it.
-You can see the protrusion in the middle of the tube facing the coiled USB power cable:</p>
-<figure>
-<img src=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/td00.jpg alt="Picture showing everything that came inside the product packaging; lamp, cradle that attaches to monitor and secures the lamp, power cord, remote puck and paper instructions.">
-<figcaption>
-<p>
-Everything that came in the box
-</p>
-</figcaption>
-</figure>
-<p>With the protrusion facing you, locate the plastic cap closest to the product information.
-This should be plastic cap on the <em>left</em> side of the tube.</p>
-<p>Use non-marring pliers or similar to grip the plastic cap and twist with enough force to break the glue.
+If you are <em>careful</em> you can keep the destruction and cosmetic damage to a minimum.</div></div></div><p>I did this teardown the hard way and damaged more of the lamp than necessary.
+Some of the photos below reflect this.</p><p>Now that I know how it all is <em>meant</em> to come apart, you will hopefully have an easier time and incur less damage!</p><h2 id=the-lamp>The lamp</h2><p>A closer look at the marked device information before we move <em>into</em> the lamp.
+The ESP that we will soon flash with Tasmota is just behind this product information.</p><figure><img src=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/lamp01.jpg alt="Photo showing the various product info and regulatory markings on the lamp"><figcaption><p>Product info and regulatory markings</p></figcaption></figure><p>Locate the small rectangle shaped protrusion from the lamp tube that mates with the magnetic mount. The protrusion has two small pogo pins on it.
+You can see the protrusion in the middle of the tube facing the coiled USB power cable:</p><figure><img src=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/td00.jpg alt="Picture showing everything that came inside the product packaging; lamp, cradle that attaches to monitor and secures the lamp, power cord, remote puck and paper instructions."><figcaption><p>Everything that came in the box</p></figcaption></figure><p>With the protrusion facing you, locate the plastic cap closest to the product information.
+This should be plastic cap on the <em>left</em> side of the tube.</p><p>Use non-marring pliers or similar to grip the plastic cap and twist with enough force to break the glue.
 Do not twist more than a few degrees!
-The plastic cap has some features that will come into contact with and could damage the PCB if rotated too far!</p>
-<p>Use a razor blade or similar to peel back the grip-tape sticker on the protrusion.
+The plastic cap has some features that will come into contact with and could damage the PCB if rotated too far!</p><p>Use a razor blade or similar to peel back the grip-tape sticker on the protrusion.
 If you&rsquo;re careful and manage to remove the sticker in one piece you might be able to re-apply it during reassembly.
-The lamp functions fine without the sticker, though.</p>
-<p>Underneath the sticker will be two small philips screws.
+The lamp functions fine without the sticker, though.</p><p>Underneath the sticker will be two small philips screws.
 Remove them and the metal protrusion and small plastic part containing the two pogo pins should come free.
-Set these aside.</p>
-<p>Gently remove the clear plastic diffuser from the lamp tube and set aside.</p>
-<p>The matte finish on the interior side of the diffuser is a fingerprint magnet.
-Consider using gloves for this step.</p>
-<p>Carefully slide the PCB out of the aluminum tube.
-Be mindful of the two spring like contacts on the back of the PCB that mated with the pogo pins!</p>
-<p>You can see the small black plastic bracket holding the pogo pins and the protrusion bit with some of the grip-tape still attached:</p>
-<figure>
-<img src=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/td01.jpg alt="Closeup photo showing damaged components on the main PCB. The components were damaged during initial teardown because of hidden screws.">
-<figcaption>
-<p>
-If it feels like you're using too much force to open the lamp... you probably are!
-</p>
-</figcaption>
-</figure>
-<p>If you try to remove the PCB without first detaching the pogo pins, you&rsquo;ll damage one or both of the spring contacts that mate the PCB to the pogo pins!</p>
-<p>You <em>don&rsquo;t</em> want your <code>GND</code> spring to look like mine!</p>
-<figure>
-<img src=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/td02.jpg alt="Photo showing a few of the lamp components removed and the primary PCB partially removed from the lamp body.">
-<figcaption>
-</figcaption>
-</figure>
-<p>Before realizing that the pogo pins could be removed from the lamp, I removed <em>both</em> caps and tried push/pull the PCB out.</p>
-<p>The PCB is supported inside the tube with a few black plastic &lsquo;sleds&rsquo; which are heat-staked on to the PCB.</p>
-<p>The &lsquo;sled&rsquo; closest to the ESP partially covers the <code>3V3</code> test point.
-Rather than use a dedicated 3V power supply during flashing, I found it easiest to use this pin to bring the <code>EN</code> pin up high.</p>
-<p>If you&rsquo;re going to use the <code>3V3</code> test pin instead of a dedicated external power supply, you will probably want to remove the &lsquo;sled&rsquo; to get easy access to the test point.</p>
-<p>You can do this with some flush-cut snips.</p>
-<figure>
-<img src=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/td04.jpg alt="Photo showing flush cutting snips used to remove a component that has been heat staked onto the main PCB">
-<figcaption>
-<p>
-Be careful to not scratch the solder mask / PCB with the sharp edges of the snips
-</p>
-</figcaption>
-</figure>
-<p>The sled isn&rsquo;t technically required for re-assembly but it&rsquo;s pretty easy to re-attach to the PCB with some hotglue. Discard it at your peril!</p>
-<figure>
-<img src=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/td05.jpg alt="Photo showing flush cutting snips and the removed component next to the PCB">
-<figcaption>
-</figcaption>
-</figure>
-<p>Here&rsquo;s a closeup of the PCB with most of the test points labeled.
-You can see the <code>3V3</code> test point immediately to the left of <code>R6</code> in the shadow of the &lsquo;sled&rsquo;.</p>
-<figure>
-<img src=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/td03.jpg alt="Photo showing a closeup of the primary lamp PCB where the test points are located.">
-<figcaption>
-</figcaption>
-</figure>
-<p>Repeat these steps in reverse order to re-assemble the lamp.</p>
-<h3 id=the-puck>The puck</h3>
-<p>Fortunately, opening up the remote is not difficult.</p>
-<p>Remove the two philips screws under the bottom cap.</p>
-<figure>
-<img src=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/puck_td_01.jpg alt="Photo of the remote puck used to control the lamp with its base removed. Two screws are all that hold it together">
-<figcaption>
-</figcaption>
-</figure>
-<p>The main body / rotary knob lifts away from the midframe.</p>
-<figure>
-<img src=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/puck_td_02.jpg alt="Photo of the remote broken down into it's primary components; the PCB is visible.">
-<figcaption>
-</figcaption>
-</figure>
-<figure>
-<img src=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/puck_td_03.jpg alt="Closeup photo of the remote puck PCB.">
-<figcaption>
-</figcaption>
-</figure>
-<figure>
-<img src=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/puck05-module_closeup.jpg alt="Even closer shot of the tiny system on module that powers the remote puck.">
-<figcaption>
-</figcaption>
-</figure>
-<p>Like with the lamp PCB, there are a few test points:</p>
-<figure>
-<img src=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/puck_td_06.jpg alt="Photo of the remote puck PCB underside showing some of the test points and other PCB markings.">
-<figcaption>
-</figcaption>
-</figure>
-<figure>
-<img src=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/puck_td_07.jpg alt="Photo of the remote puck PCB underside showing some of the test points and other PCB markings.">
-<figcaption>
-</figcaption>
-</figure>
-<h1 id=tasmota>Tasmota</h1>
-<div class="details admonition warning open">
-<div class="details-summary admonition-title">
-<i class="icon fas fa-exclamation-triangle fa-fw"></i>Warning<i class="details-icon fas fa-angle-right fa-fw"></i>
-</div>
-<div class=details-content>
-<div class=admonition-content><p>It is likely that both the WW and CW LEDs <em>will</em> briefly light up during the flashing process. When this happens, you <em>will</em> draw more current than a typical USB &lt;-> Serial adapter can provide. At <em>best</em> you&rsquo;ll cause a brownout and the flash will be interrupted.</p>
-<p><strong>Use a dedicated 5V supply that can provide <em>at least</em> 10W of power</strong> while flashing the lamp! Make sure that the <code>GND</code> wire from your serial programmer <em>and</em> the <code>GND</code> wire for your dedicated 5V@2A/10W supply are tied together or you will likely destroy some of the electronics on both the lamp, your serial adapter <em>and</em> possibly your computer!</p>
-</div>
-</div>
-</div>
-<p>Having said all that, it&rsquo;s totally worth it:</p>
-<figure>
-<img src=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/lamp_in_ha.png alt="Screenshot showing the lamps' device info an control page within Home Assistant">
-<figcaption>
-<p>
-When all is said and done, the lamp is easily integrated and controlled with Home Assistant
-</p>
-</figcaption>
-</figure>
-<h2 id=flashing>Flashing</h2>
-<div class="details admonition info open">
-<div class="details-summary admonition-title">
-<i class="icon fas fa-info-circle fa-fw"></i>Info<i class="details-icon fas fa-angle-right fa-fw"></i>
-</div>
-<div class=details-content>
-<div class=admonition-content>The ESP32 chip on this PCB is a <em>single core</em> version.
-Follow the <a href=https://tasmota.github.io/docs/ESP32/#flashing target=_blank rel="noopener noreffer">instructions for flashing the ESP32 version of Tasmota</a>, specifically the <code>tasmota32solo1</code> version!</div>
-</div>
-</div>
-<p>Solder wires to the usual <code>RX</code>, <code>TX</code>, <code>GPIO0</code> and <code>GND</code> test points.
+Set these aside.</p><p>Gently remove the clear plastic diffuser from the lamp tube and set aside.</p><p>The matte finish on the interior side of the diffuser is a fingerprint magnet.
+Consider using gloves for this step.</p><p>Carefully slide the PCB out of the aluminum tube.
+Be mindful of the two spring like contacts on the back of the PCB that mated with the pogo pins!</p><p>You can see the small black plastic bracket holding the pogo pins and the protrusion bit with some of the grip-tape still attached:</p><figure><img src=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/td01.jpg alt="Closeup photo showing damaged components on the main PCB. The components were damaged during initial teardown because of hidden screws."><figcaption><p>If it feels like you're using too much force to open the lamp... you probably are!</p></figcaption></figure><p>If you try to remove the PCB without first detaching the pogo pins, you&rsquo;ll damage one or both of the spring contacts that mate the PCB to the pogo pins!</p><p>You <em>don&rsquo;t</em> want your <code>GND</code> spring to look like mine!</p><figure><img src=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/td02.jpg alt="Photo showing a few of the lamp components removed and the primary PCB partially removed from the lamp body."><figcaption></figcaption></figure><p>Before realizing that the pogo pins could be removed from the lamp, I removed <em>both</em> caps and tried push/pull the PCB out.</p><p>The PCB is supported inside the tube with a few black plastic &lsquo;sleds&rsquo; which are heat-staked on to the PCB.</p><p>The &lsquo;sled&rsquo; closest to the ESP partially covers the <code>3V3</code> test point.
+Rather than use a dedicated 3V power supply during flashing, I found it easiest to use this pin to bring the <code>EN</code> pin up high.</p><p>If you&rsquo;re going to use the <code>3V3</code> test pin instead of a dedicated external power supply, you will probably want to remove the &lsquo;sled&rsquo; to get easy access to the test point.</p><p>You can do this with some flush-cut snips.</p><figure><img src=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/td04.jpg alt="Photo showing flush cutting snips used to remove a component that has been heat staked onto the main PCB"><figcaption><p>Be careful to not scratch the solder mask / PCB with the sharp edges of the snips</p></figcaption></figure><p>The sled isn&rsquo;t technically required for re-assembly but it&rsquo;s pretty easy to re-attach to the PCB with some hotglue. Discard it at your peril!</p><figure><img src=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/td05.jpg alt="Photo showing flush cutting snips and the removed component next to the PCB"><figcaption></figcaption></figure><p>Here&rsquo;s a closeup of the PCB with most of the test points labeled.
+You can see the <code>3V3</code> test point immediately to the left of <code>R6</code> in the shadow of the &lsquo;sled&rsquo;.</p><figure><img src=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/td03.jpg alt="Photo showing a closeup of the primary lamp PCB where the test points are located."><figcaption></figcaption></figure><p>Repeat these steps in reverse order to re-assemble the lamp.</p><h3 id=the-puck>The puck</h3><p>Fortunately, opening up the remote is not difficult.</p><p>Remove the two philips screws under the bottom cap.</p><figure><img src=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/puck_td_01.jpg alt="Photo of the remote puck used to control the lamp with its base removed. Two screws are all that hold it together"><figcaption></figcaption></figure><p>The main body / rotary knob lifts away from the midframe.</p><figure><img src=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/puck_td_02.jpg alt="Photo of the remote broken down into it's primary components; the PCB is visible."><figcaption></figcaption></figure><figure><img src=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/puck_td_03.jpg alt="Closeup photo of the remote puck PCB."><figcaption></figcaption></figure><figure><img src=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/puck05-module_closeup.jpg alt="Even closer shot of the tiny system on module that powers the remote puck."><figcaption></figcaption></figure><p>Like with the lamp PCB, there are a few test points:</p><figure><img src=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/puck_td_06.jpg alt="Photo of the remote puck PCB underside showing some of the test points and other PCB markings."><figcaption></figcaption></figure><figure><img src=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/puck_td_07.jpg alt="Photo of the remote puck PCB underside showing some of the test points and other PCB markings."><figcaption></figcaption></figure><h1 id=tasmota>Tasmota</h1><div class="details admonition warning open"><div class="details-summary admonition-title"><i class="icon fas fa-exclamation-triangle fa-fw"></i>Warning<i class="details-icon fas fa-angle-right fa-fw"></i></div><div class=details-content><div class=admonition-content><p>It is likely that both the WW and CW LEDs <em>will</em> briefly light up during the flashing process. When this happens, you <em>will</em> draw more current than a typical USB &lt;-> Serial adapter can provide. At <em>best</em> you&rsquo;ll cause a brownout and the flash will be interrupted.</p><p><strong>Use a dedicated 5V supply that can provide <em>at least</em> 10W of power</strong> while flashing the lamp! Make sure that the <code>GND</code> wire from your serial programmer <em>and</em> the <code>GND</code> wire for your dedicated 5V@2A/10W supply are tied together or you will likely destroy some of the electronics on both the lamp, your serial adapter <em>and</em> possibly your computer!</p></div></div></div><p>Having said all that, it&rsquo;s totally worth it:</p><figure><img src=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/lamp_in_ha.png alt="Screenshot showing the lamps' device info an control page within Home Assistant"><figcaption><p>When all is said and done, the lamp is easily integrated and controlled with Home Assistant</p></figcaption></figure><h2 id=flashing>Flashing</h2><div class="details admonition info open"><div class="details-summary admonition-title"><i class="icon fas fa-info-circle fa-fw"></i>Info<i class="details-icon fas fa-angle-right fa-fw"></i></div><div class=details-content><div class=admonition-content>The ESP32 chip on this PCB is a <em>single core</em> version.
+Follow the <a href=https://tasmota.github.io/docs/ESP32/#flashing target=_blank rel="noopener noreffer">instructions for flashing the ESP32 version of Tasmota</a>, specifically the <code>tasmota32solo1</code> version!</div></div></div><p>Solder wires to the usual <code>RX</code>, <code>TX</code>, <code>GPIO0</code> and <code>GND</code> test points.
 The <code>GPIO0</code> test point is the test point nearest to the ESP32 chip; directly off the bottom right corner.
-I used some solid-core cable from a length of cat5 cable but any similarly high gauge wire will work.</p>
-<p>Solder a jumper between the <code>EN</code> and <code>3V3</code> test point. I used a small yellow wire for this.
+I used some solid-core cable from a length of cat5 cable but any similarly high gauge wire will work.</p><p>Solder a jumper between the <code>EN</code> and <code>3V3</code> test point. I used a small yellow wire for this.
 The solid blue wire attached to <code>GPIO0</code> and the blue/white wire attached to <code>GND</code> are joined together just out of frame.
-The ESP will not boot into programming mode unless <code>GPIO0</code> is tied to ground.</p>
-<figure>
-<img src=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/flash02.jpg alt="Picture showing the various jumper wires and other soldered connections needed to flash Tasmota to the PCB">
-<figcaption>
-</figcaption>
-</figure>
-<p>Leads from a dedicated 5V power supply are attached to the main contacts with reg/green alligator clips</p>
-<figure>
-<img src=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/flash01.jpg alt="Picture showing the various jumper wires and other soldered connections needed to flash Tasmota to the PCB">
-<figcaption>
-</figcaption>
-</figure>
-<p>After confirming that each point is soldered sufficiently and wired to the correct pin on your USB &lt;-> Serial programmer, turn the dedicated power supply on and you should be able to flash.</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt> 1
+The ESP will not boot into programming mode unless <code>GPIO0</code> is tied to ground.</p><figure><img src=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/flash02.jpg alt="Picture showing the various jumper wires and other soldered connections needed to flash Tasmota to the PCB"><figcaption></figcaption></figure><p>Leads from a dedicated 5V power supply are attached to the main contacts with reg/green alligator clips</p><figure><img src=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/flash01.jpg alt="Picture showing the various jumper wires and other soldered connections needed to flash Tasmota to the PCB"><figcaption></figcaption></figure><p>After confirming that each point is soldered sufficiently and wired to the correct pin on your USB &lt;-> Serial programmer, turn the dedicated power supply on and you should be able to flash.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
@@ -459,36 +95,29 @@ The ESP will not boot into programming mode unless <code>GPIO0</code> is tied to
 </span><span class=lnt>19
 </span><span class=lnt>20
 </span><span class=lnt>21
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-shell data-lang=shell>❯ esptool.py --chip esp32 --port /dev/ttyUSB0 --baud <span class=m>921600</span> --before default_reset --after hard_reset write_flash -z --flash_mode dout --flash_freq 40m --flash_size detect 0x1000 bootloader_dout_40m.bin 0x8000 partitions.bin 0xe000 boot_app0.bin 0x10000 tasmota32solo1.bin
-esptool.py v3.2
-Serial port /dev/ttyUSB0
-Connecting.....
-&lt;...&gt;
-Stub running...
-Changing baud rate to <span class=m>921600</span>
-Changed.
-Configuring flash size...
-Auto-detected Flash size: 4MB
-Flash will be erased from 0x00001000 to 0x00004fff...
-Flash will be erased from 0x00008000 to 0x00008fff...
-Flash will be erased from 0x0000e000 to 0x0000ffff...
-Flash will be erased from 0x00010000 to 0x00157fff...
-Compressed <span class=m>15536</span> bytes to 10862...
-Wrote <span class=m>15536</span> bytes <span class=o>(</span><span class=m>10862</span> compressed<span class=o>)</span> at 0x00001000 in 0.4 seconds <span class=o>(</span>effective 353.8 kbit/s<span class=o>)</span>...
-&lt;...&gt;
-Hash of data verified.
-
-Leaving...
-Hard resetting via RTS pin...
-</code></pre></td></tr></table>
-</div>
-</div><p>Turn off the dedicated 5V supply and desolder the <code>GPIO0</code> wire and the <code>3V3</code> &lt;-> <code>EN</code> jumper.
-Leave the <code>RX</code>, <code>TX</code>, and <code>GND</code> wires in place so you can easily check the boot logs to confirm Tasmota flashed OK:</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>❯ esptool.py --chip esp32 --port /dev/ttyUSB0 --baud <span class=m>921600</span> --before default_reset --after hard_reset write_flash -z --flash_mode dout --flash_freq 40m --flash_size detect 0x1000 bootloader_dout_40m.bin 0x8000 partitions.bin 0xe000 boot_app0.bin 0x10000 tasmota32solo1.bin
+</span></span><span class=line><span class=cl>esptool.py v3.2
+</span></span><span class=line><span class=cl>Serial port /dev/ttyUSB0
+</span></span><span class=line><span class=cl>Connecting.....
+</span></span><span class=line><span class=cl>&lt;...&gt;
+</span></span><span class=line><span class=cl>Stub running...
+</span></span><span class=line><span class=cl>Changing baud rate to <span class=m>921600</span>
+</span></span><span class=line><span class=cl>Changed.
+</span></span><span class=line><span class=cl>Configuring flash size...
+</span></span><span class=line><span class=cl>Auto-detected Flash size: 4MB
+</span></span><span class=line><span class=cl>Flash will be erased from 0x00001000 to 0x00004fff...
+</span></span><span class=line><span class=cl>Flash will be erased from 0x00008000 to 0x00008fff...
+</span></span><span class=line><span class=cl>Flash will be erased from 0x0000e000 to 0x0000ffff...
+</span></span><span class=line><span class=cl>Flash will be erased from 0x00010000 to 0x00157fff...
+</span></span><span class=line><span class=cl>Compressed <span class=m>15536</span> bytes to 10862...
+</span></span><span class=line><span class=cl>Wrote <span class=m>15536</span> bytes <span class=o>(</span><span class=m>10862</span> compressed<span class=o>)</span> at 0x00001000 in 0.4 seconds <span class=o>(</span>effective 353.8 kbit/s<span class=o>)</span>...
+</span></span><span class=line><span class=cl>&lt;...&gt;
+</span></span><span class=line><span class=cl>Hash of data verified.
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Leaving...
+</span></span><span class=line><span class=cl>Hard resetting via RTS pin...
+</span></span></code></pre></td></tr></table></div></div><p>Turn off the dedicated 5V supply and desolder the <code>GPIO0</code> wire and the <code>3V3</code> &lt;-> <code>EN</code> jumper.
+Leave the <code>RX</code>, <code>TX</code>, and <code>GND</code> wires in place so you can easily check the boot logs to confirm Tasmota flashed OK:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
 </span><span class=lnt> 4
@@ -511,167 +140,39 @@ Leave the <code>RX</code>, <code>TX</code>, and <code>GND</code> wires in place 
 </span><span class=lnt>21
 </span><span class=lnt>22
 </span><span class=lnt>23
-</span><span class=lnt>24
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-shell data-lang=shell>❯ screen /dev/ttyUSB0 <span class=m>115200</span>
-ets Jun  <span class=m>8</span> <span class=m>2016</span> 00:22:57
-
-rst:0x1 <span class=o>(</span>POWERON_RESET<span class=o>)</span>,boot:0x13 <span class=o>(</span>SPI_FAST_FLASH_BOOT<span class=o>)</span>
-configsip: 0, SPIWP:0xee
-clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
-mode:DOUT, clock div:2
-load:0x3fff0030,len:184
-load:0x40078000,len:12352
-load:0x40080400,len:2912
-entry 0x400805c4
-
-00:00:00.002-228/73 HDW: ESP32-S0WD-OEM 
-./components/esp_littlefs/src/littlefs/lfs.c:1071:error: Corrupted dir pair at <span class=o>{</span>0x0, 0x1<span class=o>}</span>
-00:00:00.777-231/73 UFS: FlashFS mounted with <span class=m>312</span> kB free
-00:00:00.782-231/73 CFG: Use defaults
-00:00:00.893 QPC: Reset
-00:00:00.941 BRY: Berry initialized, RAM <span class=nv>used</span><span class=o>=</span><span class=m>3849</span>
-00:00:00.950 BRY: no <span class=s1>&#39;preinit.be&#39;</span>
-00:00:00.963 Project tasmota - Tasmota Version 10.1.0<span class=o>(</span>tasmota<span class=o>)</span>-2_0_1_1<span class=o>(</span>2021-12-08T14:50:34<span class=o>)</span>
-00:00:00.984 BRY: no <span class=s1>&#39;autoexec.be&#39;</span>
-00:00:00.243 WIF: WifiManager active <span class=k>for</span> <span class=m>3</span> minutes
-00:00:01.200 HTP: Web server active on tasmota-197907-6407 with IP address 192.168.4.1
-
-</code></pre></td></tr></table>
-</div>
-</div><p>After confirming a successful flash/boot, you can continue to configure Tasmota via the serial console or just power off and de-solder all wires and finish configuration after you re-assemble.</p>
-<h2 id=templates>Templates</h2>
-<p>The ESP32 controls the lamp via 3 GPIO pins:</p>
-<ul>
-<li><code>GPIO04</code>: Global light enable/disable.</li>
-<li><code>GPIO19</code>: Cold White channel</li>
-<li><code>GPIO21</code>: Warm White channel</li>
-</ul>
-<p>Irrespective of what the WW or CW channel are doing, there will be no light if <code>GPIO4</code> is not high.
-This means you have two choices for how to configure the GPIO.</p>
-<p>Tasmota will disable both <code>GPIO19</code> and <code>GPIO21</code> when the light is switched off so there really is no need for independent control via <code>GPIO4</code>.
-This template keeps <code>GPIO4</code> high and relies on Tasmota setting to fully off to shut the light off.</p>
-<p>Most people should use this template.</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=p>{</span><span class=nt>&#34;NAME&#34;</span><span class=p>:</span><span class=s2>&#34;Mijia Desk Lamp 1S (MJGJD02YL)&#34;</span><span class=p>,</span><span class=nt>&#34;GPIO&#34;</span><span class=p>:[</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>3840</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>1</span><span class=p>,</span><span class=mi>1</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>416</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>417</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>],</span><span class=nt>&#34;FLAG&#34;</span><span class=p>:</span><span class=mi>0</span><span class=p>,</span><span class=nt>&#34;BASE&#34;</span><span class=p>:</span><span class=mi>1</span><span class=p>,</span><span class=nt>&#34;CMND&#34;</span><span class=p>:</span><span class=s2>&#34;DimmerRange 45,255&#34;</span><span class=p>}</span>
-</code></pre></td></tr></table>
-</div>
-</div><p>If, for some reason, you want to control the global on/off (<code>GPIO04</code>) independently of the WW/CW channels, use this template:</p>
-<div class=highlight><div class=chroma>
-<table class=lntable><tr><td class=lntd>
-<pre tabindex=0 class=chroma><code><span class=lnt>1
-</span></code></pre></td>
-<td class=lntd>
-<pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=p>{</span><span class=nt>&#34;NAME&#34;</span><span class=p>:</span><span class=s2>&#34;Mijia Desk Lamp 1S (MJGJD02YL)&#34;</span><span class=p>,</span><span class=nt>&#34;GPIO&#34;</span><span class=p>:[</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>224</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>1</span><span class=p>,</span><span class=mi>1</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>416</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>417</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>],</span><span class=nt>&#34;FLAG&#34;</span><span class=p>:</span><span class=mi>0</span><span class=p>,</span><span class=nt>&#34;BASE&#34;</span><span class=p>:</span><span class=mi>1</span><span class=p>,</span><span class=nt>&#34;CMND&#34;</span><span class=p>:</span><span class=s2>&#34;DimmerRange 45,255&#34;</span><span class=p>}</span>
-</code></pre></td></tr></table>
-</div>
-</div><p>If you do not need dimmer control and only need full on/off control, you can adjust the module so <code>GPIO{04,19,21}</code> are always high, low or simple on/off outputs by configuring them to be of type <code>Relay</code> instead of <code>PWM</code> outputs.</p>
-<h3 id=dimmer-range>Dimmer Range</h3>
-<p>In testing, extremely low brightness values for both the WW and CW channel had some undesirable behavior:</p>
-<ul>
-<li>Values lower than ~30 didn&rsquo;t light at all</li>
-<li>Values between 30-35 caused unpleasant flicker</li>
-<li>Values lower than ~40 would also cause flicker when attempting to light the WW <em>and</em> CW channels together</li>
-</ul>
-<p>For this reason, a <code>DimmerRange</code> of 45-255 is suggested.
-Tasmota will let you dim the light as low as possible without flicker.</p>
-<p>Your lamp, eyes and needs will differ so feel free to see if a lower <code>dimmer</code> value will work for you by unlocking the full dimmer range with <code>DimmerRange 0,255</code> and then playing with the <code>ct</code> and <code>dimmer</code> commands to find the lowest tolerable brightness for your needs.</p>
-<p>That is why you see the <code>DimmerRange 45,255</code> command in the above templates.</p>
-<h3 id=pcbic-markings>PCB/IC Markings</h3>
-<p>Some of the interesting ICs and PCB markings</p>
-<h4 id=lamp>Lamp</h4>
-<ul>
-<li>PCB is labeled <code>Yeelight Spider 1S V06</code>, <code>20210714 by XJD</code>, <code>94V-0</code>, <code>Y Y21M09D13</code>, <code>JUl 7.820.0874-1</code></li>
-<li>PCB has a QR code / sticker with <code>WF-E32-RWY1</code>, <code>Spider1S</code>, and the device mac address</li>
-<li><code>SGM4065</code>: <a href=https://www.sg-micro.de/show-product-611.html target=_blank rel="noopener noreffer">Over-Voltage Protection IC and Li+ Charger Front-End Protection IC with LDO Mode</a></li>
-<li>Some DFN-10 package that is marked with either <code>WRDPA</code> or <code>WRQPA</code> or <code>WR0PA</code>. It&rsquo;s a little hard to tell as the markings are super faint and I can&rsquo;t get them super clear even with high contrast / inverted color image filters. There are several of them with identical circuitry through the length of the board so this IC is some sort of pwm dimmable constant current LED driver.</li>
-<li><code>ESP32-D0WD</code>: the star of the show</li>
-<li><code>GD25Q32(B)</code>: a 4096 kB SPI flash chip</li>
-<li>The lamp body is marked with <code>CMIT ID: 2021DP11423</code></li>
-</ul>
-<h4 id=remote>Remote</h4>
-<ul>
-<li>PCB labeled with <code>100-P806D1-1B-A1</code>, <code>Yeelight Spider 1S RC Board V02</code>, <code>20210716 by XJD</code></li>
-<li><code>MHCB07P</code>. This is marked on the tiny BTLE module inside the remote. Not too many search <a href=https://twitter.com/simransingh931/status/1418120923568246786 target=_blank rel="noopener noreffer">results</a> show <a href=https://www.ec.ust.hk/hackathon/2021/document/xiaomi_0319_eng.pdf target=_blank rel="noopener noreffer">up</a>.</li>
-<li><code>CMIT ID: 2020DP3172(M)</code></li>
-</ul>
-<h2 id=mugjd01yl>MUGJD01YL</h2>
-<p><figure>
-<img src=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/MUGJD01YL_04.jpg alt="Picture showing product details for MUGJD01YL version of the lamp.">
-<figcaption>
-<p>
-Product details for the lamp that can't be converted to run Tasmota.
-Courtesy of @htvekov
-</p>
-</figcaption>
-</figure>
-<figure>
-<img src=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/MUGJD01YL_03.jpg alt="Picture showing portion of the internal PCB for MUGJD01YL version of the lamp.">
-<figcaption>
-<p>
-The PCB is held in the tube with similar plastic 'sleds'. They are secured with screws rather than heatstake so they are easier to remove. The move to heatstake in the revised edition was likely to reduce costs.
-Courtesy of @htvekov
-</p>
-</figcaption>
-</figure>
-<figure>
-<img src=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/MUGJD01YL_02.jpg alt="Picture showing closeup of SOIC-8 package on the PCB.">
-<figcaption>
-<p>
-Courtesy of @htvekov
-</p>
-</figcaption>
-</figure>
-<figure>
-<img src=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/MUGJD01YL_01.jpg alt="Closeup of the non ESP microcontroller in the MUGJD01YL version of the lamp.">
-<figcaption>
-<p>
-Courtesy of @htvekov
-</p>
-</figcaption>
-</figure>
-</p>
-</div><div class=post-footer id=post-footer>
-<div class=post-info>
-<div class=post-info-line>
-<div class=post-info-mod>
-<span>Updated on 2022-02-05&nbsp;<a class=git-hash href=https://github.com/kquinsland/kquinsland.github.io/commit/8ea2c5aa011ee6c755d81466166008fb26103165 target=_blank title="commit by karl(github@karlquinsland.com) 8ea2c5aa011ee6c755d81466166008fb26103165: added update w/ new lamp version">
-<i class="fas fa-hashtag fa-fw"></i>8ea2c5a</a></span>
-</div>
-<div class=post-info-license></div>
-</div>
-<div class=post-info-line>
-<div class=post-info-md><span>
-<a class=link-to-markdown href=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/index.md target=_blank>Read Markdown</a>
-</span></div>
-<div class=post-info-share>
-<span></span>
-</div>
-</div>
-</div>
-<div class=post-info-more>
-<section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=https://karlquinsland.com/tags/tasmota/>tasmota</a>,&nbsp;<a href=https://karlquinsland.com/tags/home-assistant/>home assistant</a></section>
-<section>
-<span><a href=javascript:void(0); onclick=window.history.back()>Back</a></span>&nbsp;|&nbsp;<span><a href=https://karlquinsland.com/>Home</a></span>
-</section>
-</div>
-<div class=post-nav><a href=https://karlquinsland.com/lanbon-l8-tuya-lcd-switch-openhasp/ class=prev rel=prev title="Using Home Assistant to dynamically layout openHasp widgets"><i class="fas fa-angle-left fa-fw"></i>Using Home Assistant to dynamically layout openHasp widgets</a></div>
-</div>
-</article></div>
-</main><footer class=footer>
-<div class=footer-container><div class=footer-line>¯\_(ツ)_/¯</div><div class=footer-line>Powered by <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.92.1">Hugo</a> | Theme - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a>
-</div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2019 - 2022</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=https://karlquinsland.com/ target=_blank>karl</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div>
-</div>
-</footer></div>
-<div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top">
-<i class="fas fa-arrow-up fa-fw"></i>
-</a><a href=# id=view-comments class=fixed-button title="View Comments">
-<i class="fas fa-comment fa-fw"></i>
-</a>
-</div><link rel=stylesheet href=https://karlquinsland.com/lib/katex/katex.min.4710034e669c7ff17f823f9ba12cf8a36582d65b007f79cbc4a3c11d7db2e4ca.css integrity="sha256-RxADTmacf/F/gj+boSz4o2WC1lsAf3nLxKPBHX2y5Mo="><link rel=stylesheet href=https://karlquinsland.com/lib/katex/copy-tex.min.bf9ff4137fec38f6255419e142d0883c9c52090885d746f80eee12b273d9b3e0.css integrity="sha256-v5/0E3/sOPYlVBnhQtCIPJxSCQiF10b4Du4SsnPZs+A="><script type=text/javascript src=https://karlquinsland.com/lib/smooth-scroll/smooth-scroll.min.bcff85fb5e00d68802850b393ac7792c997f722f536f38e26638c46dca8e5eb6.js integrity="sha256-vP+F+14A1ogChQs5Osd5LJl/ci9TbzjiZjjEbcqOXrY="></script><script type=text/javascript src=https://karlquinsland.com/lib/autocomplete/autocomplete.min.615590a2ca2b667afa7c02ef396f5500b62e22795ddbb46448f90494605d09a5.js integrity="sha256-YVWQosorZnr6fALvOW9VALYuInld27RkSPkElGBdCaU="></script><script type=text/javascript src=https://karlquinsland.com/lib/lunr/lunr.min.df84a2d58ea594c04a3371b48d020b55ea10284c2ec636e4e331965d7313e29b.js integrity="sha256-34Si1Y6llMBKM3G0jQILVeoQKEwuxjbk4zGWXXMT4ps="></script><script type=text/javascript src=https://karlquinsland.com/lib/lazysizes/lazysizes.min.fb649fcae62177dfe63e67081ddceb830b5ce1f05a4184e9bbb7d87ac4b8f4e5.js integrity="sha256-+2SfyuYhd9/mPmcIHdzrgwtc4fBaQYTpu7fYesS49OU="></script><script type=text/javascript src=https://karlquinsland.com/lib/clipboard/clipboard.min.8a7739925f4c03586479852df840b7061948832a7fda30c8c812d2ea4dd4c4f2.js integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/katex.min.17f5dd6b9f123dd7140abfb18521b3f4c036cd004f6f40121182a8865f140877.js integrity="sha256-F/Xda58SPdcUCr+xhSGz9MA2zQBPb0ASEYKohl8UCHc="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/auto-render.min.f74776a677f0d2be0af0264058f928e2ba455d0b19bc985304660d922a43a6b2.js integrity="sha256-90d2pnfw0r4K8CZAWPko4rpFXQsZvJhTBGYNkipDprI="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/copy-tex.min.2ab2237329021bc443986c8327f6e61357fb68a54e5d233d224023718c02207d.js integrity="sha256-KrIjcykCG8RDmGyDJ/bmE1f7aKVOXSM9IkAjcYwCIH0="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/mhchem.min.5cea356d6025c5a2f18c454c83ec5674dbb04fab1cd1d75569e77788c6b6f888.js integrity="sha256-XOo1bWAlxaLxjEVMg+xWdNuwT6sc0ddVaed3iMa2+Ig="></script><script type=text/javascript>window.config={code:{copyTitle:"Copy to clipboard",maxShownLines:10},comment:{},math:{delimiters:[{display:!0,left:"$$",right:"$$"},{display:!0,left:"\\[",right:"\\]"},{display:!1,left:"$",right:"$"},{display:!1,left:"\\(",right:"\\)"}],strict:!1},search:{highlightTag:"em",lunrIndexURL:"/index.json",maxResultLength:10,noResultsFound:"No results found",snippetLength:30,type:"lunr"}}</script><script type=text/javascript src=https://karlquinsland.com/js/theme.min.f51938f3065a40ee841bcb558e4330e31fd26c0ea55343fff8770b88b0319a3c.js integrity="sha256-9Rk48wZaQO6EG8tVjkMw4x/SbA6lU0P/+HcLiLAxmjw="></script><script type=text/javascript>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date),gtag('config','UA-173167356-1',{anonymize_ip:!0})</script><script type=text/javascript src="https://www.googletagmanager.com/gtag/js?id=UA-173167356-1" async></script></body>
-</html>
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>❯ screen /dev/ttyUSB0 <span class=m>115200</span>
+</span></span><span class=line><span class=cl>ets Jun  <span class=m>8</span> <span class=m>2016</span> 00:22:57
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>rst:0x1 <span class=o>(</span>POWERON_RESET<span class=o>)</span>,boot:0x13 <span class=o>(</span>SPI_FAST_FLASH_BOOT<span class=o>)</span>
+</span></span><span class=line><span class=cl>configsip: 0, SPIWP:0xee
+</span></span><span class=line><span class=cl>clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+</span></span><span class=line><span class=cl>mode:DOUT, clock div:2
+</span></span><span class=line><span class=cl>load:0x3fff0030,len:184
+</span></span><span class=line><span class=cl>load:0x40078000,len:12352
+</span></span><span class=line><span class=cl>load:0x40080400,len:2912
+</span></span><span class=line><span class=cl>entry 0x400805c4
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>00:00:00.002-228/73 HDW: ESP32-S0WD-OEM 
+</span></span><span class=line><span class=cl>./components/esp_littlefs/src/littlefs/lfs.c:1071:error: Corrupted dir pair at <span class=o>{</span>0x0, 0x1<span class=o>}</span>
+</span></span><span class=line><span class=cl>00:00:00.777-231/73 UFS: FlashFS mounted with <span class=m>312</span> kB free
+</span></span><span class=line><span class=cl>00:00:00.782-231/73 CFG: Use defaults
+</span></span><span class=line><span class=cl>00:00:00.893 QPC: Reset
+</span></span><span class=line><span class=cl>00:00:00.941 BRY: Berry initialized, RAM <span class=nv>used</span><span class=o>=</span><span class=m>3849</span>
+</span></span><span class=line><span class=cl>00:00:00.950 BRY: no <span class=s1>&#39;preinit.be&#39;</span>
+</span></span><span class=line><span class=cl>00:00:00.963 Project tasmota - Tasmota Version 10.1.0<span class=o>(</span>tasmota<span class=o>)</span>-2_0_1_1<span class=o>(</span>2021-12-08T14:50:34<span class=o>)</span>
+</span></span><span class=line><span class=cl>00:00:00.984 BRY: no <span class=s1>&#39;autoexec.be&#39;</span>
+</span></span><span class=line><span class=cl>00:00:00.243 WIF: WifiManager active <span class=k>for</span> <span class=m>3</span> minutes
+</span></span><span class=line><span class=cl>00:00:01.200 HTP: Web server active on tasmota-197907-6407 with IP address 192.168.4.1
+</span></span></code></pre></td></tr></table></div></div><p>After confirming a successful flash/boot, you can continue to configure Tasmota via the serial console or just power off and de-solder all wires and finish configuration after you re-assemble.</p><h2 id=templates>Templates</h2><p>The ESP32 controls the lamp via 3 GPIO pins:</p><ul><li><code>GPIO04</code>: Global light enable/disable.</li><li><code>GPIO19</code>: Cold White channel</li><li><code>GPIO21</code>: Warm White channel</li></ul><p>Irrespective of what the WW or CW channel are doing, there will be no light if <code>GPIO4</code> is not high.
+This means you have two choices for how to configure the GPIO.</p><p>Tasmota will disable both <code>GPIO19</code> and <code>GPIO21</code> when the light is switched off so there really is no need for independent control via <code>GPIO4</code>.
+This template keeps <code>GPIO4</code> high and relies on Tasmota setting to fully off to shut the light off.</p><p>Most people should use this template.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>{</span><span class=nt>&#34;NAME&#34;</span><span class=p>:</span><span class=s2>&#34;Mijia Desk Lamp 1S (MJGJD02YL)&#34;</span><span class=p>,</span><span class=nt>&#34;GPIO&#34;</span><span class=p>:[</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>3840</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>1</span><span class=p>,</span><span class=mi>1</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>416</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>417</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>],</span><span class=nt>&#34;FLAG&#34;</span><span class=p>:</span><span class=mi>0</span><span class=p>,</span><span class=nt>&#34;BASE&#34;</span><span class=p>:</span><span class=mi>1</span><span class=p>,</span><span class=nt>&#34;CMND&#34;</span><span class=p>:</span><span class=s2>&#34;DimmerRange 45,255&#34;</span><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>If, for some reason, you want to control the global on/off (<code>GPIO04</code>) independently of the WW/CW channels, use this template:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>{</span><span class=nt>&#34;NAME&#34;</span><span class=p>:</span><span class=s2>&#34;Mijia Desk Lamp 1S (MJGJD02YL)&#34;</span><span class=p>,</span><span class=nt>&#34;GPIO&#34;</span><span class=p>:[</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>224</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>1</span><span class=p>,</span><span class=mi>1</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>416</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>417</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>],</span><span class=nt>&#34;FLAG&#34;</span><span class=p>:</span><span class=mi>0</span><span class=p>,</span><span class=nt>&#34;BASE&#34;</span><span class=p>:</span><span class=mi>1</span><span class=p>,</span><span class=nt>&#34;CMND&#34;</span><span class=p>:</span><span class=s2>&#34;DimmerRange 45,255&#34;</span><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>If you do not need dimmer control and only need full on/off control, you can adjust the module so <code>GPIO{04,19,21}</code> are always high, low or simple on/off outputs by configuring them to be of type <code>Relay</code> instead of <code>PWM</code> outputs.</p><h3 id=dimmer-range>Dimmer Range</h3><p>In testing, extremely low brightness values for both the WW and CW channel had some undesirable behavior:</p><ul><li>Values lower than ~30 didn&rsquo;t light at all</li><li>Values between 30-35 caused unpleasant flicker</li><li>Values lower than ~40 would also cause flicker when attempting to light the WW <em>and</em> CW channels together</li></ul><p>For this reason, a <code>DimmerRange</code> of 45-255 is suggested.
+Tasmota will let you dim the light as low as possible without flicker.</p><p>Your lamp, eyes and needs will differ so feel free to see if a lower <code>dimmer</code> value will work for you by unlocking the full dimmer range with <code>DimmerRange 0,255</code> and then playing with the <code>ct</code> and <code>dimmer</code> commands to find the lowest tolerable brightness for your needs.</p><p>That is why you see the <code>DimmerRange 45,255</code> command in the above templates.</p><h3 id=pcbic-markings>PCB/IC Markings</h3><p>Some of the interesting ICs and PCB markings</p><h4 id=lamp>Lamp</h4><ul><li>PCB is labeled <code>Yeelight Spider 1S V06</code>, <code>20210714 by XJD</code>, <code>94V-0</code>, <code>Y Y21M09D13</code>, <code>JUl 7.820.0874-1</code></li><li>PCB has a QR code / sticker with <code>WF-E32-RWY1</code>, <code>Spider1S</code>, and the device mac address</li><li><code>SGM4065</code>: <a href=https://www.sg-micro.de/show-product-611.html target=_blank rel="noopener noreffer">Over-Voltage Protection IC and Li+ Charger Front-End Protection IC with LDO Mode</a></li><li>Some DFN-10 package that is marked with either <code>WRDPA</code> or <code>WRQPA</code> or <code>WR0PA</code>. It&rsquo;s a little hard to tell as the markings are super faint and I can&rsquo;t get them super clear even with high contrast / inverted color image filters. There are several of them with identical circuitry through the length of the board so this IC is some sort of pwm dimmable constant current LED driver.</li><li><code>ESP32-D0WD</code>: the star of the show</li><li><code>GD25Q32(B)</code>: a 4096 kB SPI flash chip</li><li>The lamp body is marked with <code>CMIT ID: 2021DP11423</code></li></ul><h4 id=remote>Remote</h4><ul><li>PCB labeled with <code>100-P806D1-1B-A1</code>, <code>Yeelight Spider 1S RC Board V02</code>, <code>20210716 by XJD</code></li><li><code>MHCB07P</code>. This is marked on the tiny BTLE module inside the remote. Not too many search <a href=https://twitter.com/simransingh931/status/1418120923568246786 target=_blank rel="noopener noreffer">results</a> show <a href=https://www.ec.ust.hk/hackathon/2021/document/xiaomi_0319_eng.pdf target=_blank rel="noopener noreffer">up</a>.</li><li><code>CMIT ID: 2020DP3172(M)</code></li></ul><h2 id=mugjd01yl>MUGJD01YL</h2><p><figure><img src=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/MUGJD01YL_04.jpg alt="Picture showing product details for MUGJD01YL version of the lamp."><figcaption><p>Product details for the lamp that can't be converted to run Tasmota.
+Courtesy of @htvekov</p></figcaption></figure><figure><img src=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/MUGJD01YL_03.jpg alt="Picture showing portion of the internal PCB for MUGJD01YL version of the lamp."><figcaption><p>The PCB is held in the tube with similar plastic 'sleds'. They are secured with screws rather than heatstake so they are easier to remove. The move to heatstake in the revised edition was likely to reduce costs.
+Courtesy of @htvekov</p></figcaption></figure><figure><img src=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/MUGJD01YL_02.jpg alt="Picture showing closeup of SOIC-8 package on the PCB."><figcaption><p>Courtesy of @htvekov</p></figcaption></figure><figure><img src=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/MUGJD01YL_01.jpg alt="Closeup of the non ESP microcontroller in the MUGJD01YL version of the lamp."><figcaption><p>Courtesy of @htvekov</p></figcaption></figure></p></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>Updated on 2022-02-05&nbsp;<a class=git-hash href=https://github.com/kquinsland/kquinsland.github.io/commit/8ea2c5aa011ee6c755d81466166008fb26103165 target=_blank title="commit by karl(github@karlquinsland.com) 8ea2c5aa011ee6c755d81466166008fb26103165: added update w/ new lamp version">
+<i class="fas fa-hashtag fa-fw"></i>8ea2c5a</a></span></div><div class=post-info-license></div></div><div class=post-info-line><div class=post-info-md><span><a class=link-to-markdown href=https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/index.md target=_blank>Read Markdown</a></span></div><div class=post-info-share><span></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=https://karlquinsland.com/tags/tasmota/>tasmota</a>,&nbsp;<a href=https://karlquinsland.com/tags/home-assistant/>home assistant</a></section><section><span><a href=javascript:void(0); onclick=window.history.back()>Back</a></span>&nbsp;|&nbsp;<span><a href=https://karlquinsland.com/>Home</a></span></section></div><div class=post-nav><a href=https://karlquinsland.com/lanbon-l8-tuya-lcd-switch-openhasp/ class=prev rel=prev title="Using Home Assistant to dynamically layout openHasp widgets"><i class="fas fa-angle-left fa-fw"></i>Using Home Assistant to dynamically layout openHasp widgets</a>
+<a href=https://karlquinsland.com/hdmi-kvm-teardown-and-esphome/ class=next rel=next title="Inside a generic/white-label HDMI KVM Switch">Inside a generic/white-label HDMI KVM Switch<i class="fas fa-angle-right fa-fw"></i></a></div></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line>¯\_(ツ)_/¯</div><div class=footer-line>Powered by <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.97.1">Hugo</a> | Theme - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a></div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2019 - 2022</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=https://karlquinsland.com/ target=_blank>karl</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top"><i class="fas fa-arrow-up fa-fw"></i>
+</a><a href=# id=view-comments class=fixed-button title="View Comments"><i class="fas fa-comment fa-fw"></i></a></div><link rel=stylesheet href=https://karlquinsland.com/lib/katex/katex.min.4710034e669c7ff17f823f9ba12cf8a36582d65b007f79cbc4a3c11d7db2e4ca.css integrity="sha256-RxADTmacf/F/gj+boSz4o2WC1lsAf3nLxKPBHX2y5Mo="><link rel=stylesheet href=https://karlquinsland.com/lib/katex/copy-tex.min.bf9ff4137fec38f6255419e142d0883c9c52090885d746f80eee12b273d9b3e0.css integrity="sha256-v5/0E3/sOPYlVBnhQtCIPJxSCQiF10b4Du4SsnPZs+A="><script type=text/javascript src=https://karlquinsland.com/lib/smooth-scroll/smooth-scroll.min.bcff85fb5e00d68802850b393ac7792c997f722f536f38e26638c46dca8e5eb6.js integrity="sha256-vP+F+14A1ogChQs5Osd5LJl/ci9TbzjiZjjEbcqOXrY="></script><script type=text/javascript src=https://karlquinsland.com/lib/autocomplete/autocomplete.min.615590a2ca2b667afa7c02ef396f5500b62e22795ddbb46448f90494605d09a5.js integrity="sha256-YVWQosorZnr6fALvOW9VALYuInld27RkSPkElGBdCaU="></script><script type=text/javascript src=https://karlquinsland.com/lib/lunr/lunr.min.df84a2d58ea594c04a3371b48d020b55ea10284c2ec636e4e331965d7313e29b.js integrity="sha256-34Si1Y6llMBKM3G0jQILVeoQKEwuxjbk4zGWXXMT4ps="></script><script type=text/javascript src=https://karlquinsland.com/lib/lazysizes/lazysizes.min.fb649fcae62177dfe63e67081ddceb830b5ce1f05a4184e9bbb7d87ac4b8f4e5.js integrity="sha256-+2SfyuYhd9/mPmcIHdzrgwtc4fBaQYTpu7fYesS49OU="></script><script type=text/javascript src=https://karlquinsland.com/lib/clipboard/clipboard.min.8a7739925f4c03586479852df840b7061948832a7fda30c8c812d2ea4dd4c4f2.js integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/katex.min.17f5dd6b9f123dd7140abfb18521b3f4c036cd004f6f40121182a8865f140877.js integrity="sha256-F/Xda58SPdcUCr+xhSGz9MA2zQBPb0ASEYKohl8UCHc="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/auto-render.min.f74776a677f0d2be0af0264058f928e2ba455d0b19bc985304660d922a43a6b2.js integrity="sha256-90d2pnfw0r4K8CZAWPko4rpFXQsZvJhTBGYNkipDprI="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/copy-tex.min.2ab2237329021bc443986c8327f6e61357fb68a54e5d233d224023718c02207d.js integrity="sha256-KrIjcykCG8RDmGyDJ/bmE1f7aKVOXSM9IkAjcYwCIH0="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/mhchem.min.5cea356d6025c5a2f18c454c83ec5674dbb04fab1cd1d75569e77788c6b6f888.js integrity="sha256-XOo1bWAlxaLxjEVMg+xWdNuwT6sc0ddVaed3iMa2+Ig="></script><script type=text/javascript>window.config={code:{copyTitle:"Copy to clipboard",maxShownLines:10},comment:{},math:{delimiters:[{display:!0,left:"$$",right:"$$"},{display:!0,left:"\\[",right:"\\]"},{display:!1,left:"$",right:"$"},{display:!1,left:"\\(",right:"\\)"}],strict:!1},search:{highlightTag:"em",lunrIndexURL:"/index.json",maxResultLength:10,noResultsFound:"No results found",snippetLength:30,type:"lunr"}}</script><script type=text/javascript src=https://karlquinsland.com/js/theme.min.f51938f3065a40ee841bcb558e4330e31fd26c0ea55343fff8770b88b0319a3c.js integrity="sha256-9Rk48wZaQO6EG8tVjkMw4x/SbA6lU0P/+HcLiLAxmjw="></script><script type=text/javascript>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","UA-173167356-1",{anonymize_ip:!0})</script><script type=text/javascript src="https://www.googletagmanager.com/gtag/js?id=UA-173167356-1" async></script></body></html>

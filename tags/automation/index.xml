@@ -19,16 +19,16 @@
 </span><span class="lnt">9
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="nt">&lt;item&gt;</span>
-\n
-<span class="nt">&lt;title&gt;</span>NOTICE 202002440: CAISO Grid Warning Issued <span class="nt">&lt;/title&gt;</span>
-\n
-<span class="nt">&lt;link&gt;</span>http://www.caiso.com/awe/noticelog.html#202002440<span class="nt">&lt;/link&gt;</span>
-\n
-<span class="nt">&lt;description&gt;</span>Effective: 16-Aug-2020 12:00 PM Terminates: 16-Aug-2020 11:59 PM<span class="nt">&lt;/description&gt;</span>
-\n
-<span class="nt">&lt;/item&gt;</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-xml" data-lang="xml"><span class="line"><span class="cl"><span class="nt">&lt;item&gt;</span>
+</span></span><span class="line"><span class="cl">\n
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;title&gt;</span>NOTICE 202002440: CAISO Grid Warning Issued <span class="nt">&lt;/title&gt;</span>
+</span></span><span class="line"><span class="cl">\n
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;link&gt;</span>http://www.caiso.com/awe/noticelog.html#202002440<span class="nt">&lt;/link&gt;</span>
+</span></span><span class="line"><span class="cl">\n
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;description&gt;</span>Effective: 16-Aug-2020 12:00 PM Terminates: 16-Aug-2020 11:59 PM<span class="nt">&lt;/description&gt;</span>
+</span></span><span class="line"><span class="cl">\n
+</span></span><span class="line"><span class="cl"><span class="nt">&lt;/item&gt;</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>Note: there&rsquo;s nothing wrong w/ your browser, the <code>\n</code> characters <em>are</em> in the actual feed. No matter, the <a href="https://github.com/home-assistant/core/tree/dev/homeassistant/components/feedreader" target="_blank" rel="noopener noreffer">RSS parser</a> in Home Assistant <em>can</em> tolerate them.</p>
 <p>I use the alerts/warnings to do a few simple tasks, but there&rsquo;s so much potential beyond the automation I currently have:</p>
@@ -46,12 +46,10 @@
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="nt">feedreader</span><span class="p">:</span><span class="w"> </span>!<span class="l">include feedreader/rss.yaml</span><span class="w">
-</span><span class="w">
-</span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">feedreader</span><span class="p">:</span><span class="w"> </span>!<span class="l">include feedreader/rss.yaml</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
 </div>
 </div><p>and in the <code>feedreader/rss.yaml</code> file, add the URLs:</p>
 <div class="highlight"><div class="chroma">
@@ -64,13 +62,13 @@
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="nt">urls</span><span class="p">:</span><span class="w">
-</span><span class="w">  </span>- <span class="l">http://content.caiso.com/awe/noticeRSS.xml</span><span class="w">
-</span><span class="w">  </span>- <span class="l">http://content.caiso.com/awe/noticeflexRSS.xml</span><span class="w">
-</span><span class="w"></span><span class="c"># Pull down the feed 2x/ hour</span><span class="w">
-</span><span class="w"></span><span class="nt">scan_interval</span><span class="p">:</span><span class="w">
-</span><span class="w">  </span><span class="nt">minutes</span><span class="p">:</span><span class="w"> </span><span class="m">30</span><span class="w">
-</span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">urls</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="l">http://content.caiso.com/awe/noticeRSS.xml</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="l">http://content.caiso.com/awe/noticeflexRSS.xml</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Pull down the feed 2x/ hour</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">scan_interval</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">minutes</span><span class="p">:</span><span class="w"> </span><span class="m">30</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
 </div>
 </div><p>Unfortunately, Home Assistant does not support setting the <code>scan_interval</code> per feed, so you&rsquo;ll have to figure out a happy middle ground if you&rsquo;ve already got a few RSS feeds you monitor. Likewise, don&rsquo;t pull the feed down excessively&hellip; I don&rsquo;t see a lot of evidence that the feed is cached well and the CA ISO does occasionally have to put banners on the top of their site saying that the site is under heavy load. Don&rsquo;t be the reason the site goes down because <em>you</em> wanted <strong>instant</strong> notification.</p>
 <p>If you&rsquo;re not in a position to do any sophisticated automation based on the notification, it&rsquo;s still simple to fire off a notification to <em>manually</em> prepare:</p>
@@ -95,24 +93,24 @@
 </span><span class="lnt">17
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="c">##</span><span class="w">
-</span><span class="w"></span>- <span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l">Notify when new Flex or Warning issued</span><span class="w">
-</span><span class="w">  </span><span class="nt">trigger</span><span class="p">:</span><span class="w">
-</span><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">event</span><span class="w">
-</span><span class="w">    </span><span class="nt">event_type</span><span class="p">:</span><span class="w"> </span><span class="l">feedreader</span><span class="w">
-</span><span class="w">  </span><span class="nt">action</span><span class="p">:</span><span class="w">
-</span><span class="w">    </span><span class="nt">service</span><span class="p">:</span><span class="w"> </span><span class="l">persistent_notification.create</span><span class="w">
-</span><span class="w">    </span><span class="nt">data_template</span><span class="p">:</span><span class="w">
-</span><span class="w">      </span><span class="nt">notification_id</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;{{ trigger.event.data.title }}&#34;</span><span class="w">
-</span><span class="w">      </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;FlexAlert&#34;</span><span class="w">
-</span><span class="w">      </span><span class="nt">message</span><span class="p">:</span><span class="w"> </span><span class="p">&gt;</span><span class="sd">
-</span><span class="sd">        {% set tokens = trigger.event.data.description.split(&#39; &#39;) %}
-</span><span class="sd">        {% set start_str = &#34;{} {} {}&#34;.format(tokens[1], tokens[2], tokens[3]) %}
-</span><span class="sd">        {% set start = strptime(start_str, &#39;%d-%b-%Y %I:%M %p&#39;) %}
-</span><span class="sd">        {% set end_str = &#34;{} {} {}&#34;.format(tokens[5], tokens[6], tokens[7]) %}
-</span><span class="sd">        {% set end = strptime(end_str, &#39;%d-%b-%Y %I:%M %p&#39;) %}
-</span><span class="sd">        &#34;Heads up, electricity demand is likely to exceed production from {{ start.isoformat() }} to {{ end.isoformat() }}&#34;</span><span class="w">        
-</span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c">##</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span>- <span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l">Notify when new Flex or Warning issued</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">trigger</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">event</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">event_type</span><span class="p">:</span><span class="w"> </span><span class="l">feedreader</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">action</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">service</span><span class="p">:</span><span class="w"> </span><span class="l">persistent_notification.create</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">data_template</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">notification_id</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;{{ trigger.event.data.title }}&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">title</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;FlexAlert&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">message</span><span class="p">:</span><span class="w"> </span><span class="p">&gt;</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">        {% set tokens = trigger.event.data.description.split(&#39; &#39;) %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">        {% set start_str = &#34;{} {} {}&#34;.format(tokens[1], tokens[2], tokens[3]) %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">        {% set start = strptime(start_str, &#39;%d-%b-%Y %I:%M %p&#39;) %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">        {% set end_str = &#34;{} {} {}&#34;.format(tokens[5], tokens[6], tokens[7]) %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">        {% set end = strptime(end_str, &#39;%d-%b-%Y %I:%M %p&#39;) %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">        &#34;Heads up, electricity demand is likely to exceed production from {{ start.isoformat() }} to {{ end.isoformat() }}&#34;</span><span class="w">        
+</span></span></span></code></pre></td></tr></table>
 </div>
 </div><p>Which should create a simple notification that&rsquo;ll look something like this:</p>
 <figure >
@@ -145,11 +143,11 @@
 </span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">{% set now = now() %}
-{% if start.day &gt; now.day -%}
-  It looks like demand will be high *tomorrow*
-{%- endif %}
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">{% set now = now() %}
+</span></span><span class="line"><span class="cl">{% if start.day &gt; now.day -%}
+</span></span><span class="line"><span class="cl">  It looks like demand will be high *tomorrow*
+</span></span><span class="line"><span class="cl">{%- endif %}
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>Happy automating.</p>
 ]]></description></item><item><title>Announcing The Missing ToDoist Tools</title><link>https://karlquinsland.com/the-missing-todoist-tools/</link><pubDate>Sun, 26 Jul 2020 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/the-missing-todoist-tools/</guid><description><![CDATA[<h1 id="tmtdt-the-missing-todoist-tools-">TMTDT: The Missing ToDoist Tools 🎉</h1>
@@ -233,7 +231,7 @@
 </figure>
 
 
-<p>I&rsquo;ve written this software to suit my needs, but the decision to make it a bit more robust and featured before release is because I&rsquo;ve noticed a few &lsquo;new&rsquo; tools to better augment ToDoist:</p>
+<p>I&rsquo;ve written this software to suit my needs, but the decision to make it a bit more robust and featured before release is because I&rsquo;ve noticed a few &rsquo;new&rsquo; tools to better augment ToDoist:</p>
 <ul>
 <li><a href="https://github.com/Hoffelhas/autodoist" target="_blank" rel="noopener noreffer">autodoist</a></li>
 <li><a href="https://chrome.google.com/webstore/detail/todoist-shortcuts-gmail-v/dehmghpdcahlffompjagejmgbcfahndp" target="_blank" rel="noopener noreffer">shortcuts</a></li>
@@ -285,33 +283,33 @@
 </span><span class="lnt">26
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="w">
-</span><span class="w">    </span><span class="c"># apply these labels...</span><span class="w">
-</span><span class="w">    </span><span class="nt">labels</span><span class="p">:</span><span class="w">
-</span><span class="w">      </span>- <span class="s2">&#34;at_work&#34;</span><span class="w">
-</span><span class="w">
-</span><span class="w">    </span><span class="c"># to tasks that...</span><span class="w">
-</span><span class="w">    </span><span class="nt">filters</span><span class="p">:</span><span class="w">
-</span><span class="w">      </span>- <span class="nt">filter</span><span class="p">:</span><span class="w">
-</span><span class="w">          </span><span class="c"># Any task that...</span><span class="w">
-</span><span class="w">          </span><span class="nt">task</span><span class="p">:</span><span class="w">
-</span><span class="w">            </span><span class="c"># ... ends in &#39;at work&#39; or &#39;the office&#39;</span><span class="w">
-</span><span class="w">            </span><span class="nt">content</span><span class="p">:</span><span class="w">
-</span><span class="w">              </span><span class="nt">match</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;(at work$|at the office$)&#39;</span><span class="w">
-</span><span class="w">              </span><span class="nt">option</span><span class="p">:</span><span class="w">
-</span><span class="w">                </span><span class="c"># remove portions of task content that match the query</span><span class="w">
-</span><span class="w">                </span><span class="nt">mutate</span><span class="p">:</span><span class="w"> </span><span class="kc">Yes</span><span class="w">
-</span><span class="w">          </span><span class="c"># *AND*</span><span class="w">
-</span><span class="w">          </span><span class="c"># ... has no labels</span><span class="w">
-</span><span class="w">          </span><span class="nt">labels</span><span class="p">:</span><span class="w">
-</span><span class="w">            </span><span class="nt">absent</span><span class="p">:</span><span class="w"> </span><span class="kc">Yes</span><span class="w">
-</span><span class="w">
-</span><span class="w">          </span><span class="c"># *AND*</span><span class="w">
-</span><span class="w">          </span><span class="c"># ... is in this project</span><span class="w">
-</span><span class="w">          </span><span class="nt">projects</span><span class="p">:</span><span class="w">
-</span><span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w">
-</span><span class="w">              </span><span class="nt">match</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;Inbox&#39;</span><span class="w">
-</span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># apply these labels...</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">labels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s2">&#34;at_work&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># to tasks that...</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">filters</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">filter</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="c"># Any task that...</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">task</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="c"># ... ends in &#39;at work&#39; or &#39;the office&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">content</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">match</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;(at work$|at the office$)&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">option</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="c"># remove portions of task content that match the query</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="nt">mutate</span><span class="p">:</span><span class="w"> </span><span class="kc">Yes</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="c"># *AND*</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="c"># ... has no labels</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">labels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">absent</span><span class="p">:</span><span class="w"> </span><span class="kc">Yes</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="c"># *AND*</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="c"># ... is in this project</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">projects</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">match</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;Inbox&#39;</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
 </div>
 </div><p>and</p>
 <div class="highlight"><div class="chroma">
@@ -342,36 +340,34 @@
 </span><span class="lnt">24
 </span><span class="lnt">25
 </span><span class="lnt">26
-</span><span class="lnt">27
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="w">
-</span><span class="w">    </span><span class="c"># Create the projects...</span><span class="w">
-</span><span class="w">    </span><span class="nt">projects</span><span class="p">:</span><span class="w">
-</span><span class="w">        </span><span class="c"># ... as child projects of `Garage Sale 🏚️💵`</span><span class="w">
-</span><span class="w">      </span>- <span class="nt">parent</span><span class="p">:</span><span class="w">
-</span><span class="w">          </span><span class="nt">project</span><span class="p">:</span><span class="w"> </span><span class="l">Garage Sale 🏚️💵</span><span class="w">
-</span><span class="w">
-</span><span class="w">        </span><span class="c"># ... populated with template tasks/sections</span><span class="w">
-</span><span class="w">        </span><span class="nt">template</span><span class="p">:</span><span class="w">
-</span><span class="w">          </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l">./templates/garage-sale.csv</span><span class="w">
-</span><span class="w">        
-</span><span class="w">        </span><span class="c"># where the name of the projects to create comes from ...</span><span class="w">
-</span><span class="w">        </span><span class="nt">from</span><span class="p">:</span><span class="w">
-</span><span class="w">          </span><span class="nt">filters</span><span class="p">:</span><span class="w">
-</span><span class="w">            </span>- <span class="nt">filter</span><span class="p">:</span><span class="w">
-</span><span class="w">                </span><span class="c"># Any task that...</span><span class="w">
-</span><span class="w">                </span><span class="nt">task</span><span class="p">:</span><span class="w">
-</span><span class="w">                  </span><span class="nt">content</span><span class="p">:</span><span class="w">
-</span><span class="w">                    </span><span class="nt">match</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;.&#34;</span><span class="w">
-</span><span class="w">                    </span><span class="nt">option</span><span class="p">:</span><span class="w">
-</span><span class="w">                      </span><span class="nt">delete</span><span class="p">:</span><span class="w"> </span><span class="kc">yes</span><span class="w">
-</span><span class="w">
-</span><span class="w">                </span><span class="nt">projects</span><span class="p">:</span><span class="w">
-</span><span class="w">                  </span><span class="c"># ... is in this project</span><span class="w">
-</span><span class="w">                  </span><span class="nt">name</span><span class="p">:</span><span class="w">
-</span><span class="w">                    </span><span class="nt">match</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;Garage Sale 🏚️💵&#39;</span><span class="w">
-</span><span class="w">
-</span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Create the projects...</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">projects</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># ... as child projects of `Garage Sale 🏚️💵`</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">parent</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">project</span><span class="p">:</span><span class="w"> </span><span class="l">Garage Sale 🏚️💵</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># ... populated with template tasks/sections</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">template</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l">./templates/garage-sale.csv</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># where the name of the projects to create comes from ...</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">from</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">filters</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="nt">filter</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="c"># Any task that...</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="nt">task</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                  </span><span class="nt">content</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="nt">match</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;.&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="nt">option</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                      </span><span class="nt">delete</span><span class="p">:</span><span class="w"> </span><span class="kc">yes</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="nt">projects</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                  </span><span class="c"># ... is in this project</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                  </span><span class="nt">name</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="nt">match</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;Garage Sale 🏚️💵&#39;</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
 </div>
 </div>]]></description></item></channel></rss>

@@ -35,7 +35,7 @@ A wired remote would be simpler and thus cheaper but my desk is already too crow
 </figure>
 
 
-<p>Beyond the basic puck shaped wireless remote, the listing indicated that the &lsquo;new 1s version&rsquo; could be controlled with the <code>Xiaomi</code> app.</p>
+<p>Beyond the basic puck shaped wireless remote, the listing indicated that the &rsquo;new 1s version&rsquo; could be controlled with the <code>Xiaomi</code> app.</p>
 <p>🤔</p>
 <p>Instead of some very basic 433Mhz radio, the lamp/remote probably used BTLE.
 In some ways, that&rsquo;s even better; the lamp only has a few simple functions and those shouldn&rsquo;t be that hard to reverse engineer from the Android app.</p>
@@ -140,10 +140,10 @@ I did a quick search for a few things that I hoped would show up in the dumped O
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">❯ cat lamp.bin.strings <span class="p">|</span> grep --ignore-case -E <span class="s1">&#39;certificate|encrypt|tls|agent|http|post|get|verify|remote|{&#34;&#39;</span> &gt; interesting_strings.txt
-❯ cat interesting_strings.txt<span class="p">|</span> wc -l
-<span class="m">710</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">❯ cat lamp.bin.strings <span class="p">|</span> grep --ignore-case -E <span class="s1">&#39;certificate|encrypt|tls|agent|http|post|get|verify|remote|{&#34;&#39;</span> &gt; interesting_strings.txt
+</span></span><span class="line"><span class="cl">❯ cat interesting_strings.txt<span class="p">|</span> wc -l
+</span></span><span class="line"><span class="cl"><span class="m">710</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>🤨</p>
 <p>Here are some of the highlights:</p>
@@ -162,23 +162,23 @@ I did a quick search for a few things that I hoped would show up in the dumped O
 </span><span class="lnt">11
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text">[I] bluetooth_remote_double_click
-[E] %s: verify root cert is not valid! (%s,%d)
-[W] %s: Fail to get gatt db from connection %04x, ret = %d  (%s,%d)
-[E] %s: mbedtls_ecdh_calc_secret error %d (%s,%d)
-miio_signature_verify
-[E] %s: --&gt;login verify send failed. (%s,%d)
------BEGIN CERTIFICATE-----
-[E] %s: https need root cert. (%s,%d)
-User-Agent: MIoT
-http://dlg.io.mi.com/v1/ot/upload
-[W] %s: httpdns new resolve start failed, %d (%s,%d)
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">[I] bluetooth_remote_double_click
+</span></span><span class="line"><span class="cl">[E] %s: verify root cert is not valid! (%s,%d)
+</span></span><span class="line"><span class="cl">[W] %s: Fail to get gatt db from connection %04x, ret = %d  (%s,%d)
+</span></span><span class="line"><span class="cl">[E] %s: mbedtls_ecdh_calc_secret error %d (%s,%d)
+</span></span><span class="line"><span class="cl">miio_signature_verify
+</span></span><span class="line"><span class="cl">[E] %s: --&gt;login verify send failed. (%s,%d)
+</span></span><span class="line"><span class="cl">-----BEGIN CERTIFICATE-----
+</span></span><span class="line"><span class="cl">[E] %s: https need root cert. (%s,%d)
+</span></span><span class="line"><span class="cl">User-Agent: MIoT
+</span></span><span class="line"><span class="cl">http://dlg.io.mi.com/v1/ot/upload
+</span></span><span class="line"><span class="cl">[W] %s: httpdns new resolve start failed, %d (%s,%d)
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>There&rsquo;s a lot more interesting things in the dump but they&rsquo;ll have to wait for another day as
 immediately after getting eyes on the PCB, I saw an ESP32 chip!</p>
 <h2 id="a-change-of-plans">A change of plans</h2>
-<p>Reverse engineering the firmware to figure out how/why the phone method of remote control was different from the remotes' method no longer really mattered.
+<p>Reverse engineering the firmware to figure out how/why the phone method of remote control was different from the remotes&rsquo; method no longer really mattered.
 An ESP based chip means Tasmota or ESPHome should be possible.</p>
 <p>If I could get either of those alternative firmwares running on the lamp, then cluttering up the desk with yet another remote and/or hacking MQTT support into the lamp via the remote was no longer necessary!</p>
 <h1 id="teardown">Teardown</h1>
@@ -571,28 +571,28 @@ The ESP will not boot into programming mode unless <code>GPIO0</code> is tied to
 </span><span class="lnt">21
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">❯ esptool.py --chip esp32 --port /dev/ttyUSB0 --baud <span class="m">921600</span> --before default_reset --after hard_reset write_flash -z --flash_mode dout --flash_freq 40m --flash_size detect 0x1000 bootloader_dout_40m.bin 0x8000 partitions.bin 0xe000 boot_app0.bin 0x10000 tasmota32solo1.bin
-esptool.py v3.2
-Serial port /dev/ttyUSB0
-Connecting.....
-&lt;...&gt;
-Stub running...
-Changing baud rate to <span class="m">921600</span>
-Changed.
-Configuring flash size...
-Auto-detected Flash size: 4MB
-Flash will be erased from 0x00001000 to 0x00004fff...
-Flash will be erased from 0x00008000 to 0x00008fff...
-Flash will be erased from 0x0000e000 to 0x0000ffff...
-Flash will be erased from 0x00010000 to 0x00157fff...
-Compressed <span class="m">15536</span> bytes to 10862...
-Wrote <span class="m">15536</span> bytes <span class="o">(</span><span class="m">10862</span> compressed<span class="o">)</span> at 0x00001000 in 0.4 seconds <span class="o">(</span>effective 353.8 kbit/s<span class="o">)</span>...
-&lt;...&gt;
-Hash of data verified.
-
-Leaving...
-Hard resetting via RTS pin...
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">❯ esptool.py --chip esp32 --port /dev/ttyUSB0 --baud <span class="m">921600</span> --before default_reset --after hard_reset write_flash -z --flash_mode dout --flash_freq 40m --flash_size detect 0x1000 bootloader_dout_40m.bin 0x8000 partitions.bin 0xe000 boot_app0.bin 0x10000 tasmota32solo1.bin
+</span></span><span class="line"><span class="cl">esptool.py v3.2
+</span></span><span class="line"><span class="cl">Serial port /dev/ttyUSB0
+</span></span><span class="line"><span class="cl">Connecting.....
+</span></span><span class="line"><span class="cl">&lt;...&gt;
+</span></span><span class="line"><span class="cl">Stub running...
+</span></span><span class="line"><span class="cl">Changing baud rate to <span class="m">921600</span>
+</span></span><span class="line"><span class="cl">Changed.
+</span></span><span class="line"><span class="cl">Configuring flash size...
+</span></span><span class="line"><span class="cl">Auto-detected Flash size: 4MB
+</span></span><span class="line"><span class="cl">Flash will be erased from 0x00001000 to 0x00004fff...
+</span></span><span class="line"><span class="cl">Flash will be erased from 0x00008000 to 0x00008fff...
+</span></span><span class="line"><span class="cl">Flash will be erased from 0x0000e000 to 0x0000ffff...
+</span></span><span class="line"><span class="cl">Flash will be erased from 0x00010000 to 0x00157fff...
+</span></span><span class="line"><span class="cl">Compressed <span class="m">15536</span> bytes to 10862...
+</span></span><span class="line"><span class="cl">Wrote <span class="m">15536</span> bytes <span class="o">(</span><span class="m">10862</span> compressed<span class="o">)</span> at 0x00001000 in 0.4 seconds <span class="o">(</span>effective 353.8 kbit/s<span class="o">)</span>...
+</span></span><span class="line"><span class="cl">&lt;...&gt;
+</span></span><span class="line"><span class="cl">Hash of data verified.
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Leaving...
+</span></span><span class="line"><span class="cl">Hard resetting via RTS pin...
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>Turn off the dedicated 5V supply and desolder the <code>GPIO0</code> wire and the <code>3V3</code> &lt;-&gt; <code>EN</code> jumper.
 Leave the <code>RX</code>, <code>TX</code>, and <code>GND</code> wires in place so you can easily check the boot logs to confirm Tasmota flashed OK:</p>
@@ -621,34 +621,32 @@ Leave the <code>RX</code>, <code>TX</code>, and <code>GND</code> wires in place 
 </span><span class="lnt">21
 </span><span class="lnt">22
 </span><span class="lnt">23
-</span><span class="lnt">24
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">❯ screen /dev/ttyUSB0 <span class="m">115200</span>
-ets Jun  <span class="m">8</span> <span class="m">2016</span> 00:22:57
-
-rst:0x1 <span class="o">(</span>POWERON_RESET<span class="o">)</span>,boot:0x13 <span class="o">(</span>SPI_FAST_FLASH_BOOT<span class="o">)</span>
-configsip: 0, SPIWP:0xee
-clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
-mode:DOUT, clock div:2
-load:0x3fff0030,len:184
-load:0x40078000,len:12352
-load:0x40080400,len:2912
-entry 0x400805c4
-
-00:00:00.002-228/73 HDW: ESP32-S0WD-OEM 
-./components/esp_littlefs/src/littlefs/lfs.c:1071:error: Corrupted dir pair at <span class="o">{</span>0x0, 0x1<span class="o">}</span>
-00:00:00.777-231/73 UFS: FlashFS mounted with <span class="m">312</span> kB free
-00:00:00.782-231/73 CFG: Use defaults
-00:00:00.893 QPC: Reset
-00:00:00.941 BRY: Berry initialized, RAM <span class="nv">used</span><span class="o">=</span><span class="m">3849</span>
-00:00:00.950 BRY: no <span class="s1">&#39;preinit.be&#39;</span>
-00:00:00.963 Project tasmota - Tasmota Version 10.1.0<span class="o">(</span>tasmota<span class="o">)</span>-2_0_1_1<span class="o">(</span>2021-12-08T14:50:34<span class="o">)</span>
-00:00:00.984 BRY: no <span class="s1">&#39;autoexec.be&#39;</span>
-00:00:00.243 WIF: WifiManager active <span class="k">for</span> <span class="m">3</span> minutes
-00:00:01.200 HTP: Web server active on tasmota-197907-6407 with IP address 192.168.4.1
-
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">❯ screen /dev/ttyUSB0 <span class="m">115200</span>
+</span></span><span class="line"><span class="cl">ets Jun  <span class="m">8</span> <span class="m">2016</span> 00:22:57
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">rst:0x1 <span class="o">(</span>POWERON_RESET<span class="o">)</span>,boot:0x13 <span class="o">(</span>SPI_FAST_FLASH_BOOT<span class="o">)</span>
+</span></span><span class="line"><span class="cl">configsip: 0, SPIWP:0xee
+</span></span><span class="line"><span class="cl">clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+</span></span><span class="line"><span class="cl">mode:DOUT, clock div:2
+</span></span><span class="line"><span class="cl">load:0x3fff0030,len:184
+</span></span><span class="line"><span class="cl">load:0x40078000,len:12352
+</span></span><span class="line"><span class="cl">load:0x40080400,len:2912
+</span></span><span class="line"><span class="cl">entry 0x400805c4
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">00:00:00.002-228/73 HDW: ESP32-S0WD-OEM 
+</span></span><span class="line"><span class="cl">./components/esp_littlefs/src/littlefs/lfs.c:1071:error: Corrupted dir pair at <span class="o">{</span>0x0, 0x1<span class="o">}</span>
+</span></span><span class="line"><span class="cl">00:00:00.777-231/73 UFS: FlashFS mounted with <span class="m">312</span> kB free
+</span></span><span class="line"><span class="cl">00:00:00.782-231/73 CFG: Use defaults
+</span></span><span class="line"><span class="cl">00:00:00.893 QPC: Reset
+</span></span><span class="line"><span class="cl">00:00:00.941 BRY: Berry initialized, RAM <span class="nv">used</span><span class="o">=</span><span class="m">3849</span>
+</span></span><span class="line"><span class="cl">00:00:00.950 BRY: no <span class="s1">&#39;preinit.be&#39;</span>
+</span></span><span class="line"><span class="cl">00:00:00.963 Project tasmota - Tasmota Version 10.1.0<span class="o">(</span>tasmota<span class="o">)</span>-2_0_1_1<span class="o">(</span>2021-12-08T14:50:34<span class="o">)</span>
+</span></span><span class="line"><span class="cl">00:00:00.984 BRY: no <span class="s1">&#39;autoexec.be&#39;</span>
+</span></span><span class="line"><span class="cl">00:00:00.243 WIF: WifiManager active <span class="k">for</span> <span class="m">3</span> minutes
+</span></span><span class="line"><span class="cl">00:00:01.200 HTP: Web server active on tasmota-197907-6407 with IP address 192.168.4.1
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>After confirming a successful flash/boot, you can continue to configure Tasmota via the serial console or just power off and de-solder all wires and finish configuration after you re-assemble.</p>
 <h2 id="templates">Templates</h2>
@@ -668,8 +666,8 @@ This template keeps <code>GPIO4</code> high and relies on Tasmota setting  to fu
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="p">{</span><span class="nt">&#34;NAME&#34;</span><span class="p">:</span><span class="s2">&#34;Mijia Desk Lamp 1S (MJGJD02YL)&#34;</span><span class="p">,</span><span class="nt">&#34;GPIO&#34;</span><span class="p">:[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">3840</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">416</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">417</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="nt">&#34;FLAG&#34;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="nt">&#34;BASE&#34;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="nt">&#34;CMND&#34;</span><span class="p">:</span><span class="s2">&#34;DimmerRange 45,255&#34;</span><span class="p">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;NAME&#34;</span><span class="p">:</span><span class="s2">&#34;Mijia Desk Lamp 1S (MJGJD02YL)&#34;</span><span class="p">,</span><span class="nt">&#34;GPIO&#34;</span><span class="p">:[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">3840</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">416</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">417</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="nt">&#34;FLAG&#34;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="nt">&#34;BASE&#34;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="nt">&#34;CMND&#34;</span><span class="p">:</span><span class="s2">&#34;DimmerRange 45,255&#34;</span><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>If, for some reason, you want to control the global on/off (<code>GPIO04</code>) independently of the WW/CW channels, use this template:</p>
 <div class="highlight"><div class="chroma">
@@ -677,8 +675,8 @@ This template keeps <code>GPIO4</code> high and relies on Tasmota setting  to fu
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="p">{</span><span class="nt">&#34;NAME&#34;</span><span class="p">:</span><span class="s2">&#34;Mijia Desk Lamp 1S (MJGJD02YL)&#34;</span><span class="p">,</span><span class="nt">&#34;GPIO&#34;</span><span class="p">:[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">224</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">416</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">417</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="nt">&#34;FLAG&#34;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="nt">&#34;BASE&#34;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="nt">&#34;CMND&#34;</span><span class="p">:</span><span class="s2">&#34;DimmerRange 45,255&#34;</span><span class="p">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;NAME&#34;</span><span class="p">:</span><span class="s2">&#34;Mijia Desk Lamp 1S (MJGJD02YL)&#34;</span><span class="p">,</span><span class="nt">&#34;GPIO&#34;</span><span class="p">:[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">224</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">416</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">417</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="nt">&#34;FLAG&#34;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="nt">&#34;BASE&#34;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="nt">&#34;CMND&#34;</span><span class="p">:</span><span class="s2">&#34;DimmerRange 45,255&#34;</span><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>If you do not need dimmer control and only need full on/off control, you can adjust the module so <code>GPIO{04,19,21}</code> are always high, low or simple on/off outputs by configuring them to be of type <code>Relay</code> instead of <code>PWM</code> outputs.</p>
 <h3 id="dimmer-range">Dimmer Range</h3>
@@ -840,11 +838,11 @@ Tasmota will let you dim the light as low as possible without flicker.</p>
 </span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">Rule1 on TuyaReceived#Data=55AA03070005030400010016 do publish2 stat/%topic%/speed 25 endon
-    on TuyaReceived#Data=55AA03070005030400010117 do publish2 stat/%topic%/speed 50 endon
-    on TuyaReceived#Data=55AA03070005030400010218 do publish2 stat/%topic%/speed 75 endon
-    on TuyaReceived#Data=55AA03070005030400010319 do publish2 stat/%topic%/speed 100 endon
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Rule1 on TuyaReceived#Data=55AA03070005030400010016 do publish2 stat/%topic%/speed 25 endon
+</span></span><span class="line"><span class="cl">    on TuyaReceived#Data=55AA03070005030400010117 do publish2 stat/%topic%/speed 50 endon
+</span></span><span class="line"><span class="cl">    on TuyaReceived#Data=55AA03070005030400010218 do publish2 stat/%topic%/speed 75 endon
+</span></span><span class="line"><span class="cl">    on TuyaReceived#Data=55AA03070005030400010319 do publish2 stat/%topic%/speed 100 endon
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>This tells Tasmota to publish an integer speed (25,50,75,100) when it receives a specific packet from the dedicated MCU over th UART.</p>
 <p>Then, issue a second rule to actually publish the configuration data:</p>
@@ -853,8 +851,8 @@ Tasmota will let you dim the light as low as possible without flicker.</p>
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">rule2 on SetOption19#Data=OFF do publish2 homeassistant/fan/%macaddr%/config {&#34;uniq_id&#34;:&#34;AABBCC&#34;,&#34;~&#34;:&#34;%topic%/POWER1&#34;,&#34;cmd_t&#34;:&#34;cmnd/~&#34;,&#34;pl_off&#34;:&#34;OFF&#34;,&#34;pl_on&#34;:&#34;ON&#34;,&#34;stat_t&#34;:&#34;stat/~&#34;,&#34;avty_t&#34;:&#34;tele/%topic%/LWT&#34;,&#34;pl_avail&#34;:&#34;Online&#34;,&#34;pl_not_avail&#34;:&#34;Offline&#34;,&#34;pct_cmd_t&#34;:&#34;cmnd/%topic%/tuyasend4&#34;,&#34;pct_cmd_tpl&#34;:&#34;{%set v=value|int%}{%if v&lt;=25%}3,0{%elif v&lt;=50%}3,1{%elif v&lt;=75%}3,2{%elif v&lt;=100%}3,3{%endif%}&#34;,&#34;pct_stat_t&#34;:&#34;stat/%topic%/speed&#34;,&#34;dev&#34;:{&#34;cns&#34;:[[&#34;mac&#34;,&#34;%macaddr%&#34;]]}} endon
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">rule2 on SetOption19#Data=OFF do publish2 homeassistant/fan/%macaddr%/config {&#34;uniq_id&#34;:&#34;AABBCC&#34;,&#34;~&#34;:&#34;%topic%/POWER1&#34;,&#34;cmd_t&#34;:&#34;cmnd/~&#34;,&#34;pl_off&#34;:&#34;OFF&#34;,&#34;pl_on&#34;:&#34;ON&#34;,&#34;stat_t&#34;:&#34;stat/~&#34;,&#34;avty_t&#34;:&#34;tele/%topic%/LWT&#34;,&#34;pl_avail&#34;:&#34;Online&#34;,&#34;pl_not_avail&#34;:&#34;Offline&#34;,&#34;pct_cmd_t&#34;:&#34;cmnd/%topic%/tuyasend4&#34;,&#34;pct_cmd_tpl&#34;:&#34;{%set v=value|int%}{%if v&lt;=25%}3,0{%elif v&lt;=50%}3,1{%elif v&lt;=75%}3,2{%elif v&lt;=100%}3,3{%endif%}&#34;,&#34;pct_stat_t&#34;:&#34;stat/%topic%/speed&#34;,&#34;dev&#34;:{&#34;cns&#34;:[[&#34;mac&#34;,&#34;%macaddr%&#34;]]}} endon
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>Note:</strong> You&rsquo;ll probably want to modify the above payload so the occurrences of the placeholder string <code>AABBCC</code> are replaced with the last 6 characters of your own device&rsquo;s MAC address!</p>
 <p>For readability, here&rsquo;s the unminified JSON:</p>
@@ -884,29 +882,29 @@ Tasmota will let you dim the light as low as possible without flicker.</p>
 </span><span class="lnt">22
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="p">{</span>
-  <span class="nt">&#34;uniq_id&#34;</span><span class="p">:</span> <span class="s2">&#34;AABBCC&#34;</span><span class="p">,</span>
-  <span class="nt">&#34;~&#34;</span><span class="p">:</span><span class="s2">&#34;%topic%/POWER1&#34;</span><span class="p">,</span>
-  <span class="nt">&#34;cmd_t&#34;</span><span class="p">:</span> <span class="s2">&#34;cmnd/~&#34;</span><span class="p">,</span>
-  <span class="nt">&#34;pl_off&#34;</span><span class="p">:</span> <span class="s2">&#34;OFF&#34;</span><span class="p">,</span>
-  <span class="nt">&#34;pl_on&#34;</span><span class="p">:</span> <span class="s2">&#34;ON&#34;</span><span class="p">,</span>
-  <span class="nt">&#34;stat_t&#34;</span><span class="p">:</span> <span class="s2">&#34;stat/~&#34;</span><span class="p">,</span>
-  <span class="nt">&#34;avty_t&#34;</span><span class="p">:</span> <span class="s2">&#34;tele/%topic%/LWT&#34;</span><span class="p">,</span>
-  <span class="nt">&#34;pl_avail&#34;</span><span class="p">:</span> <span class="s2">&#34;Online&#34;</span><span class="p">,</span>
-  <span class="nt">&#34;pl_not_avail&#34;</span><span class="p">:</span> <span class="s2">&#34;Offline&#34;</span><span class="p">,</span>
-  <span class="nt">&#34;pct_cmd_t&#34;</span><span class="p">:</span> <span class="s2">&#34;cmnd/%topic%/tuyasend4&#34;</span><span class="p">,</span>
-  <span class="nt">&#34;pct_cmd_tpl&#34;</span><span class="p">:</span> <span class="s2">&#34;{%set v=value|int%}{%if v&lt;=25%}3,0{%elif v&lt;=50%}3,1{%elif v&lt;=75%}3,2{%elif v&lt;=100%}3,3{%endif%}&#34;</span><span class="p">,</span>
-  <span class="nt">&#34;pct_stat_t&#34;</span><span class="p">:</span> <span class="s2">&#34;stat/%topic%/speed&#34;</span><span class="p">,</span>
-  <span class="nt">&#34;dev&#34;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&#34;cns&#34;</span><span class="p">:</span> <span class="p">[</span>
-      <span class="p">[</span>
-        <span class="s2">&#34;mac&#34;</span><span class="p">,</span>
-        <span class="s2">&#34;%macaddr%&#34;</span>
-      <span class="p">]</span>
-    <span class="p">]</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;uniq_id&#34;</span><span class="p">:</span> <span class="s2">&#34;AABBCC&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;~&#34;</span><span class="p">:</span><span class="s2">&#34;%topic%/POWER1&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;cmd_t&#34;</span><span class="p">:</span> <span class="s2">&#34;cmnd/~&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;pl_off&#34;</span><span class="p">:</span> <span class="s2">&#34;OFF&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;pl_on&#34;</span><span class="p">:</span> <span class="s2">&#34;ON&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;stat_t&#34;</span><span class="p">:</span> <span class="s2">&#34;stat/~&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;avty_t&#34;</span><span class="p">:</span> <span class="s2">&#34;tele/%topic%/LWT&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;pl_avail&#34;</span><span class="p">:</span> <span class="s2">&#34;Online&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;pl_not_avail&#34;</span><span class="p">:</span> <span class="s2">&#34;Offline&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;pct_cmd_t&#34;</span><span class="p">:</span> <span class="s2">&#34;cmnd/%topic%/tuyasend4&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;pct_cmd_tpl&#34;</span><span class="p">:</span> <span class="s2">&#34;{%set v=value|int%}{%if v&lt;=25%}3,0{%elif v&lt;=50%}3,1{%elif v&lt;=75%}3,2{%elif v&lt;=100%}3,3{%endif%}&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;pct_stat_t&#34;</span><span class="p">:</span> <span class="s2">&#34;stat/%topic%/speed&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;dev&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;cns&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">      <span class="p">[</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;mac&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;%macaddr%&#34;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="p">]</span>
+</span></span><span class="line"><span class="cl">  <span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>Note:</strong> The <code>dev</code> portion of the payload is the <a href="https://www.home-assistant.io/integrations/fan.mqtt/#device" target="_blank" rel="noopener noreffer">magic that convinces Home Assistant to combine the multiple entities under once device</a>. Without that portion of the document, you will still have a properly configured DS03, but it will exist as an &lsquo;orphaned&rsquo; entity that belongs to no device!</p>
 <p>All that&rsquo;s left is to enable <code>rule2</code> and then trigger it:</p>
@@ -916,9 +914,9 @@ Tasmota will let you dim the light as low as possible without flicker.</p>
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">rule2 1
-so19 0
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">rule2 1
+</span></span><span class="line"><span class="cl">so19 0
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>Altogether, It&rsquo;ll look something like this:</p>
 <div class="highlight"><div class="chroma">
@@ -940,22 +938,22 @@ so19 0
 </span><span class="lnt">15
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">18:23:54.140 CMD: Rule1 on TuyaReceived#Data=55AA03070005030400010016 do publish2 stat/%topic%/speed 25 endon on TuyaReceived#Data=55AA03070005030400010117 do publish2 stat/%topic%/speed 50 endon on TuyaReceived#Data=55AA03070005030400010218 do publish2 stat/%topic%/speed 75 endon on TuyaReceived#Data=55AA03070005030400010319 do publish2 stat/%topic%/speed 100 endon
-18:23:54.149 RUL: Stored uncompressed, would compress from 344 to 98 (-72%)
-18:23:54.155 MQT: stat/living_room_ceiling_fan/RESULT = {&#34;Rule1&#34;:{&#34;State&#34;:&#34;ON&#34;,&#34;Once&#34;:&#34;OFF&#34;,&#34;StopOnError&#34;:&#34;OFF&#34;,&#34;Length&#34;:344,&#34;Free&#34;:167,&#34;Rules&#34;:&#34;on TuyaReceived#Data=55AA03070005030400010016 do publish2 stat/%topic%/speed 25 endon on TuyaReceived#Data=55AA03070005030400010117 do publish2 stat/%topic%/speed 50 endon on TuyaReceived#Data=55AA03070005030400010218 do publish2 stat/%topic%/speed 75 endon on TuyaReceived#Data=55AA03070005030400010319 do publish2 stat/%topic%/speed 100 endon&#34;}}
-
-18:24:05.061 CMD: rule2 on SetOption19#Data=OFF do publish2 homeassistant/fan/%macaddr%/config {&#34;uniq_id&#34;:&#34;AABBCC&#34;,&#34;~&#34;:&#34;%topic%/POWER1&#34;,&#34;cmd_t&#34;:&#34;cmnd/~&#34;,&#34;pl_off&#34;:&#34;OFF&#34;,&#34;pl_on&#34;:&#34;ON&#34;,&#34;stat_t&#34;:&#34;stat/~&#34;,&#34;avty_t&#34;:&#34;tele/%topic%/LWT&#34;,&#34;pl_avail&#34;:&#34;Online&#34;,&#34;pl_not_avail&#34;:&#34;Offline&#34;,&#34;pct_cmd_t&#34;:&#34;cmnd/%topic%/tuyasend4&#34;,&#34;pct_cmd_tpl&#34;:&#34;{%set v=value|int%}{%if v&lt;=25%}3,0{%elif v&lt;=50%}3,1{%elif v&lt;=75%}3,2{%elif v&lt;=100%}3,3{%endif%}&#34;,&#34;pct_stat_t&#34;:&#34;stat/%topic%/speed&#34;,&#34;dev&#34;:{&#34;cns&#34;:[[&#34;mac&#34;,&#34;%macaddr%&#34;]]}} endon
-18:24:05.093 RUL: Stored uncompressed, would compress from 473 to 351 (-26%)
-18:24:05.100 MQT: stat/living_room_ceiling_fan/RESULT = {&#34;Rule2&#34;:{&#34;State&#34;:&#34;OFF&#34;,&#34;Once&#34;:&#34;OFF&#34;,&#34;StopOnError&#34;:&#34;OFF&#34;,&#34;Length&#34;:473,&#34;Free&#34;:38,&#34;Rules&#34;:&#34;on SetOption19#Data=OFF do publish2 homeassistant/fan/%macaddr%/config {\&#34;uniq_id\&#34;:\&#34;AABBCC\&#34;,\&#34;~\&#34;:\&#34;%topic%/POWER1\&#34;,\&#34;cmd_t\&#34;:\&#34;cmnd/~\&#34;,\&#34;pl_off\&#34;:\&#34;OFF\&#34;,\&#34;pl_on\&#34;:\&#34;ON\&#34;,\&#34;stat_t\&#34;:\&#34;stat/~\&#34;,\&#34;avty_t\&#34;:\&#34;tele/%topic%/LWT\&#34;,\&#34;pl_avail\&#34;:\&#34;Online\&#34;,\&#34;pl_not_avail\&#34;:\&#34;Offline\&#34;,\&#34;pct_cmd_t\&#34;:\&#34;cmnd/%topic%/tuyasend4\&#34;,\&#34;pct_cmd_tpl\&#34;:\&#34;{%set v=value|int%}{%if v&lt;=25%}3,0{%elif v&lt;=50%}3,1{%elif v&lt;=75%}3,2{%elif v&lt;=100%}3,3{%endif%}\&#34;,\&#34;pct_stat_t\&#34;:\&#34;stat/%topic%/speed\&#34;,\&#34;dev\&#34;:{\&#34;cns\&#34;:[[\&#34;mac\&#34;,\&#34;%macaddr%\&#34;]]}} endon&#34;}}
-18:24:07.494 CMD: rule2 1
-18:24:07.503 MQT: stat/living_room_ceiling_fan/RESULT = {&#34;Rule2&#34;:{&#34;State&#34;:&#34;ON&#34;,&#34;Once&#34;:&#34;OFF&#34;,&#34;StopOnError&#34;:&#34;OFF&#34;,&#34;Length&#34;:473,&#34;Free&#34;:38,&#34;Rules&#34;:&#34;on SetOption19#Data=OFF do publish2 homeassistant/fan/%macaddr%/config {\&#34;uniq_id\&#34;:\&#34;AABBCC\&#34;,\&#34;~\&#34;:\&#34;%topic%/POWER1\&#34;,\&#34;cmd_t\&#34;:\&#34;cmnd/~\&#34;,\&#34;pl_off\&#34;:\&#34;OFF\&#34;,\&#34;pl_on\&#34;:\&#34;ON\&#34;,\&#34;stat_t\&#34;:\&#34;stat/~\&#34;,\&#34;avty_t\&#34;:\&#34;tele/%topic%/LWT\&#34;,\&#34;pl_avail\&#34;:\&#34;Online\&#34;,\&#34;pl_not_avail\&#34;:\&#34;Offline\&#34;,\&#34;pct_cmd_t\&#34;:\&#34;cmnd/%topic%/tuyasend4\&#34;,\&#34;pct_cmd_tpl\&#34;:\&#34;{%set v=value|int%}{%if v&lt;=25%}3,0{%elif v&lt;=50%}3,1{%elif v&lt;=75%}3,2{%elif v&lt;=100%}3,3{%endif%}\&#34;,\&#34;pct_stat_t\&#34;:\&#34;stat/%topic%/speed\&#34;,\&#34;dev\&#34;:{\&#34;cns\&#34;:[[\&#34;mac\&#34;,\&#34;%macaddr%\&#34;]]}} endon&#34;}}
-
-18:24:10.362 CMD: so19 0
-18:24:10.369 MQT: stat/living_room_ceiling_fan/RESULT = {&#34;SetOption19&#34;:&#34;OFF&#34;}
-18:24:10.414 RUL: SETOPTION19#DATA=OFF performs &#34;publish2 homeassistant/fan/DDEEFFAABBCC/config {&#34;uniq_id&#34;:&#34;AABBCC&#34;,&#34;~&#34;:&#34;living_room_ceiling_...
-18:24:10.421 MQT: home Assistant/fan/DDEEFFAABBCC/config = {&#34;uniq_id&#34;:&#34;AABBCC&#34;,&#34;~&#34;:&#34;living_room_ceiling_fan/POWER1&#34;,&#34;cmd_t&#34;:&#34;cmnd/~&#34;,&#34;pl_off&#34;:&#34;OFF&#34;,&#34;pl_on&#34;:&#34;ON&#34;,&#34;stat_t&#34;:&#34;stat/~&#34;,&#34;avty_t&#34;:&#34;tele/living_room_ceiling_fan/LWT&#34;,&#34;pl_avail&#34;:&#34;Online&#34;,&#34;pl_not_avail&#34;:&#34;Offline&#34;,&#34;pct_cmd_t&#34;:&#34;cmnd/living_room_ceiling_fan/tuyasend4&#34;,&#34;pct_cmd_tpl&#34;:&#34;{%set v=value|int%}{%if v&lt;=25%}3,0{%elif v&lt;=50%}3,1{%elif v&lt;=75%}3,2{%elif v&lt;=100%}3,3{%endif%}&#34;,&#34;pct_stat_t&#34;:&#34;stat/living_room_ceiling_fan/speed&#34;,&#34;dev&#34;:{&#34;cns&#34;:[[&#34;mac&#34;,&#34;DDEEFFAABBCC&#34;]]}} (retained)
-18:24:10.509 LOG: Home Assistant MQTT Discovery disabled.
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">18:23:54.140 CMD: Rule1 on TuyaReceived#Data=55AA03070005030400010016 do publish2 stat/%topic%/speed 25 endon on TuyaReceived#Data=55AA03070005030400010117 do publish2 stat/%topic%/speed 50 endon on TuyaReceived#Data=55AA03070005030400010218 do publish2 stat/%topic%/speed 75 endon on TuyaReceived#Data=55AA03070005030400010319 do publish2 stat/%topic%/speed 100 endon
+</span></span><span class="line"><span class="cl">18:23:54.149 RUL: Stored uncompressed, would compress from 344 to 98 (-72%)
+</span></span><span class="line"><span class="cl">18:23:54.155 MQT: stat/living_room_ceiling_fan/RESULT = {&#34;Rule1&#34;:{&#34;State&#34;:&#34;ON&#34;,&#34;Once&#34;:&#34;OFF&#34;,&#34;StopOnError&#34;:&#34;OFF&#34;,&#34;Length&#34;:344,&#34;Free&#34;:167,&#34;Rules&#34;:&#34;on TuyaReceived#Data=55AA03070005030400010016 do publish2 stat/%topic%/speed 25 endon on TuyaReceived#Data=55AA03070005030400010117 do publish2 stat/%topic%/speed 50 endon on TuyaReceived#Data=55AA03070005030400010218 do publish2 stat/%topic%/speed 75 endon on TuyaReceived#Data=55AA03070005030400010319 do publish2 stat/%topic%/speed 100 endon&#34;}}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">18:24:05.061 CMD: rule2 on SetOption19#Data=OFF do publish2 homeassistant/fan/%macaddr%/config {&#34;uniq_id&#34;:&#34;AABBCC&#34;,&#34;~&#34;:&#34;%topic%/POWER1&#34;,&#34;cmd_t&#34;:&#34;cmnd/~&#34;,&#34;pl_off&#34;:&#34;OFF&#34;,&#34;pl_on&#34;:&#34;ON&#34;,&#34;stat_t&#34;:&#34;stat/~&#34;,&#34;avty_t&#34;:&#34;tele/%topic%/LWT&#34;,&#34;pl_avail&#34;:&#34;Online&#34;,&#34;pl_not_avail&#34;:&#34;Offline&#34;,&#34;pct_cmd_t&#34;:&#34;cmnd/%topic%/tuyasend4&#34;,&#34;pct_cmd_tpl&#34;:&#34;{%set v=value|int%}{%if v&lt;=25%}3,0{%elif v&lt;=50%}3,1{%elif v&lt;=75%}3,2{%elif v&lt;=100%}3,3{%endif%}&#34;,&#34;pct_stat_t&#34;:&#34;stat/%topic%/speed&#34;,&#34;dev&#34;:{&#34;cns&#34;:[[&#34;mac&#34;,&#34;%macaddr%&#34;]]}} endon
+</span></span><span class="line"><span class="cl">18:24:05.093 RUL: Stored uncompressed, would compress from 473 to 351 (-26%)
+</span></span><span class="line"><span class="cl">18:24:05.100 MQT: stat/living_room_ceiling_fan/RESULT = {&#34;Rule2&#34;:{&#34;State&#34;:&#34;OFF&#34;,&#34;Once&#34;:&#34;OFF&#34;,&#34;StopOnError&#34;:&#34;OFF&#34;,&#34;Length&#34;:473,&#34;Free&#34;:38,&#34;Rules&#34;:&#34;on SetOption19#Data=OFF do publish2 homeassistant/fan/%macaddr%/config {\&#34;uniq_id\&#34;:\&#34;AABBCC\&#34;,\&#34;~\&#34;:\&#34;%topic%/POWER1\&#34;,\&#34;cmd_t\&#34;:\&#34;cmnd/~\&#34;,\&#34;pl_off\&#34;:\&#34;OFF\&#34;,\&#34;pl_on\&#34;:\&#34;ON\&#34;,\&#34;stat_t\&#34;:\&#34;stat/~\&#34;,\&#34;avty_t\&#34;:\&#34;tele/%topic%/LWT\&#34;,\&#34;pl_avail\&#34;:\&#34;Online\&#34;,\&#34;pl_not_avail\&#34;:\&#34;Offline\&#34;,\&#34;pct_cmd_t\&#34;:\&#34;cmnd/%topic%/tuyasend4\&#34;,\&#34;pct_cmd_tpl\&#34;:\&#34;{%set v=value|int%}{%if v&lt;=25%}3,0{%elif v&lt;=50%}3,1{%elif v&lt;=75%}3,2{%elif v&lt;=100%}3,3{%endif%}\&#34;,\&#34;pct_stat_t\&#34;:\&#34;stat/%topic%/speed\&#34;,\&#34;dev\&#34;:{\&#34;cns\&#34;:[[\&#34;mac\&#34;,\&#34;%macaddr%\&#34;]]}} endon&#34;}}
+</span></span><span class="line"><span class="cl">18:24:07.494 CMD: rule2 1
+</span></span><span class="line"><span class="cl">18:24:07.503 MQT: stat/living_room_ceiling_fan/RESULT = {&#34;Rule2&#34;:{&#34;State&#34;:&#34;ON&#34;,&#34;Once&#34;:&#34;OFF&#34;,&#34;StopOnError&#34;:&#34;OFF&#34;,&#34;Length&#34;:473,&#34;Free&#34;:38,&#34;Rules&#34;:&#34;on SetOption19#Data=OFF do publish2 homeassistant/fan/%macaddr%/config {\&#34;uniq_id\&#34;:\&#34;AABBCC\&#34;,\&#34;~\&#34;:\&#34;%topic%/POWER1\&#34;,\&#34;cmd_t\&#34;:\&#34;cmnd/~\&#34;,\&#34;pl_off\&#34;:\&#34;OFF\&#34;,\&#34;pl_on\&#34;:\&#34;ON\&#34;,\&#34;stat_t\&#34;:\&#34;stat/~\&#34;,\&#34;avty_t\&#34;:\&#34;tele/%topic%/LWT\&#34;,\&#34;pl_avail\&#34;:\&#34;Online\&#34;,\&#34;pl_not_avail\&#34;:\&#34;Offline\&#34;,\&#34;pct_cmd_t\&#34;:\&#34;cmnd/%topic%/tuyasend4\&#34;,\&#34;pct_cmd_tpl\&#34;:\&#34;{%set v=value|int%}{%if v&lt;=25%}3,0{%elif v&lt;=50%}3,1{%elif v&lt;=75%}3,2{%elif v&lt;=100%}3,3{%endif%}\&#34;,\&#34;pct_stat_t\&#34;:\&#34;stat/%topic%/speed\&#34;,\&#34;dev\&#34;:{\&#34;cns\&#34;:[[\&#34;mac\&#34;,\&#34;%macaddr%\&#34;]]}} endon&#34;}}
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">18:24:10.362 CMD: so19 0
+</span></span><span class="line"><span class="cl">18:24:10.369 MQT: stat/living_room_ceiling_fan/RESULT = {&#34;SetOption19&#34;:&#34;OFF&#34;}
+</span></span><span class="line"><span class="cl">18:24:10.414 RUL: SETOPTION19#DATA=OFF performs &#34;publish2 homeassistant/fan/DDEEFFAABBCC/config {&#34;uniq_id&#34;:&#34;AABBCC&#34;,&#34;~&#34;:&#34;living_room_ceiling_...
+</span></span><span class="line"><span class="cl">18:24:10.421 MQT: home Assistant/fan/DDEEFFAABBCC/config = {&#34;uniq_id&#34;:&#34;AABBCC&#34;,&#34;~&#34;:&#34;living_room_ceiling_fan/POWER1&#34;,&#34;cmd_t&#34;:&#34;cmnd/~&#34;,&#34;pl_off&#34;:&#34;OFF&#34;,&#34;pl_on&#34;:&#34;ON&#34;,&#34;stat_t&#34;:&#34;stat/~&#34;,&#34;avty_t&#34;:&#34;tele/living_room_ceiling_fan/LWT&#34;,&#34;pl_avail&#34;:&#34;Online&#34;,&#34;pl_not_avail&#34;:&#34;Offline&#34;,&#34;pct_cmd_t&#34;:&#34;cmnd/living_room_ceiling_fan/tuyasend4&#34;,&#34;pct_cmd_tpl&#34;:&#34;{%set v=value|int%}{%if v&lt;=25%}3,0{%elif v&lt;=50%}3,1{%elif v&lt;=75%}3,2{%elif v&lt;=100%}3,3{%endif%}&#34;,&#34;pct_stat_t&#34;:&#34;stat/living_room_ceiling_fan/speed&#34;,&#34;dev&#34;:{&#34;cns&#34;:[[&#34;mac&#34;,&#34;DDEEFFAABBCC&#34;]]}} (retained)
+</span></span><span class="line"><span class="cl">18:24:10.509 LOG: Home Assistant MQTT Discovery disabled.
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>If everything worked correctly, Home Assistant should now show a single device in the <a href="https://developers.home-assistant.io/docs/device_registry_index/" target="_blank" rel="noopener noreffer">device registry</a> with a dimmable light entity and a variable-speed fan entity!</p>
 <figure >
@@ -1037,28 +1035,28 @@ so19 0
 </span><span class="lnt">21
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l">Tasmotas Announce</span><span class="w">
-</span><span class="w"></span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;Prevents devices from going Unavailable&#39;</span><span class="w">
-</span><span class="w"></span><span class="nt">trigger</span><span class="p">:</span><span class="w">
-</span><span class="w">  </span>- <span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">home Assistant</span><span class="w">
-</span><span class="w">    </span><span class="nt">event</span><span class="p">:</span><span class="w"> </span><span class="l">start</span><span class="w">
-</span><span class="w">  </span>- <span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">time_pattern</span><span class="w">
-</span><span class="w">    </span><span class="nt">hours</span><span class="p">:</span><span class="w"> </span><span class="l">/1</span><span class="w">
-</span><span class="w"></span><span class="nt">condition</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
-</span><span class="w"></span><span class="nt">action</span><span class="p">:</span><span class="w">
-</span><span class="w">  </span><span class="c"># For reasons that I don&#39;t understand, different tasmota devices seem to </span><span class="w">
-</span><span class="w">  </span><span class="c">#     subscribe to a different group topic. cmnd/tas vs tas/cmnd</span><span class="w">
-</span><span class="w">  </span><span class="c">##</span><span class="w">
-</span><span class="w">  </span>- <span class="nt">service</span><span class="p">:</span><span class="w"> </span><span class="l">mqtt.publish</span><span class="w">
-</span><span class="w">    </span><span class="nt">data</span><span class="p">:</span><span class="w">
-</span><span class="w">      </span><span class="nt">topic</span><span class="p">:</span><span class="w"> </span><span class="l">cmnd/tasmotas/SetOption19</span><span class="w">
-</span><span class="w">      </span><span class="nt">payload</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;0&#39;</span><span class="w">
-</span><span class="w">  </span>- <span class="nt">service</span><span class="p">:</span><span class="w"> </span><span class="l">mqtt.publish</span><span class="w">
-</span><span class="w">    </span><span class="nt">data</span><span class="p">:</span><span class="w">
-</span><span class="w">      </span><span class="nt">topic</span><span class="p">:</span><span class="w"> </span><span class="l">tasmotas/cmnd/SetOption19</span><span class="w">
-</span><span class="w">      </span><span class="nt">payload</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;0&#39;</span><span class="w">
-</span><span class="w"></span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l">single</span><span class="w">
-</span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l">Tasmotas Announce</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;Prevents devices from going Unavailable&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">trigger</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">home Assistant</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">event</span><span class="p">:</span><span class="w"> </span><span class="l">start</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">time_pattern</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">hours</span><span class="p">:</span><span class="w"> </span><span class="l">/1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">condition</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">action</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># For reasons that I don&#39;t understand, different tasmota devices seem to </span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#     subscribe to a different group topic. cmnd/tas vs tas/cmnd</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">##</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">service</span><span class="p">:</span><span class="w"> </span><span class="l">mqtt.publish</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">data</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">topic</span><span class="p">:</span><span class="w"> </span><span class="l">cmnd/tasmotas/SetOption19</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">payload</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;0&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">service</span><span class="p">:</span><span class="w"> </span><span class="l">mqtt.publish</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">data</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">topic</span><span class="p">:</span><span class="w"> </span><span class="l">tasmotas/cmnd/SetOption19</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">payload</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;0&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l">single</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
 </div>
 </div><p>You could probably work around this whole thing by changing the trigger for <code>rule2</code> to something like <code>on Mqtt#Connected publish2</code>. Or storing the configuration payload as a <a href="https://tasmota.github.io/docs/Rules/#rule-variables" target="_blank" rel="noopener noreffer">variable</a> so you could write multiple triggers for the same <code>publish2 %mem1%</code> action 🤔.</p>
 <h3 id="side-note-rules-crash">Side note: Rules Crash!</h3>
@@ -1069,12 +1067,12 @@ so19 0
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">MQT: stat/living_room_ceiling_fan/RESULT = {&#34;Rule2&#34;:{&#34;State&#34;:&#34;ON&#34;,...&#34;Free&#34;:9,&#34;Rules&#34;:&#34;on ... endon&#34;}}
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">MQT: stat/living_room_ceiling_fan/RESULT = {&#34;Rule2&#34;:{&#34;State&#34;:&#34;ON&#34;,...&#34;Free&#34;:9,&#34;Rules&#34;:&#34;on ... endon&#34;}}
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>I could technically make the rule <code>9</code> characters longer and it&rsquo;d still fit&hellip; right?</p>
 <p>Not quite. Looking at the result from issuing the <code>Rule1</code> command, it was clear that while <code>rule2</code> would have an absolute maximum length of 511 characters (<code>&quot;Length&quot;:344,&quot;Free&quot;:167</code>; 344+167=511) there was also a less well defined soft limit on rule length.</p>
-<p>For some versions of my <code>rule2</code> payload, I was able to solve the crashing just by switching to the &lsquo;lite&rsquo; version of Tasmota. While the &lsquo;lite&rsquo; version of Tasmota does work with Tuya MCU (<code>USE_TUYA_MCU</code>), it <a href="https://github.com/arendst/Tasmota/blob/v9.4.0/BUILDS.md" target="_blank" rel="noopener noreffer">does <em>not</em> support</a> Home Assistant configuration (<code>USE_HOME_ASSISTANT</code>)!</p>
+<p>For some versions of my <code>rule2</code> payload, I was able to solve the crashing just by switching to the &rsquo;lite&rsquo; version of Tasmota. While the &rsquo;lite&rsquo; version of Tasmota does work with Tuya MCU (<code>USE_TUYA_MCU</code>), it <a href="https://github.com/arendst/Tasmota/blob/v9.4.0/BUILDS.md" target="_blank" rel="noopener noreffer">does <em>not</em> support</a> Home Assistant configuration (<code>USE_HOME_ASSISTANT</code>)!</p>
 <p>After flashing back to the &lsquo;regular&rsquo; Tasmota build, I set out trying to compress the <code>rule2</code> payload as much as possible so that it would still work <em>and</em> not reliably crash the ESP8266 on the DS03.</p>
 <p>After testing several things, I managed to get a working <code>rule2</code> that didn&rsquo;t reliably crash when triggered.</p>
 ]]></description></item><item><title>Two Tasmota rules</title><link>https://karlquinsland.com/two-tasmota-rules/</link><pubDate>Fri, 20 Nov 2020 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/two-tasmota-rules/</guid><description><![CDATA[<p><a href="https://tasmota.github.io/" target="_blank" rel="noopener noreffer">Tasmota</a> is an incredibly powerful alternative/open source firmware for the ever popular Espressif family of WiFi equipped microcontrollers.
@@ -1128,29 +1126,29 @@ If you want to pour a cup of coffee while it&rsquo;s still brewing, this is rath
 </span><span class="lnt">22
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">Rule1
-    # When relay1 (heater) is turned on, activate rule2
-    ON Power1#state=1 DO Rule2 1 ENDON
-
-    # and deactivate rule2 when the heater is turned off
-    ON Power1#state=0 DO Rule2 0 ENDON
-
-    # When Timer1 expires, turn the heater off
-    ON Rules#Timer=1 DO Power1 off ENDON
-
-    # When the current used by the heating element rises above 1 Amp, disable Timer1
-    ON Energy#Current&gt;1 DO RuleTimer1 0 ENDON
-
-    # ... and enable rule 2
-    ON Energy#Current&gt;1 DO Rule2 1 ENDON
-
-Rule2
-    # Wait for power use to drop to 0; start counting down
-    ON Energy#Current&lt;.2 DO RuleTimer1 30 ENDON
-
-    # and disable rule2 so the timer is not constantly reset
-    ON Energy#Current&lt;.2 DO Rule2 0 ENDON
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Rule1
+</span></span><span class="line"><span class="cl">    # When relay1 (heater) is turned on, activate rule2
+</span></span><span class="line"><span class="cl">    ON Power1#state=1 DO Rule2 1 ENDON
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    # and deactivate rule2 when the heater is turned off
+</span></span><span class="line"><span class="cl">    ON Power1#state=0 DO Rule2 0 ENDON
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    # When Timer1 expires, turn the heater off
+</span></span><span class="line"><span class="cl">    ON Rules#Timer=1 DO Power1 off ENDON
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    # When the current used by the heating element rises above 1 Amp, disable Timer1
+</span></span><span class="line"><span class="cl">    ON Energy#Current&gt;1 DO RuleTimer1 0 ENDON
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    # ... and enable rule 2
+</span></span><span class="line"><span class="cl">    ON Energy#Current&gt;1 DO Rule2 1 ENDON
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Rule2
+</span></span><span class="line"><span class="cl">    # Wait for power use to drop to 0; start counting down
+</span></span><span class="line"><span class="cl">    ON Energy#Current&lt;.2 DO RuleTimer1 30 ENDON
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    # and disable rule2 so the timer is not constantly reset
+</span></span><span class="line"><span class="cl">    ON Energy#Current&lt;.2 DO Rule2 0 ENDON
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>I chose <code>.2</code> Amps as the trigger, but the logic works the exact same way with Power / Wattage.</p>
 <h2 id="electric-kettle">Electric Kettle</h2>
@@ -1172,19 +1170,19 @@ This is trivial to do with a &lsquo;<a href="https://tasmota.github.io/docs/devi
 </span><span class="lnt">12
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml">- <span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
-</span><span class="w">  </span><span class="nt">sensors</span><span class="p">:</span><span class="w">
-</span><span class="w">    </span><span class="nt">kettle_running</span><span class="p">:</span><span class="w">
-</span><span class="w">      </span><span class="nt">friendly_name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Kettle Boiling&#34;</span><span class="w">
-</span><span class="w">      </span><span class="c"># If the kettle is using more than 5w, assume its on / boiling water</span><span class="w">
-</span><span class="w">      </span><span class="nt">icon_template</span><span class="p">:</span><span class="w"> </span><span class="p">&gt;-</span><span class="sd">
-</span><span class="sd">        {% if states(&#39;sensor.kettle_energy_power&#39;) | float &gt; 5 %}
-</span><span class="sd">          mdi:kettle-steam
-</span><span class="sd">        {% else %}
-</span><span class="sd">          mdi:kettle
-</span><span class="sd">        {% endif %}</span><span class="w">        
-</span><span class="w">      </span><span class="nt">value_template</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;{{states(&#39;sensor.kettle_energy_power&#39;) | float &gt; 5}}&#34;</span><span class="w">
-</span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl">- <span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">sensors</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">kettle_running</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">friendly_name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Kettle Boiling&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="c"># If the kettle is using more than 5w, assume its on / boiling water</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">icon_template</span><span class="p">:</span><span class="w"> </span><span class="p">&gt;-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">        {% if states(&#39;sensor.kettle_energy_power&#39;) | float &gt; 5 %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          mdi:kettle-steam
+</span></span></span><span class="line"><span class="cl"><span class="sd">        {% else %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          mdi:kettle
+</span></span></span><span class="line"><span class="cl"><span class="sd">        {% endif %}</span><span class="w">        
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">value_template</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;{{states(&#39;sensor.kettle_energy_power&#39;) | float &gt; 5}}&#34;</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
 </div>
 </div><p>Only problem, Tasmota only publishes the kettle&rsquo;s power once every 300 seconds. This means <code>sensor.kettle_energy_power</code> only gets updated every 300s which makes it really hard
 to fire off a <em>timely</em> notification when the kettle is done.
@@ -1201,12 +1199,12 @@ is consuming more than 1 Watt. Like the coffee maker, it&rsquo;s either consumin
 </span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">Rule1
-    on ENERGY#Power&gt;1 do Backlog TelePeriod 10; Rule2 1 endon
-
-Rule2
-    on ENERGY#Power=0 do Backlog TelePeriod 1; Rule2 0 endon
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Rule1
+</span></span><span class="line"><span class="cl">    on ENERGY#Power&gt;1 do Backlog TelePeriod 10; Rule2 1 endon
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Rule2
+</span></span><span class="line"><span class="cl">    on ENERGY#Power=0 do Backlog TelePeriod 1; Rule2 0 endon
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>As soon as the kettle starts using more than 1 Watt, configure Tasmota to publish its sensor data every 10 seconds.
 I&rsquo;ll get notified that the water is boiling within 10s; much better than 300s!
@@ -1219,9 +1217,9 @@ Without the <code>Rule2 0</code>, the console/logs for the device would be full 
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">RUL: ENERGY#POWER&gt;1 performs &#34;TelePeriod 10&#34;
-MQT: stat/tasmota_kettle/RESULT = {&#34;TelePeriod&#34;:10}
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">RUL: ENERGY#POWER&gt;1 performs &#34;TelePeriod 10&#34;
+</span></span><span class="line"><span class="cl">MQT: stat/tasmota_kettle/RESULT = {&#34;TelePeriod&#34;:10}
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>Hope that helped!</p>
 <hr>

@@ -59,10 +59,10 @@ For example, <a href="https://haswitchplate.github.io/openHASP-docs/0.6/design/o
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="p">{</span><span class="nt">&#34;page&#34;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="nt">&#34;id&#34;</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="nt">&#34;obj&#34;</span><span class="p">:</span><span class="s2">&#34;btn&#34;</span><span class="p">,</span><span class="nt">&#34;x&#34;</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span><span class="nt">&#34;y&#34;</span><span class="p">:</span><span class="mi">40</span><span class="p">,</span><span class="nt">&#34;w&#34;</span><span class="p">:</span><span class="mi">105</span><span class="p">,</span><span class="nt">&#34;h&#34;</span><span class="p">:</span><span class="mi">90</span><span class="p">,</span><span class="nt">&#34;toggle&#34;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="nt">&#34;text&#34;</span><span class="p">:</span><span class="s2">&#34;Button&#34;</span><span class="p">,</span><span class="nt">&#34;mode&#34;</span><span class="p">:</span><span class="s2">&#34;break&#34;</span><span class="p">,</span><span class="nt">&#34;align&#34;</span><span class="p">:</span><span class="s2">&#34;center&#34;</span><span class="p">}</span>
-
-<span class="p">{</span><span class="nt">&#34;page&#34;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="nt">&#34;id&#34;</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span><span class="nt">&#34;obj&#34;</span><span class="p">:</span><span class="s2">&#34;btn&#34;</span><span class="p">,</span><span class="nt">&#34;x&#34;</span><span class="p">:</span><span class="mi">125</span><span class="p">,</span><span class="nt">&#34;y&#34;</span><span class="p">:</span><span class="mi">40</span><span class="p">,</span><span class="nt">&#34;w&#34;</span><span class="p">:</span><span class="mi">105</span><span class="p">,</span><span class="nt">&#34;h&#34;</span><span class="p">:</span><span class="mi">90</span><span class="p">,</span><span class="nt">&#34;toggle&#34;</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span><span class="nt">&#34;text&#34;</span><span class="p">:</span><span class="s2">&#34;#FFD700 Toggle# Button&#34;</span><span class="p">,</span><span class="nt">&#34;mode&#34;</span><span class="p">:</span><span class="s2">&#34;break&#34;</span><span class="p">,</span><span class="nt">&#34;align&#34;</span><span class="p">:</span><span class="s2">&#34;center&#34;</span><span class="p">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;page&#34;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="nt">&#34;id&#34;</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="nt">&#34;obj&#34;</span><span class="p">:</span><span class="s2">&#34;btn&#34;</span><span class="p">,</span><span class="nt">&#34;x&#34;</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span><span class="nt">&#34;y&#34;</span><span class="p">:</span><span class="mi">40</span><span class="p">,</span><span class="nt">&#34;w&#34;</span><span class="p">:</span><span class="mi">105</span><span class="p">,</span><span class="nt">&#34;h&#34;</span><span class="p">:</span><span class="mi">90</span><span class="p">,</span><span class="nt">&#34;toggle&#34;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="nt">&#34;text&#34;</span><span class="p">:</span><span class="s2">&#34;Button&#34;</span><span class="p">,</span><span class="nt">&#34;mode&#34;</span><span class="p">:</span><span class="s2">&#34;break&#34;</span><span class="p">,</span><span class="nt">&#34;align&#34;</span><span class="p">:</span><span class="s2">&#34;center&#34;</span><span class="p">}</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;page&#34;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="nt">&#34;id&#34;</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span><span class="nt">&#34;obj&#34;</span><span class="p">:</span><span class="s2">&#34;btn&#34;</span><span class="p">,</span><span class="nt">&#34;x&#34;</span><span class="p">:</span><span class="mi">125</span><span class="p">,</span><span class="nt">&#34;y&#34;</span><span class="p">:</span><span class="mi">40</span><span class="p">,</span><span class="nt">&#34;w&#34;</span><span class="p">:</span><span class="mi">105</span><span class="p">,</span><span class="nt">&#34;h&#34;</span><span class="p">:</span><span class="mi">90</span><span class="p">,</span><span class="nt">&#34;toggle&#34;</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span><span class="nt">&#34;text&#34;</span><span class="p">:</span><span class="s2">&#34;#FFD700 Toggle# Button&#34;</span><span class="p">,</span><span class="nt">&#34;mode&#34;</span><span class="p">:</span><span class="s2">&#34;break&#34;</span><span class="p">,</span><span class="nt">&#34;align&#34;</span><span class="p">:</span><span class="s2">&#34;center&#34;</span><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><figure >
 
@@ -220,9 +220,9 @@ The page/id values declared in your <code>jsonl</code> file <em>must match</em> 
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">❯ cat header.frag.jsonl footer.frag.jsonl room.frag.jsonl &gt; pages.jsonl
-❯ curl http://roomPlateIpv4Here/edit --form <span class="nv">name</span><span class="o">=</span>data --form <span class="nv">data</span><span class="o">=</span>@pages.jsonl
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">❯ cat header.frag.jsonl footer.frag.jsonl room.frag.jsonl &gt; pages.jsonl
+</span></span><span class="line"><span class="cl">❯ curl http://roomPlateIpv4Here/edit --form <span class="nv">name</span><span class="o">=</span>data --form <span class="nv">data</span><span class="o">=</span>@pages.jsonl
+</span></span></code></pre></td></tr></table>
 </div>
 </div><div class="details admonition info open">
         <div class="details-summary admonition-title">
@@ -238,10 +238,10 @@ You can change this setting via the web UI: <code>http://roomPlateIpv4Here/confi
 </span><span class="lnt">3
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">❯ telnet roomPlateIpv4Here
-&lt;...&gt;
-prompt&gt; config/hasp <span class="o">{</span><span class="s2">&#34;pages&#34;</span>:<span class="s2">&#34;/foo.jsonl&#34;</span><span class="o">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">❯ telnet roomPlateIpv4Here
+</span></span><span class="line"><span class="cl">&lt;...&gt;
+</span></span><span class="line"><span class="cl">prompt&gt; config/hasp <span class="o">{</span><span class="s2">&#34;pages&#34;</span>:<span class="s2">&#34;/foo.jsonl&#34;</span><span class="o">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div></div>
         </div>
@@ -280,35 +280,35 @@ prompt&gt; config/hasp <span class="o">{</span><span class="s2">&#34;pages&#34;<
 </span><span class="lnt">28
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="p">{</span>
-    <span class="nt">&#34;page&#34;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="nt">&#34;comment&#34;</span><span class="p">:</span> <span class="s2">&#34;Default to page0 as the header and page/layout&#34;</span>
-<span class="p">}</span>
-<span class="p">{</span>
-    <span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="nt">&#34;comment&#34;</span><span class="p">:</span> <span class="s2">&#34;Time in the top left&#34;</span><span class="p">,</span>
-    <span class="nt">&#34;obj&#34;</span><span class="p">:</span> <span class="s2">&#34;label&#34;</span><span class="p">,</span>
-    <span class="nt">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;00:00&#34;</span><span class="p">,</span>
-    <span class="nt">&#34;align&#34;</span><span class="p">:</span> <span class="s2">&#34;center&#34;</span><span class="p">,</span>
-    <span class="nt">&#34;bg_color&#34;</span><span class="p">:</span> <span class="s2">&#34;#2C3E50&#34;</span>
-<span class="p">}</span>
-<span class="p">{</span>
-    <span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
-    <span class="nt">&#34;comment&#34;</span><span class="p">:</span> <span class="s2">&#34;Temp in the middle&#34;</span><span class="p">,</span>
-    <span class="nt">&#34;obj&#34;</span><span class="p">:</span> <span class="s2">&#34;label&#34;</span><span class="p">,</span>
-    <span class="nt">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;00.0°C&#34;</span><span class="p">,</span>
-    <span class="nt">&#34;align&#34;</span><span class="p">:</span> <span class="s2">&#34;center&#34;</span><span class="p">,</span>
-    <span class="nt">&#34;bg_color&#34;</span><span class="p">:</span> <span class="s2">&#34;#2C3E50&#34;</span>
-<span class="p">}</span>
-<span class="p">{</span>
-    <span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-    <span class="nt">&#34;comment&#34;</span><span class="p">:</span> <span class="s2">&#34;Humidity in the top right&#34;</span><span class="p">,</span>
-    <span class="nt">&#34;obj&#34;</span><span class="p">:</span> <span class="s2">&#34;label&#34;</span><span class="p">,</span>
-    <span class="nt">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;00.0%&#34;</span><span class="p">,</span>
-    <span class="nt">&#34;align&#34;</span><span class="p">:</span> <span class="s2">&#34;right&#34;</span><span class="p">,</span>
-    <span class="nt">&#34;bg_color&#34;</span><span class="p">:</span> <span class="s2">&#34;#2C3E50&#34;</span>
-<span class="p">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;page&#34;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;comment&#34;</span><span class="p">:</span> <span class="s2">&#34;Default to page0 as the header and page/layout&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;comment&#34;</span><span class="p">:</span> <span class="s2">&#34;Time in the top left&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;obj&#34;</span><span class="p">:</span> <span class="s2">&#34;label&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;00:00&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;align&#34;</span><span class="p">:</span> <span class="s2">&#34;center&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;bg_color&#34;</span><span class="p">:</span> <span class="s2">&#34;#2C3E50&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;comment&#34;</span><span class="p">:</span> <span class="s2">&#34;Temp in the middle&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;obj&#34;</span><span class="p">:</span> <span class="s2">&#34;label&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;00.0°C&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;align&#34;</span><span class="p">:</span> <span class="s2">&#34;center&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;bg_color&#34;</span><span class="p">:</span> <span class="s2">&#34;#2C3E50&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;comment&#34;</span><span class="p">:</span> <span class="s2">&#34;Humidity in the top right&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;obj&#34;</span><span class="p">:</span> <span class="s2">&#34;label&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;00.0%&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;align&#34;</span><span class="p">:</span> <span class="s2">&#34;right&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;bg_color&#34;</span><span class="p">:</span> <span class="s2">&#34;#2C3E50&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><h4 id="footerfragjsonl"><code>footer.frag.jsonl</code></h4>
 <p>This contains the three page navigation buttons that I wish to have at the bottom of <em>every</em> openHasp device that I deploy.</p>
@@ -348,45 +348,43 @@ prompt&gt; config/hasp <span class="o">{</span><span class="s2">&#34;pages&#34;<
 </span><span class="lnt">32
 </span><span class="lnt">33
 </span><span class="lnt">34
-</span><span class="lnt">35
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="p">{</span>
-    <span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
-    <span class="nt">&#34;comment&#34;</span><span class="p">:</span> <span class="s2">&#34;tab nav on the bottom, prev&#34;</span><span class="p">,</span>
-    <span class="nt">&#34;obj&#34;</span><span class="p">:</span> <span class="s2">&#34;btn&#34;</span><span class="p">,</span>
-    <span class="nt">&#34;action&#34;</span><span class="p">:</span> <span class="s2">&#34;prev&#34;</span><span class="p">,</span>
-    <span class="nt">&#34;bg_color&#34;</span><span class="p">:</span> <span class="s2">&#34;#2C3E50&#34;</span><span class="p">,</span>
-    <span class="nt">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;\uE141&#34;</span><span class="p">,</span>
-    <span class="nt">&#34;text_color&#34;</span><span class="p">:</span> <span class="s2">&#34;#FFFFFF&#34;</span><span class="p">,</span>
-    <span class="nt">&#34;radius&#34;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="nt">&#34;border_side&#34;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="nt">&#34;text_font&#34;</span><span class="p">:</span> <span class="mi">28</span>
-<span class="p">}</span>
-<span class="p">{</span>
-    <span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
-    <span class="nt">&#34;obj&#34;</span><span class="p">:</span> <span class="s2">&#34;btn&#34;</span><span class="p">,</span>
-    <span class="nt">&#34;action&#34;</span><span class="p">:</span> <span class="s2">&#34;back&#34;</span><span class="p">,</span>
-    <span class="nt">&#34;bg_color&#34;</span><span class="p">:</span> <span class="s2">&#34;#2C3E50&#34;</span><span class="p">,</span>
-    <span class="nt">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;\uE2DC&#34;</span><span class="p">,</span>
-    <span class="nt">&#34;text_color&#34;</span><span class="p">:</span> <span class="s2">&#34;#FFFFFF&#34;</span><span class="p">,</span>
-    <span class="nt">&#34;radius&#34;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="nt">&#34;border_side&#34;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="nt">&#34;text_font&#34;</span><span class="p">:</span> <span class="mi">22</span>
-<span class="p">}</span>
-<span class="p">{</span>
-    <span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
-    <span class="nt">&#34;obj&#34;</span><span class="p">:</span> <span class="s2">&#34;btn&#34;</span><span class="p">,</span>
-    <span class="nt">&#34;action&#34;</span><span class="p">:</span> <span class="s2">&#34;next&#34;</span><span class="p">,</span>
-    <span class="nt">&#34;bg_color&#34;</span><span class="p">:</span> <span class="s2">&#34;#2C3E50&#34;</span><span class="p">,</span>
-    <span class="nt">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;\uE142&#34;</span><span class="p">,</span>
-    <span class="nt">&#34;text_color&#34;</span><span class="p">:</span> <span class="s2">&#34;#FFFFFF&#34;</span><span class="p">,</span>
-    <span class="nt">&#34;radius&#34;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="nt">&#34;border_side&#34;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="nt">&#34;text_font&#34;</span><span class="p">:</span> <span class="mi">28</span>
-<span class="p">}</span>
-
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;comment&#34;</span><span class="p">:</span> <span class="s2">&#34;tab nav on the bottom, prev&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;obj&#34;</span><span class="p">:</span> <span class="s2">&#34;btn&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;action&#34;</span><span class="p">:</span> <span class="s2">&#34;prev&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;bg_color&#34;</span><span class="p">:</span> <span class="s2">&#34;#2C3E50&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;\uE141&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;text_color&#34;</span><span class="p">:</span> <span class="s2">&#34;#FFFFFF&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;radius&#34;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;border_side&#34;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;text_font&#34;</span><span class="p">:</span> <span class="mi">28</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;obj&#34;</span><span class="p">:</span> <span class="s2">&#34;btn&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;action&#34;</span><span class="p">:</span> <span class="s2">&#34;back&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;bg_color&#34;</span><span class="p">:</span> <span class="s2">&#34;#2C3E50&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;\uE2DC&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;text_color&#34;</span><span class="p">:</span> <span class="s2">&#34;#FFFFFF&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;radius&#34;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;border_side&#34;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;text_font&#34;</span><span class="p">:</span> <span class="mi">22</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;obj&#34;</span><span class="p">:</span> <span class="s2">&#34;btn&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;action&#34;</span><span class="p">:</span> <span class="s2">&#34;next&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;bg_color&#34;</span><span class="p">:</span> <span class="s2">&#34;#2C3E50&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;\uE142&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;text_color&#34;</span><span class="p">:</span> <span class="s2">&#34;#FFFFFF&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;radius&#34;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;border_side&#34;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;text_font&#34;</span><span class="p">:</span> <span class="mi">28</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><h4 id="roomfragjson"><code>room.frag.json</code></h4>
 <p>This file should contain all the page(s) and UI widgets that are unique to the openHasp device deployed into the room that I will call <code>room</code> for the purposes of this post.
@@ -429,41 +427,41 @@ As a <strong>demonstration</strong>, I have set up three buttons that control ea
 </span><span class="lnt">34
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="p">{</span>
-    <span class="nt">&#34;page&#34;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-    <span class="nt">&#34;comment&#34;</span><span class="p">:</span> <span class="s2">&#34;primary controls for the 3 relays&#34;</span>
-<span class="p">}</span>
-<span class="p">{</span>
-    <span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="mi">101</span><span class="p">,</span>
-    <span class="nt">&#34;comment&#34;</span><span class="p">:</span> <span class="s2">&#34;relay1&#34;</span><span class="p">,</span>
-    <span class="nt">&#34;obj&#34;</span><span class="p">:</span> <span class="s2">&#34;btn&#34;</span><span class="p">,</span>
-    <span class="nt">&#34;toggle&#34;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
-    <span class="nt">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;relay1&#34;</span><span class="p">,</span>
-    <span class="nt">&#34;mode&#34;</span><span class="p">:</span> <span class="s2">&#34;break&#34;</span><span class="p">,</span>
-    <span class="nt">&#34;align&#34;</span><span class="p">:</span> <span class="s2">&#34;center&#34;</span><span class="p">,</span>
-    <span class="nt">&#34;groupid&#34;</span><span class="p">:</span> <span class="mi">1</span>
-<span class="p">}</span>
-<span class="p">{</span>
-    <span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="mi">102</span><span class="p">,</span>
-    <span class="nt">&#34;comment&#34;</span><span class="p">:</span> <span class="s2">&#34;relay2&#34;</span><span class="p">,</span>
-    <span class="nt">&#34;obj&#34;</span><span class="p">:</span> <span class="s2">&#34;btn&#34;</span><span class="p">,</span>
-    <span class="nt">&#34;toggle&#34;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
-    <span class="nt">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;relay2&#34;</span><span class="p">,</span>
-    <span class="nt">&#34;mode&#34;</span><span class="p">:</span> <span class="s2">&#34;break&#34;</span><span class="p">,</span>
-    <span class="nt">&#34;align&#34;</span><span class="p">:</span> <span class="s2">&#34;center&#34;</span><span class="p">,</span>
-    <span class="nt">&#34;groupid&#34;</span><span class="p">:</span> <span class="mi">2</span>
-<span class="p">}</span>
-<span class="p">{</span>
-    <span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="mi">103</span><span class="p">,</span>
-    <span class="nt">&#34;comment&#34;</span><span class="p">:</span> <span class="s2">&#34;relay3&#34;</span><span class="p">,</span>
-    <span class="nt">&#34;obj&#34;</span><span class="p">:</span> <span class="s2">&#34;btn&#34;</span><span class="p">,</span>
-    <span class="nt">&#34;toggle&#34;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
-    <span class="nt">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;relay3&#34;</span><span class="p">,</span>
-    <span class="nt">&#34;mode&#34;</span><span class="p">:</span> <span class="s2">&#34;break&#34;</span><span class="p">,</span>
-    <span class="nt">&#34;align&#34;</span><span class="p">:</span> <span class="s2">&#34;center&#34;</span><span class="p">,</span>
-    <span class="nt">&#34;groupid&#34;</span><span class="p">:</span> <span class="mi">3</span>
-<span class="p">}</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;page&#34;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;comment&#34;</span><span class="p">:</span> <span class="s2">&#34;primary controls for the 3 relays&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="mi">101</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;comment&#34;</span><span class="p">:</span> <span class="s2">&#34;relay1&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;obj&#34;</span><span class="p">:</span> <span class="s2">&#34;btn&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;toggle&#34;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;relay1&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;mode&#34;</span><span class="p">:</span> <span class="s2">&#34;break&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;align&#34;</span><span class="p">:</span> <span class="s2">&#34;center&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;groupid&#34;</span><span class="p">:</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="mi">102</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;comment&#34;</span><span class="p">:</span> <span class="s2">&#34;relay2&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;obj&#34;</span><span class="p">:</span> <span class="s2">&#34;btn&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;toggle&#34;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;relay2&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;mode&#34;</span><span class="p">:</span> <span class="s2">&#34;break&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;align&#34;</span><span class="p">:</span> <span class="s2">&#34;center&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;groupid&#34;</span><span class="p">:</span> <span class="mi">2</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="mi">103</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;comment&#34;</span><span class="p">:</span> <span class="s2">&#34;relay3&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;obj&#34;</span><span class="p">:</span> <span class="s2">&#34;btn&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;toggle&#34;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;relay3&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;mode&#34;</span><span class="p">:</span> <span class="s2">&#34;break&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;align&#34;</span><span class="p">:</span> <span class="s2">&#34;center&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;groupid&#34;</span><span class="p">:</span> <span class="mi">3</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="configure-home-assistant">Configure Home Assistant</h3>
 <p>After the <code>pages.jsonl</code> is deployed to <em>each</em> of the openHasp devices, you will need to create a configuration file for Home Assistant.
@@ -798,338 +796,336 @@ For the above screenshots, I created two <em>identical</em> ⃰ copies of the ya
 </span><span class="lnt">325
 </span><span class="lnt">326
 </span><span class="lnt">327
-</span><span class="lnt">328
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="c"># plate00 is a test L8 module</span><span class="w">
-</span><span class="w"></span><span class="c"># Has a resolution of 240x320</span><span class="w">
-</span><span class="w"></span><span class="c"># The top left corner is 0,0, X grows positive to the right and Y grows positive down</span><span class="w">
-</span><span class="w"></span><span class="c">##</span><span class="w">
-</span><span class="w"></span><span class="nt">plate00</span><span class="p">:</span><span class="w">
-</span><span class="w">  </span><span class="c">## TODO: is there a way to fix this? Maybe a HA feature request or openHasp/CC change...</span><span class="w">
-</span><span class="w">  </span><span class="c"># Would be really nice if HA had some way to save templates and load them</span><span class="w">
-</span><span class="w">  </span><span class="c">#   that way I don&#39;t have to declare the same variables over and over...</span><span class="w">
-</span><span class="w">  </span><span class="nt">objects</span><span class="p">:</span><span class="w">
-</span><span class="w">    </span><span class="c">###</span><span class="w">
-</span><span class="w">    </span><span class="c"># COMMON</span><span class="w">
-</span><span class="w">    </span><span class="c">###</span><span class="w">
-</span><span class="w">    </span><span class="c"># Header: Time</span><span class="w">
-</span><span class="w">    </span>- <span class="nt">obj</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;p0b1&#34;</span><span class="w">
-</span><span class="w">      </span><span class="nt">properties</span><span class="p">:</span><span class="w">
-</span><span class="w">        </span><span class="c"># Align left most, If we do go over our permitted length, loop</span><span class="w">
-</span><span class="w">        </span><span class="nt">&#34;align&#34;: </span><span class="s2">&#34;left&#34;</span><span class="w">
-</span><span class="w">        </span><span class="nt">&#34;text&#34;: </span><span class="s2">&#34;{{ states(&#39;sensor.time&#39;) }}&#34;</span><span class="w">
-</span><span class="w">        </span><span class="nt">&#34;mode&#34;: </span><span class="s2">&#34;loop&#34;</span><span class="w">
-</span><span class="w">        </span><span class="c">##</span><span class="w">
-</span><span class="w">        </span><span class="c"># Draw the labels with a 1% margin from the top and sides</span><span class="w">
-</span><span class="w">        </span><span class="nt">&#34;x&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
-</span><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
-</span><span class="sd">          {{hdrHorMargin}}</span><span class="w">          
-</span><span class="w">
-</span><span class="w">        </span><span class="nt">&#34;y&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
-</span><span class="sd">          {% set hdrVrtMargin = (scnHt*0.01) | int %}
-</span><span class="sd">          {{hdrVrtMargin}}</span><span class="w">          
-</span><span class="w">
-</span><span class="w">        </span><span class="c"># Width is 1/3 of the screen width after subtracting margins</span><span class="w">
-</span><span class="w">        </span><span class="c">##</span><span class="w">
-</span><span class="w">        </span><span class="nt">&#34;w&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span><span class="sd">          {% set numObj = 3 %}
-</span><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
-</span><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
-</span><span class="sd">          {% set usableHdrWd = scnWd-(2*hdrHorMargin) %}
-</span><span class="sd">          {% set hdrLblWd = (usableHdrWd/numObj) | int %}
-</span><span class="sd">          {{hdrLblWd}}</span><span class="w">          
-</span><span class="w">
-</span><span class="w">        </span><span class="c"># Height is 10% of the screen, after margin</span><span class="w">
-</span><span class="w">        </span><span class="c">##</span><span class="w">
-</span><span class="w">        </span><span class="nt">&#34;h&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
-</span><span class="sd">          {% set hdrVrtMargin = (scnHt*0.01) | int %}
-</span><span class="sd">          {% set hdrHt = (scnHt*0.1) | int %}
-</span><span class="sd">          {% set hdrLblHt = hdrHt-hdrVrtMargin %}
-</span><span class="sd">          {{hdrLblHt}}</span><span class="w">          
-</span><span class="w">
-</span><span class="w">    </span><span class="c"># Header: Temp</span><span class="w">
-</span><span class="w">    </span>- <span class="nt">obj</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;p0b2&#34;</span><span class="w">
-</span><span class="w">      </span><span class="nt">properties</span><span class="p">:</span><span class="w">
-</span><span class="w">        </span><span class="c"># Align center, If we do go over our permitted length, loop</span><span class="w">
-</span><span class="w">        </span><span class="nt">&#34;align&#34;: </span><span class="s2">&#34;center&#34;</span><span class="w">
-</span><span class="w">        </span><span class="nt">&#34;text&#34;: </span><span class="s2">&#34;{{ states(&#39;sensor.room_temperature&#39;) }}°C&#34;</span><span class="w">
-</span><span class="w">        </span><span class="nt">&#34;mode&#34;: </span><span class="s2">&#34;loop&#34;</span><span class="w">
-</span><span class="w">        </span><span class="c">##</span><span class="w">
-</span><span class="w">        </span><span class="c"># Draw the labels with a 1% margin from the top and sides</span><span class="w">
-</span><span class="w">        </span><span class="nt">&#34;x&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span><span class="sd">          {% set numObj = 3 %}
-</span><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
-</span><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
-</span><span class="sd">          {% set usableHdrWd = scnWd-(2*hdrHorMargin) %}
-</span><span class="sd">          {% set hdrLblWd = (usableHdrWd/numObj) | int %}
-</span><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
-</span><span class="sd">          {{hdrHorMargin+hdrLblWd}}</span><span class="w">          
-</span><span class="w">
-</span><span class="w">        </span><span class="nt">&#34;y&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
-</span><span class="sd">          {% set hdrVrtMargin = (scnHt*0.01) | int %}
-</span><span class="sd">          {{hdrVrtMargin}}</span><span class="w">          
-</span><span class="w">
-</span><span class="w">        </span><span class="c"># Width is 1/3 of the screen width after subtracting margins</span><span class="w">
-</span><span class="w">        </span><span class="c">##</span><span class="w">
-</span><span class="w">        </span><span class="nt">&#34;w&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span><span class="sd">          {% set numObj = 3 %}
-</span><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
-</span><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
-</span><span class="sd">          {% set usableHdrWd = scnWd-(2*hdrHorMargin) %}
-</span><span class="sd">          {% set hdrLblWd = (usableHdrWd/numObj) | int %}
-</span><span class="sd">          {{hdrLblWd}}</span><span class="w">          
-</span><span class="w">
-</span><span class="w">        </span><span class="c"># Height is 10% of the screen, after margin</span><span class="w">
-</span><span class="w">        </span><span class="c">##</span><span class="w">
-</span><span class="w">        </span><span class="nt">&#34;h&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
-</span><span class="sd">          {% set hdrVrtMargin = (scnHt*0.01) | int %}
-</span><span class="sd">          {% set hdrHt = (scnHt*0.1) | int %}
-</span><span class="sd">          {% set hdrLblHt = hdrHt-hdrVrtMargin %}
-</span><span class="sd">          {{hdrLblHt}}</span><span class="w">          
-</span><span class="w">
-</span><span class="w">    </span><span class="c"># Header: Humidity</span><span class="w">
-</span><span class="w">    </span>- <span class="nt">obj</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;p0b3&#34;</span><span class="w">
-</span><span class="w">      </span><span class="nt">properties</span><span class="p">:</span><span class="w">
-</span><span class="w">        </span><span class="c"># Align right most, If we do go over our permitted length, loop</span><span class="w">
-</span><span class="w">        </span><span class="nt">&#34;align&#34;: </span><span class="s2">&#34;right&#34;</span><span class="w">
-</span><span class="w">        </span><span class="nt">&#34;text&#34;: </span><span class="s2">&#34;{{ states(&#39;sensor.room_humidity&#39;) }}%&#34;</span><span class="w">
-</span><span class="w">        </span><span class="nt">&#34;mode&#34;: </span><span class="s2">&#34;loop&#34;</span><span class="w">
-</span><span class="w">        </span><span class="c">##</span><span class="w">
-</span><span class="w">        </span><span class="c"># Draw the labels with a 1% margin from the top and sides</span><span class="w">
-</span><span class="w">        </span><span class="nt">&#34;x&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span><span class="sd">          {% set numObj = 3 %}
-</span><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
-</span><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
-</span><span class="sd">          {% set usableHdrWd = scnWd-(2*hdrHorMargin) %}
-</span><span class="sd">          {% set hdrLblWd = (usableHdrWd/numObj) | int %}
-</span><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
-</span><span class="sd">          {{hdrHorMargin+(2*hdrLblWd)}}</span><span class="w">          
-</span><span class="w">
-</span><span class="w">        </span><span class="nt">&#34;y&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
-</span><span class="sd">          {% set hdrVrtMargin = (scnHt*0.01) | int %}
-</span><span class="sd">          {{hdrVrtMargin}}</span><span class="w">          
-</span><span class="w">
-</span><span class="w">        </span><span class="c"># Width is 1/3 of the screen width after subtracting margins</span><span class="w">
-</span><span class="w">        </span><span class="c">##</span><span class="w">
-</span><span class="w">        </span><span class="nt">&#34;w&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span><span class="sd">          {% set numObj = 3 %}
-</span><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
-</span><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
-</span><span class="sd">          {% set usableHdrWd = scnWd-(2*hdrHorMargin) %}
-</span><span class="sd">          {% set hdrLblWd = (usableHdrWd/numObj) | int %}
-</span><span class="sd">          {{hdrLblWd}}</span><span class="w">          
-</span><span class="w">
-</span><span class="w">        </span><span class="c"># Height is 10% of the screen, after margin</span><span class="w">
-</span><span class="w">        </span><span class="c">##</span><span class="w">
-</span><span class="w">        </span><span class="nt">&#34;h&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
-</span><span class="sd">          {% set hdrVrtMargin = (scnHt*0.01) | int %}
-</span><span class="sd">          {% set hdrHt = (scnHt*0.1) | int %}
-</span><span class="sd">          {% set hdrLblHt = hdrHt-hdrVrtMargin %}
-</span><span class="sd">          {{hdrLblHt}}</span><span class="w">          
-</span><span class="w">
-</span><span class="w">    </span><span class="c"># bottom nav: previous</span><span class="w">
-</span><span class="w">    </span>- <span class="nt">obj</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;p0b6&#34;</span><span class="w">
-</span><span class="w">      </span><span class="nt">properties</span><span class="p">:</span><span class="w">
-</span><span class="w">        </span><span class="c"># Left most button sits all the way up against the left side of the screen</span><span class="w">
-</span><span class="w">        </span><span class="nt">&#34;x&#34;: </span><span class="m">0</span><span class="w">
-</span><span class="w">        </span><span class="c"># Start drawing the button from the bottom most pixel</span><span class="w">
-</span><span class="w">        </span><span class="nt">&#34;y&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
-</span><span class="sd">          {% set hdrHt = (scnHt*0.1) | int %}
-</span><span class="sd">          {{scnHt-hdrHt}}</span><span class="w">          
-</span><span class="w">        </span><span class="c"># And since we have 3 buttons, 1/3 of the width</span><span class="w">
-</span><span class="w">        </span><span class="nt">&#34;w&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span><span class="sd">          {% set numObj = 3 %}
-</span><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
-</span><span class="sd">          {% set ftrBtnWd = (scnWd/numObj) | int %}
-</span><span class="sd">          {{ftrBtnWd-1}}</span><span class="w">          
-</span><span class="w">        </span><span class="c"># We want the bottom nav buttons to consume the bottom 10% of the screen</span><span class="w">
-</span><span class="w">        </span><span class="nt">&#34;h&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
-</span><span class="sd">          {% set ftrHt = (scnHt*0.1) | int %}
-</span><span class="sd">          {{ftrHt}}</span><span class="w">          
-</span><span class="w">
-</span><span class="w">    </span><span class="c"># bottom nav: home</span><span class="w">
-</span><span class="w">    </span>- <span class="nt">obj</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;p0b7&#34;</span><span class="w">
-</span><span class="w">      </span><span class="nt">properties</span><span class="p">:</span><span class="w">
-</span><span class="w">        </span><span class="c"># Start drawing exactly the next pixel over from where the first button stopped</span><span class="w">
-</span><span class="w">        </span><span class="nt">&#34;x&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span><span class="sd">          {% set numObj = 3 %}
-</span><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
-</span><span class="sd">          {% set ftrBtnWd = (scnWd/numObj) | int %}
-</span><span class="sd">          {{ftrBtnWd}}</span><span class="w">          
-</span><span class="w">        </span><span class="c"># Start drawing the button from the bottom most pixel</span><span class="w">
-</span><span class="w">        </span><span class="nt">&#34;y&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
-</span><span class="sd">          {% set hdrHt = (scnHt*0.1) | int %}
-</span><span class="sd">          {{scnHt-hdrHt}}</span><span class="w">          
-</span><span class="w">        </span><span class="c"># And since we have 3 buttons, 1/3 of the width</span><span class="w">
-</span><span class="w">        </span><span class="nt">&#34;w&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span><span class="sd">          {% set numObj = 3 %}
-</span><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
-</span><span class="sd">          {% set ftrBtnWd = (scnWd/numObj) | int %}
-</span><span class="sd">          {{ftrBtnWd-1}}</span><span class="w">          
-</span><span class="w">        </span><span class="c"># We want the bottom nav buttons to consume the bottom 10% of the screen</span><span class="w">
-</span><span class="w">        </span><span class="nt">&#34;h&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
-</span><span class="sd">          {% set ftrHt = (scnHt*0.1) | int %}
-</span><span class="sd">          {{ftrHt}}</span><span class="w">          
-</span><span class="w">
-</span><span class="w">    </span><span class="c"># bottom nav: next</span><span class="w">
-</span><span class="w">    </span>- <span class="nt">obj</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;p0b8&#34;</span><span class="w">
-</span><span class="w">      </span><span class="nt">properties</span><span class="p">:</span><span class="w">
-</span><span class="w">        </span><span class="c"># Start drawing exactly the next pixel over from where the first button stopped</span><span class="w">
-</span><span class="w">        </span><span class="nt">&#34;x&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span><span class="sd">          {% set numObj = 3 %}
-</span><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
-</span><span class="sd">          {% set ftrBtnWd = (scnWd/numObj) | int %}
-</span><span class="sd">          {{ftrBtnWd*2}}</span><span class="w">          
-</span><span class="w">        </span><span class="c"># Start drawing the button from the bottom most pixel</span><span class="w">
-</span><span class="w">        </span><span class="nt">&#34;y&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
-</span><span class="sd">          {% set hdrHt = (scnHt*0.1) | int %}
-</span><span class="sd">          {{scnHt-hdrHt}}</span><span class="w">          
-</span><span class="w">        </span><span class="c"># And since we have 3 buttons, 1/3 of the width</span><span class="w">
-</span><span class="w">        </span><span class="nt">&#34;w&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span><span class="sd">          {% set numObj = 3 %}
-</span><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
-</span><span class="sd">          {% set ftrBtnWd = (scnWd/numObj) | int %}
-</span><span class="sd">          {{ftrBtnWd}}</span><span class="w">          
-</span><span class="w">        </span><span class="c"># We want the bottom nav buttons to consume the bottom 10% of the screen</span><span class="w">
-</span><span class="w">        </span><span class="nt">&#34;h&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
-</span><span class="sd">          {% set ftrHt = (scnHt*0.1) | int %}
-</span><span class="sd">          {{ftrHt}}</span><span class="w">          
-</span><span class="w">
-</span><span class="w">    </span><span class="c"># ###</span><span class="w">
-</span><span class="w">    </span><span class="c"># # Room Specific</span><span class="w">
-</span><span class="w">    </span><span class="c"># ###</span><span class="w">
-</span><span class="w">    </span><span class="c"># relay toggle 1</span><span class="w">
-</span><span class="w">    </span>- <span class="nt">obj</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;p1b101&#34;</span><span class="w">
-</span><span class="w">      </span><span class="nt">properties</span><span class="p">:</span><span class="w">
-</span><span class="w">        </span><span class="nt">&#34;x&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
-</span><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
-</span><span class="sd">          {{hdrHorMargin}}</span><span class="w">          
-</span><span class="w">        </span><span class="c"># Figure out how tall the display is, subtract out the height of the header/footer and that&#39;s the usable</span><span class="w">
-</span><span class="w">        </span><span class="c">#   space. Within that usable space, we will want small margins.</span><span class="w">
-</span><span class="w">        </span><span class="c">##</span><span class="w">
-</span><span class="w">        </span><span class="nt">&#34;y&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
-</span><span class="sd">          {% set hdrVrtMargin = (scnHt*0.01) | int %}
-</span><span class="sd">          {% set hdrHt = (scnHt*0.1) | int %}
-</span><span class="sd">          {{hdrHt+hdrVrtMargin}}</span><span class="w">          
-</span><span class="w">
-</span><span class="w">        </span><span class="nt">&#34;w&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
-</span><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
-</span><span class="sd">          {% set usableHdrWd = scnWd-(2*hdrHorMargin) %}
-</span><span class="sd">          {% set bdyWd = usableHdrWd %}
-</span><span class="sd">          {{bdyWd}}</span><span class="w">          
-</span><span class="w">
-</span><span class="w">        </span><span class="c"># We want the bottom nav buttons to consume the bottom 10% of the screen</span><span class="w">
-</span><span class="w">        </span><span class="nt">&#34;h&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span><span class="sd">          {% set numObj = 3 %}
-</span><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
-</span><span class="sd">          {% set hdrHt = (scnHt*0.1) | int %}
-</span><span class="sd">          {% set ftrHt = (scnHt*0.1) | int %}
-</span><span class="sd">          {% set hdrVrtMargin = (scnHt*0.01) | int %}
-</span><span class="sd">          {% set bdyHt = (scnHt - (hdrHt+ftrHt) - (2*hdrVrtMargin)) | int %}
-</span><span class="sd">          {% set bdyBtnVrtMargin = (bdyHt * 0.02) | int %}
-</span><span class="sd">          {% set bdyBtnHt = ((bdyHt-((numObj-1)*bdyBtnVrtMargin))/numObj) | int %}
-</span><span class="sd">          {{bdyBtnHt}}</span><span class="w">          
-</span><span class="w">
-</span><span class="w">    </span><span class="c"># relay toggle 2</span><span class="w">
-</span><span class="w">    </span>- <span class="nt">obj</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;p1b102&#34;</span><span class="w">
-</span><span class="w">      </span><span class="nt">properties</span><span class="p">:</span><span class="w">
-</span><span class="w">        </span><span class="nt">&#34;x&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
-</span><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
-</span><span class="sd">          {{hdrHorMargin}}</span><span class="w">          
-</span><span class="w">
-</span><span class="w">        </span><span class="c"># Figure out how tall the display is, subtract out the height of the header/footer and that&#39;s the usable</span><span class="w">
-</span><span class="w">        </span><span class="c">#   space. Within that usable space, we will want small margins.</span><span class="w">
-</span><span class="w">        </span><span class="c">##</span><span class="w">
-</span><span class="w">        </span><span class="nt">&#34;y&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span><span class="sd">          {% set numObj = 3 %}
-</span><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
-</span><span class="sd">          {% set hdrVrtMargin = (scnHt*0.01) | int %}
-</span><span class="sd">          {% set hdrHt = (scnHt*0.1) | int %}
-</span><span class="sd">          {% set ftrHt = (scnHt*0.1) | int %}
-</span><span class="sd">          {% set bdyHt = (scnHt - (hdrHt+ftrHt) - (2*hdrVrtMargin)) | int %}
-</span><span class="sd">          {% set bdyBtnVrtMargin = (bdyHt * 0.02) | int %}
-</span><span class="sd">          {% set bdyBtnHt = ((bdyHt-((numObj-1)*bdyBtnVrtMargin))/numObj) | int %}
-</span><span class="sd">          {{hdrHt+hdrVrtMargin+(1*bdyBtnHt+bdyBtnVrtMargin)}}</span><span class="w">          
-</span><span class="w">
-</span><span class="w">        </span><span class="nt">&#34;w&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
-</span><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
-</span><span class="sd">          {% set usableHdrWd = scnWd-(2*hdrHorMargin) %}
-</span><span class="sd">          {% set bdyWd = usableHdrWd %}
-</span><span class="sd">          {{bdyWd}}</span><span class="w">          
-</span><span class="w">
-</span><span class="w">        </span><span class="c"># We want the bottom nav buttons to consume the bottom 10% of the screen</span><span class="w">
-</span><span class="w">        </span><span class="nt">&#34;h&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span><span class="sd">          {% set numObj = 3 %}
-</span><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
-</span><span class="sd">          {% set hdrHt = (scnHt*0.1) | int %}
-</span><span class="sd">          {% set ftrHt = (scnHt*0.1) | int %}
-</span><span class="sd">          {% set hdrVrtMargin = (scnHt*0.01) | int %}
-</span><span class="sd">          {% set bdyHt = (scnHt - (hdrHt+ftrHt) - (2*hdrVrtMargin)) | int %}
-</span><span class="sd">          {% set bdyBtnVrtMargin = (bdyHt * 0.02) | int %}
-</span><span class="sd">          {% set bdyBtnHt = ((bdyHt-((numObj-1)*bdyBtnVrtMargin))/numObj) | int %}
-</span><span class="sd">          {{bdyBtnHt}}</span><span class="w">          
-</span><span class="w">
-</span><span class="w">    </span><span class="c"># relay toggle 3</span><span class="w">
-</span><span class="w">    </span>- <span class="nt">obj</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;p1b103&#34;</span><span class="w">
-</span><span class="w">      </span><span class="nt">properties</span><span class="p">:</span><span class="w">
-</span><span class="w">        </span><span class="nt">&#34;x&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
-</span><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
-</span><span class="sd">          {{hdrHorMargin}}</span><span class="w">          
-</span><span class="w">
-</span><span class="w">        </span><span class="c"># Figure out how tall the display is, subtract out the height of the header/footer and that&#39;s the usable</span><span class="w">
-</span><span class="w">        </span><span class="c">#   space. Within that usable space, we will want small margins.</span><span class="w">
-</span><span class="w">        </span><span class="c">##</span><span class="w">
-</span><span class="w">        </span><span class="nt">&#34;y&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span><span class="sd">          {% set numObj = 3 %}
-</span><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
-</span><span class="sd">          {% set hdrVrtMargin = (scnHt*0.01) | int %}
-</span><span class="sd">          {% set hdrHt = (scnHt*0.1) | int %}
-</span><span class="sd">          {% set ftrHt = (scnHt*0.1) | int %}
-</span><span class="sd">          {% set bdyHt = (scnHt - (hdrHt+ftrHt) - (2*hdrVrtMargin)) | int %}
-</span><span class="sd">          {% set bdyBtnVrtMargin = (bdyHt * 0.02) | int %}
-</span><span class="sd">          {% set bdyBtnHt = ((bdyHt-((numObj-1)*bdyBtnVrtMargin))/numObj) | int %}
-</span><span class="sd">          {{hdrHt+hdrVrtMargin+(2*(bdyBtnHt+bdyBtnVrtMargin))}}</span><span class="w">          
-</span><span class="w">
-</span><span class="w">        </span><span class="nt">&#34;w&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
-</span><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
-</span><span class="sd">          {% set usableHdrWd = scnWd-(2*hdrHorMargin) %}
-</span><span class="sd">          {% set bdyWd = usableHdrWd %}
-</span><span class="sd">          {{bdyWd}}</span><span class="w">          
-</span><span class="w">
-</span><span class="w">        </span><span class="c"># We want the bottom nav buttons to consume the bottom 10% of the screen</span><span class="w">
-</span><span class="w">        </span><span class="nt">&#34;h&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span><span class="sd">          {% set numObj = 3 %}
-</span><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
-</span><span class="sd">          {% set hdrHt = (scnHt*0.1) | int %}
-</span><span class="sd">          {% set ftrHt = (scnHt*0.1) | int %}
-</span><span class="sd">          {% set hdrVrtMargin = (scnHt*0.01) | int %}
-</span><span class="sd">          {% set bdyHt = (scnHt - (hdrHt+ftrHt) - (2*hdrVrtMargin)) | int %}
-</span><span class="sd">          {% set bdyBtnVrtMargin = (bdyHt * 0.02) | int %}
-</span><span class="sd">          {% set bdyBtnHt = ((bdyHt-((numObj-1)*bdyBtnVrtMargin))/numObj) | int %}
-</span><span class="sd">          {{bdyBtnHt}}</span><span class="w">          
-</span><span class="w">
-</span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c"># plate00 is a test L8 module</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Has a resolution of 240x320</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># The top left corner is 0,0, X grows positive to the right and Y grows positive down</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">##</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">plate00</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">## TODO: is there a way to fix this? Maybe a HA feature request or openHasp/CC change...</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># Would be really nice if HA had some way to save templates and load them</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#   that way I don&#39;t have to declare the same variables over and over...</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">objects</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c">###</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># COMMON</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c">###</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Header: Time</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">obj</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;p0b1&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">properties</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Align left most, If we do go over our permitted length, loop</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;align&#34;: </span><span class="s2">&#34;left&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;text&#34;: </span><span class="s2">&#34;{{ states(&#39;sensor.time&#39;) }}&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;mode&#34;: </span><span class="s2">&#34;loop&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c">##</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Draw the labels with a 1% margin from the top and sides</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;x&#34;: </span><span class="p">&gt;-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrHorMargin}}</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;y&#34;: </span><span class="p">&gt;-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrVrtMargin = (scnHt*0.01) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrVrtMargin}}</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Width is 1/3 of the screen width after subtracting margins</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c">##</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;w&#34;: </span><span class="p">&gt;-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set numObj = 3 %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set usableHdrWd = scnWd-(2*hdrHorMargin) %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrLblWd = (usableHdrWd/numObj) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrLblWd}}</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Height is 10% of the screen, after margin</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c">##</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;h&#34;: </span><span class="p">&gt;-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrVrtMargin = (scnHt*0.01) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHt = (scnHt*0.1) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrLblHt = hdrHt-hdrVrtMargin %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrLblHt}}</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Header: Temp</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">obj</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;p0b2&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">properties</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Align center, If we do go over our permitted length, loop</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;align&#34;: </span><span class="s2">&#34;center&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;text&#34;: </span><span class="s2">&#34;{{ states(&#39;sensor.room_temperature&#39;) }}°C&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;mode&#34;: </span><span class="s2">&#34;loop&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c">##</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Draw the labels with a 1% margin from the top and sides</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;x&#34;: </span><span class="p">&gt;-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set numObj = 3 %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set usableHdrWd = scnWd-(2*hdrHorMargin) %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrLblWd = (usableHdrWd/numObj) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrHorMargin+hdrLblWd}}</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;y&#34;: </span><span class="p">&gt;-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrVrtMargin = (scnHt*0.01) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrVrtMargin}}</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Width is 1/3 of the screen width after subtracting margins</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c">##</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;w&#34;: </span><span class="p">&gt;-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set numObj = 3 %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set usableHdrWd = scnWd-(2*hdrHorMargin) %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrLblWd = (usableHdrWd/numObj) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrLblWd}}</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Height is 10% of the screen, after margin</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c">##</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;h&#34;: </span><span class="p">&gt;-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrVrtMargin = (scnHt*0.01) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHt = (scnHt*0.1) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrLblHt = hdrHt-hdrVrtMargin %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrLblHt}}</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Header: Humidity</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">obj</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;p0b3&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">properties</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Align right most, If we do go over our permitted length, loop</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;align&#34;: </span><span class="s2">&#34;right&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;text&#34;: </span><span class="s2">&#34;{{ states(&#39;sensor.room_humidity&#39;) }}%&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;mode&#34;: </span><span class="s2">&#34;loop&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c">##</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Draw the labels with a 1% margin from the top and sides</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;x&#34;: </span><span class="p">&gt;-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set numObj = 3 %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set usableHdrWd = scnWd-(2*hdrHorMargin) %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrLblWd = (usableHdrWd/numObj) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrHorMargin+(2*hdrLblWd)}}</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;y&#34;: </span><span class="p">&gt;-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrVrtMargin = (scnHt*0.01) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrVrtMargin}}</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Width is 1/3 of the screen width after subtracting margins</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c">##</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;w&#34;: </span><span class="p">&gt;-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set numObj = 3 %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set usableHdrWd = scnWd-(2*hdrHorMargin) %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrLblWd = (usableHdrWd/numObj) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrLblWd}}</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Height is 10% of the screen, after margin</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c">##</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;h&#34;: </span><span class="p">&gt;-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrVrtMargin = (scnHt*0.01) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHt = (scnHt*0.1) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrLblHt = hdrHt-hdrVrtMargin %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrLblHt}}</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># bottom nav: previous</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">obj</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;p0b6&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">properties</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Left most button sits all the way up against the left side of the screen</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;x&#34;: </span><span class="m">0</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Start drawing the button from the bottom most pixel</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;y&#34;: </span><span class="p">&gt;-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHt = (scnHt*0.1) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{scnHt-hdrHt}}</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># And since we have 3 buttons, 1/3 of the width</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;w&#34;: </span><span class="p">&gt;-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set numObj = 3 %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set ftrBtnWd = (scnWd/numObj) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{ftrBtnWd-1}}</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># We want the bottom nav buttons to consume the bottom 10% of the screen</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;h&#34;: </span><span class="p">&gt;-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set ftrHt = (scnHt*0.1) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{ftrHt}}</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># bottom nav: home</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">obj</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;p0b7&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">properties</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Start drawing exactly the next pixel over from where the first button stopped</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;x&#34;: </span><span class="p">&gt;-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set numObj = 3 %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set ftrBtnWd = (scnWd/numObj) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{ftrBtnWd}}</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Start drawing the button from the bottom most pixel</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;y&#34;: </span><span class="p">&gt;-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHt = (scnHt*0.1) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{scnHt-hdrHt}}</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># And since we have 3 buttons, 1/3 of the width</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;w&#34;: </span><span class="p">&gt;-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set numObj = 3 %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set ftrBtnWd = (scnWd/numObj) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{ftrBtnWd-1}}</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># We want the bottom nav buttons to consume the bottom 10% of the screen</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;h&#34;: </span><span class="p">&gt;-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set ftrHt = (scnHt*0.1) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{ftrHt}}</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># bottom nav: next</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">obj</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;p0b8&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">properties</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Start drawing exactly the next pixel over from where the first button stopped</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;x&#34;: </span><span class="p">&gt;-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set numObj = 3 %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set ftrBtnWd = (scnWd/numObj) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{ftrBtnWd*2}}</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Start drawing the button from the bottom most pixel</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;y&#34;: </span><span class="p">&gt;-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHt = (scnHt*0.1) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{scnHt-hdrHt}}</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># And since we have 3 buttons, 1/3 of the width</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;w&#34;: </span><span class="p">&gt;-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set numObj = 3 %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set ftrBtnWd = (scnWd/numObj) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{ftrBtnWd}}</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># We want the bottom nav buttons to consume the bottom 10% of the screen</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;h&#34;: </span><span class="p">&gt;-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set ftrHt = (scnHt*0.1) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{ftrHt}}</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># ###</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># # Room Specific</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># ###</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># relay toggle 1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">obj</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;p1b101&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">properties</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;x&#34;: </span><span class="p">&gt;-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrHorMargin}}</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Figure out how tall the display is, subtract out the height of the header/footer and that&#39;s the usable</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c">#   space. Within that usable space, we will want small margins.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c">##</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;y&#34;: </span><span class="p">&gt;-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrVrtMargin = (scnHt*0.01) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHt = (scnHt*0.1) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrHt+hdrVrtMargin}}</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;w&#34;: </span><span class="p">&gt;-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set usableHdrWd = scnWd-(2*hdrHorMargin) %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyWd = usableHdrWd %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{bdyWd}}</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># We want the bottom nav buttons to consume the bottom 10% of the screen</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;h&#34;: </span><span class="p">&gt;-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set numObj = 3 %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHt = (scnHt*0.1) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set ftrHt = (scnHt*0.1) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrVrtMargin = (scnHt*0.01) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyHt = (scnHt - (hdrHt+ftrHt) - (2*hdrVrtMargin)) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyBtnVrtMargin = (bdyHt * 0.02) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyBtnHt = ((bdyHt-((numObj-1)*bdyBtnVrtMargin))/numObj) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{bdyBtnHt}}</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># relay toggle 2</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">obj</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;p1b102&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">properties</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;x&#34;: </span><span class="p">&gt;-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrHorMargin}}</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Figure out how tall the display is, subtract out the height of the header/footer and that&#39;s the usable</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c">#   space. Within that usable space, we will want small margins.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c">##</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;y&#34;: </span><span class="p">&gt;-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set numObj = 3 %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrVrtMargin = (scnHt*0.01) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHt = (scnHt*0.1) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set ftrHt = (scnHt*0.1) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyHt = (scnHt - (hdrHt+ftrHt) - (2*hdrVrtMargin)) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyBtnVrtMargin = (bdyHt * 0.02) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyBtnHt = ((bdyHt-((numObj-1)*bdyBtnVrtMargin))/numObj) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrHt+hdrVrtMargin+(1*bdyBtnHt+bdyBtnVrtMargin)}}</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;w&#34;: </span><span class="p">&gt;-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set usableHdrWd = scnWd-(2*hdrHorMargin) %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyWd = usableHdrWd %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{bdyWd}}</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># We want the bottom nav buttons to consume the bottom 10% of the screen</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;h&#34;: </span><span class="p">&gt;-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set numObj = 3 %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHt = (scnHt*0.1) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set ftrHt = (scnHt*0.1) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrVrtMargin = (scnHt*0.01) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyHt = (scnHt - (hdrHt+ftrHt) - (2*hdrVrtMargin)) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyBtnVrtMargin = (bdyHt * 0.02) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyBtnHt = ((bdyHt-((numObj-1)*bdyBtnVrtMargin))/numObj) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{bdyBtnHt}}</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># relay toggle 3</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">obj</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;p1b103&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">properties</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;x&#34;: </span><span class="p">&gt;-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrHorMargin}}</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Figure out how tall the display is, subtract out the height of the header/footer and that&#39;s the usable</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c">#   space. Within that usable space, we will want small margins.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c">##</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;y&#34;: </span><span class="p">&gt;-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set numObj = 3 %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrVrtMargin = (scnHt*0.01) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHt = (scnHt*0.1) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set ftrHt = (scnHt*0.1) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyHt = (scnHt - (hdrHt+ftrHt) - (2*hdrVrtMargin)) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyBtnVrtMargin = (bdyHt * 0.02) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyBtnHt = ((bdyHt-((numObj-1)*bdyBtnVrtMargin))/numObj) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrHt+hdrVrtMargin+(2*(bdyBtnHt+bdyBtnVrtMargin))}}</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;w&#34;: </span><span class="p">&gt;-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set usableHdrWd = scnWd-(2*hdrHorMargin) %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyWd = usableHdrWd %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{bdyWd}}</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># We want the bottom nav buttons to consume the bottom 10% of the screen</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;h&#34;: </span><span class="p">&gt;-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set numObj = 3 %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHt = (scnHt*0.1) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set ftrHt = (scnHt*0.1) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrVrtMargin = (scnHt*0.01) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyHt = (scnHt - (hdrHt+ftrHt) - (2*hdrVrtMargin)) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyBtnVrtMargin = (bdyHt * 0.02) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyBtnHt = ((bdyHt-((numObj-1)*bdyBtnVrtMargin))/numObj) | int %}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{bdyBtnHt}}</span><span class="w">          
+</span></span></span></code></pre></td></tr></table>
 </div>
 </div><div class="details admonition tip open">
         <div class="details-summary admonition-title">

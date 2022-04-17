@@ -6,7 +6,7 @@ As expected, things broke&hellip;. including my private, filtered DNS over TLS s
 At the time, I was working with <a href="https://saltproject.io/" target="_blank" rel="noopener noreffer">SaltStack</a> a lot and took the opportunity to re-do the entire thing as a salt state for a bit of practice. The <em>exact</em> steps and commands shown below are unique to my particular instance. Use them as <em>guidance</em> for fixing an issue with the publicly released version of SkyHole.</p>
 <h1 id="symptoms">Symptoms</h1>
 <p>My current daily driver runs Android 11. When configured to use a <a href="https://android-developers.googleblog.com/2018/04/dns-over-tls-support-in-android-p.html" target="_blank" rel="noopener noreffer">private DNS server</a>, Android essentially behaves as if you&rsquo;ve turned WiFi/Cell data off if there is any issue when talking to the DoT server.
-While this &lsquo;fail private&rsquo; approach is commendable, the lack of debug info in the UI is not; no details are given about the failure other than a generic &lsquo;the private dns server could not be reached&rsquo; message.</p>
+While this &lsquo;fail private&rsquo; approach is commendable, the lack of debug info in the UI is not; no details are given about the failure other than a generic &rsquo;the private dns server could not be reached&rsquo; message.</p>
 <p>I have seen this behavior once before when the certificate renewal timer failed to fire off&hellip; except I implemented email based notifications after that incident and had recently received a notification from the renewal script.</p>
 <p>Just to be sure, I checked the <code>notAfter</code> in each certificate and they all had plenty of life left:</p>
 <div class="highlight"><div class="chroma">
@@ -27,21 +27,21 @@ While this &lsquo;fail private&rsquo; approach is commendable, the lack of debug
 </span><span class="lnt">14
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">me@dot-host:/etc/coredns/tls# gawk <span class="s1">&#39;BEGIN { pipe=&#34;openssl x509 -noout -subject -dates&#34;} \
-</span><span class="s1">&gt;   /^-+BEGIN CERT/,/^-+END CERT/ { print | pipe }
-</span><span class="s1">&gt;   /^-+END CERT/                 { close(pipe); printf(&#34;\n&#34;)}  &#39;</span> chain.pem
-<span class="nv">subject</span><span class="o">=</span><span class="nv">CN</span> <span class="o">=</span> dot.my-test-domain.tld
-<span class="nv">notBefore</span><span class="o">=</span>Oct  <span class="m">1</span> 01:50:58 <span class="m">2021</span> GMT
-<span class="nv">notAfter</span><span class="o">=</span>Dec <span class="m">30</span> 01:50:57 <span class="m">2021</span> GMT
-
-<span class="nv">subject</span><span class="o">=</span><span class="nv">C</span> <span class="o">=</span> US, <span class="nv">O</span> <span class="o">=</span> Let<span class="err">&#39;</span>s Encrypt, <span class="nv">CN</span> <span class="o">=</span> R3
-<span class="nv">notBefore</span><span class="o">=</span>Sep  <span class="m">4</span> 00:00:00 <span class="m">2020</span> GMT
-<span class="nv">notAfter</span><span class="o">=</span>Sep <span class="m">15</span> 16:00:00 <span class="m">2025</span> GMT
-
-<span class="nv">subject</span><span class="o">=</span><span class="nv">C</span> <span class="o">=</span> US, <span class="nv">O</span> <span class="o">=</span> Internet Security Research Group, <span class="nv">CN</span> <span class="o">=</span> ISRG Root X1
-<span class="nv">notBefore</span><span class="o">=</span>Jan <span class="m">20</span> 19:14:03 <span class="m">2021</span> GMT
-<span class="nv">notAfter</span><span class="o">=</span>Sep <span class="m">30</span> 18:14:03 <span class="m">2024</span> GMT
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">me@dot-host:/etc/coredns/tls# gawk <span class="s1">&#39;BEGIN { pipe=&#34;openssl x509 -noout -subject -dates&#34;} \
+</span></span></span><span class="line"><span class="cl"><span class="s1">&gt;   /^-+BEGIN CERT/,/^-+END CERT/ { print | pipe }
+</span></span></span><span class="line"><span class="cl"><span class="s1">&gt;   /^-+END CERT/                 { close(pipe); printf(&#34;\n&#34;)}  &#39;</span> chain.pem
+</span></span><span class="line"><span class="cl"><span class="nv">subject</span><span class="o">=</span><span class="nv">CN</span> <span class="o">=</span> dot.my-test-domain.tld
+</span></span><span class="line"><span class="cl"><span class="nv">notBefore</span><span class="o">=</span>Oct  <span class="m">1</span> 01:50:58 <span class="m">2021</span> GMT
+</span></span><span class="line"><span class="cl"><span class="nv">notAfter</span><span class="o">=</span>Dec <span class="m">30</span> 01:50:57 <span class="m">2021</span> GMT
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">subject</span><span class="o">=</span><span class="nv">C</span> <span class="o">=</span> US, <span class="nv">O</span> <span class="o">=</span> Let<span class="err">&#39;</span>s Encrypt, <span class="nv">CN</span> <span class="o">=</span> R3
+</span></span><span class="line"><span class="cl"><span class="nv">notBefore</span><span class="o">=</span>Sep  <span class="m">4</span> 00:00:00 <span class="m">2020</span> GMT
+</span></span><span class="line"><span class="cl"><span class="nv">notAfter</span><span class="o">=</span>Sep <span class="m">15</span> 16:00:00 <span class="m">2025</span> GMT
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">subject</span><span class="o">=</span><span class="nv">C</span> <span class="o">=</span> US, <span class="nv">O</span> <span class="o">=</span> Internet Security Research Group, <span class="nv">CN</span> <span class="o">=</span> ISRG Root X1
+</span></span><span class="line"><span class="cl"><span class="nv">notBefore</span><span class="o">=</span>Jan <span class="m">20</span> 19:14:03 <span class="m">2021</span> GMT
+</span></span><span class="line"><span class="cl"><span class="nv">notAfter</span><span class="o">=</span>Sep <span class="m">30</span> 18:14:03 <span class="m">2024</span> GMT
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>Borrowed that command from <a href="https://serverfault.com/questions/541262/checking-the-issued-and-expiry-dates-for-the-certificates-involved-a-certificate" target="_blank" rel="noopener noreffer">this</a> post.</p>
 <p>Looking for more information, <code>adb</code> yielded something:</p>
@@ -55,13 +55,13 @@ While this &lsquo;fail private&rsquo; approach is commendable, the lack of debug
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">❯ adb logcat <span class="p">|</span> grep resolv
-09-30 21:28:12.995   <span class="m">962</span> <span class="m">15448</span> W resolv  : Validating DnsTlsServer 12.34.56.78 with mark 0xf0084
-09-30 21:28:13.085   <span class="m">962</span> <span class="m">15448</span> W resolv  : SSL_connect ssl <span class="nv">error</span> <span class="o">=</span>1, mark 0xf0084: No such file or directory
-09-30 21:28:13.085   <span class="m">962</span> <span class="m">15448</span> W resolv  : TLS Handshake failed
-09-30 21:28:13.085   <span class="m">962</span> <span class="m">15448</span> W resolv  : query failed
-09-30 21:28:13.085   <span class="m">962</span> <span class="m">15448</span> W resolv  : validateDnsTlsServer returned <span class="m">0</span> <span class="k">for</span> 12.34.56.78
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">❯ adb logcat <span class="p">|</span> grep resolv
+</span></span><span class="line"><span class="cl">09-30 21:28:12.995   <span class="m">962</span> <span class="m">15448</span> W resolv  : Validating DnsTlsServer 12.34.56.78 with mark 0xf0084
+</span></span><span class="line"><span class="cl">09-30 21:28:13.085   <span class="m">962</span> <span class="m">15448</span> W resolv  : SSL_connect ssl <span class="nv">error</span> <span class="o">=</span>1, mark 0xf0084: No such file or directory
+</span></span><span class="line"><span class="cl">09-30 21:28:13.085   <span class="m">962</span> <span class="m">15448</span> W resolv  : TLS Handshake failed
+</span></span><span class="line"><span class="cl">09-30 21:28:13.085   <span class="m">962</span> <span class="m">15448</span> W resolv  : query failed
+</span></span><span class="line"><span class="cl">09-30 21:28:13.085   <span class="m">962</span> <span class="m">15448</span> W resolv  : validateDnsTlsServer returned <span class="m">0</span> <span class="k">for</span> 12.34.56.78
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>The <code>No such file or directory</code> message came from <a href="https://android.googlesource.com/platform/packages/modules/DnsResolver/&#43;/refs/heads/master/DnsTlsSocket.cpp" target="_blank" rel="noopener noreffer">here</a>.</p>
 <p>Google uses their own fork of openSSL in Android so spent some time trying to figure out what an error code of <code>1</code> means in the openSSL project.
@@ -106,26 +106,26 @@ I compared the traffic with a working manual query from <code>kdig</code> and no
 </span><span class="lnt">19
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">❯ openssl version
-LibreSSL 2.8.3
-
-❯ openssl s_client -connect dot.my-test-domain.tld:853 -servername dot.my-test-domain.tld <span class="p">|</span>
-    openssl crl2pkcs7 -nocrl -certfile /dev/stdin <span class="p">|</span>
-    openssl pkcs7 -print_certs -noout -text <span class="p">|</span>
-    egrep <span class="s1">&#39;not(Before|After)&#39;</span>
-<span class="nv">depth</span><span class="o">=</span><span class="m">1</span> <span class="nv">O</span> <span class="o">=</span> Digital Signature Trust Co., <span class="nv">CN</span> <span class="o">=</span> DST Root CA X3
-verify error:num<span class="o">=</span>10:certificate has expired
-<span class="nv">notAfter</span><span class="o">=</span>Sep <span class="m">30</span> 14:01:15 <span class="m">2021</span> GMT
-verify <span class="k">return</span>:0
-<span class="nv">depth</span><span class="o">=</span><span class="m">1</span> <span class="nv">O</span> <span class="o">=</span> Digital Signature Trust Co., <span class="nv">CN</span> <span class="o">=</span> DST Root CA X3
-verify error:num<span class="o">=</span>10:certificate has expired
-<span class="nv">notAfter</span><span class="o">=</span>Sep <span class="m">30</span> 14:01:15 <span class="m">2021</span> GMT
-verify <span class="k">return</span>:0
-<span class="nv">depth</span><span class="o">=</span><span class="m">3</span> <span class="nv">O</span> <span class="o">=</span> Digital Signature Trust Co., <span class="nv">CN</span> <span class="o">=</span> DST Root CA X3
-verify error:num<span class="o">=</span>10:certificate has expired
-<span class="nv">notAfter</span><span class="o">=</span>Sep <span class="m">30</span> 14:01:15 <span class="m">2021</span> GMT
-verify <span class="k">return</span>:0
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">❯ openssl version
+</span></span><span class="line"><span class="cl">LibreSSL 2.8.3
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">❯ openssl s_client -connect dot.my-test-domain.tld:853 -servername dot.my-test-domain.tld <span class="p">|</span>
+</span></span><span class="line"><span class="cl">    openssl crl2pkcs7 -nocrl -certfile /dev/stdin <span class="p">|</span>
+</span></span><span class="line"><span class="cl">    openssl pkcs7 -print_certs -noout -text <span class="p">|</span>
+</span></span><span class="line"><span class="cl">    egrep <span class="s1">&#39;not(Before|After)&#39;</span>
+</span></span><span class="line"><span class="cl"><span class="nv">depth</span><span class="o">=</span><span class="m">1</span> <span class="nv">O</span> <span class="o">=</span> Digital Signature Trust Co., <span class="nv">CN</span> <span class="o">=</span> DST Root CA X3
+</span></span><span class="line"><span class="cl">verify error:num<span class="o">=</span>10:certificate has expired
+</span></span><span class="line"><span class="cl"><span class="nv">notAfter</span><span class="o">=</span>Sep <span class="m">30</span> 14:01:15 <span class="m">2021</span> GMT
+</span></span><span class="line"><span class="cl">verify <span class="k">return</span>:0
+</span></span><span class="line"><span class="cl"><span class="nv">depth</span><span class="o">=</span><span class="m">1</span> <span class="nv">O</span> <span class="o">=</span> Digital Signature Trust Co., <span class="nv">CN</span> <span class="o">=</span> DST Root CA X3
+</span></span><span class="line"><span class="cl">verify error:num<span class="o">=</span>10:certificate has expired
+</span></span><span class="line"><span class="cl"><span class="nv">notAfter</span><span class="o">=</span>Sep <span class="m">30</span> 14:01:15 <span class="m">2021</span> GMT
+</span></span><span class="line"><span class="cl">verify <span class="k">return</span>:0
+</span></span><span class="line"><span class="cl"><span class="nv">depth</span><span class="o">=</span><span class="m">3</span> <span class="nv">O</span> <span class="o">=</span> Digital Signature Trust Co., <span class="nv">CN</span> <span class="o">=</span> DST Root CA X3
+</span></span><span class="line"><span class="cl">verify error:num<span class="o">=</span>10:certificate has expired
+</span></span><span class="line"><span class="cl"><span class="nv">notAfter</span><span class="o">=</span>Sep <span class="m">30</span> 14:01:15 <span class="m">2021</span> GMT
+</span></span><span class="line"><span class="cl">verify <span class="k">return</span>:0
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>Huh. That sure looks like a problem!</p>
 <p>After a <a href="https://www.mail-archive.com/openssl-users@openssl.org/msg90068.html" target="_blank" rel="noopener noreffer">bit</a> of google, I found that the different versions of openSSL (and their forks&hellip;) behave differently when validating certificate chains:</p>
@@ -141,7 +141,7 @@ I don&rsquo;t know <em>exactly</em> what version of OpenSSL the BoringSSL in my 
 My phone is not rooted so I just assumed that I would have access to the portions of the file system needed for a &lsquo;client side&rsquo; fix. That left the third solution; use a different intermediate chain.</p>
 <p>I was not aware that there was an alternate intermediate chain for Lets Encrypt. I didn&rsquo;t even know that was a thing let alone <em>why</em> somebody would do that.</p>
 <h1 id="alternate-intermediate">Alternate Intermediate</h1>
-<p>Turns out, it&rsquo;s a very clever trick meant to <a href="https://letsencrypt.org/2020/12/21/extending-android-compatibility.html" target="_blank" rel="noopener noreffer">prevent Lets Encrypt certificates from breaking on <em>older</em> versions</a>. Ironic that a &lsquo;newer&rsquo; android device got screwed in the process 😬.</p>
+<p>Turns out, it&rsquo;s a very clever trick meant to <a href="https://letsencrypt.org/2020/12/21/extending-android-compatibility.html" target="_blank" rel="noopener noreffer">prevent Lets Encrypt certificates from breaking on <em>older</em> versions</a>. Ironic that a &rsquo;newer&rsquo; android device got screwed in the process 😬.</p>
 <p>The two valid chains of trust for Lets Encrypt certificates look like this:</p>
 <figure >
 
@@ -171,9 +171,9 @@ My phone is not rooted so I just assumed that I would have access to the portion
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">me@dot-host:~# cat /etc/letsencrypt/cli.ini <span class="p">|</span> grep chain
-preferred-chain<span class="o">=</span><span class="s1">&#39;ISRG Root X1&#39;</span>
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">me@dot-host:~# cat /etc/letsencrypt/cli.ini <span class="p">|</span> grep chain
+</span></span><span class="line"><span class="cl">preferred-chain<span class="o">=</span><span class="s1">&#39;ISRG Root X1&#39;</span>
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>After running certbot with the new config, <code>logcat</code> shows success:</p>
 <div class="highlight"><div class="chroma">
@@ -184,11 +184,11 @@ preferred-chain<span class="o">=</span><span class="s1">&#39;ISRG Root X1&#39;</
 </span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell">❯ adb logcat <span class="p">|</span> grep resolv
-10-01 09:41:01.190   <span class="m">962</span>  <span class="m">7711</span> W resolv  : Validating DnsTlsServer 12.34.56.78 with mark 0xf0084
-10-01 09:41:01.734   <span class="m">962</span>  <span class="m">7711</span> W resolv  : validateDnsTlsServer returned <span class="m">1</span> <span class="k">for</span> 12.34.56.78
-10-01 09:41:01.734   <span class="m">962</span>  <span class="m">7711</span> W resolv  : Validation success
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">❯ adb logcat <span class="p">|</span> grep resolv
+</span></span><span class="line"><span class="cl">10-01 09:41:01.190   <span class="m">962</span>  <span class="m">7711</span> W resolv  : Validating DnsTlsServer 12.34.56.78 with mark 0xf0084
+</span></span><span class="line"><span class="cl">10-01 09:41:01.734   <span class="m">962</span>  <span class="m">7711</span> W resolv  : validateDnsTlsServer returned <span class="m">1</span> <span class="k">for</span> 12.34.56.78
+</span></span><span class="line"><span class="cl">10-01 09:41:01.734   <span class="m">962</span>  <span class="m">7711</span> W resolv  : Validation success
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>Android no longer shows an unhelpful &ldquo;can&rsquo;t connect&rdquo; message and I can see DNS queries being filtered!</p>
 <p>🎊</p>

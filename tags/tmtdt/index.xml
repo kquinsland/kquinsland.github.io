@@ -79,7 +79,7 @@
 </figure>
 
 
-<p>I&rsquo;ve written this software to suit my needs, but the decision to make it a bit more robust and featured before release is because I&rsquo;ve noticed a few &lsquo;new&rsquo; tools to better augment ToDoist:</p>
+<p>I&rsquo;ve written this software to suit my needs, but the decision to make it a bit more robust and featured before release is because I&rsquo;ve noticed a few &rsquo;new&rsquo; tools to better augment ToDoist:</p>
 <ul>
 <li><a href="https://github.com/Hoffelhas/autodoist" target="_blank" rel="noopener noreffer">autodoist</a></li>
 <li><a href="https://chrome.google.com/webstore/detail/todoist-shortcuts-gmail-v/dehmghpdcahlffompjagejmgbcfahndp" target="_blank" rel="noopener noreffer">shortcuts</a></li>
@@ -131,33 +131,33 @@
 </span><span class="lnt">26
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="w">
-</span><span class="w">    </span><span class="c"># apply these labels...</span><span class="w">
-</span><span class="w">    </span><span class="nt">labels</span><span class="p">:</span><span class="w">
-</span><span class="w">      </span>- <span class="s2">&#34;at_work&#34;</span><span class="w">
-</span><span class="w">
-</span><span class="w">    </span><span class="c"># to tasks that...</span><span class="w">
-</span><span class="w">    </span><span class="nt">filters</span><span class="p">:</span><span class="w">
-</span><span class="w">      </span>- <span class="nt">filter</span><span class="p">:</span><span class="w">
-</span><span class="w">          </span><span class="c"># Any task that...</span><span class="w">
-</span><span class="w">          </span><span class="nt">task</span><span class="p">:</span><span class="w">
-</span><span class="w">            </span><span class="c"># ... ends in &#39;at work&#39; or &#39;the office&#39;</span><span class="w">
-</span><span class="w">            </span><span class="nt">content</span><span class="p">:</span><span class="w">
-</span><span class="w">              </span><span class="nt">match</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;(at work$|at the office$)&#39;</span><span class="w">
-</span><span class="w">              </span><span class="nt">option</span><span class="p">:</span><span class="w">
-</span><span class="w">                </span><span class="c"># remove portions of task content that match the query</span><span class="w">
-</span><span class="w">                </span><span class="nt">mutate</span><span class="p">:</span><span class="w"> </span><span class="kc">Yes</span><span class="w">
-</span><span class="w">          </span><span class="c"># *AND*</span><span class="w">
-</span><span class="w">          </span><span class="c"># ... has no labels</span><span class="w">
-</span><span class="w">          </span><span class="nt">labels</span><span class="p">:</span><span class="w">
-</span><span class="w">            </span><span class="nt">absent</span><span class="p">:</span><span class="w"> </span><span class="kc">Yes</span><span class="w">
-</span><span class="w">
-</span><span class="w">          </span><span class="c"># *AND*</span><span class="w">
-</span><span class="w">          </span><span class="c"># ... is in this project</span><span class="w">
-</span><span class="w">          </span><span class="nt">projects</span><span class="p">:</span><span class="w">
-</span><span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w">
-</span><span class="w">              </span><span class="nt">match</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;Inbox&#39;</span><span class="w">
-</span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># apply these labels...</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">labels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="s2">&#34;at_work&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># to tasks that...</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">filters</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">filter</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="c"># Any task that...</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">task</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="c"># ... ends in &#39;at work&#39; or &#39;the office&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">content</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">match</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;(at work$|at the office$)&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">option</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="c"># remove portions of task content that match the query</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="nt">mutate</span><span class="p">:</span><span class="w"> </span><span class="kc">Yes</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="c"># *AND*</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="c"># ... has no labels</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">labels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">absent</span><span class="p">:</span><span class="w"> </span><span class="kc">Yes</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="c"># *AND*</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="c"># ... is in this project</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">projects</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">name</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">match</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;Inbox&#39;</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
 </div>
 </div><p>and</p>
 <div class="highlight"><div class="chroma">
@@ -188,36 +188,34 @@
 </span><span class="lnt">24
 </span><span class="lnt">25
 </span><span class="lnt">26
-</span><span class="lnt">27
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="w">
-</span><span class="w">    </span><span class="c"># Create the projects...</span><span class="w">
-</span><span class="w">    </span><span class="nt">projects</span><span class="p">:</span><span class="w">
-</span><span class="w">        </span><span class="c"># ... as child projects of `Garage Sale 🏚️💵`</span><span class="w">
-</span><span class="w">      </span>- <span class="nt">parent</span><span class="p">:</span><span class="w">
-</span><span class="w">          </span><span class="nt">project</span><span class="p">:</span><span class="w"> </span><span class="l">Garage Sale 🏚️💵</span><span class="w">
-</span><span class="w">
-</span><span class="w">        </span><span class="c"># ... populated with template tasks/sections</span><span class="w">
-</span><span class="w">        </span><span class="nt">template</span><span class="p">:</span><span class="w">
-</span><span class="w">          </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l">./templates/garage-sale.csv</span><span class="w">
-</span><span class="w">        
-</span><span class="w">        </span><span class="c"># where the name of the projects to create comes from ...</span><span class="w">
-</span><span class="w">        </span><span class="nt">from</span><span class="p">:</span><span class="w">
-</span><span class="w">          </span><span class="nt">filters</span><span class="p">:</span><span class="w">
-</span><span class="w">            </span>- <span class="nt">filter</span><span class="p">:</span><span class="w">
-</span><span class="w">                </span><span class="c"># Any task that...</span><span class="w">
-</span><span class="w">                </span><span class="nt">task</span><span class="p">:</span><span class="w">
-</span><span class="w">                  </span><span class="nt">content</span><span class="p">:</span><span class="w">
-</span><span class="w">                    </span><span class="nt">match</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;.&#34;</span><span class="w">
-</span><span class="w">                    </span><span class="nt">option</span><span class="p">:</span><span class="w">
-</span><span class="w">                      </span><span class="nt">delete</span><span class="p">:</span><span class="w"> </span><span class="kc">yes</span><span class="w">
-</span><span class="w">
-</span><span class="w">                </span><span class="nt">projects</span><span class="p">:</span><span class="w">
-</span><span class="w">                  </span><span class="c"># ... is in this project</span><span class="w">
-</span><span class="w">                  </span><span class="nt">name</span><span class="p">:</span><span class="w">
-</span><span class="w">                    </span><span class="nt">match</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;Garage Sale 🏚️💵&#39;</span><span class="w">
-</span><span class="w">
-</span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Create the projects...</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">projects</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># ... as child projects of `Garage Sale 🏚️💵`</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">parent</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">project</span><span class="p">:</span><span class="w"> </span><span class="l">Garage Sale 🏚️💵</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># ... populated with template tasks/sections</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">template</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l">./templates/garage-sale.csv</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># where the name of the projects to create comes from ...</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">from</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">filters</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="nt">filter</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="c"># Any task that...</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="nt">task</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                  </span><span class="nt">content</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="nt">match</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;.&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="nt">option</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                      </span><span class="nt">delete</span><span class="p">:</span><span class="w"> </span><span class="kc">yes</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="nt">projects</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                  </span><span class="c"># ... is in this project</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                  </span><span class="nt">name</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="nt">match</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;Garage Sale 🏚️💵&#39;</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
 </div>
 </div>]]></description></item></channel></rss>

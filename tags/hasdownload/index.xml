@@ -686,7 +686,7 @@ Once the screw is fully inserted, allow it to fully cool (~5min) so the softened
 <p>All of the hardware modifications detailed below automatically configure themselves with Home Assistant.</p>
 <p>The original HASP code base uses allocates too little memory for storing MQTT credentials. Any username or password longer than 31 bytes/characters would be <strong>silently</strong> truncated on save. Despite the &lsquo;credentials saved, rebooting&rsquo; message, the next screen was always a &lsquo;failure to connect&rsquo; message. Frustrating! The pull request to address this is <a href="https://github.com/aderusha/HASwitchPlate/pull/117" target="_blank" rel="noopener noreffer">here</a>.</p>
 <h3 id="hardware">Hardware</h3>
-<p>The HASP does support dimming the LCD, but it has no awareness of ambient light levels. This makes it rather difficult to deploy a HASP in any &lsquo;light sensitive&rsquo; location like a bedroom or media room without another device to cue Home Assistant and lower the LCD brightness. Workable, but too high friction to be ideal.</p>
+<p>The HASP does support dimming the LCD, but it has no awareness of ambient light levels. This makes it rather difficult to deploy a HASP in any &rsquo;light sensitive&rsquo; location like a bedroom or media room without another device to cue Home Assistant and lower the LCD brightness. Workable, but too high friction to be ideal.</p>
 <p>Light Dependent Resistors - <a href="https://en.wikipedia.org/wiki/Photoresistor" target="_blank" rel="noopener noreffer">LDR</a> for short - are a very cheap and compact way to get an approximate light level. Fortunately, the analogue pin is broken out on the <a href="https://github.com/aderusha/HASwitchPlate/tree/master/PCB" target="_blank" rel="noopener noreffer">PCB</a> so a simple <a href="https://en.wikipedia.org/wiki/Voltage_divider#Resistive_divider" target="_blank" rel="noopener noreffer">resistive divider</a> and a few lines of code are all that&rsquo;s needed to get a a number that linearly correlates to the level of light hitting the face plate.</p>
 <p>It just so happens that there is <em>just enough</em> room to fit a LDR beneath the surface of the decor plate and out of the way of the LCD. As (not) shown in the picture above, there is no way to tell that the LDR is embedded beneath the surface.</p>
 <p>The range of values from the LDR isn&rsquo;t great, but they are adequate enough to reliably detect if the HASP is in a darkened room.</p>
@@ -733,7 +733,7 @@ Once the screw is fully inserted, allow it to fully cool (~5min) so the softened
 </figure>
 
 
-<p>With <em>zero</em> room to spare, four LEDs can fit into a small cavity between the LCD and decor plate surface. Like with the LDR, there is no visual &lsquo;tell&rsquo; that there are LEDs beneath the surface&hellip; unless they&rsquo;re on, of course.</p>
+<p>With <em>zero</em> room to spare, four LEDs can fit into a small cavity between the LCD and decor plate surface. Like with the LDR, there is no visual &rsquo;tell&rsquo; that there are LEDs beneath the surface&hellip; unless they&rsquo;re on, of course.</p>
 <figure >
 
     
@@ -850,7 +850,7 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 </figure>
 
 
-<p><strong>Note</strong>: Where possible, I&rsquo;ve used commission links. The links don&rsquo;t raise the price of any item, they simply let the retailer know that I&rsquo;m the reason for your business. In return, I get a small cut of your purchase as a &lsquo;thanks&rsquo; from the retailer. If you&rsquo;re not comfortable with that, you can use a URL unwinding service to get the &lsquo;raw&rsquo; product link and drop the attribution/commission part.</p>
+<p><strong>Note</strong>: Where possible, I&rsquo;ve used commission links. The links don&rsquo;t raise the price of any item, they simply let the retailer know that I&rsquo;m the reason for your business. In return, I get a small cut of your purchase as a &rsquo;thanks&rsquo; from the retailer. If you&rsquo;re not comfortable with that, you can use a URL unwinding service to get the &lsquo;raw&rsquo; product link and drop the attribution/commission part.</p>
 <h3 id="brass-inserts">Brass inserts</h3>
 <p>The original instructions suggest using glue to secure the brass inserts to the face plate, but I suggest using either a lighter or a very fine tip soldering iron to heat up the brass insert. A hot insert will melt the surrounding plastic which will make for a much stronger joint.  The modified version of the HASP face plate used in this guide intentionally features holes slightly too small for the brass inserts so glue won&rsquo;t be enough.</p>
 <p>Fully insert the 20mm screw into the brass insert, use pliers to grasp the screw and apply heat with a lighter for a few seconds and then insert into the face plate. Make sure that the screw is <strong>completely</strong> inserted into the insert so that molten plastic can&rsquo;t flow into the insert. If molten plastic enters and cools on the threads, it will be rather difficult to later screw things together!</p>
@@ -1386,7 +1386,7 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 <p>Better LED diffusion. There&rsquo;s not a lot of space for light pipes or similar, but I would like to find a better way of diffusing the LEDs. Or even to fit a masking layer between the LEDs and the plate, so the effect would be akin to a back-lit silhouette.</p>
 </li>
 <li>
-<p>Effects for the LEDs. Right now, the LEDs only support on/off/brightness commands. Their ability to passively indicate information would be enhanced if Home Assistant could send &lsquo;effect&rsquo; commands, too. E.G.: Rather than HA having to send a constant stream of color/brightness commands to fade between blue, green, yellow, purple, simply send a <code>fade(2s) blue, green, yellow, purple</code> command.</p>
+<p>Effects for the LEDs. Right now, the LEDs only support on/off/brightness commands. Their ability to passively indicate information would be enhanced if Home Assistant could send &rsquo;effect&rsquo; commands, too. E.G.: Rather than HA having to send a constant stream of color/brightness commands to fade between blue, green, yellow, purple, simply send a <code>fade(2s) blue, green, yellow, purple</code> command.</p>
 </li>
 <li>
 <p>There&rsquo;s plenty of spare room on the HASP PCB for the 10KΩ resistor. This would simplify the creation of the wiring harness. I&rsquo;ve been meaning to learn KiKad, this might be a very gentle way to start learning it. 🤔</p>
@@ -2051,7 +2051,7 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 <p>As the numerous wild fires in California rage on, <a href="https://www.forbes.com/sites/ericmack/2020/08/21/wildfire-smoke-blankets-the-west-as-california-records-worlds-worst-air-quality/" target="_blank" rel="noopener noreffer">the air quality has gone from bad to dangerous</a>. Knowing that outside was warmer, but less humid, was no longer enough to make a smart decision about weather or not to open the windows for some cost-effective cooling. I now need HomeAssistant to be aware of how clean the outside air was before making the decision to pipe in outdoor air.</p>
 <p>This post covers two things:</p>
 <ul>
-<li>A small update to the existing WS3 -&gt; ESPHome -&gt; HomeAssistant bridge code to take advantage of the WS3s' support for the ubiquitous <code>PMS5003T</code> sensor.</li>
+<li>A small update to the existing WS3 -&gt; ESPHome -&gt; HomeAssistant bridge code to take advantage of the WS3s&rsquo; support for the ubiquitous <code>PMS5003T</code> sensor.</li>
 <li>A simple 3d-printable enclosure for deploying the particulate matter sensor outdoors</li>
 </ul>
 <p>When deployed, it looks like this:</p>
@@ -2229,7 +2229,7 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 <li>Drill/Screwdriver</li>
 <li>Driver bit for the screws</li>
 </ul>
-<p>The stepped drill bit in the above picture is not a requirement if you assemble things in the correct oder. The cable egress hole is sized for a &lsquo;typical&rsquo; 3 pair <a href="https://en.wikipedia.org/wiki/Registered_jack#RJ11,_RJ14,_RJ25_wiring" target="_blank" rel="noopener noreffer">RJ11 cable</a> plus a tiny bit of wiggle room. I needed a working cable to test the code while the parts were printing so the hole in the printed base needed to be enlarged slightly to fit the head of the cable.</p>
+<p>The stepped drill bit in the above picture is not a requirement if you assemble things in the correct oder. The cable egress hole is sized for a &rsquo;typical&rsquo; 3 pair <a href="https://en.wikipedia.org/wiki/Registered_jack#RJ11,_RJ14,_RJ25_wiring" target="_blank" rel="noopener noreffer">RJ11 cable</a> plus a tiny bit of wiggle room. I needed a working cable to test the code while the parts were printing so the hole in the printed base needed to be enlarged slightly to fit the head of the cable.</p>
 <h3 id="wiring">Wiring</h3>
 <p>There&rsquo;s no ready-made cable out there that&rsquo;ll join the two devices so one must be made. Fortunately, there&rsquo;s only 6 wires to deal with&hellip; 4 of them are distinct.</p>
 <p>Sacrifice the cable that comes with the PM2.5 sensor and the RJ11 cable by cutting them in half and solder the correct wires together. The <em>color</em> of the wires that come in both the RJ11 cable and the PM2.5 cable are likely going to differ from the ones I used so I&rsquo;ve left those details out and provided a table showing which pins are to be joined together:</p>
@@ -2398,36 +2398,36 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 </span><span class="lnt">29
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="nt">uart</span><span class="p">:</span><span class="w">
-</span><span class="w">  </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">uart_bus</span><span class="w">
-</span><span class="w">  </span><span class="c"># At this time, ESP does not Transmit anything to the WS3</span><span class="w">
-</span><span class="w">  </span><span class="nt">tx_pin</span><span class="p">:</span><span class="w"> </span><span class="l">GPIO16</span><span class="w">
-</span><span class="w">  </span><span class="nt">rx_pin</span><span class="p">:</span><span class="w"> </span><span class="l">GPIO17</span><span class="w">
-</span><span class="w">  </span><span class="nt">baud_rate</span><span class="p">:</span><span class="w"> </span><span class="m">2400</span><span class="w">
-</span><span class="w">
-</span><span class="w"></span><span class="nt">sensor</span><span class="p">:</span><span class="w">
-</span><span class="w">  </span>- <span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">custom</span><span class="w">
-</span><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span><span class="sd">      auto ws3 = new WS3(id(uart_bus));
-</span><span class="sd">      App.register_component(ws3);
-</span><span class="sd">      return {
-</span><span class="sd">        ws3-&gt;temperature_sensor, 
-</span><span class="sd">        ws3-&gt;pressure_sensor, 
-</span><span class="sd">        ws3-&gt;humidity_sensor, 
-</span><span class="sd">        ws3-&gt;wind_speed_current_sensor,
-</span><span class="sd">        ws3-&gt;wind_speed_peak_5m_sensor,
-</span><span class="sd">        ws3-&gt;wind_direction_sensor,
-</span><span class="sd">        ws3-&gt;rain_fall_1h_sensor, 
-</span><span class="sd">        ws3-&gt;rain_fall_24h_sensor,
-</span><span class="sd">
-</span><span class="sd">        ws3-&gt;particles_03um,
-</span><span class="sd">        ws3-&gt;particles_05um,
-</span><span class="sd">        ws3-&gt;particles_10um,
-</span><span class="sd">        ws3-&gt;particles_25um,
-</span><span class="sd">        ws3-&gt;particles_50um,
-</span><span class="sd">        ws3-&gt;particles_100um,
-</span><span class="sd">      };</span><span class="w">      
-</span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">uart</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">uart_bus</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># At this time, ESP does not Transmit anything to the WS3</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">tx_pin</span><span class="p">:</span><span class="w"> </span><span class="l">GPIO16</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">rx_pin</span><span class="p">:</span><span class="w"> </span><span class="l">GPIO17</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">baud_rate</span><span class="p">:</span><span class="w"> </span><span class="m">2400</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">sensor</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">custom</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">      auto ws3 = new WS3(id(uart_bus));
+</span></span></span><span class="line"><span class="cl"><span class="sd">      App.register_component(ws3);
+</span></span></span><span class="line"><span class="cl"><span class="sd">      return {
+</span></span></span><span class="line"><span class="cl"><span class="sd">        ws3-&gt;temperature_sensor, 
+</span></span></span><span class="line"><span class="cl"><span class="sd">        ws3-&gt;pressure_sensor, 
+</span></span></span><span class="line"><span class="cl"><span class="sd">        ws3-&gt;humidity_sensor, 
+</span></span></span><span class="line"><span class="cl"><span class="sd">        ws3-&gt;wind_speed_current_sensor,
+</span></span></span><span class="line"><span class="cl"><span class="sd">        ws3-&gt;wind_speed_peak_5m_sensor,
+</span></span></span><span class="line"><span class="cl"><span class="sd">        ws3-&gt;wind_direction_sensor,
+</span></span></span><span class="line"><span class="cl"><span class="sd">        ws3-&gt;rain_fall_1h_sensor, 
+</span></span></span><span class="line"><span class="cl"><span class="sd">        ws3-&gt;rain_fall_24h_sensor,
+</span></span></span><span class="line"><span class="cl"><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">        ws3-&gt;particles_03um,
+</span></span></span><span class="line"><span class="cl"><span class="sd">        ws3-&gt;particles_05um,
+</span></span></span><span class="line"><span class="cl"><span class="sd">        ws3-&gt;particles_10um,
+</span></span></span><span class="line"><span class="cl"><span class="sd">        ws3-&gt;particles_25um,
+</span></span></span><span class="line"><span class="cl"><span class="sd">        ws3-&gt;particles_50um,
+</span></span></span><span class="line"><span class="cl"><span class="sd">        ws3-&gt;particles_100um,
+</span></span></span><span class="line"><span class="cl"><span class="sd">      };</span><span class="w">      
+</span></span></span></code></pre></td></tr></table>
 </div>
 </div><p>With that, check the logs from your instance of ESPHome and you should see something like this:</p>
 <div class="highlight"><div class="chroma">
@@ -2438,11 +2438,11 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 </span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback">[D][ws3:157]: pkt_read_ok!
-[D][WS3:410]: VALID! Packet: [c000s000g000t093r000p000h35b09880,050,080,088,502,056,065,*18
-], Checksum: [18] chksum: [18]
-[E][WS3:342]: Validating: [c000s000g000t093r000p000h35b09880,050,080,088,502,056,065]
-</code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">[D][ws3:157]: pkt_read_ok!
+</span></span><span class="line"><span class="cl">[D][WS3:410]: VALID! Packet: [c000s000g000t093r000p000h35b09880,050,080,088,502,056,065,*18
+</span></span><span class="line"><span class="cl">], Checksum: [18] chksum: [18]
+</span></span><span class="line"><span class="cl">[E][WS3:342]: Validating: [c000s000g000t093r000p000h35b09880,050,080,088,502,056,065]
+</span></span></code></pre></td></tr></table>
 </div>
 </div><p>indicating that the WS3 has detected the PM2.5 sensor and is reporting it&rsquo;s readings in addition to the temperature/wind data. Then just check your HomeAssistant install for the data.</p>
 <h2 id="files">Files</h2>
@@ -3006,7 +3006,7 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 <p>There are two components for this build:</p>
 <ul>
 <li>the &lsquo;plate&rsquo; which rests on the top of the PSU case and has small &lsquo;fences&rsquo; to fix the circuit boards in place. It&rsquo;s the &lsquo;salmon&rsquo; colored component</li>
-<li>the &lsquo;lid&rsquo; is the (mostly) transparent yellow component which holds the auxiliary power supplies (pink components) in place and keeps all voltages away from people.</li>
+<li>the &rsquo;lid&rsquo; is the (mostly) transparent yellow component which holds the auxiliary power supplies (pink components) in place and keeps all voltages away from people.</li>
 </ul>
 <figure >
 
@@ -3079,7 +3079,7 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 <li>re-connect the IEC power connector and power on</li>
 <li>monitor for sounds and smells that indicate you screwed up. begin testing PoE and USB port for proper power.</li>
 </ol>
-<p>Just prior to seating the &lsquo;lid&rsquo; you should have something like this:</p>
+<p>Just prior to seating the &rsquo;lid&rsquo; you should have something like this:</p>
 <figure >
 
     
@@ -3316,7 +3316,7 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 <p>As is, the model has:</p>
 <ul>
 <li>8 jacks</li>
-<li><code>178.5mm</code> from &lsquo;edge&rsquo; to &lsquo;edge&rsquo; between the two screw holes</li>
+<li><code>178.5mm</code> from &rsquo;edge&rsquo; to &rsquo;edge&rsquo; between the two screw holes</li>
 <li><code>6.5mm</code> diameter for the holes as my rack uses M6 screws.</li>
 </ul>
 <p>Note: After printing the model you see in the pictures below, I added a small cutout which should make it easier to depress the clip on the &lsquo;male&rsquo; end of a keystone device from the &lsquo;user facing&rsquo; side as you&rsquo;d typically find on a proper patch panel</p>

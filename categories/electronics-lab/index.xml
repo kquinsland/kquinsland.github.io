@@ -31,7 +31,7 @@
 <p>There are two components for this build:</p>
 <ul>
 <li>the &lsquo;plate&rsquo; which rests on the top of the PSU case and has small &lsquo;fences&rsquo; to fix the circuit boards in place. It&rsquo;s the &lsquo;salmon&rsquo; colored component</li>
-<li>the &lsquo;lid&rsquo; is the (mostly) transparent yellow component which holds the auxiliary power supplies (pink components) in place and keeps all voltages away from people.</li>
+<li>the &rsquo;lid&rsquo; is the (mostly) transparent yellow component which holds the auxiliary power supplies (pink components) in place and keeps all voltages away from people.</li>
 </ul>
 <figure >
 
@@ -104,7 +104,7 @@
 <li>re-connect the IEC power connector and power on</li>
 <li>monitor for sounds and smells that indicate you screwed up. begin testing PoE and USB port for proper power.</li>
 </ol>
-<p>Just prior to seating the &lsquo;lid&rsquo; you should have something like this:</p>
+<p>Just prior to seating the &rsquo;lid&rsquo; you should have something like this:</p>
 <figure >
 
     
