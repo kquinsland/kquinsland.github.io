@@ -243,8 +243,16 @@ I did not dump [`EDID`](https://en.wikipedia.org/wiki/Extended_Display_Identific
 
 ## ESPHome component
 
+
+{{< admonition info >}}
+The ESPHome component and some additional documentation/software/details are over at [`kquinsland/hdmi-kvm-esphome`](https://github.com/kquinsland/hdmi-kvm-esphome).
+{{< /admonition >}}
+
+
 Yes, I wanted to be able to control this KVM from my Home Assistant install.
 Some sort of API was a strong desire/requirement for KVM switches for a reason!
+
+{{<figure name="example_ha_conf">}}
 
 I am still working on a complementary ESPHome component to automate my standing desk (to be published soon!) but to give you an idea of the automations this KVM will be used in:
 
@@ -257,8 +265,6 @@ I am still working on a complementary ESPHome component to automate my standing 
 * When personal/work computer are not in use, switch to a host running Grafana dashboards on rotation
 * Allow me to track how much time per week is spent with each host
 
-
-The ESPHome component and some additional documentation/software/details are over at [`kquinsland/hdmi-kvm-esphome`](https://github.com/kquinsland/hdmi-kvm-esphome).
 
 
 ## ICs and distinguishing markings

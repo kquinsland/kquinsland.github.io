@@ -694,8 +694,32 @@ Could that have something to do with the <code>3251QE</code> muxes?
 Perhaps this device indicates to the computer weather or not it is the activated one? 🤔 But why would you need two?</p>
 <p>I did not dump <a href="https://en.wikipedia.org/wiki/Extended_Display_Identification_Data" target="_blank" rel="noopener noreffer"><code>EDID</code></a> information for the HDMI but I suspect that the switch is smart enough to just copy exactly what the display provides so the computers don&rsquo;t &lsquo;see&rsquo; the loss/change of a display which might re-arrange windows or adjust scaling.</p>
 <h2 id="esphome-component">ESPHome component</h2>
+<div class="details admonition info open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-info-circle fa-fw"></i>Info<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">The ESPHome component and some additional documentation/software/details are over at <a href="https://github.com/kquinsland/hdmi-kvm-esphome" target="_blank" rel="noopener noreffer"><code>kquinsland/hdmi-kvm-esphome</code></a>.</div>
+        </div>
+    </div>
 <p>Yes, I wanted to be able to control this KVM from my Home Assistant install.
 Some sort of API was a strong desire/requirement for KVM switches for a reason!</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
 <p>I am still working on a complementary ESPHome component to automate my standing desk (to be published soon!) but to give you an idea of the automations this KVM will be used in:</p>
 <ul>
 <li>
@@ -713,7 +737,6 @@ Some sort of API was a strong desire/requirement for KVM switches for a reason!<
 <p>Allow me to track how much time per week is spent with each host</p>
 </li>
 </ul>
-<p>The ESPHome component and some additional documentation/software/details are over at <a href="https://github.com/kquinsland/hdmi-kvm-esphome" target="_blank" rel="noopener noreffer"><code>kquinsland/hdmi-kvm-esphome</code></a>.</p>
 <h2 id="ics-and-distinguishing-markings">ICs and distinguishing markings</h2>
 <p>The front panel PCB is labeled: <code>20170622</code> and features:</p>
 <ul>
