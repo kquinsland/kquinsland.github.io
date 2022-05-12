@@ -1,4 +1,12 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>teardown - Tag - karl</title><link>https://karlquinsland.com/tags/teardown/</link><description>teardown - Tag - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 23 Apr 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/teardown/" rel="self" type="application/rss+xml"/><item><title>Quick look inside Venstar T7850 - One of the only 'no-cloud' WiFi Thermostats that plays nice with Home Assistant</title><link>https://karlquinsland.com/venstar-t7850-teardown-review/</link><pubDate>Sat, 23 Apr 2022 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/venstar-t7850-teardown-review/</guid><description><![CDATA[<p>This is another one of those posts from my never ending quest to integrate Home Assistant with All The Things!</p>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>teardown - Tag - karl</title><link>https://karlquinsland.com/tags/teardown/</link><description>teardown - Tag - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 23 Apr 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/teardown/" rel="self" type="application/rss+xml"/><item><title>Quick look inside Venstar T7850 - One of the only 'no-cloud' WiFi Thermostats that plays nice with Home Assistant</title><link>https://karlquinsland.com/venstar-t7850-teardown-review/</link><pubDate>Sat, 23 Apr 2022 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/venstar-t7850-teardown-review/</guid><description><![CDATA[<div class="details admonition info open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-info-circle fa-fw"></i>Info<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">As of 2022-05-11, there is an update on my experience with the thermostat <a href="#an-update-on-wifi-connectivity" rel="">below</a>!</div>
+        </div>
+    </div>
+<p>This is another one of those posts from my never ending quest to integrate Home Assistant with All The Things!</p>
 <p>The thermostat that was installed when I moved in was an early Nest thermostat. These thermostats are - for the most part - well reviewed and liked. I had no complaints&hellip; except one.</p>
 <p>Google only permits programmatic interaction with Nest devices through their <a href="https://developers.google.com/nest/device-access/api" target="_blank" rel="noopener noreffer">Smart Device Management API</a>.
 This API is essentially cloud hosted MQTT and requires a small fee to access.
@@ -50,6 +58,211 @@ My criteria:</p>
 <p>Below is a super concise review that is based mostly on my initial impressions / install experience.
 I have only recently acquired and installed the T7850 so I can&rsquo;t comment on any of the finer points or drawbacks that could only be known after several months experience with the thermostat.</p>
 <p>TL;DR: I wish I had more insight into Google&rsquo;s disappointing decision to not implement a local API for the Nest; I&rsquo;ll uninstall the Venstar and put it up on eBay the nanosecond the Nest gets a local API!</p>
+<h2 id="an-update-on-wifi-connectivity">An Update on WiFi connectivity</h2>
+<p>Less than 48 hours after installing the thermostat, I noticed that Home Assistant was no longer able to control it.
+Every entity on the device showed <code>Unavailable</code>. Apparently, the thermostat had fallen off the network and was struggling to get back on.</p>
+<p>I went through all the usual troubleshooting steps and was able to confirm a few interesting things:</p>
+<ul>
+<li>Changing the network name and password didn&rsquo;t help.</li>
+<li>I disabled the SSID on my access point and created an identical SSID/network key on an old raspberry pi. The thermostat was <em>usually</em> able to connect to the AP. If I powered down the raspberry pi AP and re-enabled the same network name/key on my AP, the thermostat would not connect. If left on the raspberry pi AP, the thermostat would eventually eventually &ldquo;fall off&rdquo;.</li>
+</ul>
+<p>I initially suspected that the initial firmware update I didn&rsquo;t consent to may have broken something and started to look for a way to downgrade the firmware to the previous version that <em>did</em> manage to connect to my AP quickly.</p>
+<p>No such luck.</p>
+<p>While the thermostat does have an A/B partition scheme, I couldn&rsquo;t find any way to force a downgrade or even get older firmware files from the manufacturer.</p>
+<p>After a few factory resets and additional troubleshooting, I started to look around&hellip; and apparently this is not a new problem.</p>
+<p>Here are two &lsquo;relatively new&rsquo; reddit threads that mention similar connection issues with similar models in the same product family:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Source: /r/homeassistant post:
+        <a href="https://www.reddit.com/r/homeassistant/comments/nge04w/all_local_control_thermostat_with_mqtt_and_home/hvxxpwy/?context=3"> 
+            ALL Local Control Thermostat with MQTT and Home Assistant - Venstar T7900
+        </a> 
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Source: /r/thermostats post:
+        <a href="https://www.reddit.com/r/thermostats/comments/og9bae/comment/hgzqdmj/?context=3"> 
+            Venstar T7900 - problem with WIFI
+        </a> 
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>And an Amazon question from years ago indicating that this might not be a &rsquo;new&rsquo; issue:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Source: Amazon question: 
+        <a href="https://www.amazon.com/ask/questions/Tx2N92LOB3XBR7U"> 
+            My venstar phone app says thermostat is offline. How do I reconnect it ?
+        </a> 
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>A Home Assistant community/support form poster seems to have a similar issue and even offers a fix&hellip; which did not work.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Source: Home Assistant community forums: 
+        <a href="https://community.home-assistant.io/t/venstar-t7900-trane-air-conditioning-amana-forced-air-furnace/314969"> 
+            Venstar T7900 &amp; Trane Air Conditioning / Amana Forced Air Furnace
+        </a> 
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>My access point is also a Unifi AP so of course there are a few threads on the unifi support forums:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Source: Ubiquity community forums: 
+        <a href="https://community.ui.com/questions/Trouble-associating-Venstar-Wifi-thermostats-with-one-particular-UAP-AC-PRO/ad597f22-b8ff-4b7c-8e01-1676e92cc318"> 
+            Trouble associating Venstar Wifi thermostats with one particular UAP-AC-PRO
+        </a> 
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<div class="details admonition note open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-pencil-alt fa-fw"></i>Note<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">Note: <a href="https://fccid.io/MUH-SKYPORT2/Attestation-Statements/Models-Covered-2531030" target="_blank" rel="noopener noreffer">The FCC documents indicate</a> that Venstar did re-brand the thermostat for <code>First Alert</code> and <code>Bionaire</code>. It is likely that they also did this for <code>Carrier</code> as well judging by <a href="https://images.google.com/search?q=carrier&#43;infinity&#43;touch&#43;control&amp;tbm=isch" target="_blank" rel="noopener noreffer">pictures</a> of a <code>Carrier Infinity Touch Control</code> thermostat.</div>
+        </div>
+    </div>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Source: Ubiquity community forums: 
+        <a href="https://community.ui.com/questions/Cant-connect-to-Carrier-Infinity-Thermostat/e95531ef-ac18-452a-be4d-7ac0157258fe"> 
+            Cant connect to Carrier Infinity Thermostat
+        </a> 
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>The user name seems familiar; probably the same user from one of the above reddit threads:
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Source: Ubiquity community forums: 
+        <a href="https://community.ui.com/questions/Venstar-T7900-Thermostat-Wont-Connect-to-WiFi/48eff0a3-5b27-4cdd-9c2f-80bcdb5e0bc3"> 
+            Venstar T7900 Thermostat Won&#39;t Connect to WiFi
+        </a> 
+        </p> 
+    </figcaption>
+    
+</figure>
+
+</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Source: Ubiquity community forums: 
+        <a href="https://community.ui.com/questions/Venstar-ColorTouch-Thermostat-Unable-to-Connect-to-AC-LR/77e08c30-246d-4a39-923c-c912c259fca9"> 
+            Venstar ColorTouch Thermostat Unable to Connect to AC-LR
+        </a> 
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<div class="details admonition warning open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-exclamation-triangle fa-fw"></i>TL;DR:<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>Ubiquity&rsquo;s Unifi line of wireless access points has a pretty solid reputation for a reason; by and large they just work. I have installed dozens of them over the years and have supported installs with <em>thousands</em> of them and had dar fewer issues with those customers/sites than with your typical &lsquo;soho&rsquo; routers and other consumer-grade access points.</p>
+<p>As of <strong>right now</strong>, I have a little more than a hundred wireless devices hanging off of the same AP that the thermostat failed to reliably connect to. Over the past several years, I have acquired many more devices and - with the exception of <strong>one other device</strong> - I have never had issues connecting anything to my wireless network.</p>
+<p>Even if only some users experience issues with Venstar thermostats connecting to WiFi, I have to wonder why the issue exists at all. It&rsquo;s 2022 and there&rsquo;s no excuse for basic WiFi network compatibility issues like the kind that were more common in the bad old days of early WiFi circa <em>2005</em>. Somehow, the hundred+ other devices got their WiFi right&hellip; what is Venstar missing?</p>
+<p>While I didn&rsquo;t want to introduce <em>yet another</em> wireless&rsquo;s networking standard to my home, I am <em>considerably</em> happier with the Honeywell TH6320ZW2003 that has replaced the T7850.</p>
+</div>
+        </div>
+    </div>
 <h2 id="the-good">The Good</h2>
 <ul>
 <li>It has <em>optional</em> cloud connectivity! It&rsquo;s trivial to turn this off and - as far as I can tell - it is <strong>mostly</strong> disabled. More on that <a href="#network" rel="">below</a>.</li>

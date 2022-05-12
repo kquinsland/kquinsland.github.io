@@ -2,6 +2,10 @@
 
 
 
+{{< admonition info >}}
+As of 2022-05-11, there is an update on my experience with the thermostat [below](#an-update-on-wifi-connectivity)!
+{{< /admonition >}}
+
 This is another one of those posts from my never ending quest to integrate Home Assistant with All The Things!
 
 The thermostat that was installed when I moved in was an early Nest thermostat. These thermostats are - for the most part - well reviewed and liked. I had no complaints... except one.
@@ -46,6 +50,74 @@ Below is a super concise review that is based mostly on my initial impressions /
 I have only recently acquired and installed the T7850 so I can't comment on any of the finer points or drawbacks that could only be known after several months experience with the thermostat.
 
 TL;DR: I wish I had more insight into Google's disappointing decision to not implement a local API for the Nest; I'll uninstall the Venstar and put it up on eBay the nanosecond the Nest gets a local API!
+
+
+## An Update on WiFi connectivity
+
+Less than 48 hours after installing the thermostat, I noticed that Home Assistant was no longer able to control it.
+Every entity on the device showed `Unavailable`. Apparently, the thermostat had fallen off the network and was struggling to get back on.
+
+I went through all the usual troubleshooting steps and was able to confirm a few interesting things:
+
+- Changing the network name and password didn't help.
+- I disabled the SSID on my access point and created an identical SSID/network key on an old raspberry pi. The thermostat was _usually_ able to connect to the AP. If I powered down the raspberry pi AP and re-enabled the same network name/key on my AP, the thermostat would not connect. If left on the raspberry pi AP, the thermostat would eventually eventually "fall off".
+
+I initially suspected that the initial firmware update I didn't consent to may have broken something and started to look for a way to downgrade the firmware to the previous version that _did_ manage to connect to my AP quickly.
+
+No such luck.
+
+While the thermostat does have an A/B partition scheme, I couldn't find any way to force a downgrade or even get older firmware files from the manufacturer.
+
+After a few factory resets and additional troubleshooting, I started to look around... and apparently this is not a new problem.
+
+Here are two 'relatively new' reddit threads that mention similar connection issues with similar models in the same product family:
+
+
+{{<figure name="wifi_issue_01">}}
+
+{{<figure name="wifi_issue_02">}}
+
+
+And an Amazon question from years ago indicating that this might not be a 'new' issue:
+
+{{<figure name="wifi_issue_03">}}
+
+A Home Assistant community/support form poster seems to have a similar issue and even offers a fix... which did not work.
+
+{{<figure name="wifi_issue_04">}}
+
+My access point is also a Unifi AP so of course there are a few threads on the unifi support forums:
+
+{{<figure name="wifi_issue_05">}}
+
+
+
+{{< admonition note >}}
+Note: [The FCC documents indicate](https://fccid.io/MUH-SKYPORT2/Attestation-Statements/Models-Covered-2531030) that Venstar did re-brand the thermostat for `First Alert` and `Bionaire`. It is likely that they also did this for `Carrier` as well judging by [pictures](https://images.google.com/search?q=carrier+infinity+touch+control&tbm=isch) of a `Carrier Infinity Touch Control` thermostat.
+
+{{< /admonition >}}
+
+
+{{<figure name="wifi_issue_06">}}
+
+The user name seems familiar; probably the same user from one of the above reddit threads:
+{{<figure name="wifi_issue_07">}}
+
+{{<figure name="wifi_issue_08">}}
+
+
+{{< admonition warning "TL;DR:" >}}
+
+Ubiquity's Unifi line of wireless access points has a pretty solid reputation for a reason; by and large they just work. I have installed dozens of them over the years and have supported installs with _thousands_ of them and had dar fewer issues with those customers/sites than with your typical 'soho' routers and other consumer-grade access points.
+
+As of **right now**, I have a little more than a hundred wireless devices hanging off of the same AP that the thermostat failed to reliably connect to. Over the past several years, I have acquired many more devices and - with the exception of **one other device** - I have never had issues connecting anything to my wireless network.
+
+Even if only some users experience issues with Venstar thermostats connecting to WiFi, I have to wonder why the issue exists at all. It's 2022 and there's no excuse for basic WiFi network compatibility issues like the kind that were more common in the bad old days of early WiFi circa _2005_. Somehow, the hundred+ other devices got their WiFi right... what is Venstar missing?
+
+While I didn't want to introduce _yet another_ wireless's networking standard to my home, I am _considerably_ happier with the Honeywell TH6320ZW2003 that has replaced the T7850.
+
+{{< /admonition >}}
+
 
 ## The Good
 
