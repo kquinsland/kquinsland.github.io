@@ -108,7 +108,7 @@ The user name seems familiar; probably the same user from one of the above reddi
 
 {{< admonition warning "TL;DR:" >}}
 
-Ubiquity's Unifi line of wireless access points has a pretty solid reputation for a reason; by and large they just work. I have installed dozens of them over the years and have supported installs with _thousands_ of them and had dar fewer issues with those customers/sites than with your typical 'soho' routers and other consumer-grade access points.
+Ubiquity's Unifi line of wireless access points has a pretty solid reputation for a reason; by and large they just work. I have installed dozens of them over the years and have supported installs with _thousands_ of them and had far fewer issues with those customers/sites than with your typical 'soho' routers and other consumer-grade access points.
 
 As of **right now**, I have a little more than a hundred wireless devices hanging off of the same AP that the thermostat failed to reliably connect to. Over the past several years, I have acquired many more devices and - with the exception of **one other device** - I have never had issues connecting anything to my wireless network.
 

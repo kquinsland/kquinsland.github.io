@@ -1,4 +1,464 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>home assistant - Tag - karl</title><link>https://karlquinsland.com/tags/home-assistant/</link><description>home assistant - Tag - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 23 Apr 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/home-assistant/" rel="self" type="application/rss+xml"/><item><title>Quick look inside Venstar T7850 - One of the only 'no-cloud' WiFi Thermostats that plays nice with Home Assistant</title><link>https://karlquinsland.com/venstar-t7850-teardown-review/</link><pubDate>Sat, 23 Apr 2022 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/venstar-t7850-teardown-review/</guid><description><![CDATA[<div class="details admonition info open">
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>home assistant - Tag - karl</title><link>https://karlquinsland.com/tags/home-assistant/</link><description>home assistant - Tag - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 12 May 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/home-assistant/" rel="self" type="application/rss+xml"/><item><title>Configuring additional ZwaveJS entities in Home Assistant over MQTT</title><link>https://karlquinsland.com/zwavejs-autodiscovery-additional-entities/</link><pubDate>Thu, 12 May 2022 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/zwavejs-autodiscovery-additional-entities/</guid><description><![CDATA[<p>This is a super quick &ldquo;because the official docs didn&rsquo;t make it super clear so here&rsquo;s what ended up working for me&rdquo; post.</p>
+<hr>
+<!-- markdownlint-disable-file MD033 -->
+<p>After some <a href="https://karlquinsland.com/venstar-t7850-teardown-review/#an-update-on-wifi-connectivity" rel="">very disappointing WiFi connectivity issues</a>, I settled on a Zwave based thermostat to replace the Venstar thermostat.</p>
+<p>After installing the Honeywell TH6320 and connecting it to the ZwaveJS gateway, a new `climate`` entity appeared in Home Assistant. From there, I was able to see/control:</p>
+<ul>
+<li>The current thermostat setpoint/mode</li>
+<li>The current air temp and humidity</li>
+<li>The current battery level / if the thermostat thought the battery was low</li>
+</ul>
+<p>I knew that it was possible to adjust the the screen backlight from the thermostat itself so I was a bit confused when there was no such configuration entity exposed in Home Assistant.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Note the `Idle_brightness` sensor. That&#39;s not part of the &#39;default&#39; zwavejs2mqtt install.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>After playing around with the ZwaveJS2MQTT web interface for bit, I discovered that it was possible to adjust the backlight brightness&hellip;and over 40 other settings under the <code>Configuration v4</code> section.</p>
+<p>I can totally understand why only the &ldquo;core&rdquo; functionality would be automatically exposed to Home Assistant; most of the 40+ knobs are things that do not need to be set beyond the initial installation.</p>
+<p>So, How do I go about getting ZwaveJS2MQTT to automatically tell Home Assistant about the current backlight level?</p>
+<h2 id="exposing-idle-brightness-to-home-assistant-as-a-sensor">Exposing &lsquo;idle brightness&rsquo; to Home Assistant as a Sensor</h2>
+<p>From the <code>Configuration v4</code> tab for the thermostat node, I found the input field <code>[4-112-0-39] Idle Brightness</code> which let me control the thermostat screen backlight level.
+I don&rsquo;t know what the numbers mean, but they are important / uniquely identify <em>a specific setting</em>.</p>
+<div class="details admonition note open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-pencil-alt fa-fw"></i>Note<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">If you are using this as a guide but for a <em>different</em> setting (perhaps you want to keep an eye on <code>[4-112-0-28] Minimum Cool Temperature</code>, for example) then you will want to substitute your parameter setting &lsquo;address&rsquo; as appropriate.</div>
+        </div>
+    </div>
+<p>After some more experimentation and trying to grok <a href="https://zwave-js.github.io/zwavejs2mqtt/#/homeassistant/homeassistant-mqtt?id=add-new-component" target="_blank" rel="noopener noreffer">documentation</a>, I figured out how to get ZwaveJS to advertise the current value for the backlight brightness as a sensor in Home Assistant.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        The &#39;HOME ASSISTANT&#39; tab of my thermostats&#39; page.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>Here&rsquo;s how to do it:</p>
+<ul>
+<li>Select the <code>node</code> in question from the <code>Control Panel</code> page on the ZwaveJS2MQTT web UI. In this case, you can see that my thermostat is node <code>4</code>. Yours will likely be different.</li>
+<li>Select the <code>Home Assistant</code> tab from the left. You can see it selected in the above screenshot.</li>
+<li>In the blank <code>Hass Device JSON</code> box, paste the JSON document that describes the sensor / entity you wish to expose to Home Assistant. I struggled for some time trying to figure out what the document should look like but was able to &lsquo;reverse engineer&rsquo; a working payload by studying the <code>sensor_humidity_air</code> entity that was automatically created.</li>
+<li>Then click the <code>ADD</code> button that should have activated just above the <code>Hass Device JSON</code>. A new row should appear in the <code>Home Assistant - Devices table</code></li>
+<li>Click the newly added row so the <code>Hass Device JSON</code> field is populated with the JSON document you have added.</li>
+<li>Click the <code>UPDATE</code> button that should appear just above the <code>Hass Device JSON</code> label</li>
+<li>Assuming no issues, this will send the MQTT message which tells Home Assistant about your new sensor. You may wish to use a MQTT broker inspection app to monitor the exact payload that is sent to the <code>homeassistant/...</code> topic as well as <code>tail -f home-assistant.log</code>. If Home Assistant gets the message, any validation errors will show up in the HA log.</li>
+<li>Once you are satisfied with how the entity is presented in Home Assistant, click the <code>STORE</code> button just below the <code>Home Assistant - Devices</code> heading on the ZwaveJS2MQTT web UI.</li>
+</ul>
+<p>When all is said and done, this is what you should see:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<h3 id="example-payload">Example payload</h3>
+<p>Here is a (slightly edited) version of the JSON document I added via the <code>Hass Device JSON</code> entry.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;type&#34;</span><span class="p">:</span> <span class="s2">&#34;sensor&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;object_id&#34;</span><span class="p">:</span> <span class="s2">&#34;idle_brightness&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;discovery_payload&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;value_template&#34;</span><span class="p">:</span> <span class="s2">&#34;{{ value_json.value }}&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;state_topic&#34;</span><span class="p">:</span> <span class="s2">&#34;zwave/YourThermostat_NameHere/112/0/39&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;json_attributes_topic&#34;</span><span class="p">:</span> <span class="s2">&#34;zwave/YourThermostat_NameHere/112/0/39&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;device&#34;</span><span class="p">:</span> <span class="p">{</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;identifiers&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;zwavejs2mqtt_0xdeadbeef_node4&#34;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">],</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;manufacturer&#34;</span><span class="p">:</span> <span class="s2">&#34;Honeywell&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;model&#34;</span><span class="p">:</span> <span class="s2">&#34;T6 Pro Z-Wave Programmable Thermostat (TH6320ZW)&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;YourThermostat NameHere&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;sw_version&#34;</span><span class="p">:</span> <span class="s2">&#34;1.3&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">},</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;YourThermostat NameHere idle_brightness&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;unique_id&#34;</span><span class="p">:</span> <span class="s2">&#34;zwavejs2mqtt_0xdeadbeef_4-112-0-Idle_Brightness&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;entity_category&#34;</span><span class="p">:</span> <span class="s2">&#34;config&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="nt">&#34;icon&#34;</span><span class="p">:</span> <span class="s2">&#34;mdi:brightness-percent&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">},</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;discoveryTopic&#34;</span><span class="p">:</span> <span class="s2">&#34;sensor/YourThermostat_NameHere/idle_brightness/config&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;values&#34;</span><span class="p">:</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;112-0-39&#34;</span>
+</span></span><span class="line"><span class="cl">  <span class="p">],</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;persistent&#34;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;ignoreDiscovery&#34;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">  <span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="s2">&#34;sensor_idle_brightness&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>I have replaced a few things in the example payload. You will want to retrieve the correct values for your payload from one of the automatically generated payloads. I used the <code>sensor_humidity_air</code> device as a starting point for my payload.</p>
+<h2 id="ok-but-what-about-writing-to-the-thermostat">Ok, but what about writing to the thermostat?</h2>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        A basic &#39;helper&#39; widget for use in Home Assistant Automations.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>Once the sensor exists in Home Assistant, you will probably want to use it in an automation.
+Here is a simple automation that watches a basic number input widget and sets the backlight brightness for the thermostat based on what the widget is set to:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l">Sync thermostat brightness to input select</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l">An Example automation.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">trigger</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">state</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">entity_id</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">sensor.yourthermostat_namehere_idle_brightness</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">physical</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">state</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">entity_id</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">input_number.thermostat_backlight</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">virtual</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">condition</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">action</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">choose</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">conditions</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="nt">condition</span><span class="p">:</span><span class="w"> </span><span class="l">trigger</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">virtual</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">sequence</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="nt">service</span><span class="p">:</span><span class="w"> </span><span class="l">mqtt.publish</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">data</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">topic</span><span class="p">:</span><span class="w"> </span><span class="l">zwave/YourThermostat_NameHere/112/0/39/set</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">payload_template</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;{{trigger.to_state.state}}&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">conditions</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="nt">condition</span><span class="p">:</span><span class="w"> </span><span class="l">trigger</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">physical</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">sequence</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="nt">service</span><span class="p">:</span><span class="w"> </span><span class="l">input_number.set_value</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">target</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">entity_id</span><span class="p">:</span><span class="w"> </span><span class="l">input_number.thermostat_backlight</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">data_template</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;{{trigger.to_state.state | float}}&#39;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">default</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l">single</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">max_exceeded</span><span class="p">:</span><span class="w"> </span><span class="l">silent</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>This <em>works</em> but it&rsquo;s not <em>automagic</em>. We can do better!</p>
+<h2 id="more-automagic-more-better">More Automagic, More Better</h2>
+<p>The primary downside with the above automation is that the user (read: you) needs to create the <code>input_number</code> widget and then spend the time telling Home Assistant what to do when the value changes.</p>
+<p>This isn&rsquo;t a particularly difficult task - only ~30 lines of yaml&hellip; but what if we didn&rsquo;t have to do that?</p>
+<p>What if Home Assistant had a robust auto discovery mechanism that we could take advantage of to <em>automagically</em> set up a basic input widget that would transmit the necessary MQTT payload to adjust the backlight &hellip; automatically?</p>
+<p>I have good news and bad news.</p>
+<p>The good news is that we totally can do this. 🎉</p>
+<p>The bad news is that ZwaveJS2MQTT does not appear to support the <a href="https://www.home-assistant.io/integrations/input_select/" target="_blank" rel="noopener noreffer"><code>input_select</code></a> type of entity that we&rsquo;ll need to pull this off. 👎</p>
+<p>I am not super familiar with the ZwaveJS2MQTT code base, but it looks like there is no validation on the JSON you enter under the <code>Hass Device JSON</code> field but there <em>is</em> some validation / filtering on the MQTT message that is sent for auto discovery. <a href="https://github.com/zwave-js/zwavejs2mqtt/blob/master/hass/configurations.ts#L6" target="_blank" rel="noopener noreffer">ZwaveJS2MQTT does not seem to support <code>select</code> components via MQTT</a> so the payload that is sent to Home Assistant is incomplete and results in errors:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">│ ERROR <span class="o">(</span>MainThread<span class="o">)</span> <span class="o">[</span>homeassistant.util.logging<span class="o">]</span> Exception in discovery_callback when dispatching <span class="s1">&#39;mqtt_discovery_updated_(&#39;</span><span class="k">select</span><span class="s1">&#39;, &#39;</span>YourThermostat NameHere idle_brightness │
+</span></span><span class="line"><span class="cl">│ Traceback <span class="o">(</span>most recent call last<span class="o">)</span>:
+</span></span><span class="line"><span class="cl">│   File <span class="s2">&#34;/usr/src/homeassistant/homeassistant/components/mqtt/mixins.py&#34;</span>, line 724, in discovery_callback      
+</span></span><span class="line"><span class="cl">│     await self._discovery_update<span class="o">(</span>payload<span class="o">)</span>    
+</span></span><span class="line"><span class="cl">│   File <span class="s2">&#34;/usr/src/homeassistant/homeassistant/components/mqtt/mixins.py&#34;</span>, line 886, in discovery_update        
+</span></span><span class="line"><span class="cl">│     <span class="nv">config</span> <span class="o">=</span> self.config_schema<span class="o">()(</span>discovery_payload<span class="o">)</span>                                                          
+</span></span><span class="line"><span class="cl">│   File <span class="s2">&#34;/usr/local/lib/python3.9/site-packages/voluptuous/validators.py&#34;</span>, line 232, in __call__               
+</span></span><span class="line"><span class="cl">│     <span class="k">return</span> self._exec<span class="o">((</span>Schema<span class="o">(</span>val<span class="o">)</span> <span class="k">for</span> val in self.validators<span class="o">)</span>, v<span class="o">)</span>                                            
+</span></span><span class="line"><span class="cl">│   File <span class="s2">&#34;/usr/local/lib/python3.9/site-packages/voluptuous/validators.py&#34;</span>, line 355, in _exec                  
+</span></span><span class="line"><span class="cl">│     raise e <span class="k">if</span> self.msg is None <span class="k">else</span> AllInvalid<span class="o">(</span>self.msg, <span class="nv">path</span><span class="o">=</span>path<span class="o">)</span>                                          
+</span></span><span class="line"><span class="cl">│   File <span class="s2">&#34;/usr/local/lib/python3.9/site-packages/voluptuous/validators.py&#34;</span>, line 351, in _exec                  
+</span></span><span class="line"><span class="cl">│     <span class="nv">v</span> <span class="o">=</span> func<span class="o">(</span>v<span class="o">)</span>                              
+</span></span><span class="line"><span class="cl">│   File <span class="s2">&#34;/usr/local/lib/python3.9/site-packages/voluptuous/schema_builder.py&#34;</span>, line 272, in __call__           
+</span></span><span class="line"><span class="cl">│     <span class="k">return</span> self._compiled<span class="o">([]</span>, data<span class="o">)</span>          
+</span></span><span class="line"><span class="cl">│   File <span class="s2">&#34;/usr/local/lib/python3.9/site-packages/voluptuous/schema_builder.py&#34;</span>, line 818, in validate_callable  
+</span></span><span class="line"><span class="cl">│     <span class="k">return</span> schema<span class="o">(</span>data<span class="o">)</span>                      
+</span></span><span class="line"><span class="cl">│   File <span class="s2">&#34;/usr/local/lib/python3.9/site-packages/voluptuous/schema_builder.py&#34;</span>, line 272, in __call__           
+</span></span><span class="line"><span class="cl">│     <span class="k">return</span> self._compiled<span class="o">([]</span>, data<span class="o">)</span>          
+</span></span><span class="line"><span class="cl">│   File <span class="s2">&#34;/usr/local/lib/python3.9/site-packages/voluptuous/schema_builder.py&#34;</span>, line 595, in validate_dict      
+</span></span><span class="line"><span class="cl">│     <span class="k">return</span> base_validate<span class="o">(</span>path, iteritems<span class="o">(</span>data<span class="o">)</span>, out<span class="o">)</span>                                                          
+</span></span><span class="line"><span class="cl">│   File <span class="s2">&#34;/usr/local/lib/python3.9/site-packages/voluptuous/schema_builder.py&#34;</span>, line 433, in validate_mapping   
+</span></span><span class="line"><span class="cl">│     raise er.MultipleInvalid<span class="o">(</span>errors<span class="o">)</span>         
+</span></span><span class="line"><span class="cl">│ voluptuous.error.MultipleInvalid: required key not provided @ data<span class="o">[</span><span class="s1">&#39;options&#39;</span><span class="o">]</span>   
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>While it would be nice if ZwaveJS2MQTT would support more device types, we have a pretty simple fix: use another device to publish a valid configuration payload.</p>
+<p>And as it turns out, it&rsquo;s <em>trivial</em> to get Home Assistant to publish an arbitrary payload to an arbitrary topic when it starts up.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l">Autoconfigure Thermostat Backlight select</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p">&gt;-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">  On HA start up, publish MQTT payload so HA auto-discovers the input_select to
+</span></span></span><span class="line"><span class="cl"><span class="sd">  automate thermostat backlight brightness</span><span class="w">  
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">trigger</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">homeassistant</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">event</span><span class="p">:</span><span class="w"> </span><span class="l">start</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">condition</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">action</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">service</span><span class="p">:</span><span class="w"> </span><span class="l">mqtt.publish</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">data</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">topic</span><span class="p">:</span><span class="w"> </span><span class="l">homeassistant/select/YourThermostat_NameHere/idle_brightness/config</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">payload</span><span class="p">:</span><span class="w"> </span><span class="p">&gt;-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">        </span><span class="w">        </span>{<span class="s2">&#34;options&#34;</span><span class="p">:[</span><span class="s2">&#34;0&#34;</span><span class="p">,</span><span class="s2">&#34;1&#34;</span><span class="p">,</span><span class="s2">&#34;2&#34;</span><span class="p">,</span><span class="s2">&#34;3&#34;</span><span class="p">,</span><span class="s2">&#34;4&#34;</span><span class="p">,</span><span class="s2">&#34;5&#34;</span><span class="p">],</span><span class="s2">&#34;name&#34;</span><span class="p">:</span><span class="s2">&#34;MainThermostat idle_brightness&#34;</span><span class="p">,</span><span class="s2">&#34;state_topic&#34;</span><span class="p">:</span><span class="s2">&#34;zwave/YourThermostat_NameHere/112/0/39&#34;</span><span class="p">,</span><span class="s2">&#34;value_template&#34;</span><span class="p">:</span><span class="s2">&#34;{{&#39;{{value_json.value}}&#39;}}&#34;</span><span class="p">,</span><span class="s2">&#34;command_topic&#34;</span><span class="p">:</span><span class="s2">&#34;zwave/YourThermostat_NameHere/112/0/39/set&#34;</span><span class="p">,</span><span class="s2">&#34;command_template&#34;</span><span class="p">:</span><span class="s2">&#34;{{&#39;{{value}}&#39;}}&#34;</span><span class="p">,</span><span class="s2">&#34;unique_id&#34;</span><span class="p">:</span><span class="s2">&#34;zwavejs2mqtt_0xdeadbeef_4-112-0-Idle_Brightness_Select&#34;</span><span class="p">,</span><span class="s2">&#34;device&#34;</span><span class="p">:</span>{<span class="s2">&#34;identifiers&#34;</span><span class="p">:[</span><span class="s2">&#34;zwavejs2mqtt_0xdeadbeef_node4&#34;</span><span class="p">],</span><span class="s2">&#34;manufacturer&#34;</span><span class="p">:</span><span class="s2">&#34;Honeywell&#34;</span><span class="p">,</span><span class="s2">&#34;model&#34;</span><span class="p">:</span><span class="s2">&#34;T6ProZ-WaveProgrammableThermostat(TH6320ZW)&#34;</span><span class="p">,</span><span class="s2">&#34;name&#34;</span><span class="p">:</span><span class="s2">&#34;MainThermostat&#34;</span><span class="p">,</span><span class="s2">&#34;sw_version&#34;</span><span class="p">:</span><span class="s2">&#34;1.3&#34;</span>}<span class="p">,</span><span class="s2">&#34;entity_category&#34;</span><span class="p">:</span><span class="s2">&#34;config&#34;</span><span class="p">,</span><span class="s2">&#34;icon&#34;</span><span class="p">:</span><span class="s2">&#34;mdi:brightness-percent&#34;</span>}<span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l">single</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><div class="details admonition important open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-pencil-alt fa-fw"></i>Notice<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>If you look carefully, you will notice two things:</p>
+<ul>
+<li>The json payload has been escaped and turned into a string</li>
+<li>The templates inside the string are <a href="https://community.home-assistant.io/t/how-can-i-use-escape-characters-while-templating/135324" target="_blank" rel="noopener noreffer"><em>further</em> escaped</a> by wrapping them in <code>{{ '</code> and <code>'}}</code>.</li>
+</ul>
+</div>
+        </div>
+    </div>
+<p>Here is a pretty formatted JSON document:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
+</span></span><span class="line"><span class="cl">   <span class="nt">&#34;options&#34;</span><span class="p">:[</span>
+</span></span><span class="line"><span class="cl">      <span class="s2">&#34;0&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="s2">&#34;1&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="s2">&#34;2&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="s2">&#34;3&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="s2">&#34;4&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="s2">&#34;5&#34;</span>
+</span></span><span class="line"><span class="cl">   <span class="p">],</span>
+</span></span><span class="line"><span class="cl">   <span class="nt">&#34;name&#34;</span><span class="p">:</span><span class="s2">&#34;YourThermostat NameHere idle_brightness&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">   <span class="nt">&#34;state_topic&#34;</span><span class="p">:</span><span class="s2">&#34;zwave/YourThermostat_NameHere/112/0/39&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">   <span class="nt">&#34;value_template&#34;</span><span class="p">:</span><span class="s2">&#34;{{ &#39;{{value_json.value}}&#39; }}&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">   <span class="nt">&#34;command_topic&#34;</span><span class="p">:</span><span class="s2">&#34;zwave/YourThermostat_NameHere/112/0/39/set&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">   <span class="nt">&#34;command_template&#34;</span><span class="p">:</span><span class="s2">&#34;{{ &#39;{{value}}&#39; }}&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">   <span class="nt">&#34;unique_id&#34;</span><span class="p">:</span><span class="s2">&#34;zwavejs2mqtt_0xdeadbeef_4-112-0-Idle_Brightness_Select&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">   <span class="nt">&#34;device&#34;</span><span class="p">:{</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;identifiers&#34;</span><span class="p">:[</span>
+</span></span><span class="line"><span class="cl">         <span class="s2">&#34;zwavejs2mqtt_0xdeadbeef_node4&#34;</span>
+</span></span><span class="line"><span class="cl">      <span class="p">],</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;manufacturer&#34;</span><span class="p">:</span><span class="s2">&#34;Honeywell&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;model&#34;</span><span class="p">:</span><span class="s2">&#34;T6 Pro Z-Wave Programmable Thermostat (TH6320ZW)&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;name&#34;</span><span class="p">:</span><span class="s2">&#34;YourThermostat NameHere&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">      <span class="nt">&#34;sw_version&#34;</span><span class="p">:</span><span class="s2">&#34;1.3&#34;</span>
+</span></span><span class="line"><span class="cl">   <span class="p">},</span>
+</span></span><span class="line"><span class="cl">   <span class="nt">&#34;entity_category&#34;</span><span class="p">:</span><span class="s2">&#34;config&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">   <span class="nt">&#34;icon&#34;</span><span class="p">:</span><span class="s2">&#34;mdi:brightness-percent&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Once the automation is created, save it. You can test your work by clicking &ldquo;run actions&rdquo; and monitoring the home assistant log file.</p>
+<p>When the payload is properly escaped, you should see a new entity added to the Device page:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Automatically created!
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>When you select a brightness value from the drop down, the backlight brightness should change.
+That&rsquo;s how you get a &rsquo;non standard&rsquo; thermostat configuration value to automatically show up on the correct device page.</p>
+<p>You now no longer need the example automation from <a href="#ok-but-what-about-writing-to-the-thermostat" rel="">above</a>. 😎.</p>
+]]></description></item><item><title>Quick look inside Venstar T7850 - One of the only 'no-cloud' WiFi Thermostats that plays nice with Home Assistant</title><link>https://karlquinsland.com/venstar-t7850-teardown-review/</link><pubDate>Sat, 23 Apr 2022 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/venstar-t7850-teardown-review/</guid><description><![CDATA[<div class="details admonition info open">
         <div class="details-summary admonition-title">
             <i class="icon fas fa-info-circle fa-fw"></i>Info<i class="details-icon fas fa-angle-right fa-fw"></i>
         </div>
@@ -256,7 +716,7 @@ Every entity on the device showed <code>Unavailable</code>. Apparently, the ther
             <i class="icon fas fa-exclamation-triangle fa-fw"></i>TL;DR:<i class="details-icon fas fa-angle-right fa-fw"></i>
         </div>
         <div class="details-content">
-            <div class="admonition-content"><p>Ubiquity&rsquo;s Unifi line of wireless access points has a pretty solid reputation for a reason; by and large they just work. I have installed dozens of them over the years and have supported installs with <em>thousands</em> of them and had dar fewer issues with those customers/sites than with your typical &lsquo;soho&rsquo; routers and other consumer-grade access points.</p>
+            <div class="admonition-content"><p>Ubiquity&rsquo;s Unifi line of wireless access points has a pretty solid reputation for a reason; by and large they just work. I have installed dozens of them over the years and have supported installs with <em>thousands</em> of them and had far fewer issues with those customers/sites than with your typical &lsquo;soho&rsquo; routers and other consumer-grade access points.</p>
 <p>As of <strong>right now</strong>, I have a little more than a hundred wireless devices hanging off of the same AP that the thermostat failed to reliably connect to. Over the past several years, I have acquired many more devices and - with the exception of <strong>one other device</strong> - I have never had issues connecting anything to my wireless network.</p>
 <p>Even if only some users experience issues with Venstar thermostats connecting to WiFi, I have to wonder why the issue exists at all. It&rsquo;s 2022 and there&rsquo;s no excuse for basic WiFi network compatibility issues like the kind that were more common in the bad old days of early WiFi circa <em>2005</em>. Somehow, the hundred+ other devices got their WiFi right&hellip; what is Venstar missing?</p>
 <p>While I didn&rsquo;t want to introduce <em>yet another</em> wireless&rsquo;s networking standard to my home, I am <em>considerably</em> happier with the Honeywell TH6320ZW2003 that has replaced the T7850.</p>
@@ -5756,692 +6216,6 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
                 
                 <figcaption>
                     <small>HomeSeer&#39;s WS200 has a delightful innovation... RGB LEDs!</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-</ul>
-
-]]></description></item><item><title>Adding an airborne particulate mater sensor to WS3 Weather Station</title><link>https://karlquinsland.com/ws3-weather-station-pm25-sensor/</link><pubDate>Thu, 27 Aug 2020 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/ws3-weather-station-pm25-sensor/</guid><description><![CDATA[<p>A while back, I <a href="https://github.com/kquinsland/ws3-to-esphome-bridge/" target="_blank" rel="noopener noreffer">posted a small bit of code</a> that could decode the data from the ubiquitous WS3 Weather Station and make it accessible to the amazing <a href="https://www.home-assistant.io/" target="_blank" rel="noopener noreffer">HomeAssistant</a> via the wonderful <a href="https://esphome.io/" target="_blank" rel="noopener noreffer">ESPHome</a> project. Since then, my weather station has been dutifully collecting data that&rsquo;s been invaluable for augmenting automation that deals with indoor climate.</p>
-<p>As the numerous wild fires in California rage on, <a href="https://www.forbes.com/sites/ericmack/2020/08/21/wildfire-smoke-blankets-the-west-as-california-records-worlds-worst-air-quality/" target="_blank" rel="noopener noreffer">the air quality has gone from bad to dangerous</a>. Knowing that outside was warmer, but less humid, was no longer enough to make a smart decision about weather or not to open the windows for some cost-effective cooling. I now need HomeAssistant to be aware of how clean the outside air was before making the decision to pipe in outdoor air.</p>
-<p>This post covers two things:</p>
-<ul>
-<li>A small update to the existing WS3 -&gt; ESPHome -&gt; HomeAssistant bridge code to take advantage of the WS3s&rsquo; support for the ubiquitous <code>PMS5003T</code> sensor.</li>
-<li>A simple 3d-printable enclosure for deploying the particulate matter sensor outdoors</li>
-</ul>
-<p>When deployed, it looks like this:</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Excuse the awkward camera angle; sensor is deployed in an awkward to photograph location.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>Please ignore the awkward camera angle as the sensor is deployed in a location where there&rsquo;s not quite enough room for proper camera placement.</p>
-<p>And results in graphs that look like this:</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Smoke particles are between .4μm to .7μm in size... which explains the elevated red line relative to other particle sizes.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>A simplified copy of this post appears on <a href="https://www.thingiverse.com/thing:4581351" target="_blank" rel="noopener noreffer">thingiverse</a> and <a href="https://www.prusaprinters.org/prints/39560-outdoor-enclosure-for-pms5003-particulate-matter-s" target="_blank" rel="noopener noreffer">prusaprinters</a>.</p>
-<h2 id="the-enclosure">The enclosure</h2>
-<p>As of writing, there&rsquo;s <a href="https://www.thingiverse.com/thing:4044492" target="_blank" rel="noopener noreffer">one existing enclosure</a> for the sensor on thingiverse. Unfortunately, the enclosure does not appear to have any design features for mounting to a pole nor does it have any bug-proofing design elements. I took this opportunity to design my own that could be easily mounted, features a slanted &lsquo;roof&rsquo; to prevent standing moisture ingress and could use standard size tobacco pipe filters to keep all but the tiniest of insects/particles out.</p>
-<p>The sensor uses a small fan to draw ambient air past an infrared laser. As airborne particles cross the laser beam, they reflect a certain amount of light which can be correlated with the size of the particle. This data can then be turned into fairly accurate counts of how many particles of a given size are in the sampled air. The enclosure is a basic box with two circular air channels pointed downwards to prevent moisture ingress. The intake and exhaust ports are at staggered heights and pointed in opposite directions and to minimize the chance of recirculating the same air.</p>
-<p>The lower port is the intake which connects to a few small holes on the front of the sensor and the exhaust port is the raised port which connects directly to the exhaust fan. If you could remove the first few mm from the front, it would look something like this:</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>From the side, you can see the two air channels and the few mm of room in the back for wiring. The sensor sits on a &lsquo;pedestal&rsquo; to keep it elevated away from any moisture that may collect on the bottom of the enclosure.</p>
-<p>The base plate/pedestal are secured to the &lsquo;body&rsquo; with two M3 screws. I used <code>10mm</code> as that&rsquo;s what I had on hand, but screws between 6-12mm should work as well. The holes are sized for a M3, but any similar sized screw will work. Use a lighter or similar to heat the screw as you drive it into the plastic to create your own threads if using a larger/longer screw.</p>
-<p>Besides the &lsquo;pedestal&rsquo; there are a few contact surfaces that hold on to the sensor with a friction fit. The &lsquo;ceiling&rsquo; is a few mm thick and shouldn&rsquo;t permit much moisture ingress but an optional slanted roof component can be printed as an extra precaution.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Upper and lower chambers for exhaust and intake.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>While designing the enclosure, I used this <a href="https://grabcad.com/library/pms5003-2" target="_blank" rel="noopener noreffer"><code>PMS5003</code> model</a> from Leclercq Gregory. 🙏</p>
-<h3 id="printing">Printing</h3>
-<p>This is a functional part with only three small surfaces that require reasonably tight precision to properly hold onto the sensor. The <code>SPEED</code> setting with a <code>.2mm</code> layer height and a reasonable 20% infill gave me part that works and feels water tight. The walls and ceiling need to keep water out so dipping below 15% infill or otherwise using settings that wont give solid layer adhesion is not advised. I printed using ABS for durability, but PLA will probably work if you can deploy into a shaded environment.</p>
-<p>The shroud and the base are not optional, the triangle shaped block is intended to turn the flat roof of the shroud into a slanted roof so water can&rsquo;t collect. It is optional but shown below.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        No raft/support when printed in this orientation.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<h2 id="assemble">Assemble</h2>
-<p>Briefly:</p>
-<ul>
-<li>collect materials</li>
-<li>press-fit the PM2.5 sensor into the enclosure</li>
-<li>make a wire that can interface the PM2.5 sensor to the WS3 board via RJ11</li>
-<li>seal everything up</li>
-<li>glue on mesh screens and angled roof</li>
-<li>plug into WS3</li>
-<li>flash ESPHome onto</li>
-</ul>
-<h3 id="bill-of-materials">Bill of Materials</h3>
-<p>More or less everything that is needed for assembly is pictured below.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        More or less everything needed to assemble.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>Components:</p>
-<ul>
-<li>
-<p><a href="https://www.aliexpress.com/item/32921725022.html" target="_blank" rel="noopener noreffer">WS3 Weather Station</a> - Essential / Foundational</p>
-</li>
-<li>
-<p><a href="https://rover.ebay.com/rover/1/711-53200-19255-0/1?mpre=https%3A%2F%2Fwww.ebay.com%2Fitm%2FDigital-Universal-Particle-Concentration-Laser-Sensor-PMS5003-PM1-0-PM2-5-PM10%2F254616699639&amp;campid=5338734064&amp;toolid=10001&amp;customid=" target="_blank" rel="noopener noreffer">ST5003T PM2.5 Sensor</a> - Essential / Foundational</p>
-</li>
-<li>
-<p><a href="https://rover.ebay.com/rover/1/711-53200-19255-0/1?mpre=https%3A%2F%2Fwww.ebay.com%2Fitm%2FTTGO-Wemos-MINI-D1-ESP32-WiFi-Bluetooth-Wemos-D1-Mini-ESP8266-ESP-32-Module%2F183413480551&amp;campid=5338734064&amp;toolid=10001&amp;customid=" target="_blank" rel="noopener noreffer">ESP32 Device</a> - A link to the ESP32 based device that I use but any ESP platform with a spare GPIO that can be used as a UART will work.</p>
-</li>
-<li>
-<p><a href="https://rover.ebay.com/rover/1/711-53200-19255-0/1?mpre=https%3A%2F%2Fwww.ebay.com%2Fitm%2F25-Stainless-Steel-Smoking-Pipe-Screens-3-4-19mm-Tobacco-HOOKAH-FILTER-Heavy%2F183969079809&amp;campid=5338734064&amp;toolid=10001&amp;customid=" target="_blank" rel="noopener noreffer">3/4 inch tobacco pipe screens</a> - For bug/critter proofing the enclosure. Strongly suggested for outdoor deployments.</p>
-</li>
-<li>
-<p><a href="https://www.mcmaster.com/91292A113/" target="_blank" rel="noopener noreffer">2x M3 x 10mm screws</a> - Optional. The base can be glued to the shroud or any similar screw will work</p>
-</li>
-</ul>
-<p><strong>Note</strong>: Where possible, I&rsquo;ve used referral links. The links don&rsquo;t raise the price of any item, they simply let the retailer know that I sent you and, in return, I get a small cut of your purchase. If you&rsquo;re not comfortable with that, you can use a URL unwinding service to get the &lsquo;raw&rsquo; product link and drop the attribution/commission part.</p>
-<p>General bits:</p>
-<ul>
-<li>Superglue</li>
-<li>Waterproofing caulk/sealant</li>
-<li>Drill/Screwdriver</li>
-<li>Driver bit for the screws</li>
-</ul>
-<p>The stepped drill bit in the above picture is not a requirement if you assemble things in the correct oder. The cable egress hole is sized for a &rsquo;typical&rsquo; 3 pair <a href="https://en.wikipedia.org/wiki/Registered_jack#RJ11,_RJ14,_RJ25_wiring" target="_blank" rel="noopener noreffer">RJ11 cable</a> plus a tiny bit of wiggle room. I needed a working cable to test the code while the parts were printing so the hole in the printed base needed to be enlarged slightly to fit the head of the cable.</p>
-<h3 id="wiring">Wiring</h3>
-<p>There&rsquo;s no ready-made cable out there that&rsquo;ll join the two devices so one must be made. Fortunately, there&rsquo;s only 6 wires to deal with&hellip; 4 of them are distinct.</p>
-<p>Sacrifice the cable that comes with the PM2.5 sensor and the RJ11 cable by cutting them in half and solder the correct wires together. The <em>color</em> of the wires that come in both the RJ11 cable and the PM2.5 cable are likely going to differ from the ones I used so I&rsquo;ve left those details out and provided a table showing which pins are to be joined together:</p>
-<table>
-<thead>
-<tr>
-<th>Pin #</th>
-<th>PM2.5 Sensor Pin</th>
-<th>WS3 Pin</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-<td>VCC</td>
-<td>5V</td>
-</tr>
-<tr>
-<td>2</td>
-<td>GND</td>
-<td>GND</td>
-</tr>
-<tr>
-<td>3</td>
-<td>SET</td>
-<td>ENABLE</td>
-</tr>
-<tr>
-<td>4</td>
-<td>RX</td>
-<td>RX</td>
-</tr>
-<tr>
-<td>5</td>
-<td>TX</td>
-<td>GND</td>
-</tr>
-<tr>
-<td>6</td>
-<td>RESET</td>
-<td>5V</td>
-</tr>
-<tr>
-<td>7</td>
-<td>NC</td>
-<td></td>
-</tr>
-<tr>
-<td>8</td>
-<td>NC</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p>For reference, Pin 1 on both the WS3 and PM2.5 Sensor:</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>With the wiring done, the sensor just needs to be stuffed into the enclosure. Don&rsquo;t forget to thread the RJ11 cable through the hole in the base plate <em>BEFORE</em> soldering it to the cable for the PM2.5 sensor&hellip; otherwise you&rsquo;ll need that stepped drill bit! 🙃</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Sensor has been press-fit into the enclosure and wire fed through the base plate.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>To finish, secure the base with screws and a bit of water-proofing caulk for good measure:</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        I suggest waiting until the end to glue on the optional roof and waiting until just before that to glue on the optional mesh screens.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<h2 id="the-code">The code</h2>
-<p>Setting up and using ESPHome is outside the scope of this post but there are several <a href="https://esphome.io/guides/getting_started_hassio.html" target="_blank" rel="noopener noreffer">good guides</a> out there. Once you have that set up, <a href="https://esphome.io/custom/custom_component.html" target="_blank" rel="noopener noreffer">include</a> the <code>ws3.h</code> file and set up your custom sensor as shown below. A working example and more detail is over on the
-<a href="https://github.com/kquinsland/ws3-to-esphome-bridge/" target="_blank" rel="noopener noreffer">github repo</a>.</p>
-<p>It&rsquo;ll look like this:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">uart</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">uart_bus</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># At this time, ESP does not Transmit anything to the WS3</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">tx_pin</span><span class="p">:</span><span class="w"> </span><span class="l">GPIO16</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">rx_pin</span><span class="p">:</span><span class="w"> </span><span class="l">GPIO17</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">baud_rate</span><span class="p">:</span><span class="w"> </span><span class="m">2400</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">sensor</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">custom</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">      auto ws3 = new WS3(id(uart_bus));
-</span></span></span><span class="line"><span class="cl"><span class="sd">      App.register_component(ws3);
-</span></span></span><span class="line"><span class="cl"><span class="sd">      return {
-</span></span></span><span class="line"><span class="cl"><span class="sd">        ws3-&gt;temperature_sensor, 
-</span></span></span><span class="line"><span class="cl"><span class="sd">        ws3-&gt;pressure_sensor, 
-</span></span></span><span class="line"><span class="cl"><span class="sd">        ws3-&gt;humidity_sensor, 
-</span></span></span><span class="line"><span class="cl"><span class="sd">        ws3-&gt;wind_speed_current_sensor,
-</span></span></span><span class="line"><span class="cl"><span class="sd">        ws3-&gt;wind_speed_peak_5m_sensor,
-</span></span></span><span class="line"><span class="cl"><span class="sd">        ws3-&gt;wind_direction_sensor,
-</span></span></span><span class="line"><span class="cl"><span class="sd">        ws3-&gt;rain_fall_1h_sensor, 
-</span></span></span><span class="line"><span class="cl"><span class="sd">        ws3-&gt;rain_fall_24h_sensor,
-</span></span></span><span class="line"><span class="cl"><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">        ws3-&gt;particles_03um,
-</span></span></span><span class="line"><span class="cl"><span class="sd">        ws3-&gt;particles_05um,
-</span></span></span><span class="line"><span class="cl"><span class="sd">        ws3-&gt;particles_10um,
-</span></span></span><span class="line"><span class="cl"><span class="sd">        ws3-&gt;particles_25um,
-</span></span></span><span class="line"><span class="cl"><span class="sd">        ws3-&gt;particles_50um,
-</span></span></span><span class="line"><span class="cl"><span class="sd">        ws3-&gt;particles_100um,
-</span></span></span><span class="line"><span class="cl"><span class="sd">      };</span><span class="w">      
-</span></span></span></code></pre></td></tr></table>
-</div>
-</div><p>With that, check the logs from your instance of ESPHome and you should see something like this:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">[D][ws3:157]: pkt_read_ok!
-</span></span><span class="line"><span class="cl">[D][WS3:410]: VALID! Packet: [c000s000g000t093r000p000h35b09880,050,080,088,502,056,065,*18
-</span></span><span class="line"><span class="cl">], Checksum: [18] chksum: [18]
-</span></span><span class="line"><span class="cl">[E][WS3:342]: Validating: [c000s000g000t093r000p000h35b09880,050,080,088,502,056,065]
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>indicating that the WS3 has detected the PM2.5 sensor and is reporting it&rsquo;s readings in addition to the temperature/wind data. Then just check your HomeAssistant install for the data.</p>
-<h2 id="files">Files</h2>
-<p>For archive / posterity, all source files are included here. All files are licensed as <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreffer">Creative Commons Attribution-NonCommercial-ShareAlike</a> (CC BY-NC-SA).</p>
-<ul>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/02.assemble.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Sensor has been press-fit into the enclosure and wire fed through the base plate.</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/03.glue.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>I suggest waiting until the end to glue on the optional roof and waiting until just before that to glue on the optional mesh screens.</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/example_dashboard.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Smoke particles are between .4μm to .7μm in size... which explains the elevated red line relative to other particle sizes.</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/04.installed.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Excuse the awkward camera angle; sensor is deployed in an awkward to photograph location.</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/BASE.step">
-                <i class="far fa-file-code"></i>
-                models/BASE.step:
-                
-                <small style="font-family:'Lucida Console', monospace">step</small> <small>file</small>
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/BODY.step">
-                <i class="far fa-file-code"></i>
-                models/BODY.step:
-                
-                <small style="font-family:'Lucida Console', monospace">step</small> <small>file</small>
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/LID.step">
-                <i class="far fa-file-code"></i>
-                models/LID.step:
-                
-                <small style="font-family:'Lucida Console', monospace">step</small> <small>file</small>
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/base.stl">
-                <i class="far fa-file-code"></i>
-                models/base.stl:
-                
-                <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/body.stl">
-                <i class="far fa-file-code"></i>
-                models/body.stl:
-                
-                <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/combined.3mf">
-                <i class="far fa-file-archive"></i>
-                models/combined.3mf:
-                
-                <small style="font-family:'Lucida Console', monospace">3mf</small> <small>file</small>
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/lid.stl">
-                <i class="far fa-file-code"></i>
-                models/lid.stl:
-                
-                <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/pin_out/PM2.5_Pins.jpg">
-                    
-                </a>
-                
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/pin_out/WS3_Pins.jpg">
-                    
-                </a>
-                
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/01.collect.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>More or less everything needed to assemble.</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/suggested_print_orientation.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>No raft/support when printed in this orientation.</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/f360_air_channels.jpg">
-                    
-                </a>
-                
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/f360_side_profile.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Upper and lower chambers for exhaust and intake.</small>
                 </figcaption>
                 
             </figure>
