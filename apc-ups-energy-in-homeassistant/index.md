@@ -11,7 +11,7 @@ This is another quick "here's how I did it, hope this help" post.
 
 In preparation for the inevitable grid brownouts that summer 2021 would bring, I installed a rather beefy UPS for my home network / lab. After some browsing, I discovered a local eWaste liquidator with a really good deal on some second-hand APC UPSs.
 
-A few hundred dollars and about 150 lbs later, the UPS was installed in the server rack. Despite being a newer generation, the software on the UPS has a _**TON**_ of similarities to the [older style of PDU that I installed in my lab ]({{< ref " /posts/monitoring-ap7900-switched-pdu-prometheus-grafana ">}}) a while back. This made it relatively straightforward to use the same
+A few hundred dollars and about 150 lbs later, the UPS was installed in the server rack. Despite being a newer generation, the software on the UPS has a _**TON**_ of similarities to the [older style of PDU that I installed in my lab ]({{< ref " /posts/2020/12/monitoring-ap7900-switched-pdu-prometheus-grafana ">}}) a while back. This made it relatively straightforward to use the same
 pattern to start getting UPS metrics into Grafana as well.
 
 After getting the basic monitoring up and running, I started to draft this post to serve as an 'update' to the APC9700 post. Life got in the way and the post sat in the drafts branch where it was completely forgotten about.... until [Home Assistant released their new Energy dashboard](https://www.home-assistant.io/blog/2021/08/04/release-20218/). Now that HA could show the energy consumption of individual devices right next to the cumulative consumption and production data, the post was worth finishing and expanding on.
