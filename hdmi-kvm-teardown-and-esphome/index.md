@@ -1,11 +1,13 @@
 # Inside a generic/white-label HDMI KVM Switch
 
 
-
 If you're here just for "how do I get it working with ESPHome" bit, skip to the [ESPHome Component](#esphome-component) section below.
 
 -----
 
+{{< admonition important "Update 2022.05.14" >}}
+I have just uploaded a basic PCB and enclosure to the  [ESPHome Component Repository](#esphome-component).
+{{< /admonition >}}
 
 For the last few months, I have been looking for a KVM switch to simplify switching between work and personal computers.
 Initially, I didn't think my criteria were that unreasonable, but for whatever reason there is no KVM switch that:
@@ -17,7 +19,6 @@ Initially, I didn't think my criteria were that unreasonable, but for whatever r
 - Costs less than $75 per host/port.
 
 Try as I might, I was not able to find anything that could satisfy all the requirements. If you know of any, [please do get in touch]({{<ref contact>}})!
-
 
 I spent a decent chunk of time searching through the usual consumer/IT electronics sites and they all had similar offerings... none of which were sufficient.
 I had some close contenders, but they are victims of the current chip shortage or otherwise very expensive unobtanium.
@@ -32,15 +33,14 @@ Likewise, speedy USB is a "nice to have". My keyboard, mouse and web cam **must*
 
 Of all the KVMs that I considered, this one came with the least compromises and came with explicit documentation about how to integrate/control the switch via TCP or RS232. Buoyed by the thought of not having to reverse engineer any IR remote codes or otherwise resort to some hackery, I pulled the trigger.
 
-### A quick note about the "generic" switch
-
+{{< admonition note "A quick note about the 'generic' switch" >}}
 I say "generic" because there are a few different brands / names on this thing and it's not clear who the actual manufacturer is.
 
 I got it from a seller by the name of [`PourXuan`](https://www.pourxuan.com/Product/9867345045.html) which does seem to be the OEM behind it.
 However, there are a few other [interesting markings](#ics-and-distinguishing-markings) that could indicate other companies contributing to / designing some internal components.
+{{< /admonition >}}
 
 Anyways, lets look inside.
-
 
 # Teardown
 
@@ -55,7 +55,6 @@ The switch came well packed in some nondescript packaging.
 
 {{< figure name="shipping-box" >}}
 
-
 The small white box containing the power supply and some accessory hardware crumpled up the single page user manual.
 
 I have uploaded a copy of this paper and the other software/documentation provided by the seller to the same git repository hosting the [ESPHome Component](#esphome-component).
@@ -63,19 +62,15 @@ I have uploaded a copy of this paper and the other software/documentation provid
 {{< figure name="shipping-box-internal" >}}
 {{< figure name="shipping-content" >}}
 
-
 {{< figure name="content-accessories-closeup" >}}
 {{< figure name="content-accessories-hardware" >}}
 
 I have not opened up the power supply to check its construction but it doesn't feel incredibly cheap.
 It's rated for 2 Amps @ 12v but the switch only drew about 3.75 Watt when measured from the wall.
 
-
 {{< figure name="content-accessory-psu" >}}
 
-
 ## The switch
-
 
 The metal shell is generic; there are holes on the side for ventilation fans that are not populated.
 Other than not-so-well hidden screw, the case is easy to open.
@@ -88,10 +83,10 @@ With all screws out, the two halves slide apart easily to give us the first look
 
 It looks like this is a pretty modular design:
 
-  - A standalone front panel input and network control.
-  - A dedicated PCB for each type of data; a HDMI/video plane and a HID/USB plane.
-  - Each plane uses dedicated ASICs to route the signals.
-  - A minimal number of microprocessors / wires coordinating between the PCBs.
+- A standalone front panel input and network control.
+- A dedicated PCB for each type of data; a HDMI/video plane and a HID/USB plane.
+- Each plane uses dedicated ASICs to route the signals.
+- A minimal number of microprocessors / wires coordinating between the PCBs.
 
 {{< figure name="feature-teardown.first-full-view" >}}
 
@@ -116,7 +111,6 @@ Most of the lines from the grey ribbon cable are not actually connected to the p
 
 {{< figure name="teardown.front-pcb-2" >}}
 
-
 ### The LAN module
 
 Very simple / standalone module. There's a dedicated PHY (`CH395Q`) and the same `STM8S003F3` micro controller again. The documentation that I received from the seller indicated that the LAN module did NOT use DHCP and there didn't seem to be a way to change the IP address configuration so I didn't bother with trying to automate via LAN.
@@ -127,7 +121,6 @@ I opted to keep going with the ESPHome <-> RS232 integration as that would be th
 {{< figure name="teardown.lan-ic" >}}
 
 {{< figure name="teardown.lan" >}}
-
 
 ## HDMI
 
@@ -143,7 +136,6 @@ The main application processor appears to be a STM32 clone known as the `CHIPSEA
 
 {{< figure name="teardown.hdmi.main-cpu" >}}
 
-
 Switching / routing the HDMI is done with two `IT66341TE` chips reducing the 4 HDMI inputs down to a single output and a `IT66321E` to switch between those two streams.
 
 {{< figure name="teardown.hdmi.output-ic" >}}
@@ -156,7 +148,6 @@ I would bet that the unpopulated connector in the bottom right is the bus connec
 
 {{< figure name="teardown.hdmi.pcb-label" >}}
 
-
 ## USB
 
 Like the HDMI PCB, the USB PCB uses a series of ASICs and a microprocessor to coordinate them all.
@@ -168,7 +159,6 @@ I have not tested / verified this functionality but the seller does advertise th
 {{< figure name="teardown.usb.output" >}}
 {{< figure name="teardown.usb.main-cpu" >}}
 
-
 Each 'input' USB port is the same: unpopulated headphone jack footprint for audio input and a `FE1.1s USB 2.0 HUB` ASIC and an unknown IC that looks like it's related to the unpopulated headphone jack.
 
 {{< figure name="teardown.usb-port-2" >}}
@@ -177,14 +167,12 @@ Each 'input' USB port is the same: unpopulated headphone jack footprint for audi
 
 {{< figure name="teardown.usb-port" >}}
 
-
 There's some generic 8:1 GPIO mux chips in the form of `3251QE`.
 They are simple IO expanders that would allow a microcontroller to read/write 8 GPIO pins using just 3 GPIO.
 I don't know why they're here or why an 8 port switch needs 2 of them... both on the USB PCB.
 
 {{< figure name="teardown.usb.io-bus-mux" >}}
 {{< figure name="teardown.usb.io-bus-mux-closeup" >}}
-
 
 That's it for teardown!
 
@@ -219,7 +207,7 @@ Just for completeness, here is how the KVM presents to the computer via USB.
 
 And `lsusb` shows:
 
-```
+```shell
 |__ Port 6: Dev 63, If 0, Class=Hub, Driver=hub/4p, 480M
     ID 1a40:0101 Terminus Technology Inc. Hub
     /sys/bus/usb/devices/1-6  /dev/bus/usb/001/063
@@ -238,16 +226,13 @@ The [`Microdia Foot Switch` bit](http://blog.ssokolow.com/archives/2017/04/10/ge
 Could that have something to do with the `3251QE` muxes?
 Perhaps this device indicates to the computer weather or not it is the activated one? 🤔 But why would you need two?
 
-
 I did not dump [`EDID`](https://en.wikipedia.org/wiki/Extended_Display_Identification_Data) information for the HDMI but I suspect that the switch is smart enough to just copy exactly what the display provides so the computers don't 'see' the loss/change of a display which might re-arrange windows or adjust scaling.
 
 ## ESPHome component
 
-
 {{< admonition info >}}
 The ESPHome component and some additional documentation/software/details are over at [`kquinsland/hdmi-kvm-esphome`](https://github.com/kquinsland/hdmi-kvm-esphome).
 {{< /admonition >}}
-
 
 Yes, I wanted to be able to control this KVM from my Home Assistant install.
 Some sort of API was a strong desire/requirement for KVM switches for a reason!
@@ -256,46 +241,46 @@ Some sort of API was a strong desire/requirement for KVM switches for a reason!
 
 I am still working on a complementary ESPHome component to automate my standing desk (to be published soon!) but to give you an idea of the automations this KVM will be used in:
 
-* Push a single button to:
-
+- Push a single button to:
   - Turn on the VR computer
   - Switch KVM to the VR computer
   - Adjust the lighting as needed; turn most lights off as they're not needed with a VR headset on but turn on ambient lighting so the room isn't pitch dark when the headset is removed.
 
-* When personal/work computer are not in use, switch to a host running Grafana dashboards on rotation
-* Allow me to track how much time per week is spent with each host
-
-
+- When personal/work computer are not in use, switch to a host running Grafana dashboards on rotation
+- Allow me to track how much time per week is spent with each host
 
 ## ICs and distinguishing markings
 
-
 The front panel PCB is labeled: `20170622` and features:
-  - [`8S003F3P6`](https://github.com/kquinsland/hdmi-kvm-esphome/blob/main/docs/datasheets/stm8s003f3.pdf) - A cheapish 8 bit micro controller.
 
+- [`8S003F3P6`](https://github.com/kquinsland/hdmi-kvm-esphome/blob/main/docs/datasheets/stm8s003f3.pdf) - A cheapish 8 bit micro controller.
 
-The LAN module PCB is marked with `20151030` and features:
-  - [`8S003F3P6`](https://github.com/kquinsland/hdmi-kvm-esphome/blob/main/docs/datasheets/stm8s003f3.pdf) - The same micro used on the front panel
-  - [`CH395Q`](https://github.com/kquinsland/hdmi-kvm-esphome/blob/main/docs/datasheets/2009031206_WCH-Jiangsu-Qin-Heng-CH395Q_C87390.pdf) - A dedicated ethernet interface.
+The LAN module PCB is marked with `20151030` and features:\
+
+- [`8S003F3P6`](https://github.com/kquinsland/hdmi-kvm-esphome/blob/main/docs/datasheets/stm8s003f3.pdf) - The same micro used on the front panel
+- [`CH395Q`](https://github.com/kquinsland/hdmi-kvm-esphome/blob/main/docs/datasheets/2009031206_WCH-Jiangsu-Qin-Heng-CH395Q_C87390.pdf) - A dedicated ethernet interface.
 
 The HDMI PCB is populated with:
-  - [`CHIPSEA F031C8T6`](https://www.google.com/search?q=CHIPSEA+F031C8T6) - STM32 clone; likely the main applications processor. I can't find a datasheet on this specific on the english speaking web but the naming is oddly similar to how some STM32 processors are named.
-  - [`SIPEX SP3223EEX`](https://github.com/kquinsland/hdmi-kvm-esphome/blob/main/docs/datasheets/sp3222_3232e.pdf) - Basic TTL <-> RS232 chip, similar to MAX232.
-  - [`IT66321E`](https://www.ite.com.tw/en/product/view?mid=100) - 2 IN to 1 OUT HDMI2.0 18Gb/s Switch with Audio In/Out
-  - [`IT66341TE`](https://www.ite.com.tw/en/product/view?mid=99) - 4 IN to 1 OUT HDMI2.0 18Gb/s Switch with Audio In/Out
-  - A sticker with the markings:
 
-      > XUFUNG
-      > 33.01.0072
-      > 2012020074
+- [`CHIPSEA F031C8T6`](https://www.google.com/search?q=CHIPSEA+F031C8T6) - STM32 clone; likely the main applications processor. I can't find a datasheet on this specific on the english speaking web but the naming is oddly similar to how some STM32 processors are named.
+- [`SIPEX SP3223EEX`](https://github.com/kquinsland/hdmi-kvm-esphome/blob/main/docs/datasheets/sp3222_3232e.pdf) - Basic TTL <-> RS232 chip, similar to MAX232.
+- [`IT66321E`](https://www.ite.com.tw/en/product/view?mid=100) - 2 IN to 1 OUT HDMI2.0 18Gb/s Switch with Audio In/Out
+- [`IT66341TE`](https://www.ite.com.tw/en/product/view?mid=99) - 4 IN to 1 OUT HDMI2.0 18Gb/s Switch with Audio In/Out
 
-  - The PCB is marked with:
-      > HK20801AU
-      > 32.02.0119
-      > BJ
+- A sticker with the markings:
+
+  > XUFUNG
+  > 33.01.0072
+  > 2012020074
+
+- The PCB is marked with:
+  > HK20801AU
+  > 32.02.0119
+  > BJ
 
 The USB PCB is marked with `HK20801A30-KVM` and is populated with:
-  - [`PI5C 3251QE`](https://github.com/kquinsland/hdmi-kvm-esphome/blob/main/docs/datasheets/PI5C3251QE-datasheetz.pdf) - 8:1 Mux/DeMux BusSwitch
-  - [`CH559L`](https://github.com/kquinsland/hdmi-kvm-esphome/blob/main/docs/datasheets//2008191807_WCH-Jiangsu-Qin-Heng-CH559L_C150548) - 8 bit enhanced USB MCU CH559
-  - [`FE1.1s`](https://github.com/kquinsland/hdmi-kvm-esphome/blob/main/docs/datasheets/FE1.1s%2BData%2BSheet%2B(Rev.%2B1.0).pdf) - FE1.1S USB 2.0 HIGH SPEED 4-PORT HUB CONTROLLER
+
+- [`PI5C 3251QE`](https://github.com/kquinsland/hdmi-kvm-esphome/blob/main/docs/datasheets/PI5C3251QE-datasheetz.pdf) - 8:1 Mux/DeMux BusSwitch
+- [`CH559L`](https://github.com/kquinsland/hdmi-kvm-esphome/blob/main/docs/datasheets//2008191807_WCH-Jiangsu-Qin-Heng-CH559L_C150548) - 8 bit enhanced USB MCU CH559
+- [`FE1.1s`](https://github.com/kquinsland/hdmi-kvm-esphome/blob/main/docs/datasheets/FE1.1s%2BData%2BSheet%2B(Rev.%2B1.0).pdf) - FE1.1S USB 2.0 HIGH SPEED 4-PORT HUB CONTROLLER
 
