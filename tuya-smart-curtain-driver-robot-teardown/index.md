@@ -5,7 +5,6 @@ I am trying something new out with this post; some mix of hardware teardown and 
 
 -----
 
-
 # Why
 
 I was looking for a way to actuate some heavy blackout curtains.

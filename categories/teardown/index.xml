@@ -1,4 +1,258 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>teardown - Category - karl</title><link>https://karlquinsland.com/categories/teardown/</link><description>teardown - Category - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 23 Apr 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/categories/teardown/" rel="self" type="application/rss+xml"/><item><title>Quick look inside Venstar T7850 - One of the only 'no-cloud' WiFi Thermostats that plays nice with Home Assistant</title><link>https://karlquinsland.com/venstar-t7850-teardown-review/</link><pubDate>Sat, 23 Apr 2022 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/venstar-t7850-teardown-review/</guid><description><![CDATA[<div class="details admonition info open">
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>teardown - Category - karl</title><link>https://karlquinsland.com/categories/teardown/</link><description>teardown - Category - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 14 May 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/categories/teardown/" rel="self" type="application/rss+xml"/><item><title>Quick look inside the OMRON Evolv BP7000 Blood Pressure cuff</title><link>https://karlquinsland.com/omron-bp7000-evolv-teardown/</link><pubDate>Sat, 14 May 2022 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/omron-bp7000-evolv-teardown/</guid><description><![CDATA[<p>A friend recently asked for my help with some reverse engineering.
+They wanted to know how difficult it would be to re-use some components from a lot of refurbished blood pressure cuffs they had recently acquired.</p>
+<p>Sounds easy, right?
+At a high level, there&rsquo;s going to be:</p>
+<ul>
+<li>a pump and a pressure sensor and a valve</li>
+<li>a micro controller to run the show</li>
+<li>a way to communicate the readings back to the user</li>
+</ul>
+<p>In the interest of expediting things, I asked for the FCC IDs from the devices so I could have a look inside&hellip; and was surprized to find out that there was no FCC listing for this particular model from the lot.</p>
+<p>😕</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Here&#39;s what it looks like on the outside
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>So with that out of the way, here&rsquo;s what the <code>Omron BP7000</code> looks like on the inside.</p>
+<h1 id="teardown">Teardown</h1>
+<p>There are a total of 7 philips screws holding the unit together. Two of the six are much smaller so two different sized bits might be a good idea.</p>
+<p>After removing all the screws and carefully prying back the plastic clips, the front panel comes off of the body giving us the first look at the PCB stackup and mechanical internals.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>The OLED screen is not held in place with anything so be exceedingly careful when opening!</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Here&rsquo;s a closeup of the &lsquo;front&rsquo; of the main PCB.
+There&rsquo;s a ton more passives than I thought there would be but a single large controller next to a pressure sensor is about what I figured.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Details on the ICs are <a href="#pcb-markings" rel="">below</a>.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>I am not quite sure what this little IC is for. Calibration or firmware?</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>The BTLE module is connected through a 8 wire FFC.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Several of the square pads are accessible from the exterior before the pressure cuff is attached. Almost certainly for programming at the factory.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>With the main PCB removed, you can see the actual mechanical components that build up and release the air pressure.
+The two blue wires are for the solenoid that vents air pressure out of the system.
+The port to the right and just above the BTLE module is where air pressure is measured.
+The white box attached tot the motor is the air pump.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<h2 id="btle-module">BTLE module</h2>
+<p>For some additional photos of the module w/o a shield, check the amazing <a href="https://fccid.io/Q6ZHHXMD05T/Internal-Photos/Short-Term-Confidential-Internal-Photo-3042585" target="_blank" rel="noopener noreffer">fccid.io page</a>.</p>
+<p>This module appears to be used in <em>several</em> similar blood pressure monitors.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<h2 id="pcb-markings">PCB Markings</h2>
+<p>AKA SEO optimization 😉</p>
+<p>Main PCB is marked:</p>
+<blockquote>
+<p>HEM-7600T
+MEIKO
+5662769-8A
+20M
+MDK332V-0W</p>
+</blockquote>
+<p>And on the rear:</p>
+<blockquote>
+<p>F02Z1B
+F15Z1B</p>
+</blockquote>
+<p>The main CPU is - apparently - from Toshiba and marked with:</p>
+<blockquote>
+<p>2127 HAL
+T5DE1FG
+369440</p>
+</blockquote>
+<p>I can&rsquo;t find anything specific. The only result in google is <a href="https://www.fomalhaut.co.jp/0000-List_Schedule_Master.xls" target="_blank" rel="noopener noreffer">this spreadsheet</a>. If you look closely, you&rsquo;ll find the string <code>T5DE1FG (TOSHIBA)</code> in column <code>L</code> on rows <code>1254</code> and <code>1255</code>.</p>
+<p>The pressure sensor is labeled:</p>
+<ul>
+<li><a href="https://www.mouser.com/c/i/sensors/pressure-sensors/?q=PP-02" target="_blank" rel="noopener noreffer"><code>PP02 L8HW</code></a> which appears to be an Omron made sensor.</li>
+</ul>
+<p>The small 8 pin IC adjacent to the main processor is labeled:</p>
+<blockquote>
+<p>4G64
+12953</p>
+</blockquote>
+<p>BTLE PCB is marked:</p>
+<ul>
+<li><code>MODEL: HHX-MD05T</code></li>
+<li><a href="https://fccid.io/Q6ZHHXMD05T" target="_blank" rel="noopener noreffer"><code>FCC ID: Q6ZHHXMD05T</code></a></li>
+<li><code>IC: 10623A-HHXMD05T</code></li>
+<li><code>Anatel 13257-20-10304</code></li>
+<li><code>007-AE0102</code></li>
+<li><code>9545448-2A</code></li>
+</ul>
+]]></description></item><item><title>Quick look inside Venstar T7850 - One of the only 'no-cloud' WiFi Thermostats that plays nice with Home Assistant</title><link>https://karlquinsland.com/venstar-t7850-teardown-review/</link><pubDate>Sat, 23 Apr 2022 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/venstar-t7850-teardown-review/</guid><description><![CDATA[<div class="details admonition info open">
         <div class="details-summary admonition-title">
             <i class="icon fas fa-info-circle fa-fw"></i>Info<i class="details-icon fas fa-angle-right fa-fw"></i>
         </div>
