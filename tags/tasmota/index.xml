@@ -793,7 +793,15 @@ Tasmota will let you dim the light as low as possible without flicker.</p>
 </figure>
 
 </p>
-]]></description></item><item><title>Fixing Home Assistant discovery with Tasmota on the Treatlife DS03</title><link>https://karlquinsland.com/treatlife-ds03-tasmota-autoconfig-with-homeassistant/</link><pubDate>Wed, 12 May 2021 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/treatlife-ds03-tasmota-autoconfig-with-homeassistant/</guid><description><![CDATA[<p><strong>UPDATE:</strong> (2021-10-22): Tasmota 9.5.0 has been superseded by the new <a href="https://github.com/arendst/Tasmota/releases/tag/v10.0.0" target="_blank" rel="noopener noreffer">Tasmota 10.0.0 release</a>. This release works perfectly with the rules/automation outlined below; you no longer need to avoid the problematic 9.5 release with the DS03. I am extremely grateful to every one of the people that contributes to the Tasmota project to keep it improving!</p>
+]]></description></item><item><title>Fixing Home Assistant discovery with Tasmota on the Treatlife DS03</title><link>https://karlquinsland.com/treatlife-ds03-tasmota-autoconfig-with-homeassistant/</link><pubDate>Wed, 12 May 2021 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/treatlife-ds03-tasmota-autoconfig-with-homeassistant/</guid><description><![CDATA[<div class="details admonition warning open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-exclamation-triangle fa-fw"></i>Update<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">This post is now deprecated. It has been superseded by  <a href="/treatlife-ds03-esphome/" rel=""><code>Using ESPHome with the Treatlife DS03</code></a> from 2022-06.</div>
+        </div>
+    </div>
+<p><strong>UPDATE:</strong> (2021-10-22): Tasmota 9.5.0 has been superseded by the new <a href="https://github.com/arendst/Tasmota/releases/tag/v10.0.0" target="_blank" rel="noopener noreffer">Tasmota 10.0.0 release</a>. This release works perfectly with the rules/automation outlined below; you no longer need to avoid the problematic 9.5 release with the DS03. I am extremely grateful to every one of the people that contributes to the Tasmota project to keep it improving!</p>
 <p><del><strong>UPDATE:</strong> (2021-09-19): Multiple have gotten in touch with me seeking some support with this post. At present, there is a <a href="https://github.com/arendst/Tasmota/issues/12684#event-5035253885" target="_blank" rel="noopener noreffer">bug</a> with the Tasmota 9.5.0 release which breaks the automation outlined below. If you are having trouble getting the steps below to work <strong><em>either use Tasmota 9.4 or the latest development release of tasmota 9.5 if you&rsquo;re going to continue on with this post!</em></strong></del></p>
 <hr>
 <p>The Treatlife DS03 is one of only a few Tasmota compatible ceiling fan controllers available in the US. It&rsquo;s internal architecture splits the task of dimming the lights and switching the fan speed electronics from communicating over the network.</p>
@@ -838,7 +846,7 @@ Tasmota will let you dim the light as low as possible without flicker.</p>
 </span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Rule1 on TuyaReceived#Data=55AA03070005030400010016 do publish2 stat/%topic%/speed 25 endon
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">Rule1 on TuyaReceived#Data=55AA03070005030400010016 do publish2 stat/%topic%/speed 25 endon
 </span></span><span class="line"><span class="cl">    on TuyaReceived#Data=55AA03070005030400010117 do publish2 stat/%topic%/speed 50 endon
 </span></span><span class="line"><span class="cl">    on TuyaReceived#Data=55AA03070005030400010218 do publish2 stat/%topic%/speed 75 endon
 </span></span><span class="line"><span class="cl">    on TuyaReceived#Data=55AA03070005030400010319 do publish2 stat/%topic%/speed 100 endon
@@ -851,7 +859,7 @@ Tasmota will let you dim the light as low as possible without flicker.</p>
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">rule2 on SetOption19#Data=OFF do publish2 homeassistant/fan/%macaddr%/config {&#34;uniq_id&#34;:&#34;AABBCC&#34;,&#34;~&#34;:&#34;%topic%/POWER1&#34;,&#34;cmd_t&#34;:&#34;cmnd/~&#34;,&#34;pl_off&#34;:&#34;OFF&#34;,&#34;pl_on&#34;:&#34;ON&#34;,&#34;stat_t&#34;:&#34;stat/~&#34;,&#34;avty_t&#34;:&#34;tele/%topic%/LWT&#34;,&#34;pl_avail&#34;:&#34;Online&#34;,&#34;pl_not_avail&#34;:&#34;Offline&#34;,&#34;pct_cmd_t&#34;:&#34;cmnd/%topic%/tuyasend4&#34;,&#34;pct_cmd_tpl&#34;:&#34;{%set v=value|int%}{%if v&lt;=25%}3,0{%elif v&lt;=50%}3,1{%elif v&lt;=75%}3,2{%elif v&lt;=100%}3,3{%endif%}&#34;,&#34;pct_stat_t&#34;:&#34;stat/%topic%/speed&#34;,&#34;dev&#34;:{&#34;cns&#34;:[[&#34;mac&#34;,&#34;%macaddr%&#34;]]}} endon
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">rule2 on SetOption19#Data=OFF do publish2 homeassistant/fan/%macaddr%/config {&#34;uniq_id&#34;:&#34;AABBCC&#34;,&#34;~&#34;:&#34;%topic%/POWER1&#34;,&#34;cmd_t&#34;:&#34;cmnd/~&#34;,&#34;pl_off&#34;:&#34;OFF&#34;,&#34;pl_on&#34;:&#34;ON&#34;,&#34;stat_t&#34;:&#34;stat/~&#34;,&#34;avty_t&#34;:&#34;tele/%topic%/LWT&#34;,&#34;pl_avail&#34;:&#34;Online&#34;,&#34;pl_not_avail&#34;:&#34;Offline&#34;,&#34;pct_cmd_t&#34;:&#34;cmnd/%topic%/tuyasend4&#34;,&#34;pct_cmd_tpl&#34;:&#34;{%set v=value|int%}{%if v&lt;=25%}3,0{%elif v&lt;=50%}3,1{%elif v&lt;=75%}3,2{%elif v&lt;=100%}3,3{%endif%}&#34;,&#34;pct_stat_t&#34;:&#34;stat/%topic%/speed&#34;,&#34;dev&#34;:{&#34;cns&#34;:[[&#34;mac&#34;,&#34;%macaddr%&#34;]]}} endon
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>Note:</strong> You&rsquo;ll probably want to modify the above payload so the occurrences of the placeholder string <code>AABBCC</code> are replaced with the last 6 characters of your own device&rsquo;s MAC address!</p>
@@ -914,7 +922,7 @@ Tasmota will let you dim the light as low as possible without flicker.</p>
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">rule2 1
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">rule2 1
 </span></span><span class="line"><span class="cl">so19 0
 </span></span></code></pre></td></tr></table>
 </div>
@@ -938,7 +946,7 @@ Tasmota will let you dim the light as low as possible without flicker.</p>
 </span><span class="lnt">15
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">18:23:54.140 CMD: Rule1 on TuyaReceived#Data=55AA03070005030400010016 do publish2 stat/%topic%/speed 25 endon on TuyaReceived#Data=55AA03070005030400010117 do publish2 stat/%topic%/speed 50 endon on TuyaReceived#Data=55AA03070005030400010218 do publish2 stat/%topic%/speed 75 endon on TuyaReceived#Data=55AA03070005030400010319 do publish2 stat/%topic%/speed 100 endon
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">18:23:54.140 CMD: Rule1 on TuyaReceived#Data=55AA03070005030400010016 do publish2 stat/%topic%/speed 25 endon on TuyaReceived#Data=55AA03070005030400010117 do publish2 stat/%topic%/speed 50 endon on TuyaReceived#Data=55AA03070005030400010218 do publish2 stat/%topic%/speed 75 endon on TuyaReceived#Data=55AA03070005030400010319 do publish2 stat/%topic%/speed 100 endon
 </span></span><span class="line"><span class="cl">18:23:54.149 RUL: Stored uncompressed, would compress from 344 to 98 (-72%)
 </span></span><span class="line"><span class="cl">18:23:54.155 MQT: stat/living_room_ceiling_fan/RESULT = {&#34;Rule1&#34;:{&#34;State&#34;:&#34;ON&#34;,&#34;Once&#34;:&#34;OFF&#34;,&#34;StopOnError&#34;:&#34;OFF&#34;,&#34;Length&#34;:344,&#34;Free&#34;:167,&#34;Rules&#34;:&#34;on TuyaReceived#Data=55AA03070005030400010016 do publish2 stat/%topic%/speed 25 endon on TuyaReceived#Data=55AA03070005030400010117 do publish2 stat/%topic%/speed 50 endon on TuyaReceived#Data=55AA03070005030400010218 do publish2 stat/%topic%/speed 75 endon on TuyaReceived#Data=55AA03070005030400010319 do publish2 stat/%topic%/speed 100 endon&#34;}}
 </span></span><span class="line"><span class="cl">
@@ -1044,7 +1052,7 @@ Tasmota will let you dim the light as low as possible without flicker.</p>
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">hours</span><span class="p">:</span><span class="w"> </span><span class="l">/1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">condition</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">action</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># For reasons that I don&#39;t understand, different tasmota devices seem to </span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># For reasons that I don&#39;t understand, different tasmota devices seem to</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#     subscribe to a different group topic. cmnd/tas vs tas/cmnd</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">##</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">service</span><span class="p">:</span><span class="w"> </span><span class="l">mqtt.publish</span><span class="w">

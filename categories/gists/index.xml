@@ -1,4 +1,144 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>gists - Category - karl</title><link>https://karlquinsland.com/categories/gists/</link><description>gists - Category - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 12 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/categories/gists/" rel="self" type="application/rss+xml"/><item><title>Fixing Home Assistant discovery with Tasmota on the Treatlife DS03</title><link>https://karlquinsland.com/treatlife-ds03-tasmota-autoconfig-with-homeassistant/</link><pubDate>Wed, 12 May 2021 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/treatlife-ds03-tasmota-autoconfig-with-homeassistant/</guid><description><![CDATA[<p><strong>UPDATE:</strong> (2021-10-22): Tasmota 9.5.0 has been superseded by the new <a href="https://github.com/arendst/Tasmota/releases/tag/v10.0.0" target="_blank" rel="noopener noreffer">Tasmota 10.0.0 release</a>. This release works perfectly with the rules/automation outlined below; you no longer need to avoid the problematic 9.5 release with the DS03. I am extremely grateful to every one of the people that contributes to the Tasmota project to keep it improving!</p>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>gists - Category - karl</title><link>https://karlquinsland.com/categories/gists/</link><description>gists - Category - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 09 Jun 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/categories/gists/" rel="self" type="application/rss+xml"/><item><title>Using ESPHome with the Treatlife DS03</title><link>https://karlquinsland.com/treatlife-ds03-esphome/</link><pubDate>Thu, 09 Jun 2022 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/treatlife-ds03-esphome/</guid><description><![CDATA[<div class="details admonition tip open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-lightbulb fa-fw"></i>Post depreciation notice<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">This is an update to the <a href="/treatlife-ds03-tasmota-autoconfig-with-homeassistant/" rel=""><code>Fixing Home Assistant discovery with Tasmota on the Treatlife DS03</code> post</a>.</div>
+        </div>
+    </div>
+<h1 id="tasmota-reliability">Tasmota reliability</h1>
+<p>A few months ago, I started to notice some bizarre behavior with the DS03 ceiling fan controllers that I had previously flashed with Tasmota.
+Very regularly, the devices would crash and reboot! I almost never noticed unless I was explicitly looking at the uptime / boot count graphs for the devices but every once in a while, the device would reboot <em>right as I was trying to control it remotely</em>.</p>
+<p>I was able to confirm that the rules I was using to &lsquo;augment&rsquo; the Home Assistant auto-discovery payload were the culprit. Odd since nothing had changed; only the version of tasmota has been changing.</p>
+<p>While it&rsquo;s not clear <em>what</em> the issue is, it <strong>probably</strong> has something to do with RAM exhaustion.
+The details are <a href="https://github.com/arendst/Tasmota/issues/15636#issuecomment-1130511474" target="_blank" rel="noopener noreffer">in Tasmota issue #15636</a> if your curious.</p>
+<p>The Tasmota rules were a workaround to a broader problem: tasmota offers very little to customize <em>how</em> the entity is advertised to Home Assistant. Since the workaround was no longer working, the next logical step is to re-evaluate if Tasmota is the appropriate firmware for the device.</p>
+<h1 id="using-esphome-with-the-ds03">Using ESPHome with the DS03</h1>
+<div class="details admonition info open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-info-circle fa-fw"></i>Beta software release<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>I <strong>strongly</strong> prefer MQTT for my Home Automation interoperability.</p>
+<p>The MQTT &lt;-&gt; Home Assistant mechanism in ESPHome has been playing second fiddle to the native ESPHome &lt;-&gt; Home Assistant API as of late so there are more bugs and usability issues. As such, the YAML below depends on a fix for <code>mqtt.fan</code> component that exists in the  <a href="https://github.com/esphome/esphome/releases/tag/2022.6.0b2" target="_blank" rel="noopener noreffer">2022.06.b2</a> or later release.</p>
+<p>Specifically, <a href="https://github.com/esphome/esphome/pull/3537" target="_blank" rel="noopener noreffer">this</a> commit.</p>
+<p>If you do not use MQTT for your ESPHome &lt;-&gt; Home Assistant linking, you should be fine using the latest &lsquo;stable&rsquo; release of ESPHome.</p>
+</div>
+        </div>
+    </div>
+<p>After <a href="https://esphome.io/guides/migrate_sonoff_tasmota.html" target="_blank" rel="noopener noreffer">migrating the tasmota install to ESPHome</a>, I am happy to report that ESPHome is running on the DS03 and that the full/proper MQTT auto-discovery payload is published. 🥳</p>
+<p>Here is a &lsquo;reference&rsquo; YAML file that is similar to the ones I use in &lsquo;production&rsquo;. You will need to add your own MQTT/WiFi&hellip; etc configuration.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">substitutions</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="l">YourHostNameHere</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">friendly_name</span><span class="p">:</span><span class="w"> </span><span class="l">YourDeviceNameHere</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">esphome</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">${hostname}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">ESP8266</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">board</span><span class="p">:</span><span class="w"> </span><span class="l">esp01_1m</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Enable logging</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">logger</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">level</span><span class="p">:</span><span class="w"> </span><span class="l">INFO</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Uses a TuYa MCU to drive the power components</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># See: https://esphome.io/components/tuya.html</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">##</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">tuya</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># See: https://esphome.io/components/uart.html</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">uart</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">rx_pin</span><span class="p">:</span><span class="w"> </span><span class="l">GPIO3</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">tx_pin</span><span class="p">:</span><span class="w"> </span><span class="l">GPIO1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># Not sure why/where/how this error shows up but seems functional as is /shrug</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># [E][uart:015]:   Invalid baud_rate: Integration requested baud_rate 9600 but you have 115200!</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">baud_rate</span><span class="p">:</span><span class="w"> </span><span class="m">115200</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># See: https://esphome.io/components/light/tuya.html</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">light</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">${friendly_name} Light</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">device_light</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;tuya&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">dimmer_datapoint</span><span class="p">:</span><span class="w"> </span><span class="m">10</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">switch_datapoint</span><span class="p">:</span><span class="w"> </span><span class="m">9</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">min_value</span><span class="p">:</span><span class="w"> </span><span class="m">100</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">max_value</span><span class="p">:</span><span class="w"> </span><span class="m">1000</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">icon</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;mdi:ceiling-fan-light&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">restore_mode</span><span class="p">:</span><span class="w"> </span><span class="l">ALWAYS_OFF</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># See: https://esphome.io/components/fan/tuya.html</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">fan</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">${friendly_name} Speed</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">device_fan</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;tuya&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">switch_datapoint</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">speed_datapoint</span><span class="p">:</span><span class="w"> </span><span class="m">3</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">speed_count</span><span class="p">:</span><span class="w"> </span><span class="m">4</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">icon</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;mdi:ceiling-fan&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">restore_mode</span><span class="p">:</span><span class="w"> </span><span class="l">ALWAYS_OFF</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div>]]></description></item><item><title>Fixing Home Assistant discovery with Tasmota on the Treatlife DS03</title><link>https://karlquinsland.com/treatlife-ds03-tasmota-autoconfig-with-homeassistant/</link><pubDate>Wed, 12 May 2021 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/treatlife-ds03-tasmota-autoconfig-with-homeassistant/</guid><description><![CDATA[<div class="details admonition warning open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-exclamation-triangle fa-fw"></i>Update<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">This post is now deprecated. It has been superseded by  <a href="/treatlife-ds03-esphome/" rel=""><code>Using ESPHome with the Treatlife DS03</code></a> from 2022-06.</div>
+        </div>
+    </div>
+<p><strong>UPDATE:</strong> (2021-10-22): Tasmota 9.5.0 has been superseded by the new <a href="https://github.com/arendst/Tasmota/releases/tag/v10.0.0" target="_blank" rel="noopener noreffer">Tasmota 10.0.0 release</a>. This release works perfectly with the rules/automation outlined below; you no longer need to avoid the problematic 9.5 release with the DS03. I am extremely grateful to every one of the people that contributes to the Tasmota project to keep it improving!</p>
 <p><del><strong>UPDATE:</strong> (2021-09-19): Multiple have gotten in touch with me seeking some support with this post. At present, there is a <a href="https://github.com/arendst/Tasmota/issues/12684#event-5035253885" target="_blank" rel="noopener noreffer">bug</a> with the Tasmota 9.5.0 release which breaks the automation outlined below. If you are having trouble getting the steps below to work <strong><em>either use Tasmota 9.4 or the latest development release of tasmota 9.5 if you&rsquo;re going to continue on with this post!</em></strong></del></p>
 <hr>
 <p>The Treatlife DS03 is one of only a few Tasmota compatible ceiling fan controllers available in the US. It&rsquo;s internal architecture splits the task of dimming the lights and switching the fan speed electronics from communicating over the network.</p>
@@ -43,7 +183,7 @@
 </span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Rule1 on TuyaReceived#Data=55AA03070005030400010016 do publish2 stat/%topic%/speed 25 endon
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">Rule1 on TuyaReceived#Data=55AA03070005030400010016 do publish2 stat/%topic%/speed 25 endon
 </span></span><span class="line"><span class="cl">    on TuyaReceived#Data=55AA03070005030400010117 do publish2 stat/%topic%/speed 50 endon
 </span></span><span class="line"><span class="cl">    on TuyaReceived#Data=55AA03070005030400010218 do publish2 stat/%topic%/speed 75 endon
 </span></span><span class="line"><span class="cl">    on TuyaReceived#Data=55AA03070005030400010319 do publish2 stat/%topic%/speed 100 endon
@@ -56,7 +196,7 @@
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">rule2 on SetOption19#Data=OFF do publish2 homeassistant/fan/%macaddr%/config {&#34;uniq_id&#34;:&#34;AABBCC&#34;,&#34;~&#34;:&#34;%topic%/POWER1&#34;,&#34;cmd_t&#34;:&#34;cmnd/~&#34;,&#34;pl_off&#34;:&#34;OFF&#34;,&#34;pl_on&#34;:&#34;ON&#34;,&#34;stat_t&#34;:&#34;stat/~&#34;,&#34;avty_t&#34;:&#34;tele/%topic%/LWT&#34;,&#34;pl_avail&#34;:&#34;Online&#34;,&#34;pl_not_avail&#34;:&#34;Offline&#34;,&#34;pct_cmd_t&#34;:&#34;cmnd/%topic%/tuyasend4&#34;,&#34;pct_cmd_tpl&#34;:&#34;{%set v=value|int%}{%if v&lt;=25%}3,0{%elif v&lt;=50%}3,1{%elif v&lt;=75%}3,2{%elif v&lt;=100%}3,3{%endif%}&#34;,&#34;pct_stat_t&#34;:&#34;stat/%topic%/speed&#34;,&#34;dev&#34;:{&#34;cns&#34;:[[&#34;mac&#34;,&#34;%macaddr%&#34;]]}} endon
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">rule2 on SetOption19#Data=OFF do publish2 homeassistant/fan/%macaddr%/config {&#34;uniq_id&#34;:&#34;AABBCC&#34;,&#34;~&#34;:&#34;%topic%/POWER1&#34;,&#34;cmd_t&#34;:&#34;cmnd/~&#34;,&#34;pl_off&#34;:&#34;OFF&#34;,&#34;pl_on&#34;:&#34;ON&#34;,&#34;stat_t&#34;:&#34;stat/~&#34;,&#34;avty_t&#34;:&#34;tele/%topic%/LWT&#34;,&#34;pl_avail&#34;:&#34;Online&#34;,&#34;pl_not_avail&#34;:&#34;Offline&#34;,&#34;pct_cmd_t&#34;:&#34;cmnd/%topic%/tuyasend4&#34;,&#34;pct_cmd_tpl&#34;:&#34;{%set v=value|int%}{%if v&lt;=25%}3,0{%elif v&lt;=50%}3,1{%elif v&lt;=75%}3,2{%elif v&lt;=100%}3,3{%endif%}&#34;,&#34;pct_stat_t&#34;:&#34;stat/%topic%/speed&#34;,&#34;dev&#34;:{&#34;cns&#34;:[[&#34;mac&#34;,&#34;%macaddr%&#34;]]}} endon
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p><strong>Note:</strong> You&rsquo;ll probably want to modify the above payload so the occurrences of the placeholder string <code>AABBCC</code> are replaced with the last 6 characters of your own device&rsquo;s MAC address!</p>
@@ -119,7 +259,7 @@
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">rule2 1
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">rule2 1
 </span></span><span class="line"><span class="cl">so19 0
 </span></span></code></pre></td></tr></table>
 </div>
@@ -143,7 +283,7 @@
 </span><span class="lnt">15
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">18:23:54.140 CMD: Rule1 on TuyaReceived#Data=55AA03070005030400010016 do publish2 stat/%topic%/speed 25 endon on TuyaReceived#Data=55AA03070005030400010117 do publish2 stat/%topic%/speed 50 endon on TuyaReceived#Data=55AA03070005030400010218 do publish2 stat/%topic%/speed 75 endon on TuyaReceived#Data=55AA03070005030400010319 do publish2 stat/%topic%/speed 100 endon
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">18:23:54.140 CMD: Rule1 on TuyaReceived#Data=55AA03070005030400010016 do publish2 stat/%topic%/speed 25 endon on TuyaReceived#Data=55AA03070005030400010117 do publish2 stat/%topic%/speed 50 endon on TuyaReceived#Data=55AA03070005030400010218 do publish2 stat/%topic%/speed 75 endon on TuyaReceived#Data=55AA03070005030400010319 do publish2 stat/%topic%/speed 100 endon
 </span></span><span class="line"><span class="cl">18:23:54.149 RUL: Stored uncompressed, would compress from 344 to 98 (-72%)
 </span></span><span class="line"><span class="cl">18:23:54.155 MQT: stat/living_room_ceiling_fan/RESULT = {&#34;Rule1&#34;:{&#34;State&#34;:&#34;ON&#34;,&#34;Once&#34;:&#34;OFF&#34;,&#34;StopOnError&#34;:&#34;OFF&#34;,&#34;Length&#34;:344,&#34;Free&#34;:167,&#34;Rules&#34;:&#34;on TuyaReceived#Data=55AA03070005030400010016 do publish2 stat/%topic%/speed 25 endon on TuyaReceived#Data=55AA03070005030400010117 do publish2 stat/%topic%/speed 50 endon on TuyaReceived#Data=55AA03070005030400010218 do publish2 stat/%topic%/speed 75 endon on TuyaReceived#Data=55AA03070005030400010319 do publish2 stat/%topic%/speed 100 endon&#34;}}
 </span></span><span class="line"><span class="cl">
@@ -249,7 +389,7 @@
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">hours</span><span class="p">:</span><span class="w"> </span><span class="l">/1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">condition</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">action</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># For reasons that I don&#39;t understand, different tasmota devices seem to </span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># For reasons that I don&#39;t understand, different tasmota devices seem to</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#     subscribe to a different group topic. cmnd/tas vs tas/cmnd</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">##</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">service</span><span class="p">:</span><span class="w"> </span><span class="l">mqtt.publish</span><span class="w">

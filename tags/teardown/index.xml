@@ -822,7 +822,7 @@ There is a mechanism for backing up / importing settings using <code>bin</code> 
 </span><span class="lnt">42
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Dynamic Host Configuration Protocol (Discover)
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">Dynamic Host Configuration Protocol (Discover)
 </span></span><span class="line"><span class="cl">    Message type: Boot Request (1)
 </span></span><span class="line"><span class="cl">    Hardware type: Ethernet (0x01)
 </span></span><span class="line"><span class="cl">    Hardware address length: 6
@@ -884,7 +884,7 @@ There is a mechanism for backing up / importing settings using <code>bin</code> 
 </span><span class="lnt">10
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">NOTIFY ALIVE SDDP/1.0
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">NOTIFY ALIVE SDDP/1.0
 </span></span><span class="line"><span class="cl">From: &#34;123.456.789.012:1902&#34;
 </span></span><span class="line"><span class="cl">Host: &#34;10:98:c3🇩🇪ad:bf&#34;
 </span></span><span class="line"><span class="cl">Max-Age: 300
@@ -913,7 +913,7 @@ There is a mechanism for backing up / importing settings using <code>bin</code> 
 </span><span class="lnt">13
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Internet Group Management Protocol
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">Internet Group Management Protocol
 </span></span><span class="line"><span class="cl">    [IGMP Version: 3]
 </span></span><span class="line"><span class="cl">    Type: Membership Report (0x22)
 </span></span><span class="line"><span class="cl">    Reserved: 00
@@ -941,7 +941,7 @@ There is a mechanism for backing up / importing settings using <code>bin</code> 
 </span><span class="lnt">7
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Queries
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">Queries
 </span></span><span class="line"><span class="cl">    ctupdate.skyport.io: type A, class IN
 </span></span><span class="line"><span class="cl">        Name: ctupdate.skyport.io
 </span></span><span class="line"><span class="cl">        [Name Length: 19]
@@ -1113,7 +1113,7 @@ There is a mechanism for backing up / importing settings using <code>bin</code> 
 </span></span><span class="line"><span class="cl">    Protocol  : TLSv1.2
 </span></span><span class="line"><span class="cl">    Cipher    : ECDHE-RSA-AES128-GCM-SHA256
 </span></span><span class="line"><span class="cl">    Session-ID: 1391DF607DB2888CA81220E321CB06CA6B5CBDE2031483A3E4AC075AD95A6A5D
-</span></span><span class="line"><span class="cl">    Session-ID-ctx: 
+</span></span><span class="line"><span class="cl">    Session-ID-ctx:
 </span></span><span class="line"><span class="cl">    Master-Key: 7A37EEBC584574EBA6B114E85CCD685B30F640D17D38A9B2E90AC8739BC76EB4A15E38A8F3B74F3D428328F874C9807C
 </span></span><span class="line"><span class="cl">    PSK identity: None
 </span></span><span class="line"><span class="cl">    PSK identity hint: None
@@ -1194,7 +1194,7 @@ There is a mechanism for backing up / importing settings using <code>bin</code> 
 </span><span class="lnt">34
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">❯ curl -vvv --insecure -L &#39;https://123.456.789.012/&#39; -H &#39;Authorization: Digest username=&#34;SomeUserNameHere&#34;, realm=&#34;thermostat&#34;, nonce=&#34;1234567890&#34;, uri=&#34;/&#34;, response=&#34;some_64_char_string_here&#34;, qop=auth, nc=00000003, cnonce=&#34;some16CharStrHere&#34;&#39;
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">❯ curl -vvv --insecure -L &#39;https://123.456.789.012/&#39; -H &#39;Authorization: Digest username=&#34;SomeUserNameHere&#34;, realm=&#34;thermostat&#34;, nonce=&#34;1234567890&#34;, uri=&#34;/&#34;, response=&#34;some_64_char_string_here&#34;, qop=auth, nc=00000003, cnonce=&#34;some16CharStrHere&#34;&#39;
 </span></span><span class="line"><span class="cl">*   Trying 123.456.789.012:443...
 </span></span><span class="line"><span class="cl">* Connected to 123.456.789.012 (123.456.789.012) port 443 (#0)
 </span></span><span class="line"><span class="cl">* ALPN, offering h2
@@ -1221,13 +1221,13 @@ There is a mechanism for backing up / importing settings using <code>bin</code> 
 </span></span><span class="line"><span class="cl">&gt; User-Agent: curl/7.82.0
 </span></span><span class="line"><span class="cl">&gt; Accept: */*
 </span></span><span class="line"><span class="cl">&gt; Authorization: Digest username=&#34;SomeUserNameHere&#34;, realm=&#34;thermostat&#34;, nonce=&#34;1234567890&#34;, uri=&#34;/&#34;, response=&#34;some_64_char_string_here&#34;, qop=auth, nc=00000003, cnonce=&#34;some16CharStrHere&#34;
-</span></span><span class="line"><span class="cl">&gt; 
+</span></span><span class="line"><span class="cl">&gt;
 </span></span><span class="line"><span class="cl">* Mark bundle as not supporting multiuse
 </span></span><span class="line"><span class="cl">&lt; HTTP/1.1 200 OK
 </span></span><span class="line"><span class="cl">&lt; Transfer-Encoding: chunked
-</span></span><span class="line"><span class="cl">&lt; 
+</span></span><span class="line"><span class="cl">&lt;
 </span></span><span class="line"><span class="cl">* Connection #0 to host 123.456.789.012 left intact
-</span></span><span class="line"><span class="cl">{&#34;api_ver&#34;:9,&#34;type&#34;:&#34;residential&#34;,&#34;model&#34;:&#34;COLORTOUCH&#34;,&#34;firmware&#34;:&#34;6.91&#34;}%  
+</span></span><span class="line"><span class="cl">{&#34;api_ver&#34;:9,&#34;type&#34;:&#34;residential&#34;,&#34;model&#34;:&#34;COLORTOUCH&#34;,&#34;firmware&#34;:&#34;6.91&#34;}%
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>Unfortunately no headers that leak details about the web server implementation. 😒</p>

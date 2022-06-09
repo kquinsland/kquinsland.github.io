@@ -1,12 +1,15 @@
 # Fixing Home Assistant discovery with Tasmota on the Treatlife DS03
 
 
+{{< admonition warning "Update" >}}
+This post is now deprecated. It has been superseded by  [`Using ESPHome with the Treatlife DS03`]({{<relref "posts/2022/06/treatlife-ds03-esphome" >}}) from 2022-06.
+{{< /admonition >}}
+
 **UPDATE:** (2021-10-22): Tasmota 9.5.0 has been superseded by the new [Tasmota 10.0.0 release](https://github.com/arendst/Tasmota/releases/tag/v10.0.0). This release works perfectly with the rules/automation outlined below; you no longer need to avoid the problematic 9.5 release with the DS03. I am extremely grateful to every one of the people that contributes to the Tasmota project to keep it improving!
 
 ~~**UPDATE:** (2021-09-19): Multiple have gotten in touch with me seeking some support with this post. At present, there is a [bug](https://github.com/arendst/Tasmota/issues/12684#event-5035253885) with the Tasmota 9.5.0 release which breaks the automation outlined below. If you are having trouble getting the steps below to work **_either use Tasmota 9.4 or the latest development release of tasmota 9.5 if you're going to continue on with this post!_**~~
 
 -----
-
 
 The Treatlife DS03 is one of only a few Tasmota compatible ceiling fan controllers available in the US. It's internal architecture splits the task of dimming the lights and switching the fan speed electronics from communicating over the network.
 
@@ -14,19 +17,15 @@ A very resource constrained ESP8266 module handles the network comms while a ded
 
 This is a totally reasonable way to build such a device, but for reasons that I don't fully understand, Tasmota does not publish a completely functional [auto-configuration](https://www.home-assistant.io/docs/mqtt/discovery/) payload for Home Assistant.
 
-
 Home Assistant automatically discovers the full light/dimmer capabilities of the DS03, but for some reason does not see that the DS03 is capable of running a fan at 4 different speeds; Home Assistant only allows for turning the fan on/off.
 
-
 {{<figure name="ha_default">}}
-
 
 The [existing](https://templates.blakadder.com/treatlife_DS03.html) guides on [how to flash the device](https://www.digiblur.com/2020/07/the-tasmota-fan-controller-ive-been.html) with Tasmota and integrate it with Home Assistant all work around this limitation by _*manually*_ configuring Home Assistant to see the device as a multi-speed fan 🤦.
 
 I'm not a huge fan of doing things manually, especially when there's a well documented and robust protocol designed to make manual configuration unnecessary! Why ignore the almost completely working auto-configuration in favor of manual configuration? Why not just fix the auto-config payload so Home Assistant exposes the full functionality of the device?
 
 Both of the above guides were written long before [Home Assistant gained support](https://www.home-assistant.io/blog/2021/03/03/release-20213/#fan-speeds-100) for fans with more than 3 speeds so even if I were to configure Home Assistant with a copy their example YAML, I'd _still_ be missing the ability to control the 4th speed!
-
 
 
 ## How
@@ -41,7 +40,7 @@ If you're following either the blakadder or digiblur guides linked above, stop a
 
 Issue a slightly modified rule:
 
-```
+```text
 Rule1 on TuyaReceived#Data=55AA03070005030400010016 do publish2 stat/%topic%/speed 25 endon
     on TuyaReceived#Data=55AA03070005030400010117 do publish2 stat/%topic%/speed 50 endon
     on TuyaReceived#Data=55AA03070005030400010218 do publish2 stat/%topic%/speed 75 endon
@@ -52,7 +51,7 @@ This tells Tasmota to publish an integer speed (25,50,75,100) when it receives a
 
 Then, issue a second rule to actually publish the configuration data:
 
-```
+```text
 rule2 on SetOption19#Data=OFF do publish2 homeassistant/fan/%macaddr%/config {"uniq_id":"AABBCC","~":"%topic%/POWER1","cmd_t":"cmnd/~","pl_off":"OFF","pl_on":"ON","stat_t":"stat/~","avty_t":"tele/%topic%/LWT","pl_avail":"Online","pl_not_avail":"Offline","pct_cmd_t":"cmnd/%topic%/tuyasend4","pct_cmd_tpl":"{%set v=value|int%}{%if v<=25%}3,0{%elif v<=50%}3,1{%elif v<=75%}3,2{%elif v<=100%}3,3{%endif%}","pct_stat_t":"stat/%topic%/speed","dev":{"cns":[["mac","%macaddr%"]]}} endon
 ```
 
@@ -90,14 +89,14 @@ For readability, here's the unminified JSON:
 
 All that's left is to enable `rule2` and then trigger it:
 
-```
+```text
 rule2 1
 so19 0
 ```
 
 Altogether, It'll look something like this:
 
-```
+```text
 18:23:54.140 CMD: Rule1 on TuyaReceived#Data=55AA03070005030400010016 do publish2 stat/%topic%/speed 25 endon on TuyaReceived#Data=55AA03070005030400010117 do publish2 stat/%topic%/speed 50 endon on TuyaReceived#Data=55AA03070005030400010218 do publish2 stat/%topic%/speed 75 endon on TuyaReceived#Data=55AA03070005030400010319 do publish2 stat/%topic%/speed 100 endon
 18:23:54.149 RUL: Stored uncompressed, would compress from 344 to 98 (-72%)
 18:23:54.155 MQT: stat/living_room_ceiling_fan/RESULT = {"Rule1":{"State":"ON","Once":"OFF","StopOnError":"OFF","Length":344,"Free":167,"Rules":"on TuyaReceived#Data=55AA03070005030400010016 do publish2 stat/%topic%/speed 25 endon on TuyaReceived#Data=55AA03070005030400010117 do publish2 stat/%topic%/speed 50 endon on TuyaReceived#Data=55AA03070005030400010218 do publish2 stat/%topic%/speed 75 endon on TuyaReceived#Data=55AA03070005030400010319 do publish2 stat/%topic%/speed 100 endon"}}
@@ -161,7 +160,7 @@ trigger:
     hours: /1
 condition: []
 action:
-  # For reasons that I don't understand, different tasmota devices seem to 
+  # For reasons that I don't understand, different tasmota devices seem to
   #     subscribe to a different group topic. cmnd/tas vs tas/cmnd
   ##
   - service: mqtt.publish

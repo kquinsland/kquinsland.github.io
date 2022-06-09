@@ -1,4 +1,136 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>All Posts - karl</title><link>https://karlquinsland.com/posts/</link><description>All Posts | karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 14 May 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/posts/" rel="self" type="application/rss+xml"/><item><title>Quick look inside the OMRON Evolv BP7000 Blood Pressure cuff</title><link>https://karlquinsland.com/omron-bp7000-evolv-teardown/</link><pubDate>Sat, 14 May 2022 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/omron-bp7000-evolv-teardown/</guid><description><![CDATA[<p>A friend recently asked for my help with some reverse engineering.
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>All Posts - karl</title><link>https://karlquinsland.com/posts/</link><description>All Posts | karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 09 Jun 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/posts/" rel="self" type="application/rss+xml"/><item><title>Using ESPHome with the Treatlife DS03</title><link>https://karlquinsland.com/treatlife-ds03-esphome/</link><pubDate>Thu, 09 Jun 2022 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/treatlife-ds03-esphome/</guid><description><![CDATA[<div class="details admonition tip open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-lightbulb fa-fw"></i>Post depreciation notice<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">This is an update to the <a href="/treatlife-ds03-tasmota-autoconfig-with-homeassistant/" rel=""><code>Fixing Home Assistant discovery with Tasmota on the Treatlife DS03</code> post</a>.</div>
+        </div>
+    </div>
+<h1 id="tasmota-reliability">Tasmota reliability</h1>
+<p>A few months ago, I started to notice some bizarre behavior with the DS03 ceiling fan controllers that I had previously flashed with Tasmota.
+Very regularly, the devices would crash and reboot! I almost never noticed unless I was explicitly looking at the uptime / boot count graphs for the devices but every once in a while, the device would reboot <em>right as I was trying to control it remotely</em>.</p>
+<p>I was able to confirm that the rules I was using to &lsquo;augment&rsquo; the Home Assistant auto-discovery payload were the culprit. Odd since nothing had changed; only the version of tasmota has been changing.</p>
+<p>While it&rsquo;s not clear <em>what</em> the issue is, it <strong>probably</strong> has something to do with RAM exhaustion.
+The details are <a href="https://github.com/arendst/Tasmota/issues/15636#issuecomment-1130511474" target="_blank" rel="noopener noreffer">in Tasmota issue #15636</a> if your curious.</p>
+<p>The Tasmota rules were a workaround to a broader problem: tasmota offers very little to customize <em>how</em> the entity is advertised to Home Assistant. Since the workaround was no longer working, the next logical step is to re-evaluate if Tasmota is the appropriate firmware for the device.</p>
+<h1 id="using-esphome-with-the-ds03">Using ESPHome with the DS03</h1>
+<div class="details admonition info open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-info-circle fa-fw"></i>Beta software release<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>I <strong>strongly</strong> prefer MQTT for my Home Automation interoperability.</p>
+<p>The MQTT &lt;-&gt; Home Assistant mechanism in ESPHome has been playing second fiddle to the native ESPHome &lt;-&gt; Home Assistant API as of late so there are more bugs and usability issues. As such, the YAML below depends on a fix for <code>mqtt.fan</code> component that exists in the  <a href="https://github.com/esphome/esphome/releases/tag/2022.6.0b2" target="_blank" rel="noopener noreffer">2022.06.b2</a> or later release.</p>
+<p>Specifically, <a href="https://github.com/esphome/esphome/pull/3537" target="_blank" rel="noopener noreffer">this</a> commit.</p>
+<p>If you do not use MQTT for your ESPHome &lt;-&gt; Home Assistant linking, you should be fine using the latest &lsquo;stable&rsquo; release of ESPHome.</p>
+</div>
+        </div>
+    </div>
+<p>After <a href="https://esphome.io/guides/migrate_sonoff_tasmota.html" target="_blank" rel="noopener noreffer">migrating the tasmota install to ESPHome</a>, I am happy to report that ESPHome is running on the DS03 and that the full/proper MQTT auto-discovery payload is published. 🥳</p>
+<p>Here is a &lsquo;reference&rsquo; YAML file that is similar to the ones I use in &lsquo;production&rsquo;. You will need to add your own MQTT/WiFi&hellip; etc configuration.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">substitutions</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="l">YourHostNameHere</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">friendly_name</span><span class="p">:</span><span class="w"> </span><span class="l">YourDeviceNameHere</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">esphome</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">${hostname}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">ESP8266</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">board</span><span class="p">:</span><span class="w"> </span><span class="l">esp01_1m</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Enable logging</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">logger</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">level</span><span class="p">:</span><span class="w"> </span><span class="l">INFO</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Uses a TuYa MCU to drive the power components</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># See: https://esphome.io/components/tuya.html</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">##</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">tuya</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># See: https://esphome.io/components/uart.html</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">uart</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">rx_pin</span><span class="p">:</span><span class="w"> </span><span class="l">GPIO3</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">tx_pin</span><span class="p">:</span><span class="w"> </span><span class="l">GPIO1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># Not sure why/where/how this error shows up but seems functional as is /shrug</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># [E][uart:015]:   Invalid baud_rate: Integration requested baud_rate 9600 but you have 115200!</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">baud_rate</span><span class="p">:</span><span class="w"> </span><span class="m">115200</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># See: https://esphome.io/components/light/tuya.html</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">light</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">${friendly_name} Light</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">device_light</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;tuya&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">dimmer_datapoint</span><span class="p">:</span><span class="w"> </span><span class="m">10</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">switch_datapoint</span><span class="p">:</span><span class="w"> </span><span class="m">9</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">min_value</span><span class="p">:</span><span class="w"> </span><span class="m">100</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">max_value</span><span class="p">:</span><span class="w"> </span><span class="m">1000</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">icon</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;mdi:ceiling-fan-light&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">restore_mode</span><span class="p">:</span><span class="w"> </span><span class="l">ALWAYS_OFF</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># See: https://esphome.io/components/fan/tuya.html</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">fan</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">${friendly_name} Speed</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">device_fan</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;tuya&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">switch_datapoint</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">speed_datapoint</span><span class="p">:</span><span class="w"> </span><span class="m">3</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">speed_count</span><span class="p">:</span><span class="w"> </span><span class="m">4</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">icon</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;mdi:ceiling-fan&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">restore_mode</span><span class="p">:</span><span class="w"> </span><span class="l">ALWAYS_OFF</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div>]]></description></item><item><title>Quick look inside the OMRON Evolv BP7000 Blood Pressure cuff</title><link>https://karlquinsland.com/omron-bp7000-evolv-teardown/</link><pubDate>Sat, 14 May 2022 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/omron-bp7000-evolv-teardown/</guid><description><![CDATA[<p>A friend recently asked for my help with some reverse engineering.
 They wanted to know how difficult it would be to re-use some components from a lot of refurbished blood pressure cuffs they had recently acquired.</p>
 <p>Sounds easy, right?
 At a high level, there&rsquo;s going to be:</p>
@@ -1282,7 +1414,7 @@ There is a mechanism for backing up / importing settings using <code>bin</code> 
 </span><span class="lnt">42
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Dynamic Host Configuration Protocol (Discover)
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">Dynamic Host Configuration Protocol (Discover)
 </span></span><span class="line"><span class="cl">    Message type: Boot Request (1)
 </span></span><span class="line"><span class="cl">    Hardware type: Ethernet (0x01)
 </span></span><span class="line"><span class="cl">    Hardware address length: 6
@@ -1344,7 +1476,7 @@ There is a mechanism for backing up / importing settings using <code>bin</code> 
 </span><span class="lnt">10
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">NOTIFY ALIVE SDDP/1.0
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">NOTIFY ALIVE SDDP/1.0
 </span></span><span class="line"><span class="cl">From: &#34;123.456.789.012:1902&#34;
 </span></span><span class="line"><span class="cl">Host: &#34;10:98:c3🇩🇪ad:bf&#34;
 </span></span><span class="line"><span class="cl">Max-Age: 300
@@ -1373,7 +1505,7 @@ There is a mechanism for backing up / importing settings using <code>bin</code> 
 </span><span class="lnt">13
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Internet Group Management Protocol
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">Internet Group Management Protocol
 </span></span><span class="line"><span class="cl">    [IGMP Version: 3]
 </span></span><span class="line"><span class="cl">    Type: Membership Report (0x22)
 </span></span><span class="line"><span class="cl">    Reserved: 00
@@ -1401,7 +1533,7 @@ There is a mechanism for backing up / importing settings using <code>bin</code> 
 </span><span class="lnt">7
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Queries
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">Queries
 </span></span><span class="line"><span class="cl">    ctupdate.skyport.io: type A, class IN
 </span></span><span class="line"><span class="cl">        Name: ctupdate.skyport.io
 </span></span><span class="line"><span class="cl">        [Name Length: 19]
@@ -1573,7 +1705,7 @@ There is a mechanism for backing up / importing settings using <code>bin</code> 
 </span></span><span class="line"><span class="cl">    Protocol  : TLSv1.2
 </span></span><span class="line"><span class="cl">    Cipher    : ECDHE-RSA-AES128-GCM-SHA256
 </span></span><span class="line"><span class="cl">    Session-ID: 1391DF607DB2888CA81220E321CB06CA6B5CBDE2031483A3E4AC075AD95A6A5D
-</span></span><span class="line"><span class="cl">    Session-ID-ctx: 
+</span></span><span class="line"><span class="cl">    Session-ID-ctx:
 </span></span><span class="line"><span class="cl">    Master-Key: 7A37EEBC584574EBA6B114E85CCD685B30F640D17D38A9B2E90AC8739BC76EB4A15E38A8F3B74F3D428328F874C9807C
 </span></span><span class="line"><span class="cl">    PSK identity: None
 </span></span><span class="line"><span class="cl">    PSK identity hint: None
@@ -1654,7 +1786,7 @@ There is a mechanism for backing up / importing settings using <code>bin</code> 
 </span><span class="lnt">34
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">❯ curl -vvv --insecure -L &#39;https://123.456.789.012/&#39; -H &#39;Authorization: Digest username=&#34;SomeUserNameHere&#34;, realm=&#34;thermostat&#34;, nonce=&#34;1234567890&#34;, uri=&#34;/&#34;, response=&#34;some_64_char_string_here&#34;, qop=auth, nc=00000003, cnonce=&#34;some16CharStrHere&#34;&#39;
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">❯ curl -vvv --insecure -L &#39;https://123.456.789.012/&#39; -H &#39;Authorization: Digest username=&#34;SomeUserNameHere&#34;, realm=&#34;thermostat&#34;, nonce=&#34;1234567890&#34;, uri=&#34;/&#34;, response=&#34;some_64_char_string_here&#34;, qop=auth, nc=00000003, cnonce=&#34;some16CharStrHere&#34;&#39;
 </span></span><span class="line"><span class="cl">*   Trying 123.456.789.012:443...
 </span></span><span class="line"><span class="cl">* Connected to 123.456.789.012 (123.456.789.012) port 443 (#0)
 </span></span><span class="line"><span class="cl">* ALPN, offering h2
@@ -1681,13 +1813,13 @@ There is a mechanism for backing up / importing settings using <code>bin</code> 
 </span></span><span class="line"><span class="cl">&gt; User-Agent: curl/7.82.0
 </span></span><span class="line"><span class="cl">&gt; Accept: */*
 </span></span><span class="line"><span class="cl">&gt; Authorization: Digest username=&#34;SomeUserNameHere&#34;, realm=&#34;thermostat&#34;, nonce=&#34;1234567890&#34;, uri=&#34;/&#34;, response=&#34;some_64_char_string_here&#34;, qop=auth, nc=00000003, cnonce=&#34;some16CharStrHere&#34;
-</span></span><span class="line"><span class="cl">&gt; 
+</span></span><span class="line"><span class="cl">&gt;
 </span></span><span class="line"><span class="cl">* Mark bundle as not supporting multiuse
 </span></span><span class="line"><span class="cl">&lt; HTTP/1.1 200 OK
 </span></span><span class="line"><span class="cl">&lt; Transfer-Encoding: chunked
-</span></span><span class="line"><span class="cl">&lt; 
+</span></span><span class="line"><span class="cl">&lt;
 </span></span><span class="line"><span class="cl">* Connection #0 to host 123.456.789.012 left intact
-</span></span><span class="line"><span class="cl">{&#34;api_ver&#34;:9,&#34;type&#34;:&#34;residential&#34;,&#34;model&#34;:&#34;COLORTOUCH&#34;,&#34;firmware&#34;:&#34;6.91&#34;}%  
+</span></span><span class="line"><span class="cl">{&#34;api_ver&#34;:9,&#34;type&#34;:&#34;residential&#34;,&#34;model&#34;:&#34;COLORTOUCH&#34;,&#34;firmware&#34;:&#34;6.91&#34;}%
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>Unfortunately no headers that leak details about the web server implementation. 😒</p>
@@ -5534,184 +5666,4 @@ The solution that I end up implementing will be designed with my heavy drapes in
 <li>&ldquo;primary&rdquo; radio: <a href="https://developer.tuya.com/en/docs/iot/bt7l?id=K96gqp1dp6iiw" target="_blank" rel="noopener noreffer"><code>BT7L</code></a></li>
 <li>&ldquo;secondary&rdquo; radio <a href="https://github.com/Edragon/JDY-MESH/tree/main/JDY-25M/SDK" target="_blank" rel="noopener noreffer"><code>JDY-25M</code></a></li>
 </ul>
-]]></description></item><item><title>Hardware accelerated graphics on the raspberry pi4 for a speedier KDS</title><link>https://karlquinsland.com/hardware-accelerated-graphics-on-the-raspberry-pi-4-a-snappier-kds/</link><pubDate>Sat, 20 Nov 2021 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/hardware-accelerated-graphics-on-the-raspberry-pi-4-a-snappier-kds/</guid><description><![CDATA[<p>Surfacing the right information at the right time in the right place is a difficult but essential task for any credible automation system.</p>
-<p>I have been experimenting with the concept of a Home Assistant powered <a href="https://www.qsrautomations.com/blog/kitchen-automation/what-is-a-kds/" target="_blank" rel="noopener noreffer">KDS</a> for a few years now and have found that the refrigerator happens to be an especially good place to surface some information and device controls.</p>
-<br>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Yes, it&#39;s over-exposed and shot at an awkward angle but that&#39;s what it took to minimize glare!
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<br>
-<p>This <strong>is not</strong> a post about how to build the KDS pictured above; you can follow any of the numerous &ldquo;how to use a raspberry pi as a kiosk&rdquo; guides out there and you&rsquo;d be 90% of the way there.
-The last 10% is highly application specific; the hardware <em>you</em> design and 3d-print or otherwise fabricate will depend on your particular screen and selected mounting location.</p>
-<p>This <strong>is</strong> a post about solving a performance issue with the dashboard hosted on the device.
-Earlier versions of this KDS were powered by a raspberry pi 3 B (not even the <code>+</code> variant!) with 1 GB of ram.
-The <a href="https://www.home-assistant.io/lovelace/" target="_blank" rel="noopener noreffer">Lovelace</a> dashboard that the KDS displays is quite javascript heavy and would frequently hang on the pi3b.</p>
-<p>I use this dashboard to adjust grocery lists, control lights, set appliance timers and more. If the dashboard is sluggish or otherwise unresponsive, it&rsquo;s worse than useless!</p>
-<p>As soon as I swapped in a raspberry pi 4 with 4 GB ram, things got &hellip;. marginally better 😑.</p>
-<p>Sure, it booted much faster and the JS heavy graphs didn&rsquo;t cause the box to wedge anymore, but manipulating things on screen still was still a choppy experience.
-Animations didn&rsquo;t show at all or had all but a few frames dropped :(.</p>
-<p>I know that the <a href="https://medium.com/@ghalfacree/benchmarking-the-raspberry-pi-4-73e5afbcd54b" target="_blank" rel="noopener noreffer">raspberry pi 4 is more than capable</a> of running a single web page in a headless browser so <em>something</em> is wrong.</p>
-<p>After a bit of digging, it turns out that chromium does NOT use hardware acceleration by default on the raspberry pi.</p>
-<p>Ok, that&rsquo;s an easy fix. Just enable the gpu and reboot:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">pi@kds:~ $ cat /boot/config.txt 
-</span></span><span class="line"><span class="cl">&lt;...&gt;
-</span></span><span class="line"><span class="cl"><span class="c1"># Enable DRM VC4 V3D driver for much more performant chrome</span>
-</span></span><span class="line"><span class="cl"><span class="nv">dtoverlay</span><span class="o">=</span>vc4-kms-v3d
-</span></span><span class="line"><span class="cl">&lt;...&gt;
-</span></span><span class="line"><span class="cl">pi@kds:~ $ sudo reboot
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>&hellip; right?</p>
-<p><strong>No.</strong></p>
-<p>Turning on the gpu acceleration broke the various screen rotation / resolution directives that I had configured in <code>/boot/config.txt</code>:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">pi@kds:~ $ cat /boot/config.txt 
-</span></span><span class="line"><span class="cl">&lt;...&gt;
-</span></span><span class="line"><span class="cl"><span class="o">[</span>all<span class="o">]</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># We need to rotate the display 90degrees as the &#39;default&#39; orientation from the manufacturer assumes a horizontal orientation, not a vertical one</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># See: https://www.waveshare.com/wiki/13.3inch_HDMI_LCD_(H)</span>
-</span></span><span class="line"><span class="cl"><span class="nv">display_rotate</span><span class="o">=</span><span class="m">1</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># Force correct resolution</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># Use &#39;DMT/Display Monitor Timings</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># See: https://www.raspberrypi.com/documentation/computers/config_txt.html#video-options</span>
-</span></span><span class="line"><span class="cl"><span class="nv">hdmi_group</span><span class="o">=</span><span class="m">2</span>
-</span></span><span class="line"><span class="cl"><span class="nv">hdmi_mode</span><span class="o">=</span><span class="m">82</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>One of the Raspberry Pi Engineers <a href="https://forums.raspberrypi.com/viewtopic.php?t=267954#p1626774" target="_blank" rel="noopener noreffer">explains why</a>:</p>
-<blockquote>
-<p>display_rotate only does anything if the firmware is in charge of the display, which isn&rsquo;t the case when using vc4-kms-v3d.</p>
-</blockquote>
-<p>Even when the video out could be configured with <code>config.txt</code>, the firmware offers no such mechanism to rotate input events to match the orientation.
-Fortunately, the LCD manufacturer <a href="https://www.waveshare.com/wiki/13.3inch_HDMI_LCD_%28H%29#Rotation.28Working_with_Raspberry_Pi.29" target="_blank" rel="noopener noreffer">provides good documentation about how to configure the touch inputs with X11</a></p>
-<p>Unfortunately, the manufacturer <em>does <strong>not</strong></em> provide corresponding documentation about how to configure the display with X11. Not that I can blame them! Configuring X11 has always been&hellip; tedious &hellip; to use a &lsquo;polite&rsquo; term for the experience!</p>
-<h2 id="xorg-and-ssh">Xorg and SSH</h2>
-<p>I&rsquo;ll spare you the bulk of the rant and summarize with this:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Can&#39;t open display :0.0
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>For reasons that don&rsquo;t make a ton of sense to me, <em>all</em> of the command line tools for probing display hardware and creating X11 configurations really don&rsquo;t like working over SSH 🤔. Yes, I of course tried the <code>export DISPLAY=:0.0</code> <a href="https://www.linuxquestions.org/questions/linux-general-1/xrandr-from-remote-through-ssh-869084/page2.html" target="_blank" rel="noopener noreffer">trick</a>.</p>
-<p><code>xrandr</code> and friends are fine when running in a <em>local</em> shell, but just don&rsquo;t play nice when a local user connects via SSH.
-This makes things a lot harder than they needed to be as the location of the KDS does not lend its self to easily hooking up a keyboard and mouse.</p>
-<p>Furthermore, the <em>intended</em> purpose of this install is to display a web page. <strong>Thats it.</strong>
-There is next to no desktop environment installed because one is not needed for a full screen headless chrome instance.</p>
-<p>Installing a virtual console application was going to involve a lot of bloat and other unnecessary packages which is <em>overkill</em> for a few CLI utilities that <strong>should just work over any console weather that be local PTY or ssh!</strong></p>
-<p>After a few hours of anguish and trial/error later, I had everything working as expected! But before we get there and while i&rsquo;m still ranting, <a href="https://unix.stackexchange.com/questions/435702/check-syntax-of-conf-file-in-etc-x11-xorg-conf-d" target="_blank" rel="noopener noreffer">why is there no <code>xorg -checkconf ...</code> command</a>?!</p>
-<p>Ok. Now it&rsquo;s all out of my system.</p>
-<p><code>&lt;/rant&gt;</code></p>
-<h2 id="solution">Solution</h2>
-<p>Every tap registers instantly and there&rsquo;s no jank or stutter in any animation. Likewise, graphs animate as quickly as they load&hellip; Perfect!</p>
-<p>This is the X11 configuration that rotated the display and would &lsquo;see&rsquo; the display attached to the GPU:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">pi@kds:~ $ cat /etc/X11/xorg.conf.d/monitor.conf
-</span></span><span class="line"><span class="cl"><span class="c1"># Device = GPU</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># When using rPi 4 with GPU instead of software render, the `modesetting` driver is the one to use... apparently.</span>
-</span></span><span class="line"><span class="cl">Section <span class="s2">&#34;Device&#34;</span>
-</span></span><span class="line"><span class="cl">        Identifier      <span class="s2">&#34;default&#34;</span>
-</span></span><span class="line"><span class="cl">        Driver          <span class="s2">&#34;modesetting&#34;</span>
-</span></span><span class="line"><span class="cl">EndSection
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">Section <span class="s2">&#34;Monitor&#34;</span>
-</span></span><span class="line"><span class="cl">        Identifier <span class="s2">&#34;default&#34;</span>
-</span></span><span class="line"><span class="cl">        <span class="c1"># equivalent to `display_rotate = 1` in config.txt </span>
-</span></span><span class="line"><span class="cl">        Option <span class="s2">&#34;Rotate&#34;</span> <span class="s2">&#34;right&#34;</span>
-</span></span><span class="line"><span class="cl">EndSection
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">Section <span class="s2">&#34;Screen&#34;</span>
-</span></span><span class="line"><span class="cl">        Identifier <span class="s2">&#34;default&#34;</span>
-</span></span><span class="line"><span class="cl">        Monitor <span class="s2">&#34;default&#34;</span>
-</span></span><span class="line"><span class="cl">EndSection
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>In addition to the X11 config, some ram needs to be allocated as dedicated graphics memory:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">pi@kds:~ $ cat /boot/config.txt <span class="p">|</span> grep -B2 gpu_mem
-</span></span><span class="line"><span class="cl"><span class="o">[</span>all<span class="o">]</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># Allocate 256MB of ram for the GPU</span>
-</span></span><span class="line"><span class="cl"><span class="nv">gpu_mem</span><span class="o">=</span><span class="m">256</span>
-</span></span><span class="line"><span class="cl">pi@kds:~ $ sudo reboot
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>Chrome did not automatically switch over to the GPU backed rendering pipe but it&rsquo;s easy enough to <a href="https://lemariva.com/blog/2020/08/raspberry-pi-4-video-acceleration-decode-chromium" target="_blank" rel="noopener noreffer">configure chrome to use the GPU</a> manually.</p>
-<p>And with all that in place, a quick <code>sudo systemctl restart lightdm</code> and a brief screen flicker later, chromium launched in full screen mode with the correct orientation. After the dashboard finished loading, the scroll/tap/animation performance was as good as it would be on any competent computer!</p>
-<p>I really don&rsquo;t know why I couldn&rsquo;t easily find a working X11 configuration example for use with the rPi 4 GPU, but I wasn&rsquo;t able to 🤷.</p>
-<p>Hopefully the above helps somebody else!</p>
 ]]></description></item></channel></rss>
