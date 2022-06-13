@@ -1,0 +1,526 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>hardware-modifications - Category - karl</title><link>https://karlquinsland.com/categories/hardware-modifications/</link><description>hardware-modifications - Category - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 10 Jun 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/categories/hardware-modifications/" rel="self" type="application/rss+xml"/><item><title>Using Qi charging to fix the biggest design flaw with the HidrateSpark Steel Pro bottle</title><link>https://karlquinsland.com/hidrate-spark-qi-retrofit/</link><pubDate>Fri, 10 Jun 2022 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/hidrate-spark-qi-retrofit/</guid><description><![CDATA[<div class="details admonition info open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-info-circle fa-fw"></i>Parts and Instructions<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">The majority of this post covers the &ldquo;why&rdquo; this mod came to be. If you&rsquo;re just looking for the mod, you can find
+the 3d printable parts, BOM and instructions in <a href="https://github.com/kquinsland/hidrate-spark-qi-charging" target="_blank" rel="noopener noreffer">accompanying github repo</a>.</div>
+        </div>
+    </div>
+<h1 id="what">What</h1>
+<p><a href="https://hidratespark.com/" target="_blank" rel="noopener noreffer">Hidrate Spark</a> bottles are one of a small but growing number of &lsquo;smart&rsquo; water bottles.
+In this instance, &lsquo;smart&rsquo; refers to some mechanism for reporting on and tracking the bottles content over time.</p>
+<p>There are a few ways to measure liquid levels but the current generation of Hidrate Spark bottles uses a small sensor puck which contains a <a href="https://en.wikipedia.org/wiki/Load_cell" target="_blank" rel="noopener noreffer">load cell</a>.
+As the bottle is emptied or filled, the puck measures a difference in weight which can then be compared with the known weight of a full/empty bottle to determine exactly how full the bottle is.</p>
+<p>There are a <em>ton</em> of reasons why you might want to track your water intake but they all generally fall into one of a few broad categories:</p>
+<ul>
+<li>Dietary restrictions: Athletes and competitors of all sorts need to precisely track their diets and water intake is no exception.</li>
+<li>Medication side effects:  Any medication with &lsquo;diminishes thirst&rsquo; as a side effect almost guarantees dehydration. A bottle that knows how long it&rsquo;s been since your last drink is a very effective way to mitigate these side effects.</li>
+<li>Personal curiosity / <a href="https://en.wikipedia.org/wiki/Quantified_self" target="_blank" rel="noopener noreffer">quantified self</a>: If you&rsquo;re already tracking other aspects of your physical/mental health throughout the day, knowing when/how much water you had makes for some more interesting graphs.
+<ul>
+<li>In the same vein, your levels of hydration can effect: cognition, blood pressure, mood, blood glucose levels, energy, complexion and more.</li>
+</ul>
+</li>
+</ul>
+<p>Now as for why you&rsquo;d need to bolt a kitchen scale and a BTLE radio onto the bottom of a water bottle in order to record this, there&rsquo;s really only one reason: Automation.</p>
+<div class="details admonition warning open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-exclamation-triangle fa-fw"></i>Warning<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">I&rsquo;m not going to entertain the &ldquo;now you&rsquo;re just being silly; there&rsquo;s no need for a water bottle to have a radio or battery in it&rdquo; crowd. If you don&rsquo;t value any of the reasons outlined above then we agree&hellip; this is a silly water bottle and <strong>you</strong> don&rsquo;t have a good reason to own one.</div>
+        </div>
+    </div>
+<h2 id="design-evaluation">Design evaluation</h2>
+<p>Overall, the Hidrate Spark bottle works. It is not without some drawbacks, though.
+The primary and obvious downside is charging the battery 🪫.</p>
+<p>Depending on how aggressive you have the LEDs configured, the battery will need charging somewhere between 1-5 times a week.
+The app will inform you when the battery is low, but sometimes the notifications come far to late to be useful. I have lost data because the warning came less than an hour before the battery was dead and about 9 hours before I&rsquo;d be able to charge it again.</p>
+<p>To charge the battery, you need to remove the sensor puck from the bottle and then attach a fiddly and proprietary USB connector. Worse, this connector uses prone-to-failure <a href="https://en.wikipedia.org/wiki/Pogo_pin" target="_blank" rel="noopener noreffer">Pogo pins</a>.</p>
+<p>Ignoring the shameful and unnecessary use of a non-standard USB micro/C port for charing, you now have to wait a few hours for the battery to charge; during this time, the puck can&rsquo;t be inserted into the bottle so it can&rsquo;t record data while it&rsquo;s being charged.
+Remind you of anything?</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Apple won all sorts of &#39;asshole design&#39; awards for this. Hidrate spark was inspired to also win such an award! src: YouTube/Tony H
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>So to re-cap:</p>
+<ul>
+<li>Anywhere from 1-5 times a week you&rsquo;ll need to remove the sensor from the bottle. During this time you&rsquo;ll have to manually track any consumed water&hellip;. defeating the entire point of the bottle!</li>
+<li>If you don&rsquo;t charge the puck in time, you&rsquo;ll also loose automatic tracking of consumption&hellip; with little or no notice from either the puck or the app. The puck does not store measurements in flash so any data recorded before the battery died but not yet synced to the phone is <em>gone</em>.</li>
+<li>You will need to pack a dedicated cable for charging the bottle if you travel. Don&rsquo;t loose or damage it because you can&rsquo;t go to the closest electronics shop to get another compatible cable!</li>
+</ul>
+<p>When I did my initial tear down, I didn&rsquo;t spot any electrical reason why the bottle could not charge and measure at the same time.
+After some additional testing, I was able to confirm that the firmware also does not object.</p>
+<p>At the <strong><em>very least</em></strong> the Hidrate team could have put the pogo pins on the bottom and shipped the bottle with a charging dock/base similar to how Ember does their mugs.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Pogo pins and slip-rings are not perfect but at least you can charge and use the mug at the same time!
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>The proprietary nature of the charge connection is still not ideal but at least the bottle could be &ldquo;used&rdquo; while it was charging.
+If the charging dock was centrally or conveniently located, the sensor puck could be consistently &rsquo;topped off&rsquo;; trickle charing while idle in the same way wireless charging of phots works; take a sip and put the bottle back down to charge and measure the consumption.</p>
+<p>Alternatively, the Hidrate designers could have at least used a standard USBC or micro USB jack in the same location as the current charging pogo pins.
+Since the charge location is at the &rsquo;top&rsquo; of the sensor puck which is deeply embedded in the base of the water bottle, they might not have even needed to bother with a &lsquo;fancy&rsquo; waterproof USB port and the additional electronics necessary to detect water/debris and cut off charging.</p>
+<p>Going with a standard USB C port in place of pogo pins would have the &ldquo;can&rsquo;t use it and charge it at the same time&rdquo; draw back but it would have at least eliminated a proprietary cable!</p>
+<h2 id="the-other-draw-backs">The other draw backs</h2>
+<p>While the biggest design flaw is related to battery charging, the Hidrate spark does have a few other noteworthy issues.</p>
+<h3 id="recalibration">Recalibration</h3>
+<p>The sensor puck measures changes in weight.
+To know how full the bottle is, the sensor puck must also be aware of the weight of a full and empty bottle.
+This weight range will change based on the density of the liquid inside.
+A bottle that is full of water will have a different weight compared to a bottle that is full of orange juice, for example.
+Any time the liquid in the bottle changes, the sensor puck will need to be recalibrated.</p>
+<p>To measure changes in weight/weight, the sensor puck relies on a load cell which (slightly) deforms as the load on it changes.
+All mechanical parts will wear with time so the bottle will periodically need to be recalibrated from time to time just to stay accurate.
+Likewise, if the bottle is dropped or otherwise experiences a sharp impact, the sensor will most certainly need to be recalibrated.</p>
+<h3 id="misc">Misc</h3>
+<ul>
+<li>No temperature. The sensor is completely independent from the primary bottle so there is no easy way to record the temperature of the liquid. It would be nice to know how cold the liquid inside is from time to time. The hidrate team could have engineered a temperature sensor into the bottle body that would come into contact with the sensor puck when inserted but this almost certainly would have increased manufacturing costs for a relatively small benefit.</li>
+<li>Imprecise and limited user feedback. The only way the sensor puck can communicate with the user is through the ring of addressable LEDs around the permitter and through BTLE; the latter of which is unreliable as the user might not have their phone nearby or the app might be closed. There is no way for the lights to communicate <em>exactly</em> how long it&rsquo;s been since the last drink or how much battery life is left. There are 10 LEDs and they can each be individually controlled so this drawback probably can be addressed through software; let the user pick when/how to display battery life remaining or to design a sequence of lights to indicate when the last drink took place.</li>
+<li>Most of the mass needs to be suspended above and not directly connected to the sensor puck. This means that the bottle has a high center of gravity which - when coupled with the small base - makes for a slightly unstable bottle. There isn&rsquo;t any real way to avoid this though; if you&rsquo;re going to use a load cell, the liquid must <del>necessarily</del> reasonably be above the load cell.</li>
+</ul>
+<h2 id="a-quick-look-at-the-tuya-bottle">A quick look at the TuYa bottle</h2>
+<p>If you search the usual eastern import sites, you&rsquo;ll see that the <em>massive</em> TuYa ecosystem has it&rsquo;s own smart water bottle that can keep track of liquid intake.
+As best as I can tell, this is branded for TuYa but the OEM is <a href="https://expo.tuya.com/product/839372" target="_blank" rel="noopener noreffer"><code>Maxevis Smart Bottle(BLE)</code></a> but the best FCC ID listing that I could find has <a href="https://fccid.io/2ALQ5-M1/Internal-Photos/Internal-photos-5000615" target="_blank" rel="noopener noreffer"><code>2ALQ5-M1</code></a> listed.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Example aliexpress listing.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>Rather than use a load cell to measure the weight of the bottle and then calculate the liquid volume, the TuYa bottle uses an AMS IR range detector (probably <code>TMF8805</code>) to measure the distance to the top of the liquid.</p>
+<p>This approach is superior in virtually every way:</p>
+<ul>
+<li>All the electronics are in the lid: The entire top of the lid &lsquo;free&rsquo; to communicate information to the user via a numeric screen. As a bonus, the TuYa lid supports charging while measuring the liquid level!</li>
+<li>Cheaper to manufacture: There is no complicated silicon overmolding as there is nothing in the lid that needs to fled or bend or otherwise deform.</li>
+<li>Sensor measures distance to the top of the liquid. Assuming a fixed volume, the density of the liquid does not matter; as long as the surface of the liquid is level and reflects IR, the sensor can tell you how full the bottle is.</li>
+</ul>
+<p>Downsides:</p>
+<ul>
+<li>Similar recalibration will be required if changing the bottle size&hellip; but at least no re-calibration needed when changing the liquid! As far as I can tell, there is only one size of bottle so this is a bit of a moot point.</li>
+<li>The data is not easily accessible. You can only get the data using their proprietary app and the TuYa app does not seem to have any easy way to exfiltrate this data to the sources where I&rsquo;d prefer to record and manage it: FitBit.</li>
+</ul>
+<h3 id="brief-bit-of-tuya--maxevis--sguai-m1-btle-logs">Brief bit of TuYa / Maxevis / Sguai M1 BTLE logs</h3>
+<p>Below is a (lightly) obfuscated log file from the <em>amazing</em> <a href="https://play.google.com/store/apps/details?id=no.nordicsemi.android.mcp&amp;hl=en_US&amp;gl=US" target="_blank" rel="noopener noreffer">nRF connect app</a>.
+I am dumping the BTLE characteristics and data here for SEO purposes. If you do find this post and these logs and <em>do</em> manage to reverse engineer the packet format&hellip; <a href="/contact/" rel="">do let me know!</a>.</p>
+<!-- markdownlint-disable-file MD010 -->
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span><span class="lnt">141
+</span><span class="lnt">142
+</span><span class="lnt">143
+</span><span class="lnt">144
+</span><span class="lnt">145
+</span><span class="lnt">146
+</span><span class="lnt">147
+</span><span class="lnt">148
+</span><span class="lnt">149
+</span><span class="lnt">150
+</span><span class="lnt">151
+</span><span class="lnt">152
+</span><span class="lnt">153
+</span><span class="lnt">154
+</span><span class="lnt">155
+</span><span class="lnt">156
+</span><span class="lnt">157
+</span><span class="lnt">158
+</span><span class="lnt">159
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">nRF Connect, 2022-06-12
+</span></span><span class="line"><span class="cl">M1 (DC:23:4D:DE:AD:BE)
+</span></span><span class="line"><span class="cl">D	11:35:37.604	[Broadcast] Action received: android.bluetooth.device.action.ACL_CONNECTED
+</span></span><span class="line"><span class="cl">V	11:35:37.796	Connecting to DC:23:4D:DE:AD:BE...
+</span></span><span class="line"><span class="cl">D	11:35:37.796	gatt = device.connectGatt(autoConnect = false, TRANSPORT_LE, preferred PHY = LE 1M)
+</span></span><span class="line"><span class="cl">D	11:35:37.799	[Callback] Connection state changed with status: 0 and new state: CONNECTED (2)
+</span></span><span class="line"><span class="cl">I	11:35:37.799	Connected to DC:23:4D:DE:AD:BE
+</span></span><span class="line"><span class="cl">V	11:35:37.809	Discovering services...
+</span></span><span class="line"><span class="cl">D	11:35:37.809	gatt.discoverServices()
+</span></span><span class="line"><span class="cl">D	11:35:37.811	[Callback] Services discovered with status: 0
+</span></span><span class="line"><span class="cl">I	11:35:37.811	Services discovered
+</span></span><span class="line"><span class="cl">V	11:35:37.816	Generic Access (0x1800)
+</span></span><span class="line"><span class="cl">- Device Name [R] (0x2A00)
+</span></span><span class="line"><span class="cl">- Appearance [R] (0x2A01)
+</span></span><span class="line"><span class="cl">Generic Attribute (0x1801)
+</span></span><span class="line"><span class="cl">Unknown Service (00001910-0000-1000-8000-00805f9b34fb)
+</span></span><span class="line"><span class="cl">- Unknown Characteristic [W WNR] (00002b11-0000-1000-8000-00805f9b34fb)
+</span></span><span class="line"><span class="cl">- Unknown Characteristic [N] (00002b10-0000-1000-8000-00805f9b34fb)
+</span></span><span class="line"><span class="cl">   Client Characteristic Configuration (0x2902)
+</span></span><span class="line"><span class="cl">D	11:35:37.816	gatt.setCharacteristicNotification(00002b10-0000-1000-8000-00805f9b34fb, true)
+</span></span><span class="line"><span class="cl">V	11:36:09.013	Refreshing device cache...
+</span></span><span class="line"><span class="cl">D	11:36:09.013	gatt.refresh() (hidden)
+</span></span><span class="line"><span class="cl">I	11:36:09.015	Cache refreshed
+</span></span><span class="line"><span class="cl">V	11:36:09.019	Discovering services...
+</span></span><span class="line"><span class="cl">D	11:36:09.019	gatt.discoverServices()
+</span></span><span class="line"><span class="cl">D	11:36:09.928	[Callback] Services discovered with status: 0
+</span></span><span class="line"><span class="cl">I	11:36:09.928	Services discovered
+</span></span><span class="line"><span class="cl">V	11:36:09.931	Generic Access (0x1800)
+</span></span><span class="line"><span class="cl">- Device Name [R] (0x2A00)
+</span></span><span class="line"><span class="cl">- Appearance [R] (0x2A01)
+</span></span><span class="line"><span class="cl">Generic Attribute (0x1801)
+</span></span><span class="line"><span class="cl">Unknown Service (00001910-0000-1000-8000-00805f9b34fb)
+</span></span><span class="line"><span class="cl">- Unknown Characteristic [W WNR] (00002b11-0000-1000-8000-00805f9b34fb)
+</span></span><span class="line"><span class="cl">- Unknown Characteristic [N] (00002b10-0000-1000-8000-00805f9b34fb)
+</span></span><span class="line"><span class="cl">   Client Characteristic Configuration (0x2902)
+</span></span><span class="line"><span class="cl">D	11:36:09.931	gatt.setCharacteristicNotification(00002b10-0000-1000-8000-00805f9b34fb, true)
+</span></span><span class="line"><span class="cl">V	11:36:12.944	Reading all characteristics...
+</span></span><span class="line"><span class="cl">V	11:36:12.944	Reading characteristic 00002a00-0000-1000-8000-00805f9b34fb
+</span></span><span class="line"><span class="cl">D	11:36:12.944	gatt.readCharacteristic(00002a00-0000-1000-8000-00805f9b34fb)
+</span></span><span class="line"><span class="cl">I	11:36:13.027	Read Response received from 00002a00-0000-1000-8000-00805f9b34fb, value: 0 bytes
+</span></span><span class="line"><span class="cl">V	11:36:13.030	Reading characteristic 00002a01-0000-1000-8000-00805f9b34fb
+</span></span><span class="line"><span class="cl">D	11:36:13.030	gatt.readCharacteristic(00002a01-0000-1000-8000-00805f9b34fb)
+</span></span><span class="line"><span class="cl">I	11:36:13.126	Read Response received from 00002a01-0000-1000-8000-00805f9b34fb, value: (0x) 00-00
+</span></span><span class="line"><span class="cl">A	11:36:13.126	&#34;[0] Unknown&#34; received
+</span></span><span class="line"><span class="cl">V	11:36:13.128	2 characteristics read
+</span></span><span class="line"><span class="cl">I	11:36:14.079	Connection parameters updated (interval: 7.5ms, latency: 0, timeout: 5000ms)
+</span></span><span class="line"><span class="cl">I	11:36:14.176	Connection parameters updated (interval: 50.0ms, latency: 0, timeout: 5000ms)
+</span></span><span class="line"><span class="cl">V	11:36:22.198	Reading characteristic 00002a01-0000-1000-8000-00805f9b34fb
+</span></span><span class="line"><span class="cl">D	11:36:22.198	gatt.readCharacteristic(00002a01-0000-1000-8000-00805f9b34fb)
+</span></span><span class="line"><span class="cl">I	11:36:22.276	Read Response received from 00002a01-0000-1000-8000-00805f9b34fb, value: (0x) 00-00
+</span></span><span class="line"><span class="cl">A	11:36:22.276	&#34;[0] Unknown&#34; received
+</span></span><span class="line"><span class="cl">V	11:36:22.734	Reading characteristic 00002a01-0000-1000-8000-00805f9b34fb
+</span></span><span class="line"><span class="cl">D	11:36:22.734	gatt.readCharacteristic(00002a01-0000-1000-8000-00805f9b34fb)
+</span></span><span class="line"><span class="cl">I	11:36:22.826	Read Response received from 00002a01-0000-1000-8000-00805f9b34fb, value: (0x) 00-00
+</span></span><span class="line"><span class="cl">A	11:36:22.826	&#34;[0] Unknown&#34; received
+</span></span><span class="line"><span class="cl">V	11:36:27.086	Reading all characteristics...
+</span></span><span class="line"><span class="cl">V	11:36:27.086	Reading characteristic 00002a00-0000-1000-8000-00805f9b34fb
+</span></span><span class="line"><span class="cl">D	11:36:27.086	gatt.readCharacteristic(00002a00-0000-1000-8000-00805f9b34fb)
+</span></span><span class="line"><span class="cl">I	11:36:27.176	Read Response received from 00002a00-0000-1000-8000-00805f9b34fb, value: 0 bytes
+</span></span><span class="line"><span class="cl">V	11:36:27.179	Reading characteristic 00002a01-0000-1000-8000-00805f9b34fb
+</span></span><span class="line"><span class="cl">D	11:36:27.179	gatt.readCharacteristic(00002a01-0000-1000-8000-00805f9b34fb)
+</span></span><span class="line"><span class="cl">I	11:36:27.277	Read Response received from 00002a01-0000-1000-8000-00805f9b34fb, value: (0x) 00-00
+</span></span><span class="line"><span class="cl">A	11:36:27.277	&#34;[0] Unknown&#34; received
+</span></span><span class="line"><span class="cl">V	11:36:27.281	2 characteristics read
+</span></span><span class="line"><span class="cl">V	11:36:41.136	Reading PHY...
+</span></span><span class="line"><span class="cl">D	11:36:41.136	gatt.readPhy()
+</span></span><span class="line"><span class="cl">I	11:36:41.160	PHY read (TX: LE 1M, RX: LE 1M)
+</span></span><span class="line"><span class="cl">V	11:36:45.223	Reading all characteristics...
+</span></span><span class="line"><span class="cl">V	11:36:45.223	Reading characteristic 00002a00-0000-1000-8000-00805f9b34fb
+</span></span><span class="line"><span class="cl">D	11:36:45.223	gatt.readCharacteristic(00002a00-0000-1000-8000-00805f9b34fb)
+</span></span><span class="line"><span class="cl">I	11:36:45.326	Read Response received from 00002a00-0000-1000-8000-00805f9b34fb, value: 0 bytes
+</span></span><span class="line"><span class="cl">V	11:36:45.329	Reading characteristic 00002a01-0000-1000-8000-00805f9b34fb
+</span></span><span class="line"><span class="cl">D	11:36:45.329	gatt.readCharacteristic(00002a01-0000-1000-8000-00805f9b34fb)
+</span></span><span class="line"><span class="cl">I	11:36:45.426	Read Response received from 00002a01-0000-1000-8000-00805f9b34fb, value: (0x) 00-00
+</span></span><span class="line"><span class="cl">A	11:36:45.426	&#34;[0] Unknown&#34; received
+</span></span><span class="line"><span class="cl">V	11:36:45.429	2 characteristics read
+</span></span><span class="line"><span class="cl">V	11:36:48.225	Enabling services...
+</span></span><span class="line"><span class="cl">V	11:36:48.225	Enabling notifications for 00002b10-0000-1000-8000-00805f9b34fb
+</span></span><span class="line"><span class="cl">D	11:36:48.225	gatt.setCharacteristicNotification(00002b10-0000-1000-8000-00805f9b34fb, true)
+</span></span><span class="line"><span class="cl">D	11:36:48.226	gatt.writeDescriptor(00002902-0000-1000-8000-00805f9b34fb, value=0x0100)
+</span></span><span class="line"><span class="cl">I	11:36:48.327	Data written to descr. 00002902-0000-1000-8000-00805f9b34fb, value: (0x) 01-00
+</span></span><span class="line"><span class="cl">A	11:36:48.327	&#34;Notifications enabled&#34; sent
+</span></span><span class="line"><span class="cl">V	11:36:48.331	Notifications enabled for 00002b10-0000-1000-8000-00805f9b34fb
+</span></span><span class="line"><span class="cl">V	11:36:48.335	All services enabled
+</span></span><span class="line"><span class="cl">I	11:36:48.427	Notification received from 00002b10-0000-1000-8000-00805f9b34fb, value: (0x) 00-31-3A-05-27-3C-3B-DF-88-0F-BF-B6-2C-9A-28-E5-47-9D-93-2C
+</span></span><span class="line"><span class="cl">A	11:36:48.427	&#34;(0x) 00-31-3A-05-27-3C-3B-DF-88-0F-BF-B6-2C-9A-28-E5-47-9D-93-2C&#34; received
+</span></span><span class="line"><span class="cl">I	11:36:48.427	Notification received from 00002b10-0000-1000-8000-00805f9b34fb, value: (0x) 01-C3-81-F8-D3-88-1F-C5-F0-68-9E-3E-21-71-97-E0-CF-69-B8-D2
+</span></span><span class="line"><span class="cl">A	11:36:48.427	&#34;(0x) 01-C3-81-F8-D3-88-1F-C5-F0-68-9E-3E-21-71-97-E0-CF-69-B8-D2&#34; received
+</span></span><span class="line"><span class="cl">I	11:36:48.427	Notification received from 00002b10-0000-1000-8000-00805f9b34fb, value: (0x) 02-76-24-15-EA-88-4C-E9-F6-2D-98-D3-F5-30
+</span></span><span class="line"><span class="cl">A	11:36:48.427	&#34;(0x) 02-76-24-15-EA-88-4C-E9-F6-2D-98-D3-F5-30&#34; received
+</span></span><span class="line"><span class="cl">V	11:36:51.059	Reading all characteristics...
+</span></span><span class="line"><span class="cl">V	11:36:51.059	Reading characteristic 00002a00-0000-1000-8000-00805f9b34fb
+</span></span><span class="line"><span class="cl">D	11:36:51.059	gatt.readCharacteristic(00002a00-0000-1000-8000-00805f9b34fb)
+</span></span><span class="line"><span class="cl">I	11:36:51.126	Read Response received from 00002a00-0000-1000-8000-00805f9b34fb, value: 0 bytes
+</span></span><span class="line"><span class="cl">V	11:36:51.128	Reading characteristic 00002a01-0000-1000-8000-00805f9b34fb
+</span></span><span class="line"><span class="cl">D	11:36:51.128	gatt.readCharacteristic(00002a01-0000-1000-8000-00805f9b34fb)
+</span></span><span class="line"><span class="cl">I	11:36:51.226	Read Response received from 00002a01-0000-1000-8000-00805f9b34fb, value: (0x) 00-00
+</span></span><span class="line"><span class="cl">A	11:36:51.226	&#34;[0] Unknown&#34; received
+</span></span><span class="line"><span class="cl">V	11:36:51.227	2 characteristics read
+</span></span><span class="line"><span class="cl">I	11:37:29.428	Notification received from 00002b10-0000-1000-8000-00805f9b34fb, value: (0x) 00-31-3B-05-29-D8-E0-4B-72-0B-28-02-BC-F6-A8-11-D5-59-34-38
+</span></span><span class="line"><span class="cl">A	11:37:29.428	&#34;(0x) 00-31-3B-05-29-D8-E0-4B-72-0B-28-02-BC-F6-A8-11-D5-59-34-38&#34; received
+</span></span><span class="line"><span class="cl">I	11:37:29.478	Notification received from 00002b10-0000-1000-8000-00805f9b34fb, value: (0x) 01-77-3B-AE-22-0C-A7-5A-F8-31-41-0C-FF-53-B7-97-D0-17-BE-43
+</span></span><span class="line"><span class="cl">A	11:37:29.478	&#34;(0x) 01-77-3B-AE-22-0C-A7-5A-F8-31-41-0C-FF-53-B7-97-D0-17-BE-43&#34; received
+</span></span><span class="line"><span class="cl">I	11:37:29.478	Notification received from 00002b10-0000-1000-8000-00805f9b34fb, value: (0x) 02-8F-38-BE-8E-5C-9F-1F-40-FC-15-66-1F-01
+</span></span><span class="line"><span class="cl">A	11:37:29.478	&#34;(0x) 02-8F-38-BE-8E-5C-9F-1F-40-FC-15-66-1F-01&#34; received
+</span></span><span class="line"><span class="cl">I	11:37:29.478	Notification received from 00002b10-0000-1000-8000-00805f9b34fb, value: (0x) 00-31-3C-05-63-F4-26-37-1F-87-CD-CE-7C-D2-60-BD-DE-95-6A-C4
+</span></span><span class="line"><span class="cl">A	11:37:29.478	&#34;(0x) 00-31-3C-05-63-F4-26-37-1F-87-CD-CE-7C-D2-60-BD-DE-95-6A-C4&#34; received
+</span></span><span class="line"><span class="cl">I	11:37:29.479	Notification received from 00002b10-0000-1000-8000-00805f9b34fb, value: (0x) 01-75-AA-47-4F-6F-4D-5C-3F-8E-DC-32-3F-A3-F5-36-51-8C-8F-AA
+</span></span><span class="line"><span class="cl">A	11:37:29.479	&#34;(0x) 01-75-AA-47-4F-6F-4D-5C-3F-8E-DC-32-3F-A3-F5-36-51-8C-8F-AA&#34; received
+</span></span><span class="line"><span class="cl">I	11:37:29.479	Notification received from 00002b10-0000-1000-8000-00805f9b34fb, value: (0x) 02-4C-6F-7E-67-92-77-D4-E7-E4-18-2C-59-E5
+</span></span><span class="line"><span class="cl">A	11:37:29.479	&#34;(0x) 02-4C-6F-7E-67-92-77-D4-E7-E4-18-2C-59-E5&#34; received
+</span></span><span class="line"><span class="cl">I	11:37:38.427	Notification received from 00002b10-0000-1000-8000-00805f9b34fb, value: (0x) 00-31-3D-05-45-90-BD-A3-80-83-E1-1A-DC-2E-02-E9-53-51-66-D0
+</span></span><span class="line"><span class="cl">A	11:37:38.427	&#34;(0x) 00-31-3D-05-45-90-BD-A3-80-83-E1-1A-DC-2E-02-E9-53-51-66-D0&#34; received
+</span></span><span class="line"><span class="cl">I	11:37:38.428	Notification received from 00002b10-0000-1000-8000-00805f9b34fb, value: (0x) 01-6D-C3-48-81-2B-E4-D1-CD-BB-55-20-54-31-97-4F-22-FB-A7-C7
+</span></span><span class="line"><span class="cl">A	11:37:38.428	&#34;(0x) 01-6D-C3-48-81-2B-E4-D1-CD-BB-55-20-54-31-97-4F-22-FB-A7-C7&#34; received
+</span></span><span class="line"><span class="cl">I	11:37:38.428	Notification received from 00002b10-0000-1000-8000-00805f9b34fb, value: (0x) 02-E1-EF-8D-FC-A7-AC-17-C7-10-80-EC-09-2E
+</span></span><span class="line"><span class="cl">A	11:37:38.428	&#34;(0x) 02-E1-EF-8D-FC-A7-AC-17-C7-10-80-EC-09-2E&#34; received
+</span></span><span class="line"><span class="cl">I	11:37:41.428	Notification received from 00002b10-0000-1000-8000-00805f9b34fb, value: (0x) 00-31-3E-05-3E-AC-56-8F-84-FF-91-E6-4B-0A-3E-95-23-8D-58-5C
+</span></span><span class="line"><span class="cl">A	11:37:41.428	&#34;(0x) 00-31-3E-05-3E-AC-56-8F-84-FF-91-E6-4B-0A-3E-95-23-8D-58-5C&#34; received
+</span></span><span class="line"><span class="cl">I	11:37:41.428	Notification received from 00002b10-0000-1000-8000-00805f9b34fb, value: (0x) 01-DA-FC-E3-F6-BC-AA-A0-C8-15-84-7B-80-AA-29-C4-61-7A-91-DA
+</span></span><span class="line"><span class="cl">A	11:37:41.428	&#34;(0x) 01-DA-FC-E3-F6-BC-AA-A0-C8-15-84-7B-80-AA-29-C4-61-7A-91-DA&#34; received
+</span></span><span class="line"><span class="cl">I	11:37:41.428	Notification received from 00002b10-0000-1000-8000-00805f9b34fb, value: (0x) 02-E9-78-C0-8A-F4-89-EC-8B-9E-B3-99-74-DC
+</span></span><span class="line"><span class="cl">A	11:37:41.428	&#34;(0x) 02-E9-78-C0-8A-F4-89-EC-8B-9E-B3-99-74-DC&#34; received
+</span></span><span class="line"><span class="cl">I	11:38:32.829	Notification received from 00002b10-0000-1000-8000-00805f9b34fb, value: (0x) 00-31-3F-05-BF-48-A0-FB-1C-FB-10-32-39-66-C3-C1-3F-49-6F-68
+</span></span><span class="line"><span class="cl">A	11:38:32.829	&#34;(0x) 00-31-3F-05-BF-48-A0-FB-1C-FB-10-32-39-66-C3-C1-3F-49-6F-68&#34; received
+</span></span><span class="line"><span class="cl">I	11:38:32.829	Notification received from 00002b10-0000-1000-8000-00805f9b34fb, value: (0x) 01-FF-00-EB-5E-50-22-71-6C-5F-C1-82-8D-95-13-C9-F4-5F-9F-E0
+</span></span><span class="line"><span class="cl">A	11:38:32.829	&#34;(0x) 01-FF-00-EB-5E-50-22-71-6C-5F-C1-82-8D-95-13-C9-F4-5F-9F-E0&#34; received
+</span></span><span class="line"><span class="cl">I	11:38:32.830	Notification received from 00002b10-0000-1000-8000-00805f9b34fb, value: (0x) 02-C1-47-3D-34-8A-5D-85-69-C8-7F-21-DB-4E
+</span></span><span class="line"><span class="cl">A	11:38:32.830	&#34;(0x) 02-C1-47-3D-34-8A-5D-85-69-C8-7F-21-DB-4E&#34; received
+</span></span><span class="line"><span class="cl">I	11:38:33.430	Notification received from 00002b10-0000-1000-8000-00805f9b34fb, value: (0x) 00-31-30-05-37-64-4C-E7-38-77-8B-FE-17-42-42-6D-96-85-DB-F4
+</span></span><span class="line"><span class="cl">A	11:38:33.430	&#34;(0x) 00-31-30-05-37-64-4C-E7-38-77-8B-FE-17-42-42-6D-96-85-DB-F4&#34; received
+</span></span><span class="line"><span class="cl">I	11:38:33.430	Notification received from 00002b10-0000-1000-8000-00805f9b34fb, value: (0x) 01-7D-C6-26-19-9C-C4-64-C3-CE-9B-BD-1F-8F-41-30-4E-D5-81-31
+</span></span><span class="line"><span class="cl">A	11:38:33.430	&#34;(0x) 01-7D-C6-26-19-9C-C4-64-C3-CE-9B-BD-1F-8F-41-30-4E-D5-81-31&#34; received
+</span></span><span class="line"><span class="cl">I	11:38:33.430	Notification received from 00002b10-0000-1000-8000-00805f9b34fb, value: (0x) 02-FE-01-83-24-0F-A7-4C-2A-07-0E-00-22-F2
+</span></span><span class="line"><span class="cl">A	11:38:33.430	&#34;(0x) 02-FE-01-83-24-0F-A7-4C-2A-07-0E-00-22-F2&#34; received
+</span></span><span class="line"><span class="cl">I	11:38:35.830	Notification received from 00002b10-0000-1000-8000-00805f9b34fb, value: (0x) 00-31-30-05-17-00-0A-53-C7-73-35-4A-54-9E-6A-99-19-41-CE-00
+</span></span><span class="line"><span class="cl">A	11:38:35.830	&#34;(0x) 00-31-30-05-17-00-0A-53-C7-73-35-4A-54-9E-6A-99-19-41-CE-00&#34; received
+</span></span><span class="line"><span class="cl">I	11:38:35.830	Notification received from 00002b10-0000-1000-8000-00805f9b34fb, value: (0x) 01-DB-8B-0F-A0-8E-61-43-4F-EC-F2-70-91-17-CE-A7-5F-2D-CA-64
+</span></span><span class="line"><span class="cl">A	11:38:35.830	&#34;(0x) 01-DB-8B-0F-A0-8E-61-43-4F-EC-F2-70-91-17-CE-A7-5F-2D-CA-64&#34; received
+</span></span><span class="line"><span class="cl">I	11:38:35.830	Notification received from 00002b10-0000-1000-8000-00805f9b34fb, value: (0x) 02-00-0E-6B-D8-FF-9E-47-CA-AB-45-1F-A3-EB
+</span></span><span class="line"><span class="cl">A	11:38:35.830	&#34;(0x) 02-00-0E-6B-D8-FF-9E-47-CA-AB-45-1F-A3-EB&#34; received
+</span></span><span class="line"><span class="cl">I	11:38:41.880	Notification received from 00002b10-0000-1000-8000-00805f9b34fb, value: (0x) 00-31-30-05-CE-1C-89-3F-B9-EF-3C-16-61-7A-EC-45-B7-7D-75-8C
+</span></span><span class="line"><span class="cl">A	11:38:41.880	&#34;(0x) 00-31-30-05-CE-1C-89-3F-B9-EF-3C-16-61-7A-EC-45-B7-7D-75-8C&#34; received
+</span></span><span class="line"><span class="cl">I	11:38:41.880	Notification received from 00002b10-0000-1000-8000-00805f9b34fb, value: (0x) 01-03-CF-67-7F-14-6C-54-5A-B7-DB-4D-D7-6E-E9-D7-28-17-3D-64
+</span></span><span class="line"><span class="cl">A	11:38:41.880	&#34;(0x) 01-03-CF-67-7F-14-6C-54-5A-B7-DB-4D-D7-6E-E9-D7-28-17-3D-64&#34; received
+</span></span><span class="line"><span class="cl">I	11:38:41.880	Notification received from 00002b10-0000-1000-8000-00805f9b34fb, value: (0x) 02-D0-68-E2-25-13-D9-18-A3-1E-A9-39-C5-5C
+</span></span><span class="line"><span class="cl">A	11:38:41.880	&#34;(0x) 02-D0-68-E2-25-13-D9-18-A3-1E-A9-39-C5-5C&#34; received
+</span></span><span class="line"><span class="cl">I	11:38:46.881	Notification received from 00002b10-0000-1000-8000-00805f9b34fb, value: (0x) 00-31-30-05-CC-B8-79-AB-FF-EB-D0-62-AD-D6-77-71-61-39-02-98
+</span></span><span class="line"><span class="cl">A	11:38:46.881	&#34;(0x) 00-31-30-05-CC-B8-79-AB-FF-EB-D0-62-AD-D6-77-71-61-39-02-98&#34; received
+</span></span><span class="line"><span class="cl">I	11:38:46.881	Notification received from 00002b10-0000-1000-8000-00805f9b34fb, value: (0x) 01-4C-68-73-AB-5E-37-67-25-64-7F-EF-7D-2C-EA-CF-8D-4E-CB-90
+</span></span><span class="line"><span class="cl">A	11:38:46.881	&#34;(0x) 01-4C-68-73-AB-5E-37-67-25-64-7F-EF-7D-2C-EA-CF-8D-4E-CB-90&#34; received
+</span></span><span class="line"><span class="cl">I	11:38:46.881	Notification received from 00002b10-0000-1000-8000-00805f9b34fb, value: (0x) 02-A2-01-AF-59-35-60-7F-4F-29-AC-7A-0A-0A
+</span></span><span class="line"><span class="cl">A	11:38:46.881	&#34;(0x) 02-A2-01-AF-59-35-60-7F-4F-29-AC-7A-0A-0A&#34; received
+</span></span><span class="line"><span class="cl">I	11:38:52.881	Notification received from 00002b10-0000-1000-8000-00805f9b34fb, value: (0x) 00-31-30-05-82-D4-8B-97-89-67-22-2E-A9-B2-BC-1D-06-75-A5-24
+</span></span><span class="line"><span class="cl">A	11:38:52.881	&#34;(0x) 00-31-30-05-82-D4-8B-97-89-67-22-2E-A9-B2-BC-1D-06-75-A5-24&#34; received
+</span></span><span class="line"><span class="cl">I	11:38:52.881	Notification received from 00002b10-0000-1000-8000-00805f9b34fb, value: (0x) 01-93-D9-CB-C6-6B-37-89-31-5E-A3-9F-8A-ED-B4-D1-13-7D-0A-FD
+</span></span><span class="line"><span class="cl">A	11:38:52.881	&#34;(0x) 01-93-D9-CB-C6-6B-37-89-31-5E-A3-9F-8A-ED-B4-D1-13-7D-0A-FD&#34; received
+</span></span><span class="line"><span class="cl">I	11:38:52.881	Notification received from 00002b10-0000-1000-8000-00805f9b34fb, value: (0x) 02-6E-4D-34-CD-EF-B0-C5-81-F1-E8-7A-1E-E3
+</span></span><span class="line"><span class="cl">A	11:38:52.881	&#34;(0x) 02-6E-4D-34-CD-EF-B0-C5-81-F1-E8-7A-1E-E3&#34; received
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Perhaps <code>00002b10-0000-1000-8000-00805f9b34fb</code> is <a href="https://developer.tizen.org/community/code-snippet/embed/20776" target="_blank" rel="noopener noreffer">temperature</a> or <a href="https://pub.dev/documentation/flutter_web_bluetooth/latest/flutter_web_bluetooth/BluetoothDefaultCharacteristicUUIDS/temperatureRange-constant.html" target="_blank" rel="noopener noreffer"><code>tempRange</code></a>?</p>
+<p>And <code>00002b11-0000-1000-8000-00805f9b34fb</code> is <a href="https://pub.dev/documentation/flutter_web_bluetooth/latest/flutter_web_bluetooth/BluetoothDefaultCharacteristicUUIDS/temperatureStatistics-constant.html" target="_blank" rel="noopener noreffer"><code>temperatureStatistics</code></a>?</p>
+<p>Not sure about packets for volume or battery level (if they&rsquo;re even in the above log dump).</p>
+<h1 id="the-mod">The mod</h1>
+<p>I still don&rsquo;t know why the Hidrate team didn&rsquo;t make the puck charge wirelessly to begin with but that&rsquo;s the simplest modification to address most of the biggest shortcomings:</p>
+<ul>
+<li>Qi is a standard. If the charging base is lost/damaged, replacements are not difficult to get and any wireless charging that a user might travel with&hellip; will just work with the bottle.</li>
+<li>Wireless charging means no liquid to accidentally get in a USB port or onto pogo pins / slip rings. Electric current through a liquid results in corrosion&hellip; which is how my original cable got damaged!</li>
+<li>The bottle can be &ldquo;in use&rdquo; while it&rsquo;s charging. Take a sip, place bottle back on charger!</li>
+</ul>
+<p>Here is a quick &ldquo;proof of concept&rdquo; video taken just before final testing and assembly.</p>
+<video controls preload="auto" width="100%"  playsinline class="html-video">
+    <source src="/hidrate-spark-qi-retrofit/images/it%20works.mp4" type="video/mp4">
+  <span>Your browser doesn't support embedded videos, but don't worry, you can <a href="/hidrate-spark-qi-retrofit/images/it%20works.mp4">download it</a> and watch it with your favorite video player!</span>
+</video>
+<p>The version shown above is &ldquo;mark 2&rdquo;. It is simpler to assemble, uses less material and is about 30% thinner relative to the &ldquo;mark 1&rdquo; designs.
+I put a <em>ton</em> of effort into making the design as approachable and affordable as possible. The idea was to make it easy for average people to make their bottle <em>better the stock</em> in just a few hours.</p>
+<ul>
+<li>Parts can be printed easily and quickly on all but the sloppiest printers.</li>
+<li>Basic hand / power tools are all that are required. At no point do you need an extremely expensive and precise machine to perform some critical step.</li>
+<li>Cheap! Requires a few $ in easy to source parts and pennies in plastic and electricity.</li>
+</ul>
+<p>My hope is that the engineers at Hidrate will see that it&rsquo;s not <em><strong>that difficult</strong></em> to design an objectively better experience into their products, that it&rsquo;s an anti-consumer dark pattern to needlessly require a proprietary charging cable.</p>
+<p>Fingers crossed that their next generation of hardware won&rsquo;t look like this 🤞:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Source is still &#39;YouTube/Tony H&#39; but I&#39;ve had a bit of fun trying to figure out how to blend images with GIMP :P.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>You can find a through set of instructions, printable part files and BOM at the <a href="https://github.com/kquinsland/hidrate-spark-qi-charging" target="_blank" rel="noopener noreffer"><code>kquinsland/hidrate-spark-qi-charging</code></a> repo.
+If you do follow the instructions and manage to make your bottle charge wirelessly, let me know!</p>
+]]></description></item></channel></rss>
