@@ -1,4 +1,912 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>fusion-360 - Tag - karl</title><link>https://karlquinsland.com/tags/fusion-360/</link><description>fusion-360 - Tag - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 01 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/fusion-360/" rel="self" type="application/rss+xml"/><item><title>Enhanced Home Assistant Switch Plate (HASP)</title><link>https://karlquinsland.com/enhanced-homeassistantswitchplate/</link><pubDate>Thu, 01 Oct 2020 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/enhanced-homeassistantswitchplate/</guid><description><![CDATA[<p>The <a href="https://github.com/aderusha/HASwitchPlate/" target="_blank" rel="noopener noreffer">HASwitchPlate</a> project by <code>aderusha</code> is brilliant. He&rsquo;s managed to arrange some relatively cheap commodity hardware into a package that conveniently fits into a prime location for interacting with Home Automation - the light switch. The entire package sips power off of the already present mains wiring and connects to any MQTT broker via the esp8266 chip. As the HASP was designed to be used with Home Assistant, the humble 2.4 inch LCD transforms into an accessible control surface for an incredibly powerful home automation platform!</p>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>fusion-360 - Tag - karl</title><link>https://karlquinsland.com/tags/fusion-360/</link><description>fusion-360 - Tag - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 31 Aug 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/fusion-360/" rel="self" type="application/rss+xml"/><item><title>I made a thing: Yet another 3d printed speaker</title><link>https://karlquinsland.com/3d-printed-subwoofer-and-arylic-amp-enclosure/</link><pubDate>Wed, 31 Aug 2022 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/3d-printed-subwoofer-and-arylic-amp-enclosure/</guid><description><![CDATA[<!-- markdownlint-disable-file MD002 -->
+<h1 id="background">Background</h1>
+<p>Long story made <strong><em>very</em></strong> short: the amplifier inside my ancient 2.1 desktop speakers died and I couldn&rsquo;t find anything &ldquo;off the shelf&rdquo; that would serve as a suitable replacement <em>and</em> integrate well with Home Assistant.</p>
+<p>So if you can&rsquo;t buy it, you have to build it!
+And as it turns out, there&rsquo;s a whole community of audiophiles that have published designs on all the usual places you&rsquo;d find free designs for makers.
+Similarly, there&rsquo;s a few companies that seems to specialize in audio electronics aimed <em>specifically at</em> people that are building their own speaker systems and just want someone else to handle the electronics and software.</p>
+<p>This post will cover the design tweaks I made to an existing subwoofer assembly and an original amplifier electronics/enclosure design.</p>
+<h2 id="the-components">The components</h2>
+<p>There are two assemblies in this build: the subwoofer and the receiver/power-electronics enclosure.</p>
+<p>The subwoofer is a remix of the amazing <a href="https://www.printables.com/model/84521-skeleton-waveguide-subwoofer-speaker-fusion-360-ar" target="_blank" rel="noopener noreffer"><code>Skeleton Waveguide Subwoofer Speaker</code></a> by <a href="https://www.printables.com/social/107245-zx82net/about" target="_blank" rel="noopener noreffer"><code>zx82net</code></a> which is a remix of <a href="https://www.printables.com/model/190762-hexibox-series-tang-band-w3-1876s-microsub" target="_blank" rel="noopener noreffer"><code>&quot;HexiBox&quot; Tang Band W3-1876S Subwoofer Enclosure</code></a>
+by <a href="https://www.printables.com/social/264072-hexibase/about" target="_blank" rel="noopener noreffer"><code>hexibase</code></a>.</p>
+<p>As for the drive electronics, I elected to use an <a href="https://www.arylic.com/products/up2stream-amp-2-1-amp-board" target="_blank" rel="noopener noreffer">Up2Stream Amp 2.1 - Multiroom Wireless 2.1 Amplifier Board</a>.
+This appears to be based on a MediaTek based module module from <a href="https://www.linkplay.com/" target="_blank" rel="noopener noreffer"><code>LinkPlay</code></a>.</p>
+<p>I could do a whole <em>series</em> of posts based on the firmware alone but for now I&rsquo;ll just say that it is 1) trivial to root and 2) <strong>should not be exposed directly to the internet for any reason whatsoever.</strong></p>
+<p>I&rsquo;m not equipped to verify any of the claims made by the original subwoofer designer so I can only offer my subjective take; this subwoofer offers more wubz at greater distances and that&rsquo;s <em>before</em> I add +10db to the bass via the equalizer on the amp!</p>
+<h2 id="tweaks">Tweaks</h2>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        The green elements are meant to be printed in TPU or another gasket like material. The cable channel runs from the RCA jack enclosure in the rear (pink color), under the gasket material to the main speaker cavity.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<h3 id="wiring">Wiring</h3>
+<ul>
+<li>There is now an integrated channel for standard 16 AWG speaker wire that runs from the main cavity, through each baffle, to the exterior.
+<ul>
+<li>This cable channel also increases rigidity which aids in printing and assembly.</li>
+</ul>
+</li>
+<li>The rear of the subwoofer body features some attachment points for a simple enclosure for speaker hookups.
+<ul>
+<li>I am using RCA jacks but the enclosure could be easily modified to work with any similar connector.</li>
+<li>The enclosure mounts directly over the cable channel so all wires are protected/hidden.</li>
+</ul>
+</li>
+</ul>
+<h3 id="assembly">Assembly</h3>
+<p>You no longer need to use goopy adhesives to seal the panels to the body! The sub body and panels have been modified to accommodate a thin 3d printed sheet of TPU or similar material to act as a gasket.</p>
+<p>There is also a subtle channel cut into the sub body which is meant for gasket cord as a fall back.</p>
+<p><figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        The dark blue represents the path that gasket cord material should be laid down.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        When properly joined, there will be a slight interference between the panel and the gasket material; this ensures a fantastic seal.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+</p>
+<h3 id="mounting">Mounting</h3>
+<ul>
+<li>The sides of the subwoofer feature a 100x100mm <a href="https://en.wikipedia.org/wiki/Flat_Display_Mounting_Interface" target="_blank" rel="noopener noreffer">VESA/FDMI</a> mounting pattern.
+<ul>
+<li>When printing with the holes facing the print bed, support material all but entirely obscures their existence.</li>
+</ul>
+</li>
+</ul>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        The support material hides the hole almost perfectly. If the image brightness wasn&#39;t turned up, you&#39;d never notice :D
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<h1 id="build">Build</h1>
+<div class="details admonition info open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-info-circle fa-fw"></i>Info<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">This is an abridged assembly guide and Bill of Materials. I have included only what&rsquo;s different/new/specific to this build. Consult the various build guides and BOMs for the original subwoofer so you understand what <em>else</em> is required.</div>
+        </div>
+    </div>
+<h2 id="bom">BOM</h2>
+<h3 id="subwoofer">Subwoofer</h3>
+<p>Very little about the subwoofer BOM has changed from the original design.</p>
+<ul>
+<li>
+<p><strong>Optional</strong>: <a href="https://www.amazon.com/gp/product/B00QVB6QPU/" target="_blank" rel="noopener noreffer">(1 mm) Buna-N O-Ring Cord Stock, 70A Durometer</a></p>
+<ul>
+<li>You will not need this if you&rsquo;re printing TPU gaskets or using some glue / caulk.</li>
+<li>You will want some superglue or similar to help secure the gasket cord as you insert it into the channels.</li>
+</ul>
+</li>
+<li>
+<p>16-Gauge Speaker Wire Cable, ~18 inches/40 cm.</p>
+<ul>
+<li>The cable channel was specifically designed for 16 AWG speaker wire with the dimensions 6mm x 3mm. Any wire can work but if there&rsquo;s a gap between the wire jacket and the channel walls, you&rsquo;ll need to fill the gap / seal the channel.</li>
+<li>18 inches will allow for some relative comfort during assembly. You can get away with less but it will make some things a bit harder than needed.</li>
+</ul>
+</li>
+<li>
+<p>28+ <code>M4x 12mm</code> screws.</p>
+<ul>
+<li>The original design didn&rsquo;t include any specific screws so I explicitly chose <a href="https://www.mcmaster.com/90666A115/" target="_blank" rel="noopener noreffer">McMaster # 90666A115</a>.</li>
+<li>You will need at least 6 screws to secure the speaker to the sub and 11 to properly secure each panel to the subwoofer body.</li>
+<li>If you choose to install the electronics enclosure at the rear of the sub, an additional 4 screws will be needed.</li>
+</ul>
+</li>
+<li>
+<p>RCA jack: there many different types out there but the parts are meant to be used with <a href="https://www.aliexpress.com/item/2255799906959194.html" target="_blank" rel="noopener noreffer">these jacks</a>.</p>
+</li>
+</ul>
+<h3 id="amplifier-enclosure">Amplifier enclosure</h3>
+<ul>
+<li>The heart of the build is the <a href="https://www.aliexpress.com/item/2255801111428335.html" target="_blank" rel="noopener noreffer">Up2stream Amp 2.1</a> module.
+<ul>
+<li>The AliExpress listing has a few versions. I was not planning on using the IR remote and I didn&rsquo;t want an external PSU so I chose to order <em>just</em> the board.</li>
+</ul>
+</li>
+</ul>
+<p>Power Supply:</p>
+<ul>
+<li>The amplifier enclosure has room for a 24V 4.5A MeanWell <a href="https://www.aliexpress.com/item/3256803302407060.html" target="_blank" rel="noopener noreffer">LRS-100</a></li>
+<li>To connect the DC output of the LRS-100, you&rsquo;ll need a <a href="https://www.amazon.com/gp/product/B0B37H6R56/" target="_blank" rel="noopener noreffer">female 3.96MM 2 pin</a> connector to mate with the DC in on the amplifier.</li>
+</ul>
+<p>Panel mount connectors:</p>
+<ul>
+<li>
+<p>RCA jacks: I used the same part number from above, just ordered a few different colors for the R/L/S channels.</p>
+</li>
+<li>
+<p>Powercon True. Rather than a traditional IEC style or simple DC barrel jack + external PSU, I opted for a <a href="https://en.wikipedia.org/wiki/Skookum" target="_blank" rel="noopener noreffer">Skookum</a> power connector. Like with the RCA jacks, there are many different parts from several manufacturers that will probably work but I specifically used <a href="https://www.aliexpress.com/item/2251832762646533.html" target="_blank" rel="noopener noreffer">this set from Ali Express</a>.</p>
+</li>
+<li>
+<p>RJ45: There are likely several that will work, but I explicitly used <a href="https://www.aliexpress.com/item/2255799916665398.html" target="_blank" rel="noopener noreffer">this part from Ali Express</a>.</p>
+</li>
+<li>
+<p>USB2.0: There are likely several that will work, but I explicitly used <a href="https://www.aliexpress.com/item/2255799916028028.html" target="_blank" rel="noopener noreffer">this part from Ali Express</a>.</p>
+</li>
+<li>
+<p>USB extension cable: You can find all sorts of adapters in every conceivable orientation on Ali Express from stores like <a href="https://www.aliexpress.com/item/2255801102773472.html" target="_blank" rel="noopener noreffer">this</a>. For this particular project, you will need a 15 cm flat flex cable (<code>FFC</code>) and 2x of the &ldquo;straight&rdquo; USB male connectors.</p>
+</li>
+</ul>
+<p>Screws:</p>
+<ul>
+<li>
+<p>The amp enclosure uses 4x of the same McMaster #90666A115 for external mounting but any M4 screw could work here.</p>
+</li>
+<li>
+<p>6x <code>M3x8mm</code> screws to hold the amplifier PCB to the internal midplate and PSU to the case. Specifically <a href="https://www.mcmaster.com/91290A113/" target="_blank" rel="noopener noreffer">McMaster #91290A113</a>.</p>
+</li>
+<li>
+<p>4x <code>M4x50</code> screws to secure the lid. Specifically <a href="https://www.mcmaster.com/91292A140/" target="_blank" rel="noopener noreffer">McMaster #91292A140</a>.</p>
+</li>
+</ul>
+<p>And it all fits together inside an enclosure like so:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        The amp enclosure as seen from the front corner.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        The amp enclosure as seen from the rear corner.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<h2 id="procedure">Procedure</h2>
+<p>To give you an idea of how things go together:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Viewed from the rear corner, the PCB (purple) sits on top of a midplate (green, highlighted) which sits on top of the power supply (also purple, bottom).
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        To make printing easier, the midplate is actually two components joined together by the two screws furthest from the knobs.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<h3 id="print">Print</h3>
+<p>Just a few things to note:</p>
+<ul>
+<li>The suggested/ideal print orientation should be fairly obvious.</li>
+<li>Tolerances are reasonably tight, you&rsquo;ll need ~ .15mm tolerance.
+<ul>
+<li>Layer height, material, speed settings are up to you. All that matters is that you can achieve the ~.15mm tolerance.</li>
+</ul>
+</li>
+</ul>
+<div class="details admonition warning open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-exclamation-triangle fa-fw"></i>This will take a while!<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>With respect to the subwoofer skeleton and panels, at least.</p>
+<p>Essentially, the more mass in the parts, the more energy will be required to make them rattle/flex/vibrate.
+The less this happens, the less &ldquo;extra&rdquo; noise will be emitted by your subwoofer.
+Following along with the original instructions for printing, I chose about 35% infill and 3 perimeters for the subwoofer skeleton. Using a .6mm nozzle and some other well tuned slicing settings, I was able to print the entire skeleton in about 40 hours using just over 1 kg of filament. I would plan on at least 80 if using a smaller nozzle with a finer layer height!</p>
+</div>
+        </div>
+    </div>
+<h4 id="prep-screw-holes--flashing">Prep screw holes &amp; flashing</h4>
+<div class="details admonition info open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-info-circle fa-fw"></i>Intentionally undersized holes<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">Almost all screw holes on this build are intentionally undersized.
+As a general preparation step, <strong><em>carefully</em></strong> drive the appropriate screw into each hole and then let it sit!</div>
+        </div>
+    </div>
+<p>In the CAD model, almost all holes meant to receive a screw are intentionally undersized by about .3mm.
+besides the general &lsquo;it&rsquo;s easier to expand the hole to the correct size than it is to shrink it&rsquo; reason, this is done for one key reason; it <strong>eliminates the need for dedicated screw thread hardware</strong>.</p>
+<p>By intentionally undersigning the hole, you can guarantee there will be a ton of friction generated when inserting the screws for the first time.
+The excess friction <em>will</em> soften the plastic in the vicinity of the screw threads which allows the plastic to form threads around the screw.</p>
+<p>This is not without drawbacks, though <strong>so proper procedure is <em>critical</em> for making this work properly!</strong></p>
+<p>You must take every precaution to ensure that:</p>
+<ul>
+<li>The screw is driven into the hole in a directly perpendicular direction.
+<ul>
+<li>As the plastic heats up, it becomes easier to knock the screw out of alignment and begin driving it at an angle.</li>
+</ul>
+</li>
+<li>A constant (slow!) velocity should be used to drive the screw.
+<ul>
+<li>This can be done with hand tools but will result in a pretty tough arm workout! Consider using a power drill with a low speed / constant torque option!</li>
+</ul>
+</li>
+<li>The threads of the screw will displace some plastic. The excess molten plastic is called <a href="https://en.wikipedia.org/wiki/Flash_%28manufacturing%29" target="_blank" rel="noopener noreffer">flashing</a> and it it almost guarantees that you&rsquo;ll need to do some post processing / cleanup of the screw holes.</li>
+<li>The molten plastic forms screw threads more or less instantly&hellip; but they won&rsquo;t <em>stay formed</em> until the excess heat has dissipated and the material has solidified.
+<ul>
+<li>Do not remove any screws from the body until they are cool to the touch! This can take <em>several minutes</em>!</li>
+</ul>
+</li>
+</ul>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        All 11(!) of the m4 screws driven into the sub body waiting for the plastic to set
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>After all 11 screws had cooled and the threads had formed, the screws were removed.
+Nearly every one of the holes had some (small) build up of material:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Use a straight edge blade or scrape tool to remove the flashing bits.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>In some cases, there may be some additional material that builds up on the screw threads themselves.
+Simply use a different screw for final assembly or use scrape tool or flame to remove the excess material from the threads:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>After the flashing is removed from around screw holes you should still be able to see threads within the hole but shouldn&rsquo;t be able to see/feel any protrusions <em>from</em> the hole:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Where possible, I have made the screw holes much deeper than strictly necessary.
+As the screw drives deeper, the tip will push molten plastic into this &ldquo;well&rdquo;.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        The extra depth on the screw hole gives the molten plastic somewhere to go.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<h3 id="subwoofer-skeleton">Subwoofer Skeleton</h3>
+<h4 id="gaskets">Gaskets</h4>
+<p>Begin by driving the screws into the side panels and speaker driver then attach the gaskets.</p>
+<p><figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+</p>
+<div class="details admonition info open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-info-circle fa-fw"></i>Info<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">You do not need to press the gasket all the way up against the component; it will be compressed between the two components during final assembly.</div>
+        </div>
+    </div>
+<div class="details admonition warning open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-exclamation-triangle fa-fw"></i>Secure the gasketed components to the body carefully<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">Rotate each screw a few turns before moving to the next one. Do this <a href="https://www.tyreplex.com/news/how-to-tighten-lug-nuts-on-a-car-the-criss-cross-pattern/" target="_blank" rel="noopener noreffer">in an alternating pattern similar to how you would tighten Lug Nuts on a car</a>. Failure to do so will likely result in the gasket being rotated out of place internally!</div>
+        </div>
+    </div>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Be mindful of the gasket as you secure the panel to the subwoofer body. Too much torque/clamping force can cause the gasket to distort.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<h4 id="speaker-wire">Speaker wire</h4>
+<p>Solder ~14 inches speaker wire to the RCA jack then install in the housing.
+Don&rsquo;t forget to use heat shrink tubing or similar to insulate/protect the electrical connections!</p>
+<p>Pass the housing assembly through the speaker hole and the attach the driver and then housing to the back of the subwoofer.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Firmly press the speaker wire into the the cable channel and push any slack wire into the RCA jack housing.</p>
+<div class="details admonition info open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-info-circle fa-fw"></i>Info<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">There should be - at most - a few inches / 15cm of slack wire. Any more than this and you&rsquo;ll run out of room inside the small housing!</div>
+        </div>
+    </div>
+<p>Once the speaker and jack housing are attached to the subwoofer body, simply line up and then attach the panels with the gaskets.</p>
+<p>Now is a good time to test that your soldering / connections are working!</p>
+<p>If you elected to use the gasket cord material, you would need to spend a non-trivial amount of time carefully cutting and routing segments of the material to fit inside the channel.
+You will almost certainly want to use superglue or similar to help you hold the material into the channel!</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        The speaker wire should press-fit into the cable channel more or less sealing it completely.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<h3 id="amp">Amp</h3>
+<div class="details admonition tip open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-lightbulb fa-fw"></i>Tip<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">Just like with the subwoofer components, you&rsquo;ll want to <a href="#prep-screw-holes--flashing" rel="">&ldquo;pre-thread&rdquo;</a> the various holes.</div>
+        </div>
+    </div>
+<h4 id="prep">Prep</h4>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Notice the holes on the left that have been &#34;rightsized&#34; during threading and the holes on the top right that are relatively deformed still.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>For the various panel mounted jacks, there are small interior cavities designed to capture the nut.
+This cavity is actually <em>oversized</em> in the CAD model but due to various printer/slicing factors it is almost certainly going to be a <strong>tight fit</strong>!</p>
+<p>Align the nut with the cavity and then use the screw to pull the nut into the hole then tighten the screw all the way to pull the nuts into place:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        After the screw has pulled the nut into place, it should stay put.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>After the various holes have been prepared and the nuts have been fitted, you are ready for final assembly</p>
+<h4 id="assemble">Assemble</h4>
+<p>First, combine both parts of the midplate with the amp board. Set aside.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Pro tip: print the MAC addresses of a network device somewhere on the device... Also, don&#39;t put unique device IDs onto the internet!
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<h5 id="power">Power</h5>
+<p>Solder mains wires to the Powercon receptacle and terminate with crimp connectors.
+Secure the Powercon receptacle to the rear of the enclosure and then attach to the screw terminals on the PSU.</p>
+<p>Lower the PSU into the enclosure and secure it with the two screws in opposite corners.
+Start with the screw closest to the Powercon connector:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Room inside the enclosure is intentionally tight so do as much wiring/connecting as possible before you start securing things to the enclosure.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>Then add the seconds screw in the opposite corner:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Take this opportunity to power up and confirm that the polarity and voltage is correct!</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<h5 id="amp-pcb">Amp PCB</h5>
+<p>Push the three rotary encoders through the holes in the enclosure and then lower the midplate/PCB on top of the PSU.
+Route the DC wires up and around to the DC plug on the PCB.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Install the RCA jacks and route wires as needed to the PCB.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Then connect both the USB and RJ54 jacks on the amp module to their respective panel mount jacks.
+I forgot to get a picture of the USB cable but it works more or less the exact same way the ethernet cable does:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        A 6 inch patch cable was quicker but a custom length cable would almost certainly look better. Good thing this will soon be hidden away!
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>Either remove the BT/WiFi antenna or secure it to the inside of the enclosure just above the LEDs (not pictured here).</p>
+<p>And before attaching the lid, attach the knobs:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Don&#39;t forget the washer/nut!
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>And just like that, the complete sub and amp.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Subwoofer and amp enclosure mounted to the leg of my desk. Please ignore the mess of wires in the background!
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<h1 id="files-and-licenses">Files and licenses</h1>
+<p>All the 3d printable files associated with this post are available from my <a href="https://www.printables.com/social/8405-rainb0w_wheez3/about" target="_blank" rel="noopener noreffer">printables.com</a> page:</p>
+<ul>
+<li>
+<p><a href="https://www.printables.com/model/273285-modified-skeleton-waveguide-subwoofer-speaker" target="_blank" rel="noopener noreffer">Modified Skeleton Waveguide Subwoofer Speaker</a></p>
+</li>
+<li>
+<p><a href="https://www.printables.com/model/273302-arylic-up2stream-amp-21-enclosure" target="_blank" rel="noopener noreffer">Arylic Up2Stream Amp 2.1 enclosure</a></p>
+</li>
+</ul>
+<p>On that page, you will find a list of files like:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">❯ tree
+</span></span><span class="line"><span class="cl">.
+</span></span><span class="line"><span class="cl">├── amp-enclosure
+</span></span><span class="line"><span class="cl">│   ├── amp-box-lid.step
+</span></span><span class="line"><span class="cl">│   ├── amp-midplate-1.step
+</span></span><span class="line"><span class="cl">│   ├── amp-midplate-2.step
+</span></span><span class="line"><span class="cl">│   ├── amp-pcb.step
+</span></span><span class="line"><span class="cl">│   └── amp-shell.step
+</span></span><span class="line"><span class="cl">└── sub
+</span></span><span class="line"><span class="cl">    ├── gasket-bottom.step
+</span></span><span class="line"><span class="cl">    ├── gasket-speaker.step
+</span></span><span class="line"><span class="cl">    ├── gasket-top.step
+</span></span><span class="line"><span class="cl">    ├── main-body.step
+</span></span><span class="line"><span class="cl">    ├── panel-bottom.step
+</span></span><span class="line"><span class="cl">    ├── panel-top.step
+</span></span><span class="line"><span class="cl">    ├── rca-enclosure.step
+</span></span><span class="line"><span class="cl">    └── sub-components v28.f3z
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>
+<p>All photos used in this post are mine and are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreffer">CC BY-NC-SA 4.0</a>.</p>
+</li>
+<li>
+<p>Everything within the <code>amp-enclosure</code> is my original work. These files are licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreffer">CC BY-NC-SA 4.0</a>.</p>
+</li>
+<li>
+<p>Everything in the <code>sub</code> directory is based off of the fusion360 file from <a href="https://www.printables.com/social/107245-zx82net/about" target="_blank" rel="noopener noreffer">zx82net</a> which  is licensed under <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreffer">CC BY-NC-SA 4.0</a>. Likewise, my modifications fall under the same license.</p>
+<ul>
+<li>My modifications in &lsquo;source&rsquo; formate are contained in the <code>sub-components v28.f3z</code> archive but to make printing easier, individual components are exported as STEP files.</li>
+</ul>
+</li>
+</ul>
+<h2 id="supporting-files">Supporting files</h2>
+<p>In building the various parts in the <code>amp-enclosure</code> directory, I relied on the following additional models:</p>
+<ul>
+<li>
+<p><a href="https://grabcad.com/library/tang-band-w3-1876s-3-subwoofer-1" target="_blank" rel="noopener noreffer">Tang Band W3-1876S 3&quot; Subwoofer</a> by <a href="https://grabcad.com/george.todd-1" target="_blank" rel="noopener noreffer">George Todd</a></p>
+</li>
+<li>
+<p><a href="https://grabcad.com/library/fonte-chaveada-bivolt-24vcc-4a-100w-1" target="_blank" rel="noopener noreffer">Fonte Chaveada Bivolt 24Vcc 4A 100W</a> by <a href="https://grabcad.com/eliandro.baseggio--1" target="_blank" rel="noopener noreffer">Eliandro Baseggio </a></p>
+</li>
+</ul>
+]]></description></item><item><title>Enhanced Home Assistant Switch Plate (HASP)</title><link>https://karlquinsland.com/enhanced-homeassistantswitchplate/</link><pubDate>Thu, 01 Oct 2020 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/enhanced-homeassistantswitchplate/</guid><description><![CDATA[<p>The <a href="https://github.com/aderusha/HASwitchPlate/" target="_blank" rel="noopener noreffer">HASwitchPlate</a> project by <code>aderusha</code> is brilliant. He&rsquo;s managed to arrange some relatively cheap commodity hardware into a package that conveniently fits into a prime location for interacting with Home Automation - the light switch. The entire package sips power off of the already present mains wiring and connects to any MQTT broker via the esp8266 chip. As the HASP was designed to be used with Home Assistant, the humble 2.4 inch LCD transforms into an accessible control surface for an incredibly powerful home automation platform!</p>
 <h2 id="modifications">Modifications</h2>
 <p>First, a brief word about indemnification:</p>
 <blockquote>
