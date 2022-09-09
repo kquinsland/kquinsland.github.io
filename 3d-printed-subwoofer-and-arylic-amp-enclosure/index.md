@@ -302,7 +302,7 @@ And before attaching the lid, attach the knobs:
 
 And just like that, the complete sub and amp.
 
-{{<figure name="sub_and_amp_installed" >}}
+{{<figure name="sub_and_amp_installed-feature" >}}
 
 # Files and licenses
 
