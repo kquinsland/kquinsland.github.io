@@ -21,5 +21,5 @@ One LCSC order, one mouser order and about a week later, I had a basic RS232 <->
 
 After a bit more testing, I was convinced I hadn't made any egregious mistakes and the new module didn't pose a significant threat/risk to my production router.
 
-{{<figure name="installed">}}
+{{<figure name="installed-feature">}}
 
