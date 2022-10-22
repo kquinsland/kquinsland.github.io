@@ -1,4 +1,4 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>homeassistant - Category - karl</title><link>https://karlquinsland.com/categories/homeassistant/</link><description>homeassistant - Category - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 20 Nov 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/categories/homeassistant/" rel="self" type="application/rss+xml"/><item><title>Hardware accelerated graphics on the raspberry pi4 for a speedier KDS</title><link>https://karlquinsland.com/hardware-accelerated-graphics-on-the-raspberry-pi-4-a-snappier-kds/</link><pubDate>Sat, 20 Nov 2021 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/hardware-accelerated-graphics-on-the-raspberry-pi-4-a-snappier-kds/</guid><description><![CDATA[<p>Surfacing the right information at the right time in the right place is a difficult but essential task for any credible automation system.</p>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>home assistant - Category - karl</title><link>https://karlquinsland.com/categories/home-assistant/</link><description>home assistant - Category - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 20 Nov 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/categories/home-assistant/" rel="self" type="application/rss+xml"/><item><title>Hardware accelerated graphics on the raspberry pi4 for a speedier KDS</title><link>https://karlquinsland.com/hardware-accelerated-graphics-on-the-raspberry-pi-4-a-snappier-kds/</link><pubDate>Sat, 20 Nov 2021 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/hardware-accelerated-graphics-on-the-raspberry-pi-4-a-snappier-kds/</guid><description><![CDATA[<p>Surfacing the right information at the right time in the right place is a difficult but essential task for any credible automation system.</p>
 <p>I have been experimenting with the concept of a Home Assistant powered <a href="https://www.qsrautomations.com/blog/kitchen-automation/what-is-a-kds/" target="_blank" rel="noopener noreffer">KDS</a> for a few years now and have found that the refrigerator happens to be an especially good place to surface some information and device controls.</p>
 <br>
 <figure >
@@ -45,7 +45,7 @@ Animations didn&rsquo;t show at all or had all but a few frames dropped :(.</p>
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">pi@kds:~ $ cat /boot/config.txt 
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">pi@kds:~ $ cat /boot/config.txt
 </span></span><span class="line"><span class="cl">&lt;...&gt;
 </span></span><span class="line"><span class="cl"><span class="c1"># Enable DRM VC4 V3D driver for much more performant chrome</span>
 </span></span><span class="line"><span class="cl"><span class="nv">dtoverlay</span><span class="o">=</span>vc4-kms-v3d
@@ -72,7 +72,7 @@ Animations didn&rsquo;t show at all or had all but a few frames dropped :(.</p>
 </span><span class="lnt">12
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">pi@kds:~ $ cat /boot/config.txt 
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">pi@kds:~ $ cat /boot/config.txt
 </span></span><span class="line"><span class="cl">&lt;...&gt;
 </span></span><span class="line"><span class="cl"><span class="o">[</span>all<span class="o">]</span>
 </span></span><span class="line"><span class="cl"><span class="c1"># We need to rotate the display 90degrees as the &#39;default&#39; orientation from the manufacturer assumes a horizontal orientation, not a vertical one</span>
@@ -147,7 +147,7 @@ There is next to no desktop environment installed because one is not needed for 
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">Section <span class="s2">&#34;Monitor&#34;</span>
 </span></span><span class="line"><span class="cl">        Identifier <span class="s2">&#34;default&#34;</span>
-</span></span><span class="line"><span class="cl">        <span class="c1"># equivalent to `display_rotate = 1` in config.txt </span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># equivalent to `display_rotate = 1` in config.txt</span>
 </span></span><span class="line"><span class="cl">        Option <span class="s2">&#34;Rotate&#34;</span> <span class="s2">&#34;right&#34;</span>
 </span></span><span class="line"><span class="cl">EndSection
 </span></span><span class="line"><span class="cl">

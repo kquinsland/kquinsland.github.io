@@ -45,7 +45,7 @@ Animations didn&rsquo;t show at all or had all but a few frames dropped :(.</p>
 </span><span class="lnt">6
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">pi@kds:~ $ cat /boot/config.txt 
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">pi@kds:~ $ cat /boot/config.txt
 </span></span><span class="line"><span class="cl">&lt;...&gt;
 </span></span><span class="line"><span class="cl"><span class="c1"># Enable DRM VC4 V3D driver for much more performant chrome</span>
 </span></span><span class="line"><span class="cl"><span class="nv">dtoverlay</span><span class="o">=</span>vc4-kms-v3d
@@ -72,7 +72,7 @@ Animations didn&rsquo;t show at all or had all but a few frames dropped :(.</p>
 </span><span class="lnt">12
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">pi@kds:~ $ cat /boot/config.txt 
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">pi@kds:~ $ cat /boot/config.txt
 </span></span><span class="line"><span class="cl">&lt;...&gt;
 </span></span><span class="line"><span class="cl"><span class="o">[</span>all<span class="o">]</span>
 </span></span><span class="line"><span class="cl"><span class="c1"># We need to rotate the display 90degrees as the &#39;default&#39; orientation from the manufacturer assumes a horizontal orientation, not a vertical one</span>
@@ -147,7 +147,7 @@ There is next to no desktop environment installed because one is not needed for 
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">Section <span class="s2">&#34;Monitor&#34;</span>
 </span></span><span class="line"><span class="cl">        Identifier <span class="s2">&#34;default&#34;</span>
-</span></span><span class="line"><span class="cl">        <span class="c1"># equivalent to `display_rotate = 1` in config.txt </span>
+</span></span><span class="line"><span class="cl">        <span class="c1"># equivalent to `display_rotate = 1` in config.txt</span>
 </span></span><span class="line"><span class="cl">        Option <span class="s2">&#34;Rotate&#34;</span> <span class="s2">&#34;right&#34;</span>
 </span></span><span class="line"><span class="cl">EndSection
 </span></span><span class="line"><span class="cl">

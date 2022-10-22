@@ -1,0 +1,512 @@
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><meta http-equiv=x-ua-compatible content="IE=edge, chrome=1"><title>ESPHome for Sinilink PC remotes - karl</title><meta name=Description content="My endless quest to Integrate ALL THE THINGS with Home Assistant claims another victim."><meta property="og:title" content="ESPHome for Sinilink PC remotes"><meta property="og:description" content="My endless quest to Integrate ALL THE THINGS with Home Assistant claims another victim."><meta property="og:type" content="article"><meta property="og:url" content="https://karlquinsland.com/esphome-sinilink-pc-remotes/"><meta property="og:image" content="https://karlquinsland.com/esphome-sinilink-pc-remotes/images/WPCE.webp"><meta property="article:section" content="posts"><meta property="article:published_time" content="2022-10-22T00:00:00+00:00"><meta property="article:modified_time" content="2022-10-22T11:55:43-07:00"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://karlquinsland.com/esphome-sinilink-pc-remotes/images/WPCE.webp"><meta name=twitter:title content="ESPHome for Sinilink PC remotes"><meta name=twitter:description content="My endless quest to Integrate ALL THE THINGS with Home Assistant claims another victim."><meta name=application-name content="karl"><meta name=apple-mobile-web-app-title content="karl"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=https://karlquinsland.com/favicon.ico><link rel=icon type=image/png sizes=32x32 href=https://karlquinsland.com/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=https://karlquinsland.com/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=https://karlquinsland.com/apple-touch-icon.png><link rel=mask-icon href=https://karlquinsland.com/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=https://karlquinsland.com/site.webmanifest><link rel=canonical href=https://karlquinsland.com/esphome-sinilink-pc-remotes/><link rel=prev href=https://karlquinsland.com/yet-another-gps-pps-opnsense/><link rel=stylesheet href=https://karlquinsland.com/lib/normalize/normalize.min.055364f5be272caa092b0e6654c165828707f8ab971e2656383a6d6392bc345e.css integrity="sha256-BVNk9b4nLKoJKw5mVMFlgocH+KuXHiZWODptY5K8NF4="><link rel=stylesheet href=https://karlquinsland.com/css/style.min.1e2694bed152fa2922dbe909a441838ed693d88b1330f97485bfa8ed78da42df.css integrity="sha256-HiaUvtFS+iki2+kJpEGDjtaT2IsTMPl0hb+o7XjaQt8="><link rel=stylesheet href=https://karlquinsland.com/lib/fontawesome-free/all.min.876d023d9d10c97941b80c3b03e2a5b94631ff7a4af9cee5604a6a2d39718d84.css integrity="sha256-h20CPZ0QyXlBuAw7A+KluUYx/3pK+c7lYEpqLTlxjYQ="><link rel=stylesheet href=https://karlquinsland.com/lib/animate/animate.min.3c770e90f98eb21b0c042fafb49755af93306fbaf42e449524f94fae9fc83295.css integrity="sha256-PHcOkPmOshsMBC+vtJdVr5Mwb7r0LkSVJPlPrp/IMpU="><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"ESPHome for Sinilink PC remotes","inLanguage":"en-us","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/karlquinsland.com\/esphome-sinilink-pc-remotes\/"},"genre":"posts","keywords":"esphome, home assistant","wordcount":1773,"url":"https:\/\/karlquinsland.com\/esphome-sinilink-pc-remotes\/","datePublished":"2022-10-22T00:00:00+00:00","dateModified":"2022-10-22T11:55:43-07:00","publisher":{"@type":"Organization","name":""},"author":{"@type":"Person","name":"karl"},"description":"My endless quest to Integrate ALL THE THINGS with Home Assistant claims another victim."}</script></head><body header-desktop=fixed header-mobile=auto><script type=text/javascript>(window.localStorage&&localStorage.getItem("theme")?localStorage.getItem("theme")==="dark":"auto"==="auto"?window.matchMedia("(prefers-color-scheme: dark)").matches:"auto"==="dark")&&document.body.setAttribute("theme","dark")</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=https://karlquinsland.com/ title=karl>Karl</a></div><div class=menu><div class=menu-inner><a class=menu-item href=https://karlquinsland.com/posts/><i class="fas fa-blog"></i> Posts </a><a class=menu-item href=https://karlquinsland.com/resume/ title="Hire Me!"><i class="fas fa-briefcase"></i> Résumé </a><a class=menu-item href=https://karlquinsland.com/tags/ title="Can you tell that I don't have a super consistent or clear taxonomy?"><i class="fas fa-tags"></i> Tags </a><a class=menu-item href=https://karlquinsland.com/contact/><i class="fas fa-address-book"></i> Contact </a><span class="menu-item delimiter"></span><span class="menu-item search" id=search-desktop>
+<input type=text placeholder="Search titles or contents..." id=search-input-desktop>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=Search><i class="fas fa-search fa-fw"></i></a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=Clear><i class="fas fa-times-circle fa-fw"></i></a>
+<span class="search-button search-loading" id=search-loading-desktop><i class="fas fa-spinner fa-fw fa-spin"></i></span>
+</span><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme"><i class="fas fa-adjust fa-fw"></i></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=https://karlquinsland.com/ title=karl>Karl</a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><div class=search-wrapper><div class="search mobile" id=search-mobile><input type=text placeholder="Search titles or contents..." id=search-input-mobile>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=Search><i class="fas fa-search fa-fw"></i></a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=Clear><i class="fas fa-times-circle fa-fw"></i></a>
+<span class="search-button search-loading" id=search-loading-mobile><i class="fas fa-spinner fa-fw fa-spin"></i></span></div><a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>Cancel</a></div><a class=menu-item href=https://karlquinsland.com/posts/ title><i class="fas fa-blog"></i>Posts</a><a class=menu-item href=https://karlquinsland.com/resume/ title="Hire Me!"><i class="fas fa-briefcase"></i>Résumé</a><a class=menu-item href=https://karlquinsland.com/tags/ title="Can you tell that I don't have a super consistent or clear taxonomy?"><i class="fas fa-tags"></i>Tags</a><a class=menu-item href=https://karlquinsland.com/contact/ title><i class="fas fa-address-book"></i>Contact</a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw"></i></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>Contents</h2><div class=toc-content id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animated flipInX">ESPHome for Sinilink PC remotes</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=https://karlquinsland.com/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw"></i>karl</a></span>&nbsp;<span class=post-category>included in <a href=https://karlquinsland.com/categories/imadeathing/><i class="far fa-folder fa-fw"></i>IMadeAThing</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2022-10-22>2022-10-22</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;1773 words&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;9 minutes&nbsp;</div></div><div class="details toc" id=toc-static kept=true><div class="details-summary toc-title"><span>Contents</span>
+<span><i class="details-icon fas fa-angle-right"></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><a href=#pc-power-remote-control>PC (power) remote control</a><ul><li><a href=#a-quick-detour-about-write_flash-errors>A quick detour about <code>write_flash</code> errors</a></li><li><a href=#esphome-configurations>ESPHome configurations</a></li></ul></li></ul></nav></div></div><div class=content id=content><h1 id=pc-power-remote-control>PC (power) remote control</h1><p>While doing research for a potential project, I stumbled onto a device that fit&rsquo;s so squarely into that &ldquo;it&rsquo;s so simple and obvious, why didn&rsquo;t I think tof that?!&rdquo; category that I immediately placed an order for a few.</p><p>That device?</p><p>A simple WiFi equipped micro controller that gets wired between the power button on a PC and the motherboard.
+This makes it possible to remotely control and monitor the power state of any PC!</p><p>I am using these devices in conjunction with my <a href=https://karlquinsland.com/hdmi-kvm-teardown-and-esphome/ rel>previously integrated KVM switch</a> to automate turning hosts on/off as they are activated/deactivated on the KVM switch.</p><div class="details admonition note open"><div class="details-summary admonition-title"><i class="icon fas fa-pencil-alt fa-fw"></i>Note<i class="details-icon fas fa-angle-right fa-fw"></i></div><div class=details-content><div class=admonition-content><p>There are <em>several</em> different types of device on Ali Express.
+Most appear to use TuYa MCUs so it&rsquo;s not immediately clear if/how those devices can be converted to use ESPHome or not; buy those at your own risk.</p><p>The two Sinilink devices liked below are trivial to get working with ESPHome/Tasmota though!</p></div></div></div><ul><li><a href=https://templates.blakadder.com/sinilink_XY-WPCE.html target=_blank rel="noopener noreffer">Sinilink PCIe Computer Remote (XY-WPCE)</a></li><li><a href=https://templates.blakadder.com/sinilink_XY-WPCL.html target=_blank rel="noopener noreffer">Sinilink USB Computer Remote (XY-WPCL)</a></li></ul><p><figure><img src=https://karlquinsland.com/esphome-sinilink-pc-remotes/images/WPCL.webp><figcaption></figcaption></figure><figure><img src=https://karlquinsland.com/esphome-sinilink-pc-remotes/images/WPCE.webp><figcaption></figcaption></figure></p><p>The PCI Express version is simpler to integrate with a PC as it uses the 3.3v power rails to determine when the PC is on.
+The USB version does not have this luxury so power must be supplied via the DC barrel jack.
+Additionally, the USB version is also wired series with the power LED(s) on the computer so the module can discern the PCs power state.</p><div class="details admonition question open"><div class="details-summary admonition-title"><i class="icon fas fa-question-circle fa-fw"></i>Why not just use Wake On Lan?<i class="details-icon fas fa-angle-right fa-fw"></i></div><div class=details-content><div class=admonition-content><p>Yes, Home Assistant does have support for <a href=https://www.home-assistant.io/integrations/wake_on_lan/ target=_blank rel="noopener noreffer">Wake On Lan</a> but I chose not to use it for a few reasons:</p><ul><li><p>Does not work across subnets. WoL uses a broadcast packet and routers tend to frown on forwarding those between subnets. As my HA instance runs inside of Kubernetes, it&rsquo;s going to be more than a little difficult to get the WoL packets out of the cluster!</p></li><li><p>Does not do status checking. The Sinilink modules have direct feedback about the state of the PC power.</p></li><li><p>Does not do shutdown. There is no WoL packet that can send a PC back to sleep!</p></li></ul></div></div></div><div class="details admonition tip open"><div class="details-summary admonition-title"><i class="icon fas fa-lightbulb fa-fw"></i>Tip<i class="details-icon fas fa-angle-right fa-fw"></i></div><div class=details-content><div class=admonition-content><p>If you use the PCI Express version and find that the module does not stay powered up while the PC is asleep/off, check your PC BIOS for <a href=https://superuser.com/questions/1074074/disadvantages-of-enabling-erp-in-bios target=_blank rel="noopener noreffer"><code>ErP</code> settings</a>.</p><p>I had to explicitly turn off ErP <em>and</em> permit the PC to wake from PCI-E devices before the 3.3v standby rail was activated.</p></div></div></div><h2 id=a-quick-detour-about-write_flash-errors>A quick detour about <code>write_flash</code> errors</h2><p>I don&rsquo;t see this error <em>often</em> but I do see it enough to warrant talking about.</p><p>I ordered 3 of the PCI Express <em>and</em> the USB version of the devices above.
+Of the 6 devices I received, 3 didn&rsquo;t &ldquo;take&rdquo; the custom firmware.</p><p>Devices that have defects with the onboard flash will appear to be function when probed with <code>esptool.py</code> but will exhibit some sort of error when doing any <code>write_flash</code> operations.</p><p>The symptoms present like this</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># Note the baud rate; it&#39;s considerably slower than the default baud rate.</span>
+</span></span><span class=line><span class=cl><span class=c1># Trying lower baud rates is a suggested &#39;fix&#39;.</span>
+</span></span><span class=line><span class=cl>❯ esptool.py -b <span class=m>19200</span> --port /dev/ttyUSB0 write_flash -fs 1MB -fm dout 0x0 ~/Downloads/tasmota-lite.bin
+</span></span><span class=line><span class=cl>esptool.py v3.3.1
+</span></span><span class=line><span class=cl>Serial port /dev/ttyUSB0
+</span></span><span class=line><span class=cl>Connecting...................
+</span></span><span class=line><span class=cl>Detecting chip type... Unsupported detection protocol, switching and trying again...
+</span></span><span class=line><span class=cl>Connecting...
+</span></span><span class=line><span class=cl>Detecting chip type... ESP8266
+</span></span><span class=line><span class=cl>Chip is ESP8285H16
+</span></span><span class=line><span class=cl>Features: WiFi, Embedded Flash
+</span></span><span class=line><span class=cl>Crystal is 26MHz
+</span></span><span class=line><span class=cl>MAC: e8:aa:bb:cc:dd:ee
+</span></span><span class=line><span class=cl>Uploading stub...
+</span></span><span class=line><span class=cl>Running stub...
+</span></span><span class=line><span class=cl>Stub running...
+</span></span><span class=line><span class=cl>Configuring flash size...
+</span></span><span class=line><span class=cl>Flash will be erased from 0x00000000 to 0x0007afff...
+</span></span><span class=line><span class=cl>Compressed <span class=m>501328</span> bytes to 358200...
+</span></span><span class=line><span class=cl>Wrote <span class=m>501328</span> bytes <span class=o>(</span><span class=m>358200</span> compressed<span class=o>)</span> at 0x00000000 in 188.8 seconds <span class=o>(</span>effective 21.2 kbit/s<span class=o>)</span>...
+</span></span><span class=line><span class=cl>File  md5: 693ff98fbada203ab23ced0650e45ab7
+</span></span><span class=line><span class=cl>Flash md5: 2a3e7abaf93800f4193d03a9da8c52fa
+</span></span><span class=line><span class=cl>MD5 of 0xFF is 36d49993e146cee00d35f8793084f71c
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>A fatal error occurred: MD5 of file does not match data in flash!
+</span></span></code></pre></td></tr></table></div></div><p>and</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>❯ esptool.py --port /dev/ttyUSB0 write_flash -fs 1MB -fm dout 0x0 ~/Downloads/tasmota-lite.bin
+</span></span><span class=line><span class=cl>esptool.py v3.3.1
+</span></span><span class=line><span class=cl>Serial port /dev/ttyUSB0
+</span></span><span class=line><span class=cl>Connecting...
+</span></span><span class=line><span class=cl>Detecting chip type... Unsupported detection protocol, switching and trying again...
+</span></span><span class=line><span class=cl>Connecting...
+</span></span><span class=line><span class=cl>Detecting chip type... ESP8266
+</span></span><span class=line><span class=cl>Chip is ESP8285H16
+</span></span><span class=line><span class=cl>Features: WiFi, Embedded Flash
+</span></span><span class=line><span class=cl>Crystal is 26MHz
+</span></span><span class=line><span class=cl>MAC: e8:aa:bb:cc:dd:ee
+</span></span><span class=line><span class=cl>Stub is already running. No upload is necessary.
+</span></span><span class=line><span class=cl>Configuring flash size...
+</span></span><span class=line><span class=cl>Flash will be erased from 0x00000000 to 0x0007afff...
+</span></span><span class=line><span class=cl>Compressed <span class=m>501328</span> bytes to 358200...
+</span></span><span class=line><span class=cl>Writing at 0x00075960... <span class=o>(</span><span class=m>100</span> %<span class=o>)</span>
+</span></span><span class=line><span class=cl>A fatal error occurred: Serial data stream stopped: Possible serial noise or corruption.
+</span></span></code></pre></td></tr></table></div></div><p>There are a few &ldquo;fixes&rdquo; for this issue but none worked for me:</p><ul><li>Check for loose or fault connections.</li><li>Use a robust power supply</li><li>Try <code>write_flash_status</code> with <code>--non-volatile 0</code></li><li>Try a different USB &lt;-> 232/TTL adapter</li></ul><p>I tried <em>all</em> of the above and nothing worked.</p><ul><li>I soldered wires directly to the modules instead of just inserting pins into the programming header.</li><li>I tried a <a href=https://karlquinsland.com/electronics-lab-enhanced-bench-psu/ rel>power supply that can supply <em>considerably more</em> than</a> the ~200 ma needed to power/flash the chip.</li><li>I tried a few different USB ports and a few different USB &lt;-> TTL adapters with both counterfeit and authentic FTDI chips.</li><li>I used <code>read_flash_status</code> and saw that the <code>--non-volatile</code> settings were already <code>0x0000</code>.</li></ul><p>None of the above worked for me.</p><p>While disappointing and frustrating, there&rsquo;s only one probable conclusion: there&rsquo;s a subtle defect in the flash memory that either wasn&rsquo;t noticed or checked for at the factory when the OEM firmware was flashed onto the devices.</p><p>I cut my losses and moved on.</p><h2 id=esphome-configurations>ESPHome configurations</h2><p>For SEO/Archival purposes, I have also uploaded a copy of the config to the <a href=https://github.com/esphome-devices/esphome-devices/pull/294 target=_blank rel="noopener noreffer">esphome-devices.com</a> site.
+As of publishing <em>this</em> article, the PR is pending review.
+If/When the page goes live, I&rsquo;ll update the link here.</p><p>The configurations there are bare-bones and cover <em>just</em> the basics required to get the GPIO working with ESPhome.</p><p>The configuration below is a bit more featured and is a lot closer to the versions that I use in production.
+It features a &ldquo;pc power button lockout&rdquo; feature and more.</p><div class="details admonition warning open"><div class="details-summary admonition-title"><i class="icon fas fa-exclamation-triangle fa-fw"></i>Warning<i class="details-icon fas fa-angle-right fa-fw"></i></div><div class=details-content><div class=admonition-content>The code below will not compile &ldquo;as is&rdquo;.
+All of the entities under the <code>packages:</code> heading are &ldquo;standard&rdquo; across all of my ESPHome configurations and are not included here.
+Either remove them or substitute as needed to get something that works for <em>you</em>.</div></div></div><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>  1
+</span><span class=lnt>  2
+</span><span class=lnt>  3
+</span><span class=lnt>  4
+</span><span class=lnt>  5
+</span><span class=lnt>  6
+</span><span class=lnt>  7
+</span><span class=lnt>  8
+</span><span class=lnt>  9
+</span><span class=lnt> 10
+</span><span class=lnt> 11
+</span><span class=lnt> 12
+</span><span class=lnt> 13
+</span><span class=lnt> 14
+</span><span class=lnt> 15
+</span><span class=lnt> 16
+</span><span class=lnt> 17
+</span><span class=lnt> 18
+</span><span class=lnt> 19
+</span><span class=lnt> 20
+</span><span class=lnt> 21
+</span><span class=lnt> 22
+</span><span class=lnt> 23
+</span><span class=lnt> 24
+</span><span class=lnt> 25
+</span><span class=lnt> 26
+</span><span class=lnt> 27
+</span><span class=lnt> 28
+</span><span class=lnt> 29
+</span><span class=lnt> 30
+</span><span class=lnt> 31
+</span><span class=lnt> 32
+</span><span class=lnt> 33
+</span><span class=lnt> 34
+</span><span class=lnt> 35
+</span><span class=lnt> 36
+</span><span class=lnt> 37
+</span><span class=lnt> 38
+</span><span class=lnt> 39
+</span><span class=lnt> 40
+</span><span class=lnt> 41
+</span><span class=lnt> 42
+</span><span class=lnt> 43
+</span><span class=lnt> 44
+</span><span class=lnt> 45
+</span><span class=lnt> 46
+</span><span class=lnt> 47
+</span><span class=lnt> 48
+</span><span class=lnt> 49
+</span><span class=lnt> 50
+</span><span class=lnt> 51
+</span><span class=lnt> 52
+</span><span class=lnt> 53
+</span><span class=lnt> 54
+</span><span class=lnt> 55
+</span><span class=lnt> 56
+</span><span class=lnt> 57
+</span><span class=lnt> 58
+</span><span class=lnt> 59
+</span><span class=lnt> 60
+</span><span class=lnt> 61
+</span><span class=lnt> 62
+</span><span class=lnt> 63
+</span><span class=lnt> 64
+</span><span class=lnt> 65
+</span><span class=lnt> 66
+</span><span class=lnt> 67
+</span><span class=lnt> 68
+</span><span class=lnt> 69
+</span><span class=lnt> 70
+</span><span class=lnt> 71
+</span><span class=lnt> 72
+</span><span class=lnt> 73
+</span><span class=lnt> 74
+</span><span class=lnt> 75
+</span><span class=lnt> 76
+</span><span class=lnt> 77
+</span><span class=lnt> 78
+</span><span class=lnt> 79
+</span><span class=lnt> 80
+</span><span class=lnt> 81
+</span><span class=lnt> 82
+</span><span class=lnt> 83
+</span><span class=lnt> 84
+</span><span class=lnt> 85
+</span><span class=lnt> 86
+</span><span class=lnt> 87
+</span><span class=lnt> 88
+</span><span class=lnt> 89
+</span><span class=lnt> 90
+</span><span class=lnt> 91
+</span><span class=lnt> 92
+</span><span class=lnt> 93
+</span><span class=lnt> 94
+</span><span class=lnt> 95
+</span><span class=lnt> 96
+</span><span class=lnt> 97
+</span><span class=lnt> 98
+</span><span class=lnt> 99
+</span><span class=lnt>100
+</span><span class=lnt>101
+</span><span class=lnt>102
+</span><span class=lnt>103
+</span><span class=lnt>104
+</span><span class=lnt>105
+</span><span class=lnt>106
+</span><span class=lnt>107
+</span><span class=lnt>108
+</span><span class=lnt>109
+</span><span class=lnt>110
+</span><span class=lnt>111
+</span><span class=lnt>112
+</span><span class=lnt>113
+</span><span class=lnt>114
+</span><span class=lnt>115
+</span><span class=lnt>116
+</span><span class=lnt>117
+</span><span class=lnt>118
+</span><span class=lnt>119
+</span><span class=lnt>120
+</span><span class=lnt>121
+</span><span class=lnt>122
+</span><span class=lnt>123
+</span><span class=lnt>124
+</span><span class=lnt>125
+</span><span class=lnt>126
+</span><span class=lnt>127
+</span><span class=lnt>128
+</span><span class=lnt>129
+</span><span class=lnt>130
+</span><span class=lnt>131
+</span><span class=lnt>132
+</span><span class=lnt>133
+</span><span class=lnt>134
+</span><span class=lnt>135
+</span><span class=lnt>136
+</span><span class=lnt>137
+</span><span class=lnt>138
+</span><span class=lnt>139
+</span><span class=lnt>140
+</span><span class=lnt>141
+</span><span class=lnt>142
+</span><span class=lnt>143
+</span><span class=lnt>144
+</span><span class=lnt>145
+</span><span class=lnt>146
+</span><span class=lnt>147
+</span><span class=lnt>148
+</span><span class=lnt>149
+</span><span class=lnt>150
+</span><span class=lnt>151
+</span><span class=lnt>152
+</span><span class=lnt>153
+</span><span class=lnt>154
+</span><span class=lnt>155
+</span><span class=lnt>156
+</span><span class=lnt>157
+</span><span class=lnt>158
+</span><span class=lnt>159
+</span><span class=lnt>160
+</span><span class=lnt>161
+</span><span class=lnt>162
+</span><span class=lnt>163
+</span><span class=lnt>164
+</span><span class=lnt>165
+</span><span class=lnt>166
+</span><span class=lnt>167
+</span><span class=lnt>168
+</span><span class=lnt>169
+</span><span class=lnt>170
+</span><span class=lnt>171
+</span><span class=lnt>172
+</span><span class=lnt>173
+</span><span class=lnt>174
+</span><span class=lnt>175
+</span><span class=lnt>176
+</span><span class=lnt>177
+</span><span class=lnt>178
+</span><span class=lnt>179
+</span><span class=lnt>180
+</span><span class=lnt>181
+</span><span class=lnt>182
+</span><span class=lnt>183
+</span><span class=lnt>184
+</span><span class=lnt>185
+</span><span class=lnt>186
+</span><span class=lnt>187
+</span><span class=lnt>188
+</span><span class=lnt>189
+</span><span class=lnt>190
+</span><span class=lnt>191
+</span><span class=lnt>192
+</span><span class=lnt>193
+</span><span class=lnt>194
+</span><span class=lnt>195
+</span><span class=lnt>196
+</span><span class=lnt>197
+</span><span class=lnt>198
+</span><span class=lnt>199
+</span><span class=lnt>200
+</span><span class=lnt>201
+</span><span class=lnt>202
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>substitutions</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># Displayed in HA frontend</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>friendly_name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;Desktop Power Control&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>friendly_name_short</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;Desktop&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>hostname</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;desktop-power-control&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>esphome</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>${hostname}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># Shows up in UI</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>comment</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;Remote power button for ${friendly_name_short}.&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>esp8266</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># Specifically a &#39;ESP8285H16&#39; with 2MB built in flash</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># See: https://docs.platformio.org/en/stable/boards/espressif8266/esp8285.html</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>board</span><span class=p>:</span><span class=w> </span><span class=l>esp8285</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>logger</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>level</span><span class=p>:</span><span class=w> </span><span class=l>INFO</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># See: https://esphome.io/guides/configuration-types.html#packages</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>packages</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># General</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>wifi</span><span class=p>:</span><span class=w> </span>!<span class=l>include ../../packages/wifi.yaml</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>mqtt</span><span class=p>:</span><span class=w> </span>!<span class=l>include ../../packages/mqtt.yaml</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>time</span><span class=p>:</span><span class=w> </span>!<span class=l>include ../../packages/ntp.yaml</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>ota</span><span class=p>:</span><span class=w> </span>!<span class=l>include ../../packages/ota.yaml</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>web_server</span><span class=p>:</span><span class=w> </span>!<span class=l>include ../../packages/web_server.yaml</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>status_led</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>pin</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>number</span><span class=p>:</span><span class=w> </span><span class=l>GPIO02</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>inverted</span><span class=p>:</span><span class=w> </span><span class=kc>True</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># Keep track of weather or not case button press should be forwarded to the motherboard</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>globals</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>glbl_relay_latched</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>bool</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>restore_value</span><span class=p>:</span><span class=w> </span><span class=kc>no</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>initial_value</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;true&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>script</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>regular_press</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>mode</span><span class=p>:</span><span class=w> </span><span class=l>single</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>then</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>output.turn_on</span><span class=p>:</span><span class=w> </span><span class=l>out_relay</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>delay</span><span class=p>:</span><span class=w> </span><span class=l>.5s</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>output.turn_off</span><span class=p>:</span><span class=w> </span><span class=l>out_relay</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>long_press</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>mode</span><span class=p>:</span><span class=w> </span><span class=l>single</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>then</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>output.turn_on</span><span class=p>:</span><span class=w> </span><span class=l>out_relay</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=c># MB seems to respond to 5s, add 2 just to be safe</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>delay</span><span class=p>:</span><span class=w> </span><span class=l>7s</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>output.turn_off</span><span class=p>:</span><span class=w> </span><span class=l>out_relay</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>button</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># We expose a button to the HA web UI that mimics the &#34;forceful&#34; power down sequence</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;${friendly_name_short} Long Press&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>btn_forceful_down</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>template</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>on_press</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=p>|-</span><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>          // If the power state is off, we&#39;ll emit a WARN level message before running the script
+</span></span></span><span class=line><span class=cl><span class=sd>          if( !id(inp_power_status).state ){
+</span></span></span><span class=line><span class=cl><span class=sd>            ESP_LOGW(&#34;forcefulShutdown&#34;, &#34;Power state is OFF but forceful shutdown requested...&#34;);
+</span></span></span><span class=line><span class=cl><span class=sd>          } else {
+</span></span></span><span class=line><span class=cl><span class=sd>            ESP_LOGW(&#34;forcefulShutdown&#34;, &#34;Power state is ON. Forceful shutdown requested...&#34;);
+</span></span></span><span class=line><span class=cl><span class=sd>          }
+</span></span></span><span class=line><span class=cl><span class=sd>          id(long_press).execute();</span><span class=w>          
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>binary_sensor</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># React to connection status, if needed</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>&lt;&lt;</span><span class=p>:</span><span class=w> </span>!<span class=l>include ../../packages/binary_sensor/connection_status.config.yaml</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;${friendly_name_short} WiFi Config Button&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>gpio</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>inp_wifi_cfg_btn</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>entity_category</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;diagnostic&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>icon</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;mdi:radiobox-marked&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>pin</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>number</span><span class=p>:</span><span class=w> </span><span class=l>GPIO04</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>mode</span><span class=p>:</span><span class=w> </span><span class=l>INPUT_PULLUP</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>inverted</span><span class=p>:</span><span class=w> </span><span class=kc>True</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;${friendly_name_short} Case Button&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>gpio</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>inp_pc_case_btn_status</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>entity_category</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;diagnostic&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>icon</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;mdi:power-standby&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>pin</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>number</span><span class=p>:</span><span class=w> </span><span class=l>GPIO10</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>mode</span><span class=p>:</span><span class=w> </span><span class=l>INPUT_PULLUP</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>inverted</span><span class=p>:</span><span class=w> </span><span class=kc>True</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>on_press</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>then</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span>- <span class=nt>if</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>condition</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>              </span><span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=s1>&#39;return id(glbl_relay_latched);&#39;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>then</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>              </span>- <span class=nt>output.turn_on</span><span class=p>:</span><span class=w> </span><span class=l>out_relay</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>else</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>              </span>- <span class=nt>logger.log</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;PC Case button press but disarmed!&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>on_release</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>then</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span>- <span class=nt>if</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>condition</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>              </span><span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=s1>&#39;return id(glbl_relay_latched);&#39;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>then</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>              </span>- <span class=nt>output.turn_off</span><span class=p>:</span><span class=w> </span><span class=l>out_relay</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>else</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>              </span>- <span class=nt>logger.log</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;PC Case button release but disarmed!&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c>##</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c># Press is momentary quick</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>on_click</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>then</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span>- <span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=p>|-</span><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>            // If relay isn&#39;t latched, do nothing
+</span></span></span><span class=line><span class=cl><span class=sd>            if( !id(glbl_relay_latched) ){
+</span></span></span><span class=line><span class=cl><span class=sd>              ESP_LOGD(&#34;caseBtnPress&#34;, &#34;button pressed, not latched so doing nothing.&#34;);
+</span></span></span><span class=line><span class=cl><span class=sd>              return;
+</span></span></span><span class=line><span class=cl><span class=sd>            }
+</span></span></span><span class=line><span class=cl><span class=sd>            ESP_LOGD(&#34;caseBtnPress&#34;, &#34;button pressed, latched. Toggling power now...&#34;);
+</span></span></span><span class=line><span class=cl><span class=sd>            id(sw_pc_power).toggle();</span><span class=w>            
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>on_multi_click</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>timing</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span>- <span class=kc>ON</span><span class=w> </span><span class=l>for at most 1s</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span>- <span class=kc>OFF</span><span class=w> </span><span class=l>for at most 2s</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span>- <span class=kc>ON</span><span class=w> </span><span class=l>for at most 1s</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span>- <span class=kc>OFF</span><span class=w> </span><span class=l>for at most 2s</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span>- <span class=kc>ON</span><span class=w> </span><span class=l>for at most 1s</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span>- <span class=kc>OFF</span><span class=w> </span><span class=l>for at most 2s</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>then</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c># We&#39;d want to press a virtual / template button for hard power down</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c># That template button would run a script that just raised the output hight for 10s</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span>- <span class=nt>logger.log</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;Triple clicked!&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span>- <span class=nt>button.press</span><span class=p>:</span><span class=w> </span><span class=l>btn_forceful_down</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;${friendly_name_short} Power Status&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>gpio</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>inp_power_status</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>device_class</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;power&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>entity_category</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;diagnostic&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>icon</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;mdi:power-settings&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>pin</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>number</span><span class=p>:</span><span class=w> </span><span class=l>GPIO12</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>mode</span><span class=p>:</span><span class=w> </span><span class=l>INPUT_PULLUP</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>inverted</span><span class=p>:</span><span class=w> </span><span class=kc>True</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>switch</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;${friendly_name_short} Relay Latch&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>template</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>sw_relay_mode</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>device_class</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;switch&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>icon</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;mdi:link-variant&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>entity_category</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;config&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=p>|-</span><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>      if (id(glbl_relay_latched)) {
+</span></span></span><span class=line><span class=cl><span class=sd>        return true;
+</span></span></span><span class=line><span class=cl><span class=sd>      } else {
+</span></span></span><span class=line><span class=cl><span class=sd>        return false;
+</span></span></span><span class=line><span class=cl><span class=sd>      }</span><span class=w>      
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>turn_on_action</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>globals.set</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>glbl_relay_latched</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>value</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;true&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>turn_off_action</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>globals.set</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>glbl_relay_latched</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>value</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;false&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;${friendly_name_short} Power&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>sw_pc_power</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>template</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>icon</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;mdi:power-plug&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>device_class</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;switch&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=p>|-</span><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>      if (id(inp_power_status).state) {
+</span></span></span><span class=line><span class=cl><span class=sd>        return true;
+</span></span></span><span class=line><span class=cl><span class=sd>      } else {
+</span></span></span><span class=line><span class=cl><span class=sd>        return false;
+</span></span></span><span class=line><span class=cl><span class=sd>      }</span><span class=w>      
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c># Mimic the user pressing the button</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>turn_on_action</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>script.execute</span><span class=p>:</span><span class=w> </span><span class=l>regular_press</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>turn_off_action</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>script.execute</span><span class=p>:</span><span class=w> </span><span class=l>regular_press</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>output</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>gpio</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>out_relay</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>pin</span><span class=p>:</span><span class=w> </span><span class=l>GPIO5</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>Updated on 2022-10-22&nbsp;<a class=git-hash href=https://github.com/kquinsland/kquinsland.github.io/commit/c7653bb5e720d3dd6e28ef12d0fa8afdfe97b5e9 target=_blank title="commit by karl(github@karlquinsland.com) c7653bb5e720d3dd6e28ef12d0fa8afdfe97b5e9: Fix biline">
+<i class="fas fa-hashtag fa-fw"></i>c7653bb</a></span></div><div class=post-info-license></div></div><div class=post-info-line><div class=post-info-md><span><a class=link-to-markdown href=https://karlquinsland.com/esphome-sinilink-pc-remotes/index.md target=_blank>Read Markdown</a></span></div><div class=post-info-share><span></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=https://karlquinsland.com/tags/esphome/>esphome</a>,&nbsp;<a href=https://karlquinsland.com/tags/home-assistant/>home assistant</a></section><section><span><a href=javascript:void(0); onclick=window.history.back()>Back</a></span>&nbsp;|&nbsp;<span><a href=https://karlquinsland.com/>Home</a></span></section></div><div class=post-nav><a href=https://karlquinsland.com/yet-another-gps-pps-opnsense/ class=prev rel=prev title="I made a thing: GPS/PPS clock source for ntpd"><i class="fas fa-angle-left fa-fw"></i>I made a thing: GPS/PPS clock source for ntpd</a></div></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line>¯\_(ツ)_/¯</div><div class=footer-line>Powered by <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.104.3">Hugo</a> | Theme - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a></div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2019 - 2022</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=https://karlquinsland.com/ target=_blank>karl</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top"><i class="fas fa-arrow-up fa-fw"></i>
+</a><a href=# id=view-comments class=fixed-button title="View Comments"><i class="fas fa-comment fa-fw"></i></a></div><link rel=stylesheet href=https://karlquinsland.com/lib/katex/katex.min.4710034e669c7ff17f823f9ba12cf8a36582d65b007f79cbc4a3c11d7db2e4ca.css integrity="sha256-RxADTmacf/F/gj+boSz4o2WC1lsAf3nLxKPBHX2y5Mo="><link rel=stylesheet href=https://karlquinsland.com/lib/katex/copy-tex.min.bf9ff4137fec38f6255419e142d0883c9c52090885d746f80eee12b273d9b3e0.css integrity="sha256-v5/0E3/sOPYlVBnhQtCIPJxSCQiF10b4Du4SsnPZs+A="><script type=text/javascript src=https://karlquinsland.com/lib/smooth-scroll/smooth-scroll.min.bcff85fb5e00d68802850b393ac7792c997f722f536f38e26638c46dca8e5eb6.js integrity="sha256-vP+F+14A1ogChQs5Osd5LJl/ci9TbzjiZjjEbcqOXrY="></script><script type=text/javascript src=https://karlquinsland.com/lib/autocomplete/autocomplete.min.615590a2ca2b667afa7c02ef396f5500b62e22795ddbb46448f90494605d09a5.js integrity="sha256-YVWQosorZnr6fALvOW9VALYuInld27RkSPkElGBdCaU="></script><script type=text/javascript src=https://karlquinsland.com/lib/lunr/lunr.min.df84a2d58ea594c04a3371b48d020b55ea10284c2ec636e4e331965d7313e29b.js integrity="sha256-34Si1Y6llMBKM3G0jQILVeoQKEwuxjbk4zGWXXMT4ps="></script><script type=text/javascript src=https://karlquinsland.com/lib/lazysizes/lazysizes.min.fb649fcae62177dfe63e67081ddceb830b5ce1f05a4184e9bbb7d87ac4b8f4e5.js integrity="sha256-+2SfyuYhd9/mPmcIHdzrgwtc4fBaQYTpu7fYesS49OU="></script><script type=text/javascript src=https://karlquinsland.com/lib/clipboard/clipboard.min.8a7739925f4c03586479852df840b7061948832a7fda30c8c812d2ea4dd4c4f2.js integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/katex.min.17f5dd6b9f123dd7140abfb18521b3f4c036cd004f6f40121182a8865f140877.js integrity="sha256-F/Xda58SPdcUCr+xhSGz9MA2zQBPb0ASEYKohl8UCHc="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/auto-render.min.f74776a677f0d2be0af0264058f928e2ba455d0b19bc985304660d922a43a6b2.js integrity="sha256-90d2pnfw0r4K8CZAWPko4rpFXQsZvJhTBGYNkipDprI="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/copy-tex.min.2ab2237329021bc443986c8327f6e61357fb68a54e5d233d224023718c02207d.js integrity="sha256-KrIjcykCG8RDmGyDJ/bmE1f7aKVOXSM9IkAjcYwCIH0="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/mhchem.min.5cea356d6025c5a2f18c454c83ec5674dbb04fab1cd1d75569e77788c6b6f888.js integrity="sha256-XOo1bWAlxaLxjEVMg+xWdNuwT6sc0ddVaed3iMa2+Ig="></script><script type=text/javascript>window.config={code:{copyTitle:"Copy to clipboard",maxShownLines:10},comment:{},math:{delimiters:[{display:!0,left:"$$",right:"$$"},{display:!0,left:"\\[",right:"\\]"},{display:!1,left:"$",right:"$"},{display:!1,left:"\\(",right:"\\)"}],strict:!1},search:{highlightTag:"em",lunrIndexURL:"/index.json",maxResultLength:10,noResultsFound:"No results found",snippetLength:30,type:"lunr"}}</script><script type=text/javascript src=https://karlquinsland.com/js/theme.min.f51938f3065a40ee841bcb558e4330e31fd26c0ea55343fff8770b88b0319a3c.js integrity="sha256-9Rk48wZaQO6EG8tVjkMw4x/SbA6lU0P/+HcLiLAxmjw="></script><script type=text/javascript>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-3WZ55XG701",{anonymize_ip:!0})</script><script type=text/javascript src="https://www.googletagmanager.com/gtag/js?id=G-3WZ55XG701" async></script></body></html>

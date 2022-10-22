@@ -33,7 +33,7 @@ After a bit of digging, it turns out that chromium does NOT use hardware acceler
 Ok, that's an easy fix. Just enable the gpu and reboot:
 
 ```shell
-pi@kds:~ $ cat /boot/config.txt 
+pi@kds:~ $ cat /boot/config.txt
 <...>
 # Enable DRM VC4 V3D driver for much more performant chrome
 dtoverlay=vc4-kms-v3d
@@ -48,7 +48,7 @@ pi@kds:~ $ sudo reboot
 Turning on the gpu acceleration broke the various screen rotation / resolution directives that I had configured in `/boot/config.txt`:
 
 ```shell
-pi@kds:~ $ cat /boot/config.txt 
+pi@kds:~ $ cat /boot/config.txt
 <...>
 [all]
 # We need to rotate the display 90degrees as the 'default' orientation from the manufacturer assumes a horizontal orientation, not a vertical one
@@ -115,7 +115,7 @@ EndSection
 
 Section "Monitor"
         Identifier "default"
-        # equivalent to `display_rotate = 1` in config.txt 
+        # equivalent to `display_rotate = 1` in config.txt
         Option "Rotate" "right"
 EndSection
 
@@ -140,7 +140,7 @@ Chrome did not automatically switch over to the GPU backed rendering pipe but it
 
 And with all that in place, a quick `sudo systemctl restart lightdm` and a brief screen flicker later, chromium launched in full screen mode with the correct orientation. After the dashboard finished loading, the scroll/tap/animation performance was as good as it would be on any competent computer!
 
-I really don't know why I couldn't easily find a working X11 configuration example for use with the rPi 4 GPU, but I wasn't able to 🤷. 
+I really don't know why I couldn't easily find a working X11 configuration example for use with the rPi 4 GPU, but I wasn't able to 🤷.
 
 Hopefully the above helps somebody else!
 
