@@ -206,8 +206,16 @@ Of the 6 devices I received, 3 didn&rsquo;t &ldquo;take&rdquo; the custom firmwa
 <p>I cut my losses and moved on.</p>
 <h2 id="esphome-configurations">ESPHome configurations</h2>
 <p>For SEO/Archival purposes, I have also uploaded a copy of the config to the <a href="https://github.com/esphome-devices/esphome-devices/pull/294" target="_blank" rel="noopener noreffer">esphome-devices.com</a> site.
-As of publishing <em>this</em> article, the PR is pending review.
-If/When the page goes live, I&rsquo;ll update the link here.</p>
+<del>As of publishing <em>this</em> article, the PR is pending review.
+If/When the page goes live, I&rsquo;ll update the link here.</del></p>
+<div class="details admonition success open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-check-circle fa-fw"></i>Success<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">The pr is <a href="https://www.esphome-devices.com/devices/Sinilink-XY-WPCE" target="_blank" rel="noopener noreffer">LIVE</a>. Thanks to the super quick work of <a href="https://github.com/tekmaven" target="_blank" rel="noopener noreffer"><code>@tekmaven</code></a>!</div>
+        </div>
+    </div>
 <p>The configurations there are bare-bones and cover <em>just</em> the basics required to get the GPIO working with ESPhome.</p>
 <p>The configuration below is a bit more featured and is a lot closer to the versions that I use in production.
 It features a &ldquo;pc power button lockout&rdquo; feature and more.</p>

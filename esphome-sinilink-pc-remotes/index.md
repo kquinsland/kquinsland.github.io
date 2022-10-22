@@ -129,8 +129,12 @@ I cut my losses and moved on.
 ## ESPHome configurations
 
 For SEO/Archival purposes, I have also uploaded a copy of the config to the [esphome-devices.com](https://github.com/esphome-devices/esphome-devices/pull/294) site.
-As of publishing _this_ article, the PR is pending review.
-If/When the page goes live, I'll update the link here.
+~~As of publishing _this_ article, the PR is pending review.
+If/When the page goes live, I'll update the link here.~~
+
+{{< admonition success  >}}
+The pr is [LIVE](https://www.esphome-devices.com/devices/Sinilink-XY-WPCE). Thanks to the super quick work of [`@tekmaven`](https://github.com/tekmaven)!
+{{< /admonition >}}
 
 The configurations there are bare-bones and cover _just_ the basics required to get the GPIO working with ESPhome.
 
@@ -346,6 +350,5 @@ output:
   - platform: gpio
     id: out_relay
     pin: GPIO5
-
 ```
 
