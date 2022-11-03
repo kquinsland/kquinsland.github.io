@@ -171,7 +171,7 @@ If those headers are for a UART, the MCU isn&rsquo;t responding to any inputs no
 </figure>
 
 
-<p>I&rsquo;m not sure why they went with 3 screws here instead of 4. If you&rsquo;re going to omit <em>a</em> screw for cost-cutting reasons, why not just
+<p>I&rsquo;m not sure why they went with 3 screws here instead of 4. If you&rsquo;re going to omit <em>a</em> screw for cost-cutting reasons, why not just use clips or a single screw in the middle?</p>
 <figure >
 
     
@@ -192,7 +192,7 @@ If those headers are for a UART, the MCU isn&rsquo;t responding to any inputs no
     
 </figure>
 
-</p>
+
 <p>The interior is more or less as expected; two highly integrated modules with a small MCU gluing them together.</p>
 <figure >
 

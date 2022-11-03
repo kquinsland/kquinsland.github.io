@@ -42,7 +42,8 @@ AKA "the white one". Box content is bare-bones; the USB lead is comically short 
 
 {{<figure name="wh_in-box">}}
 
-I'm not sure why they went with 3 screws here instead of 4. If you're going to omit _a_ screw for cost-cutting reasons, why not just
+I'm not sure why they went with 3 screws here instead of 4. If you're going to omit _a_ screw for cost-cutting reasons, why not just use clips or a single screw in the middle?
+
 {{<figure name="wh_btm">}}
 
 The interior is more or less as expected; two highly integrated modules with a small MCU gluing them together.
