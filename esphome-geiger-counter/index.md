@@ -47,7 +47,7 @@ I have some thoughts on being able to toggle this behavior [below](#beeper)
 
 And with a bit of hot glue, we're done with the hardware assembly.
 
-{{<figure name="feat-assembled">}}
+{{<figure name="feature-assembled">}}
 
 {{< admonition warning >}}
 There's no _good_ place to put the ESP module such that the screen is unobstructed and such that the ESP is not near the geiger tube.
