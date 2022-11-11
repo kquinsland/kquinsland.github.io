@@ -1,0 +1,317 @@
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><meta http-equiv=x-ua-compatible content="IE=edge, chrome=1"><title>Integrating ESPHome with a Cheap Geiger Counter - karl</title><meta name=Description content="This 'i made an iot geiger counter' post isn't like all the other ones, I swear!"><meta property="og:title" content="Integrating ESPHome with a Cheap Geiger Counter"><meta property="og:description" content="This 'i made an iot geiger counter' post isn't like all the other ones, I swear!"><meta property="og:type" content="article"><meta property="og:url" content="https://karlquinsland.com/esphome-geiger-counter/"><meta property="og:image" content="https://karlquinsland.com/images/avatar.png"><meta property="article:section" content="posts"><meta property="article:published_time" content="2022-11-09T00:00:00+00:00"><meta property="article:modified_time" content="2022-11-10T19:37:10-08:00"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://karlquinsland.com/images/avatar.png"><meta name=twitter:title content="Integrating ESPHome with a Cheap Geiger Counter"><meta name=twitter:description content="This 'i made an iot geiger counter' post isn't like all the other ones, I swear!"><meta name=application-name content="karl"><meta name=apple-mobile-web-app-title content="karl"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=https://karlquinsland.com/favicon.ico><link rel=icon type=image/png sizes=32x32 href=https://karlquinsland.com/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=https://karlquinsland.com/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=https://karlquinsland.com/apple-touch-icon.png><link rel=mask-icon href=https://karlquinsland.com/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=https://karlquinsland.com/site.webmanifest><link rel=canonical href=https://karlquinsland.com/esphome-geiger-counter/><link rel=prev href=https://karlquinsland.com/two-mmwave-sensors/><link rel=stylesheet href=https://karlquinsland.com/lib/normalize/normalize.min.055364f5be272caa092b0e6654c165828707f8ab971e2656383a6d6392bc345e.css integrity="sha256-BVNk9b4nLKoJKw5mVMFlgocH+KuXHiZWODptY5K8NF4="><link rel=stylesheet href=https://karlquinsland.com/css/style.min.1e2694bed152fa2922dbe909a441838ed693d88b1330f97485bfa8ed78da42df.css integrity="sha256-HiaUvtFS+iki2+kJpEGDjtaT2IsTMPl0hb+o7XjaQt8="><link rel=stylesheet href=https://karlquinsland.com/lib/fontawesome-free/all.min.876d023d9d10c97941b80c3b03e2a5b94631ff7a4af9cee5604a6a2d39718d84.css integrity="sha256-h20CPZ0QyXlBuAw7A+KluUYx/3pK+c7lYEpqLTlxjYQ="><link rel=stylesheet href=https://karlquinsland.com/lib/animate/animate.min.3c770e90f98eb21b0c042fafb49755af93306fbaf42e449524f94fae9fc83295.css integrity="sha256-PHcOkPmOshsMBC+vtJdVr5Mwb7r0LkSVJPlPrp/IMpU="><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Integrating ESPHome with a Cheap Geiger Counter","inLanguage":"en-us","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/karlquinsland.com\/esphome-geiger-counter\/"},"genre":"posts","keywords":"esphome, home assistant","wordcount":1890,"url":"https:\/\/karlquinsland.com\/esphome-geiger-counter\/","datePublished":"2022-11-09T00:00:00+00:00","dateModified":"2022-11-10T19:37:10-08:00","publisher":{"@type":"Organization","name":""},"author":{"@type":"Person","name":"karl"},"description":"This 'i made an iot geiger counter' post isn't like all the other ones, I swear!"}</script></head><body header-desktop=fixed header-mobile=auto><script type=text/javascript>(window.localStorage&&localStorage.getItem("theme")?localStorage.getItem("theme")==="dark":"auto"==="auto"?window.matchMedia("(prefers-color-scheme: dark)").matches:"auto"==="dark")&&document.body.setAttribute("theme","dark")</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=https://karlquinsland.com/ title=karl>Karl</a></div><div class=menu><div class=menu-inner><a class=menu-item href=https://karlquinsland.com/posts/><i class="fas fa-blog"></i> Posts </a><a class=menu-item href=https://karlquinsland.com/resume/ title="Hire Me!"><i class="fas fa-briefcase"></i> Résumé </a><a class=menu-item href=https://karlquinsland.com/tags/ title="Can you tell that I don't have a super consistent or clear taxonomy?"><i class="fas fa-tags"></i> Tags </a><a class=menu-item href=https://karlquinsland.com/contact/><i class="fas fa-address-book"></i> Contact </a><span class="menu-item delimiter"></span><span class="menu-item search" id=search-desktop>
+<input type=text placeholder="Search titles or contents..." id=search-input-desktop>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=Search><i class="fas fa-search fa-fw"></i></a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=Clear><i class="fas fa-times-circle fa-fw"></i></a>
+<span class="search-button search-loading" id=search-loading-desktop><i class="fas fa-spinner fa-fw fa-spin"></i></span>
+</span><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme"><i class="fas fa-adjust fa-fw"></i></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=https://karlquinsland.com/ title=karl>Karl</a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><div class=search-wrapper><div class="search mobile" id=search-mobile><input type=text placeholder="Search titles or contents..." id=search-input-mobile>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=Search><i class="fas fa-search fa-fw"></i></a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=Clear><i class="fas fa-times-circle fa-fw"></i></a>
+<span class="search-button search-loading" id=search-loading-mobile><i class="fas fa-spinner fa-fw fa-spin"></i></span></div><a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>Cancel</a></div><a class=menu-item href=https://karlquinsland.com/posts/ title><i class="fas fa-blog"></i>Posts</a><a class=menu-item href=https://karlquinsland.com/resume/ title="Hire Me!"><i class="fas fa-briefcase"></i>Résumé</a><a class=menu-item href=https://karlquinsland.com/tags/ title="Can you tell that I don't have a super consistent or clear taxonomy?"><i class="fas fa-tags"></i>Tags</a><a class=menu-item href=https://karlquinsland.com/contact/ title><i class="fas fa-address-book"></i>Contact</a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw"></i></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>Contents</h2><div class=toc-content id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animated flipInX">Integrating ESPHome with a Cheap Geiger Counter</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=https://karlquinsland.com/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw"></i>karl</a></span>&nbsp;<span class=post-category>included in <a href=https://karlquinsland.com/categories/imadeathing/><i class="far fa-folder fa-fw"></i>IMadeAThing</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2022-11-09>2022-11-09</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;1890 words&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;9 minutes&nbsp;</div></div><div class="details toc" id=toc-static kept=true><div class="details-summary toc-title"><span>Contents</span>
+<span><i class="details-icon fas fa-angle-right"></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><ul><li><a href=#the-geiger-counter>The Geiger Counter</a><ul><li><a href=#the-usb--uart-port>The USB / UART port</a></li></ul></li><li><a href=#plan-b>Plan B</a></li><li><a href=#esphome>ESPHome</a><ul><li><a href=#beeper>Beeper</a></li></ul></li></ul></li></ul></nav></div></div><div class=content id=content><p>Yes, there have <a href=https://community.home-assistant.io/t/geiger-counter-with-ha-integration/107660/12 target=_blank rel="noopener noreffer">been</a> <em>loads</em> of <a href=https://www.rhelectronics.store/radiation-detector-geiger-counter-diy-kit-second-edition target=_blank rel="noopener noreffer">people</a> doing <a href=https://www.connectix.nl/connecting-a-geiger-counter-to-home-assistant/ target=_blank rel="noopener noreffer">similar</a> <a href=https://old.reddit.com/r/homeassistant/comments/l92fbf/doomsday_sensor_v10/ target=_blank rel="noopener noreffer">things</a>! ESPHome already has a tutorial <a href=https://esphome.io/cookbook/geiger-counter.html target=_blank rel="noopener noreffer">covering <em>exactly</em> this</a>!</p><p>I&rsquo;m writing this up because the approach that I ended up taking was <em>not</em> the intended/planned approach.</p><h2 id=the-geiger-counter>The Geiger Counter</h2><p>I originally pulled the trigger on this particular version because it had a built in screen attached to a micro controller.</p><figure><img src=https://karlquinsland.com/esphome-geiger-counter/images/ali_img.webp><figcaption></figcaption></figure><p>I naïvely thought that I&rsquo;d be able to get a simple UART from the 4 pins next to the microcontroller or maybe even get data directly off of the micro USB port.</p><div class="details admonition info open"><div class="details-summary admonition-title"><i class="icon fas fa-info-circle fa-fw"></i>Info<i class="details-icon fas fa-angle-right fa-fw"></i></div><div class=details-content><div class=admonition-content>As of 2022.11, the geiger counter pictured above can be found <a href=https://www.aliexpress.us/item/3256804497523971.html target=_blank rel="noopener noreffer">here</a>.
+The listing title is <code>DIY Geiger Counter Kit Assembled Module Nuclear Radiation Detector X γ β rays Iodine 131 Detecting OLED Display Radiation Tester</code></div></div></div><h3 id=the-usb--uart-port>The USB / UART port</h3><p>After receiving and unpacking it, I probed around and determined that the micro USB port did have the data lines going to the <code>U5</code> micro and that the 4 pins <em>also</em> went to the micro.</p><p>Unfortunately both seemed dead; the pins didn&rsquo;t have any signal on them and the software on the micro implementing the USB stack didn&rsquo;t seem to be fully implemented.
+Using <code>dmesg</code> I could see <em>a device</em> being plugged in but the device failed to respond to any probes.</p><p>So much for the easy way out.</p><h2 id=plan-b>Plan B</h2><p>With the identifying markings sanded off of the chip, attempting to dump / reverse / re-program the firmware wasn&rsquo;t the most appealing option.</p><p>After some quick testing, I determined that the micro controller toggles the beeper and the LED via <em>distinct</em> GPIO pins and that the LED is pulsed to 3.3v for 5ms.</p><figure><img src=https://karlquinsland.com/esphome-geiger-counter/images/oscope.png><figcaption></figcaption></figure><p>For reference, here are the points that I chose to inject power and observe the LED.
+I am injecting 5V into the geiger counter from the ESP module so I can program and power the entire assembly with a single cable.
+If you choose to use separate power supplies for both, make sure that the ESP and geiger counter share a ground!</p><p>Removing <code>R1</code> is optional; keep it if you want the beeper to click as well.
+I have some thoughts on being able to toggle this behavior <a href=#beeper rel>below</a></p><figure><img src=https://karlquinsland.com/esphome-geiger-counter/images/pcb_marked_up.jpg alt="I left R1 in place so it's easier to reverse the mod."><figcaption><p>I left R1 in place so it's easier to reverse the mod.</p></figcaption></figure><p>And with a bit of hot glue, we&rsquo;re done with the hardware assembly.</p><figure><img src=https://karlquinsland.com/esphome-geiger-counter/images/assembled.jpg alt="There's no good place for the ESP module so I chose to strategically obfuscate the portion of the screen that does not display the actual measurements."><figcaption><p>There's no good place for the ESP module so I chose to strategically obfuscate the portion of the screen that does not display the actual measurements.</p></figcaption></figure><div class="details admonition warning open"><div class="details-summary admonition-title"><i class="icon fas fa-exclamation-triangle fa-fw"></i>Warning<i class="details-icon fas fa-angle-right fa-fw"></i></div><div class=details-content><div class=admonition-content>There&rsquo;s no <em>good</em> place to put the ESP module such that the screen is unobstructed and such that the ESP is not near the geiger tube.
+As the tube is charged up to ~400v, it putting the ESP module directly over it seems like a potential problem.</div></div></div><figure><img src=https://karlquinsland.com/esphome-geiger-counter/images/assembled-doa.jpg alt="I wouldn't put the ESP right here because a) the tube is partially obstructed and b) the tube is charged to a few hundred volts and putting any delicate electronics that close seems like a bad idea."><figcaption><p>I wouldn't put the ESP right here because a) the tube is partially obstructed and b) the tube is charged to a few hundred volts and putting any delicate electronics that close seems like a bad idea.</p></figcaption></figure><h2 id=esphome>ESPHome</h2><figure><img src=https://karlquinsland.com/esphome-geiger-counter/images/ha_geiger_history.png alt="Ignore that 12 hour gap in the data... I forgot to plug the assembly back in after doing some tests."><figcaption><p>Ignore that 12 hour gap in the data... I forgot to plug the assembly back in after doing some tests.</p></figcaption></figure><p>The firmware is pretty simple.
+The configuration below is an abridged version of what I am currently using.
+I&rsquo;ve stripped out unnecessary things but left some comments in to serve as basic documentation.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=c>##</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># To convert from particles per unit time, there&#39;s supposed to be some conversion factor.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># This conversion factor depends on the tube and the cheap Ali Express tubes all seem to be J321 style.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># Not a ton of documentation out there, but I did find one source that says J321 is basically J305.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># See: https://www.radmon.org/index.php/forum/geiger-muller-tubes/1245-information-on-j321-gm-tube</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c>#</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># But even then, the conversion factor is derived from some known isotope. They expose the tube to some</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c>#   known isotope and then measure the counts. Because they also know the proper dosing info for the</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c>#   isotope, the tube then gets a conversion factor.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c>#</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># Additionally, the micro controller sits between the raw data from the tube and the LED that I am tapping into.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># Each time there is _any_ radiation detected, the micro controller pluses the LED for 5ms. In theory, multiple</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c>#   radioactive particles could strike the tube in the 5ms window and the microcontroller would know ... but I wouldn&#39;t.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># At 5ms per pulse, the maximum number of particles per second that I can detect is 200. Even if the TRUE count</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c>#   is 3x that... 200 is still way more than enough to know that _something_ isn&#39;t right and that&#39;s really what I&#39;m after here.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c>#</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># So for now, just stick with basic counts per min w/ the understanding that the signal that I&#39;m observing might not</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c>#   be with the full resolution that the tube is capable of.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c>##</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>esphome</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># Note: this will be the hostname that device request during the DHCP dance...</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;geiger-counter&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>esp32</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>board</span><span class=p>:</span><span class=w> </span><span class=l>mhetesp32minikit</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># Enable logging</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>logger</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>level</span><span class=p>:</span><span class=w> </span><span class=l>INFO</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>sensor</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># See: https://esphome.io/components/sensor/pulse_counter.html</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>Particle Count</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>pulse_counter</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>sense_p_cnt</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c># Does not really matter which pin for ESP32</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>pin</span><span class=p>:</span><span class=w> </span><span class=l>GPIO32</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>use_pcnt</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c># Measured with oScope: pulse is 5ms _exactly_.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c># Docs say to use falling edge detection with the hardware pulse counter</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>count_mode</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>rising_edge</span><span class=p>:</span><span class=w> </span><span class=l>DISABLE</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>falling_edge</span><span class=p>:</span><span class=w> </span><span class=l>INCREMENT</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c># Docs ALSO say that you can&#39;t configure a filter of more than 13us when using the</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c>#   internal pulse counter. 5ms is ... 5000 us and that&#39;s more than 13us so I guess we&#39;ll</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c>#   stick with the defaults?</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c>##</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>internal_filter</span><span class=p>:</span><span class=w> </span><span class=l>13us</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c># As best I can tell, pulses trigger an ISR which just increases some counter somewhere.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c># Every update_interval, esphome checks the value in the storage and computes the count</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c>#   per min.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c>##</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>update_interval</span><span class=p>:</span><span class=w> </span><span class=l>60s</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>unit_of_measurement</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;cpm&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>state_class</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;measurement&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>icon</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;mdi:radioactive-circle-outline&#34;</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h3 id=beeper>Beeper</h3><p>I can&rsquo;t confirm it, but I suspect that the beeper is driven independently of the LED because the original designer wanted to implement a software toggle for the sound.</p><p>I don&rsquo;t need the sound functionality but I also don&rsquo;t want to <em>permanently</em> disable it. It would be nice to be able to toggle it on/off as needed.
+There are a few ways to get similar functionality:</p><ul><li><p>Hack the hardware&mldr; more. The TO92 driving the beeper (via <code>R1</code>) is a <code>SS9014 NPN</code>. I could add <em>another</em> transistor in series with <code>R1</code> and then control the current flow via another GPIO on the ESP.</p></li><li><p>Inspired by this <a href=https://old.reddit.com/r/Esphome/comments/uhu3uy/trying_to_detect_falling_edge_on_input_where_also/ target=_blank rel="noopener noreffer">reddit thread</a>, I could try to get the ESP to toggle a beeper directly when a pulse is detected.
+There are some issues with this approach, though.</p></li></ul><p>It is not possible to get <em>direct</em> access to the ISR via ESPHome.
+I&rsquo;d have to create my own custom component to pull this off.
+Not the end of the world but also more time than I wanted to spend so I went with a different approach that <em>appears to work</em>.</p><p>Basically, create <em>two</em> instances of the <a href=https://esphome.io/components/sensor/pulse_counter.html target=_blank rel="noopener noreffer"><code>pulse_counter</code></a> sensor using the same GPIO pin.
+One of them will remain external and will publish data to Home Assistant at 60s intervals.
+The other will be internal and will be updated every <code>loop()</code>.
+By attaching a <a href=https://esphome.io/guides/automations.html#lambda-action target=_blank rel="noopener noreffer"><code>lambda</code> function</a> to the sensor evaluation loop, we can compare the number of recorded pulses many times per second.
+The number of cycles that the internal pulse counter will sum pulses over is 1 so any time the current value does not match the previous value &mldr; should indicate that a pulse was fired off.</p><p>Here&rsquo;s what I came up with:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>sensor</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># See: https://esphome.io/components/sensor/pulse_counter.html</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>Particle Count</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c># &lt;...&gt;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>INTERNAL Particle Count</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>internal</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>pulse_counter</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c># &lt;... literally the exact same config as the external pulse counter ...&gt;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c>##</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c># 0ms means every loop()</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>update_interval</span><span class=p>:</span><span class=w> </span><span class=l>0ms</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>filters</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=c># LogE because we want it to stand out on the console while testing</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=p>|-</span><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>          static int num_zeros = 0;
+</span></span></span><span class=line><span class=cl><span class=sd>          if (x &gt; 0) {
+</span></span></span><span class=line><span class=cl><span class=sd>            // reset
+</span></span></span><span class=line><span class=cl><span class=sd>            num_zeros = 0;
+</span></span></span><span class=line><span class=cl><span class=sd>            // Indicate that a non 0 measurement was taken and dump to console
+</span></span></span><span class=line><span class=cl><span class=sd>            // This is where a beeper would be fired off if desired...
+</span></span></span><span class=line><span class=cl><span class=sd>            ESP_LOGE(&#34;filterLambda&#34;, &#34;raw is %f&#34;, x );
+</span></span></span><span class=line><span class=cl><span class=sd>          } else {
+</span></span></span><span class=line><span class=cl><span class=sd>            num_zeros++;
+</span></span></span><span class=line><span class=cl><span class=sd>          }
+</span></span></span><span class=line><span class=cl><span class=sd>          // Dont spam console
+</span></span></span><span class=line><span class=cl><span class=sd>          if (num_zeros % 1000 == 0) {
+</span></span></span><span class=line><span class=cl><span class=sd>            ESP_LOGI(&#34;filterLambda&#34;, &#34;num_zeros is %d&#34;, num_zeros );
+</span></span></span><span class=line><span class=cl><span class=sd>          }
+</span></span></span><span class=line><span class=cl><span class=sd>          return x;</span><span class=w>          
+</span></span></span></code></pre></td></tr></table></div></div><p>In testing, I would get logs like:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-text data-lang=text><span class=line><span class=cl>[17:34:18][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class=line><span class=cl>[17:34:18][I][filterLambda:170]: num_zeros is 0
+</span></span><span class=line><span class=cl>[17:34:19][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class=line><span class=cl>[17:34:19][I][filterLambda:170]: num_zeros is 0
+</span></span><span class=line><span class=cl>[17:34:19][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class=line><span class=cl>[17:34:19][I][filterLambda:170]: num_zeros is 0
+</span></span><span class=line><span class=cl>[17:34:20][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class=line><span class=cl>[17:34:20][I][filterLambda:170]: num_zeros is 0
+</span></span><span class=line><span class=cl>[17:34:22][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class=line><span class=cl>[17:34:22][I][filterLambda:170]: num_zeros is 0
+</span></span><span class=line><span class=cl>[17:34:24][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class=line><span class=cl>[17:34:24][I][filterLambda:170]: num_zeros is 0
+</span></span><span class=line><span class=cl>[17:34:24][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class=line><span class=cl>[17:34:24][I][filterLambda:170]: num_zeros is 0
+</span></span><span class=line><span class=cl>[17:34:25][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class=line><span class=cl>[17:34:25][I][filterLambda:170]: num_zeros is 0
+</span></span><span class=line><span class=cl>[17:34:26][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class=line><span class=cl>[17:34:26][I][filterLambda:170]: num_zeros is 0
+</span></span><span class=line><span class=cl>[17:34:32][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class=line><span class=cl>[17:34:32][I][filterLambda:170]: num_zeros is 0
+</span></span><span class=line><span class=cl>[17:34:33][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class=line><span class=cl>[17:34:33][I][filterLambda:170]: num_zeros is 0
+</span></span><span class=line><span class=cl>[17:34:35][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class=line><span class=cl>[17:34:35][I][filterLambda:170]: num_zeros is 0
+</span></span><span class=line><span class=cl>[17:34:40][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class=line><span class=cl>[17:34:40][I][filterLambda:170]: num_zeros is 0
+</span></span><span class=line><span class=cl>[17:34:42][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class=line><span class=cl>[17:34:42][I][filterLambda:170]: num_zeros is 0
+</span></span><span class=line><span class=cl>[17:34:43][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class=line><span class=cl>[17:34:43][I][filterLambda:170]: num_zeros is 0
+</span></span><span class=line><span class=cl>[17:34:44][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class=line><span class=cl>[17:34:44][I][filterLambda:170]: num_zeros is 0
+</span></span><span class=line><span class=cl>[17:34:45][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class=line><span class=cl>[17:34:45][I][filterLambda:170]: num_zeros is 0
+</span></span><span class=line><span class=cl>[17:34:46][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class=line><span class=cl>[17:34:46][I][filterLambda:170]: num_zeros is 0
+</span></span><span class=line><span class=cl>[17:34:47][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class=line><span class=cl>[17:34:47][I][filterLambda:170]: num_zeros is 0
+</span></span><span class=line><span class=cl>[17:34:50][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class=line><span class=cl>[17:34:50][I][filterLambda:170]: num_zeros is 0
+</span></span><span class=line><span class=cl>[17:34:52][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class=line><span class=cl>[17:34:52][I][filterLambda:170]: num_zeros is 0
+</span></span><span class=line><span class=cl>[17:34:54][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class=line><span class=cl>[17:34:54][I][filterLambda:170]: num_zeros is 0
+</span></span><span class=line><span class=cl>[17:34:58][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class=line><span class=cl>[17:34:58][I][filterLambda:170]: num_zeros is 0
+</span></span><span class=line><span class=cl>[17:35:00][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class=line><span class=cl>[17:35:00][I][filterLambda:170]: num_zeros is 0
+</span></span><span class=line><span class=cl>[17:35:02][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class=line><span class=cl>[17:35:02][I][filterLambda:170]: num_zeros is 0
+</span></span><span class=line><span class=cl>[17:35:05][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class=line><span class=cl>[17:35:05][I][filterLambda:170]: num_zeros is 0
+</span></span><span class=line><span class=cl>[17:35:11][I][filterLambda:170]: num_zeros is 1000
+</span></span><span class=line><span class=cl>[17:35:17][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class=line><span class=cl>[17:35:17][I][filterLambda:170]: num_zeros is 0
+</span></span></code></pre></td></tr></table></div></div><p>The period between <code>17:34:18</code> and <code>17:35:17</code> is basically 60 seconds long and the number of times that <code>num_zeros is 0</code> is printed is 27.
+Coincidentally, the external facing sensor published a value of 27 to Home Assistant.</p><p>This is not a <em>conclusive</em> test but - at least at <strong>background</strong> radiation levels - using two instances of the same sensor type on the same GPIO might work.</p><p>I don&rsquo;t have any easy way to induce higher counts on the geiger tube so I can&rsquo;t test how well this holds up &ldquo;under load&rdquo; nor can I confirm that this works reliably across all ESP chips/modules and versions of ESPHome/PlatformIO&mldr;etc.</p><p>Doing this with a custom component probably is the better way to do it but I wasn&rsquo;t going to pull that off in the time I had allotted.</p></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>Updated on 2022-11-10&nbsp;<a class=git-hash href=https://github.com/kquinsland/kquinsland.github.io/commit/6bc965863124aa884bacee6aaec93213651d6063 target=_blank title="commit by karl(github@karlquinsland.com) 6bc965863124aa884bacee6aaec93213651d6063: typo">
+<i class="fas fa-hashtag fa-fw"></i>6bc9658</a></span></div><div class=post-info-license></div></div><div class=post-info-line><div class=post-info-md><span><a class=link-to-markdown href=https://karlquinsland.com/esphome-geiger-counter/index.md target=_blank>Read Markdown</a></span></div><div class=post-info-share><span></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=https://karlquinsland.com/tags/esphome/>esphome</a>,&nbsp;<a href=https://karlquinsland.com/tags/home-assistant/>home assistant</a></section><section><span><a href=javascript:void(0); onclick=window.history.back()>Back</a></span>&nbsp;|&nbsp;<span><a href=https://karlquinsland.com/>Home</a></span></section></div><div class=post-nav><a href=https://karlquinsland.com/two-mmwave-sensors/ class=prev rel=prev title="Quick look inside two Ali Express mmWave presence detection sensors"><i class="fas fa-angle-left fa-fw"></i>Quick look inside two Ali Express mmWave presence detection sensors</a></div></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line>¯\_(ツ)_/¯</div><div class=footer-line>Powered by <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.105.0">Hugo</a> | Theme - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a></div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2019 - 2022</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=https://karlquinsland.com/ target=_blank>karl</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top"><i class="fas fa-arrow-up fa-fw"></i>
+</a><a href=# id=view-comments class=fixed-button title="View Comments"><i class="fas fa-comment fa-fw"></i></a></div><link rel=stylesheet href=https://karlquinsland.com/lib/katex/katex.min.4710034e669c7ff17f823f9ba12cf8a36582d65b007f79cbc4a3c11d7db2e4ca.css integrity="sha256-RxADTmacf/F/gj+boSz4o2WC1lsAf3nLxKPBHX2y5Mo="><link rel=stylesheet href=https://karlquinsland.com/lib/katex/copy-tex.min.bf9ff4137fec38f6255419e142d0883c9c52090885d746f80eee12b273d9b3e0.css integrity="sha256-v5/0E3/sOPYlVBnhQtCIPJxSCQiF10b4Du4SsnPZs+A="><script type=text/javascript src=https://karlquinsland.com/lib/smooth-scroll/smooth-scroll.min.bcff85fb5e00d68802850b393ac7792c997f722f536f38e26638c46dca8e5eb6.js integrity="sha256-vP+F+14A1ogChQs5Osd5LJl/ci9TbzjiZjjEbcqOXrY="></script><script type=text/javascript src=https://karlquinsland.com/lib/autocomplete/autocomplete.min.615590a2ca2b667afa7c02ef396f5500b62e22795ddbb46448f90494605d09a5.js integrity="sha256-YVWQosorZnr6fALvOW9VALYuInld27RkSPkElGBdCaU="></script><script type=text/javascript src=https://karlquinsland.com/lib/lunr/lunr.min.df84a2d58ea594c04a3371b48d020b55ea10284c2ec636e4e331965d7313e29b.js integrity="sha256-34Si1Y6llMBKM3G0jQILVeoQKEwuxjbk4zGWXXMT4ps="></script><script type=text/javascript src=https://karlquinsland.com/lib/lazysizes/lazysizes.min.fb649fcae62177dfe63e67081ddceb830b5ce1f05a4184e9bbb7d87ac4b8f4e5.js integrity="sha256-+2SfyuYhd9/mPmcIHdzrgwtc4fBaQYTpu7fYesS49OU="></script><script type=text/javascript src=https://karlquinsland.com/lib/clipboard/clipboard.min.8a7739925f4c03586479852df840b7061948832a7fda30c8c812d2ea4dd4c4f2.js integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/katex.min.17f5dd6b9f123dd7140abfb18521b3f4c036cd004f6f40121182a8865f140877.js integrity="sha256-F/Xda58SPdcUCr+xhSGz9MA2zQBPb0ASEYKohl8UCHc="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/auto-render.min.f74776a677f0d2be0af0264058f928e2ba455d0b19bc985304660d922a43a6b2.js integrity="sha256-90d2pnfw0r4K8CZAWPko4rpFXQsZvJhTBGYNkipDprI="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/copy-tex.min.2ab2237329021bc443986c8327f6e61357fb68a54e5d233d224023718c02207d.js integrity="sha256-KrIjcykCG8RDmGyDJ/bmE1f7aKVOXSM9IkAjcYwCIH0="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/mhchem.min.5cea356d6025c5a2f18c454c83ec5674dbb04fab1cd1d75569e77788c6b6f888.js integrity="sha256-XOo1bWAlxaLxjEVMg+xWdNuwT6sc0ddVaed3iMa2+Ig="></script><script type=text/javascript>window.config={code:{copyTitle:"Copy to clipboard",maxShownLines:10},comment:{},math:{delimiters:[{display:!0,left:"$$",right:"$$"},{display:!0,left:"\\[",right:"\\]"},{display:!1,left:"$",right:"$"},{display:!1,left:"\\(",right:"\\)"}],strict:!1},search:{highlightTag:"em",lunrIndexURL:"/index.json",maxResultLength:10,noResultsFound:"No results found",snippetLength:30,type:"lunr"}}</script><script type=text/javascript src=https://karlquinsland.com/js/theme.min.f51938f3065a40ee841bcb558e4330e31fd26c0ea55343fff8770b88b0319a3c.js integrity="sha256-9Rk48wZaQO6EG8tVjkMw4x/SbA6lU0P/+HcLiLAxmjw="></script><script type=text/javascript>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-3WZ55XG701",{anonymize_ip:!0})</script><script type=text/javascript src="https://www.googletagmanager.com/gtag/js?id=G-3WZ55XG701" async></script></body></html>

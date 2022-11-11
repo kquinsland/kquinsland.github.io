@@ -1,4 +1,494 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>All Posts - karl</title><link>https://karlquinsland.com/posts/</link><description>All Posts | karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 01 Nov 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/posts/" rel="self" type="application/rss+xml"/><item><title>Quick look inside two Ali Express mmWave presence detection sensors</title><link>https://karlquinsland.com/two-mmwave-sensors/</link><pubDate>Tue, 01 Nov 2022 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/two-mmwave-sensors/</guid><description><![CDATA[<p>Millimeter Wave technology has recently hit &ldquo;mass consumer product adoption&rdquo; price points.
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>All Posts - karl</title><link>https://karlquinsland.com/posts/</link><description>All Posts | karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 09 Nov 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/posts/" rel="self" type="application/rss+xml"/><item><title>Integrating ESPHome with a Cheap Geiger Counter</title><link>https://karlquinsland.com/esphome-geiger-counter/</link><pubDate>Wed, 09 Nov 2022 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/esphome-geiger-counter/</guid><description><![CDATA[<p>Yes, there have <a href="https://community.home-assistant.io/t/geiger-counter-with-ha-integration/107660/12" target="_blank" rel="noopener noreffer">been</a> <em>loads</em> of <a href="https://www.rhelectronics.store/radiation-detector-geiger-counter-diy-kit-second-edition" target="_blank" rel="noopener noreffer">people</a> doing <a href="https://www.connectix.nl/connecting-a-geiger-counter-to-home-assistant/" target="_blank" rel="noopener noreffer">similar</a> <a href="https://old.reddit.com/r/homeassistant/comments/l92fbf/doomsday_sensor_v10/" target="_blank" rel="noopener noreffer">things</a>! ESPHome already has a tutorial <a href="https://esphome.io/cookbook/geiger-counter.html" target="_blank" rel="noopener noreffer">covering <em>exactly</em> this</a>!</p>
+<p>I&rsquo;m writing this up because the approach that I ended up taking was <em>not</em> the intended/planned approach.</p>
+<!-- markdownlint-disable-file MD002 -->
+<h2 id="the-geiger-counter">The Geiger Counter</h2>
+<p>I originally pulled the trigger on this particular version because it had a built in screen attached to a micro controller.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>I naïvely thought that I&rsquo;d be able to get a simple UART from the 4 pins next to the microcontroller or maybe even get data directly off of the micro USB port.</p>
+<div class="details admonition info open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-info-circle fa-fw"></i>Info<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">As of 2022.11, the geiger counter pictured above can be found <a href="https://www.aliexpress.us/item/3256804497523971.html" target="_blank" rel="noopener noreffer">here</a>.
+The listing title is <code>DIY Geiger Counter Kit Assembled Module Nuclear Radiation Detector X γ β rays Iodine 131 Detecting OLED Display Radiation Tester</code></div>
+        </div>
+    </div>
+<h3 id="the-usb--uart-port">The USB / UART port</h3>
+<p>After receiving and unpacking it, I probed around and determined that the micro USB port did have the data lines going to the <code>U5</code> micro and that the 4 pins <em>also</em> went to the micro.</p>
+<p>Unfortunately both seemed dead; the pins didn&rsquo;t have any signal on them and the software on the micro implementing the USB stack didn&rsquo;t seem to be fully implemented.
+Using <code>dmesg</code> I could see <em>a device</em> being plugged in but the device failed to respond to any probes.</p>
+<p>So much for the easy way out.</p>
+<h2 id="plan-b">Plan B</h2>
+<p>With the identifying markings sanded off of the chip, attempting to dump / reverse / re-program the firmware wasn&rsquo;t the most appealing option.</p>
+<p>After some quick testing, I determined that the micro controller toggles the beeper and the LED via <em>distinct</em> GPIO pins and that the LED is pulsed to 3.3v for 5ms.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>For reference, here are the points that I chose to inject power and observe the LED.
+I am injecting 5V into the geiger counter from the ESP module so I can program and power the entire assembly with a single cable.
+If you choose to use separate power supplies for both, make sure that the ESP and geiger counter share a ground!</p>
+<p>Removing <code>R1</code> is optional; keep it if you want the beeper to click as well.
+I have some thoughts on being able to toggle this behavior <a href="#beeper" rel="">below</a></p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        I left R1 in place so it&#39;s easier to reverse the mod.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>And with a bit of hot glue, we&rsquo;re done with the hardware assembly.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        There&#39;s no good place for the ESP module so I chose to strategically obfuscate the portion of the screen that does not display the actual measurements.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<div class="details admonition warning open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-exclamation-triangle fa-fw"></i>Warning<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">There&rsquo;s no <em>good</em> place to put the ESP module such that the screen is unobstructed and such that the ESP is not near the geiger tube.
+As the tube is charged up to ~400v, it putting the ESP module directly over it seems like a potential problem.</div>
+        </div>
+    </div>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        I wouldn&#39;t put the ESP right here because a) the tube is partially obstructed and b) the tube is charged to a few hundred volts and putting any delicate electronics that close seems like a bad idea.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<h2 id="esphome">ESPHome</h2>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Ignore that 12 hour gap in the data... I forgot to plug the assembly back in after doing some tests.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>The firmware is pretty simple.
+The configuration below is an abridged version of what I am currently using.
+I&rsquo;ve stripped out unnecessary things but left some comments in to serve as basic documentation.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c">##</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># To convert from particles per unit time, there&#39;s supposed to be some conversion factor.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># This conversion factor depends on the tube and the cheap Ali Express tubes all seem to be J321 style.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Not a ton of documentation out there, but I did find one source that says J321 is basically J305.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># See: https://www.radmon.org/index.php/forum/geiger-muller-tubes/1245-information-on-j321-gm-tube</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># But even then, the conversion factor is derived from some known isotope. They expose the tube to some</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#   known isotope and then measure the counts. Because they also know the proper dosing info for the</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#   isotope, the tube then gets a conversion factor.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Additionally, the micro controller sits between the raw data from the tube and the LED that I am tapping into.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Each time there is _any_ radiation detected, the micro controller pluses the LED for 5ms. In theory, multiple</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#   radioactive particles could strike the tube in the 5ms window and the microcontroller would know ... but I wouldn&#39;t.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># At 5ms per pulse, the maximum number of particles per second that I can detect is 200. Even if the TRUE count</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#   is 3x that... 200 is still way more than enough to know that _something_ isn&#39;t right and that&#39;s really what I&#39;m after here.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># So for now, just stick with basic counts per min w/ the understanding that the signal that I&#39;m observing might not</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#   be with the full resolution that the tube is capable of.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">##</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">esphome</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># Note: this will be the hostname that device request during the DHCP dance...</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;geiger-counter&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">esp32</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">board</span><span class="p">:</span><span class="w"> </span><span class="l">mhetesp32minikit</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Enable logging</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">logger</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">level</span><span class="p">:</span><span class="w"> </span><span class="l">INFO</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">sensor</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># See: https://esphome.io/components/sensor/pulse_counter.html</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Particle Count</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">pulse_counter</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">sense_p_cnt</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Does not really matter which pin for ESP32</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">pin</span><span class="p">:</span><span class="w"> </span><span class="l">GPIO32</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">use_pcnt</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Measured with oScope: pulse is 5ms _exactly_.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Docs say to use falling edge detection with the hardware pulse counter</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">count_mode</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">rising_edge</span><span class="p">:</span><span class="w"> </span><span class="l">DISABLE</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">falling_edge</span><span class="p">:</span><span class="w"> </span><span class="l">INCREMENT</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Docs ALSO say that you can&#39;t configure a filter of more than 13us when using the</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c">#   internal pulse counter. 5ms is ... 5000 us and that&#39;s more than 13us so I guess we&#39;ll</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c">#   stick with the defaults?</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c">##</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">internal_filter</span><span class="p">:</span><span class="w"> </span><span class="l">13us</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># As best I can tell, pulses trigger an ISR which just increases some counter somewhere.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Every update_interval, esphome checks the value in the storage and computes the count</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c">#   per min.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c">##</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">update_interval</span><span class="p">:</span><span class="w"> </span><span class="l">60s</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">unit_of_measurement</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;cpm&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">state_class</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;measurement&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">icon</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;mdi:radioactive-circle-outline&#34;</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="beeper">Beeper</h3>
+<p>I can&rsquo;t confirm it, but I suspect that the beeper is driven independently of the LED because the original designer wanted to implement a software toggle for the sound.</p>
+<p>I don&rsquo;t need the sound functionality but I also don&rsquo;t want to <em>permanently</em> disable it. It would be nice to be able to toggle it on/off as needed.
+There are a few ways to get similar functionality:</p>
+<ul>
+<li>
+<p>Hack the hardware&hellip; more. The TO92 driving the beeper (via <code>R1</code>) is a <code>SS9014 NPN</code>. I could add <em>another</em> transistor in series with <code>R1</code> and then control the current flow via another GPIO on the ESP.</p>
+</li>
+<li>
+<p>Inspired by this <a href="https://old.reddit.com/r/Esphome/comments/uhu3uy/trying_to_detect_falling_edge_on_input_where_also/" target="_blank" rel="noopener noreffer">reddit thread</a>, I could try to get the ESP to toggle a beeper directly when a pulse is detected.
+There are some issues with this approach, though.</p>
+</li>
+</ul>
+<p>It is not possible to get <em>direct</em> access to the ISR via ESPHome.
+I&rsquo;d have to create my own custom component to pull this off.
+Not the end of the world but also more time than I wanted to spend so I went with a different approach that <em>appears to work</em>.</p>
+<p>Basically, create <em>two</em> instances of the <a href="https://esphome.io/components/sensor/pulse_counter.html" target="_blank" rel="noopener noreffer"><code>pulse_counter</code></a> sensor using the same GPIO pin.
+One of them will remain external and will publish data to Home Assistant at 60s intervals.
+The other will be internal and will be updated every <code>loop()</code>.
+By attaching a <a href="https://esphome.io/guides/automations.html#lambda-action" target="_blank" rel="noopener noreffer"><code>lambda</code> function</a> to the sensor evaluation loop, we can compare the number of recorded pulses many times per second.
+The number of cycles that the internal pulse counter will sum pulses over is 1 so any time the current value does not match the previous value &hellip; should indicate that a pulse was fired off.</p>
+<p>Here&rsquo;s what I came up with:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">sensor</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># See: https://esphome.io/components/sensor/pulse_counter.html</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Particle Count</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># &lt;...&gt;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">INTERNAL Particle Count</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">internal</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">pulse_counter</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># &lt;... literally the exact same config as the external pulse counter ...&gt;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c">##</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># 0ms means every loop()</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">update_interval</span><span class="p">:</span><span class="w"> </span><span class="l">0ms</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">filters</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="c"># LogE because we want it to stand out on the console while testing</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          static int num_zeros = 0;
+</span></span></span><span class="line"><span class="cl"><span class="sd">          if (x &gt; 0) {
+</span></span></span><span class="line"><span class="cl"><span class="sd">            // reset
+</span></span></span><span class="line"><span class="cl"><span class="sd">            num_zeros = 0;
+</span></span></span><span class="line"><span class="cl"><span class="sd">            // Indicate that a non 0 measurement was taken and dump to console
+</span></span></span><span class="line"><span class="cl"><span class="sd">            // This is where a beeper would be fired off if desired...
+</span></span></span><span class="line"><span class="cl"><span class="sd">            ESP_LOGE(&#34;filterLambda&#34;, &#34;raw is %f&#34;, x );
+</span></span></span><span class="line"><span class="cl"><span class="sd">          } else {
+</span></span></span><span class="line"><span class="cl"><span class="sd">            num_zeros++;
+</span></span></span><span class="line"><span class="cl"><span class="sd">          }
+</span></span></span><span class="line"><span class="cl"><span class="sd">          // Dont spam console
+</span></span></span><span class="line"><span class="cl"><span class="sd">          if (num_zeros % 1000 == 0) {
+</span></span></span><span class="line"><span class="cl"><span class="sd">            ESP_LOGI(&#34;filterLambda&#34;, &#34;num_zeros is %d&#34;, num_zeros );
+</span></span></span><span class="line"><span class="cl"><span class="sd">          }
+</span></span></span><span class="line"><span class="cl"><span class="sd">          return x;</span><span class="w">          
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>In testing, I would get logs like:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">[17:34:18][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:34:18][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:34:19][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:34:19][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:34:19][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:34:19][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:34:20][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:34:20][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:34:22][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:34:22][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:34:24][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:34:24][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:34:24][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:34:24][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:34:25][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:34:25][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:34:26][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:34:26][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:34:32][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:34:32][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:34:33][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:34:33][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:34:35][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:34:35][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:34:40][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:34:40][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:34:42][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:34:42][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:34:43][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:34:43][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:34:44][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:34:44][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:34:45][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:34:45][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:34:46][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:34:46][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:34:47][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:34:47][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:34:50][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:34:50][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:34:52][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:34:52][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:34:54][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:34:54][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:34:58][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:34:58][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:35:00][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:35:00][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:35:02][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:35:02][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:35:05][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:35:05][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:35:11][I][filterLambda:170]: num_zeros is 1000
+</span></span><span class="line"><span class="cl">[17:35:17][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:35:17][I][filterLambda:170]: num_zeros is 0
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>The period between <code>17:34:18</code> and <code>17:35:17</code> is basically 60 seconds long and the number of times that <code>num_zeros is 0</code> is printed is 27.
+Coincidentally, the external facing sensor published a value of 27 to Home Assistant.</p>
+<p>This is not a <em>conclusive</em> test but - at least at <strong>background</strong> radiation levels - using two instances of the same sensor type on the same GPIO might work.</p>
+<p>I don&rsquo;t have any easy way to induce higher counts on the geiger tube so I can&rsquo;t test how well this holds up &ldquo;under load&rdquo; nor can I confirm that this works reliably across all ESP chips/modules and versions of ESPHome/PlatformIO&hellip;etc.</p>
+<p>Doing this with a custom component probably is the better way to do it but I wasn&rsquo;t going to pull that off in the time I had allotted.</p>
+]]></description></item><item><title>Quick look inside two Ali Express mmWave presence detection sensors</title><link>https://karlquinsland.com/two-mmwave-sensors/</link><pubDate>Tue, 01 Nov 2022 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/two-mmwave-sensors/</guid><description><![CDATA[<p>Millimeter Wave technology has recently hit &ldquo;mass consumer product adoption&rdquo; price points.
 A casual search for &ldquo;human presence sensor&rdquo; on Ali Express will turn up a seemingly endless number of sub $40 devices that can detect movement far more accurately than any old PIR sensor.</p>
 <p>Each listing is fairly generic; there&rsquo;s no explicit manufacturer details but they all use the same marketing images:</p>
 <p><figure >
@@ -4010,1003 +4500,4 @@ Here is a simple automation that watches a basic number input widget and sets th
 <p>When you select a brightness value from the drop down, the backlight brightness should change.
 That&rsquo;s how you get a &rsquo;non standard&rsquo; thermostat configuration value to automatically show up on the correct device page.</p>
 <p>You now no longer need the example automation from <a href="#ok-but-what-about-writing-to-the-thermostat" rel="">above</a>. 😎.</p>
-]]></description></item><item><title>Quick look inside Venstar T7850 - One of the only 'no-cloud' WiFi Thermostats that plays nice with Home Assistant</title><link>https://karlquinsland.com/venstar-t7850-teardown-review/</link><pubDate>Sat, 23 Apr 2022 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/venstar-t7850-teardown-review/</guid><description><![CDATA[<div class="details admonition info open">
-        <div class="details-summary admonition-title">
-            <i class="icon fas fa-info-circle fa-fw"></i>Info<i class="details-icon fas fa-angle-right fa-fw"></i>
-        </div>
-        <div class="details-content">
-            <div class="admonition-content">As of 2022-05-11, there is an update on my experience with the thermostat <a href="#an-update-on-wifi-connectivity" rel="">below</a>!</div>
-        </div>
-    </div>
-<p>This is another one of those posts from my never ending quest to integrate Home Assistant with All The Things!</p>
-<p>The thermostat that was installed when I moved in was an early Nest thermostat. These thermostats are - for the most part - well reviewed and liked. I had no complaints&hellip; except one.</p>
-<p>Google only permits programmatic interaction with Nest devices through their <a href="https://developers.google.com/nest/device-access/api" target="_blank" rel="noopener noreffer">Smart Device Management API</a>.
-This API is essentially cloud hosted MQTT and requires a small fee to access.
-There is no way to control a supported Nest device without an Internet connection&hellip; even if the Home Assistant server and the Nest device are on the same subnet! 👎</p>
-<p>This policy makes it needlessly complicated to integrate the thermostat with Home Assistant and that cripples my climate control automations beyond a tolerable level.</p>
-<p>With summer approaching, I started looking for a thermostat that would play nice with Home Assistant.
-My criteria:</p>
-<ul>
-<li>Work with existing HVAC system and wiring.</li>
-<li>Play nice with Home Assistant, preferably with a <em><strong>local</strong></em> API.</li>
-<li>Cost no more than the Nest thermostat.</li>
-<li>Use TCP/IP over WiFi instead of Zigbee or Zwave.</li>
-</ul>
-<p>As it turns out, I am not the only one on a similar hunt:</p>
-<ul>
-<li>
-<p><a href="https://community.home-assistant.io/t/which-of-these-thermostats-have-the-best-experience-with-ha/207520" target="_blank" rel="noopener noreffer">Which of these thermostats have the best experience with HA?</a></p>
-</li>
-<li>
-<p><a href="https://community.home-assistant.io/t/smart-thermostat-recommendations-for-2021/359434" target="_blank" rel="noopener noreffer">Smart Thermostat Recommendations for 2021</a></p>
-</li>
-<li>
-<p><a href="https://community.home-assistant.io/t/best-easiest-and-of-course-lowest-cost-smart-thermostat-for-home-assistant/384927" target="_blank" rel="noopener noreffer">Best, easiest and of course lowest cost smart thermostat for Home Assistant</a></p>
-</li>
-<li>
-<p><a href="https://www.reddit.com/r/homeassistant/comments/kzavi9/what_is_the_best_thermostats_to_use_with_home/" target="_blank" rel="noopener noreffer">What is the best thermostats to use with Home Automation</a></p>
-</li>
-</ul>
-<p>The &ldquo;TL;DR:&rdquo; of most of those threads is: <em>&ldquo;Any thermostat with zwave of zigbee will work&rdquo;</em>.</p>
-<p>As most people don&rsquo;t particularly care about the network protocol(s) used to link Home Assistant to the thermostat, that&rsquo;s fine advice.</p>
-<p>For whatever reason, you have to dig much deeper to find people discussing <strong>WiFi</strong> based thermostats that play nice with Home Assistant w/o an internet connection but there are a few out there. I settled on the Venstar T7850.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<h1 id="initial-impressions">Initial Impressions:</h1>
-<p>Below is a super concise review that is based mostly on my initial impressions / install experience.
-I have only recently acquired and installed the T7850 so I can&rsquo;t comment on any of the finer points or drawbacks that could only be known after several months experience with the thermostat.</p>
-<p>TL;DR: I wish I had more insight into Google&rsquo;s disappointing decision to not implement a local API for the Nest; I&rsquo;ll uninstall the Venstar and put it up on eBay the nanosecond the Nest gets a local API!</p>
-<h2 id="an-update-on-wifi-connectivity">An Update on WiFi connectivity</h2>
-<p>Less than 48 hours after installing the thermostat, I noticed that Home Assistant was no longer able to control it.
-Every entity on the device showed <code>Unavailable</code>. Apparently, the thermostat had fallen off the network and was struggling to get back on.</p>
-<p>I went through all the usual troubleshooting steps and was able to confirm a few interesting things:</p>
-<ul>
-<li>Changing the network name and password didn&rsquo;t help.</li>
-<li>I disabled the SSID on my access point and created an identical SSID/network key on an old raspberry pi. The thermostat was <em>usually</em> able to connect to the AP. If I powered down the raspberry pi AP and re-enabled the same network name/key on my AP, the thermostat would not connect. If left on the raspberry pi AP, the thermostat would eventually eventually &ldquo;fall off&rdquo;.</li>
-</ul>
-<p>I initially suspected that the initial firmware update I didn&rsquo;t consent to may have broken something and started to look for a way to downgrade the firmware to the previous version that <em>did</em> manage to connect to my AP quickly.</p>
-<p>No such luck.</p>
-<p>While the thermostat does have an A/B partition scheme, I couldn&rsquo;t find any way to force a downgrade or even get older firmware files from the manufacturer.</p>
-<p>After a few factory resets and additional troubleshooting, I started to look around&hellip; and apparently this is not a new problem.</p>
-<p>Here are two &lsquo;relatively new&rsquo; reddit threads that mention similar connection issues with similar models in the same product family:</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Source: /r/homeassistant post:
-        <a href="https://www.reddit.com/r/homeassistant/comments/nge04w/all_local_control_thermostat_with_mqtt_and_home/hvxxpwy/?context=3"> 
-            ALL Local Control Thermostat with MQTT and Home Assistant - Venstar T7900
-        </a> 
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Source: /r/thermostats post:
-        <a href="https://www.reddit.com/r/thermostats/comments/og9bae/comment/hgzqdmj/?context=3"> 
-            Venstar T7900 - problem with WIFI
-        </a> 
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>And an Amazon question from years ago indicating that this might not be a &rsquo;new&rsquo; issue:</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Source: Amazon question: 
-        <a href="https://www.amazon.com/ask/questions/Tx2N92LOB3XBR7U"> 
-            My venstar phone app says thermostat is offline. How do I reconnect it ?
-        </a> 
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>A Home Assistant community/support form poster seems to have a similar issue and even offers a fix&hellip; which did not work.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Source: Home Assistant community forums: 
-        <a href="https://community.home-assistant.io/t/venstar-t7900-trane-air-conditioning-amana-forced-air-furnace/314969"> 
-            Venstar T7900 &amp; Trane Air Conditioning / Amana Forced Air Furnace
-        </a> 
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>My access point is also a Unifi AP so of course there are a few threads on the unifi support forums:</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Source: Ubiquity community forums: 
-        <a href="https://community.ui.com/questions/Trouble-associating-Venstar-Wifi-thermostats-with-one-particular-UAP-AC-PRO/ad597f22-b8ff-4b7c-8e01-1676e92cc318"> 
-            Trouble associating Venstar Wifi thermostats with one particular UAP-AC-PRO
-        </a> 
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<div class="details admonition note open">
-        <div class="details-summary admonition-title">
-            <i class="icon fas fa-pencil-alt fa-fw"></i>Note<i class="details-icon fas fa-angle-right fa-fw"></i>
-        </div>
-        <div class="details-content">
-            <div class="admonition-content">Note: <a href="https://fccid.io/MUH-SKYPORT2/Attestation-Statements/Models-Covered-2531030" target="_blank" rel="noopener noreffer">The FCC documents indicate</a> that Venstar did re-brand the thermostat for <code>First Alert</code> and <code>Bionaire</code>. It is likely that they also did this for <code>Carrier</code> as well judging by <a href="https://images.google.com/search?q=carrier&#43;infinity&#43;touch&#43;control&amp;tbm=isch" target="_blank" rel="noopener noreffer">pictures</a> of a <code>Carrier Infinity Touch Control</code> thermostat.</div>
-        </div>
-    </div>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Source: Ubiquity community forums: 
-        <a href="https://community.ui.com/questions/Cant-connect-to-Carrier-Infinity-Thermostat/e95531ef-ac18-452a-be4d-7ac0157258fe"> 
-            Cant connect to Carrier Infinity Thermostat
-        </a> 
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>The user name seems familiar; probably the same user from one of the above reddit threads:
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Source: Ubiquity community forums: 
-        <a href="https://community.ui.com/questions/Venstar-T7900-Thermostat-Wont-Connect-to-WiFi/48eff0a3-5b27-4cdd-9c2f-80bcdb5e0bc3"> 
-            Venstar T7900 Thermostat Won&#39;t Connect to WiFi
-        </a> 
-        </p> 
-    </figcaption>
-    
-</figure>
-
-</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Source: Ubiquity community forums: 
-        <a href="https://community.ui.com/questions/Venstar-ColorTouch-Thermostat-Unable-to-Connect-to-AC-LR/77e08c30-246d-4a39-923c-c912c259fca9"> 
-            Venstar ColorTouch Thermostat Unable to Connect to AC-LR
-        </a> 
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<div class="details admonition warning open">
-        <div class="details-summary admonition-title">
-            <i class="icon fas fa-exclamation-triangle fa-fw"></i>TL;DR:<i class="details-icon fas fa-angle-right fa-fw"></i>
-        </div>
-        <div class="details-content">
-            <div class="admonition-content"><p>Ubiquity&rsquo;s Unifi line of wireless access points has a pretty solid reputation for a reason; by and large they just work. I have installed dozens of them over the years and have supported installs with <em>thousands</em> of them and had far fewer issues with those customers/sites than with your typical &lsquo;soho&rsquo; routers and other consumer-grade access points.</p>
-<p>As of <strong>right now</strong>, I have a little more than a hundred wireless devices hanging off of the same AP that the thermostat failed to reliably connect to. Over the past several years, I have acquired many more devices and - with the exception of <strong>one other device</strong> - I have never had issues connecting anything to my wireless network.</p>
-<p>Even if only some users experience issues with Venstar thermostats connecting to WiFi, I have to wonder why the issue exists at all. It&rsquo;s 2022 and there&rsquo;s no excuse for basic WiFi network compatibility issues like the kind that were more common in the bad old days of early WiFi circa <em>2005</em>. Somehow, the hundred+ other devices got their WiFi right&hellip; what is Venstar missing?</p>
-<p>While I didn&rsquo;t want to introduce <em>yet another</em> wireless&rsquo;s networking standard to my home, I am <em>considerably</em> happier with the Honeywell TH6320ZW2003 that has replaced the T7850.</p>
-</div>
-        </div>
-    </div>
-<h2 id="the-good">The Good</h2>
-<ul>
-<li>It has <em>optional</em> cloud connectivity! It&rsquo;s trivial to turn this off and - as far as I can tell - it is <strong>mostly</strong> disabled. More on that <a href="#network" rel="">below</a>.</li>
-<li>API is <a href="https://developer.venstar.com/documentation/" target="_blank" rel="noopener noreffer">documented</a>!</li>
-<li>API accessible over HTTP or HTTPS and can be put behind <a href="https://en.wikipedia.org/wiki/Basic_access_authentication" target="_blank" rel="noopener noreffer">BasicAuth</a>! 👏</li>
-<li>Thermostat has <em>lots</em> of tweaks and options meant for &lsquo;power users&rsquo;. These settings ship with reasonably sane default values. I suspect that most of these options are included in the &ldquo;residential&rdquo; devices only because they&rsquo;re already baked into the firmware for &ldquo;commercial&rdquo; customers that legitimately do need lots of knobs to adjust.</li>
-<li>It&rsquo;s a reasonably good looking LCD screen; viewing angles are decent and the screen is plenty readable in direct sunlight when the brightness is turned all the way up.</li>
-<li>The piezoelectric beeper can be disabled in software! 🔇</li>
-</ul>
-<h2 id="the-bad">The Bad</h2>
-<ul>
-<li>The API is <a href="#api-limitations" rel="">pretty limited</a>.</li>
-<li>The screen has an integrated <em>resistive</em> touch panel. This was a poor choice for for a product design in 2014/2015 and is inexcusable for in 2022! 👎</li>
-<li>There is no way to use your own TLS certificate. You have to use the certificate generated by the device. 🙁</li>
-<li>There is no way to disable automatic firmware updates or view release notes on device. If there&rsquo;s an update found, the thermostat will download it and restart&hellip; even if the user is <em>actively using the device</em>. 😡 Even <a href="https://support.microsoft.com/en-us/windows/defer-feature-updates-in-windows-10-770c0ea8-eee5-ae25-f695-8e33f541e04d" target="_blank" rel="noopener noreffer">windows (finally) let you push the update to <em>after</em> you&rsquo;re done using the device</a>!</li>
-<li>There is no ambient brightness sensor or presence detection sensor so the screen is always on at one brightness level.</li>
-<li>The device has WiFI and communicates with the mothership using TLS1.2&hellip; but somehow it does not have <a href="https://en.wikipedia.org/wiki/Network_Time_Protocol" target="_blank" rel="noopener noreffer">NTP</a> support! Yep! This is literally the <strong>only</strong> internet enabled <em>thing</em> that I own that <strong>still requires me to manually set the date/time</strong> 😡. What a glaring oversight!</li>
-</ul>
-<h3 id="api-limitations">API limitations</h3>
-<div class="details admonition warning open">
-        <div class="details-summary admonition-title">
-            <i class="icon fas fa-exclamation-triangle fa-fw"></i>Warning<i class="details-icon fas fa-angle-right fa-fw"></i>
-        </div>
-        <div class="details-content">
-            <div class="admonition-content"><p>The only <em>documented</em> portions of the API <a href="https://developer.venstar.com/documentation/#query" target="_blank" rel="noopener noreffer">cover interrogating the device for state about sensors and mode</a>.
-Keep these limitations in mind when considering exactly what you want to be able to control via the API.</p>
-<p>E.G.: It was <em>very</em> disappointing to find out that I can&rsquo;t adjust the screen on/off/brightness state via the API! So much for automatically turning the screen at night and waking it only when nearby motion was detected!</p>
-</div>
-        </div>
-    </div>
-<p>There is no <em>documented</em> way to control most of the other device settings that can be manipulated through the screen.
-Things you can do via the screen but not via the (documented) API:</p>
-<ul>
-<li>Adjust the date / time</li>
-<li>Adjust the screen brightness</li>
-<li>Adjust any program/schedule settings or adjust vacation mode settings</li>
-<li>Adjust setpoint limits (e.g.: don&rsquo;t let the user try to cool below 25°C or heat above 35°C)</li>
-<li>Set/Disable Screen lock (requires a PIN code to access controls)</li>
-<li>Set &lsquo;screensaver&rsquo; functionality. You can&rsquo;t toggle this via the API nor can you set the &ldquo;idle timeout&rdquo; setting or upload custom photos. You have to resort to a desktop / electron app to do so!</li>
-</ul>
-<p>I have not bothered with the &ldquo;skyport&rdquo; remote control functionality that Venstar offers but their marketing literature implies that some of the above points <em>can</em> be manipulated via their remote service. This leads me to believe that there is more to the API that what is documented publicly.</p>
-<p>Given that the thermostat seems to have it&rsquo;s own CA created by Venstar engineering, I would bet that simple TLS proxy will not be enough to discover any undocumented API endpoints in the unit that could allow for more control.</p>
-<p>If anybody does know of a local API endpoint that allows for controlling the screen brightness&hellip;<a href="https://karlquinsland.com/contact/" rel="">please do get in touch</a>!</p>
-<h1 id="teardown">Teardown</h1>
-<p>It&rsquo;s not a particularly complicated device: everything is on one side of a multi-layer PCB.
-A ton of electronics for directly interfacing with thermostat wires and a few ICs for all the fun stuff!</p>
-<p>The photos are mine, taken right before installing the unit.
-There are more / similar photos at the <a href="https://fccid.io/MUH-SKYPORT2/Internal-Photos/Internal-Photos-Revised-2531033" target="_blank" rel="noopener noreffer">FCC filing</a> if you&rsquo;re curious.</p>
-<p>I am including mine for some additional detail and as a &lsquo;mirror&rsquo; of the FCC photos. Shoutout to the <em>amazing</em> <code>fccid.io</code> ❤️!</p>
-<p>The main PCB is readily accessed - just remove the rear panel / wall mount bracket.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        I don&#39;t see any (mechanical) relays
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>Lots of passives and misc ICs and a few unpopulated footprints. This is consistent with <a href="https://fccid.io/MUH-SKYPORT2/Attestation-Statements/Models-Covered-2531030" target="_blank" rel="noopener noreffer">some of the documentation on file with the FCC</a>: there is 1 PCB for all 6 products in the family and the only significant difference is the software and the humidity sensor.
-If i had to guess, I&rsquo;d be that <code>U13</code> is the humidity sensor.</p>
-<p>Only one obvious pin header but the silkscreen <code>JP2</code> implies that there&rsquo;s another one somewhere (<code>JP1</code>).
-The pins are suspiciously close to the full sized SD card and don&rsquo;t match the pinout for an obvious UART but 6 pins could be JTAG.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>There&rsquo;s nothing remarkable on the other side; just a connection for the LCD and a beeper. At least the beeper module is trivial to &ldquo;factory delete&rdquo; if the software option to disable it ever stops working!</p>
-<p>The full sized SD card is for users to store photos and firmware upgrades.
-Photo parsing is notoriously tricky so there&rsquo;s a decent chance that a malicious photo could be crafted to attack the thermostat. 🤔</p>
-<p>All the business logic lives under the big metal shield. I didn&rsquo;t probe the two test points but they certainly look like they could be UART or similar interface to the app processor.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Highly integrated ARM with external flash and ram. Almost a given these days!
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>Here&rsquo;s a partial shot of the LCD panel barcode.
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-</p>
-<p>And a quick bonus picture! I took this just a few moments after the thermostat had been installed and powered up.
-I had connected it to the WiFi network just 45 seconds before and was exploring the system settings when the unit locked up for a second and then kicked me to this screen:</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        No way to cancel or defer. No explanation of &#39;why&#39;!
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>There was no explanation for the abrupt reboot but after the device came back, the system settings indicated the device was running the latest firmware.</p>
-<p><strong>Note:</strong> Look at the date/time! The device <em>obviously</em> has been able to phone home and download the latest firmware file&hellip; but does nothing with the NTP server it asked for (and received!)</p>
-<h1 id="other-technical-details">Other technical details</h1>
-<h2 id="firmware">Firmware</h2>
-<p>The firmware updates can be obtained through the desktop app. They are written out to a SD card with this directory structure:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">❯ tree
-</span></span><span class="line"><span class="cl">.
-</span></span><span class="line"><span class="cl">├── FOUND.000
-</span></span><span class="line"><span class="cl">│   └── FILE0000.CHK
-</span></span><span class="line"><span class="cl">├── System Volume Information
-</span></span><span class="line"><span class="cl">│   ├── IndexerVolumeGuid
-</span></span><span class="line"><span class="cl">│   └── WPSettings.dat
-</span></span><span class="line"><span class="cl">├── VC
-</span></span><span class="line"><span class="cl">│   └── firmware
-</span></span><span class="line"><span class="cl">│       └── Update.bin
-</span></span><span class="line"><span class="cl">├── VH
-</span></span><span class="line"><span class="cl">│   ├── dealer.bin
-</span></span><span class="line"><span class="cl">│   ├── dealerlogo.bin
-</span></span><span class="line"><span class="cl">│   ├── dealerlogo - Copy.jpg
-</span></span><span class="line"><span class="cl">│   ├── firmware1a
-</span></span><span class="line"><span class="cl">│   │   └── update.bin
-</span></span><span class="line"><span class="cl">│   ├── gallery
-</span></span><span class="line"><span class="cl">│   │   ├── 0.bin
-</span></span><span class="line"><span class="cl">│   │   ├── gallery.bin
-</span></span><span class="line"><span class="cl">│   │   └── thumbs
-</span></span><span class="line"><span class="cl">│   │       └── 0.bin
-</span></span><span class="line"><span class="cl">│   ├── name.bin
-</span></span><span class="line"><span class="cl">│   ├── schedule.bin
-</span></span><span class="line"><span class="cl">│   └── settings.bin
-</span></span><span class="line"><span class="cl">├── VR
-</span></span><span class="line"><span class="cl">│   └── firmware
-</span></span><span class="line"><span class="cl">│       └── Update.bin
-</span></span><span class="line"><span class="cl">└── VW
-</span></span><span class="line"><span class="cl">    └── firmware1a
-</span></span><span class="line"><span class="cl">        └── update.bin
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="m">12</span> directories, <span class="m">16</span> files
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>The <code>dealerlogo - Copy.jpg</code> was me testing something related to the &ldquo;user photos&rdquo; function of the desktop app. The <code>gallery/*.bin</code> files are just re-sized jpeg files.
-There is a mechanism for backing up / importing settings using <code>bin</code> files which are just <code>json</code> files store in the root directory for the device model; <code>VH</code> in this case. Those files are not pictured above as I discovered the export function after I drafted this section of the post.</p>
-<p>I could do a whole <em>series</em> of posts on reverse engineering the firmware but that&rsquo;s going to have to wait for another day / more time. In the interim, here&rsquo;s some of my findings:</p>
-<ul>
-<li>The user interface is javascript. Yep! The entire interface is a single page web app that seems to be hosted by a binary called <code>maestero2</code>. Not much comes up on google, but <a href="https://github.com/grassroot72/Maestro2" target="_blank" rel="noopener noreffer">this repo</a> does seem like it could be related.
-<ul>
-<li>I can <em>see</em> in the source code where the javascript controls the LCD backlight&hellip; so there is <strong>absolutely no good reason</strong> why I can&rsquo;t do the same via the &ldquo;local API&rdquo;.</li>
-</ul>
-</li>
-<li>The device appears to use mutual TLS when talking to the remote endpoints. Try to make a request to <code>https://ctupdate.skyport.io/feed</code> and you&rsquo;ll see the server ask you for a certificate :D.
-<ul>
-<li>I don&rsquo;t know if the certificates are <em>per device</em> or not. The certificates are stored in a separate <code>jffs2</code> partition which is <em>not</em> distributed in the firmware updates (as best I can tell).</li>
-<li>There are a few strings that mention code signing certificates but I have not probed the firmware update routines in depth to know how it all works.</li>
-</ul>
-</li>
-<li>It appears that the TTY is disabled and there are no telnet/ssh services started on boot so it&rsquo;s unclear how the <code>root</code> user can be used remotely&hellip; but I did find this in <code>/etc/shadow</code>: <code>root:$1$JEstzl9y$Ed7nAJIsY/0irewnqZoqn1:10933:0:99999:7:::</code>.</li>
-</ul>
-<h2 id="network">network</h2>
-<div class="details admonition warning open">
-        <div class="details-summary admonition-title">
-            <i class="icon fas fa-exclamation-triangle fa-fw"></i>Warning<i class="details-icon fas fa-angle-right fa-fw"></i>
-        </div>
-        <div class="details-content">
-            <div class="admonition-content">Even though the <code>skyport</code> functionality has been switched off, <a href="#dns" rel="">I still see the thermostat phoning home to <code>ctupdate.skyport.io</code> on startup</a>. In addition to the usual &ldquo;write firewall rules preventing WAN access&rdquo;, I would suggest sinkholing the <code>skyport.io</code> domain.</div>
-        </div>
-    </div>
-<p>Like with all new devices, I ran <code>tcpdump</code> while setting it up. Almost all of the traffic was TLS1.2 protected but I did notice a few interesting things from the packet capture.</p>
-<p>Immediately after booting / joining the network, the device sends out a DHCP request:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">Dynamic Host Configuration Protocol (Discover)
-</span></span><span class="line"><span class="cl">    Message type: Boot Request (1)
-</span></span><span class="line"><span class="cl">    Hardware type: Ethernet (0x01)
-</span></span><span class="line"><span class="cl">    Hardware address length: 6
-</span></span><span class="line"><span class="cl">    Hops: 0
-</span></span><span class="line"><span class="cl">    Transaction ID: 0x1308ee40
-</span></span><span class="line"><span class="cl">    Seconds elapsed: 0
-</span></span><span class="line"><span class="cl">    Bootp flags: 0x0000 (Unicast)
-</span></span><span class="line"><span class="cl">    Client IP address: 0.0.0.0
-</span></span><span class="line"><span class="cl">    Your (client) IP address: 0.0.0.0
-</span></span><span class="line"><span class="cl">    Next server IP address: 0.0.0.0
-</span></span><span class="line"><span class="cl">    Relay agent IP address: 0.0.0.0
-</span></span><span class="line"><span class="cl">    Client MAC address: MurataMa_de:ad:bf (10:98:c3🇩🇪ad:bf)
-</span></span><span class="line"><span class="cl">    Client hardware address padding: 00000000000000000000
-</span></span><span class="line"><span class="cl">    Server host name not given
-</span></span><span class="line"><span class="cl">    Boot file name not given
-</span></span><span class="line"><span class="cl">    Magic cookie: DHCP
-</span></span><span class="line"><span class="cl">    Option: (53) DHCP Message Type (Discover)
-</span></span><span class="line"><span class="cl">        Length: 1
-</span></span><span class="line"><span class="cl">        DHCP: Discover (1)
-</span></span><span class="line"><span class="cl">    Option: (61) Client identifier
-</span></span><span class="line"><span class="cl">        Length: 7
-</span></span><span class="line"><span class="cl">        Hardware type: Ethernet (0x01)
-</span></span><span class="line"><span class="cl">        Client MAC address: MurataMa_de:ad:bf (10:98:c3🇩🇪ad:bf)
-</span></span><span class="line"><span class="cl">    Option: (57) Maximum DHCP Message Size
-</span></span><span class="line"><span class="cl">        Length: 2
-</span></span><span class="line"><span class="cl">        Maximum DHCP Message Size: 576
-</span></span><span class="line"><span class="cl">    Option: (55) Parameter Request List
-</span></span><span class="line"><span class="cl">        Length: 7
-</span></span><span class="line"><span class="cl">        Parameter Request List Item: (1) Subnet Mask
-</span></span><span class="line"><span class="cl">        Parameter Request List Item: (3) Router
-</span></span><span class="line"><span class="cl">        Parameter Request List Item: (6) Domain Name Server
-</span></span><span class="line"><span class="cl">        Parameter Request List Item: (12) Host Name
-</span></span><span class="line"><span class="cl">        Parameter Request List Item: (15) Domain Name
-</span></span><span class="line"><span class="cl">        Parameter Request List Item: (28) Broadcast Address
-</span></span><span class="line"><span class="cl">        Parameter Request List Item: (42) Network Time Protocol Servers
-</span></span><span class="line"><span class="cl">    Option: (60) Vendor class identifier
-</span></span><span class="line"><span class="cl">        Length: 12
-</span></span><span class="line"><span class="cl">        Vendor class identifier: udhcp 1.29.2
-</span></span><span class="line"><span class="cl">    Option: (255) End
-</span></span><span class="line"><span class="cl">        Option End: 255
-</span></span><span class="line"><span class="cl">    Padding: 0000000000000000000000000000000000000000
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><strong>Note:</strong> <code>de:ad:bf </code> is replacing the <em>actual</em> octets of my thermostat MAC :).</p>
-<p>Interesting! The DHCP server <em>explicitly asks for a NTP server</em> and then the thermostat &hellip; does not use it!</p>
-<p>The <code>udhcp 1.29.2</code> string implies a relatively recent build of - possibly - busybox running the show&hellip;</p>
-<p>The next packets after that are basic SSDP and IGMP:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">NOTIFY ALIVE SDDP/1.0
-</span></span><span class="line"><span class="cl">From: &#34;123.456.789.012:1902&#34;
-</span></span><span class="line"><span class="cl">Host: &#34;10:98:c3🇩🇪ad:bf&#34;
-</span></span><span class="line"><span class="cl">Max-Age: 300
-</span></span><span class="line"><span class="cl">Type: &#34;venstar:control4_thermostat_proxy:colortouch&#34;
-</span></span><span class="line"><span class="cl">Primary-Proxy: &#34;thermostatV2&#34;
-</span></span><span class="line"><span class="cl">Proxies: &#34;thermostatV2&#34;
-</span></span><span class="line"><span class="cl">Manufacturer: &#34;Venstar&#34;
-</span></span><span class="line"><span class="cl">Model: &#34;ColorTouch&#34;
-</span></span><span class="line"><span class="cl">Driver: &#34;venstar_ip_colortouch_hvac.c4z&#34;
-</span></span></code></pre></td></tr></table>
-</div>
-</div><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">Internet Group Management Protocol
-</span></span><span class="line"><span class="cl">    [IGMP Version: 3]
-</span></span><span class="line"><span class="cl">    Type: Membership Report (0x22)
-</span></span><span class="line"><span class="cl">    Reserved: 00
-</span></span><span class="line"><span class="cl">    Checksum: 0xea03 [correct]
-</span></span><span class="line"><span class="cl">    [Checksum Status: Good]
-</span></span><span class="line"><span class="cl">    Reserved: 0000
-</span></span><span class="line"><span class="cl">    Num Group Records: 1
-</span></span><span class="line"><span class="cl">    Group Record : 239.255.255.250  Change To Exclude Mode
-</span></span><span class="line"><span class="cl">        Record Type: Change To Exclude Mode (4)
-</span></span><span class="line"><span class="cl">        Aux Data Len: 0
-</span></span><span class="line"><span class="cl">        Num Src: 0
-</span></span><span class="line"><span class="cl">        Multicast Address: 239.255.255.250
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="dns">DNS</h3>
-<p>And <em>just before</em> the TLS traffic, there is a single DNS query:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">Queries
-</span></span><span class="line"><span class="cl">    ctupdate.skyport.io: type A, class IN
-</span></span><span class="line"><span class="cl">        Name: ctupdate.skyport.io
-</span></span><span class="line"><span class="cl">        [Name Length: 19]
-</span></span><span class="line"><span class="cl">        [Label Count: 3]
-</span></span><span class="line"><span class="cl">        Type: A (Host Address) (1)
-</span></span><span class="line"><span class="cl">        Class: IN (0x0001)
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="web-server">Web server</h3>
-<p>After setting a user/password and selecting the <code>https</code> option for the local API, here&rsquo;s what I see:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span><span class="lnt">56
-</span><span class="lnt">57
-</span><span class="lnt">58
-</span><span class="lnt">59
-</span><span class="lnt">60
-</span><span class="lnt">61
-</span><span class="lnt">62
-</span><span class="lnt">63
-</span><span class="lnt">64
-</span><span class="lnt">65
-</span><span class="lnt">66
-</span><span class="lnt">67
-</span><span class="lnt">68
-</span><span class="lnt">69
-</span><span class="lnt">70
-</span><span class="lnt">71
-</span><span class="lnt">72
-</span><span class="lnt">73
-</span><span class="lnt">74
-</span><span class="lnt">75
-</span><span class="lnt">76
-</span><span class="lnt">77
-</span><span class="lnt">78
-</span><span class="lnt">79
-</span><span class="lnt">80
-</span><span class="lnt">81
-</span><span class="lnt">82
-</span><span class="lnt">83
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">❯ openssl s_client -connect 123.456.789.012:443
-</span></span><span class="line"><span class="cl">CONNECTED<span class="o">(</span>00000003<span class="o">)</span>
-</span></span><span class="line"><span class="cl"><span class="nv">depth</span><span class="o">=</span><span class="m">0</span> <span class="nv">C</span> <span class="o">=</span> US, <span class="nv">ST</span> <span class="o">=</span> California, <span class="nv">L</span> <span class="o">=</span> Chatsworth, <span class="nv">O</span> <span class="o">=</span> Venstar Inc., <span class="nv">OU</span> <span class="o">=</span> Engineering, <span class="nv">CN</span> <span class="o">=</span> CT1A_100163664
-</span></span><span class="line"><span class="cl">verify error:num<span class="o">=</span>20:unable to get <span class="nb">local</span> issuer certificate
-</span></span><span class="line"><span class="cl">verify <span class="k">return</span>:1
-</span></span><span class="line"><span class="cl"><span class="nv">depth</span><span class="o">=</span><span class="m">0</span> <span class="nv">C</span> <span class="o">=</span> US, <span class="nv">ST</span> <span class="o">=</span> California, <span class="nv">L</span> <span class="o">=</span> Chatsworth, <span class="nv">O</span> <span class="o">=</span> Venstar Inc., <span class="nv">OU</span> <span class="o">=</span> Engineering, <span class="nv">CN</span> <span class="o">=</span> CT1A_100163664
-</span></span><span class="line"><span class="cl">verify error:num<span class="o">=</span>21:unable to verify the first certificate
-</span></span><span class="line"><span class="cl">verify <span class="k">return</span>:1
-</span></span><span class="line"><span class="cl"><span class="nv">depth</span><span class="o">=</span><span class="m">0</span> <span class="nv">C</span> <span class="o">=</span> US, <span class="nv">ST</span> <span class="o">=</span> California, <span class="nv">L</span> <span class="o">=</span> Chatsworth, <span class="nv">O</span> <span class="o">=</span> Venstar Inc., <span class="nv">OU</span> <span class="o">=</span> Engineering, <span class="nv">CN</span> <span class="o">=</span> CT1A_100163664
-</span></span><span class="line"><span class="cl">verify <span class="k">return</span>:1
-</span></span><span class="line"><span class="cl">---
-</span></span><span class="line"><span class="cl">Certificate chain
-</span></span><span class="line"><span class="cl"> <span class="m">0</span> s:C <span class="o">=</span> US, <span class="nv">ST</span> <span class="o">=</span> California, <span class="nv">L</span> <span class="o">=</span> Chatsworth, <span class="nv">O</span> <span class="o">=</span> Venstar Inc., <span class="nv">OU</span> <span class="o">=</span> Engineering, <span class="nv">CN</span> <span class="o">=</span> CT1A_100163664
-</span></span><span class="line"><span class="cl">   i:C <span class="o">=</span> US, <span class="nv">ST</span> <span class="o">=</span> California, <span class="nv">O</span> <span class="o">=</span> Venstar Inc., <span class="nv">OU</span> <span class="o">=</span> Engineering, <span class="nv">CN</span> <span class="o">=</span> Skyport Root CA
-</span></span><span class="line"><span class="cl">---
-</span></span><span class="line"><span class="cl">Server certificate
-</span></span><span class="line"><span class="cl">-----BEGIN CERTIFICATE-----
-</span></span><span class="line"><span class="cl">MIIGAzCCA+ugAwIBAgIJAIMdu2UK2QoqMA0GCSqGSIb3DQEBDQUAMGkxCzAJBgNV
-</span></span><span class="line"><span class="cl">BAYTAlVTMRMwEQYDVQQIDApDYWxpZm9ybmlhMRUwEwYDVQQKDAxWZW5zdGFyIElu
-</span></span><span class="line"><span class="cl">Yy4xFDASBgNVBAsMC0VuZ2luZWVyaW5nMRgwFgYDVQQDDA9Ta3lwb3J0IFJvb3Qg
-</span></span><span class="line"><span class="cl">Q0EwHhcNMTkxMTA4MDUxOTM2WhcNMzcwNTE3MjM1OTU5WjB9MQswCQYDVQQGEwJV
-</span></span><span class="line"><span class="cl">UzETMBEGA1UECAwKQ2FsaWZvcm5pYTETMBEGA1UEBwwKQ2hhdHN3b3J0aDEVMBMG
-</span></span><span class="line"><span class="cl">A1UECgwMVmVuc3RhciBJbmMuMRQwEgYDVQQLDAtFbmdpbmVlcmluZzEXMBUGA1UE
-</span></span><span class="line"><span class="cl">AwwOQ1QxQV8xMDAxNjM2NjQwggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoIC
-</span></span><span class="line"><span class="cl">AQDIYpgYtd/+KVEwVKTAHjFzp3FZXJx+RFQjUwdCGMOOWqrztokmNF5I/qXbWqA7
-</span></span><span class="line"><span class="cl">okUmO7FKUdW3hAKq358tjcPZytEr1RtRQVtc4/fg35IwtNWf1g/UACazkFOgmOLd
-</span></span><span class="line"><span class="cl">yQ4AwMWvfgDFLxREGH3WfPCHJS7v1ddO02WZMEpligK8g7iSEsqw1ZD4gD2xIbwf
-</span></span><span class="line"><span class="cl">OxgbIdWJyakNbOebVMul5HUoqtVOLawaOefgh65gf4x0gBgMJ95E32cXZxjUB016
-</span></span><span class="line"><span class="cl">r2sAanTkeK7gJhYjVuwFkepEgiLEfj+VY23Qv6CnhR2Kg4g1hv0ZxacHvNw1HCYU
-</span></span><span class="line"><span class="cl">5o38tyQQWNHFw4+CadUPLzSnjhK/8TaaIdVcXDgxpQTdwr3l4Q8Dyz4SX+VihdGT
-</span></span><span class="line"><span class="cl">Zb2s4K7emuJFlQv9ZlSYpltC7o44sLnQbETBdDwoS8EjOb/T1QyfEvNoqLvWSPOD
-</span></span><span class="line"><span class="cl">V1VPPAHp68q9DOgnXa8PJj9nlz0btITmYWhGPobtGeD25Qxl/FulAZLaHWVDfkXb
-</span></span><span class="line"><span class="cl">VbWquGMxm5xkYqcsI7UM4r0O8W94x9QZcobQ1sgZ6rs1vDsMGCZBmdexvqZgGN/t
-</span></span><span class="line"><span class="cl">oPEIA8MaI4R1UfkqJx3haxYS4AOYt2IEE12kiPeAZlER4PIKbcGny7BgJPi72JSb
-</span></span><span class="line"><span class="cl">eacDm7djJBqTP/G/O6Pdny9aWh2WVh0Kom5pLCHm3qydawIDAQABo4GZMIGWMAkG
-</span></span><span class="line"><span class="cl">A1UdEwQCMAAwSQYJYIZIAYb4QgENBDwWOklmIHlvdSBrZXB0IHRoZSBzbWFsbCBy
-</span></span><span class="line"><span class="cl">dWxlcywgeW91IGNvdWxkIGJyZWFrIHRoZSBiaWcgb25lcy4wHQYDVR0OBBYEFNwF
-</span></span><span class="line"><span class="cl">Q5GfrnSlRDSGT/QZ6f283vPMMB8GA1UdIwQYMBaAFLEAWEXFwN/oc5doNhyOE47D
-</span></span><span class="line"><span class="cl">w/qxMA0GCSqGSIb3DQEBDQUAA4ICAQA6sUR9fZ0CiwWFnYOKQ5CTzy2rDsXGtP9t
-</span></span><span class="line"><span class="cl">DJcN/Ga396Pd2CwxDxp1fXXsbrcLELsuupYnLtsm6VzAaix+fgTtxeFTaQR4vqPf
-</span></span><span class="line"><span class="cl">wMXfRzLe0Bk6m+BpWSslD7FTCyDVCnGtuHGCfesOFVvqR897vgU4mGG0qsI8OoD9
-</span></span><span class="line"><span class="cl">0EEeX2HVG8QYvKSbJF3FhmKiCDemG9TVfITHKSody/iHpUNo0uHHGjsPfVXq4iWe
-</span></span><span class="line"><span class="cl">bkQ3dqRXZmjcGPwzQK4CjlKcmXBDWyEhR25/U+dDItaTQet0GGaYK+KrpjDLH56d
-</span></span><span class="line"><span class="cl">XWm7YDP5/EMbfRR7en7L6Ca3TFhpyNF5PxDfmz1fywqr85wdAb/ACJztew9f9hqG
-</span></span><span class="line"><span class="cl">35rOH+OqucGeHqfYk6UW46fjXSnybBMJG8+HcVUMpYn7myfFK0tnwQZb477dV7Fs
-</span></span><span class="line"><span class="cl">G+rYViPjPmfgxi5/kvXpn0FvTzNg73vkgSBCRxuFIPtMkHrpQdSTr1umAXhKCd7d
-</span></span><span class="line"><span class="cl">3mragcL61lhKhh17vOBG73C4bhlAGBFsuACYrmnJFghlfv2X5PbLksc3h8P0DEn3
-</span></span><span class="line"><span class="cl">36x/fGTVRvq14/9hxeKmOhL5KFQXrja5YJpoLRs/pgBl2zXQGF3+dLdbcAdaDVjy
-</span></span><span class="line"><span class="cl">LyDkRMOfhugXmRh7TuWaqGrpcyXVeL4Kn6nWpq51PEval1HKoUMIkahRJu2WK0BT
-</span></span><span class="line"><span class="cl"><span class="nv">kVBzZrkbvA</span><span class="o">==</span>
-</span></span><span class="line"><span class="cl">-----END CERTIFICATE-----
-</span></span><span class="line"><span class="cl"><span class="nv">subject</span><span class="o">=</span><span class="nv">C</span> <span class="o">=</span> US, <span class="nv">ST</span> <span class="o">=</span> California, <span class="nv">L</span> <span class="o">=</span> Chatsworth, <span class="nv">O</span> <span class="o">=</span> Venstar Inc., <span class="nv">OU</span> <span class="o">=</span> Engineering, <span class="nv">CN</span> <span class="o">=</span> CT1A_100163664
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="nv">issuer</span><span class="o">=</span><span class="nv">C</span> <span class="o">=</span> US, <span class="nv">ST</span> <span class="o">=</span> California, <span class="nv">O</span> <span class="o">=</span> Venstar Inc., <span class="nv">OU</span> <span class="o">=</span> Engineering, <span class="nv">CN</span> <span class="o">=</span> Skyport Root CA
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">---
-</span></span><span class="line"><span class="cl">No client certificate CA names sent
-</span></span><span class="line"><span class="cl">Peer signing digest: SHA256
-</span></span><span class="line"><span class="cl">Peer signature type: RSA-PSS
-</span></span><span class="line"><span class="cl">Server Temp Key: X25519, <span class="m">253</span> bits
-</span></span><span class="line"><span class="cl">---
-</span></span><span class="line"><span class="cl">SSL handshake has <span class="nb">read</span> <span class="m">2277</span> bytes and written <span class="m">430</span> bytes
-</span></span><span class="line"><span class="cl">Verification error: unable to verify the first certificate
-</span></span><span class="line"><span class="cl">---
-</span></span><span class="line"><span class="cl">New, TLSv1.2, Cipher is ECDHE-RSA-AES128-GCM-SHA256
-</span></span><span class="line"><span class="cl">Server public key is <span class="m">4096</span> bit
-</span></span><span class="line"><span class="cl">Secure Renegotiation IS supported
-</span></span><span class="line"><span class="cl">Compression: NONE
-</span></span><span class="line"><span class="cl">Expansion: NONE
-</span></span><span class="line"><span class="cl">No ALPN negotiated
-</span></span><span class="line"><span class="cl">SSL-Session:
-</span></span><span class="line"><span class="cl">    Protocol  : TLSv1.2
-</span></span><span class="line"><span class="cl">    Cipher    : ECDHE-RSA-AES128-GCM-SHA256
-</span></span><span class="line"><span class="cl">    Session-ID: 1391DF607DB2888CA81220E321CB06CA6B5CBDE2031483A3E4AC075AD95A6A5D
-</span></span><span class="line"><span class="cl">    Session-ID-ctx:
-</span></span><span class="line"><span class="cl">    Master-Key: 7A37EEBC584574EBA6B114E85CCD685B30F640D17D38A9B2E90AC8739BC76EB4A15E38A8F3B74F3D428328F874C9807C
-</span></span><span class="line"><span class="cl">    PSK identity: None
-</span></span><span class="line"><span class="cl">    PSK identity hint: None
-</span></span><span class="line"><span class="cl">    SRP username: None
-</span></span><span class="line"><span class="cl">    Start Time: <span class="m">1650744968</span>
-</span></span><span class="line"><span class="cl">    Timeout   : <span class="m">7200</span> <span class="o">(</span>sec<span class="o">)</span>
-</span></span><span class="line"><span class="cl">    Verify <span class="k">return</span> code: <span class="m">21</span> <span class="o">(</span>unable to verify the first certificate<span class="o">)</span>
-</span></span><span class="line"><span class="cl">    Extended master secret: yes
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>The thermostat was pretty well closed off. <code>nmap</code> came back with port 53 and 443 open. Taking a closer lok at 443:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">PORT    STATE SERVICE  VERSION
-</span></span><span class="line"><span class="cl">443/tcp open  ssl/http Neato Botvac Connected
-</span></span><span class="line"><span class="cl"><span class="p">|</span> ssl-cert: Subject: <span class="nv">commonName</span><span class="o">=</span>CT1A_100163664/organizationName<span class="o">=</span>Venstar Inc./stateOrProvinceName<span class="o">=</span>California/countryName<span class="o">=</span>US
-</span></span><span class="line"><span class="cl"><span class="p">|</span> Issuer: <span class="nv">commonName</span><span class="o">=</span>Skyport Root CA/organizationName<span class="o">=</span>Venstar Inc./stateOrProvinceName<span class="o">=</span>California/countryName<span class="o">=</span>US
-</span></span><span class="line"><span class="cl"><span class="p">|</span> Public Key type: rsa
-</span></span><span class="line"><span class="cl"><span class="p">|</span> Public Key bits: <span class="m">4096</span>
-</span></span><span class="line"><span class="cl"><span class="p">|</span> Signature Algorithm: sha512WithRSAEncryption
-</span></span><span class="line"><span class="cl"><span class="p">|</span> Not valid before: 2019-11-08T05:19:36
-</span></span><span class="line"><span class="cl"><span class="p">|</span> Not valid after:  2037-05-17T23:59:59
-</span></span><span class="line"><span class="cl"><span class="p">|</span> MD5:   3efc 609c bbf3 cfb6 ddfb 4cbe bb54 1c63
-</span></span><span class="line"><span class="cl"><span class="p">|</span>_SHA-1: 1e65 43f9 <span class="m">8404</span> 9bf6 acf4 0be8 <span class="m">5116</span> 78ff bc02 f024
-</span></span><span class="line"><span class="cl">Service Info: Device: specialized
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>And taking a closer look @ the web server:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">❯ curl -vvv --insecure -L &#39;https://123.456.789.012/&#39; -H &#39;Authorization: Digest username=&#34;SomeUserNameHere&#34;, realm=&#34;thermostat&#34;, nonce=&#34;1234567890&#34;, uri=&#34;/&#34;, response=&#34;some_64_char_string_here&#34;, qop=auth, nc=00000003, cnonce=&#34;some16CharStrHere&#34;&#39;
-</span></span><span class="line"><span class="cl">*   Trying 123.456.789.012:443...
-</span></span><span class="line"><span class="cl">* Connected to 123.456.789.012 (123.456.789.012) port 443 (#0)
-</span></span><span class="line"><span class="cl">* ALPN, offering h2
-</span></span><span class="line"><span class="cl">* ALPN, offering http/1.1
-</span></span><span class="line"><span class="cl">* TLSv1.3 (OUT), TLS handshake, Client hello (1):
-</span></span><span class="line"><span class="cl">* TLSv1.3 (IN), TLS handshake, Server hello (2):
-</span></span><span class="line"><span class="cl">* TLSv1.2 (IN), TLS handshake, Certificate (11):
-</span></span><span class="line"><span class="cl">* TLSv1.2 (IN), TLS handshake, Server key exchange (12):
-</span></span><span class="line"><span class="cl">* TLSv1.2 (IN), TLS handshake, Server finished (14):
-</span></span><span class="line"><span class="cl">* TLSv1.2 (OUT), TLS handshake, Client key exchange (16):
-</span></span><span class="line"><span class="cl">* TLSv1.2 (OUT), TLS change cipher, Change cipher spec (1):
-</span></span><span class="line"><span class="cl">* TLSv1.2 (OUT), TLS handshake, Finished (20):
-</span></span><span class="line"><span class="cl">* TLSv1.2 (IN), TLS handshake, Finished (20):
-</span></span><span class="line"><span class="cl">* SSL connection using TLSv1.2 / ECDHE-RSA-AES128-GCM-SHA256
-</span></span><span class="line"><span class="cl">* ALPN, server did not agree to a protocol
-</span></span><span class="line"><span class="cl">* Server certificate:
-</span></span><span class="line"><span class="cl">*  subject: C=US; ST=California; L=Chatsworth; O=Venstar Inc.; OU=Engineering; CN=CT1A_100163664
-</span></span><span class="line"><span class="cl">*  start date: Nov  8 05:19:36 2019 GMT
-</span></span><span class="line"><span class="cl">*  expire date: May 17 23:59:59 2037 GMT
-</span></span><span class="line"><span class="cl">*  issuer: C=US; ST=California; O=Venstar Inc.; OU=Engineering; CN=Skyport Root CA
-</span></span><span class="line"><span class="cl">*  SSL certificate verify result: unable to get local issuer certificate (20), continuing anyway.
-</span></span><span class="line"><span class="cl">&gt; GET / HTTP/1.1
-</span></span><span class="line"><span class="cl">&gt; Host: 123.456.789.012
-</span></span><span class="line"><span class="cl">&gt; User-Agent: curl/7.82.0
-</span></span><span class="line"><span class="cl">&gt; Accept: */*
-</span></span><span class="line"><span class="cl">&gt; Authorization: Digest username=&#34;SomeUserNameHere&#34;, realm=&#34;thermostat&#34;, nonce=&#34;1234567890&#34;, uri=&#34;/&#34;, response=&#34;some_64_char_string_here&#34;, qop=auth, nc=00000003, cnonce=&#34;some16CharStrHere&#34;
-</span></span><span class="line"><span class="cl">&gt;
-</span></span><span class="line"><span class="cl">* Mark bundle as not supporting multiuse
-</span></span><span class="line"><span class="cl">&lt; HTTP/1.1 200 OK
-</span></span><span class="line"><span class="cl">&lt; Transfer-Encoding: chunked
-</span></span><span class="line"><span class="cl">&lt;
-</span></span><span class="line"><span class="cl">* Connection #0 to host 123.456.789.012 left intact
-</span></span><span class="line"><span class="cl">{&#34;api_ver&#34;:9,&#34;type&#34;:&#34;residential&#34;,&#34;model&#34;:&#34;COLORTOUCH&#34;,&#34;firmware&#34;:&#34;6.91&#34;}%
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>Unfortunately no headers that leak details about the web server implementation. 😒</p>
-<h2 id="ics-and-distinguishing-markings">ICs and distinguishing markings</h2>
-<p>As noted above, the WiFi module was covered with a soldered on shield. Fortunately, the FCC filings give a good look!
-The chip is a <code>muRata Type ZX WiFi Module</code> which is the <a href="https://learn.sparkfun.com/tutorials/nest-protect-teardown/sensor-scavenger-hunt" target="_blank" rel="noopener noreffer"><em>same</em> WiFi radio thats inside the Nest Protect</a>!</p>
-<p>The larger of the two metal shields on the PCB can be removed giving a look at the main application processor:</p>
-<ul>
-<li>
-<p><code>W971GG</code> (probably <a href="https://www.alldatasheet.com/datasheet-pdf/pdf/555599/WINBOND/W971GG6JB-25.html" target="_blank" rel="noopener noreffer"><code>W971GG6JB</code></a>) - DRAM.</p>
-</li>
-<li>
-<p><a href="https://www.digikey.com/en/products/detail/winbond-electronics/W29N01HVBINA/5804021" target="_blank" rel="noopener noreffer"><code>W29N01HVBINA</code></a>: 1gigabit flash.</p>
-</li>
-<li>
-<p><a href="https://www.microchip.com/en-us/product/AT91SAM9G15" target="_blank" rel="noopener noreffer"><code>AT91SAM9G15</code></a> - ARM926 with the peripherals needed for driving a LCD and reading from the resistive (🤮) touchscreen</p>
-</li>
-</ul>
-<p>The LCD is marked with (partially visible):</p>
-<pre><code>AT043HS40D07R2
-30671T051KD
-190805527 (0000000) L101661
-</code></pre>
 ]]></description></item></channel></rss>

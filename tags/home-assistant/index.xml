@@ -1,4 +1,494 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>home assistant - Tag - karl</title><link>https://karlquinsland.com/tags/home-assistant/</link><description>home assistant - Tag - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 22 Oct 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/home-assistant/" rel="self" type="application/rss+xml"/><item><title>ESPHome for Sinilink PC remotes</title><link>https://karlquinsland.com/esphome-sinilink-pc-remotes/</link><pubDate>Sat, 22 Oct 2022 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/esphome-sinilink-pc-remotes/</guid><description><![CDATA[<h1 id="pc-power-remote-control">PC (power) remote control</h1>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>home assistant - Tag - karl</title><link>https://karlquinsland.com/tags/home-assistant/</link><description>home assistant - Tag - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 09 Nov 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/home-assistant/" rel="self" type="application/rss+xml"/><item><title>Integrating ESPHome with a Cheap Geiger Counter</title><link>https://karlquinsland.com/esphome-geiger-counter/</link><pubDate>Wed, 09 Nov 2022 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/esphome-geiger-counter/</guid><description><![CDATA[<p>Yes, there have <a href="https://community.home-assistant.io/t/geiger-counter-with-ha-integration/107660/12" target="_blank" rel="noopener noreffer">been</a> <em>loads</em> of <a href="https://www.rhelectronics.store/radiation-detector-geiger-counter-diy-kit-second-edition" target="_blank" rel="noopener noreffer">people</a> doing <a href="https://www.connectix.nl/connecting-a-geiger-counter-to-home-assistant/" target="_blank" rel="noopener noreffer">similar</a> <a href="https://old.reddit.com/r/homeassistant/comments/l92fbf/doomsday_sensor_v10/" target="_blank" rel="noopener noreffer">things</a>! ESPHome already has a tutorial <a href="https://esphome.io/cookbook/geiger-counter.html" target="_blank" rel="noopener noreffer">covering <em>exactly</em> this</a>!</p>
+<p>I&rsquo;m writing this up because the approach that I ended up taking was <em>not</em> the intended/planned approach.</p>
+<!-- markdownlint-disable-file MD002 -->
+<h2 id="the-geiger-counter">The Geiger Counter</h2>
+<p>I originally pulled the trigger on this particular version because it had a built in screen attached to a micro controller.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>I naïvely thought that I&rsquo;d be able to get a simple UART from the 4 pins next to the microcontroller or maybe even get data directly off of the micro USB port.</p>
+<div class="details admonition info open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-info-circle fa-fw"></i>Info<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">As of 2022.11, the geiger counter pictured above can be found <a href="https://www.aliexpress.us/item/3256804497523971.html" target="_blank" rel="noopener noreffer">here</a>.
+The listing title is <code>DIY Geiger Counter Kit Assembled Module Nuclear Radiation Detector X γ β rays Iodine 131 Detecting OLED Display Radiation Tester</code></div>
+        </div>
+    </div>
+<h3 id="the-usb--uart-port">The USB / UART port</h3>
+<p>After receiving and unpacking it, I probed around and determined that the micro USB port did have the data lines going to the <code>U5</code> micro and that the 4 pins <em>also</em> went to the micro.</p>
+<p>Unfortunately both seemed dead; the pins didn&rsquo;t have any signal on them and the software on the micro implementing the USB stack didn&rsquo;t seem to be fully implemented.
+Using <code>dmesg</code> I could see <em>a device</em> being plugged in but the device failed to respond to any probes.</p>
+<p>So much for the easy way out.</p>
+<h2 id="plan-b">Plan B</h2>
+<p>With the identifying markings sanded off of the chip, attempting to dump / reverse / re-program the firmware wasn&rsquo;t the most appealing option.</p>
+<p>After some quick testing, I determined that the micro controller toggles the beeper and the LED via <em>distinct</em> GPIO pins and that the LED is pulsed to 3.3v for 5ms.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>For reference, here are the points that I chose to inject power and observe the LED.
+I am injecting 5V into the geiger counter from the ESP module so I can program and power the entire assembly with a single cable.
+If you choose to use separate power supplies for both, make sure that the ESP and geiger counter share a ground!</p>
+<p>Removing <code>R1</code> is optional; keep it if you want the beeper to click as well.
+I have some thoughts on being able to toggle this behavior <a href="#beeper" rel="">below</a></p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        I left R1 in place so it&#39;s easier to reverse the mod.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>And with a bit of hot glue, we&rsquo;re done with the hardware assembly.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        There&#39;s no good place for the ESP module so I chose to strategically obfuscate the portion of the screen that does not display the actual measurements.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<div class="details admonition warning open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-exclamation-triangle fa-fw"></i>Warning<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">There&rsquo;s no <em>good</em> place to put the ESP module such that the screen is unobstructed and such that the ESP is not near the geiger tube.
+As the tube is charged up to ~400v, it putting the ESP module directly over it seems like a potential problem.</div>
+        </div>
+    </div>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        I wouldn&#39;t put the ESP right here because a) the tube is partially obstructed and b) the tube is charged to a few hundred volts and putting any delicate electronics that close seems like a bad idea.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<h2 id="esphome">ESPHome</h2>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Ignore that 12 hour gap in the data... I forgot to plug the assembly back in after doing some tests.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>The firmware is pretty simple.
+The configuration below is an abridged version of what I am currently using.
+I&rsquo;ve stripped out unnecessary things but left some comments in to serve as basic documentation.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c">##</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># To convert from particles per unit time, there&#39;s supposed to be some conversion factor.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># This conversion factor depends on the tube and the cheap Ali Express tubes all seem to be J321 style.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Not a ton of documentation out there, but I did find one source that says J321 is basically J305.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># See: https://www.radmon.org/index.php/forum/geiger-muller-tubes/1245-information-on-j321-gm-tube</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># But even then, the conversion factor is derived from some known isotope. They expose the tube to some</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#   known isotope and then measure the counts. Because they also know the proper dosing info for the</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#   isotope, the tube then gets a conversion factor.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Additionally, the micro controller sits between the raw data from the tube and the LED that I am tapping into.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Each time there is _any_ radiation detected, the micro controller pluses the LED for 5ms. In theory, multiple</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#   radioactive particles could strike the tube in the 5ms window and the microcontroller would know ... but I wouldn&#39;t.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># At 5ms per pulse, the maximum number of particles per second that I can detect is 200. Even if the TRUE count</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#   is 3x that... 200 is still way more than enough to know that _something_ isn&#39;t right and that&#39;s really what I&#39;m after here.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># So for now, just stick with basic counts per min w/ the understanding that the signal that I&#39;m observing might not</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#   be with the full resolution that the tube is capable of.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">##</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">esphome</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># Note: this will be the hostname that device request during the DHCP dance...</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;geiger-counter&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">esp32</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">board</span><span class="p">:</span><span class="w"> </span><span class="l">mhetesp32minikit</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Enable logging</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">logger</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">level</span><span class="p">:</span><span class="w"> </span><span class="l">INFO</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">sensor</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># See: https://esphome.io/components/sensor/pulse_counter.html</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Particle Count</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">pulse_counter</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">sense_p_cnt</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Does not really matter which pin for ESP32</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">pin</span><span class="p">:</span><span class="w"> </span><span class="l">GPIO32</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">use_pcnt</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Measured with oScope: pulse is 5ms _exactly_.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Docs say to use falling edge detection with the hardware pulse counter</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">count_mode</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">rising_edge</span><span class="p">:</span><span class="w"> </span><span class="l">DISABLE</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">falling_edge</span><span class="p">:</span><span class="w"> </span><span class="l">INCREMENT</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Docs ALSO say that you can&#39;t configure a filter of more than 13us when using the</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c">#   internal pulse counter. 5ms is ... 5000 us and that&#39;s more than 13us so I guess we&#39;ll</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c">#   stick with the defaults?</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c">##</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">internal_filter</span><span class="p">:</span><span class="w"> </span><span class="l">13us</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># As best I can tell, pulses trigger an ISR which just increases some counter somewhere.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Every update_interval, esphome checks the value in the storage and computes the count</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c">#   per min.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c">##</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">update_interval</span><span class="p">:</span><span class="w"> </span><span class="l">60s</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">unit_of_measurement</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;cpm&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">state_class</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;measurement&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">icon</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;mdi:radioactive-circle-outline&#34;</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="beeper">Beeper</h3>
+<p>I can&rsquo;t confirm it, but I suspect that the beeper is driven independently of the LED because the original designer wanted to implement a software toggle for the sound.</p>
+<p>I don&rsquo;t need the sound functionality but I also don&rsquo;t want to <em>permanently</em> disable it. It would be nice to be able to toggle it on/off as needed.
+There are a few ways to get similar functionality:</p>
+<ul>
+<li>
+<p>Hack the hardware&hellip; more. The TO92 driving the beeper (via <code>R1</code>) is a <code>SS9014 NPN</code>. I could add <em>another</em> transistor in series with <code>R1</code> and then control the current flow via another GPIO on the ESP.</p>
+</li>
+<li>
+<p>Inspired by this <a href="https://old.reddit.com/r/Esphome/comments/uhu3uy/trying_to_detect_falling_edge_on_input_where_also/" target="_blank" rel="noopener noreffer">reddit thread</a>, I could try to get the ESP to toggle a beeper directly when a pulse is detected.
+There are some issues with this approach, though.</p>
+</li>
+</ul>
+<p>It is not possible to get <em>direct</em> access to the ISR via ESPHome.
+I&rsquo;d have to create my own custom component to pull this off.
+Not the end of the world but also more time than I wanted to spend so I went with a different approach that <em>appears to work</em>.</p>
+<p>Basically, create <em>two</em> instances of the <a href="https://esphome.io/components/sensor/pulse_counter.html" target="_blank" rel="noopener noreffer"><code>pulse_counter</code></a> sensor using the same GPIO pin.
+One of them will remain external and will publish data to Home Assistant at 60s intervals.
+The other will be internal and will be updated every <code>loop()</code>.
+By attaching a <a href="https://esphome.io/guides/automations.html#lambda-action" target="_blank" rel="noopener noreffer"><code>lambda</code> function</a> to the sensor evaluation loop, we can compare the number of recorded pulses many times per second.
+The number of cycles that the internal pulse counter will sum pulses over is 1 so any time the current value does not match the previous value &hellip; should indicate that a pulse was fired off.</p>
+<p>Here&rsquo;s what I came up with:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">sensor</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># See: https://esphome.io/components/sensor/pulse_counter.html</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Particle Count</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># &lt;...&gt;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">INTERNAL Particle Count</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">internal</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">pulse_counter</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># &lt;... literally the exact same config as the external pulse counter ...&gt;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c">##</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># 0ms means every loop()</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">update_interval</span><span class="p">:</span><span class="w"> </span><span class="l">0ms</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">filters</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="c"># LogE because we want it to stand out on the console while testing</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          static int num_zeros = 0;
+</span></span></span><span class="line"><span class="cl"><span class="sd">          if (x &gt; 0) {
+</span></span></span><span class="line"><span class="cl"><span class="sd">            // reset
+</span></span></span><span class="line"><span class="cl"><span class="sd">            num_zeros = 0;
+</span></span></span><span class="line"><span class="cl"><span class="sd">            // Indicate that a non 0 measurement was taken and dump to console
+</span></span></span><span class="line"><span class="cl"><span class="sd">            // This is where a beeper would be fired off if desired...
+</span></span></span><span class="line"><span class="cl"><span class="sd">            ESP_LOGE(&#34;filterLambda&#34;, &#34;raw is %f&#34;, x );
+</span></span></span><span class="line"><span class="cl"><span class="sd">          } else {
+</span></span></span><span class="line"><span class="cl"><span class="sd">            num_zeros++;
+</span></span></span><span class="line"><span class="cl"><span class="sd">          }
+</span></span></span><span class="line"><span class="cl"><span class="sd">          // Dont spam console
+</span></span></span><span class="line"><span class="cl"><span class="sd">          if (num_zeros % 1000 == 0) {
+</span></span></span><span class="line"><span class="cl"><span class="sd">            ESP_LOGI(&#34;filterLambda&#34;, &#34;num_zeros is %d&#34;, num_zeros );
+</span></span></span><span class="line"><span class="cl"><span class="sd">          }
+</span></span></span><span class="line"><span class="cl"><span class="sd">          return x;</span><span class="w">          
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>In testing, I would get logs like:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">[17:34:18][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:34:18][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:34:19][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:34:19][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:34:19][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:34:19][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:34:20][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:34:20][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:34:22][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:34:22][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:34:24][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:34:24][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:34:24][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:34:24][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:34:25][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:34:25][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:34:26][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:34:26][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:34:32][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:34:32][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:34:33][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:34:33][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:34:35][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:34:35][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:34:40][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:34:40][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:34:42][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:34:42][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:34:43][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:34:43][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:34:44][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:34:44][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:34:45][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:34:45][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:34:46][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:34:46][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:34:47][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:34:47][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:34:50][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:34:50][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:34:52][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:34:52][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:34:54][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:34:54][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:34:58][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:34:58][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:35:00][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:35:00][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:35:02][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:35:02][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:35:05][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:35:05][I][filterLambda:170]: num_zeros is 0
+</span></span><span class="line"><span class="cl">[17:35:11][I][filterLambda:170]: num_zeros is 1000
+</span></span><span class="line"><span class="cl">[17:35:17][E][filterLambda:165]: raw is 10000.000000
+</span></span><span class="line"><span class="cl">[17:35:17][I][filterLambda:170]: num_zeros is 0
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>The period between <code>17:34:18</code> and <code>17:35:17</code> is basically 60 seconds long and the number of times that <code>num_zeros is 0</code> is printed is 27.
+Coincidentally, the external facing sensor published a value of 27 to Home Assistant.</p>
+<p>This is not a <em>conclusive</em> test but - at least at <strong>background</strong> radiation levels - using two instances of the same sensor type on the same GPIO might work.</p>
+<p>I don&rsquo;t have any easy way to induce higher counts on the geiger tube so I can&rsquo;t test how well this holds up &ldquo;under load&rdquo; nor can I confirm that this works reliably across all ESP chips/modules and versions of ESPHome/PlatformIO&hellip;etc.</p>
+<p>Doing this with a custom component probably is the better way to do it but I wasn&rsquo;t going to pull that off in the time I had allotted.</p>
+]]></description></item><item><title>ESPHome for Sinilink PC remotes</title><link>https://karlquinsland.com/esphome-sinilink-pc-remotes/</link><pubDate>Sat, 22 Oct 2022 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/esphome-sinilink-pc-remotes/</guid><description><![CDATA[<h1 id="pc-power-remote-control">PC (power) remote control</h1>
 <p>While doing research for a potential project, I stumbled onto a device that fit&rsquo;s so squarely into that &ldquo;it&rsquo;s so simple and obvious, why didn&rsquo;t I think tof that?!&rdquo; category that I immediately placed an order for a few.</p>
 <p>That device?</p>
 <p>A simple WiFi equipped micro controller that gets wired between the power button on a PC and the motherboard.
@@ -5114,387 +5604,4 @@ Once the screw is fully inserted, allow it to fully cool (~5min) so the softened
     
 </ul>
 
-]]></description></item><item><title>Amcrest IP Cameras: security isn't a feature, it's a punchline</title><link>https://karlquinsland.com/amcrest-ip-cam-security-isnt-a-feature-its-a-punchine/</link><pubDate>Fri, 27 Nov 2020 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/amcrest-ip-cam-security-isnt-a-feature-its-a-punchine/</guid><description><![CDATA[<p>This is part rant, part &ldquo;reference&rdquo; for anybody else that&rsquo;s struggling to get their Amcrest IP Camera to work with <a href="https://www.home-assistant.io/integrations/onvif/" target="_blank" rel="noopener noreffer">Home Assistant</a> via ONVIF. Skip to <a href="#tldr" rel="">TL;DR</a> for a working Home Assistant config.</p>
-<p>Briefly, <a href="https://www.onvif.org/profiles/" target="_blank" rel="noopener noreffer">ONVIF</a> is an industry group that maintains a set of standards to allow for interoperability between IP Cameras and related devices from multiple vendors. One set of protocols so your cameras from <code>$vendorA</code> will work with with the recording/analytics software from <code>$vendorB</code> which can then pipe events into software from <code>$vendorC</code>.
-How ONVIF works and how it&rsquo;s implemented are beyond the scope of this rant, but, like most standards that haven&rsquo;t aged well, <a href="https://en.wikipedia.org/wiki/SOAP" target="_blank" rel="noopener noreffer">SOAP</a> is involved. 🤮.</p>
-<p>The IP Camera in question is the <code>Amcrest IP4M-1051</code>, though it does appear that other devices from Amcrest are effected by some of the same issues I&rsquo;ll detail below.
-Additionally, Amcrest appears to be a budget brand offering cheaper versions of <a href="https://en.wikipedia.org/wiki/Dahua_Technology" target="_blank" rel="noopener noreffer">DaHua</a> hardware, so the firmware Amcrest uses likely originates from DaHua.</p>
-<p>The hardware is pretty good for the price. About $80 and you get a camera with a pretty wide field of view, 4K resolution, automatic IR leds/filter, PTZ servos, 10/100 Ethernet <em>and</em> 2.4/5ghz WiFi. The software, however is scarry 😱.</p>
-<p>I&rsquo;ve only spent a few hours with the camera so far, but here&rsquo;s an incomplete list of the security-related issues i&rsquo;ve noticed in that time:</p>
-<ul>
-<li>There&rsquo;s no way to require the web interface be served over HTTPS. You can turn on HTTPS support, but you can&rsquo;t turn of HTTP support!</li>
-<li>ONVIF runs over HTTP &hellip; on port 80!</li>
-<li>Only the ADMIN user is supported for ONVIF</li>
-<li>Passwords are limited to 32 characters in length&hellip; but the web UI won&rsquo;t inform you about this.</li>
-</ul>
-<h3 id="firmware">Firmware</h3>
-<p>Before anybody asks, yes, I did update the firmware to the latest version immediately after unboxing.
-As of writing, the latest firmware available is version <code>V2.620.00AC000.3.R.20191218</code> which can be downloaded <a href="https://sup-files.s3.us-east-2.amazonaws.com/Firmware/IP4M-1051/Amcrest_IPC-AWXX-V2-Rhea_Eng_NP_AMCREST_V2.620.00AC000.3.R.20191218.bin" target="_blank" rel="noopener noreffer">here</a>.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        FW for all Amcrest devices can be fetched from https://amcrest.com/firmwaredownloads.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>In the unlikely event that anybody sees this post and somehow gets Amcrest to correct their issues, the versions of software on the affected cameras are:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-txt" data-lang="txt"><span class="line"><span class="cl">Software Version:       V2.620.00AC000.3.R, Build Date: 2019-12-18
-</span></span><span class="line"><span class="cl">WEB Version:            3.2.1.619604
-</span></span><span class="line"><span class="cl">ONVIF Version:          16.12(V2.4.1.513183)
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="web-ui">Web UI</h2>
-<p>Nothing shocking about a networking equipped, consumer-grade bit of electronics with a web based management interface. The only reason I&rsquo;m noting it here is because I can&rsquo;t find a way to
-force the web UI to be served over HTTPS 😢.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        *sigh*
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>And the <code>HTTPS</code> tab has no way to disable the web server on port 80 or at least do a simple redirect to the HTTPS URL 😞.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        I&#39;ll leave you to determine if it&#39;s a good idea for the web interface to generate a self-signed certificate or not.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>I suspect that the next issue might have something to do with the &lsquo;always on&rsquo; HTTP server&hellip; 🤔</p>
-<h2 id="onvif-over-port-80">ONVIF over port 80</h2>
-<p>The inciting &lsquo;incident&rsquo; for this post was a &lsquo;generic&rsquo; error from Home Assistant while trying to connect the camera to HA.
-While going through the config flow, I&rsquo;d get a super useful <code>an unknown error occurred</code> message 🙃.</p>
-<p>After a bit of digging through verbose HA logs, I started to suspect that the default port of <code>5000</code> was not the correct port despite the port being &lsquo;open&rsquo; on the camera:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-bash" data-lang="bash"><span class="line"><span class="cl">$ nmap -p1-6553 cameraIPv4Here
-</span></span><span class="line"><span class="cl">Starting Nmap 7.91 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2020-11-27 16:14 PST
-</span></span><span class="line"><span class="cl">Nmap scan report <span class="k">for</span> cameraIPv4Here
-</span></span><span class="line"><span class="cl">Host is up <span class="o">(</span>0.010s latency<span class="o">)</span>.
-</span></span><span class="line"><span class="cl">Not shown: <span class="m">6547</span> closed ports
-</span></span><span class="line"><span class="cl">PORT     STATE    SERVICE
-</span></span><span class="line"><span class="cl">53/tcp   open     domain
-</span></span><span class="line"><span class="cl">80/tcp   open     http
-</span></span><span class="line"><span class="cl">123/tcp  filtered ntp
-</span></span><span class="line"><span class="cl">443/tcp  open     https
-</span></span><span class="line"><span class="cl">554/tcp  open     rtsp
-</span></span><span class="line"><span class="cl">5000/tcp open     upnp
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">Nmap <span class="k">done</span>: <span class="m">1</span> IP address <span class="o">(</span><span class="m">1</span> host up<span class="o">)</span> scanned in 2.21 seconds
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>Sure enough, Home Assistant found a responsive ONVIF endpoint on port 80. Repeated testing showed that port 80 is the ONLY port with a responsive ONVIF endpoint 🤦.</p>
-<p>So yeah. ONVIF traffic, just like the web UI traffic, can be sniffed by anybody between the client and the camera. That&rsquo;s not OK for a device that&rsquo;s intended to be used for security.</p>
-<p>So this little setting is basically useless:</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        &#39;Authentication&#39; is misleading. It should be labeled something along the lines of &#39;allow just ADMIN to use onvif or allow anybody to use onvif&#39;
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>That screenshot is from the PDF file <a href="https://drive.google.com/file/d/1X-f5xH4aSjhd4vXpIT9yPN_y9-LSgVWN/view" target="_blank" rel="noopener noreffer">here</a> which has this revision info:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Amcrest IP4M-1051B / IP4M-1051W
-</span></span><span class="line"><span class="cl">4MP ProHD Indoor Wi-Fi Camera
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">User Manual
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">Version 1.0.3
-</span></span><span class="line"><span class="cl">Revised April 4th, 2019
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="onvif-only-supports-authentication-with-the-admin-user">ONVIF only supports authentication with the Admin user</h2>
-<p>After discovering that ONVIF only &lsquo;works&rsquo; over port 80, I took a moment to get over my disappointment and then tried to set up a second user with minimal authority on the camera; read only and limited permission to move the camera around.</p>
-<p>Except I was never able to get HA to successfully connect to the camera when using the secondary user. Home Assistant still failed to connect to the camera over ONVIF even after elevating the secondary user to the privilege level of an admin:</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Admin users have all 34 permissions enabled
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>My secondary user permissions:</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>As Home Assistant really does not expose a ton of debugging information, I tried the secondary user credentials with the <a href="https://play.google.com/store/apps/details?id=net.biyee.onvifer&amp;hl=en_US&amp;gl=US" target="_blank" rel="noopener noreffer"><code>Onvifer</code></a> app. The debugging logs from that app confirmed that only the <code>admin</code> credential set &lsquo;worked&rsquo; with ONVIF.</p>
-<p>After a bit more research, it turns out that I&rsquo;m not the first person to discover this:</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Source: https://amcrest.com/forum/ip-cameras-f18/firmware-security-bug-regarding-onvif--t13445-s10.html
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Source: https://amcrest.com/forum/ip-cameras-f18/ip3m-941b-onvif-and-user-management-t12647.html
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>Now i&rsquo;m embarrassed that it took me so long to discover an issue that&rsquo;s been documented since AT LEAST summer of 2019! 😳</p>
-<h3 id="password-length">Password length</h3>
-<p>Can we <em>please</em> <a href="https://security.stackexchange.com/questions/33470/what-technical-reasons-are-there-to-have-low-maximum-password-lengths" target="_blank" rel="noopener noreffer">stop putting ceilings on password length</a>?</p>
-<p>Or, at least if you&rsquo;re going to set an upper bound on password length, please make sure that:</p>
-<ul>
-<li>You&rsquo;re consistent about enforcing the length</li>
-<li>You tell the user when their password is longer than allowed.</li>
-</ul>
-<p>The very first time the default credentials are used to sign into the camera, you&rsquo;re prompted to change the default password. Good! Only problem: the password generated by my password was, apparently, longer than the camera supports. The new admin password was <em><strong>silently</strong> truncated</em> as I was logged in.</p>
-<p>I didn&rsquo;t realize that the password stored in the manager wouldn&rsquo;t let me in until after the camera applied it&rsquo;s FW update and rebooted. After a factory reset, I figured out what happened.</p>
-<p>The <code>maxlength</code> property of the login form differs from the password set form. In any case, there&rsquo;s no warning that the input exceeds the length!</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        ...
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        ...
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p><em>sigh</em></p>
-<h2 id="tldr">TL;DR:</h2>
-<ul>
-<li>
-<p>It&rsquo;s almost 2021, but we still have IP Cameras shipping with 2011&rsquo;s security issues. <strong>Absolutely</strong> do not expose your IP Cameras directly to the internet or otherwise allow them to contact the internet. Keep cameras on their <em>own</em> dedicated and isolated network and consider the admin credentials for the camera to be compromised. Seriously re-consider using WiFi for your cameras.</p>
-</li>
-<li>
-<p>If you&rsquo;re trying to use the <a href="https://www.home-assistant.io/integrations/onvif/" target="_blank" rel="noopener noreffer">Home Assistant ONVIF integration</a> to control an <code>Amcrest IP4M-1051</code>, you must use the <code>admin</code> credentials and change the port from <code>5000</code> to <code>80</code>.</p>
-</li>
-</ul>
-<p>The first bit of documentation you see when unboxing the camera is this little guy:</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        This is *literally* the first thing you see when unpacking the camera.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>which reads:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">IMPORTANT SECURITY NOTICE
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">Please make sure your device has the
-</span></span><span class="line"><span class="cl">latest firmware as listed on:
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">www.amcrest.com/firmware-subscribe
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">Never use the default password for
-</span></span><span class="line"><span class="cl">your device. Always ensure your
-</span></span><span class="line"><span class="cl">password contains a combination
-</span></span><span class="line"><span class="cl">of lowercase and uppercase
-</span></span><span class="line"><span class="cl">characters and numbers.
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>A for effort, though, Amcrest! 👏🌟</p>
-<p>🙃</p>
 ]]></description></item></channel></rss>
