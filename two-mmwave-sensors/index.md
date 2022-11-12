@@ -64,7 +64,13 @@ Nothing of interest on the bottom of the PCB:
 - PCB: `ZY-M100` and `V4.20`
 - TuYa radio: [`WBR3`](https://developer.tuya.com/en/docs/iot/wbr3-module-datasheet?id=K9dujs2k5nriy)
 - TuYa mcu: [`GD32E230`](https://www.gigadevice.com/products/microcontrollers/gd32/arm-cortex-m23/value-line/gd32e230-series/)
-- Radar sensor: `JYSJ_5807_A01` with an IC marked `SJ 501`. No results on this one. Please do [get in touch]({{< relref "contact" >}}) if you do know anything about it. I'd love to re-use the sensor in something else!
+- Radar sensor: `JYSJ_5807_A01` with an IC marked `SJ 501`. ~~No results on this one. Please do [get in touch]({{< relref "contact" >}}) if you do know anything about it. I'd love to re-use the sensor in something else!~~
+
+{{< admonition update "We have an ID!" >}}
+Thanks to the prolific [blakadder.com for bringing it to my attention](https://blakadder.com/zy-m100/) and [@crlogic](https://community.home-assistant.io/u/crlogic) from the Home Assistant community forums [for identifying the module _and_ linking to a datasheet](https://community.home-assistant.io/t/mmwave-wars-one-sensor-module-to-rule-them-all/453260/73)!
+
+The module is [`Leapmmw 5.8GHz Motion Detection: MD5G20`](http://docs.leapmmw.com/%E4%BC%A0%E6%84%9F%E5%99%A8%E4%BA%A7%E5%93%81/%E6%A8%A1%E5%9D%97/module.html)
+{{< /admonition >}}
 
 ## The `MicRadar RD24D`
 
