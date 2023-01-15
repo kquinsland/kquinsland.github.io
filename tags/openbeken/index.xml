@@ -1,0 +1,753 @@
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>OpenBeken - Tag - karl</title><link>https://karlquinsland.com/tags/openbeken/</link><description>OpenBeken - Tag - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 15 Jan 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/openbeken/" rel="self" type="application/rss+xml"/><item><title>Teardown and Home Assistant integration with two generic Chinese 'smart' power strips.</title><link>https://karlquinsland.com/esphome-power-strips/</link><pubDate>Sun, 15 Jan 2023 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/esphome-power-strips/</guid><description><![CDATA[<!-- markdownlint-disable-file MD002 -->
+<p>I love the Sonoff-S31 smart plugs.
+They&rsquo;re cheap, well made and - most importantly - trivial to flash with ESPHome and integrate into Home Assistant.
+They do have one obvious draw back, though; optimized for a &ldquo;traditional&rdquo; US style outlet.
+When you try to deploy them to a power strip, you end up loosing about 50% of the outlets on the strip!</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        This is how you loose about 50% of the outlets on your power strip.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>I figured that there must be a power strip out there that had the WiFi radio, power supply and relays built in.</p>
+<p>Looking through the <a href="https://templates.blakadder.com/us.html#Power%20Strip" target="_blank" rel="noopener noreffer"><code>Power Strip</code></a> listing of the excellent Tasmota device/template repository, there are more than a few options out there.
+Upon closer inspection, almost <em>all</em> of them are from super generic/no-name Chinese brands and lack any ETL or UL certifications 😬.</p>
+<p>Searching for smart power strips on Amazon returns several results&hellip; and only a few from name brands.
+The few name brand power strips out there that I could find are using their own microcontrollers internally and are immediately disqualified as they&rsquo;ll be - at best - difficult ot integrate with Home Assistant.</p>
+<p>I&rsquo;m not quite so concerned about any power conditioning/surge suppression as I am not plugging in any valuable or delectate electronics.
+I am concerned with a more integrated / space efficient solution that allows me to retain my ESPHome/Home Assistant integration.</p>
+<p>After cross referencing the Tasmota templates listing with the Amazon search listings, it became clear that there&rsquo;s really only a few designs that get sold under several different brands and that virtually all of the devices that were known to be powered by an ESP micro are no longer for sale on Amazon.</p>
+<p>I eventually took a gamble on two:</p>
+<ul>
+<li><a href="https://www.amazon.com/gp/product/B097NHBPN9" target="_blank" rel="noopener noreffer"><code>BN-LINK U158WT</code></a></li>
+<li><a href="https://www.amazon.com/gp/product/B0B5G6MDQ6" target="_blank" rel="noopener noreffer"><code>POWSAV AHR-083</code></a></li>
+</ul>
+<h2 id="bn-link">BN-Link</h2>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Marketing photo for the BN-Link power strip
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>This opens up with a standard philips screw driver and you only need one bit size for all screws - nice touch!</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>The screws are hiding under the anti-slip pads but instead of those being glued down, the pads use a friction fit on the <code>+</code> shaped locating pegs.
+I really like this design feature as the glued pads never stick quite as well when replaced.
+In addition to the 4 screws, there are several plastic clip/tabs around the permitter that take some work to carefully undo.
+If you have a thin metal pry tool / spudger, it will come in handy!</p>
+<p>Overall, the physical construction is solid enough and - pleasantly - serviceable.</p>
+<p><figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        I&#39;m not loving the sloppy wiring connecting the USB power supply to the mains rails.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+</p>
+<p>Like the USB power supply, the WiFi module is also separate from the main PCB.</p>
+<p><figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        You know what&#39;s cheaper than pin headers? PCB fingers in slots.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+</p>
+<p>Bad news: this module is NOT an ESP powered device.</p>
+<p>Good news: there a Tasmota-like firmware for it: <a href="https://github.com/openshwprojects/OpenBK7231T_App" target="_blank" rel="noopener noreffer">OpenBK7231T</a>!</p>
+<p>I&rsquo;ll go ahead and flash the OpenBK firmware and have a go to at least give it a try.</p>
+<p>The relay switching electronics look reasonable enough:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>The relays themselves are nothing special to write home about:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Note the links. I&#39;d bet that it&#39;s simpler to scale a design by copy/pasting a self-contained footprint and adjust the number of links on the BOM as needed.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>There&rsquo;s nothing remarkable about the USB Power supply; standard switch mode power supply topology.
+The power conversion is done by the chip under the metal heat sink; I didn&rsquo;t bother to get an ID on it as the ports don&rsquo;t support any quick charge or power delivery protocols.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Before putting the strip back together, I secured the USB power supply wires with a bit of electrical tape to lessen the probability of a short due to insulation wearing off.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<h3 id="flashing-openbk">Flashing OpenBK</h3>
+<p>I don&rsquo;t have a ton of notes about the flashing process as it was pretty straight forward.
+Two small things to note:</p>
+<ul>
+<li>The <a href="https://github.com/OpenBekenIOT/hid_download_py" target="_blank" rel="noopener noreffer"><code>hid_download_py/uartprogram</code></a> tool needs a <a href="https://github.com/OpenBekenIOT/hid_download_py/pull/13/files" target="_blank" rel="noopener noreffer">requirements.txt</a>.</li>
+<li>You can get away with only 4 wires (power, gnd, rx, tx) to program the chip but you must move very fast! It took me more than a few attempts to get the tool to connect to the bootloader on the chip; you have a very limited window for the tool to connect to the chip. I had to run connect power to the chip within about 200ms of starting the <code>uartprogram</code>. If i waited much longer, I would get <code>Cannot get bus.</code></li>
+</ul>
+<p>Eventually I was able to program the chip:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">❯ python3 uartprogram ../OpenBK7231T_UA_1.15.308.bin -d /dev/ttyUSB0 -w
+</span></span><span class="line"><span class="cl">UartDownloader....
+</span></span><span class="line"><span class="cl">programm....
+</span></span><span class="line"><span class="cl">Cannot get bus. : <span class="p">|</span>                                                  <span class="p">|</span><span class="o">[</span>    ?k/s<span class="o">]</span>
+</span></span><span class="line"><span class="cl">❯ python3 uartprogram ../OpenBK7231T_UA_1.15.308.bin -d /dev/ttyUSB0 -w
+</span></span><span class="line"><span class="cl">UartDownloader....
+</span></span><span class="line"><span class="cl">programm....
+</span></span><span class="line"><span class="cl">Gotten Bus...   : <span class="p">|</span>                                                  <span class="p">|</span><span class="o">[</span>    ?k/s<span class="o">]</span>caution: ignoring unexpected reply in SetBaudRate
+</span></span><span class="line"><span class="cl">Write Successful: <span class="p">|</span><span class="c1">##################################################|[ 13.2k/s]</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>The <code>caution: ignoring unexpected reply</code> came as soon as I connected the power to the programmer.</p>
+<p>After figuring out the <a href="#bn-gpio-notes" rel="">GPIO assignments</a>, I did manage to get the Home Assistant / MQTT auto discovery working but - like with Tasmota - wasn&rsquo;t impressed with the lack of customization in the mqtt payloads.
+I <strong>highly value</strong> having the correct device/entity class, icon, name &hellip; etc all populating in home assistant automatically; ESPHome lets me do this.</p>
+<p>I&rsquo;ll keep an eye on the project and may find another use for this power strip in the future.
+If ESPHome ever adds support for the <code>BK7231T</code> chips then this is <em>perfect</em>.</p>
+<div class="details admonition tip open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-lightbulb fa-fw"></i>Tip<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>While drafting this post, I <a href="https://old.reddit.com/r/esp8266/comments/qfg3yc/replaced_tuya_plug_controller_with_esp8266/" target="_blank" rel="noopener noreffer">came across</a> an ESP based drop in replacement for the <code>WB2S</code> module: the <a href="https://www.lcsc.com/product-detail/WiFi-Modules_Wireless-tag-WT-01N_C477823.html" target="_blank" rel="noopener noreffer"><code>WT-01N</code></a>.
+Had I known, I would have just done the module swap, flashed ESPHome and stopped there.</p>
+<p>While looking for the <code>WT-01N</code>, on Ali Express, I found that there&rsquo;s already a small supply of <a href="https://www.aliexpress.com/w/wholesale--ESP%2525252d02S.html?catId=0&amp;initiative_id=SB_20230114112241&amp;SearchText=%2BESP-02S&amp;spm=a2g0o.home.1000002.0&amp;dida=y" target="_blank" rel="noopener noreffer"><code>ESP-02S</code> modules that should be drop in replacements</a>!</p>
+<p>Next time!</p>
+</div>
+        </div>
+    </div>
+<h3 id="bn-gpio-notes">BN GPIO notes</h3>
+<p>The project needs some basic &ldquo;here&rsquo;s how to figure out which GPIOs do what&rdquo; docs similar to <a href="https://Tasmota.github.io/docs/Configuration-Procedure-for-New-Devices/#step-1" target="_blank" rel="noopener noreffer">these</a> but I eventually figured out the following GPIO assignments.</p>
+<table>
+<thead>
+<tr>
+<th>PIN</th>
+<th>Label</th>
+<th>Purpose</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>6</td>
+<td>PWM0</td>
+<td><code>Rel</code> 1</td>
+<td>Outlet closest to the power cord.</td>
+</tr>
+<tr>
+<td>7</td>
+<td>PWM1</td>
+<td>NC</td>
+<td>This is not connected to the main PCB.</td>
+</tr>
+<tr>
+<td>8</td>
+<td>PWM2</td>
+<td><code>Rel</code> 4</td>
+<td>Outlet closest to the USB.</td>
+</tr>
+<tr>
+<td>10</td>
+<td>RXD1</td>
+<td><code>Btn</code></td>
+<td>This is the user button.</td>
+</tr>
+<tr>
+<td>11</td>
+<td>TXD1</td>
+<td><code>WiFiLED_n</code></td>
+<td>WiFi status LED.</td>
+</tr>
+<tr>
+<td>23</td>
+<td>ADC3</td>
+<td>NC</td>
+<td>This is not connected to the main PCB.</td>
+</tr>
+<tr>
+<td>24</td>
+<td>PWM4</td>
+<td><code>Rel</code> 2</td>
+<td>Second outlet from power cord.</td>
+</tr>
+<tr>
+<td>26</td>
+<td>PWM5</td>
+<td><code>Rel</code> 3</td>
+<td>Third outlet from power cord.</td>
+</tr>
+</tbody>
+</table>
+<h2 id="powsav">POWSAV</h2>
+<p>Happy that I was able to get open firmware on the first but disappointed with the lack of customization, I moved onto the second candidate.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Marketing photo for the POWSAV power strip
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<div class="details admonition note open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-pencil-alt fa-fw"></i>Note<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>At one point in time, this <em>exact same device</em> was sold under the <code>ahrise</code> branding and was <a href="https://templates.blakadder.com/ahrise_AHR-083.html" target="_blank" rel="noopener noreffer">Tasmota compatible</a>.</p>
+<p>The model number is the same, the templates repo picture is identical, the GPIO pinout is identical&hellip; but the linked Amazon listing is no longer available.
+The PCB silk screen also include the old <code>AHR</code> markings so I&rsquo;m guessing that this was just a re-brand with the new <code>POWSAV</code> branding after switching to TuYa?</p>
+</div>
+        </div>
+    </div>
+<p>To open this one, you&rsquo;ll need a 2.2mm triangle bit.
+There are 6 screws. four hidden under the anti-slip pads.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Why are the screw mounting slots not centered :/.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>The USB, WiFI and mains switching are all on a single PCB but the main power cut off and protection features are all on a separate PCB.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Nothing of concern to see on the bottom, everything looks pretty boring... which is good when it comes to mains handling!
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        About what you&#39;d expect for a PCB layout. Plenty of distance between the HV and LV sides!
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>It&rsquo;s nice to see that the surge suppression circuitry is on it&rsquo;s own PCB. Repairs there should be easier to pull off - in theory.</p>
+<p>Here&rsquo;s a few more shots of the primary components/assemblies:</p>
+<p><figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Note the silk screen: this protection PCB is common to the AHR-053 model as well.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        WB3S is a TuYa branded module that is pin compatible with the ubiquitous ESP-8266 modules.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Note the black insulating material separating the USB ports from the mains side of things.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Relatively painless extraction, only partially lifted the pad in the bottom left.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Not even 5 min later, the TuYa modules has been replaced with one running a firmware powered by ESPHome.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+</p>
+<h3 id="powsav-gpio-notes">POWSAV GPIO notes</h3>
+<p>Thanks to <a href="https://Tasmota.github.io/docs/Configuration-Procedure-for-New-Devices/#step-1" target="_blank" rel="noopener noreffer">excellent</a> Tasmota docs, it was pretty easy to figure out the mappings.</p>
+<p>For reference:</p>
+<table>
+<thead>
+<tr>
+<th>PIN</th>
+<th>Type</th>
+<th>Number</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>GPIO2</td>
+<td><code>Led_i</code></td>
+<td>1</td>
+</tr>
+<tr>
+<td>GPIO5</td>
+<td><code>Button_n</code></td>
+<td>1</td>
+</tr>
+<tr>
+<td>GPIO 12</td>
+<td><code>Relay</code></td>
+<td>3</td>
+</tr>
+<tr>
+<td>GPIO 13</td>
+<td><code>Relay</code></td>
+<td>4</td>
+</tr>
+<tr>
+<td>GPIO 14</td>
+<td><code>Relay</code></td>
+<td>2</td>
+</tr>
+<tr>
+<td>GPIO 15</td>
+<td><code>Relay</code></td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+<p>And the corresponding template:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;NAME&#34;</span><span class="p">:</span><span class="s2">&#34;POWSAV_AHR-083&#34;</span><span class="p">,</span><span class="nt">&#34;GPIO&#34;</span><span class="p">:[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">320</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">64</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">226</span><span class="p">,</span><span class="mi">227</span><span class="p">,</span><span class="mi">225</span><span class="p">,</span><span class="mi">224</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="nt">&#34;FLAG&#34;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="nt">&#34;BASE&#34;</span><span class="p">:</span><span class="mi">18</span><span class="p">}</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="esphome">Esphome</h3>
+<p>And here&rsquo;s a super basic ESPHome configuration using the mappings from above.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">substitutions</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">friendly_name_short</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Power Strip&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">esphome</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;power-strip&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">esp8266</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">board</span><span class="p">:</span><span class="w"> </span><span class="l">esp01_1m</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># Disable writing the switch mode / restore_from_flash</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">restore_from_flash</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">status_led</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">pin</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l">GPIO02</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">inverted</span><span class="p">:</span><span class="w"> </span><span class="kc">True</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">binary_sensor</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># I don&#39;t know what the stock behavior was. For now, only basic control</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;${friendly_name_short} Button&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">gpio</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">internal</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">pin</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l">GPIO05</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l">INPUT_PULLUP</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">inverted</span><span class="p">:</span><span class="w"> </span><span class="kc">False</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Press is momentary quick</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">on_press</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">then</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">switch.toggle</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">sw_relay1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Not doing anything fancy so we can go with basic GPIO switches</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># See: https://esphome.io/components/switch/gpio.html</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">switch</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Outlet 1&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">sw_relay1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">gpio</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">pin</span><span class="p">:</span><span class="w"> </span><span class="l">GPIO15</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">icon</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;mdi:numeric-1&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Don&#39;t want to wear down flash storing state, easiest to just not bother remembering</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">restore_mode</span><span class="p">:</span><span class="w"> </span><span class="l">ALWAYS_OFF</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># See: https://developers.home-assistant.io/docs/core/entity/switch/#available-device-classes</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">device_class</span><span class="p">:</span><span class="w"> </span><span class="l">OUTLET</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Outlet 2&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">sw_relay2</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">gpio</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">pin</span><span class="p">:</span><span class="w"> </span><span class="l">GPIO14</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">icon</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;mdi:numeric-2&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">restore_mode</span><span class="p">:</span><span class="w"> </span><span class="l">ALWAYS_OFF</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">device_class</span><span class="p">:</span><span class="w"> </span><span class="l">OUTLET</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Outlet 3&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">sw_relay3</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">gpio</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">pin</span><span class="p">:</span><span class="w"> </span><span class="l">GPIO12</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">icon</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;mdi:numeric-3&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">restore_mode</span><span class="p">:</span><span class="w"> </span><span class="l">ALWAYS_OFF</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">device_class</span><span class="p">:</span><span class="w"> </span><span class="l">OUTLET</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Outlet 4&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">sw_relay4</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">gpio</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">pin</span><span class="p">:</span><span class="w"> </span><span class="l">GPIO13</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">icon</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;mdi:numeric-4&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">restore_mode</span><span class="p">:</span><span class="w"> </span><span class="l">ALWAYS_OFF</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">device_class</span><span class="p">:</span><span class="w"> </span><span class="l">OUTLET</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div>]]></description></item></channel></rss>
