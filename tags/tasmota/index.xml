@@ -1835,7 +1835,8 @@ Tasmota will let you dim the light as low as possible without flicker.</p>
 <p>For some versions of my <code>rule2</code> payload, I was able to solve the crashing just by switching to the &rsquo;lite&rsquo; version of Tasmota. While the &rsquo;lite&rsquo; version of Tasmota does work with Tuya MCU (<code>USE_TUYA_MCU</code>), it <a href="https://github.com/arendst/Tasmota/blob/v9.4.0/BUILDS.md" target="_blank" rel="noopener noreffer">does <em>not</em> support</a> Home Assistant configuration (<code>USE_HOME_ASSISTANT</code>)!</p>
 <p>After flashing back to the &lsquo;regular&rsquo; Tasmota build, I set out trying to compress the <code>rule2</code> payload as much as possible so that it would still work <em>and</em> not reliably crash the ESP8266 on the DS03.</p>
 <p>After testing several things, I managed to get a working <code>rule2</code> that didn&rsquo;t reliably crash when triggered.</p>
-]]></description></item><item><title>Two Tasmota rules</title><link>https://karlquinsland.com/two-tasmota-rules/</link><pubDate>Fri, 20 Nov 2020 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/two-tasmota-rules/</guid><description><![CDATA[<p><a href="https://tasmota.github.io/" target="_blank" rel="noopener noreffer">Tasmota</a> is an incredibly powerful alternative/open source firmware for the ever popular Espressif family of WiFi equipped microcontrollers.
+]]></description></item><item><title>Two Tasmota rules</title><link>https://karlquinsland.com/two-tasmota-rules/</link><pubDate>Fri, 20 Nov 2020 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/two-tasmota-rules/</guid><description><![CDATA[<!-- markdownlint-disable-file MD002 -->
+<p><a href="https://tasmota.github.io/" target="_blank" rel="noopener noreffer">Tasmota</a> is an incredibly powerful alternative/open source firmware for the ever popular Espressif family of WiFi equipped microcontrollers.
 This does not need to be another post espousing it&rsquo;s many awesome qualities, so just trust me on this; Tasmota is AWESOME.</p>
 <p>Tasmota supports user configurable <a href="https://tasmota.github.io/docs/Rules/" target="_blank" rel="noopener noreffer">rules</a> which are simple commands wired into various device triggers.
 In short; a device running Tasmota gains some autonomy to react to events without needing to report the event to, and wait for commands from, a remote server.</p>
@@ -1845,6 +1846,15 @@ and doing a few searches through the github issues looking for issues/questions 
 <p>This post is a simple &ldquo;here&rsquo;s how i did it&rdquo; that I wish I had found when I needed to solve the problem.
 Hopefully this will save you some trouble!</p>
 <h3 id="mr-coffee">Mr. Coffee</h3>
+<div class="details admonition note open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-pencil-alt fa-fw"></i>Note<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">I have since replaced my Tasmota based automation with an ESPHome based automation.
+Details on that are <a href="/improved-esphome-coffee-automation/" rel="">here</a>.</div>
+        </div>
+    </div>
 <p>A $15 &lsquo;<a href="https://tasmota.github.io/docs/devices/Sonoff-Pow/" target="_blank" rel="noopener noreffer">smart relay</a>&rsquo; is all that&rsquo;s needed to turn a simple drip-over coffee maker into a remote-controllable coffee maker.
 Immediately, you gain the ability to start brewing coffee in the morning from bed.
 With a little extra integration work, start brewing coffee 10 minutes before your alarm is scheduled to go off. Simple quality of life improvement!</p>
@@ -1886,29 +1896,29 @@ If you want to pour a cup of coffee while it&rsquo;s still brewing, this is rath
 </span><span class="lnt">22
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Rule1
-</span></span><span class="line"><span class="cl">    # When relay1 (heater) is turned on, activate rule2
-</span></span><span class="line"><span class="cl">    ON Power1#state=1 DO Rule2 1 ENDON
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    # and deactivate rule2 when the heater is turned off
-</span></span><span class="line"><span class="cl">    ON Power1#state=0 DO Rule2 0 ENDON
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    # When Timer1 expires, turn the heater off
-</span></span><span class="line"><span class="cl">    ON Rules#Timer=1 DO Power1 off ENDON
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    # When the current used by the heating element rises above 1 Amp, disable Timer1
-</span></span><span class="line"><span class="cl">    ON Energy#Current&gt;1 DO RuleTimer1 0 ENDON
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    # ... and enable rule 2
-</span></span><span class="line"><span class="cl">    ON Energy#Current&gt;1 DO Rule2 1 ENDON
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">Rule2
-</span></span><span class="line"><span class="cl">    # Wait for power use to drop to 0; start counting down
-</span></span><span class="line"><span class="cl">    ON Energy#Current&lt;.2 DO RuleTimer1 30 ENDON
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">    # and disable rule2 so the timer is not constantly reset
-</span></span><span class="line"><span class="cl">    ON Energy#Current&lt;.2 DO Rule2 0 ENDON
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="go">Rule1
+</span></span></span><span class="line"><span class="cl"><span class="go">    # When relay1 (heater) is turned on, activate rule2
+</span></span></span><span class="line"><span class="cl"><span class="go">    ON Power1#state=1 DO Rule2 1 ENDON
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">    # and deactivate rule2 when the heater is turned off
+</span></span></span><span class="line"><span class="cl"><span class="go">    ON Power1#state=0 DO Rule2 0 ENDON
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">    # When Timer1 expires, turn the heater off
+</span></span></span><span class="line"><span class="cl"><span class="go">    ON Rules#Timer=1 DO Power1 off ENDON
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">    # When the current used by the heating element rises above 1 Amp, disable Timer1
+</span></span></span><span class="line"><span class="cl"><span class="go">    ON Energy#Current&gt;1 DO RuleTimer1 0 ENDON
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">    # ... and enable rule 2
+</span></span></span><span class="line"><span class="cl"><span class="go">    ON Energy#Current&gt;1 DO Rule2 1 ENDON
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">Rule2
+</span></span></span><span class="line"><span class="cl"><span class="go">    # Wait for power use to drop to 0; start counting down
+</span></span></span><span class="line"><span class="cl"><span class="go">    ON Energy#Current&lt;.2 DO RuleTimer1 30 ENDON
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">    # and disable rule2 so the timer is not constantly reset
+</span></span></span><span class="line"><span class="cl"><span class="go">    ON Energy#Current&lt;.2 DO Rule2 0 ENDON
+</span></span></span></code></pre></td></tr></table>
 </div>
 </div><p>I chose <code>.2</code> Amps as the trigger, but the logic works the exact same way with Power / Wattage.</p>
 <h2 id="electric-kettle">Electric Kettle</h2>
@@ -1959,12 +1969,12 @@ is consuming more than 1 Watt. Like the coffee maker, it&rsquo;s either consumin
 </span><span class="lnt">5
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">Rule1
-</span></span><span class="line"><span class="cl">    on ENERGY#Power&gt;1 do Backlog TelePeriod 10; Rule2 1 endon
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">Rule2
-</span></span><span class="line"><span class="cl">    on ENERGY#Power=0 do Backlog TelePeriod 1; Rule2 0 endon
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="go">Rule1
+</span></span></span><span class="line"><span class="cl"><span class="go">    on ENERGY#Power&gt;1 do Backlog TelePeriod 10; Rule2 1 endon
+</span></span></span><span class="line"><span class="cl"><span class="go"></span><span class="err">
+</span></span></span><span class="line"><span class="cl"><span class="err"></span><span class="go">Rule2
+</span></span></span><span class="line"><span class="cl"><span class="go">    on ENERGY#Power=0 do Backlog TelePeriod 1; Rule2 0 endon
+</span></span></span></code></pre></td></tr></table>
 </div>
 </div><p>As soon as the kettle starts using more than 1 Watt, configure Tasmota to publish its sensor data every 10 seconds.
 I&rsquo;ll get notified that the water is boiling within 10s; much better than 300s!
@@ -1977,9 +1987,9 @@ Without the <code>Rule2 0</code>, the console/logs for the device would be full 
 </span><span class="lnt">2
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">RUL: ENERGY#POWER&gt;1 performs &#34;TelePeriod 10&#34;
-</span></span><span class="line"><span class="cl">MQT: stat/tasmota_kettle/RESULT = {&#34;TelePeriod&#34;:10}
-</span></span></code></pre></td></tr></table>
+<pre tabindex="0" class="chroma"><code class="language-console" data-lang="console"><span class="line"><span class="cl"><span class="go">RUL: ENERGY#POWER&gt;1 performs &#34;TelePeriod 10&#34;
+</span></span></span><span class="line"><span class="cl"><span class="go">MQT: stat/tasmota_kettle/RESULT = {&#34;TelePeriod&#34;:10}
+</span></span></span></code></pre></td></tr></table>
 </div>
 </div><p>Hope that helped!</p>
 <hr>
