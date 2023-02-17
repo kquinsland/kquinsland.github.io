@@ -37,11 +37,13 @@
       "endDate": "2023-02-17",
       "summary": "In-house AWS specialist tasked with taming legacy Terraform, k8s configuration and general 'as-needed' tool development / process automation.",
       "highlights": [
-        "Architected and deployed highly scalable, reliable Infrastructure as Code (IaC) pipeline for CI/CD based workflows.",
-        "Led efforts to deploy IaC pattern to resources beyond those in AWS.",
-        "Participated in on-call rotation and led efforts to implement consistent incident management process.",
-        "Responsible for running bug bounty program, triage reports.",
-        "Wrote extensive documentation on new IaC/tooling and automated document  generation for existing IaC."
+        "Modernized legacy Terraform and consolidated infrastructure saving thousands of $/month in AWS costs.",
+        "Architected and deployed highly scalable CI/CD pipe for IaC (infrastructure as code) cutting expensive dev time to provision infrastructure",
+        "Wrote extensive documentation for - and provided training on - new IaC/tooling. Automated document generation for existing IaC.",
+        "Introduced and consistently coached colleagues on standardized ADR (architecture design review) based approach to documenting and debating merits of architecture.",
+        "Led efforts to eliminate nuisance pages and implement consistent incident management process leading to faster/cheaper recovery.",
+        "Responsible for running bug bounty program, triage reports and prioritizing remediation work for internal teams.",
+        "Performed security focused code and architecture review for new product features."
       ]
     },
     {
@@ -52,7 +54,7 @@
       "endDate": "2022-04-01",
       "summary": "First dedicated Ops/Infra/SRE hire. Taming unwieldy infrastructure, porting legacy Terraform, developing/modernizing tooling and practices and leading efforts to instrument all layers of the stack.",
       "highlights": [
-        "Tool-smith 🛠️. Wrote more than a few scripts/tools/lambda functions to automate everything from Cassandra cluster assembly to management of DNS entries and TLS Certificate provisioning to documentation generation",
+        "Tool-smith: Wrote more than a few scripts/tools/lambda functions to automate everything from Cassandra cluster assembly to management of DNS entries and TLS Certificate provisioning to documentation generation",
         "OSS contributor: new features and bug fixes merged into various Cassandra management tools and Terraform providers.",
         "Led efforts to increase observability into applications and infrastructure and build out a mature incident reporting and management apparatus.",
         "Overhauled IAM and introduced best practices for cross-account resource utilization... and managed it with Terraform.",
@@ -68,11 +70,11 @@
       "endDate": "2020-04-01",
       "summary": "equal parts troubleshooter, automation tooling engineer, AWS architect. Owned efforts to modernize, internalize, containerize various bits of core infrastructure.",
       "highlights": [
-        "Tool-smith 🛠️. Dozens of in-house tools some of which radically changed (read: streamlined and automated) how hardware was shipped to customers. Other tools developed as needed to rectify problems at hundreds of in-field deployments.",
-        "Hashicorp evangelist. Terraform, Packer, Consul, Vault used/deployed to make for a largely immutable, smarter, more secure operating environment. I 💗 (immutable) Infra as Code!",
-        "Vocal advocate for the containerization 📦 of workloads whenever possible. Strong proponent of immutable infrastructure and declarative infrastructure as code.",
-        "Tamer of Elastic Search (Open Distro for Elastic Search on Docker 🐳, specifically). Worked w/ Application Engineering side of the house on migration to ES7.",
-        "Supervisor of in-field hardware; everything from instrumenting for prometheus and building Grafana dashboards 📈 to vetting OEM samples to reverse engineering troublesome firmware and proprietary APIs."
+        "Tool-smith: Dozens of in-house tools some of which radically changed (read: streamlined and automated) how hardware was shipped to customers. Other tools developed as needed to rectify problems at hundreds of in-field deployments.",
+        "Hashicorp evangelist. Terraform, Packer, Consul, Vault used/deployed to make for a largely immutable, smarter, more secure operating environment.",
+        "Vocal advocate for the containerization of workloads whenever possible. Strong proponent of immutable infrastructure and declarative infrastructure as code.",
+        "Tamer of Elastic Search (Open Distro for Elastic Search on Docker, specifically). Worked w/ Application Engineering side of the house on migration to ES7.",
+        "Supervisor of in-field hardware; everything from instrumenting for prometheus and building Grafana dashboards to vetting OEM samples to reverse engineering troublesome firmware and proprietary APIs."
       ]
     },
     {
@@ -239,8 +241,7 @@
     {
       "name": "Home/Personal Automation",
       "keywords": [
-        "built/hacked several IoT devices",
-        "Operational Technologies (OT)"
+        "built/hacked several IoT devices; see https://karlquinsland.com/tags/esphome/"
       ]
     },
     {
