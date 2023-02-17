@@ -1,10 +1,13 @@
 {
+  "meta": {
+    "theme": "elegant"
+  },
   "basics": {
     "name": "Karl Quinsland",
     "label": "Cloud Native SRE, SysAdmin/Architect",
     "picture": "https://karlquinsland.com/images/avatar.jpg",
     "website": "https://karlquinsland.com",
-    "summary": "Seasoned SRE and SysAdmin with a knack for automation in all facets of life. Serial skill acquirer in pursuit of a more automated and optimal life; I pickup, replace and augment skills as needed. At the end of the day, the software/tools/things/technology I'm responsible for should be reliable, performant and ideally put a smile on people's faces.",
+    "summary": "Seasoned SRE and SysAdmin with a knack for automation and systematization all facets of life. Serial skill acquirer in pursuit of a more automated and optimal life; I pickup, replace and augment skills as needed. At the end of the day, the software/tools/things/technology I'm responsible for should be reliable, performant and ideally put a smile on people's faces.",
     "location": {
       "address": "",
       "postalCode": "",
@@ -27,10 +30,26 @@
   },
   "work": [
     {
+      "company": "Sprig",
+      "position": "Sr. Ops Engineer/SRE",
+      "website": "https://sprig.com/",
+      "startDate": "2022-04-01",
+      "endDate": "2023-02-17",
+      "summary": "In-house AWS specialist tasked with taming legacy Terraform, k8s configuration and general 'as-needed' tool development / process automation.",
+      "highlights": [
+        "Architected and deployed highly scalable, reliable Infrastructure as Code (IaC) pipeline for CI/CD based workflows.",
+        "Led efforts to deploy IaC pattern to resources beyond those in AWS.",
+        "Participated in on-call rotation and led efforts to implement consistent incident management process.",
+        "Responsible for running bug bounty program, triage reports.",
+        "Wrote extensive documentation on new IaC/tooling and automated document  generation for existing IaC."
+      ]
+    },
+    {
       "company": "Kiddom",
       "position": "Sr. Ops Engineer/SRE",
       "website": "https://www.kiddom.co/",
       "startDate": "2020-10-01",
+      "endDate": "2022-04-01",
       "summary": "First dedicated Ops/Infra/SRE hire. Taming unwieldy infrastructure, porting legacy Terraform, developing/modernizing tooling and practices and leading efforts to instrument all layers of the stack.",
       "highlights": [
         "Tool-smith 🛠️. Wrote more than a few scripts/tools/lambda functions to automate everything from Cassandra cluster assembly to management of DNS entries and TLS Certificate provisioning to documentation generation",
@@ -82,7 +101,7 @@
         "Was 24x7 Tier 4 OnCall",
         "Rebuild a modern / skilled DevOps team",
         "Significant tech-debt eradication, ancient stack archaeology, platform spelunking",
-        "Authored countless CHef cookbooks, ruby gems",
+        "Authored countless Chef cookbooks, ruby gems",
         "SCALR server administrator",
         "Mongo and MySQL dbe/a",
         "Consult as an SRE and Architect for new apps and services",
@@ -112,7 +131,7 @@
       "summary": "Equal parts Mongo and Vertica 5 DBA. Led development of software to automate build/deploy of Aditive software in A/B style. In-house Chef dev",
       "highlights": [
         "Single handedly engineered and implemented growth/scale strategy for high demand web services.",
-        "Responsible for most infrastructure maintenance, including upgrades to production appliances and live migrations to AWS/VPC from AWS/EC2 Clasic",
+        "Responsible for most infrastructure maintenance, including upgrades to production appliances and live migrations to AWS/VPC from AWS/EC2 Classic",
         "Designed and built a variety of deployment tools to aide under staffed development team with single-click / continuous deployment for testing and production environments."
       ]
     }
@@ -174,7 +193,7 @@
       "level": "",
       "keywords": [
         "Docker: advanced",
-        "kubernetes: intermediate"
+        "kubernetes: advanced"
       ]
     },
     {
@@ -200,11 +219,11 @@
   ],
   "languages": [
     {
-      "language": "🇺🇸English",
+      "language": "🇺🇸 English",
       "fluency": "Native"
     },
     {
-      "language": "🇪🇸Spanish",
+      "language": "🇪🇸 Spanish",
       "fluency": "No asombroso, suficiente"
     }
   ],
