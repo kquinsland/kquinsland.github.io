@@ -38,7 +38,7 @@
       "summary": "In-house AWS specialist tasked with taming legacy Terraform, k8s configuration and general 'as-needed' tool development / process automation.",
       "highlights": [
         "Modernized legacy Terraform and consolidated infrastructure saving thousands of $/month in AWS costs.",
-        "Architected and deployed highly scalable CI/CD pipe for IaC (infrastructure as code) cutting expensive dev time to provision infrastructure",
+        "Architected and deployed highly scalable CI/CD pipe for IaC (infrastructure as code) cutting expensive dev time to provision infrastructure.",
         "Wrote extensive documentation for - and provided training on - new IaC/tooling. Automated document generation for existing IaC.",
         "Introduced and consistently coached colleagues on standardized ADR (architecture design review) based approach to documenting and debating merits of architecture.",
         "Led efforts to eliminate nuisance pages and implement consistent incident management process leading to faster/cheaper recovery.",
@@ -176,6 +176,7 @@
       "keywords": [
         "Python3: advanced",
         "golang: passable",
+        "rust: new, liking a lot!",
         "php: rusty",
         "ruby: rusty",
         "C/++: hacky"
