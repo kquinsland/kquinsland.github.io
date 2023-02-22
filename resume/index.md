@@ -11,6 +11,7 @@ The files linked below should be considered the most up to date copy of my recen
 {{< /admonition >}}
 
 - [JSON](/resume/kq.json) document. Complies with the [JSON Resume](https://jsonresume.org/) schema.
+- [MARKDOWN](/resume/kq.md) document which can be easily turned into HTML or PDF if you so choose.
 - [HTML](/resume/kq.html) document which can be easily turned into a PDF if you so choose.
 - [PDF](/resume/kq.pdf) document which mirrors the HTML but has most formatting stripped out for reliable machine parsing.
 
