@@ -24,12 +24,13 @@ At the end of the day, the software/tools/things/technology I'm responsible for 
 ##### 2022-04-01 - 2023-02-17
 
 - Modernized legacy Terraform and consolidated infrastructure saving thousands of $/month in AWS costs.
-- Architected and deployed highly scalable CI/CD pipe for IaC (infrastructure as code) cutting expensive dev time to provision infrastructure, manage networking/security resources.
+- Architected and deployed highly scalable CI/CD pipe for both IaC (infrastructure as code) and Lambda functions cutting expensive dev time to provision traditional and EKS based infrastructure, manage networking/security resources.
 - Wrote extensive documentation for - and provided training on - new IaC/tooling. Automated document generation for existing IaC.
 - Introduced and consistently coached colleagues on standardized ADR (architecture design review) based approach to documenting and debating merits of architecture.
 - Led efforts to eliminate nuisance pages and implement consistent incident management process leading to faster/cheaper recovery.
 - Responsible for running bug bounty program, triage reports and prioritizing remediation work for internal teams.
 - Performed security focused code and architecture review for new product features. In-house AWS specialist tasked with taming legacy Terraform, k8s configuration and general 'as-needed' tool development / process automation.
+- Improved home-grown EKS deployment pipeline and tooling.
 
 ### Sr. Ops Engineer/SRE, [Kiddom](https://www.kiddom.co/)
 
@@ -41,6 +42,7 @@ At the end of the day, the software/tools/things/technology I'm responsible for 
 - Overhauled IAM and introduced best practices for cross-account resource utilization... and managed it with Terraform.
 - Brought IaC practices to as many things as possible including external services; onboarding new Eng. hires was done with a few PRs and tools like Atlantis did the heavy lifting.
 - Developed extensive corpus of documentation around IaC driven processes as well as legacy infrastructure and it's replacement - both planned and implemented. First dedicated Ops/Infra/SRE hire. Taming unwieldy infrastructure, porting legacy Terraform, developing/modernizing tooling and practices and leading efforts to instrument all layers of the stack.
+- Initiated the transition from legacy bare-metal /auto-scaled AMIs based architecture to an EKS based platform.
 
 ### Sr. Production Engineer/SRE, [Touchpoint Restaurant Innovations](https://touchpoint.io)
 
