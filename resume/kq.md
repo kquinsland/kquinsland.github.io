@@ -162,7 +162,7 @@ At the end of the day, the software/tools/things/technology I'm responsible for 
 ## Interests
 
 - Fitness (avid gym rat, automated nutrition optimization, practitioner of various mindfulness techniques)
-- Home/Personal Automation (built/hacked several IoT devices; see https://karlquinsland.com/tags/esphome/)
+- Home/Personal Automation (built/hacked several IoT devices; see [https://karlquinsland.com/tags/esphome)](https://karlquinsland.com/tags/esphome/)
 - Networks & wireless systems (Licensed HAM (we're allowed to build / test our own wireless protocols), Passionate student of all techniques/protocols for linking systems together)
 
 ## References
