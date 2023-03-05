@@ -528,7 +528,7 @@ The length of the timer can be adjusted at any time; the new value is used for t
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">step</span><span class="p">:</span><span class="w"> </span><span class="m">30</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">      </span><span class="w">      </span><span class="l">return (int) id(glbl_timeout_length_ticks);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">      return (int) id(glbl_timeout_length_ticks);</span><span class="w">      
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">set_action</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">then</span><span class="p">:</span><span class="w">

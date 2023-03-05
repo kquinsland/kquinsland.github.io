@@ -1,0 +1,388 @@
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><meta http-equiv=x-ua-compatible content="IE=edge, chrome=1"><title>Frigate From Scratch guide - karl</title><meta name=Description content="A (relatively) straightforward guide to installing Frigate NVR without Docker Compose."><meta property="og:title" content="Frigate From Scratch guide"><meta property="og:description" content="A (relatively) straightforward guide to installing Frigate NVR without Docker Compose."><meta property="og:type" content="article"><meta property="og:url" content="https://karlquinsland.com/frigate-install/"><meta property="og:image" content="https://karlquinsland.com/frigate-install/images/logo.svg"><meta property="article:section" content="posts"><meta property="article:published_time" content="2023-03-04T00:00:00+00:00"><meta property="article:modified_time" content="2023-03-04T18:12:29-08:00"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://karlquinsland.com/frigate-install/images/logo.svg"><meta name=twitter:title content="Frigate From Scratch guide"><meta name=twitter:description content="A (relatively) straightforward guide to installing Frigate NVR without Docker Compose."><meta name=application-name content="karl"><meta name=apple-mobile-web-app-title content="karl"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=https://karlquinsland.com/favicon.ico><link rel=icon type=image/png sizes=32x32 href=https://karlquinsland.com/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=https://karlquinsland.com/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=https://karlquinsland.com/apple-touch-icon.png><link rel=mask-icon href=https://karlquinsland.com/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=https://karlquinsland.com/site.webmanifest><link rel=canonical href=https://karlquinsland.com/frigate-install/><link rel=prev href=https://karlquinsland.com/improved-esphome-coffee-automation/><link rel=stylesheet href=https://karlquinsland.com/lib/normalize/normalize.min.055364f5be272caa092b0e6654c165828707f8ab971e2656383a6d6392bc345e.css integrity="sha256-BVNk9b4nLKoJKw5mVMFlgocH+KuXHiZWODptY5K8NF4="><link rel=stylesheet href=https://karlquinsland.com/css/style.min.1e2694bed152fa2922dbe909a441838ed693d88b1330f97485bfa8ed78da42df.css integrity="sha256-HiaUvtFS+iki2+kJpEGDjtaT2IsTMPl0hb+o7XjaQt8="><link rel=stylesheet href=https://karlquinsland.com/lib/fontawesome-free/all.min.876d023d9d10c97941b80c3b03e2a5b94631ff7a4af9cee5604a6a2d39718d84.css integrity="sha256-h20CPZ0QyXlBuAw7A+KluUYx/3pK+c7lYEpqLTlxjYQ="><link rel=stylesheet href=https://karlquinsland.com/lib/animate/animate.min.3c770e90f98eb21b0c042fafb49755af93306fbaf42e449524f94fae9fc83295.css integrity="sha256-PHcOkPmOshsMBC+vtJdVr5Mwb7r0LkSVJPlPrp/IMpU="><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Frigate From Scratch guide","inLanguage":"en-us","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/karlquinsland.com\/frigate-install\/"},"genre":"posts","keywords":"frigate, home-assistant, systemd, co-author\/chatGPT","wordcount":2117,"url":"https:\/\/karlquinsland.com\/frigate-install\/","datePublished":"2023-03-04T00:00:00+00:00","dateModified":"2023-03-04T18:12:29-08:00","publisher":{"@type":"Organization","name":""},"author":{"@type":"Person","name":"karl"},"description":"A (relatively) straightforward guide to installing Frigate NVR without Docker Compose."}</script></head><body header-desktop=fixed header-mobile=auto><script type=text/javascript>(window.localStorage&&localStorage.getItem("theme")?localStorage.getItem("theme")==="dark":"auto"==="auto"?window.matchMedia("(prefers-color-scheme: dark)").matches:"auto"==="dark")&&document.body.setAttribute("theme","dark")</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=https://karlquinsland.com/ title=karl>Karl</a></div><div class=menu><div class=menu-inner><a class=menu-item href=https://karlquinsland.com/posts/><i class="fas fa-blog"></i> Posts </a><a class=menu-item href=https://karlquinsland.com/resume/ title="Hire Me!"><i class="fas fa-briefcase"></i> Résumé </a><a class=menu-item href=https://karlquinsland.com/tags/ title="Can you tell that I don't have a super consistent or clear taxonomy?"><i class="fas fa-tags"></i> Tags </a><a class=menu-item href=https://karlquinsland.com/contact/><i class="fas fa-address-book"></i> Contact </a><span class="menu-item delimiter"></span><span class="menu-item search" id=search-desktop>
+<input type=text placeholder="Search titles or contents..." id=search-input-desktop>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=Search><i class="fas fa-search fa-fw"></i></a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=Clear><i class="fas fa-times-circle fa-fw"></i></a>
+<span class="search-button search-loading" id=search-loading-desktop><i class="fas fa-spinner fa-fw fa-spin"></i></span>
+</span><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme"><i class="fas fa-adjust fa-fw"></i></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=https://karlquinsland.com/ title=karl>Karl</a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><div class=search-wrapper><div class="search mobile" id=search-mobile><input type=text placeholder="Search titles or contents..." id=search-input-mobile>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=Search><i class="fas fa-search fa-fw"></i></a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=Clear><i class="fas fa-times-circle fa-fw"></i></a>
+<span class="search-button search-loading" id=search-loading-mobile><i class="fas fa-spinner fa-fw fa-spin"></i></span></div><a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>Cancel</a></div><a class=menu-item href=https://karlquinsland.com/posts/ title><i class="fas fa-blog"></i>Posts</a><a class=menu-item href=https://karlquinsland.com/resume/ title="Hire Me!"><i class="fas fa-briefcase"></i>Résumé</a><a class=menu-item href=https://karlquinsland.com/tags/ title="Can you tell that I don't have a super consistent or clear taxonomy?"><i class="fas fa-tags"></i>Tags</a><a class=menu-item href=https://karlquinsland.com/contact/ title><i class="fas fa-address-book"></i>Contact</a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw"></i></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>Contents</h2><div class=toc-content id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animated flipInX">Frigate From Scratch guide</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=https://karlquinsland.com/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw"></i>karl</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2023-03-04>2023-03-04</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;2117 words&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;10 minutes&nbsp;</div></div><div class="details toc" id=toc-static kept=true><div class="details-summary toc-title"><span>Contents</span>
+<span><i class="details-icon fas fa-angle-right"></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><ul><li><a href=#goal>Goal</a></li><li><a href=#prep>Prep</a><ul><li><a href=#install-docker>Install Docker</a></li><li><a href=#create-frigate-user>Create Frigate User</a></li><li><a href=#create-mounts>Create Mounts</a></li><li><a href=#coralai-edge-tpu>Coral.ai edge TPU</a></li></ul></li><li><a href=#install>Install</a><ul><li><a href=#environmentfile><code>EnvironmentFile</code></a></li><li><a href=#systemd-unit-for-frigate>Systemd Unit for Frigate</a></li></ul></li></ul></li></ul></nav></div></div><div class=content id=content><div class="details admonition info open"><div class="details-summary admonition-title"><i class="icon fas fa-info-circle fa-fw"></i>FYI<i class="details-icon fas fa-angle-right fa-fw"></i></div><div class=details-content><div class=admonition-content>Portions of this post was edited for clarity with the help of <a href=https://chat.openai.com/ target=_blank rel="noopener noreffer">ChatGPT</a>.</div></div></div><hr><p>The <a href=https://frigate.video/ target=_blank rel="noopener noreffer">Frigate NVR</a> project is a relatively new entrant to the home security camera DVR space.
+Like most immature yet popular software, it has a killer feature - very good object detection that just works™ and robust <a href=https://docs.frigate.video/integrations/home-assistant/ target=_blank rel="noopener noreffer">Home Assistant integration</a>.</p><p>Unfortunately, the Frigate docs are a bit spartan particularly around installing; they more or less start with &ldquo;now that you&rsquo;ve installed it, let&rsquo;s go over configuring / using &mldr;&rdquo;.</p><p>While this does seem like a rather import omission, it&rsquo;s somewhat intentional.
+This is because Frigate is only distributed as a Docker container so installing really boils down to &ldquo;get a computer that runs <code>docker</code> and then make sure <code>docker run ...</code> is executed when you want&rdquo;.</p><p>Most of the existing guides out there all use <code>docker-compose</code> with only some minor attention paid to <a href=https://en.wikipedia.org/wiki/Supervisory_program target=_blank rel="noopener noreffer">supervisory</a> configuration:</p><ul><li><a href=https://wiki.seeedstudio.com/ODYSSEY-X86J4105-Frigate/ target=_blank rel="noopener noreffer">FRIGATE NVR Project with Seeed Odyssey</a></li><li><a href=https://www.digimoot.com/frigate-nvr-linux-manual-install/ target=_blank rel="noopener noreffer">Frigate NVR: Linux Manual Install</a></li><li><a href=https://github.com/blakeblackshear/frigate/discussions/4041 target=_blank rel="noopener noreffer">installing frigate from scratch guide #4041</a></li></ul><p>This document isn&rsquo;t going to introduce anything new or innovative but should offer an alternative that closely tracks the way I did it.</p><hr><h2 id=goal>Goal</h2><p>This post is going to cover the steps taken to get a host that:</p><ul><li>runs the Frigate docker container via <a href=https://en.wikipedia.org/wiki/Systemd target=_blank rel="noopener noreffer"><code>systemd</code></a></li><li>uses a <a href=https://coral.ai/products/m2-accelerator-bm target=_blank rel="noopener noreffer">coral.ai edge TPU</a> for accelerated object detection</li><li>records footage on a network mounted file share</li></ul><p>This post is not going to cover details that are likely specific to your deployment or are whole posts on their own:</p><ul><li>host or camera hardware selection.</li><li>camera placement</li><li>host setup tasks like installing OS</li><li>configuring frigate to use your specific cameras</li><li>integrating frigate with Home Assistant</li></ul><h2 id=prep>Prep</h2><p>I&rsquo;m going to assume that you&rsquo;ve already got a <a href=https://docs.frigate.video/frigate/hardware/ target=_blank rel="noopener noreffer">suitable host</a> for running Frigate and that you have already set it up as to your liking; <code>ssh</code> keys, <code>$hostname</code> set, timezone and ntp servers set up &mldr; etc.</p><p>I used a modern <a href=https://www.intel.com/content/www/us/en/products/sku/212327/intel-pentium-silver-n6005-processor-4m-cache-up-to-3-30-ghz/specifications.html target=_blank rel="noopener noreffer">Intel N6005</a> system running Ubuntu 22.04 but the general process should be very similar for you and may even be identical if you use a debian based OS on similar hardware.</p><h3 id=install-docker>Install Docker</h3><p>Installing the bare docker runtime is pretty straight forward. As this is a debian based host, I followed the <a href=https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository target=_blank rel="noopener noreffer"><code>apt</code> repo method</a>.</p><p>Make sure the system is up to date before installing anything new - if something goes wrong and breaks your system you&rsquo;ll have an easier time figuring out what needs fixing.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>karl@nvr:~$ sudo -i
+</span></span><span class=line><span class=cl><span class=o>[</span>sudo<span class=o>]</span> password <span class=k>for</span> karl:  
+</span></span><span class=line><span class=cl>root@nvr:~# apt update<span class=p>;</span> apt dist-upgrade -y<span class=p>;</span> apt autoremove -y<span class=p>;</span> apt autoclean -y
+</span></span><span class=line><span class=cl>&lt;...&gt;
+</span></span><span class=line><span class=cl>root@nvr:~# cat /var/run/reboot-required.pkgs  
+</span></span><span class=line><span class=cl>linux-image-5.19.0-35-generic
+</span></span><span class=line><span class=cl>linux-base
+</span></span><span class=line><span class=cl>root@nvr:~# reboot
+</span></span></code></pre></td></tr></table></div></div><p>Post update, install a subset of the docker packages:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>karl@nvr:~$ sudo mkdir -m <span class=m>0755</span> -p /etc/apt/keyrings
+</span></span><span class=line><span class=cl>karl@nvr:~$ curl -fsSL https://download.docker.com/linux/ubuntu/gpg <span class=p>|</span> sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+</span></span><span class=line><span class=cl>karl@nvr:~$ <span class=nb>echo</span> <span class=se>\
+</span></span></span><span class=line><span class=cl><span class=se></span> <span class=s2>&#34;deb [arch=</span><span class=k>$(</span>dpkg --print-architecture<span class=k>)</span><span class=s2> signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+</span></span></span><span class=line><span class=cl><span class=s2> </span><span class=k>$(</span>lsb_release -cs<span class=k>)</span><span class=s2> stable&#34;</span> <span class=p>|</span> sudo tee /etc/apt/sources.list.d/docker.list &gt; /dev/null
+</span></span><span class=line><span class=cl>karl@nvr:~$ sudo apt update<span class=p>;</span> sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin
+</span></span><span class=line><span class=cl>&lt;...&gt;
+</span></span><span class=line><span class=cl>After this operation, <span class=m>401</span> MB of additional disk space will be used.
+</span></span><span class=line><span class=cl>Do you want to <span class=k>continue</span>? <span class=o>[</span>Y/n<span class=o>]</span> Y
+</span></span><span class=line><span class=cl>&lt;...&gt;
+</span></span></code></pre></td></tr></table></div></div><p>And then check signs of life:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>karl@nvr:~$ sudo docker run hello-world
+</span></span><span class=line><span class=cl>&lt;...&gt;
+</span></span><span class=line><span class=cl>Status: Downloaded newer image <span class=k>for</span> hello-world:latest
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Hello from Docker!
+</span></span><span class=line><span class=cl>This message shows that your installation appears to be working correctly.
+</span></span><span class=line><span class=cl>&lt;...&gt;
+</span></span></code></pre></td></tr></table></div></div><p>With that, docker is good to go and we can move on to the other prerequisites.</p><h3 id=create-frigate-user>Create Frigate User</h3><p>It&rsquo;s good practice to create dedicated users with limited permissions to run the service(s) under.
+Create the user and verify that the user does not need elevated credentials to talk to docker:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>karl@nvr:~$ sudo useradd --comment <span class=s2>&#34;service user for Frigate NVR&#34;</span> --groups docker --system --shell /usr/bin/bash frigate
+</span></span><span class=line><span class=cl>karl@nvr:~$ sudo -i
+</span></span><span class=line><span class=cl>root@nvr:~# su - frigate
+</span></span><span class=line><span class=cl>su: warning: cannot change directory to /home/frigate: No such file or directory
+</span></span><span class=line><span class=cl>frigate@nvr:/root$ groups
+</span></span><span class=line><span class=cl>frigate docker
+</span></span><span class=line><span class=cl>frigate@nvr:/root$ docker container list -a
+</span></span><span class=line><span class=cl>CONTAINER ID   IMAGE         COMMAND    CREATED         STATUS                     PORTS     NAMES
+</span></span><span class=line><span class=cl>dd7a5d1694c7   hello-world   <span class=s2>&#34;/hello&#34;</span>   4 minutes ago   Exited <span class=o>(</span>0<span class=o>)</span> <span class=m>4</span> minutes ago             mystifying_yalow
+</span></span></code></pre></td></tr></table></div></div><div class="details admonition warning open"><div class="details-summary admonition-title"><i class="icon fas fa-exclamation-triangle fa-fw"></i>Quite note about docker security<i class="details-icon fas fa-angle-right fa-fw"></i></div><div class=details-content><div class=admonition-content><p>Yes, I am aware that - because the <code>frigate</code> user can invoke <code>docker</code> commands directly - it isn&rsquo;t difficult for the <code>frigate</code> user to <a href=https://docs.docker.com/engine/security/#docker-daemon-attack-surface target=_blank rel="noopener noreffer">escalate credentials to those of <code>root</code></a>.</p><p>Running the docker daemon in <a href=https://docs.docker.com/engine/security/rootless/ target=_blank rel="noopener noreffer">rootless mode</a> or an alternative &rsquo;non-root&rsquo; container management tool is one way to eliminate this risk but is beyond the scope of this post.</p><p>As always, <a href=https://en.wikipedia.org/wiki/Defense_in_depth_%28computing%29 target=_blank rel="noopener noreffer">defense in depth</a>; this frigate host is appropriately firewalled off from the rest of the network.</p></div></div></div><p>After <code>docker</code> is installed and the <code>frigate</code> user is added to the <code>docker</code> group, the next pre-requisite is storage for Frigate recordings.</p><h3 id=create-mounts>Create Mounts</h3><div class="details admonition tip open"><div class="details-summary admonition-title"><i class="icon fas fa-lightbulb fa-fw"></i>Tip<i class="details-icon fas fa-angle-right fa-fw"></i></div><div class=details-content><div class=admonition-content>You can skip this step if you do not wish to use remote storage for the Frigate configuration and recordings.</div></div></div><div class="details admonition warning open"><div class="details-summary admonition-title"><i class="icon fas fa-exclamation-triangle fa-fw"></i>Storage quotas<i class="details-icon fas fa-angle-right fa-fw"></i></div><div class=details-content><div class=admonition-content><p>Frigate does not have <a href=https://docs.frigate.video/configuration/record target=_blank rel="noopener noreffer">sophisticated controls</a> for configuring how long recordings are kept so you are encouraged to set up a storage quota for whatever disk/mount/share you use for network recordings.</p><p>If you are going the network share route, the software on the NAS likely has this functionality.
+If you are going with local storage, the simplest way to enforce a quota is to use a dedicated partition.</p></div></div></div><p>Using <a href=https://www.freedesktop.org/software/systemd/man/systemd.mount.html target=_blank rel="noopener noreffer"><code>.mount</code> files</a>, it is trivial to have systemd mount the network share before starting Frigate.
+I chose to use a <a href=https://en.wikipedia.org/wiki/Network_File_System target=_blank rel="noopener noreffer">NFS</a> share as both the NAS and the Frigate host are *NIX based and file system permissions tend to work a lot cleaner over NFS compared to Samba.</p><p>If you run into errors related to the database that frigate uses, you may consider <a href=https://docs.frigate.video/configuration/advanced#database target=_blank rel="noopener noreffer">re-locating the database to a local mount</a>.</p><p>The technique outlined below will work for Samba shares as well but the <code>.mount</code> files will be configured slightly differently and you&rsquo;ll need to install slightly different software:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>karl@nvr:~$ sudo apt install nfs-common
+</span></span><span class=line><span class=cl><span class=c1># Only needed if you use SMB shares. Without this package, you will likely get obscure errors related to hostname resolution</span>
+</span></span><span class=line><span class=cl><span class=c1># See: https://askubuntu.com/questions/373340/ubuntu-server-13-10-cant-mount-hard-drive-that-is-on-my-router/374699#374699</span>
+</span></span><span class=line><span class=cl>karl@nvr:~$ sudo apt-get install cifs-utils
+</span></span></code></pre></td></tr></table></div></div><p>With the correct smb/nfs packages installed, tell systemd how to mount the network share locally automatically:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># Create path on host</span>
+</span></span><span class=line><span class=cl>karl@nvr:~$ sudo mkdir -p /mnt/frigate
+</span></span><span class=line><span class=cl>karl@nvr:~$ sudo chown -R frigate /mnt/frigate
+</span></span><span class=line><span class=cl>karl@nvr:~$ ls -lah /mnt/frigate/
+</span></span><span class=line><span class=cl>total 8.0K
+</span></span><span class=line><span class=cl>drwxr-xr-x <span class=m>2</span> frigate root 4.0K Mar  <span class=m>2</span> 08:37 .
+</span></span><span class=line><span class=cl>drwxr-xr-x <span class=m>3</span> root    root 4.0K Mar  <span class=m>2</span> 08:37 ..
+</span></span><span class=line><span class=cl><span class=c1># Create the mount files</span>
+</span></span><span class=line><span class=cl>karl@nvr:~$ sudo <span class=nv>$EDITOR</span> /etc/systemd/system/mnt-frigate.mount
+</span></span><span class=line><span class=cl>karl@nvr:~$ sudo <span class=nv>$EDITOR</span> /etc/systemd/system/mnt-frigate.automount
+</span></span><span class=line><span class=cl><span class=c1># And apply them</span>
+</span></span><span class=line><span class=cl>karl@nvr:~$ sudo systemctl daemon-reload
+</span></span><span class=line><span class=cl>karl@nvr:~$ sudo systemctl <span class=nb>enable</span> mnt-frigate.moun
+</span></span><span class=line><span class=cl>karl@nvr:~$ sudo systemctl <span class=nb>enable</span> mnt-frigate.automount
+</span></span><span class=line><span class=cl>karl@nvr:~$ sudo systemctl start mnt-frigate.mount
+</span></span><span class=line><span class=cl>karl@nvr:~$ sudo systemctl start mnt-frigate.automount
+</span></span></code></pre></td></tr></table></div></div><p>The <code>/etc/systemd/system/mnt-frigate.mount</code> file looks like this:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-systemd data-lang=systemd><span class=line><span class=cl><span class=k>[Unit]</span>
+</span></span><span class=line><span class=cl><span class=na>Description</span><span class=o>=</span><span class=s>Mount Frigate NFS share share locally for frigate docker container</span>
+</span></span><span class=line><span class=cl><span class=na>Requires</span><span class=o>=</span><span class=s>systemd-networkd.service</span>
+</span></span><span class=line><span class=cl><span class=na>After</span><span class=o>=</span><span class=s>network-online.target</span>
+</span></span><span class=line><span class=cl><span class=na>Wants</span><span class=o>=</span><span class=s>network-online.target</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>[Mount]</span>
+</span></span><span class=line><span class=cl><span class=na>What</span><span class=o>=</span><span class=s>yourServerIPHere:/path/to/your/nfs/share/here</span>
+</span></span><span class=line><span class=cl><span class=na>Where</span><span class=o>=</span><span class=s>/mnt/frigate</span>
+</span></span><span class=line><span class=cl><span class=na>Type</span><span class=o>=</span><span class=s>nfs</span>
+</span></span><span class=line><span class=cl><span class=na>Options</span><span class=o>=</span><span class=s>default</span>
+</span></span><span class=line><span class=cl><span class=na>TimeoutSec</span><span class=o>=</span><span class=s>5</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>[Install]</span>
+</span></span><span class=line><span class=cl><span class=na>WantedBy</span><span class=o>=</span><span class=s>multi-user.target</span>
+</span></span></code></pre></td></tr></table></div></div><p>And the <code>/etc/systemd/system/mnt-frigate.automount</code> looks like this:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span><span class=lnt>8
+</span><span class=lnt>9
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-systemd data-lang=systemd><span class=line><span class=cl><span class=k>[Unit]</span>
+</span></span><span class=line><span class=cl><span class=na>Description</span><span class=o>=</span><span class=s>automount for frigate</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>[Automount]</span>
+</span></span><span class=line><span class=cl><span class=na>Where</span><span class=o>=</span><span class=s>/mnt/frigate</span>
+</span></span><span class=line><span class=cl><span class=na>TimeoutIdleSec</span><span class=o>=</span><span class=s>0</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>[Install]</span>
+</span></span><span class=line><span class=cl><span class=na>WantedBy</span><span class=o>=</span><span class=s>multi-user.target</span>
+</span></span></code></pre></td></tr></table></div></div><p>After <code>systemctl start/enable ...</code> the mounts should be up and running.
+Use <code>systemctl status</code> to check that things worked properly and use <code>journalctl</code> to check logs if things went wrong.
+Ideally you&rsquo;ll have something that looks like this:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>root@nvr:~# systemctl status mnt-frigate.mount
+</span></span><span class=line><span class=cl>● mnt-frigate.mount - Mount Frigate NFS share share locally <span class=k>for</span> frigate docker container
+</span></span><span class=line><span class=cl>     Loaded: loaded <span class=o>(</span>/proc/self/mountinfo<span class=p>;</span> enabled<span class=p>;</span> preset: enabled<span class=o>)</span>
+</span></span><span class=line><span class=cl>     Active: active <span class=o>(</span>mounted<span class=o>)</span> since &lt;...&gt;
+</span></span><span class=line><span class=cl>TriggeredBy: ● mnt-frigate.automount
+</span></span><span class=line><span class=cl>      Where: /mnt/frigate
+</span></span><span class=line><span class=cl>       &lt;...&gt;
+</span></span></code></pre></td></tr></table></div></div><p>At this point, all the <em>basic</em> pre-requisites are satisfied: a <code>frigate</code> specific user can run <code>docker run ...</code> commands and <code>systemd</code> will automatically mount the network share locally.</p><h3 id=coralai-edge-tpu>Coral.ai edge TPU</h3><div class="details admonition tip open"><div class="details-summary admonition-title"><i class="icon fas fa-lightbulb fa-fw"></i>Tip<i class="details-icon fas fa-angle-right fa-fw"></i></div><div class=details-content><div class=admonition-content>Skip this step if you are not using PCI-E based edge TPU nodes.</div></div></div><p>As mentioned at the top, one of the features that makes Frigate so attractive is how easy it is to use dedicated hardware for image/object classification.</p><p>I am using a <a href=https://en.wikipedia.org/wiki/PCI_Express target=_blank rel="noopener noreffer">PCI-Express</a> based TPU so there&rsquo;s a little bit more wor required to successfully pass a PCIe device into a docker container.
+Fortunately this process is a lot simpler than it used to be and the google provided <a href=https://coral.ai/docs/m2/get-started/#2a-on-linux target=_blank rel="noopener noreffer">instructions</a> are pretty clear:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># Confirm there is no apex driver present already.</span>
+</span></span><span class=line><span class=cl>karl@nvr:~$ sudo lsmod <span class=p>|</span> grep apex
+</span></span><span class=line><span class=cl><span class=c1># Add apt repos</span>
+</span></span><span class=line><span class=cl>karl@nvr:~$ <span class=nb>echo</span> <span class=s2>&#34;deb https://packages.cloud.google.com/apt coral-edgetpu-stable main&#34;</span> <span class=p>|</span> sudo tee /etc/apt/sources.list.d/coral-edgetpu.list
+</span></span><span class=line><span class=cl>deb https://packages.cloud.google.com/apt coral-edgetpu-stable main
+</span></span><span class=line><span class=cl><span class=c1># Install the driver</span>
+</span></span><span class=line><span class=cl>karl@nvr:~$ curl https://packages.cloud.google.com/apt/doc/apt-key.gpg <span class=p>|</span> sudo apt-key add -
+</span></span><span class=line><span class=cl>&lt;...&gt;
+</span></span><span class=line><span class=cl>karl@nvr:~$ sudo apt-get update<span class=p>;</span> sudo apt-get install gasket-dkms libedgetpu1-std
+</span></span><span class=line><span class=cl>Get:1 https://packages.cloud.google.com/apt coral-edgetpu-stable InRelease <span class=o>[</span>6,332 B<span class=o>]</span>
+</span></span><span class=line><span class=cl>&lt;...&gt;
+</span></span><span class=line><span class=cl>The following additional packages will be installed:
+</span></span><span class=line><span class=cl> build-essential bzip2 cpp cpp-12 dctrl-tools dh-dkms dkms dpkg-dev fakeroot fontconfig-config fonts-dejavu-core g++ g++-12 gcc
+</span></span><span class=line><span class=cl>&lt;...&gt;
+</span></span><span class=line><span class=cl>Do you want to <span class=k>continue</span>? <span class=o>[</span>Y/n<span class=o>]</span> Y
+</span></span><span class=line><span class=cl>&lt;...&gt;
+</span></span></code></pre></td></tr></table></div></div><p>After install, <a href=https://en.wikipedia.org/wiki/Udev target=_blank rel="noopener noreffer"><code>udev</code></a> rules are needed to make sure the proper driver is loaded:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># Confirm file does not exist</span>
+</span></span><span class=line><span class=cl>karl@nvr:~$ sudo cat /etc/udev/rules.d/65-apex.rules
+</span></span><span class=line><span class=cl>cat: /etc/udev/rules.d/65-apex.rules: No such file or directory
+</span></span><span class=line><span class=cl>karl@nvr:~$ sudo sh -c <span class=s2>&#34;echo &#39;SUBSYSTEM==\&#34;apex\&#34;, MODE=\&#34;0660\&#34;, GROUP=\&#34;apex\&#34;&#39; &gt;&gt; /etc/udev/rules.d/65-apex.rules&#34;</span>
+</span></span><span class=line><span class=cl><span class=c1># Add the `frigate` user to the `apex` group so it can access the &#34;virtual&#34; PCIe devices</span>
+</span></span><span class=line><span class=cl>karl@nvr:~$ sudo groupadd -U frigate apex
+</span></span><span class=line><span class=cl>karl@nvr:~$ sudo groups frigate
+</span></span><span class=line><span class=cl>frigate : frigate docker apex
+</span></span><span class=line><span class=cl><span class=c1># Cleanest way to make sure driver and udev rules work is to reboot</span>
+</span></span><span class=line><span class=cl>karl@nvr:~$ sudo reboot
+</span></span></code></pre></td></tr></table></div></div><p>Checking that the <code>apex</code> driver is properly loaded is quick and painless:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span><span class=lnt>7
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl><span class=c1># I have a &#34;dual&#34; TPU so two devices show up. If you only have a &#34;single&#34; TPU, only one will show up.</span>
+</span></span><span class=line><span class=cl>karl@nvr:~$ sudo lspci -nn <span class=p>|</span> grep 089a
+</span></span><span class=line><span class=cl><span class=o>[</span>sudo<span class=o>]</span> password <span class=k>for</span> karl:  
+</span></span><span class=line><span class=cl>03:00.0 System peripheral <span class=o>[</span>0880<span class=o>]</span>: Global Unichip Corp. Coral Edge TPU <span class=o>[</span>1ac1:089a<span class=o>]</span>
+</span></span><span class=line><span class=cl>04:00.0 System peripheral <span class=o>[</span>0880<span class=o>]</span>: Global Unichip Corp. Coral Edge TPU <span class=o>[</span>1ac1:089a<span class=o>]</span>
+</span></span><span class=line><span class=cl>karl@nvr:~$ sudo ls /dev/apex_*
+</span></span><span class=line><span class=cl>/dev/apex_0 /dev/apex_1
+</span></span></code></pre></td></tr></table></div></div><p>And with that, all the core/extended pre-requisites are done and the remaining work is actually pretty minimal.</p><h2 id=install>Install</h2><p>After the pre-requisites are satisfied so all that&rsquo;s left is the <a href=https://www.freedesktop.org/software/systemd/man/systemd.unit.html target=_blank rel="noopener noreffer"><code>.unit</code> file</a> which will wrap the <code>docker run</code> commands.</p><h3 id=environmentfile><code>EnvironmentFile</code></h3><p>Frigate supports env-var substitution in it&rsquo;s configuration file like so:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>mqtt</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>host</span><span class=p>:</span><span class=w> </span><span class=l>mqtt.server.com</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>user</span><span class=p>:</span><span class=w> </span>{<span class=l>FRIGATE_SOME_KEY_HERE}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>The configuration file - sans sensitive information - can now be safely checked in to source control.
+Create a file just for holding our env-vars:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>karl@nvr:~$ sudo mkdir -p /etc/frigate
+</span></span><span class=line><span class=cl><span class=o>[</span>sudo<span class=o>]</span> password <span class=k>for</span> karl:
+</span></span><span class=line><span class=cl>karl@nvr:~$ sudo touch /etc/frigate/secrets
+</span></span><span class=line><span class=cl>karl@nvr:~$ sudo chown -R frigate:frigate /etc/frigate
+</span></span><span class=line><span class=cl>karl@nvr:~$ sudo chmod -R <span class=m>0750</span> /etc/frigate
+</span></span><span class=line><span class=cl>karl@nvr:~$ sudo ls -lah /etc/frigate/
+</span></span><span class=line><span class=cl>total 12K
+</span></span><span class=line><span class=cl>drwxr-x---   <span class=m>2</span> frigate frigate 4.0K Mar  <span class=m>4</span> 16:13 .
+</span></span><span class=line><span class=cl>drwxr-xr-x <span class=m>110</span> root    root    4.0K Mar  <span class=m>4</span> 15:16 ..
+</span></span><span class=line><span class=cl>-rwxr-x---   <span class=m>1</span> frigate frigate  <span class=m>356</span> Mar  <span class=m>4</span> 16:13 secrets
+</span></span></code></pre></td></tr></table></div></div><p>The secrets file is <a href=https://docs.docker.com/engine/reference/commandline/run/#env target=_blank rel="noopener noreffer">simple key=value format</a>:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span><span class=lnt>5
+</span><span class=lnt>6
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>karl@nvr:~$ sudo cat /etc/frigate/secrets
+</span></span><span class=line><span class=cl><span class=nv>FRIGATE_MQTT_USER</span><span class=o>=</span>frigate
+</span></span><span class=line><span class=cl><span class=nv>FRIGATE_MQTT_PASSWORD</span><span class=o>=</span>ChangeMe
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=nv>FRIGATE_CAM01_RTSP_USER</span><span class=o>=</span>frigate
+</span></span><span class=line><span class=cl><span class=nv>FRIGATE_CAM01_RTSP_PASS</span><span class=o>=</span>changeme
+</span></span></code></pre></td></tr></table></div></div><div class="details admonition warning open"><div class="details-summary admonition-title"><i class="icon fas fa-exclamation-triangle fa-fw"></i>Warning<i class="details-icon fas fa-angle-right fa-fw"></i></div><div class=details-content><div class=admonition-content><p>The use of env-var substitution in the MQTT section of the config requires frigate 0.12 or higher.
+At the time of writing (2023.03), the latest <code>stable</code> release is <code>0.11</code>.</p><p>Some additional details in <a href=https://github.com/blakeblackshear/frigate/issues/5640 target=_blank rel="noopener noreffer">this</a> GH issue.</p></div></div></div><h3 id=systemd-unit-for-frigate>Systemd Unit for Frigate</h3><p>The <code>/etc/systemd/system/frigate.service</code> file:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-systemd data-lang=systemd><span class=line><span class=cl><span class=k>[Unit]</span>
+</span></span><span class=line><span class=cl><span class=na>Description</span><span class=o>=</span><span class=s>Frigate NVR</span>
+</span></span><span class=line><span class=cl><span class=c># Don&#39;t start until after docker is healthy and the nfs share is mounted</span>
+</span></span><span class=line><span class=cl><span class=na>After</span><span class=o>=</span><span class=s>docker.service</span>
+</span></span><span class=line><span class=cl><span class=na>Requires</span><span class=o>=</span><span class=s>docker.service</span>
+</span></span><span class=line><span class=cl><span class=na>Requires</span><span class=o>=</span><span class=s>mnt-frigate.mount</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>[Service]</span>
+</span></span><span class=line><span class=cl><span class=na>User</span><span class=o>=</span><span class=s>frigate</span>
+</span></span><span class=line><span class=cl><span class=na>Group</span><span class=o>=</span><span class=s>frigate</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=na>TimeoutStartSec</span><span class=o>=</span><span class=s>0</span>
+</span></span><span class=line><span class=cl><span class=na>Restart</span><span class=o>=</span><span class=s>always</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c># We want to start with a fresh container every time</span>
+</span></span><span class=line><span class=cl><span class=na>ExecStartPre</span><span class=o>=</span><span class=s>-/usr/bin/docker exec %n stop</span>
+</span></span><span class=line><span class=cl><span class=na>ExecStartPre</span><span class=o>=</span><span class=s>-/usr/bin/docker rm %n</span>
+</span></span><span class=line><span class=cl><span class=na>ExecStartPre</span><span class=o>=</span><span class=s>/usr/bin/docker pull blakeblackshear/frigate:stable</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=c># Expose the web UI on port 80 to keep things a bit cleaner</span>
+</span></span><span class=line><span class=cl><span class=na>ExecStart</span><span class=o>=</span><span class=s>/usr/bin/docker run --rm --name %n </span>\
+</span></span><span class=line><span class=cl><span class=s>  --env-file /etc/frigate/secrets </span>\
+</span></span><span class=line><span class=cl><span class=s>  --mount type=tmpfs,target=/tmp/cache,tmpfs-size=1000000000 </span>\
+</span></span><span class=line><span class=cl><span class=s>  --device /dev/dri/renderD128 </span>\
+</span></span><span class=line><span class=cl><span class=s>  --device /dev/apex_0:/dev/apex_0 </span>\
+</span></span><span class=line><span class=cl><span class=s>  --device /dev/apex_1:/dev/apex_1 </span>\
+</span></span><span class=line><span class=cl><span class=s>  --shm-size=64m </span>\
+</span></span><span class=line><span class=cl><span class=s>  -v /mnt/frigate/storage:/media/frigate </span>\
+</span></span><span class=line><span class=cl><span class=s>  -v /mnt/frigate/config:/config:ro </span>\
+</span></span><span class=line><span class=cl><span class=s>  -v /etc/localtime:/etc/localtime:ro </span>\
+</span></span><span class=line><span class=cl><span class=s>  -p 80:5000 </span>\
+</span></span><span class=line><span class=cl><span class=s>  -p 1935:1935 </span>\
+</span></span><span class=line><span class=cl><span class=s>  blakeblackshear/frigate:stable</span>
+</span></span><span class=line><span class=cl><span class=k>[Install]</span>
+</span></span><span class=line><span class=cl><span class=na>WantedBy</span><span class=o>=</span><span class=s>default.target</span>
+</span></span></code></pre></td></tr></table></div></div><p>Then enable/start the service</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>karl@nvr:~$ sudo systemctl <span class=nb>enable</span> frigate.service
+</span></span><span class=line><span class=cl>Created symlink /etc/systemd/system/default.target.wants/frigate.service → /etc/systemd/system/frigate.service.
+</span></span><span class=line><span class=cl>karl@nvr:~$ sudo systemctl start frigate.service
+</span></span><span class=line><span class=cl>&lt;...&gt;
+</span></span><span class=line><span class=cl>karl@nvr:~$ sudo systemctl status frigate
+</span></span><span class=line><span class=cl>● frigate.service - Frigate NVR
+</span></span><span class=line><span class=cl>     Loaded: loaded <span class=o>(</span>/etc/systemd/system/frigate.service<span class=p>;</span> enabled<span class=p>;</span> preset: enabled<span class=o>)</span>
+</span></span><span class=line><span class=cl>     Active: active <span class=o>(</span>running<span class=o>)</span> since &lt;...&gt;
+</span></span><span class=line><span class=cl>     CGroup: /system.slice/frigate.service
+</span></span><span class=line><span class=cl>             └─27104 /usr/bin/docker run --rm --name frigate.service --mount <span class=nv>type</span><span class=o>=</span>tmpfs,target<span class=o>=</span>/tmp/cache,tmpfs-size<span class=o>=</span><span class=m>1000000000</span> --device /dev/dri/renderD128 --device /dev/apex_0:/dev/apex_0 --device /dev/apex_1:/dev/apex_1 --shm-size<span class=o>=</span>&gt;
+</span></span></code></pre></td></tr></table></div></div><p>And that&rsquo;s all there is to it :).</p><p>Hopefully that helps!</p></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>Updated on 2023-03-04&nbsp;<a class=git-hash href=https://github.com/kquinsland/kquinsland.github.io/commit/50a0f07f6091fbea47756df26babdaaa7004a6f3 target=_blank title="commit by karl(github@karlquinsland.com) 50a0f07f6091fbea47756df26babdaaa7004a6f3: get ready to post">
+<i class="fas fa-hashtag fa-fw"></i>50a0f07</a></span></div><div class=post-info-license></div></div><div class=post-info-line><div class=post-info-md><span><a class=link-to-markdown href=https://karlquinsland.com/frigate-install/index.md target=_blank>Read Markdown</a></span></div><div class=post-info-share><span></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=https://karlquinsland.com/tags/frigate/>frigate</a>,&nbsp;<a href=https://karlquinsland.com/tags/home-assistant/>home assistant</a>,&nbsp;<a href=https://karlquinsland.com/tags/systemd/>systemd</a>,&nbsp;<a href=https://karlquinsland.com/tags/co-author/chatgpt/>co-author/chatGPT</a></section><section><span><a href=javascript:void(0); onclick=window.history.back()>Back</a></span>&nbsp;|&nbsp;<span><a href=https://karlquinsland.com/>Home</a></span></section></div><div class=post-nav><a href=https://karlquinsland.com/improved-esphome-coffee-automation/ class=prev rel=prev title="Integrating a dumb coffee maker with Home Assistant via ESPHome"><i class="fas fa-angle-left fa-fw"></i>Integrating a dumb coffee maker with Home Assistant via ESPHome</a></div></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line>¯\_(ツ)_/¯</div><div class=footer-line>Powered by <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.111.1">Hugo</a> | Theme - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a></div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2019 - 2023</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=https://karlquinsland.com/ target=_blank>karl</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top"><i class="fas fa-arrow-up fa-fw"></i>
+</a><a href=# id=view-comments class=fixed-button title="View Comments"><i class="fas fa-comment fa-fw"></i></a></div><link rel=stylesheet href=https://karlquinsland.com/lib/katex/katex.min.4710034e669c7ff17f823f9ba12cf8a36582d65b007f79cbc4a3c11d7db2e4ca.css integrity="sha256-RxADTmacf/F/gj+boSz4o2WC1lsAf3nLxKPBHX2y5Mo="><link rel=stylesheet href=https://karlquinsland.com/lib/katex/copy-tex.min.bf9ff4137fec38f6255419e142d0883c9c52090885d746f80eee12b273d9b3e0.css integrity="sha256-v5/0E3/sOPYlVBnhQtCIPJxSCQiF10b4Du4SsnPZs+A="><script type=text/javascript src=https://karlquinsland.com/lib/smooth-scroll/smooth-scroll.min.bcff85fb5e00d68802850b393ac7792c997f722f536f38e26638c46dca8e5eb6.js integrity="sha256-vP+F+14A1ogChQs5Osd5LJl/ci9TbzjiZjjEbcqOXrY="></script><script type=text/javascript src=https://karlquinsland.com/lib/autocomplete/autocomplete.min.615590a2ca2b667afa7c02ef396f5500b62e22795ddbb46448f90494605d09a5.js integrity="sha256-YVWQosorZnr6fALvOW9VALYuInld27RkSPkElGBdCaU="></script><script type=text/javascript src=https://karlquinsland.com/lib/lunr/lunr.min.df84a2d58ea594c04a3371b48d020b55ea10284c2ec636e4e331965d7313e29b.js integrity="sha256-34Si1Y6llMBKM3G0jQILVeoQKEwuxjbk4zGWXXMT4ps="></script><script type=text/javascript src=https://karlquinsland.com/lib/lazysizes/lazysizes.min.fb649fcae62177dfe63e67081ddceb830b5ce1f05a4184e9bbb7d87ac4b8f4e5.js integrity="sha256-+2SfyuYhd9/mPmcIHdzrgwtc4fBaQYTpu7fYesS49OU="></script><script type=text/javascript src=https://karlquinsland.com/lib/clipboard/clipboard.min.8a7739925f4c03586479852df840b7061948832a7fda30c8c812d2ea4dd4c4f2.js integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/katex.min.17f5dd6b9f123dd7140abfb18521b3f4c036cd004f6f40121182a8865f140877.js integrity="sha256-F/Xda58SPdcUCr+xhSGz9MA2zQBPb0ASEYKohl8UCHc="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/auto-render.min.f74776a677f0d2be0af0264058f928e2ba455d0b19bc985304660d922a43a6b2.js integrity="sha256-90d2pnfw0r4K8CZAWPko4rpFXQsZvJhTBGYNkipDprI="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/copy-tex.min.2ab2237329021bc443986c8327f6e61357fb68a54e5d233d224023718c02207d.js integrity="sha256-KrIjcykCG8RDmGyDJ/bmE1f7aKVOXSM9IkAjcYwCIH0="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/mhchem.min.5cea356d6025c5a2f18c454c83ec5674dbb04fab1cd1d75569e77788c6b6f888.js integrity="sha256-XOo1bWAlxaLxjEVMg+xWdNuwT6sc0ddVaed3iMa2+Ig="></script><script type=text/javascript>window.config={code:{copyTitle:"Copy to clipboard",maxShownLines:10},comment:{},math:{delimiters:[{display:!0,left:"$$",right:"$$"},{display:!0,left:"\\[",right:"\\]"},{display:!1,left:"$",right:"$"},{display:!1,left:"\\(",right:"\\)"}],strict:!1},search:{highlightTag:"em",lunrIndexURL:"/index.json",maxResultLength:10,noResultsFound:"No results found",snippetLength:30,type:"lunr"}}</script><script type=text/javascript src=https://karlquinsland.com/js/theme.min.f51938f3065a40ee841bcb558e4330e31fd26c0ea55343fff8770b88b0319a3c.js integrity="sha256-9Rk48wZaQO6EG8tVjkMw4x/SbA6lU0P/+HcLiLAxmjw="></script><script type=text/javascript>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-3WZ55XG701",{anonymize_ip:!0})</script><script type=text/javascript src="https://www.googletagmanager.com/gtag/js?id=G-3WZ55XG701" async></script></body></html>

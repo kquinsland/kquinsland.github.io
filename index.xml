@@ -1,4 +1,601 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>karl</title><link>https://karlquinsland.com/</link><description>Karl's little corner of the internet</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 21 Jan 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Integrating a dumb coffee maker with Home Assistant via ESPHome</title><link>https://karlquinsland.com/improved-esphome-coffee-automation/</link><pubDate>Sat, 21 Jan 2023 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/improved-esphome-coffee-automation/</guid><description><![CDATA[<!-- markdownlint-disable-file MD002 -->
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>karl</title><link>https://karlquinsland.com/</link><description>Karl's little corner of the internet</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 04 Mar 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Frigate From Scratch guide</title><link>https://karlquinsland.com/frigate-install/</link><pubDate>Sat, 04 Mar 2023 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/frigate-install/</guid><description><![CDATA[<!-- markdownlint-disable-file MD002 -->
+<div class="details admonition info open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-info-circle fa-fw"></i>FYI<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">Portions of this post was edited for clarity with the help of <a href="https://chat.openai.com/" target="_blank" rel="noopener noreffer">ChatGPT</a>.</div>
+        </div>
+    </div>
+<hr>
+<p>The <a href="https://frigate.video/" target="_blank" rel="noopener noreffer">Frigate NVR</a> project is a relatively new entrant to the home security camera DVR space.
+Like most immature yet popular software, it has a killer feature - very good object detection that just works™ and robust <a href="https://docs.frigate.video/integrations/home-assistant/" target="_blank" rel="noopener noreffer">Home Assistant integration</a>.</p>
+<p>Unfortunately, the Frigate docs are a bit spartan particularly around installing; they more or less start with &ldquo;now that you&rsquo;ve installed it, let&rsquo;s go over configuring / using &hellip;&rdquo;.</p>
+<p>While this does seem like a rather import omission, it&rsquo;s somewhat intentional.
+This is because Frigate is only distributed as a Docker container so installing really boils down to &ldquo;get a computer that runs <code>docker</code> and then make sure <code>docker run ...</code> is executed when you want&rdquo;.</p>
+<p>Most of the existing guides out there all use <code>docker-compose</code> with only some minor attention paid to <a href="https://en.wikipedia.org/wiki/Supervisory_program" target="_blank" rel="noopener noreffer">supervisory</a> configuration:</p>
+<ul>
+<li><a href="https://wiki.seeedstudio.com/ODYSSEY-X86J4105-Frigate/" target="_blank" rel="noopener noreffer">FRIGATE NVR Project with Seeed Odyssey</a></li>
+<li><a href="https://www.digimoot.com/frigate-nvr-linux-manual-install/" target="_blank" rel="noopener noreffer">Frigate NVR: Linux Manual Install</a></li>
+<li><a href="https://github.com/blakeblackshear/frigate/discussions/4041" target="_blank" rel="noopener noreffer">installing frigate from scratch guide #4041</a></li>
+</ul>
+<p>This document isn&rsquo;t going to introduce anything new or innovative but should offer an alternative that closely tracks the way I did it.</p>
+<hr>
+<h2 id="goal">Goal</h2>
+<p>This post is going to cover the steps taken to get a host that:</p>
+<ul>
+<li>runs the Frigate docker container via <a href="https://en.wikipedia.org/wiki/Systemd" target="_blank" rel="noopener noreffer"><code>systemd</code></a></li>
+<li>uses a <a href="https://coral.ai/products/m2-accelerator-bm" target="_blank" rel="noopener noreffer">coral.ai edge TPU</a> for accelerated object detection</li>
+<li>records footage on a network mounted file share</li>
+</ul>
+<p>This post is not going to cover details that are likely specific to your deployment or are whole posts on their own:</p>
+<ul>
+<li>host or camera hardware selection.</li>
+<li>camera placement</li>
+<li>host setup tasks like installing OS</li>
+<li>configuring frigate to use your specific cameras</li>
+<li>integrating frigate with Home Assistant</li>
+</ul>
+<h2 id="prep">Prep</h2>
+<p>I&rsquo;m going to assume that you&rsquo;ve already got a <a href="https://docs.frigate.video/frigate/hardware/" target="_blank" rel="noopener noreffer">suitable host</a> for running Frigate and that you have already set it up as to your liking; <code>ssh</code> keys, <code>$hostname</code> set, timezone and ntp servers set up &hellip; etc.</p>
+<p>I used a modern <a href="https://www.intel.com/content/www/us/en/products/sku/212327/intel-pentium-silver-n6005-processor-4m-cache-up-to-3-30-ghz/specifications.html" target="_blank" rel="noopener noreffer">Intel N6005</a> system running Ubuntu 22.04 but the general process should be very similar for you and may even be identical if you use a debian based OS on similar hardware.</p>
+<h3 id="install-docker">Install Docker</h3>
+<p>Installing the bare docker runtime is pretty straight forward. As this is a debian based host, I followed the <a href="https://docs.docker.com/engine/install/ubuntu/#install-using-the-repository" target="_blank" rel="noopener noreffer"><code>apt</code> repo method</a>.</p>
+<p>Make sure the system is up to date before installing anything new - if something goes wrong and breaks your system you&rsquo;ll have an easier time figuring out what needs fixing.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">karl@nvr:~$ sudo -i
+</span></span><span class="line"><span class="cl"><span class="o">[</span>sudo<span class="o">]</span> password <span class="k">for</span> karl:  
+</span></span><span class="line"><span class="cl">root@nvr:~# apt update<span class="p">;</span> apt dist-upgrade -y<span class="p">;</span> apt autoremove -y<span class="p">;</span> apt autoclean -y
+</span></span><span class="line"><span class="cl">&lt;...&gt;
+</span></span><span class="line"><span class="cl">root@nvr:~# cat /var/run/reboot-required.pkgs  
+</span></span><span class="line"><span class="cl">linux-image-5.19.0-35-generic
+</span></span><span class="line"><span class="cl">linux-base
+</span></span><span class="line"><span class="cl">root@nvr:~# reboot
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Post update, install a subset of the docker packages:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">karl@nvr:~$ sudo mkdir -m <span class="m">0755</span> -p /etc/apt/keyrings
+</span></span><span class="line"><span class="cl">karl@nvr:~$ curl -fsSL https://download.docker.com/linux/ubuntu/gpg <span class="p">|</span> sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+</span></span><span class="line"><span class="cl">karl@nvr:~$ <span class="nb">echo</span> <span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="se"></span> <span class="s2">&#34;deb [arch=</span><span class="k">$(</span>dpkg --print-architecture<span class="k">)</span><span class="s2"> signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+</span></span></span><span class="line"><span class="cl"><span class="s2"> </span><span class="k">$(</span>lsb_release -cs<span class="k">)</span><span class="s2"> stable&#34;</span> <span class="p">|</span> sudo tee /etc/apt/sources.list.d/docker.list &gt; /dev/null
+</span></span><span class="line"><span class="cl">karl@nvr:~$ sudo apt update<span class="p">;</span> sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin
+</span></span><span class="line"><span class="cl">&lt;...&gt;
+</span></span><span class="line"><span class="cl">After this operation, <span class="m">401</span> MB of additional disk space will be used.
+</span></span><span class="line"><span class="cl">Do you want to <span class="k">continue</span>? <span class="o">[</span>Y/n<span class="o">]</span> Y
+</span></span><span class="line"><span class="cl">&lt;...&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>And then check signs of life:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">karl@nvr:~$ sudo docker run hello-world
+</span></span><span class="line"><span class="cl">&lt;...&gt;
+</span></span><span class="line"><span class="cl">Status: Downloaded newer image <span class="k">for</span> hello-world:latest
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Hello from Docker!
+</span></span><span class="line"><span class="cl">This message shows that your installation appears to be working correctly.
+</span></span><span class="line"><span class="cl">&lt;...&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>With that, docker is good to go and we can move on to the other prerequisites.</p>
+<h3 id="create-frigate-user">Create Frigate User</h3>
+<p>It&rsquo;s good practice to create dedicated users with limited permissions to run the service(s) under.
+Create the user and verify that the user does not need elevated credentials to talk to docker:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">karl@nvr:~$ sudo useradd --comment <span class="s2">&#34;service user for Frigate NVR&#34;</span> --groups docker --system --shell /usr/bin/bash frigate
+</span></span><span class="line"><span class="cl">karl@nvr:~$ sudo -i
+</span></span><span class="line"><span class="cl">root@nvr:~# su - frigate
+</span></span><span class="line"><span class="cl">su: warning: cannot change directory to /home/frigate: No such file or directory
+</span></span><span class="line"><span class="cl">frigate@nvr:/root$ groups
+</span></span><span class="line"><span class="cl">frigate docker
+</span></span><span class="line"><span class="cl">frigate@nvr:/root$ docker container list -a
+</span></span><span class="line"><span class="cl">CONTAINER ID   IMAGE         COMMAND    CREATED         STATUS                     PORTS     NAMES
+</span></span><span class="line"><span class="cl">dd7a5d1694c7   hello-world   <span class="s2">&#34;/hello&#34;</span>   4 minutes ago   Exited <span class="o">(</span>0<span class="o">)</span> <span class="m">4</span> minutes ago             mystifying_yalow
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="details admonition warning open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-exclamation-triangle fa-fw"></i>Quite note about docker security<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>Yes, I am aware that - because the <code>frigate</code> user can invoke <code>docker</code> commands directly - it isn&rsquo;t difficult for the <code>frigate</code> user to <a href="https://docs.docker.com/engine/security/#docker-daemon-attack-surface" target="_blank" rel="noopener noreffer">escalate credentials to those of <code>root</code></a>.</p>
+<p>Running the docker daemon in <a href="https://docs.docker.com/engine/security/rootless/" target="_blank" rel="noopener noreffer">rootless mode</a> or an alternative &rsquo;non-root&rsquo; container management tool is one way to eliminate this risk but is beyond the scope of this post.</p>
+<p>As always, <a href="https://en.wikipedia.org/wiki/Defense_in_depth_%28computing%29" target="_blank" rel="noopener noreffer">defense in depth</a>; this frigate host is appropriately firewalled off from the rest of the network.</p>
+</div>
+        </div>
+    </div>
+<p>After <code>docker</code> is installed and the <code>frigate</code> user is added to the <code>docker</code> group, the next pre-requisite is storage for Frigate recordings.</p>
+<h3 id="create-mounts">Create Mounts</h3>
+<div class="details admonition tip open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-lightbulb fa-fw"></i>Tip<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">You can skip this step if you do not wish to use remote storage for the Frigate configuration and recordings.</div>
+        </div>
+    </div>
+<div class="details admonition warning open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-exclamation-triangle fa-fw"></i>Storage quotas<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>Frigate does not have <a href="https://docs.frigate.video/configuration/record" target="_blank" rel="noopener noreffer">sophisticated controls</a> for configuring how long recordings are kept so you are encouraged to set up a storage quota for whatever disk/mount/share you use for network recordings.</p>
+<p>If you are going the network share route, the software on the NAS likely has this functionality.
+If you are going with local storage, the simplest way to enforce a quota is to use a dedicated partition.</p>
+</div>
+        </div>
+    </div>
+<p>Using <a href="https://www.freedesktop.org/software/systemd/man/systemd.mount.html" target="_blank" rel="noopener noreffer"><code>.mount</code> files</a>, it is trivial to have systemd mount the network share before starting Frigate.
+I chose to use a <a href="https://en.wikipedia.org/wiki/Network_File_System" target="_blank" rel="noopener noreffer">NFS</a> share as both the NAS and the Frigate host are *NIX based and file system permissions tend to work a lot cleaner over NFS compared to Samba.</p>
+<p>If you run into errors related to the database that frigate uses, you may consider <a href="https://docs.frigate.video/configuration/advanced#database" target="_blank" rel="noopener noreffer">re-locating the database to a local mount</a>.</p>
+<p>The technique outlined below will work for Samba shares as well but the <code>.mount</code> files will be configured slightly differently and you&rsquo;ll need to install slightly different software:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">karl@nvr:~$ sudo apt install nfs-common
+</span></span><span class="line"><span class="cl"><span class="c1"># Only needed if you use SMB shares. Without this package, you will likely get obscure errors related to hostname resolution</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># See: https://askubuntu.com/questions/373340/ubuntu-server-13-10-cant-mount-hard-drive-that-is-on-my-router/374699#374699</span>
+</span></span><span class="line"><span class="cl">karl@nvr:~$ sudo apt-get install cifs-utils
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>With the correct smb/nfs packages installed, tell systemd how to mount the network share locally automatically:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># Create path on host</span>
+</span></span><span class="line"><span class="cl">karl@nvr:~$ sudo mkdir -p /mnt/frigate
+</span></span><span class="line"><span class="cl">karl@nvr:~$ sudo chown -R frigate /mnt/frigate
+</span></span><span class="line"><span class="cl">karl@nvr:~$ ls -lah /mnt/frigate/
+</span></span><span class="line"><span class="cl">total 8.0K
+</span></span><span class="line"><span class="cl">drwxr-xr-x <span class="m">2</span> frigate root 4.0K Mar  <span class="m">2</span> 08:37 .
+</span></span><span class="line"><span class="cl">drwxr-xr-x <span class="m">3</span> root    root 4.0K Mar  <span class="m">2</span> 08:37 ..
+</span></span><span class="line"><span class="cl"><span class="c1"># Create the mount files</span>
+</span></span><span class="line"><span class="cl">karl@nvr:~$ sudo <span class="nv">$EDITOR</span> /etc/systemd/system/mnt-frigate.mount
+</span></span><span class="line"><span class="cl">karl@nvr:~$ sudo <span class="nv">$EDITOR</span> /etc/systemd/system/mnt-frigate.automount
+</span></span><span class="line"><span class="cl"><span class="c1"># And apply them</span>
+</span></span><span class="line"><span class="cl">karl@nvr:~$ sudo systemctl daemon-reload
+</span></span><span class="line"><span class="cl">karl@nvr:~$ sudo systemctl <span class="nb">enable</span> mnt-frigate.moun
+</span></span><span class="line"><span class="cl">karl@nvr:~$ sudo systemctl <span class="nb">enable</span> mnt-frigate.automount
+</span></span><span class="line"><span class="cl">karl@nvr:~$ sudo systemctl start mnt-frigate.mount
+</span></span><span class="line"><span class="cl">karl@nvr:~$ sudo systemctl start mnt-frigate.automount
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>The <code>/etc/systemd/system/mnt-frigate.mount</code> file looks like this:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-systemd" data-lang="systemd"><span class="line"><span class="cl"><span class="k">[Unit]</span>
+</span></span><span class="line"><span class="cl"><span class="na">Description</span><span class="o">=</span><span class="s">Mount Frigate NFS share share locally for frigate docker container</span>
+</span></span><span class="line"><span class="cl"><span class="na">Requires</span><span class="o">=</span><span class="s">systemd-networkd.service</span>
+</span></span><span class="line"><span class="cl"><span class="na">After</span><span class="o">=</span><span class="s">network-online.target</span>
+</span></span><span class="line"><span class="cl"><span class="na">Wants</span><span class="o">=</span><span class="s">network-online.target</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">[Mount]</span>
+</span></span><span class="line"><span class="cl"><span class="na">What</span><span class="o">=</span><span class="s">yourServerIPHere:/path/to/your/nfs/share/here</span>
+</span></span><span class="line"><span class="cl"><span class="na">Where</span><span class="o">=</span><span class="s">/mnt/frigate</span>
+</span></span><span class="line"><span class="cl"><span class="na">Type</span><span class="o">=</span><span class="s">nfs</span>
+</span></span><span class="line"><span class="cl"><span class="na">Options</span><span class="o">=</span><span class="s">default</span>
+</span></span><span class="line"><span class="cl"><span class="na">TimeoutSec</span><span class="o">=</span><span class="s">5</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">[Install]</span>
+</span></span><span class="line"><span class="cl"><span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>And the <code>/etc/systemd/system/mnt-frigate.automount</code> looks like this:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-systemd" data-lang="systemd"><span class="line"><span class="cl"><span class="k">[Unit]</span>
+</span></span><span class="line"><span class="cl"><span class="na">Description</span><span class="o">=</span><span class="s">automount for frigate</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">[Automount]</span>
+</span></span><span class="line"><span class="cl"><span class="na">Where</span><span class="o">=</span><span class="s">/mnt/frigate</span>
+</span></span><span class="line"><span class="cl"><span class="na">TimeoutIdleSec</span><span class="o">=</span><span class="s">0</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">[Install]</span>
+</span></span><span class="line"><span class="cl"><span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>After <code>systemctl start/enable ...</code> the mounts should be up and running.
+Use <code>systemctl status</code> to check that things worked properly and use <code>journalctl</code> to check logs if things went wrong.
+Ideally you&rsquo;ll have something that looks like this:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">root@nvr:~# systemctl status mnt-frigate.mount
+</span></span><span class="line"><span class="cl">● mnt-frigate.mount - Mount Frigate NFS share share locally <span class="k">for</span> frigate docker container
+</span></span><span class="line"><span class="cl">     Loaded: loaded <span class="o">(</span>/proc/self/mountinfo<span class="p">;</span> enabled<span class="p">;</span> preset: enabled<span class="o">)</span>
+</span></span><span class="line"><span class="cl">     Active: active <span class="o">(</span>mounted<span class="o">)</span> since &lt;...&gt;
+</span></span><span class="line"><span class="cl">TriggeredBy: ● mnt-frigate.automount
+</span></span><span class="line"><span class="cl">      Where: /mnt/frigate
+</span></span><span class="line"><span class="cl">       &lt;...&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>At this point, all the <em>basic</em> pre-requisites are satisfied: a <code>frigate</code> specific user can run <code>docker run ...</code> commands and <code>systemd</code> will automatically mount the network share locally.</p>
+<h3 id="coralai-edge-tpu">Coral.ai edge TPU</h3>
+<div class="details admonition tip open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-lightbulb fa-fw"></i>Tip<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">Skip this step if you are not using PCI-E based edge TPU nodes.</div>
+        </div>
+    </div>
+<p>As mentioned at the top, one of the features that makes Frigate so attractive is how easy it is to use dedicated hardware for image/object classification.</p>
+<p>I am using a <a href="https://en.wikipedia.org/wiki/PCI_Express" target="_blank" rel="noopener noreffer">PCI-Express</a> based TPU so there&rsquo;s a little bit more wor required to successfully pass a PCIe device into a docker container.
+Fortunately this process is a lot simpler than it used to be and the google provided <a href="https://coral.ai/docs/m2/get-started/#2a-on-linux" target="_blank" rel="noopener noreffer">instructions</a> are pretty clear:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># Confirm there is no apex driver present already.</span>
+</span></span><span class="line"><span class="cl">karl@nvr:~$ sudo lsmod <span class="p">|</span> grep apex
+</span></span><span class="line"><span class="cl"><span class="c1"># Add apt repos</span>
+</span></span><span class="line"><span class="cl">karl@nvr:~$ <span class="nb">echo</span> <span class="s2">&#34;deb https://packages.cloud.google.com/apt coral-edgetpu-stable main&#34;</span> <span class="p">|</span> sudo tee /etc/apt/sources.list.d/coral-edgetpu.list
+</span></span><span class="line"><span class="cl">deb https://packages.cloud.google.com/apt coral-edgetpu-stable main
+</span></span><span class="line"><span class="cl"><span class="c1"># Install the driver</span>
+</span></span><span class="line"><span class="cl">karl@nvr:~$ curl https://packages.cloud.google.com/apt/doc/apt-key.gpg <span class="p">|</span> sudo apt-key add -
+</span></span><span class="line"><span class="cl">&lt;...&gt;
+</span></span><span class="line"><span class="cl">karl@nvr:~$ sudo apt-get update<span class="p">;</span> sudo apt-get install gasket-dkms libedgetpu1-std
+</span></span><span class="line"><span class="cl">Get:1 https://packages.cloud.google.com/apt coral-edgetpu-stable InRelease <span class="o">[</span>6,332 B<span class="o">]</span>
+</span></span><span class="line"><span class="cl">&lt;...&gt;
+</span></span><span class="line"><span class="cl">The following additional packages will be installed:
+</span></span><span class="line"><span class="cl"> build-essential bzip2 cpp cpp-12 dctrl-tools dh-dkms dkms dpkg-dev fakeroot fontconfig-config fonts-dejavu-core g++ g++-12 gcc
+</span></span><span class="line"><span class="cl">&lt;...&gt;
+</span></span><span class="line"><span class="cl">Do you want to <span class="k">continue</span>? <span class="o">[</span>Y/n<span class="o">]</span> Y
+</span></span><span class="line"><span class="cl">&lt;...&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>After install, <a href="https://en.wikipedia.org/wiki/Udev" target="_blank" rel="noopener noreffer"><code>udev</code></a> rules are needed to make sure the proper driver is loaded:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># Confirm file does not exist</span>
+</span></span><span class="line"><span class="cl">karl@nvr:~$ sudo cat /etc/udev/rules.d/65-apex.rules
+</span></span><span class="line"><span class="cl">cat: /etc/udev/rules.d/65-apex.rules: No such file or directory
+</span></span><span class="line"><span class="cl">karl@nvr:~$ sudo sh -c <span class="s2">&#34;echo &#39;SUBSYSTEM==\&#34;apex\&#34;, MODE=\&#34;0660\&#34;, GROUP=\&#34;apex\&#34;&#39; &gt;&gt; /etc/udev/rules.d/65-apex.rules&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># Add the `frigate` user to the `apex` group so it can access the &#34;virtual&#34; PCIe devices</span>
+</span></span><span class="line"><span class="cl">karl@nvr:~$ sudo groupadd -U frigate apex
+</span></span><span class="line"><span class="cl">karl@nvr:~$ sudo groups frigate
+</span></span><span class="line"><span class="cl">frigate : frigate docker apex
+</span></span><span class="line"><span class="cl"><span class="c1"># Cleanest way to make sure driver and udev rules work is to reboot</span>
+</span></span><span class="line"><span class="cl">karl@nvr:~$ sudo reboot
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Checking that the <code>apex</code> driver is properly loaded is quick and painless:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># I have a &#34;dual&#34; TPU so two devices show up. If you only have a &#34;single&#34; TPU, only one will show up.</span>
+</span></span><span class="line"><span class="cl">karl@nvr:~$ sudo lspci -nn <span class="p">|</span> grep 089a
+</span></span><span class="line"><span class="cl"><span class="o">[</span>sudo<span class="o">]</span> password <span class="k">for</span> karl:  
+</span></span><span class="line"><span class="cl">03:00.0 System peripheral <span class="o">[</span>0880<span class="o">]</span>: Global Unichip Corp. Coral Edge TPU <span class="o">[</span>1ac1:089a<span class="o">]</span>
+</span></span><span class="line"><span class="cl">04:00.0 System peripheral <span class="o">[</span>0880<span class="o">]</span>: Global Unichip Corp. Coral Edge TPU <span class="o">[</span>1ac1:089a<span class="o">]</span>
+</span></span><span class="line"><span class="cl">karl@nvr:~$ sudo ls /dev/apex_*
+</span></span><span class="line"><span class="cl">/dev/apex_0 /dev/apex_1
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>And with that, all the core/extended pre-requisites are done and the remaining work is actually pretty minimal.</p>
+<h2 id="install">Install</h2>
+<p>After the pre-requisites are satisfied so all that&rsquo;s left is the <a href="https://www.freedesktop.org/software/systemd/man/systemd.unit.html" target="_blank" rel="noopener noreffer"><code>.unit</code> file</a> which will wrap the <code>docker run</code> commands.</p>
+<h3 id="environmentfile"><code>EnvironmentFile</code></h3>
+<p>Frigate supports env-var substitution in it&rsquo;s configuration file like so:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">mqtt</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">host</span><span class="p">:</span><span class="w"> </span><span class="l">mqtt.server.com</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">user</span><span class="p">:</span><span class="w"> </span>{<span class="l">FRIGATE_SOME_KEY_HERE}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>The configuration file - sans sensitive information - can now be safely checked in to source control.
+Create a file just for holding our env-vars:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">karl@nvr:~$ sudo mkdir -p /etc/frigate
+</span></span><span class="line"><span class="cl"><span class="o">[</span>sudo<span class="o">]</span> password <span class="k">for</span> karl:
+</span></span><span class="line"><span class="cl">karl@nvr:~$ sudo touch /etc/frigate/secrets
+</span></span><span class="line"><span class="cl">karl@nvr:~$ sudo chown -R frigate:frigate /etc/frigate
+</span></span><span class="line"><span class="cl">karl@nvr:~$ sudo chmod -R <span class="m">0750</span> /etc/frigate
+</span></span><span class="line"><span class="cl">karl@nvr:~$ sudo ls -lah /etc/frigate/
+</span></span><span class="line"><span class="cl">total 12K
+</span></span><span class="line"><span class="cl">drwxr-x---   <span class="m">2</span> frigate frigate 4.0K Mar  <span class="m">4</span> 16:13 .
+</span></span><span class="line"><span class="cl">drwxr-xr-x <span class="m">110</span> root    root    4.0K Mar  <span class="m">4</span> 15:16 ..
+</span></span><span class="line"><span class="cl">-rwxr-x---   <span class="m">1</span> frigate frigate  <span class="m">356</span> Mar  <span class="m">4</span> 16:13 secrets
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>The secrets file is <a href="https://docs.docker.com/engine/reference/commandline/run/#env" target="_blank" rel="noopener noreffer">simple key=value format</a>:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">karl@nvr:~$ sudo cat /etc/frigate/secrets
+</span></span><span class="line"><span class="cl"><span class="nv">FRIGATE_MQTT_USER</span><span class="o">=</span>frigate
+</span></span><span class="line"><span class="cl"><span class="nv">FRIGATE_MQTT_PASSWORD</span><span class="o">=</span>ChangeMe
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nv">FRIGATE_CAM01_RTSP_USER</span><span class="o">=</span>frigate
+</span></span><span class="line"><span class="cl"><span class="nv">FRIGATE_CAM01_RTSP_PASS</span><span class="o">=</span>changeme
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="details admonition warning open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-exclamation-triangle fa-fw"></i>Warning<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>The use of env-var substitution in the MQTT section of the config requires frigate 0.12 or higher.
+At the time of writing (2023.03), the latest <code>stable</code> release is <code>0.11</code>.</p>
+<p>Some additional details in <a href="https://github.com/blakeblackshear/frigate/issues/5640" target="_blank" rel="noopener noreffer">this</a> GH issue.</p>
+</div>
+        </div>
+    </div>
+<h3 id="systemd-unit-for-frigate">Systemd Unit for Frigate</h3>
+<p>The <code>/etc/systemd/system/frigate.service</code> file:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-systemd" data-lang="systemd"><span class="line"><span class="cl"><span class="k">[Unit]</span>
+</span></span><span class="line"><span class="cl"><span class="na">Description</span><span class="o">=</span><span class="s">Frigate NVR</span>
+</span></span><span class="line"><span class="cl"><span class="c"># Don&#39;t start until after docker is healthy and the nfs share is mounted</span>
+</span></span><span class="line"><span class="cl"><span class="na">After</span><span class="o">=</span><span class="s">docker.service</span>
+</span></span><span class="line"><span class="cl"><span class="na">Requires</span><span class="o">=</span><span class="s">docker.service</span>
+</span></span><span class="line"><span class="cl"><span class="na">Requires</span><span class="o">=</span><span class="s">mnt-frigate.mount</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">[Service]</span>
+</span></span><span class="line"><span class="cl"><span class="na">User</span><span class="o">=</span><span class="s">frigate</span>
+</span></span><span class="line"><span class="cl"><span class="na">Group</span><span class="o">=</span><span class="s">frigate</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="na">TimeoutStartSec</span><span class="o">=</span><span class="s">0</span>
+</span></span><span class="line"><span class="cl"><span class="na">Restart</span><span class="o">=</span><span class="s">always</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c"># We want to start with a fresh container every time</span>
+</span></span><span class="line"><span class="cl"><span class="na">ExecStartPre</span><span class="o">=</span><span class="s">-/usr/bin/docker exec %n stop</span>
+</span></span><span class="line"><span class="cl"><span class="na">ExecStartPre</span><span class="o">=</span><span class="s">-/usr/bin/docker rm %n</span>
+</span></span><span class="line"><span class="cl"><span class="na">ExecStartPre</span><span class="o">=</span><span class="s">/usr/bin/docker pull blakeblackshear/frigate:stable</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="c"># Expose the web UI on port 80 to keep things a bit cleaner</span>
+</span></span><span class="line"><span class="cl"><span class="na">ExecStart</span><span class="o">=</span><span class="s">/usr/bin/docker run --rm --name %n </span>\
+</span></span><span class="line"><span class="cl"><span class="s">  --env-file /etc/frigate/secrets </span>\
+</span></span><span class="line"><span class="cl"><span class="s">  --mount type=tmpfs,target=/tmp/cache,tmpfs-size=1000000000 </span>\
+</span></span><span class="line"><span class="cl"><span class="s">  --device /dev/dri/renderD128 </span>\
+</span></span><span class="line"><span class="cl"><span class="s">  --device /dev/apex_0:/dev/apex_0 </span>\
+</span></span><span class="line"><span class="cl"><span class="s">  --device /dev/apex_1:/dev/apex_1 </span>\
+</span></span><span class="line"><span class="cl"><span class="s">  --shm-size=64m </span>\
+</span></span><span class="line"><span class="cl"><span class="s">  -v /mnt/frigate/storage:/media/frigate </span>\
+</span></span><span class="line"><span class="cl"><span class="s">  -v /mnt/frigate/config:/config:ro </span>\
+</span></span><span class="line"><span class="cl"><span class="s">  -v /etc/localtime:/etc/localtime:ro </span>\
+</span></span><span class="line"><span class="cl"><span class="s">  -p 80:5000 </span>\
+</span></span><span class="line"><span class="cl"><span class="s">  -p 1935:1935 </span>\
+</span></span><span class="line"><span class="cl"><span class="s">  blakeblackshear/frigate:stable</span>
+</span></span><span class="line"><span class="cl"><span class="k">[Install]</span>
+</span></span><span class="line"><span class="cl"><span class="na">WantedBy</span><span class="o">=</span><span class="s">default.target</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Then enable/start the service</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">karl@nvr:~$ sudo systemctl <span class="nb">enable</span> frigate.service
+</span></span><span class="line"><span class="cl">Created symlink /etc/systemd/system/default.target.wants/frigate.service → /etc/systemd/system/frigate.service.
+</span></span><span class="line"><span class="cl">karl@nvr:~$ sudo systemctl start frigate.service
+</span></span><span class="line"><span class="cl">&lt;...&gt;
+</span></span><span class="line"><span class="cl">karl@nvr:~$ sudo systemctl status frigate
+</span></span><span class="line"><span class="cl">● frigate.service - Frigate NVR
+</span></span><span class="line"><span class="cl">     Loaded: loaded <span class="o">(</span>/etc/systemd/system/frigate.service<span class="p">;</span> enabled<span class="p">;</span> preset: enabled<span class="o">)</span>
+</span></span><span class="line"><span class="cl">     Active: active <span class="o">(</span>running<span class="o">)</span> since &lt;...&gt;
+</span></span><span class="line"><span class="cl">     CGroup: /system.slice/frigate.service
+</span></span><span class="line"><span class="cl">             └─27104 /usr/bin/docker run --rm --name frigate.service --mount <span class="nv">type</span><span class="o">=</span>tmpfs,target<span class="o">=</span>/tmp/cache,tmpfs-size<span class="o">=</span><span class="m">1000000000</span> --device /dev/dri/renderD128 --device /dev/apex_0:/dev/apex_0 --device /dev/apex_1:/dev/apex_1 --shm-size<span class="o">=</span>&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>And that&rsquo;s all there is to it :).</p>
+<p>Hopefully that helps!</p>
+]]></description></item><item><title>Integrating a dumb coffee maker with Home Assistant via ESPHome</title><link>https://karlquinsland.com/improved-esphome-coffee-automation/</link><pubDate>Sat, 21 Jan 2023 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/improved-esphome-coffee-automation/</guid><description><![CDATA[<!-- markdownlint-disable-file MD002 -->
 <p>My beloved coffee maker of 10 years has finally died 😢.
 Parts are no longer available from either the manufacturer or the second-hand market.</p>
 <p>Taking advantage of a (slight) holiday sale discount, I pulled the trigger on a coffee maker that&rsquo;s <a href="https://us.moccamaster.com/pages/sustainability-at-our-core" target="_blank" rel="noopener noreffer">designed to be repairable forever</a>.
@@ -453,7 +1050,7 @@ As is, you&rsquo;ll need to fill it out / add in your own versions of some of th
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">step</span><span class="p">:</span><span class="w"> </span><span class="m">2</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">      </span><span class="w">      </span><span class="l">return (int) id(glbl_pre_bloom_time_sec);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">      return (int) id(glbl_pre_bloom_time_sec);</span><span class="w">      
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">set_action</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">then</span><span class="p">:</span><span class="w">
@@ -477,7 +1074,7 @@ As is, you&rsquo;ll need to fill it out / add in your own versions of some of th
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">step</span><span class="p">:</span><span class="w"> </span><span class="m">2</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">      </span><span class="w">      </span><span class="l">return (int) id(glbl_bloom_time_sec);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">      return (int) id(glbl_bloom_time_sec);</span><span class="w">      
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">set_action</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">then</span><span class="p">:</span><span class="w">
@@ -4500,7 +5097,7 @@ The length of the timer can be adjusted at any time; the new value is used for t
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">step</span><span class="p">:</span><span class="w"> </span><span class="m">30</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">      </span><span class="w">      </span><span class="l">return (int) id(glbl_timeout_length_ticks);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">      return (int) id(glbl_timeout_length_ticks);</span><span class="w">      
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">set_action</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">then</span><span class="p">:</span><span class="w">
@@ -5130,136 +5727,4 @@ I put a <em>ton</em> of effort into making the design as approachable and afford
 
 <p>You can find a through set of instructions, printable part files and BOM at the <a href="https://github.com/kquinsland/hidrate-spark-qi-charging" target="_blank" rel="noopener noreffer"><code>kquinsland/hidrate-spark-qi-charging</code></a> repo.
 If you do follow the instructions and manage to make your bottle charge wirelessly, let me know!</p>
-]]></description></item><item><title>Using ESPHome with the Treatlife DS03</title><link>https://karlquinsland.com/treatlife-ds03-esphome/</link><pubDate>Thu, 09 Jun 2022 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/treatlife-ds03-esphome/</guid><description><![CDATA[<div class="details admonition tip open">
-        <div class="details-summary admonition-title">
-            <i class="icon fas fa-lightbulb fa-fw"></i>Post depreciation notice<i class="details-icon fas fa-angle-right fa-fw"></i>
-        </div>
-        <div class="details-content">
-            <div class="admonition-content">This is an update to the <a href="/treatlife-ds03-tasmota-autoconfig-with-homeassistant/" rel=""><code>Fixing Home Assistant discovery with Tasmota on the Treatlife DS03</code> post</a>.</div>
-        </div>
-    </div>
-<h1 id="tasmota-reliability">Tasmota reliability</h1>
-<p>A few months ago, I started to notice some bizarre behavior with the DS03 ceiling fan controllers that I had previously flashed with Tasmota.
-Very regularly, the devices would crash and reboot! I almost never noticed unless I was explicitly looking at the uptime / boot count graphs for the devices but every once in a while, the device would reboot <em>right as I was trying to control it remotely</em>.</p>
-<p>I was able to confirm that the rules I was using to &lsquo;augment&rsquo; the Home Assistant auto-discovery payload were the culprit. Odd since nothing had changed; only the version of tasmota has been changing.</p>
-<p>While it&rsquo;s not clear <em>what</em> the issue is, it <strong>probably</strong> has something to do with RAM exhaustion.
-The details are <a href="https://github.com/arendst/Tasmota/issues/15636#issuecomment-1130511474" target="_blank" rel="noopener noreffer">in Tasmota issue #15636</a> if your curious.</p>
-<p>The Tasmota rules were a workaround to a broader problem: tasmota offers very little to customize <em>how</em> the entity is advertised to Home Assistant. Since the workaround was no longer working, the next logical step is to re-evaluate if Tasmota is the appropriate firmware for the device.</p>
-<h1 id="using-esphome-with-the-ds03">Using ESPHome with the DS03</h1>
-<div class="details admonition info open">
-        <div class="details-summary admonition-title">
-            <i class="icon fas fa-info-circle fa-fw"></i>Beta software release<i class="details-icon fas fa-angle-right fa-fw"></i>
-        </div>
-        <div class="details-content">
-            <div class="admonition-content"><p>I <strong>strongly</strong> prefer MQTT for my Home Automation interoperability.</p>
-<p>The MQTT &lt;-&gt; Home Assistant mechanism in ESPHome has been playing second fiddle to the native ESPHome &lt;-&gt; Home Assistant API as of late so there are more bugs and usability issues. As such, the YAML below depends on a fix for <code>mqtt.fan</code> component that exists in the  <a href="https://github.com/esphome/esphome/releases/tag/2022.6.0b2" target="_blank" rel="noopener noreffer">2022.06.b2</a> or later release.</p>
-<p>Specifically, <a href="https://github.com/esphome/esphome/pull/3537" target="_blank" rel="noopener noreffer">this</a> commit.</p>
-<p>If you do not use MQTT for your ESPHome &lt;-&gt; Home Assistant linking, you should be fine using the latest &lsquo;stable&rsquo; release of ESPHome.</p>
-</div>
-        </div>
-    </div>
-<p>After <a href="https://esphome.io/guides/migrate_sonoff_tasmota.html" target="_blank" rel="noopener noreffer">migrating the tasmota install to ESPHome</a>, I am happy to report that ESPHome is running on the DS03 and that the full/proper MQTT auto-discovery payload is published. 🥳</p>
-<p>Here is a &lsquo;reference&rsquo; YAML file that is similar to the ones I use in &lsquo;production&rsquo;. You will need to add your own MQTT/WiFi&hellip; etc configuration.</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">substitutions</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">hostname</span><span class="p">:</span><span class="w"> </span><span class="l">YourHostNameHere</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">friendly_name</span><span class="p">:</span><span class="w"> </span><span class="l">YourDeviceNameHere</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">esphome</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">${hostname}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">ESP8266</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">board</span><span class="p">:</span><span class="w"> </span><span class="l">esp01_1m</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Enable logging</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">logger</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">level</span><span class="p">:</span><span class="w"> </span><span class="l">INFO</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Uses a TuYa MCU to drive the power components</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># See: https://esphome.io/components/tuya.html</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">##</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">tuya</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># See: https://esphome.io/components/uart.html</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">uart</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">rx_pin</span><span class="p">:</span><span class="w"> </span><span class="l">GPIO3</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">tx_pin</span><span class="p">:</span><span class="w"> </span><span class="l">GPIO1</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># Not sure why/where/how this error shows up but seems functional as is /shrug</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># [E][uart:015]:   Invalid baud_rate: Integration requested baud_rate 9600 but you have 115200!</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">baud_rate</span><span class="p">:</span><span class="w"> </span><span class="m">115200</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># See: https://esphome.io/components/light/tuya.html</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">light</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">${friendly_name} Light</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">device_light</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;tuya&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">dimmer_datapoint</span><span class="p">:</span><span class="w"> </span><span class="m">10</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">switch_datapoint</span><span class="p">:</span><span class="w"> </span><span class="m">9</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">min_value</span><span class="p">:</span><span class="w"> </span><span class="m">100</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">max_value</span><span class="p">:</span><span class="w"> </span><span class="m">1000</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">icon</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;mdi:ceiling-fan-light&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">restore_mode</span><span class="p">:</span><span class="w"> </span><span class="l">ALWAYS_OFF</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># See: https://esphome.io/components/fan/tuya.html</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">fan</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">${friendly_name} Speed</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">device_fan</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;tuya&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">switch_datapoint</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">speed_datapoint</span><span class="p">:</span><span class="w"> </span><span class="m">3</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">speed_count</span><span class="p">:</span><span class="w"> </span><span class="m">4</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">icon</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;mdi:ceiling-fan&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">restore_mode</span><span class="p">:</span><span class="w"> </span><span class="l">ALWAYS_OFF</span><span class="w">
-</span></span></span></code></pre></td></tr></table>
-</div>
-</div>]]></description></item></channel></rss>
+]]></description></item></channel></rss>
