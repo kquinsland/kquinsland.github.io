@@ -313,6 +313,7 @@ The secrets file is [simple key=value format](https://docs.docker.com/engine/ref
 
 ```shell
 karl@nvr:~$ sudo cat /etc/frigate/secrets
+# Note: frigate < 0.12 does not support env-var for mqtt.user; set it here/now for use in the future.
 FRIGATE_MQTT_USER=frigate
 FRIGATE_MQTT_PASSWORD=ChangeMe
 
@@ -321,7 +322,7 @@ FRIGATE_CAM01_RTSP_PASS=changeme
 ```
 
 {{< admonition warning >}}
-The use of env-var substitution in the MQTT section of the config requires frigate 0.12 or higher.
+The use of env-var substitution for the `username` field in the MQTT section of the config requires frigate 0.12 or higher.
 At the time of writing (2023.03), the latest `stable` release is `0.11`.
 
 Some additional details in [this](https://github.com/blakeblackshear/frigate/issues/5640) GH issue.

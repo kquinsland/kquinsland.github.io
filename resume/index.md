@@ -2,9 +2,31 @@
 
 # Resume
 
-I used to curate a résumé as an excuse to learn [LaTex](https://www.latex-project.org/) but have found over the years that most positions don't actually look at the résumé, they look at the summary that their [ATS](https://en.wikipedia.org/wiki/Applicant_tracking_system) generates _after_ ingesting the resume.
+## TL;DR
 
-Not all ATS platforms can reliably ingest the PDF export from LinkedIn that has been my defacto resume since I stopped maintaining the LaTex version, so I offer my résumé in a few formats for other workflows/needs.
+When asked to summarize my resume, ChatGPT said:
+
+> Overall, the candidate is a highly skilled SRE with a passion for automation and optimization.
+
+When asked to expand on that further I got back a summary that was accurate and concise:
+
+> I am a Senior+ level engineer with a constellation of skills in the Dev/Sec-Ops and SRE space.
+>
+> An overall tool-smith leveraging a decade+ of cloud computing and software development experience to make both personal and professional tasks more automatic and consistent.
+>
+> My expertise includes designing and building modern, scalable architectures as well as the CI/CD pipelines to facilitate their deployment.
+>
+> I have also spent a decent amount of time modernizing legacy Terraform infrastructure, improving internal documentation and both developing and coaching incident management processes.
+>
+> I believe that quality documentation is one of an engineer's most valuable resources.
+>
+> I have a strong understanding of security in the application, infrastructure and organizational contexts. I have run vulnerability bounty programs and been responsible for triaging and prioritizing bounty-winning reports.
+>
+> I am an OSS contributor with a strong background in Python and am comfortable working with a range of technologies.
+> I am particularly skilled at identifying opportunities for automation and building tools to streamline workflows.
+> I enjoy using personal time to further develop my skills and build tools to automate tasks outside of work; my personal interests and skills often overlap with my professional expertise.
+
+## Download
 
 {{< admonition info "Note" >}}
 The files linked below should be considered the most up to date copy of my recent professional roles and accomplishments.

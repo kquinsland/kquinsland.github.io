@@ -467,9 +467,11 @@ Create a file just for holding our env-vars:</p>
 </span><span class="lnt">4
 </span><span class="lnt">5
 </span><span class="lnt">6
+</span><span class="lnt">7
 </span></code></pre></td>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">karl@nvr:~$ sudo cat /etc/frigate/secrets
+</span></span><span class="line"><span class="cl"><span class="c1"># Note: frigate &lt; 0.12 does not support env-var for mqtt.user; set it here/now for use in the future.</span>
 </span></span><span class="line"><span class="cl"><span class="nv">FRIGATE_MQTT_USER</span><span class="o">=</span>frigate
 </span></span><span class="line"><span class="cl"><span class="nv">FRIGATE_MQTT_PASSWORD</span><span class="o">=</span>ChangeMe
 </span></span><span class="line"><span class="cl">
@@ -482,7 +484,7 @@ Create a file just for holding our env-vars:</p>
             <i class="icon fas fa-exclamation-triangle fa-fw"></i>Warning<i class="details-icon fas fa-angle-right fa-fw"></i>
         </div>
         <div class="details-content">
-            <div class="admonition-content"><p>The use of env-var substitution in the MQTT section of the config requires frigate 0.12 or higher.
+            <div class="admonition-content"><p>The use of env-var substitution for the <code>username</code> field in the MQTT section of the config requires frigate 0.12 or higher.
 At the time of writing (2023.03), the latest <code>stable</code> release is <code>0.11</code>.</p>
 <p>Some additional details in <a href="https://github.com/blakeblackshear/frigate/issues/5640" target="_blank" rel="noopener noreffer">this</a> GH issue.</p>
 </div>
