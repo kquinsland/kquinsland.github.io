@@ -1,8 +1,7 @@
-# 
-
 # Resume
 
-## TL;DR
+
+# TL;DR
 
 When asked to summarize my resume, ChatGPT said:
 
