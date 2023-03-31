@@ -113,6 +113,15 @@ While looking for the `WT-01N`, on Ali Express, I found that there's already a s
 Next time!
 {{< /admonition >}}
 
+#### WT-01N swap
+
+{{< admonition >}}
+On a rainy afternoon in late 2023.03, I got around to doing the module swap.
+Below you'll find the appropriate Tasmota configuration for GPIO pins.
+{{< /admonition >}}
+
+{{<figure name="bn_tasmota">}}
+
 ### BN GPIO notes
 
 The project needs some basic "here's how to figure out which GPIOs do what" docs similar to [these](https://Tasmota.github.io/docs/Configuration-Procedure-for-New-Devices/#step-1) but I eventually figured out the following GPIO assignments.

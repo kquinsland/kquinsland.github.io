@@ -1595,6 +1595,37 @@ Had I known, I would have just done the module swap, flashed ESPHome and stopped
 </div>
         </div>
     </div>
+<h4 id="wt-01n-swap">WT-01N swap</h4>
+<div class="details admonition note open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-pencil-alt fa-fw"></i>Note<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">On a rainy afternoon in late 2023.03, I got around to doing the module swap.
+Below you&rsquo;ll find the appropriate Tasmota configuration for GPIO pins.</div>
+        </div>
+    </div>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        And here&#39;s the Tasmota configuration for the BN-Link.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
 <h3 id="bn-gpio-notes">BN GPIO notes</h3>
 <p>The project needs some basic &ldquo;here&rsquo;s how to figure out which GPIOs do what&rdquo; docs similar to <a href="https://Tasmota.github.io/docs/Configuration-Procedure-for-New-Devices/#step-1" target="_blank" rel="noopener noreffer">these</a> but I eventually figured out the following GPIO assignments.</p>
 <table>
