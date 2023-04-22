@@ -1,0 +1,282 @@
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><meta http-equiv=x-ua-compatible content="IE=edge, chrome=1"><title>ESPHome on dingtian-tech relay modules - karl</title><meta name=Description content="Yet another 'karl puts ESPHome on something cheap from AliExpress' posts."><meta property="og:title" content="ESPHome on dingtian-tech relay modules"><meta property="og:description" content="Yet another 'karl puts ESPHome on something cheap from AliExpress' posts."><meta property="og:type" content="article"><meta property="og:url" content="https://karlquinsland.com/dingtian-2ch-relay-with-esphome/"><meta property="og:image" content="https://karlquinsland.com/dingtian-2ch-relay-with-esphome/images/product_image.jpg"><meta property="article:section" content="posts"><meta property="article:published_time" content="2023-04-21T00:00:00+00:00"><meta property="article:modified_time" content="2023-04-22T08:03:50-07:00"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://karlquinsland.com/dingtian-2ch-relay-with-esphome/images/product_image.jpg"><meta name=twitter:title content="ESPHome on dingtian-tech relay modules"><meta name=twitter:description content="Yet another 'karl puts ESPHome on something cheap from AliExpress' posts."><meta name=application-name content="karl"><meta name=apple-mobile-web-app-title content="karl"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=https://karlquinsland.com/favicon.ico><link rel=icon type=image/png sizes=32x32 href=https://karlquinsland.com/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=https://karlquinsland.com/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=https://karlquinsland.com/apple-touch-icon.png><link rel=mask-icon href=https://karlquinsland.com/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=https://karlquinsland.com/site.webmanifest><link rel=canonical href=https://karlquinsland.com/dingtian-2ch-relay-with-esphome/><link rel=prev href=https://karlquinsland.com/frigate-install/><link rel=stylesheet href=https://karlquinsland.com/lib/normalize/normalize.min.055364f5be272caa092b0e6654c165828707f8ab971e2656383a6d6392bc345e.css integrity="sha256-BVNk9b4nLKoJKw5mVMFlgocH+KuXHiZWODptY5K8NF4="><link rel=stylesheet href=https://karlquinsland.com/css/style.min.1e2694bed152fa2922dbe909a441838ed693d88b1330f97485bfa8ed78da42df.css integrity="sha256-HiaUvtFS+iki2+kJpEGDjtaT2IsTMPl0hb+o7XjaQt8="><link rel=stylesheet href=https://karlquinsland.com/lib/fontawesome-free/all.min.876d023d9d10c97941b80c3b03e2a5b94631ff7a4af9cee5604a6a2d39718d84.css integrity="sha256-h20CPZ0QyXlBuAw7A+KluUYx/3pK+c7lYEpqLTlxjYQ="><link rel=stylesheet href=https://karlquinsland.com/lib/animate/animate.min.3c770e90f98eb21b0c042fafb49755af93306fbaf42e449524f94fae9fc83295.css integrity="sha256-PHcOkPmOshsMBC+vtJdVr5Mwb7r0LkSVJPlPrp/IMpU="><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"ESPHome on dingtian-tech relay modules","inLanguage":"en-us","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/karlquinsland.com\/dingtian-2ch-relay-with-esphome\/"},"genre":"posts","keywords":"Tasmota, esphome, home-assistant","wordcount":1380,"url":"https:\/\/karlquinsland.com\/dingtian-2ch-relay-with-esphome\/","datePublished":"2023-04-21T00:00:00+00:00","dateModified":"2023-04-22T08:03:50-07:00","publisher":{"@type":"Organization","name":""},"author":{"@type":"Person","name":"karl"},"description":"Yet another 'karl puts ESPHome on something cheap from AliExpress' posts."}</script></head><body header-desktop=fixed header-mobile=auto><script type=text/javascript>(window.localStorage&&localStorage.getItem("theme")?localStorage.getItem("theme")==="dark":"auto"==="auto"?window.matchMedia("(prefers-color-scheme: dark)").matches:"auto"==="dark")&&document.body.setAttribute("theme","dark")</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=https://karlquinsland.com/ title=karl>Karl</a></div><div class=menu><div class=menu-inner><a class=menu-item href=https://karlquinsland.com/posts/><i class="fas fa-blog"></i> Posts </a><a class=menu-item href=https://karlquinsland.com/resume/ title="Hire Me!"><i class="fas fa-briefcase"></i> Résumé </a><a class=menu-item href=https://karlquinsland.com/tags/ title="Can you tell that I don't have a super consistent or clear taxonomy?"><i class="fas fa-tags"></i> Tags </a><a class=menu-item href=https://karlquinsland.com/contact/><i class="fas fa-address-book"></i> Contact </a><span class="menu-item delimiter"></span><span class="menu-item search" id=search-desktop>
+<input type=text placeholder="Search titles or contents..." id=search-input-desktop>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=Search><i class="fas fa-search fa-fw"></i></a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=Clear><i class="fas fa-times-circle fa-fw"></i></a>
+<span class="search-button search-loading" id=search-loading-desktop><i class="fas fa-spinner fa-fw fa-spin"></i></span>
+</span><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme"><i class="fas fa-adjust fa-fw"></i></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=https://karlquinsland.com/ title=karl>Karl</a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><div class=search-wrapper><div class="search mobile" id=search-mobile><input type=text placeholder="Search titles or contents..." id=search-input-mobile>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=Search><i class="fas fa-search fa-fw"></i></a>
+<a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=Clear><i class="fas fa-times-circle fa-fw"></i></a>
+<span class="search-button search-loading" id=search-loading-mobile><i class="fas fa-spinner fa-fw fa-spin"></i></span></div><a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>Cancel</a></div><a class=menu-item href=https://karlquinsland.com/posts/ title><i class="fas fa-blog"></i>Posts</a><a class=menu-item href=https://karlquinsland.com/resume/ title="Hire Me!"><i class="fas fa-briefcase"></i>Résumé</a><a class=menu-item href=https://karlquinsland.com/tags/ title="Can you tell that I don't have a super consistent or clear taxonomy?"><i class="fas fa-tags"></i>Tags</a><a class=menu-item href=https://karlquinsland.com/contact/ title><i class="fas fa-address-book"></i>Contact</a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw"></i></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>Contents</h2><div class=toc-content id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animated flipInX">ESPHome on dingtian-tech relay modules</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=https://karlquinsland.com/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw"></i>karl</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2023-04-21>2023-04-21</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;1380 words&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;7 minutes&nbsp;</div></div><div class="details toc" id=toc-static kept=true><div class="details-summary toc-title"><span>Contents</span>
+<span><i class="details-icon fas fa-angle-right"></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><ul><li><a href=#esp32-secure-boot>ESP32 Secure Boot</a></li><li><a href=#tasmota>Tasmota</a></li><li><a href=#esphome>ESPHome</a></li></ul></li></ul></nav></div></div><div class=content id=content><p>This is another one of those quick &ldquo;I wish that was easier to find when I was googling it&rdquo; posts.</p><p>For a project, I needed a small relay module to switch a few mains loads.
+I chose this generic looking relay module from AliExpress because it was powered by an ESP32 and featured ethernet connectivity.</p><figure><img src=https://karlquinsland.com/dingtian-2ch-relay-with-esphome/images/product_image.jpg><figcaption></figcaption></figure><p>AliExpress is full of generic looking relay modules but <a href=https://www.aliexpress.us/item/2255800812755068.html target=_blank rel="noopener noreffer">this</a> one is branded <a href=https://www.dingtian-tech.com/en_us/relay2.html target=_blank rel="noopener noreffer"><code>dingtian-tech</code></a></p><p>The device came with an obvious programming header right next to the ESP32 so I thought it would be a 5 minute job to flash Tasmota and <a href=https://tasmota.github.io/docs/Configuration-Procedure-for-New-Devices/ target=_blank rel="noopener noreffer">probe the GPIOs</a>.</p><p><strong>N.O.P.E.</strong></p><p>This post is a super condensed version of my notes that I&rsquo;m posting in the off chance that they&rsquo;re useful for somebody else.</p><h2 id=esp32-secure-boot>ESP32 Secure Boot</h2><p>No matter what I did to flash the ESP32 module, it would always boot loop with output like this:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>rst:0x1 (POWERON_RESET),boot:0x7 (DOWNLOAD_BOOT(UART0/UART1/SDIO_REI_REO_V2))␍␊
+</span></span><span class=line><span class=cl>waiting for download␍␊
+</span></span><span class=line><span class=cl>&lt;break&gt;
+</span></span><span class=line><span class=cl>&lt;0xff&gt;ets Jun  8 2016 00:22:57␍␊
+</span></span></code></pre></td></tr></table></div></div><p>I knew that I didn&rsquo;t brick anything because the ESP would boot right up as soon as i re-flashed the original dump.</p><p>Turns out, there&rsquo;s <a href=https://github.com/espressif/esp-idf/issues/113 target=_blank rel="noopener noreffer">a few reasons</a> why this might happen but in this case, it&rsquo;s because <a href="https://www.esp32.com/viewtopic.php?f=12&amp;t=19176&amp;start=10" target=_blank rel="noopener noreffer">secure boot was enabled</a>.</p><p>Because at least a decent chunk of the flash dump I took was in plain text, I didn&rsquo;t thing that there was any flash protection in place but sure enough, at least some of the protection features have been enabled:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>❯ espefuse.py summary
+</span></span><span class=line><span class=cl>Connecting...
+</span></span><span class=line><span class=cl>Detecting chip type... Unsupported detection protocol, switching and trying again...
+</span></span><span class=line><span class=cl>Connecting...
+</span></span><span class=line><span class=cl>Detecting chip type... ESP32
+</span></span><span class=line><span class=cl>espefuse.py v3.3.1
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=o>===</span> Run <span class=s2>&#34;summary&#34;</span> <span class=nb>command</span> <span class=o>===</span>
+</span></span><span class=line><span class=cl>EFUSE_NAME <span class=o>(</span>Block<span class=o>)</span> <span class=nv>Description</span>  <span class=o>=</span> <span class=o>[</span>Meaningful Value<span class=o>]</span> <span class=o>[</span>Readable/Writeable<span class=o>]</span> <span class=o>(</span>Hex Value<span class=o>)</span>
+</span></span><span class=line><span class=cl>----------------------------------------------------------------------------------------
+</span></span><span class=line><span class=cl>Calibration fuses:
+</span></span><span class=line><span class=cl>BLK3_PART_RESERVE <span class=o>(</span>BLOCK0<span class=o>)</span>:                        BLOCK3 partially served <span class=k>for</span> ADC calibration <span class=nv>data</span>   <span class=o>=</span> False R/W <span class=o>(</span>0b0<span class=o>)</span>
+</span></span><span class=line><span class=cl>ADC_VREF <span class=o>(</span>BLOCK0<span class=o>)</span>:                                 Voltage reference <span class=nv>calibration</span>                      <span class=o>=</span> <span class=m>1114</span> R/W <span class=o>(</span>0b00010<span class=o>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Config fuses:
+</span></span><span class=line><span class=cl>XPD_SDIO_FORCE <span class=o>(</span>BLOCK0<span class=o>)</span>:                           Ignore MTDI pin <span class=o>(</span>GPIO12<span class=o>)</span> <span class=k>for</span> VDD_SDIO on <span class=nv>reset</span>     <span class=o>=</span> False R/W <span class=o>(</span>0b0<span class=o>)</span>
+</span></span><span class=line><span class=cl>XPD_SDIO_REG <span class=o>(</span>BLOCK0<span class=o>)</span>:                             If XPD_SDIO_FORCE, <span class=nb>enable</span> VDD_SDIO reg on <span class=nv>reset</span>    <span class=o>=</span> False R/W <span class=o>(</span>0b0<span class=o>)</span>
+</span></span><span class=line><span class=cl>XPD_SDIO_TIEH <span class=o>(</span>BLOCK0<span class=o>)</span>:                            If XPD_SDIO_FORCE <span class=p>&amp;</span> <span class=nv>XPD_SDIO_REG</span>                   <span class=o>=</span> 1.8V R/W <span class=o>(</span>0b0<span class=o>)</span>
+</span></span><span class=line><span class=cl>CLK8M_FREQ <span class=o>(</span>BLOCK0<span class=o>)</span>:                               8MHz clock freq <span class=nv>override</span>                           <span class=o>=</span> <span class=m>54</span> R/W <span class=o>(</span>0x36<span class=o>)</span>
+</span></span><span class=line><span class=cl>SPI_PAD_CONFIG_CLK <span class=o>(</span>BLOCK0<span class=o>)</span>:                       Override SD_CLK pad <span class=o>(</span>GPIO6/SPICLK<span class=o>)</span>                 <span class=o>=</span> <span class=m>0</span> R/W <span class=o>(</span>0b00000<span class=o>)</span>
+</span></span><span class=line><span class=cl>SPI_PAD_CONFIG_Q <span class=o>(</span>BLOCK0<span class=o>)</span>:                         Override SD_DATA_0 pad <span class=o>(</span>GPIO7/SPIQ<span class=o>)</span>                <span class=o>=</span> <span class=m>0</span> R/W <span class=o>(</span>0b00000<span class=o>)</span>
+</span></span><span class=line><span class=cl>SPI_PAD_CONFIG_D <span class=o>(</span>BLOCK0<span class=o>)</span>:                         Override SD_DATA_1 pad <span class=o>(</span>GPIO8/SPID<span class=o>)</span>                <span class=o>=</span> <span class=m>0</span> R/W <span class=o>(</span>0b00000<span class=o>)</span>
+</span></span><span class=line><span class=cl>SPI_PAD_CONFIG_HD <span class=o>(</span>BLOCK0<span class=o>)</span>:                        Override SD_DATA_2 pad <span class=o>(</span>GPIO9/SPIHD<span class=o>)</span>               <span class=o>=</span> <span class=m>0</span> R/W <span class=o>(</span>0b00000<span class=o>)</span>
+</span></span><span class=line><span class=cl>SPI_PAD_CONFIG_CS0 <span class=o>(</span>BLOCK0<span class=o>)</span>:                       Override SD_CMD pad <span class=o>(</span>GPIO11/SPICS0<span class=o>)</span>                <span class=o>=</span> <span class=m>0</span> R/W <span class=o>(</span>0b00000<span class=o>)</span>
+</span></span><span class=line><span class=cl>DISABLE_SDIO_HOST <span class=o>(</span>BLOCK0<span class=o>)</span>:                        Disable SDIO <span class=nv>host</span>                                  <span class=o>=</span> False R/W <span class=o>(</span>0b0<span class=o>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Efuse fuses:
+</span></span><span class=line><span class=cl>WR_DIS <span class=o>(</span>BLOCK0<span class=o>)</span>:                                   Efuse write disable <span class=nv>mask</span>                           <span class=o>=</span> <span class=m>388</span> R/W <span class=o>(</span>0x0184<span class=o>)</span>
+</span></span><span class=line><span class=cl>RD_DIS <span class=o>(</span>BLOCK0<span class=o>)</span>:                                   Efuse <span class=nb>read</span> disable <span class=nv>mask</span>                            <span class=o>=</span> <span class=m>3</span> R/W <span class=o>(</span>0x3<span class=o>)</span>
+</span></span><span class=line><span class=cl>CODING_SCHEME <span class=o>(</span>BLOCK0<span class=o>)</span>:                            Efuse variable block length <span class=nv>scheme</span>
+</span></span><span class=line><span class=cl>   <span class=o>=</span> NONE <span class=o>(</span>BLK1-3 <span class=nv>len</span><span class=o>=</span><span class=m>256</span> bits<span class=o>)</span> R/W <span class=o>(</span>0b00<span class=o>)</span>
+</span></span><span class=line><span class=cl>KEY_STATUS <span class=o>(</span>BLOCK0<span class=o>)</span>:                               Usage of efuse block <span class=m>3</span> <span class=o>(</span>reserved<span class=o>)</span>                  <span class=o>=</span> False R/W <span class=o>(</span>0b0<span class=o>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Identity fuses:
+</span></span><span class=line><span class=cl>MAC <span class=o>(</span>BLOCK0<span class=o>)</span>:                                      Factory MAC <span class=nv>Address</span>
+</span></span><span class=line><span class=cl>   <span class=o>=</span> 78:21:84:56:b1:50 <span class=o>(</span>CRC 0x6c OK<span class=o>)</span> R/W
+</span></span><span class=line><span class=cl>MAC_CRC <span class=o>(</span>BLOCK0<span class=o>)</span>:                                  CRC8 <span class=k>for</span> factory MAC <span class=nv>address</span>                       <span class=o>=</span> <span class=m>108</span> R/W <span class=o>(</span>0x6c<span class=o>)</span>
+</span></span><span class=line><span class=cl>CHIP_VER_REV1 <span class=o>(</span>BLOCK0<span class=o>)</span>:                            Silicon Revision <span class=nv>1</span>                                 <span class=o>=</span> True R/W <span class=o>(</span>0b1<span class=o>)</span>
+</span></span><span class=line><span class=cl>CHIP_VER_REV2 <span class=o>(</span>BLOCK0<span class=o>)</span>:                            Silicon Revision <span class=nv>2</span>                                 <span class=o>=</span> False R/W <span class=o>(</span>0b0<span class=o>)</span>
+</span></span><span class=line><span class=cl>CHIP_VERSION <span class=o>(</span>BLOCK0<span class=o>)</span>:                             Reserved <span class=k>for</span> future chip <span class=nv>versions</span>                  <span class=o>=</span> <span class=m>2</span> R/W <span class=o>(</span>0b10<span class=o>)</span>
+</span></span><span class=line><span class=cl>CHIP_PACKAGE <span class=o>(</span>BLOCK0<span class=o>)</span>:                             Chip package <span class=nv>identifier</span>                            <span class=o>=</span> <span class=m>1</span> R/W <span class=o>(</span>0b001<span class=o>)</span>
+</span></span><span class=line><span class=cl>CHIP_PACKAGE_4BIT <span class=o>(</span>BLOCK0<span class=o>)</span>:                        Chip package identifier <span class=c1>#4bit                      = False R/W (0b0)</span>
+</span></span><span class=line><span class=cl>MAC_VERSION <span class=o>(</span>BLOCK3<span class=o>)</span>:                              Version of the MAC <span class=nv>field</span>                           <span class=o>=</span> <span class=m>0</span> R/W <span class=o>(</span>0x00<span class=o>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Security fuses:
+</span></span><span class=line><span class=cl>FLASH_CRYPT_CNT <span class=o>(</span>BLOCK0<span class=o>)</span>:                          Flash encryption mode <span class=nv>counter</span>                      <span class=o>=</span> <span class=m>1</span> R/- <span class=o>(</span>0b0000001<span class=o>)</span>
+</span></span><span class=line><span class=cl>UART_DOWNLOAD_DIS <span class=o>(</span>BLOCK0<span class=o>)</span>:                        Disable UART download mode <span class=o>(</span>ESP32 rev3 only<span class=o>)</span>       <span class=o>=</span> False R/- <span class=o>(</span>0b0<span class=o>)</span>
+</span></span><span class=line><span class=cl>FLASH_CRYPT_CONFIG <span class=o>(</span>BLOCK0<span class=o>)</span>:                       Flash encryption config <span class=o>(</span>key tweak bits<span class=o>)</span>           <span class=o>=</span> <span class=m>15</span> R/W <span class=o>(</span>0xf<span class=o>)</span>
+</span></span><span class=line><span class=cl>CONSOLE_DEBUG_DISABLE <span class=o>(</span>BLOCK0<span class=o>)</span>:                    Disable ROM BASIC interpreter <span class=nv>fallback</span>             <span class=o>=</span> True R/W <span class=o>(</span>0b1<span class=o>)</span>
+</span></span><span class=line><span class=cl>ABS_DONE_0 <span class=o>(</span>BLOCK0<span class=o>)</span>:                               Secure boot V1 is enabled <span class=k>for</span> bootloader <span class=nv>image</span>     <span class=o>=</span> True R/W <span class=o>(</span>0b1<span class=o>)</span>
+</span></span><span class=line><span class=cl>ABS_DONE_1 <span class=o>(</span>BLOCK0<span class=o>)</span>:                               Secure boot V2 is enabled <span class=k>for</span> bootloader <span class=nv>image</span>     <span class=o>=</span> False R/W <span class=o>(</span>0b0<span class=o>)</span>
+</span></span><span class=line><span class=cl>JTAG_DISABLE <span class=o>(</span>BLOCK0<span class=o>)</span>:                             Disable <span class=nv>JTAG</span>                                       <span class=o>=</span> True R/W <span class=o>(</span>0b1<span class=o>)</span>
+</span></span><span class=line><span class=cl>DISABLE_DL_ENCRYPT <span class=o>(</span>BLOCK0<span class=o>)</span>:                       Disable flash encryption in UART <span class=nv>bootloader</span>        <span class=o>=</span> True R/W <span class=o>(</span>0b1<span class=o>)</span>
+</span></span><span class=line><span class=cl>DISABLE_DL_DECRYPT <span class=o>(</span>BLOCK0<span class=o>)</span>:                       Disable flash decryption in UART <span class=nv>bootloader</span>        <span class=o>=</span> True R/W <span class=o>(</span>0b1<span class=o>)</span>
+</span></span><span class=line><span class=cl>DISABLE_DL_CACHE <span class=o>(</span>BLOCK0<span class=o>)</span>:                         Disable flash cache in UART <span class=nv>bootloader</span>             <span class=o>=</span> True R/W <span class=o>(</span>0b1<span class=o>)</span>
+</span></span><span class=line><span class=cl>BLOCK1 <span class=o>(</span>BLOCK1<span class=o>)</span>:                                   Flash encryption <span class=nv>key</span>
+</span></span><span class=line><span class=cl>   <span class=o>=</span> ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? -/-
+</span></span><span class=line><span class=cl>BLOCK2 <span class=o>(</span>BLOCK2<span class=o>)</span>:                                   Secure boot <span class=nv>key</span>
+</span></span><span class=line><span class=cl>   <span class=o>=</span> ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? ?? -/-
+</span></span><span class=line><span class=cl>BLOCK3 <span class=o>(</span>BLOCK3<span class=o>)</span>:                                   Variable Block <span class=nv>3</span>
+</span></span><span class=line><span class=cl>   <span class=o>=</span> <span class=m>00</span> <span class=m>00</span> <span class=m>00</span> <span class=m>00</span> <span class=m>00</span> <span class=m>00</span> <span class=m>00</span> <span class=m>00</span> <span class=m>00</span> <span class=m>00</span> <span class=m>00</span> <span class=m>00</span> <span class=m>00</span> <span class=m>00</span> <span class=m>00</span> <span class=m>00</span> <span class=m>00</span> <span class=m>00</span> <span class=m>00</span> <span class=m>00</span> <span class=m>00</span> <span class=m>00</span> <span class=m>00</span> <span class=m>00</span> <span class=m>00</span> <span class=m>00</span> <span class=m>00</span> <span class=m>00</span> <span class=m>00</span> <span class=m>00</span> <span class=m>00</span> <span class=m>00</span> R/W
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>Flash voltage <span class=o>(</span>VDD_SDIO<span class=o>)</span> determined by GPIO12 on reset <span class=o>(</span>High <span class=k>for</span> 1.8V, Low/NC <span class=k>for</span> 3.3V<span class=o>)</span>.
+</span></span></code></pre></td></tr></table></div></div><p>That&rsquo;s the first time I&rsquo;ve <em>ever</em> seen the security settings enabled on cheap IoT gear from China. 🤯</p><p>In hindsight, it should have been pretty obvious as the flash dump does not look like a &ldquo;traditional&rdquo; ESP flash dump:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>❯ binwalk flash_4M.bin
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>DECIMAL       HEXADECIMAL     DESCRIPTION
+</span></span><span class=line><span class=cl>--------------------------------------------------------------------------------
+</span></span><span class=line><span class=cl><span class=m>1131864</span>       0x114558        AES S-Box
+</span></span><span class=line><span class=cl><span class=m>1155516</span>       0x11A1BC        Base64 standard index table
+</span></span><span class=line><span class=cl><span class=m>1161148</span>       0x11B7BC        PEM RSA private key
+</span></span><span class=line><span class=cl><span class=m>1161212</span>       0x11B7FC        PEM EC private key
+</span></span><span class=line><span class=cl><span class=m>1161560</span>       0x11B958        SHA256 <span class=nb>hash</span> constants, little endian
+</span></span><span class=line><span class=cl><span class=m>1166968</span>       0x11CE78        PEM certificate
+</span></span><span class=line><span class=cl><span class=m>2075923</span>       0x1FAD13        mcrypt 2.5 encrypted data, algorithm: <span class=s2>&#34;+&#34;</span>, keysize: <span class=m>21964</span> bytes, mode: <span class=s2>&#34;H&#34;</span>,
+</span></span></code></pre></td></tr></table></div></div><p>It was late and I was tired so I didn&rsquo;t bother with trying to reverse engineer the flash dump or trying to figure out if there was a way to disable the protections.
+Nothing was going to compete with 10 minute to heat-soak and remove the ESP module so I just did that.</p><figure><img src=https://karlquinsland.com/dingtian-2ch-relay-with-esphome/images/pcb_closeup_no_esp32.jpg alt="Note the sharpie next to the pin headers. Order is GND, RX, TX, EN, GPIO0, VCC from top to bottom."><figcaption><p>Note the sharpie next to the pin headers. Order is GND, RX, TX, EN, GPIO0, VCC from top to bottom.</p></figcaption></figure><p>And a better look at some of the PCB traces to the ethernet PHY:</p><figure><img src=https://karlquinsland.com/dingtian-2ch-relay-with-esphome/images/pcb_closeup_eth_phy.jpg><figcaption></figcaption></figure><p>With a &ldquo;fresh&rdquo; ESP module installed, figuring out th GPIO assignments wasn&rsquo;t particularly difficult.</p><table><thead><tr><th>Function</th><th>Pin</th><th>Note</th></tr></thead><tbody><tr><td>Relay 1</td><td><code>GPIO2</code></td><td>&ndash;</td></tr><tr><td>Relay 2</td><td><code>GPIO16</code></td><td>&ndash;</td></tr><tr><td>Input 1</td><td><code>GPIO36</code></td><td>Normally at 3.3V. Pull to ground to trigger.</td></tr><tr><td>Input 2</td><td><code>GPIO39</code></td><td>Same as <code>Input 1</code>.</td></tr><tr><td>Input 3</td><td><code>GPIO34</code></td><td>This is the <code>FACTORY</code> button. Same as <code>Input 1</code>.</td></tr><tr><td>LED 1</td><td><code>GPIO32</code></td><td>This is the second little red LED next to the <code>FACTORY</code> button. Inverted.</td></tr></tbody></table><h2 id=tasmota>Tasmota</h2><p>And here&rsquo;s the working Tasmota template:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-json data-lang=json><span class=line><span class=cl><span class=p>{</span><span class=nt>&#34;NAME&#34;</span><span class=p>:</span><span class=s2>&#34;2chFinal&#34;</span><span class=p>,</span><span class=nt>&#34;GPIO&#34;</span><span class=p>:[</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>224</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>1</span><span class=p>,</span><span class=mi>1</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>225</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>320</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>32</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>160</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>0</span><span class=p>,</span><span class=mi>161</span><span class=p>],</span><span class=nt>&#34;FLAG&#34;</span><span class=p>:</span><span class=mi>0</span><span class=p>,</span><span class=nt>&#34;BASE&#34;</span><span class=p>:</span><span class=mi>1</span><span class=p>}</span>
+</span></span></code></pre></td></tr></table></div></div><p>And visually:</p><figure><img src=https://karlquinsland.com/dingtian-2ch-relay-with-esphome/images/tasmota_config.png alt="This configuration works even though GPIO34 should be Button_i."><figcaption><p>This configuration works even though GPIO34 should be Button_i.</p></figcaption></figure><h2 id=esphome>ESPHome</h2><p>This is a bare-bones config that covers all the core/critical functionality.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>esp32</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># See: https://docs.platformio.org/en/latest/boards/espressif32/esp32dev.html</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>board</span><span class=p>:</span><span class=w> </span><span class=l>esp32dev</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># Above the &#34;FACTORY&#34; button there are two LEDs. One is wired in series with the switch and the other is controllable via GPIO. Use the second one as a status indicator.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>status_led</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>pin</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>number</span><span class=p>:</span><span class=w> </span><span class=l>GPIO32</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>inverted</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>ethernet</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>JL1101</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>mdc_pin</span><span class=p>:</span><span class=w> </span><span class=l>GPIO23</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>mdio_pin</span><span class=p>:</span><span class=w> </span><span class=l>GPIO18</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>phy_addr</span><span class=p>:</span><span class=w> </span><span class=m>0</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>clk_mode</span><span class=p>:</span><span class=w> </span><span class=l>GPIO17_OUT</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># The PHY chip has a pin labeled TX_EN that goes to GPIO 21 on ESP</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># and the RSTn pin on the phy goes to GPIO0</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c>##</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># Datasheet indicates the RSTn should be LOW to disable the phy and default is high</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>power_pin</span><span class=p>:</span><span class=w> </span><span class=l>GPIO0</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>binary_sensor</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># The &#34;factory reset&#34; button</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>gpio</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;User Button&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>pin</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>number</span><span class=p>:</span><span class=w> </span><span class=l>GPIO34</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>inverted</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># The two sets of contacts for manual trigger</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># input is pulled up to 3.3V by default.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;User Input 1&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>gpio</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>pin</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>number</span><span class=p>:</span><span class=w> </span><span class=l>GPIO36</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>inverted</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;User Input 2&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>gpio</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>pin</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>number</span><span class=p>:</span><span class=w> </span><span class=l>GPIO39</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>inverted</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>switch</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;Relay 1&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>gpio</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>pin</span><span class=p>:</span><span class=w> </span><span class=l>GPIO2</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;Relay 2&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>gpio</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>pin</span><span class=p>:</span><span class=w> </span><span class=l>GPIO16</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>Updated on 2023-04-22&nbsp;<a class=git-hash href=https://github.com/kquinsland/kquinsland.github.io/commit/6e000efc3e4cfb7cc2436a128c823f4f4cc26b7e target=_blank title="commit by karl(github@karlquinsland.com) 6e000efc3e4cfb7cc2436a128c823f4f4cc26b7e: Add quick post and vs code workspace">
+<i class="fas fa-hashtag fa-fw"></i>6e000ef</a></span></div><div class=post-info-license></div></div><div class=post-info-line><div class=post-info-md><span><a class=link-to-markdown href=https://karlquinsland.com/dingtian-2ch-relay-with-esphome/index.md target=_blank>Read Markdown</a></span></div><div class=post-info-share><span></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=https://karlquinsland.com/tags/tasmota/>tasmota</a>,&nbsp;<a href=https://karlquinsland.com/tags/esphome/>esphome</a>,&nbsp;<a href=https://karlquinsland.com/tags/home-assistant/>home assistant</a></section><section><span><a href=javascript:void(0); onclick=window.history.back()>Back</a></span>&nbsp;|&nbsp;<span><a href=https://karlquinsland.com/>Home</a></span></section></div><div class=post-nav><a href=https://karlquinsland.com/frigate-install/ class=prev rel=prev title="Frigate From Scratch guide"><i class="fas fa-angle-left fa-fw"></i>Frigate From Scratch guide</a></div></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line>¯\_(ツ)_/¯</div><div class=footer-line>Powered by <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.111.3">Hugo</a> | Theme - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a></div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2019 - 2023</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=https://karlquinsland.com/ target=_blank>karl</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top"><i class="fas fa-arrow-up fa-fw"></i>
+</a><a href=# id=view-comments class=fixed-button title="View Comments"><i class="fas fa-comment fa-fw"></i></a></div><link rel=stylesheet href=https://karlquinsland.com/lib/katex/katex.min.4710034e669c7ff17f823f9ba12cf8a36582d65b007f79cbc4a3c11d7db2e4ca.css integrity="sha256-RxADTmacf/F/gj+boSz4o2WC1lsAf3nLxKPBHX2y5Mo="><link rel=stylesheet href=https://karlquinsland.com/lib/katex/copy-tex.min.bf9ff4137fec38f6255419e142d0883c9c52090885d746f80eee12b273d9b3e0.css integrity="sha256-v5/0E3/sOPYlVBnhQtCIPJxSCQiF10b4Du4SsnPZs+A="><script type=text/javascript src=https://karlquinsland.com/lib/smooth-scroll/smooth-scroll.min.bcff85fb5e00d68802850b393ac7792c997f722f536f38e26638c46dca8e5eb6.js integrity="sha256-vP+F+14A1ogChQs5Osd5LJl/ci9TbzjiZjjEbcqOXrY="></script><script type=text/javascript src=https://karlquinsland.com/lib/autocomplete/autocomplete.min.615590a2ca2b667afa7c02ef396f5500b62e22795ddbb46448f90494605d09a5.js integrity="sha256-YVWQosorZnr6fALvOW9VALYuInld27RkSPkElGBdCaU="></script><script type=text/javascript src=https://karlquinsland.com/lib/lunr/lunr.min.df84a2d58ea594c04a3371b48d020b55ea10284c2ec636e4e331965d7313e29b.js integrity="sha256-34Si1Y6llMBKM3G0jQILVeoQKEwuxjbk4zGWXXMT4ps="></script><script type=text/javascript src=https://karlquinsland.com/lib/lazysizes/lazysizes.min.fb649fcae62177dfe63e67081ddceb830b5ce1f05a4184e9bbb7d87ac4b8f4e5.js integrity="sha256-+2SfyuYhd9/mPmcIHdzrgwtc4fBaQYTpu7fYesS49OU="></script><script type=text/javascript src=https://karlquinsland.com/lib/clipboard/clipboard.min.8a7739925f4c03586479852df840b7061948832a7fda30c8c812d2ea4dd4c4f2.js integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/katex.min.17f5dd6b9f123dd7140abfb18521b3f4c036cd004f6f40121182a8865f140877.js integrity="sha256-F/Xda58SPdcUCr+xhSGz9MA2zQBPb0ASEYKohl8UCHc="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/auto-render.min.f74776a677f0d2be0af0264058f928e2ba455d0b19bc985304660d922a43a6b2.js integrity="sha256-90d2pnfw0r4K8CZAWPko4rpFXQsZvJhTBGYNkipDprI="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/copy-tex.min.2ab2237329021bc443986c8327f6e61357fb68a54e5d233d224023718c02207d.js integrity="sha256-KrIjcykCG8RDmGyDJ/bmE1f7aKVOXSM9IkAjcYwCIH0="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/mhchem.min.5cea356d6025c5a2f18c454c83ec5674dbb04fab1cd1d75569e77788c6b6f888.js integrity="sha256-XOo1bWAlxaLxjEVMg+xWdNuwT6sc0ddVaed3iMa2+Ig="></script><script type=text/javascript>window.config={code:{copyTitle:"Copy to clipboard",maxShownLines:10},comment:{},math:{delimiters:[{display:!0,left:"$$",right:"$$"},{display:!0,left:"\\[",right:"\\]"},{display:!1,left:"$",right:"$"},{display:!1,left:"\\(",right:"\\)"}],strict:!1},search:{highlightTag:"em",lunrIndexURL:"/index.json",maxResultLength:10,noResultsFound:"No results found",snippetLength:30,type:"lunr"}}</script><script type=text/javascript src=https://karlquinsland.com/js/theme.min.f51938f3065a40ee841bcb558e4330e31fd26c0ea55343fff8770b88b0319a3c.js integrity="sha256-9Rk48wZaQO6EG8tVjkMw4x/SbA6lU0P/+HcLiLAxmjw="></script><script type=text/javascript>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-3WZ55XG701",{anonymize_ip:!0})</script><script type=text/javascript src="https://www.googletagmanager.com/gtag/js?id=G-3WZ55XG701" async></script></body></html>
