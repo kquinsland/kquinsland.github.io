@@ -1,4 +1,264 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>teardown - Tag - karl</title><link>https://karlquinsland.com/tags/teardown/</link><description>teardown - Tag - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 15 Jan 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/teardown/" rel="self" type="application/rss+xml"/><item><title>Teardown and Home Assistant integration with two generic Chinese 'smart' power strips.</title><link>https://karlquinsland.com/esphome-power-strips/</link><pubDate>Sun, 15 Jan 2023 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/esphome-power-strips/</guid><description><![CDATA[<!-- markdownlint-disable-file MD002 -->
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>teardown - Tag - karl</title><link>https://karlquinsland.com/tags/teardown/</link><description>teardown - Tag - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 06 May 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/teardown/" rel="self" type="application/rss+xml"/><item><title>Roborock S8 Pro Ultra Teardown</title><link>https://karlquinsland.com/roborock-s8-pro-ultra-dock-teardown/</link><pubDate>Sat, 06 May 2023 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/roborock-s8-pro-ultra-dock-teardown/</guid><description><![CDATA[<h1 id="roborock-s8-teardown">Roborock S8 teardown</h1>
+<p>I recently acquired the new S8 from Roborock to replace my rapidly failing roomba.</p>
+<p>While I am patiently waiting for <a href="https://dontvacuum.me/" target="_blank" rel="noopener noreffer">Dennis</a> and <a href="https://github.com/Hypfer" target="_blank" rel="noopener noreffer">Hypfer</a> to add <a href="https://github.com/Hypfer/Valetudo" target="_blank" rel="noopener noreffer">Valetudo</a> support, I thought I&rsquo;d have a peek inside to see if this model will be any more serviceable or maintainable than my current vacuum.</p>
+<p>From what I&rsquo;m told, the S7 and the S8 are supposed to be pretty similar so here&rsquo;s to hoping that it&rsquo;s not too much more of a wait.</p>
+<p>In the mean time this post is going &ldquo;live&rdquo; with photos of the docking station internals and a few photos of the vacuum.
+I ran out of time to finish the S8 teardown but I&rsquo;ll update this post when I have made progress.
+Assuming the S8 is similar to the S7, I imagine that the procedure and internals will be similar.</p>
+<h2 id="the-dock">The dock</h2>
+<p>Fortunately, it&rsquo;s pretty easy to open the <em>huge</em> charging station/dock up.
+Really, you just need a single philips screwdriver for the ~10 screws on the rear.
+There is one sticker covering a screw on the rear but it&rsquo;s not the &ldquo;tamper-evident&rdquo; kind so it should be easy enough to replace if needed.</p>
+<hr>
+<p>Excess cable slack can be looped around the rear of the docking station to minimize errant cords.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Note the white sticker covering the screw in the middle on the bottom.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>Near the mains input is a simple USB-C port.
+<code>dmesg</code> doesn&rsquo;t show any signs of life on the port both with and without the mains cable plugged in. I have not yet tried with the robot docked so there may be some simple handshake that&rsquo;s needed before this port becomes interesting.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>With screws removed, the rear panel lifts off to reveal the internals.
+The overall layout seems logical and there&rsquo;s lots of room between components which is nice to see.
+Each component is well labeled secured to the main body with standard screws and Zip-Ties.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>In addition to the small features molded into the body for cable management, the cables to the components that move are protected with an easy to remove cable chain.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>The strong vaccuum motor that empties the mobile dustbin into the larger bin is powered directly via mains but isn&rsquo;t easily accessible.
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+</p>
+<p>The mains PSU is nothing special to write home about.
+There is a low-voltage connection right next to the mains cabling that heads down to the main &ldquo;evacuation&rdquo; suction motor but there is no obvious relay.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Here&rsquo;s a closeup of the main control board for the docking station.</p>
+<p>Each of the connectors around the edge is a different size/number of pins os it&rsquo;s virtually impossible to plug the wrong cable in to the wrong port - nice!</p>
+<p>The conformal coating does obscure component IDs and traces, but you can still get a high-level idea of the topology.
+More than likely, all sensors and actuators are controlled by the <a href="https://www.nationstech.com/en/N32G455MCUs/" target="_blank" rel="noopener noreffer">Nation N32G455</a> and the ESP32 is (probably) just there for communicating status to the robot and/or cloud.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>From this angle it&rsquo;s a bit easier to see where the USB-C traces go but since the ESP32 module is BGA packaged and everything is conformally coated, I skipped the tedious work of trying to beep things out.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        At least the conformal coating is pretty easy to rub off the IC.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<h2 id="the-vacuum">The vacuum</h2>
+<p>More photos coming in a later update, but here&rsquo;s what I have so far.</p>
+<p><figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        It would be better if Roborock provided tools to verify this claim, but at least they&#39;re trying to address consumer privacy concerns.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Like with the S7, the panel surrounding the LIDAR puck can be pried off.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+</p>
+<p>Nice to see that the labeling for which roller goes into which position is molding into the robot body for ultimate wear-resistance.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>And here&rsquo;s a shot of the LIDAR pcb.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Hopefully more soon!</p>
+]]></description></item><item><title>Teardown and Home Assistant integration with two generic Chinese 'smart' power strips.</title><link>https://karlquinsland.com/esphome-power-strips/</link><pubDate>Sun, 15 Jan 2023 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/esphome-power-strips/</guid><description><![CDATA[<!-- markdownlint-disable-file MD002 -->
 <p>I love the Sonoff-S31 smart plugs.
 They&rsquo;re cheap, well made and - most importantly - trivial to flash with ESPHome and integrate into Home Assistant.
 They do have one obvious draw back, though; optimized for a &ldquo;traditional&rdquo; US style outlet.
