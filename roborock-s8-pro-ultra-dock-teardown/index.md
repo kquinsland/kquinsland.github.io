@@ -78,5 +78,34 @@ And here's a shot of the LIDAR pcb.
 
 {{<figure name="vac06_dis06" >}}
 
-Hopefully more soon!
+
+As for getting into the rest of the robot, it's not that difficult.
+Standard "keep track of all the screws and take photos at each step" advice applies here.
+
+You can follow the the [existing S7 teardown guides](https://www.youtube.com/watch?v=TKMD-VOvILc) for the initial steps but once you remove the front bumper just look for screws that hold the top lid onto the body of the robot.
+There are two obvious ones, two next to the castor wheel and a few more hiding under the mop pad.
+With those removed, the lid slides off pretty easily to reveal the PCB:
+
+{{<figure name ="vac07_no-lid">}}
+
+There's a few interesting things to note here:
+
+- The roller brush assembly and mop head are lifted up via small steel cables. You can see the actuator motor for the main brush assembly just off of the top left corner of the PCB. The steel cable runs through the white plastic guides which route it around other internal components. The "space claim" portion of this design must have been pretty interesting :).
+
+- There are only two small locating features for the PCB. When installing the PCB back in to the chassis start with the small plastic peg between the screw and the micro USB port. If you seat this corner of the PCB first and everything else should fall into place nicely.
+
+{{<figure name ="vac08_pcb_front">}}
+
+{{<figure name ="vac08_pcb_rear">}}
+
+
+The conformal coating is annoying but here's the big players:
+
+- An Allwinner [`MR813`](https://github.com/mangopi-sbc/aw-doc/blob/main/A133-MR813-R818/MR813_Datasheet_V1.6.pdf) runs the show.
+
+- Samsung [`KLM4G1`](https://semiconductor.samsung.com/estorage/emmc/emmc-5-1/klm4g1fete-b041/) for storage
+
+- A [`GDQ2BFAA`](https://www.sekorm.com/doc/2446002.html) handles everything low level
+
+- WiFi provided by [`RTL8189FTV`](https://www.realtek.com/en/products/communications-network-ics/item/rtl8189ftv).
 

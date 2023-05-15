@@ -257,7 +257,83 @@ More than likely, all sensors and actuators are controlled by the <a href="https
 </figure>
 
 
-<p>Hopefully more soon!</p>
+<p>As for getting into the rest of the robot, it&rsquo;s not that difficult.
+Standard &ldquo;keep track of all the screws and take photos at each step&rdquo; advice applies here.</p>
+<p>You can follow the the <a href="https://www.youtube.com/watch?v=TKMD-VOvILc" target="_blank" rel="noopener noreffer">existing S7 teardown guides</a> for the initial steps but once you remove the front bumper just look for screws that hold the top lid onto the body of the robot.
+There are two obvious ones, two next to the castor wheel and a few more hiding under the mop pad.
+With those removed, the lid slides off pretty easily to reveal the PCB:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>There&rsquo;s a few interesting things to note here:</p>
+<ul>
+<li>
+<p>The roller brush assembly and mop head are lifted up via small steel cables. You can see the actuator motor for the main brush assembly just off of the top left corner of the PCB. The steel cable runs through the white plastic guides which route it around other internal components. The &ldquo;space claim&rdquo; portion of this design must have been pretty interesting :).</p>
+</li>
+<li>
+<p>There are only two small locating features for the PCB. When installing the PCB back in to the chassis start with the small plastic peg between the screw and the micro USB port. If you seat this corner of the PCB first and everything else should fall into place nicely.</p>
+</li>
+</ul>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>The conformal coating is annoying but here&rsquo;s the big players:</p>
+<ul>
+<li>
+<p>An Allwinner <a href="https://github.com/mangopi-sbc/aw-doc/blob/main/A133-MR813-R818/MR813_Datasheet_V1.6.pdf" target="_blank" rel="noopener noreffer"><code>MR813</code></a> runs the show.</p>
+</li>
+<li>
+<p>Samsung <a href="https://semiconductor.samsung.com/estorage/emmc/emmc-5-1/klm4g1fete-b041/" target="_blank" rel="noopener noreffer"><code>KLM4G1</code></a> for storage</p>
+</li>
+<li>
+<p>A <a href="https://www.sekorm.com/doc/2446002.html" target="_blank" rel="noopener noreffer"><code>GDQ2BFAA</code></a> handles everything low level</p>
+</li>
+<li>
+<p>WiFi provided by <a href="https://www.realtek.com/en/products/communications-network-ics/item/rtl8189ftv" target="_blank" rel="noopener noreffer"><code>RTL8189FTV</code></a>.</p>
+</li>
+</ul>
 ]]></description></item><item><title>Teardown and Home Assistant integration with two generic Chinese 'smart' power strips.</title><link>https://karlquinsland.com/esphome-power-strips/</link><pubDate>Sun, 15 Jan 2023 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/esphome-power-strips/</guid><description><![CDATA[<!-- markdownlint-disable-file MD002 -->
 <p>I love the Sonoff-S31 smart plugs.
 They&rsquo;re cheap, well made and - most importantly - trivial to flash with ESPHome and integrate into Home Assistant.
