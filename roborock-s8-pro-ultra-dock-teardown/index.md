@@ -103,9 +103,9 @@ The conformal coating is annoying but here's the big players:
 
 - An Allwinner [`MR813`](https://github.com/mangopi-sbc/aw-doc/blob/main/A133-MR813-R818/MR813_Datasheet_V1.6.pdf) runs the show.
 
-- Samsung [`KLM4G1`](https://semiconductor.samsung.com/estorage/emmc/emmc-5-1/klm4g1fete-b041/) for storage
+- Samsung [`KLM4G1`](https://semiconductor.samsung.com/estorage/emmc/emmc-5-1/klm4g1fete-b041/) for storage.
 
-- A [`GDQ2BFAA`](https://www.sekorm.com/doc/2446002.html) handles everything low level
+- A [`GDQ2BFAA`](https://www.sekorm.com/doc/2446002.html) handles everything low level.
 
 - WiFi provided by [`RTL8189FTV`](https://www.realtek.com/en/products/communications-network-ics/item/rtl8189ftv).
 
