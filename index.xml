@@ -325,7 +325,10 @@ With those removed, the lid slides off pretty easily to reveal the PCB:</p>
 <p>An Allwinner <a href="https://github.com/mangopi-sbc/aw-doc/blob/main/A133-MR813-R818/MR813_Datasheet_V1.6.pdf" target="_blank" rel="noopener noreffer"><code>MR813</code></a> runs the show.</p>
 </li>
 <li>
-<p>Samsung <a href="https://semiconductor.samsung.com/estorage/emmc/emmc-5-1/klm4g1fete-b041/" target="_blank" rel="noopener noreffer"><code>KLM4G1</code></a> for storage.</p>
+<p>Samsung <a href="https://semiconductor.samsung.com/estorage/emmc/emmc-5-1/klm4g1fete-b041/" target="_blank" rel="noopener noreffer"><code>KLM4G1</code></a> for RAM.</p>
+</li>
+<li>
+<p>A GigaDevice <a href="https://item.szlcsc.com/3292467.html#pdf-view" target="_blank" rel="noopener noreffer"><code>GDQ2BFAA-CE</code></a> 4Gb flash chip for OS storage.</p>
 </li>
 <li>
 <p>A <a href="https://www.sekorm.com/doc/2446002.html" target="_blank" rel="noopener noreffer"><code>GDQ2BFAA</code></a> handles everything low level.</p>
