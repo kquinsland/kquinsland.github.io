@@ -1,4 +1,273 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>teardown - Tag - karl</title><link>https://karlquinsland.com/tags/teardown/</link><description>teardown - Tag - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 06 May 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/teardown/" rel="self" type="application/rss+xml"/><item><title>Roborock S8 Pro Ultra Teardown</title><link>https://karlquinsland.com/roborock-s8-pro-ultra-dock-teardown/</link><pubDate>Sat, 06 May 2023 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/roborock-s8-pro-ultra-dock-teardown/</guid><description><![CDATA[<h1 id="roborock-s8-teardown">Roborock S8 teardown</h1>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>teardown - Tag - karl</title><link>https://karlquinsland.com/tags/teardown/</link><description>teardown - Tag - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 20 Jul 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/teardown/" rel="self" type="application/rss+xml"/><item><title>Solum 2.2 inch Electronic Shelf Label Teardown</title><link>https://karlquinsland.com/solum-el022hwra-teardown/</link><pubDate>Thu, 20 Jul 2023 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/solum-el022hwra-teardown/</guid><description><![CDATA[<h1 id="quick-peek-inside-the-el029f3wra">Quick peek inside the EL029F3WRA</h1>
+<p>In light of the recent news that the <a href="https://github.com/jjwbruijn/OpenEPaperLink" target="_blank" rel="noopener noreffer">OpenEPaperLink</a> firmware has been <a href="https://www.youtube.com/watch?v=Ph5BXFcugC4" target="_blank" rel="noopener noreffer">ported to the <code>nRF52811</code></a> series of chips, I decided to take a look inside the Solum EL029F3WRA to see if it was a viable candidate for a project.</p>
+<p>As it turns out, it is very similar to the <a href="https://github.com/jjwbruijn/OpenEPaperLink/wiki/2.9%22-EL029H3WRA" target="_blank" rel="noopener noreffer">2.9 inch</a> tags.
+I hope to soon have a simple CAD model of the ESL which I&rsquo;ll use to model a basic pogo-pin programming jig for this particular ESL.</p>
+<hr>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        The rear of the ESL is clipped in and can be removed with a plastic spudger.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        All programming pins are accessible from the rear once the batteries are removed.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Batteries are held in with moulded plastic clips.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Side profile of the ESL.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        The outer front panel is glued in place. Careful prying was enough to remove it.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Unfortunately, there&#39;s more glue holding the eInk panel to the PCB and the whole PCB assembly in the case.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<div class="details admonition warning open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-exclamation-triangle fa-fw"></i>Warning<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>DO NOT DO THIS.</p>
+<p>The PCB <strong>can</strong> be pried out of the case but doing so will likely damage the eInk panel unless you apply pressure equally from multiple corners.</p>
+<p>The glass on the eInk panel is very thin and far less flexible than the PCB.
+Note the crack&hellip;</p>
+</div>
+        </div>
+    </div>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        The residue is not there by default. Since I had already ruined the panel, I was testing the effect of different solvents on the panel hoping to find one that would dissolve the glue without damaging the panel.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        The eInk panel is attached to the PCB with a thin layer of glue. The same tool/technique used to remove the front panel can be used to remove the eInk panel.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p><figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        PCB as seen from the rear of the ESL.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        A close up look at the micro and related pcb traces.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Close up look at the second half of the PCB.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Closeup of the side of the PCB normally covered by the eInk panel. Note the thin layer of glue around the edge of the PCB used to hold the eInk panel in place.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+</p>
+]]></description></item><item><title>Roborock S8 Pro Ultra Teardown</title><link>https://karlquinsland.com/roborock-s8-pro-ultra-dock-teardown/</link><pubDate>Sat, 06 May 2023 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/roborock-s8-pro-ultra-dock-teardown/</guid><description><![CDATA[<h1 id="roborock-s8-teardown">Roborock S8 teardown</h1>
 <p>I recently acquired the new S8 from Roborock to replace my rapidly failing roomba.</p>
 <p>While I am patiently waiting for <a href="https://dontvacuum.me/" target="_blank" rel="noopener noreffer">Dennis</a> and <a href="https://github.com/Hypfer" target="_blank" rel="noopener noreffer">Hypfer</a> to add <a href="https://github.com/Hypfer/Valetudo" target="_blank" rel="noopener noreffer">Valetudo</a> support, I thought I&rsquo;d have a peek inside to see if this model will be any more serviceable or maintainable than my current vacuum.</p>
 <p>From what I&rsquo;m told, the S7 and the S8 are supposed to be pretty similar so here&rsquo;s to hoping that it&rsquo;s not too much more of a wait.</p>
