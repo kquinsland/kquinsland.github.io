@@ -1227,6 +1227,15 @@ Some photos of the <code>MUGJD01YL</code> internals are provided <a href="#mugjd
         </div>
     </div>
 <p>If you&rsquo;re here just for &ldquo;how do I flash tasmota&rdquo; bit, skip to the <a href="#tasmota" rel="">Tasmota</a> section below.</p>
+<div class="details admonition tip open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-lightbulb fa-fw"></i>Now with ESPHome<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">ESPHome support for the single-core ESP32 chip in the lamp has come a long way.
+You can find the ESPHome configuration that I used with this lamp <a href="#esphome" rel="">below</a>.</div>
+        </div>
+    </div>
 <hr>
 <p>I was looking for a way to light my desk my desk without screen glare.
 The easiest way to prevent glare on a screen is to change the orientation of the light relative to the screen either from under or behind the screen.
@@ -1327,7 +1336,7 @@ If I&rsquo;m lucky, I can capture the entire discovery/pair/command packets usin
 
 <p>Well now I&rsquo;m curious.</p>
 <p>What could this lamp <em>possibly need</em> WiFi credentials for? The remote used BTLE and every conceivable phone that will also control the lamp supports BTLE&hellip; so why spend the extra money for a WiFi enabled microcontroller at all!?</p>
-<h1 id="et-lamp-phone-home"><del>ET</del> Lamp Phone Home:</h1>
+<h1 id="et-lamp-phone-home"><del>ET</del> Lamp Phone Home</h1>
 <p>I threw the lamp behind an isolated access point and it sure is <em>chatty</em>&hellip;
 After getting an IP address, the lamp looks up the <code>A</code> record for <code>dk.io.mi.com</code> and then attempts to open a TCP connection and send some bytes:</p>
 <figure >
@@ -1854,7 +1863,7 @@ Leave the <code>RX</code>, <code>TX</code>, and <code>GND</code> wires in place 
 </span></span><span class="line"><span class="cl">load:0x40080400,len:2912
 </span></span><span class="line"><span class="cl">entry 0x400805c4
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">00:00:00.002-228/73 HDW: ESP32-S0WD-OEM 
+</span></span><span class="line"><span class="cl">00:00:00.002-228/73 HDW: ESP32-S0WD-OEM
 </span></span><span class="line"><span class="cl">./components/esp_littlefs/src/littlefs/lfs.c:1071:error: Corrupted dir pair at <span class="o">{</span>0x0, 0x1<span class="o">}</span>
 </span></span><span class="line"><span class="cl">00:00:00.777-231/73 UFS: FlashFS mounted with <span class="m">312</span> kB free
 </span></span><span class="line"><span class="cl">00:00:00.782-231/73 CFG: Use defaults
@@ -2012,7 +2021,117 @@ Tasmota will let you dim the light as low as possible without flicker.</p>
 </figure>
 
 </p>
-]]></description></item><item><title>Fixing Home Assistant discovery with Tasmota on the Treatlife DS03</title><link>https://karlquinsland.com/treatlife-ds03-tasmota-autoconfig-with-homeassistant/</link><pubDate>Wed, 12 May 2021 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/treatlife-ds03-tasmota-autoconfig-with-homeassistant/</guid><description><![CDATA[<div class="details admonition warning open">
+<h2 id="esphome">ESPHome</h2>
+<p>While putting together the <a href="/yeelight-monitor-lamp-teardown-esphome/" rel="">&ldquo;update&rdquo;</a> to this post, I figured I should update this post with the configuration that I used for ESPHome:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c">##</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># This is an ESPHome port of https://templates.blakadder.com/xiaomi_MJGJD02YL.html</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">##</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">esphome</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">comment</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Xiaomi Mi Computer Monitor Light Bar 1S Light (MJGJD02YL)&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># See: https://github.com/esphome/issues/issues/2955</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">esp32</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">board</span><span class="p">:</span><span class="w"> </span><span class="l">esp32dev</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">framework</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">esp-idf</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">sdkconfig_options</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">CONFIG_FREERTOS_UNICORE</span><span class="p">:</span><span class="w"> </span><span class="kc">y</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">advanced</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="c"># See: https://github.com/esphome/issues/issues/4830</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">ignore_efuse_mac_crc</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Enable logging</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">logger</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">level</span><span class="p">:</span><span class="w"> </span><span class="l">INFO</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># The light bar has two banks of LEDs for WW/CW config</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># See: https://esphome.io/components/light/cwww.html</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">##</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">light</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">cwww</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">leds</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">cold_white</span><span class="p">:</span><span class="w"> </span><span class="l">out_pwm_cw</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">warm_white</span><span class="p">:</span><span class="w"> </span><span class="l">out_pwm_ww</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># The ali express listing indicates 2700/6500K.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">cold_white_color_temperature</span><span class="p">:</span><span class="w"> </span><span class="l">6600K</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">warm_white_color_temperature</span><span class="p">:</span><span class="w"> </span><span class="l">2700K</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Draws a little over 10W at full brightness.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Shouldn&#39;t be too hard for a USB power supply to handle but heat dissipation might be an</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c">#   issue so don&#39;t permit both WW and CW channels to both run 100%.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">constant_brightness</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">output</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># THis is the master kill switch. This GPIO must be high for the WW/CW channels to work.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">light_enable</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">gpio</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">pin</span><span class="p">:</span><span class="w"> </span><span class="l">GPIO04</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">out_pwm_ww</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">ledc</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">pin</span><span class="p">:</span><span class="w"> </span><span class="l">GPIO21</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">out_pwm_cw</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">ledc</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">pin</span><span class="p">:</span><span class="w"> </span><span class="l">GPIO19</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div>]]></description></item><item><title>Fixing Home Assistant discovery with Tasmota on the Treatlife DS03</title><link>https://karlquinsland.com/treatlife-ds03-tasmota-autoconfig-with-homeassistant/</link><pubDate>Wed, 12 May 2021 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/treatlife-ds03-tasmota-autoconfig-with-homeassistant/</guid><description><![CDATA[<div class="details admonition warning open">
         <div class="details-summary admonition-title">
             <i class="icon fas fa-exclamation-triangle fa-fw"></i>Update<i class="details-icon fas fa-angle-right fa-fw"></i>
         </div>

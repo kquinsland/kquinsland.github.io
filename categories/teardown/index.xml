@@ -1,4 +1,656 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>teardown - Category - karl</title><link>https://karlquinsland.com/categories/teardown/</link><description>teardown - Category - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 15 Jan 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/categories/teardown/" rel="self" type="application/rss+xml"/><item><title>Teardown and Home Assistant integration with two generic Chinese 'smart' power strips.</title><link>https://karlquinsland.com/esphome-power-strips/</link><pubDate>Sun, 15 Jan 2023 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/esphome-power-strips/</guid><description><![CDATA[<!-- markdownlint-disable-file MD002 -->
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>teardown - Category - karl</title><link>https://karlquinsland.com/categories/teardown/</link><description>teardown - Category - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 18 Sep 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/categories/teardown/" rel="self" type="application/rss+xml"/><item><title>ESPHome on the Yeelight Monitor Light Bar Pro</title><link>https://karlquinsland.com/yeelight-monitor-lamp-teardown-esphome/</link><pubDate>Mon, 18 Sep 2023 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/yeelight-monitor-lamp-teardown-esphome/</guid><description><![CDATA[<h1 id="yeelight-light-bar-pro-yltd003-teardown">Yeelight Light Bar Pro (YLTD003) Teardown</h1>
+<p>Monitor-top light bars are wonderful for reducing eye strain and fatigue and the effect is even better with a bias light behind the monitor.
+Enter the <a href="https://www.aliexpress.us/item/3256801709519092.html" target="_blank" rel="noopener noreffer">Yeelight Light Bar Pro (YLTD003)</a>.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        YeeLight marketing photo from AliExpress listing. The background wash light really does help reduce eye strain and fatigue.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>It appears to be a pretty straightforward clone of the Xaomi MJGJD02YL that I&rsquo;ve torn down <a href="/xaomi-s1-monitor-lamp-teardown-and-tasmota/" rel="">previously</a> but with some welcome changes internally.</p>
+<h2 id="unbox">Unbox</h2>
+<p>Before teardown, quick look at the box.
+The shipping damage is just part of the Ali Express experience!</p>
+<p><figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        The box isn&#39;t anything to write home about.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Neatly packed, for what it&#39;s worth.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+</p>
+<p>Not only does it look a lot like the Xaomi lamp, it&rsquo;s dimensionally similar, too.
+It&rsquo;s 100% compatible with the mounting bracket that Xaomi shipped with their lamp.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Xaomi desk lamp on top, Yeelight on bottom.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<h2 id="teardown">Teardown</h2>
+<div class="details admonition tip open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-lightbulb fa-fw"></i>Tip<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>I am going to run through a <em>complete</em> teardown.</p>
+<p>You do not need to <strong>completely</strong> disassemble the lamp to replace the ESP8266 with an ESP32.</p>
+<p>To access the ESP8266 based module controlling the lamp, you really only need to remove the larger of the two end caps.
+From there, you will have a few inches of ribbon cable to work with. If you&rsquo;re careful, you can replace the ESP8266 with an ESP32 without removing the main PCB from the tube but you may find that taking the main PCB out of the tube makes it easier to work with.</p>
+</div>
+        </div>
+    </div>
+<p>Just like with the Xaomi lamp, you will start by removing the sticker covering the small metal protrusion that holds the pogo pins and mates with the power supply &ldquo;dock&rdquo;.
+The pogo pins are one of the two features that keep the main PCB from sliding out of the tube.</p>
+<p>Discard the sicker and put the metal piece and the pogo pin assembly somewhere safe.
+This step is not pictured.</p>
+<p>Next, note that Yeelight bar has a larger plastic cap on the left relative to the one on the right.
+Not only does this cap have a grip feature moulded in, it&rsquo;s also secured to the tube with a lot less glue than the Xaomi lamp; just grip and twist to remove this cap.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        The cap is trivial to remove.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>After the end cap is removed, you will be able to see inside the tube.
+There&rsquo;s not much room, but the micro controller is on it&rsquo;s own little PCB attached to the main PCB with ~50mm of ribbon cable.
+If you&rsquo;re careful, this is all the disassembly you need to do to access the ESP8266 module.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        There&#39;s not much room to work with. Left most is the cw/ww led strip and reflector. Middle is ribbon cable connecting leds to main pcb. Right most is the ESP8266 module.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>As of writing, I could not find any information about which pins on the module are used for programming.
+I was under a bit of time pressure and wanted to use a more &ldquo;future proof&rdquo; ESP32 module anyways so I didn&rsquo;t bother trying to program the ESP8266 module.</p>
+<p>I opted to replace it with an ESP32 module that I had on hand.</p>
+<p><figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        It&#39;s clearly an ESP8266 module but the pinout/form-factor are unusual.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+</p>
+<p>If you want to extract the main PCB from the tube, you will notice that there&rsquo;s still <em>something</em> holding it in place.
+That something is the plastic lens closest to the now removed end cap.</p>
+<p>Using a small flat pry tool or razor blade, you can carefully pry the lens out of the tube.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Note the plastic lense that used to cover the RGB LEDs.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>With the plastic lense out of the way, the main PCB and the cw/ww light ribbon and reflector can be slid out of the tube.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        There&#39;s not much to it, really. Tube, big PCB and small ESP8266 module on a ribbon cable.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>That&rsquo;s really all there is to opening up the lamp.</p>
+<p>Below a few more photos of the internals.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        A look at the power regulation and LED drive circuitry.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        A closer look at the chips for the remote control puck.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        A closer look at the power regulation circuitry.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        This is what happens when you are impatient and set the hotplate to an aggressive temperature.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<h2 id="esp32-retrofit">ESP32 Retrofit</h2>
+<p>Fortunately, each wire connecting the ESP8266 module to the main PCB is clearly labeled.</p>
+<table>
+<thead>
+<tr>
+<th>Pin</th>
+<th>Label</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>GND</code></td>
+<td>Ground for the ESP module</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>3v3</code></td>
+<td>Power for the ESP module</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>SCL</code></td>
+<td>I2C. (probably, see note below)</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>SDA</code></td>
+<td>I2C. (probably, see note below)</td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>RGB</code></td>
+<td>Standard neopixel data bus</td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>C</code></td>
+<td>PWM signal for cold white channel</td>
+</tr>
+<tr>
+<td>7</td>
+<td><code>EN</code></td>
+<td>Master enable/disable for all light output</td>
+</tr>
+<tr>
+<td>8</td>
+<td><code>W</code></td>
+<td>PWM signal for warm white channel</td>
+</tr>
+</tbody>
+</table>
+<div class="details admonition note open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-pencil-alt fa-fw"></i>I2C, probably<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">99% sure this is I2C for communications to the micro controller handing communication with the remote control puck.
+There&rsquo;s nothing else on the PCB that would need I2C, but I haven&rsquo;t bothered to verify this&hellip; hence 99% sure.</div>
+        </div>
+    </div>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        I am eternally grateful for every PCB designer that bothers with clear silkscreen labels.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>To drive the LEDs, we only need 4 GPIOs. Two for PWM channels and another two for master output enable and neopixels.</p>
+<p>This makes it <em>trivial</em> to replace the ESP8266 based module with an ESP32.
+The only catch is that the ESP32 module has to be <em>narrow</em> (if you want to fit it inside the tube).
+If you don&rsquo;t care about that, you can use any ESP32 module you have on hand but you&rsquo;ll need to design/make a new enclosure for it.</p>
+<p>I had a few of the incredibly tiny <a href="https://github.com/01Space/ESP32-C3-0.42LCD" target="_blank" rel="noopener noreffer">ESP32-C3-0.42LCD</a> modules on hand, so I used one and it <em>barely</em> fit:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Tube is quite narrow and the ESP32 module takes up almost all of the available space.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>All in all, you want to make sure the module is no more than ~20mm wide and probably not much longer than that either.
+To make my life easier in the future, I soldered the ESP32 module to the main PCB with AWS30 wires about ~100mm long. You can see the colored wires in the photo above.</p>
+<p>I was barely able to fit everything back into the tube.
+You should probably use wires a bit shorter if you can.</p>
+<p>In any case, the extra bulk from the wires and the ESP32 module meant that the OEM end cap would not fit back on the tube without some modifications.</p>
+<p>Rather than play a game of &ldquo;cut some more plastic away and see if it fits yet&rdquo;, I decided to just model a new end cap in Fusion 360.
+This replacement cap specifically does not have any features that extend deep into the tube so there&rsquo;s no risk of it interfering with the ESP32 module.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Suggested print orientation. Choose resolution, material and color to suit your needs.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>You can download <code>endcap.step</code> file <a href="/yeelight-monitor-lamp-teardown-esphome/models/endcap.step" rel="">here</a>.
+Print it in whatever material and color you want but be mindful of dimensional accuracy; the end cap is meant to be press-fit into the tube.</p>
+<p>If you&rsquo;re confident that you&rsquo;ll never need to access the ESP32 module again, glue the end cap in place.</p>
+<h3 id="esphome">ESPHome</h3>
+<p>Here&rsquo;s a simple ESPHome config for the device.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">esphome</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># Will boot loop w/o this when using the ESP-IDF and the C3</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">platformio_options</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">board_build.flash_mode</span><span class="p">:</span><span class="w"> </span><span class="l">dio</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">esp32</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># There is no platform.io board for ESP32-C3-0.42LCD so use generic</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">board</span><span class="p">:</span><span class="w"> </span><span class="l">esp32-c3-devkitm-1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">framework</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">esp-idf</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Enable logging</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">logger</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">level</span><span class="p">:</span><span class="w"> </span><span class="l">INFO</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># Requires ESP-IDF</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">hardware_uart</span><span class="p">:</span><span class="w"> </span><span class="l">USB_SERIAL_JTAG</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">light</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Primary&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">cwww</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">leds</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">cold_white</span><span class="p">:</span><span class="w"> </span><span class="l">out_pwm_cw</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">warm_white</span><span class="p">:</span><span class="w"> </span><span class="l">out_pwm_ww</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Marketing photos on ali express listing show a range of 2700K to 6500K</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">warm_white_color_temperature</span><span class="p">:</span><span class="w"> </span><span class="l">2700K</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">cold_white_color_temperature</span><span class="p">:</span><span class="w"> </span><span class="l">6500K</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># With WW/CW on full, was drawing about 2.6-2.8A.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># The RGB added another .5A or so.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># The cw/ww strip is on a metal reflector which does mate with the aluminum case but</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c">#    i&#39;m not sure how much heat transfer there is.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">constant_brightness</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># See: https://esphome.io/components/light/esp32_rmt_led_strip</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Ambient&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">esp32_rmt_led_strip</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">pixels</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">pin</span><span class="p">:</span><span class="w"> </span><span class="l">GPIO10</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">chipset</span><span class="p">:</span><span class="w"> </span><span class="l">WS2812</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">rmt_channel</span><span class="p">:</span><span class="w"> </span><span class="m">0</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">rgb_order</span><span class="p">:</span><span class="w"> </span><span class="l">GRB</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># There are two banks of 20</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">num_leds</span><span class="p">:</span><span class="w"> </span><span class="m">40</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">output</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">out_pwm_ww</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">ledc</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">pin</span><span class="p">:</span><span class="w"> </span><span class="l">GPIO08</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Any lower than this and the LEDs don&#39;t turn on until ~ 15% or so</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">min_power</span><span class="p">:</span><span class="w"> </span><span class="m">0.05</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># But when we hit off, we want it to be off</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">zero_means_zero</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">frequency</span><span class="p">:</span><span class="w"> </span><span class="l">2441Hz</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">out_pwm_cw</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">ledc</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">pin</span><span class="p">:</span><span class="w"> </span><span class="l">GPIO07</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">zero_means_zero</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">min_power</span><span class="p">:</span><span class="w"> </span><span class="m">0.05</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">frequency</span><span class="p">:</span><span class="w"> </span><span class="l">2441Hz</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># PWM and RGB drivers can be enabled/disabled by a master on/off</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">switch</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Master Output Enable&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">sw_out_en</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">gpio</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">pin</span><span class="p">:</span><span class="w"> </span><span class="l">GPIO06</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="pcbic-markings">PCB/IC markings</h2>
+<p>AKA the strings that I wish google had indexed when I was first looking for this info.</p>
+<p>The front of the ESP8266 module is marked with:</p>
+<ul>
+<li><code>YEELIGHT</code></li>
+<li><code>ESP8266NV1.0</code></li>
+<li><code>LibraPro</code></li>
+<li><code>WF-E266-RPY2</code></li>
+<li><code>PN: 21500000028</code></li>
+<li><code>CMIT ID: 2020DP12740</code></li>
+</ul>
+<p>The rear of the ESP8266 module is marked with:</p>
+<ul>
+<li><code>94V-0</code></li>
+<li><code>S Y22M02D25</code></li>
+<li><code>JU17.820.0767</code></li>
+</ul>
+<p>The main PCB is populated with:</p>
+<ul>
+<li><a href="https://wiki.telink-semi.cn/doc/ds/DS_TLSR8368-E_Datasheet%20for%20Telink%202.4GHz%20RF%20System-On-Chip%20Solution%20TLSR8368.pdf" target="_blank" rel="noopener noreffer"><code>TLSR8368EP16</code></a>: 2.4GHz RF System-On-Chip Solution for remote control puck</li>
+<li><a href="https://datasheet.lcsc.com/lcsc/1810011020_FUDAN-MICRO-FM24C02C-SO-T-G_C189501.pdf" target="_blank" rel="noopener noreffer"><code>FM24C02C</code></a>: Flash rom for the <code>TLSR83</code>. I didn&rsquo;t bother to desolder and dump this chip.</li>
+<li>3x ICs marked with <code>WRFAA</code> in a <code>2x5 SON</code> package. I can&rsquo;t find any info on these chips, but given that there are three LED channels and their proximity to power regulation circuitry, I assume that they are LED drivers.</li>
+</ul>
+]]></description></item><item><title>Teardown and Home Assistant integration with two generic Chinese 'smart' power strips.</title><link>https://karlquinsland.com/esphome-power-strips/</link><pubDate>Sun, 15 Jan 2023 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/esphome-power-strips/</guid><description><![CDATA[<!-- markdownlint-disable-file MD002 -->
 <p>I love the Sonoff-S31 smart plugs.
 They&rsquo;re cheap, well made and - most importantly - trivial to flash with ESPHome and integrate into Home Assistant.
 They do have one obvious draw back, though; optimized for a &ldquo;traditional&rdquo; US style outlet.
@@ -3264,6 +3916,15 @@ Some photos of the <code>MUGJD01YL</code> internals are provided <a href="#mugjd
         </div>
     </div>
 <p>If you&rsquo;re here just for &ldquo;how do I flash tasmota&rdquo; bit, skip to the <a href="#tasmota" rel="">Tasmota</a> section below.</p>
+<div class="details admonition tip open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-lightbulb fa-fw"></i>Now with ESPHome<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">ESPHome support for the single-core ESP32 chip in the lamp has come a long way.
+You can find the ESPHome configuration that I used with this lamp <a href="#esphome" rel="">below</a>.</div>
+        </div>
+    </div>
 <hr>
 <p>I was looking for a way to light my desk my desk without screen glare.
 The easiest way to prevent glare on a screen is to change the orientation of the light relative to the screen either from under or behind the screen.
@@ -3364,7 +4025,7 @@ If I&rsquo;m lucky, I can capture the entire discovery/pair/command packets usin
 
 <p>Well now I&rsquo;m curious.</p>
 <p>What could this lamp <em>possibly need</em> WiFi credentials for? The remote used BTLE and every conceivable phone that will also control the lamp supports BTLE&hellip; so why spend the extra money for a WiFi enabled microcontroller at all!?</p>
-<h1 id="et-lamp-phone-home"><del>ET</del> Lamp Phone Home:</h1>
+<h1 id="et-lamp-phone-home"><del>ET</del> Lamp Phone Home</h1>
 <p>I threw the lamp behind an isolated access point and it sure is <em>chatty</em>&hellip;
 After getting an IP address, the lamp looks up the <code>A</code> record for <code>dk.io.mi.com</code> and then attempts to open a TCP connection and send some bytes:</p>
 <figure >
@@ -3891,7 +4552,7 @@ Leave the <code>RX</code>, <code>TX</code>, and <code>GND</code> wires in place 
 </span></span><span class="line"><span class="cl">load:0x40080400,len:2912
 </span></span><span class="line"><span class="cl">entry 0x400805c4
 </span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">00:00:00.002-228/73 HDW: ESP32-S0WD-OEM 
+</span></span><span class="line"><span class="cl">00:00:00.002-228/73 HDW: ESP32-S0WD-OEM
 </span></span><span class="line"><span class="cl">./components/esp_littlefs/src/littlefs/lfs.c:1071:error: Corrupted dir pair at <span class="o">{</span>0x0, 0x1<span class="o">}</span>
 </span></span><span class="line"><span class="cl">00:00:00.777-231/73 UFS: FlashFS mounted with <span class="m">312</span> kB free
 </span></span><span class="line"><span class="cl">00:00:00.782-231/73 CFG: Use defaults
@@ -4049,7 +4710,117 @@ Tasmota will let you dim the light as low as possible without flicker.</p>
 </figure>
 
 </p>
-]]></description></item><item><title>Using Home Assistant to dynamically layout openHasp widgets</title><link>https://karlquinsland.com/lanbon-l8-tuya-lcd-switch-openhasp/</link><pubDate>Tue, 18 Jan 2022 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/lanbon-l8-tuya-lcd-switch-openhasp/</guid><description><![CDATA[<h1 id="background">Background</h1>
+<h2 id="esphome">ESPHome</h2>
+<p>While putting together the <a href="/yeelight-monitor-lamp-teardown-esphome/" rel="">&ldquo;update&rdquo;</a> to this post, I figured I should update this post with the configuration that I used for ESPHome:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c">##</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># This is an ESPHome port of https://templates.blakadder.com/xiaomi_MJGJD02YL.html</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">##</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">esphome</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">comment</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Xiaomi Mi Computer Monitor Light Bar 1S Light (MJGJD02YL)&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># See: https://github.com/esphome/issues/issues/2955</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">esp32</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">board</span><span class="p">:</span><span class="w"> </span><span class="l">esp32dev</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">framework</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">esp-idf</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">sdkconfig_options</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">CONFIG_FREERTOS_UNICORE</span><span class="p">:</span><span class="w"> </span><span class="kc">y</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">advanced</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="c"># See: https://github.com/esphome/issues/issues/4830</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">ignore_efuse_mac_crc</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Enable logging</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">logger</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">level</span><span class="p">:</span><span class="w"> </span><span class="l">INFO</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># The light bar has two banks of LEDs for WW/CW config</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># See: https://esphome.io/components/light/cwww.html</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">##</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">light</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">cwww</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">leds</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">cold_white</span><span class="p">:</span><span class="w"> </span><span class="l">out_pwm_cw</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">warm_white</span><span class="p">:</span><span class="w"> </span><span class="l">out_pwm_ww</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># The ali express listing indicates 2700/6500K.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">cold_white_color_temperature</span><span class="p">:</span><span class="w"> </span><span class="l">6600K</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">warm_white_color_temperature</span><span class="p">:</span><span class="w"> </span><span class="l">2700K</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Draws a little over 10W at full brightness.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Shouldn&#39;t be too hard for a USB power supply to handle but heat dissipation might be an</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c">#   issue so don&#39;t permit both WW and CW channels to both run 100%.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">constant_brightness</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">output</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># THis is the master kill switch. This GPIO must be high for the WW/CW channels to work.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">light_enable</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">gpio</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">pin</span><span class="p">:</span><span class="w"> </span><span class="l">GPIO04</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">out_pwm_ww</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">ledc</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">pin</span><span class="p">:</span><span class="w"> </span><span class="l">GPIO21</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">out_pwm_cw</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">ledc</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">pin</span><span class="p">:</span><span class="w"> </span><span class="l">GPIO19</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div>]]></description></item><item><title>Using Home Assistant to dynamically layout openHasp widgets</title><link>https://karlquinsland.com/lanbon-l8-tuya-lcd-switch-openhasp/</link><pubDate>Tue, 18 Jan 2022 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/lanbon-l8-tuya-lcd-switch-openhasp/</guid><description><![CDATA[<h1 id="background">Background</h1>
 <p>This is one of those posts that sat in the <code>Drafts</code> folder for <em>way</em> too long.
 Just before release, I&rsquo;d discover something new that would warrant substantial rewrites.
 After several delays, false starts and re-writes, I finally have something that is mostly new <em>and</em> worth sharing with the world.</p>
@@ -5824,456 +6595,5 @@ Layouts are almost always a bit weird when the electronics have to be designed t
 <li>
 <p>Daughter boards not really marked with anything other than the usual component IDs and the date code of <code>211015</code></p>
 </li>
-</ul>
-]]></description></item><item><title>Tuya Smart Curtain Driver Robot Teardown</title><link>https://karlquinsland.com/tuya-smart-curtain-driver-robot-teardown/</link><pubDate>Sat, 11 Dec 2021 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/tuya-smart-curtain-driver-robot-teardown/</guid><description><![CDATA[<p>I am trying something new out with this post; some mix of hardware teardown and a brief product review.</p>
-<hr>
-<h1 id="why">Why</h1>
-<p>I was looking for a way to actuate some heavy blackout curtains.</p>
-<p>There have been <em>several</em> DIY projects out there that manipulate curtains but they all appear to be relatively involved as they are often designed for a very specific type of curtain; servos that fit on the &rsquo;tilt rod&rsquo; or motors that can manipulate the pull chain&hellip; etc.</p>
-<p>The specific curtains that I wanted to power-actuate  are curtains that do not have a pull string or a set of wheels/track to facilitate their movement. Just folds of fabric hanging directly from a telescopic metal rod.</p>
-<p>After a quick review of hte existing commercial solutions for my application/style of curtains, it became clear that they all work in about the same way: some battery powered motor mechanically couples to the curtain rod and moves along the rod dragging / pushing the curtain as it does so.</p>
-<p>Since they all more or less use the same design, I figured that most of the differentiation between products would be in the software side of things. No product immediately stood out as having <strong>local</strong> Home Assistant integration so it didn&rsquo;t matter which product I selected; I will inevitably have to do some reverse engineering / hacking to get <strong>local</strong> Home Assistant integration.</p>
-<p>I selected the <code>Tuya Smart Curtain Driver Robot</code> because:</p>
-<ol>
-<li>Cheap</li>
-<li>Appeared to use USB-C for charging</li>
-<li>I was vaguely aware that <a href="https://github.com/ct-Open-Source/tuya-convert" target="_blank" rel="noopener noreffer">TuYa was pumping out a <em>ton</em> of ESP8266 based hardware</a> and hoped that I&rsquo;d find the familiar microcontroller inside.</li>
-</ol>
-<p>Below is a collection of photos and some thoughts that are - roughly - what I wish I had been able to find when doing the product research.
-If I had found the equivalent of this post while doing my research, I would have been able to save myself a purchase!</p>
-<h1 id="what">What</h1>
-<p>Searching for rod-based curtain actuators will turn up a <em>ton</em> of results. A fair number of them use product images very similar to these:</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Official marketing photo
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>How well the robot performs will depend on how well the little white wheel is held against the bottom of the curtain rod.
-The arms that the upper sled attaches to are spring loaded for additional clamping force.</p>
-<p>The case seems to be fairly generic and used across multiple brands so it&rsquo;s safe to say that depending on the version / hardware variant, you may or may not have all of the featured inputs/sensors.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Only one of the two units in a pair comes equipped with the light sensor.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>The light sensor is a nice touch. I will absolutely be borrowing that idea when designing my own solution 💡🤔!</p>
-<h2 id="teardown">Teardown</h2>
-<p>I&rsquo;m not a huge fan of unboxing videos. The box is rather unremarkable; it sustained some damage in transit, but that&rsquo;s what it&rsquo;s supposed to do.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Relatively well packaged. The seller that I purchased from had explicit listings for different curtain rod styles so I am not sure why I received hardware for all styles. There does not appear to be any easy way to install this hardware.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>The upper sled is coupled to the main body through two spring-loaded arms with a ratchet and paw setup. The arms can be easily removed from the main body if needed.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        I am getting some vague Portal2 Turret vibes...
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>Since the entire weight of the robot will be hanging from the upper sled, the springs are the only thing that will pull the actuator wheel into the curtain rod. I don&rsquo;t know how the springs will last over time, but I absolutely can forsee needing to re-tension things as the springs inevitably stretch out.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        The ratchet/paws seem to indicate compatibility with some comically large diameter curtain rods!
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Obligatory &#39;i void warranties&#39; reference.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>Use a Philips style <code>J00</code> or <code>J000</code> screwdriver to remove the four screws holding the thing together. Use any flat pry tool to crack the two halves apart.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Screw hiding under warranty void sticker and obvious mechanical/snap seam make it pretty obvious how this will come apart.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>And with that, our first real look at the electronics inside!</p>
-<p>I expected a simple PCB that contained a charge controller circuit for the battery and a simple motor driver with over current protection&hellip; and nothing else. I was sure that <em>everything</em> else would be handled directly by a the radio-on-module.</p>
-<p>I <em>absolutely</em> did not expect the PCB to have provisions for &hellip; <strong>two</strong> radio modules!</p>
-<p>A few other quick observations:</p>
-<ul>
-<li>The unpopulated radio module footprint does not match any ESP-8266 modules that I am familiar with.</li>
-<li>The populated radio module <em>does</em> look like a common ESP-12E module footprint&hellip; but the module is <em>clearly</em> not an ESP.</li>
-<li>The markings have been erased from all the interesting ICs 🤬.</li>
-<li>The 20 pin chip closest to the unpopulated module footprint could be anything but is likely the &lsquo;housekeeping&rsquo; CPU. The populated radio module likely communicates with this chip to command the motor and check the sensors</li>
-<li>The product marketing photos indicated that there would be a light sensor. The PCB appears to have a foot print for an LDR&hellip; but it&rsquo;s not populated&hellip;
-only a few passive components besides some radio-on-module</li>
-<li>The USB-C port does not have any active electronics connected to it. The port likely does not speak any power delivery protocols and certainly does not have a hidden UART for talking to either of the microcontrollers.</li>
-<li>No motor is visible so that means that it must be embedded in the comically small drive wheel&hellip;</li>
-</ul>
-<p>Some more technical details are discussed <a href="#technical-details" rel="">below</a>.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Huh. Was not expecting the PCB to be quite so big or complex!
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>Lifting up the PCB reveals the battery pack. I did not slice the pack open to see which brand of cells went into the pack.
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Grateful that they didn&#39;t solder the battery directly to the PCB.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        I have not tested the battery to see accurate the labeled capacity is.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>I was still looking for that elusive light sensor so I opened up the second unit&hellip; and found it!</p>
-<p>Other than the populated second radio module, <code>R20</code> and the LDR, the PCBs appear identical.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Something tells me that the PCB with two radio modules is the &#39;leader&#39; out of the two.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>On the rear we can see an obvious programming / debug port and a PCB/product designator: <code>ZNCL_TY_V1.5</code>.</p>
-<p>Giving that a quick google returns almost nothing.
-I did find <a href="https://old.reddit.com/r/esp32/comments/q3omwh/can_somebody_tell_me_what_were_looking_at_here/hft52t1/" target="_blank" rel="noopener noreffer">this</a> post from <a href="https://old.reddit.com/user/coned_miro" target="_blank" rel="noopener noreffer">/u/coned_miro</a> asking about a very similar PCB revision:</p>
-<pre><code>    ...The main board says 'ZNCL_TY_V1.3' on the back
-</code></pre>
-<p>Nothing new to be learned about the tuya device from that thread, sadly.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        No, I didn&#39;t hook a scope up or trace out the obvious programming/debug header.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<h2 id="the-app">The App</h2>
-<p>I never intended to use the manufacturer provided app for anything other than the initial setup so this will be a very brief section. The robot was quickly discovered and provisioned through the app.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        BTLE Pair/Provisioning was straightforward
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>The device calibration process is pretty rudimentary and does not have an easy &ldquo;undo&rdquo; process.</p>
-<p>If you make a mistake in configuring the direction/distance that the robot needs to travel for curtain open/close, you have to factory reset the device. Fortunately this is easy to do in app and discovering/re-provisioning the device takes only a few seconds.</p>
-<p>The <em>two</em> firmware version strings strongly hints at a &ldquo;two processors for two domains&rdquo; architecture: the anonymous 20pin chip runs everything on the PCB and the <code>BT7L</code> module deals with external communications and is only abstractly aware of the PCB/motor/sensor/battery state.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        I have only skimmed the TuYa developer documentation but I think that the VirtualID is common to _all_ of the curtain robots.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<h1 id="verdict">Verdict</h1>
-<p>While disappointing that there was no easily hackable ESP microcontroller running the show, it doesn&rsquo;t matter.
-I can&rsquo;t use this product as is for my intended application; the motor is just too puny for the task.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        The brains(?)
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>My curtains are rather thick and heavy. A tiny motor can&rsquo;t <em>possibly</em> have enough power to do this on it&rsquo;s own&hellip; especially with a sub-optimal coupling mechanism!</p>
-<p>To give the motor a fighting chance, the engineers went with a TON of reduction-gearing.
-The gearbox allows a wimpy but fast motor to become a more grunty motor at the expense of speed.
-Almost anything small that rotates at high speed will come with some unpleasant sounds. This is ESPECIALLY true for cheaply made gearbox full of small gears.</p>
-<p>This means that any invocation of the robot will be noisy.
-You can expect the noisy little device to <em>slowly</em> move across the curtain rod. 🙄</p>
-<p>The robot struggled to push the curtains together towards the end of an opening cycle&hellip; it would often skip in place as the drive wheel struggled to keep enough traction on the curtin rod.</p>
-<p>Likewise, asking the robot to pull the bucked up curtains closed was out of the question without some sort of an assist.</p>
-<p>Because the robot has no fixed position sensor, it can&rsquo;t really measure where on the curtain rod it is.
-Every time the drive wheel skips, the difference between where the robot thinks it is and where it <em>actually</em> is will grow.</p>
-<p>If you can stand the whiny/slow movement, expect frequent re-calibrations 👎.</p>
-<br>
-<p><strong>TL;DR</strong>: Looks like there&rsquo;s a reason why the hobbyist/DIY community has produced such a <em>wide variety</em> of bespoke curtain/drape actuators&hellip; most of the commercial ones have sacrificed too much in order to be widely usable.
-The solution that I end up implementing will be designed with my heavy drapes in mind and will use an appropriately sized and quiet motor!</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        A simple brushed DC motor with no position encoder and what is probably a cheaply made gearbox. What could go wrong?
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<h1 id="technical-details">Technical Details</h1>
-<p>A highly condensed version of my initial notes from setup/teardown:</p>
-<ul>
-<li>
-<p>Was not expecting multiple radio units. The blue radio-module that both PCBs have in common appears to be a <code>JDY-25M</code>.</p>
-</li>
-<li>
-<p>There is a SDK for the <code>JDY-25M</code> available <a href="https://github.com/Edragon/JDY-MESH/tree/main/JDY-25M/SDK" target="_blank" rel="noopener noreffer">here</a>. It contains some english documentation.</p>
-</li>
-<li>
-<p>The <code>JDY-25M</code> SDK does not appear to contain any information about how to program the chip or build a custom firmware. You are meant to interface with the &lsquo;stock&rsquo; firmware via <code>AT+</code> commands. The firmware appears to support multiple modes&hellip; including a bi-directional communication link. I suspect that the unique radio module is the connection to the outside world and the the two identical radio modules are used to coordinate movement between the two pods</p>
-</li>
-<li>
-<p>I was never able to get the &lsquo;follower&rsquo; unit to pair or otherwise command the second unit.</p>
-</li>
-<li>
-<p>The unique radio module is a module made specifically by/for TuYa: <a href="https://developer.tuya.com/en/docs/iot/bt7l?id=K96gqp1dp6iiw" target="_blank" rel="noopener noreffer">https://developer.tuya.com/en/docs/iot/bt7l?id=K96gqp1dp6iiw</a></p>
-</li>
-</ul>
-<h2 id="pcb-markings">PCB Markings</h2>
-<p>AKA SEO optimization 😉</p>
-<ul>
-<li>PCB is marked: <code>ZNCL_TY_V1.5</code></li>
-<li>&ldquo;primary&rdquo; radio: <a href="https://developer.tuya.com/en/docs/iot/bt7l?id=K96gqp1dp6iiw" target="_blank" rel="noopener noreffer"><code>BT7L</code></a></li>
-<li>&ldquo;secondary&rdquo; radio <a href="https://github.com/Edragon/JDY-MESH/tree/main/JDY-25M/SDK" target="_blank" rel="noopener noreffer"><code>JDY-25M</code></a></li>
 </ul>
 ]]></description></item></channel></rss>

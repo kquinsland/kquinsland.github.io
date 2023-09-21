@@ -1,4 +1,656 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>esphome - Tag - karl</title><link>https://karlquinsland.com/tags/esphome/</link><description>esphome - Tag - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 21 Apr 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/esphome/" rel="self" type="application/rss+xml"/><item><title>ESPHome on dingtian-tech relay modules</title><link>https://karlquinsland.com/dingtian-2ch-relay-with-esphome/</link><pubDate>Fri, 21 Apr 2023 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/dingtian-2ch-relay-with-esphome/</guid><description><![CDATA[<!-- markdownlint-disable-file MD002 -->
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>esphome - Tag - karl</title><link>https://karlquinsland.com/tags/esphome/</link><description>esphome - Tag - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 18 Sep 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/esphome/" rel="self" type="application/rss+xml"/><item><title>ESPHome on the Yeelight Monitor Light Bar Pro</title><link>https://karlquinsland.com/yeelight-monitor-lamp-teardown-esphome/</link><pubDate>Mon, 18 Sep 2023 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/yeelight-monitor-lamp-teardown-esphome/</guid><description><![CDATA[<h1 id="yeelight-light-bar-pro-yltd003-teardown">Yeelight Light Bar Pro (YLTD003) Teardown</h1>
+<p>Monitor-top light bars are wonderful for reducing eye strain and fatigue and the effect is even better with a bias light behind the monitor.
+Enter the <a href="https://www.aliexpress.us/item/3256801709519092.html" target="_blank" rel="noopener noreffer">Yeelight Light Bar Pro (YLTD003)</a>.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        YeeLight marketing photo from AliExpress listing. The background wash light really does help reduce eye strain and fatigue.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>It appears to be a pretty straightforward clone of the Xaomi MJGJD02YL that I&rsquo;ve torn down <a href="/xaomi-s1-monitor-lamp-teardown-and-tasmota/" rel="">previously</a> but with some welcome changes internally.</p>
+<h2 id="unbox">Unbox</h2>
+<p>Before teardown, quick look at the box.
+The shipping damage is just part of the Ali Express experience!</p>
+<p><figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        The box isn&#39;t anything to write home about.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Neatly packed, for what it&#39;s worth.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+</p>
+<p>Not only does it look a lot like the Xaomi lamp, it&rsquo;s dimensionally similar, too.
+It&rsquo;s 100% compatible with the mounting bracket that Xaomi shipped with their lamp.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Xaomi desk lamp on top, Yeelight on bottom.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<h2 id="teardown">Teardown</h2>
+<div class="details admonition tip open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-lightbulb fa-fw"></i>Tip<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>I am going to run through a <em>complete</em> teardown.</p>
+<p>You do not need to <strong>completely</strong> disassemble the lamp to replace the ESP8266 with an ESP32.</p>
+<p>To access the ESP8266 based module controlling the lamp, you really only need to remove the larger of the two end caps.
+From there, you will have a few inches of ribbon cable to work with. If you&rsquo;re careful, you can replace the ESP8266 with an ESP32 without removing the main PCB from the tube but you may find that taking the main PCB out of the tube makes it easier to work with.</p>
+</div>
+        </div>
+    </div>
+<p>Just like with the Xaomi lamp, you will start by removing the sticker covering the small metal protrusion that holds the pogo pins and mates with the power supply &ldquo;dock&rdquo;.
+The pogo pins are one of the two features that keep the main PCB from sliding out of the tube.</p>
+<p>Discard the sicker and put the metal piece and the pogo pin assembly somewhere safe.
+This step is not pictured.</p>
+<p>Next, note that Yeelight bar has a larger plastic cap on the left relative to the one on the right.
+Not only does this cap have a grip feature moulded in, it&rsquo;s also secured to the tube with a lot less glue than the Xaomi lamp; just grip and twist to remove this cap.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        The cap is trivial to remove.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>After the end cap is removed, you will be able to see inside the tube.
+There&rsquo;s not much room, but the micro controller is on it&rsquo;s own little PCB attached to the main PCB with ~50mm of ribbon cable.
+If you&rsquo;re careful, this is all the disassembly you need to do to access the ESP8266 module.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        There&#39;s not much room to work with. Left most is the cw/ww led strip and reflector. Middle is ribbon cable connecting leds to main pcb. Right most is the ESP8266 module.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>As of writing, I could not find any information about which pins on the module are used for programming.
+I was under a bit of time pressure and wanted to use a more &ldquo;future proof&rdquo; ESP32 module anyways so I didn&rsquo;t bother trying to program the ESP8266 module.</p>
+<p>I opted to replace it with an ESP32 module that I had on hand.</p>
+<p><figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        It&#39;s clearly an ESP8266 module but the pinout/form-factor are unusual.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+</p>
+<p>If you want to extract the main PCB from the tube, you will notice that there&rsquo;s still <em>something</em> holding it in place.
+That something is the plastic lens closest to the now removed end cap.</p>
+<p>Using a small flat pry tool or razor blade, you can carefully pry the lens out of the tube.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Note the plastic lense that used to cover the RGB LEDs.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>With the plastic lense out of the way, the main PCB and the cw/ww light ribbon and reflector can be slid out of the tube.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        There&#39;s not much to it, really. Tube, big PCB and small ESP8266 module on a ribbon cable.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>That&rsquo;s really all there is to opening up the lamp.</p>
+<p>Below a few more photos of the internals.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        A look at the power regulation and LED drive circuitry.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        A closer look at the chips for the remote control puck.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        A closer look at the power regulation circuitry.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        This is what happens when you are impatient and set the hotplate to an aggressive temperature.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<h2 id="esp32-retrofit">ESP32 Retrofit</h2>
+<p>Fortunately, each wire connecting the ESP8266 module to the main PCB is clearly labeled.</p>
+<table>
+<thead>
+<tr>
+<th>Pin</th>
+<th>Label</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>GND</code></td>
+<td>Ground for the ESP module</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>3v3</code></td>
+<td>Power for the ESP module</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>SCL</code></td>
+<td>I2C. (probably, see note below)</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>SDA</code></td>
+<td>I2C. (probably, see note below)</td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>RGB</code></td>
+<td>Standard neopixel data bus</td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>C</code></td>
+<td>PWM signal for cold white channel</td>
+</tr>
+<tr>
+<td>7</td>
+<td><code>EN</code></td>
+<td>Master enable/disable for all light output</td>
+</tr>
+<tr>
+<td>8</td>
+<td><code>W</code></td>
+<td>PWM signal for warm white channel</td>
+</tr>
+</tbody>
+</table>
+<div class="details admonition note open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-pencil-alt fa-fw"></i>I2C, probably<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">99% sure this is I2C for communications to the micro controller handing communication with the remote control puck.
+There&rsquo;s nothing else on the PCB that would need I2C, but I haven&rsquo;t bothered to verify this&hellip; hence 99% sure.</div>
+        </div>
+    </div>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        I am eternally grateful for every PCB designer that bothers with clear silkscreen labels.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>To drive the LEDs, we only need 4 GPIOs. Two for PWM channels and another two for master output enable and neopixels.</p>
+<p>This makes it <em>trivial</em> to replace the ESP8266 based module with an ESP32.
+The only catch is that the ESP32 module has to be <em>narrow</em> (if you want to fit it inside the tube).
+If you don&rsquo;t care about that, you can use any ESP32 module you have on hand but you&rsquo;ll need to design/make a new enclosure for it.</p>
+<p>I had a few of the incredibly tiny <a href="https://github.com/01Space/ESP32-C3-0.42LCD" target="_blank" rel="noopener noreffer">ESP32-C3-0.42LCD</a> modules on hand, so I used one and it <em>barely</em> fit:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Tube is quite narrow and the ESP32 module takes up almost all of the available space.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>All in all, you want to make sure the module is no more than ~20mm wide and probably not much longer than that either.
+To make my life easier in the future, I soldered the ESP32 module to the main PCB with AWS30 wires about ~100mm long. You can see the colored wires in the photo above.</p>
+<p>I was barely able to fit everything back into the tube.
+You should probably use wires a bit shorter if you can.</p>
+<p>In any case, the extra bulk from the wires and the ESP32 module meant that the OEM end cap would not fit back on the tube without some modifications.</p>
+<p>Rather than play a game of &ldquo;cut some more plastic away and see if it fits yet&rdquo;, I decided to just model a new end cap in Fusion 360.
+This replacement cap specifically does not have any features that extend deep into the tube so there&rsquo;s no risk of it interfering with the ESP32 module.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Suggested print orientation. Choose resolution, material and color to suit your needs.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>You can download <code>endcap.step</code> file <a href="/yeelight-monitor-lamp-teardown-esphome/models/endcap.step" rel="">here</a>.
+Print it in whatever material and color you want but be mindful of dimensional accuracy; the end cap is meant to be press-fit into the tube.</p>
+<p>If you&rsquo;re confident that you&rsquo;ll never need to access the ESP32 module again, glue the end cap in place.</p>
+<h3 id="esphome">ESPHome</h3>
+<p>Here&rsquo;s a simple ESPHome config for the device.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">esphome</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># Will boot loop w/o this when using the ESP-IDF and the C3</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">platformio_options</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">board_build.flash_mode</span><span class="p">:</span><span class="w"> </span><span class="l">dio</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">esp32</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># There is no platform.io board for ESP32-C3-0.42LCD so use generic</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">board</span><span class="p">:</span><span class="w"> </span><span class="l">esp32-c3-devkitm-1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">framework</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">esp-idf</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Enable logging</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">logger</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">level</span><span class="p">:</span><span class="w"> </span><span class="l">INFO</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># Requires ESP-IDF</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">hardware_uart</span><span class="p">:</span><span class="w"> </span><span class="l">USB_SERIAL_JTAG</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">light</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Primary&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">cwww</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">leds</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">cold_white</span><span class="p">:</span><span class="w"> </span><span class="l">out_pwm_cw</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">warm_white</span><span class="p">:</span><span class="w"> </span><span class="l">out_pwm_ww</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Marketing photos on ali express listing show a range of 2700K to 6500K</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">warm_white_color_temperature</span><span class="p">:</span><span class="w"> </span><span class="l">2700K</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">cold_white_color_temperature</span><span class="p">:</span><span class="w"> </span><span class="l">6500K</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># With WW/CW on full, was drawing about 2.6-2.8A.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># The RGB added another .5A or so.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># The cw/ww strip is on a metal reflector which does mate with the aluminum case but</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c">#    i&#39;m not sure how much heat transfer there is.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">constant_brightness</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># See: https://esphome.io/components/light/esp32_rmt_led_strip</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Ambient&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">esp32_rmt_led_strip</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">pixels</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">pin</span><span class="p">:</span><span class="w"> </span><span class="l">GPIO10</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">chipset</span><span class="p">:</span><span class="w"> </span><span class="l">WS2812</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">rmt_channel</span><span class="p">:</span><span class="w"> </span><span class="m">0</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">rgb_order</span><span class="p">:</span><span class="w"> </span><span class="l">GRB</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># There are two banks of 20</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">num_leds</span><span class="p">:</span><span class="w"> </span><span class="m">40</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">output</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">out_pwm_ww</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">ledc</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">pin</span><span class="p">:</span><span class="w"> </span><span class="l">GPIO08</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Any lower than this and the LEDs don&#39;t turn on until ~ 15% or so</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">min_power</span><span class="p">:</span><span class="w"> </span><span class="m">0.05</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># But when we hit off, we want it to be off</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">zero_means_zero</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">frequency</span><span class="p">:</span><span class="w"> </span><span class="l">2441Hz</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">out_pwm_cw</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">ledc</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">pin</span><span class="p">:</span><span class="w"> </span><span class="l">GPIO07</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">zero_means_zero</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">min_power</span><span class="p">:</span><span class="w"> </span><span class="m">0.05</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">frequency</span><span class="p">:</span><span class="w"> </span><span class="l">2441Hz</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># PWM and RGB drivers can be enabled/disabled by a master on/off</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">switch</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Master Output Enable&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">sw_out_en</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">gpio</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">pin</span><span class="p">:</span><span class="w"> </span><span class="l">GPIO06</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="pcbic-markings">PCB/IC markings</h2>
+<p>AKA the strings that I wish google had indexed when I was first looking for this info.</p>
+<p>The front of the ESP8266 module is marked with:</p>
+<ul>
+<li><code>YEELIGHT</code></li>
+<li><code>ESP8266NV1.0</code></li>
+<li><code>LibraPro</code></li>
+<li><code>WF-E266-RPY2</code></li>
+<li><code>PN: 21500000028</code></li>
+<li><code>CMIT ID: 2020DP12740</code></li>
+</ul>
+<p>The rear of the ESP8266 module is marked with:</p>
+<ul>
+<li><code>94V-0</code></li>
+<li><code>S Y22M02D25</code></li>
+<li><code>JU17.820.0767</code></li>
+</ul>
+<p>The main PCB is populated with:</p>
+<ul>
+<li><a href="https://wiki.telink-semi.cn/doc/ds/DS_TLSR8368-E_Datasheet%20for%20Telink%202.4GHz%20RF%20System-On-Chip%20Solution%20TLSR8368.pdf" target="_blank" rel="noopener noreffer"><code>TLSR8368EP16</code></a>: 2.4GHz RF System-On-Chip Solution for remote control puck</li>
+<li><a href="https://datasheet.lcsc.com/lcsc/1810011020_FUDAN-MICRO-FM24C02C-SO-T-G_C189501.pdf" target="_blank" rel="noopener noreffer"><code>FM24C02C</code></a>: Flash rom for the <code>TLSR83</code>. I didn&rsquo;t bother to desolder and dump this chip.</li>
+<li>3x ICs marked with <code>WRFAA</code> in a <code>2x5 SON</code> package. I can&rsquo;t find any info on these chips, but given that there are three LED channels and their proximity to power regulation circuitry, I assume that they are LED drivers.</li>
+</ul>
+]]></description></item><item><title>ESPHome on dingtian-tech relay modules</title><link>https://karlquinsland.com/dingtian-2ch-relay-with-esphome/</link><pubDate>Fri, 21 Apr 2023 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/dingtian-2ch-relay-with-esphome/</guid><description><![CDATA[<!-- markdownlint-disable-file MD002 -->
 <p>This is another one of those quick &ldquo;I wish that was easier to find when I was googling it&rdquo; posts.</p>
 <p>For a project, I needed a small relay module to switch a few mains loads.
 I chose this generic looking relay module from AliExpress because it was powered by an ESP32 and featured ethernet connectivity.</p>
@@ -5295,692 +5947,6 @@ Once the screw is fully inserted, allow it to fully cool (~5min) so the softened
                 
                 <figcaption>
                     <small>I cut a few inches off the Ethernet cable and power leads so everything fits in the enclosure better.</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-</ul>
-
-]]></description></item><item><title>Adding an airborne particulate mater sensor to WS3 Weather Station</title><link>https://karlquinsland.com/ws3-weather-station-pm25-sensor/</link><pubDate>Thu, 27 Aug 2020 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/ws3-weather-station-pm25-sensor/</guid><description><![CDATA[<p>A while back, I <a href="https://github.com/kquinsland/ws3-to-esphome-bridge/" target="_blank" rel="noopener noreffer">posted a small bit of code</a> that could decode the data from the ubiquitous WS3 Weather Station and make it accessible to the amazing <a href="https://www.home-assistant.io/" target="_blank" rel="noopener noreffer">HomeAssistant</a> via the wonderful <a href="https://esphome.io/" target="_blank" rel="noopener noreffer">ESPHome</a> project. Since then, my weather station has been dutifully collecting data that&rsquo;s been invaluable for augmenting automation that deals with indoor climate.</p>
-<p>As the numerous wild fires in California rage on, <a href="https://www.forbes.com/sites/ericmack/2020/08/21/wildfire-smoke-blankets-the-west-as-california-records-worlds-worst-air-quality/" target="_blank" rel="noopener noreffer">the air quality has gone from bad to dangerous</a>. Knowing that outside was warmer, but less humid, was no longer enough to make a smart decision about weather or not to open the windows for some cost-effective cooling. I now need HomeAssistant to be aware of how clean the outside air was before making the decision to pipe in outdoor air.</p>
-<p>This post covers two things:</p>
-<ul>
-<li>A small update to the existing WS3 -&gt; ESPHome -&gt; HomeAssistant bridge code to take advantage of the WS3s&rsquo; support for the ubiquitous <code>PMS5003T</code> sensor.</li>
-<li>A simple 3d-printable enclosure for deploying the particulate matter sensor outdoors</li>
-</ul>
-<p>When deployed, it looks like this:</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Excuse the awkward camera angle; sensor is deployed in an awkward to photograph location.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>Please ignore the awkward camera angle as the sensor is deployed in a location where there&rsquo;s not quite enough room for proper camera placement.</p>
-<p>And results in graphs that look like this:</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Smoke particles are between .4μm to .7μm in size... which explains the elevated red line relative to other particle sizes.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>A simplified copy of this post appears on <a href="https://www.thingiverse.com/thing:4581351" target="_blank" rel="noopener noreffer">thingiverse</a> and <a href="https://www.prusaprinters.org/prints/39560-outdoor-enclosure-for-pms5003-particulate-matter-s" target="_blank" rel="noopener noreffer">prusaprinters</a>.</p>
-<h2 id="the-enclosure">The enclosure</h2>
-<p>As of writing, there&rsquo;s <a href="https://www.thingiverse.com/thing:4044492" target="_blank" rel="noopener noreffer">one existing enclosure</a> for the sensor on thingiverse. Unfortunately, the enclosure does not appear to have any design features for mounting to a pole nor does it have any bug-proofing design elements. I took this opportunity to design my own that could be easily mounted, features a slanted &lsquo;roof&rsquo; to prevent standing moisture ingress and could use standard size tobacco pipe filters to keep all but the tiniest of insects/particles out.</p>
-<p>The sensor uses a small fan to draw ambient air past an infrared laser. As airborne particles cross the laser beam, they reflect a certain amount of light which can be correlated with the size of the particle. This data can then be turned into fairly accurate counts of how many particles of a given size are in the sampled air. The enclosure is a basic box with two circular air channels pointed downwards to prevent moisture ingress. The intake and exhaust ports are at staggered heights and pointed in opposite directions and to minimize the chance of recirculating the same air.</p>
-<p>The lower port is the intake which connects to a few small holes on the front of the sensor and the exhaust port is the raised port which connects directly to the exhaust fan. If you could remove the first few mm from the front, it would look something like this:</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>From the side, you can see the two air channels and the few mm of room in the back for wiring. The sensor sits on a &lsquo;pedestal&rsquo; to keep it elevated away from any moisture that may collect on the bottom of the enclosure.</p>
-<p>The base plate/pedestal are secured to the &lsquo;body&rsquo; with two M3 screws. I used <code>10mm</code> as that&rsquo;s what I had on hand, but screws between 6-12mm should work as well. The holes are sized for a M3, but any similar sized screw will work. Use a lighter or similar to heat the screw as you drive it into the plastic to create your own threads if using a larger/longer screw.</p>
-<p>Besides the &lsquo;pedestal&rsquo; there are a few contact surfaces that hold on to the sensor with a friction fit. The &lsquo;ceiling&rsquo; is a few mm thick and shouldn&rsquo;t permit much moisture ingress but an optional slanted roof component can be printed as an extra precaution.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Upper and lower chambers for exhaust and intake.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>While designing the enclosure, I used this <a href="https://grabcad.com/library/pms5003-2" target="_blank" rel="noopener noreffer"><code>PMS5003</code> model</a> from Leclercq Gregory. 🙏</p>
-<h3 id="printing">Printing</h3>
-<p>This is a functional part with only three small surfaces that require reasonably tight precision to properly hold onto the sensor. The <code>SPEED</code> setting with a <code>.2mm</code> layer height and a reasonable 20% infill gave me part that works and feels water tight. The walls and ceiling need to keep water out so dipping below 15% infill or otherwise using settings that wont give solid layer adhesion is not advised. I printed using ABS for durability, but PLA will probably work if you can deploy into a shaded environment.</p>
-<p>The shroud and the base are not optional, the triangle shaped block is intended to turn the flat roof of the shroud into a slanted roof so water can&rsquo;t collect. It is optional but shown below.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        No raft/support when printed in this orientation.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<h2 id="assemble">Assemble</h2>
-<p>Briefly:</p>
-<ul>
-<li>collect materials</li>
-<li>press-fit the PM2.5 sensor into the enclosure</li>
-<li>make a wire that can interface the PM2.5 sensor to the WS3 board via RJ11</li>
-<li>seal everything up</li>
-<li>glue on mesh screens and angled roof</li>
-<li>plug into WS3</li>
-<li>flash ESPHome onto</li>
-</ul>
-<h3 id="bill-of-materials">Bill of Materials</h3>
-<p>More or less everything that is needed for assembly is pictured below.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        More or less everything needed to assemble.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>Components:</p>
-<ul>
-<li>
-<p><a href="https://www.aliexpress.com/item/32921725022.html" target="_blank" rel="noopener noreffer">WS3 Weather Station</a> - Essential / Foundational</p>
-</li>
-<li>
-<p><a href="https://rover.ebay.com/rover/1/711-53200-19255-0/1?mpre=https%3A%2F%2Fwww.ebay.com%2Fitm%2FDigital-Universal-Particle-Concentration-Laser-Sensor-PMS5003-PM1-0-PM2-5-PM10%2F254616699639&amp;campid=5338734064&amp;toolid=10001&amp;customid=" target="_blank" rel="noopener noreffer">ST5003T PM2.5 Sensor</a> - Essential / Foundational</p>
-</li>
-<li>
-<p><a href="https://rover.ebay.com/rover/1/711-53200-19255-0/1?mpre=https%3A%2F%2Fwww.ebay.com%2Fitm%2FTTGO-Wemos-MINI-D1-ESP32-WiFi-Bluetooth-Wemos-D1-Mini-ESP8266-ESP-32-Module%2F183413480551&amp;campid=5338734064&amp;toolid=10001&amp;customid=" target="_blank" rel="noopener noreffer">ESP32 Device</a> - A link to the ESP32 based device that I use but any ESP platform with a spare GPIO that can be used as a UART will work.</p>
-</li>
-<li>
-<p><a href="https://rover.ebay.com/rover/1/711-53200-19255-0/1?mpre=https%3A%2F%2Fwww.ebay.com%2Fitm%2F25-Stainless-Steel-Smoking-Pipe-Screens-3-4-19mm-Tobacco-HOOKAH-FILTER-Heavy%2F183969079809&amp;campid=5338734064&amp;toolid=10001&amp;customid=" target="_blank" rel="noopener noreffer">3/4 inch tobacco pipe screens</a> - For bug/critter proofing the enclosure. Strongly suggested for outdoor deployments.</p>
-</li>
-<li>
-<p><a href="https://www.mcmaster.com/91292A113/" target="_blank" rel="noopener noreffer">2x M3 x 10mm screws</a> - Optional. The base can be glued to the shroud or any similar screw will work</p>
-</li>
-</ul>
-<p><strong>Note</strong>: Where possible, I&rsquo;ve used referral links. The links don&rsquo;t raise the price of any item, they simply let the retailer know that I sent you and, in return, I get a small cut of your purchase. If you&rsquo;re not comfortable with that, you can use a URL unwinding service to get the &lsquo;raw&rsquo; product link and drop the attribution/commission part.</p>
-<p>General bits:</p>
-<ul>
-<li>Superglue</li>
-<li>Waterproofing caulk/sealant</li>
-<li>Drill/Screwdriver</li>
-<li>Driver bit for the screws</li>
-</ul>
-<p>The stepped drill bit in the above picture is not a requirement if you assemble things in the correct oder. The cable egress hole is sized for a &rsquo;typical&rsquo; 3 pair <a href="https://en.wikipedia.org/wiki/Registered_jack#RJ11,_RJ14,_RJ25_wiring" target="_blank" rel="noopener noreffer">RJ11 cable</a> plus a tiny bit of wiggle room. I needed a working cable to test the code while the parts were printing so the hole in the printed base needed to be enlarged slightly to fit the head of the cable.</p>
-<h3 id="wiring">Wiring</h3>
-<p>There&rsquo;s no ready-made cable out there that&rsquo;ll join the two devices so one must be made. Fortunately, there&rsquo;s only 6 wires to deal with&hellip; 4 of them are distinct.</p>
-<p>Sacrifice the cable that comes with the PM2.5 sensor and the RJ11 cable by cutting them in half and solder the correct wires together. The <em>color</em> of the wires that come in both the RJ11 cable and the PM2.5 cable are likely going to differ from the ones I used so I&rsquo;ve left those details out and provided a table showing which pins are to be joined together:</p>
-<table>
-<thead>
-<tr>
-<th>Pin #</th>
-<th>PM2.5 Sensor Pin</th>
-<th>WS3 Pin</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-<td>VCC</td>
-<td>5V</td>
-</tr>
-<tr>
-<td>2</td>
-<td>GND</td>
-<td>GND</td>
-</tr>
-<tr>
-<td>3</td>
-<td>SET</td>
-<td>ENABLE</td>
-</tr>
-<tr>
-<td>4</td>
-<td>RX</td>
-<td>RX</td>
-</tr>
-<tr>
-<td>5</td>
-<td>TX</td>
-<td>GND</td>
-</tr>
-<tr>
-<td>6</td>
-<td>RESET</td>
-<td>5V</td>
-</tr>
-<tr>
-<td>7</td>
-<td>NC</td>
-<td></td>
-</tr>
-<tr>
-<td>8</td>
-<td>NC</td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<p>For reference, Pin 1 on both the WS3 and PM2.5 Sensor:</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>With the wiring done, the sensor just needs to be stuffed into the enclosure. Don&rsquo;t forget to thread the RJ11 cable through the hole in the base plate <em>BEFORE</em> soldering it to the cable for the PM2.5 sensor&hellip; otherwise you&rsquo;ll need that stepped drill bit! 🙃</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Sensor has been press-fit into the enclosure and wire fed through the base plate.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>To finish, secure the base with screws and a bit of water-proofing caulk for good measure:</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        I suggest waiting until the end to glue on the optional roof and waiting until just before that to glue on the optional mesh screens.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<h2 id="the-code">The code</h2>
-<p>Setting up and using ESPHome is outside the scope of this post but there are several <a href="https://esphome.io/guides/getting_started_hassio.html" target="_blank" rel="noopener noreffer">good guides</a> out there. Once you have that set up, <a href="https://esphome.io/custom/custom_component.html" target="_blank" rel="noopener noreffer">include</a> the <code>ws3.h</code> file and set up your custom sensor as shown below. A working example and more detail is over on the
-<a href="https://github.com/kquinsland/ws3-to-esphome-bridge/" target="_blank" rel="noopener noreffer">github repo</a>.</p>
-<p>It&rsquo;ll look like this:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">uart</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">uart_bus</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># At this time, ESP does not Transmit anything to the WS3</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">tx_pin</span><span class="p">:</span><span class="w"> </span><span class="l">GPIO16</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">rx_pin</span><span class="p">:</span><span class="w"> </span><span class="l">GPIO17</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">baud_rate</span><span class="p">:</span><span class="w"> </span><span class="m">2400</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">sensor</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">custom</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">      auto ws3 = new WS3(id(uart_bus));
-</span></span></span><span class="line"><span class="cl"><span class="sd">      App.register_component(ws3);
-</span></span></span><span class="line"><span class="cl"><span class="sd">      return {
-</span></span></span><span class="line"><span class="cl"><span class="sd">        ws3-&gt;temperature_sensor, 
-</span></span></span><span class="line"><span class="cl"><span class="sd">        ws3-&gt;pressure_sensor, 
-</span></span></span><span class="line"><span class="cl"><span class="sd">        ws3-&gt;humidity_sensor, 
-</span></span></span><span class="line"><span class="cl"><span class="sd">        ws3-&gt;wind_speed_current_sensor,
-</span></span></span><span class="line"><span class="cl"><span class="sd">        ws3-&gt;wind_speed_peak_5m_sensor,
-</span></span></span><span class="line"><span class="cl"><span class="sd">        ws3-&gt;wind_direction_sensor,
-</span></span></span><span class="line"><span class="cl"><span class="sd">        ws3-&gt;rain_fall_1h_sensor, 
-</span></span></span><span class="line"><span class="cl"><span class="sd">        ws3-&gt;rain_fall_24h_sensor,
-</span></span></span><span class="line"><span class="cl"><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">        ws3-&gt;particles_03um,
-</span></span></span><span class="line"><span class="cl"><span class="sd">        ws3-&gt;particles_05um,
-</span></span></span><span class="line"><span class="cl"><span class="sd">        ws3-&gt;particles_10um,
-</span></span></span><span class="line"><span class="cl"><span class="sd">        ws3-&gt;particles_25um,
-</span></span></span><span class="line"><span class="cl"><span class="sd">        ws3-&gt;particles_50um,
-</span></span></span><span class="line"><span class="cl"><span class="sd">        ws3-&gt;particles_100um,
-</span></span></span><span class="line"><span class="cl"><span class="sd">      };</span><span class="w">      
-</span></span></span></code></pre></td></tr></table>
-</div>
-</div><p>With that, check the logs from your instance of ESPHome and you should see something like this:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">[D][ws3:157]: pkt_read_ok!
-</span></span><span class="line"><span class="cl">[D][WS3:410]: VALID! Packet: [c000s000g000t093r000p000h35b09880,050,080,088,502,056,065,*18
-</span></span><span class="line"><span class="cl">], Checksum: [18] chksum: [18]
-</span></span><span class="line"><span class="cl">[E][WS3:342]: Validating: [c000s000g000t093r000p000h35b09880,050,080,088,502,056,065]
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>indicating that the WS3 has detected the PM2.5 sensor and is reporting it&rsquo;s readings in addition to the temperature/wind data. Then just check your HomeAssistant install for the data.</p>
-<h2 id="files">Files</h2>
-<p>For archive / posterity, all source files are included here. All files are licensed as <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank" rel="noopener noreffer">Creative Commons Attribution-NonCommercial-ShareAlike</a> (CC BY-NC-SA).</p>
-<ul>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/02.assemble.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Sensor has been press-fit into the enclosure and wire fed through the base plate.</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/03.glue.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>I suggest waiting until the end to glue on the optional roof and waiting until just before that to glue on the optional mesh screens.</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/example_dashboard.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Smoke particles are between .4μm to .7μm in size... which explains the elevated red line relative to other particle sizes.</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/04.installed.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Excuse the awkward camera angle; sensor is deployed in an awkward to photograph location.</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/BASE.step">
-                <i class="far fa-file-code"></i>
-                models/BASE.step:
-                
-                <small style="font-family:'Lucida Console', monospace">step</small> <small>file</small>
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/BODY.step">
-                <i class="far fa-file-code"></i>
-                models/BODY.step:
-                
-                <small style="font-family:'Lucida Console', monospace">step</small> <small>file</small>
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/LID.step">
-                <i class="far fa-file-code"></i>
-                models/LID.step:
-                
-                <small style="font-family:'Lucida Console', monospace">step</small> <small>file</small>
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/base.stl">
-                <i class="far fa-file-code"></i>
-                models/base.stl:
-                
-                <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/body.stl">
-                <i class="far fa-file-code"></i>
-                models/body.stl:
-                
-                <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/combined.3mf">
-                <i class="far fa-file-archive"></i>
-                models/combined.3mf:
-                
-                <small style="font-family:'Lucida Console', monospace">3mf</small> <small>file</small>
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/lid.stl">
-                <i class="far fa-file-code"></i>
-                models/lid.stl:
-                
-                <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/pin_out/PM2.5_Pins.jpg">
-                    
-                </a>
-                
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/pin_out/WS3_Pins.jpg">
-                    
-                </a>
-                
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/01.collect.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>More or less everything needed to assemble.</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/suggested_print_orientation.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>No raft/support when printed in this orientation.</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/f360_air_channels.jpg">
-                    
-                </a>
-                
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/f360_side_profile.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Upper and lower chambers for exhaust and intake.</small>
                 </figcaption>
                 
             </figure>

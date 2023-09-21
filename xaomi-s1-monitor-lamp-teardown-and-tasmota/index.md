@@ -9,8 +9,14 @@ Some photos of the `MUGJD01YL` internals are provided [below](#mugjd01yl).
 
 {{< /admonition >}}
 
-
 If you're here just for "how do I flash tasmota" bit, skip to the [Tasmota](#tasmota) section below.
+
+{{< admonition tip "Now with ESPHome" >}}
+
+ESPHome support for the single-core ESP32 chip in the lamp has come a long way.
+You can find the ESPHome configuration that I used with this lamp [below](#esphome).
+
+{{< /admonition >}}
 
 -----
 
@@ -26,7 +32,6 @@ As this light source would be heavily used for all sorts of work, the _quality_ 
 
 I also wanted one that had some basic remote control functions so I don't have to reach to the top of my monitor and risk destabilizing whatever I am working on or getting finger prints on the panel.
 A wired remote would be simpler and thus cheaper but my desk is already too crowded with wires and cords; if the cost difference between a wired and wireless remote was marginal, opt for wireless.
-
 
 After a bit of searching, I found the `2021 Xiaomi Mijia Lite Desk Lamp 1S` which fit the bill exactly.
 
@@ -72,7 +77,7 @@ Well now I'm curious.
 
 What could this lamp _possibly need_ WiFi credentials for? The remote used BTLE and every conceivable phone that will also control the lamp supports BTLE... so why spend the extra money for a WiFi enabled microcontroller at all!?
 
-# ~~ET~~ Lamp Phone Home:
+# ~~ET~~ Lamp Phone Home
 
 I threw the lamp behind an isolated access point and it sure is _chatty_...
 After getting an IP address, the lamp looks up the `A` record for `dk.io.mi.com` and then attempts to open a TCP connection and send some bytes:
@@ -80,7 +85,6 @@ After getting an IP address, the lamp looks up the `A` record for `dk.io.mi.com`
 {{<figure name="wireshark">}}
 
 Now I'm more than a little bit curious.
-
 
 Why send raw bytes to TCP/80 without at least the typical HTTP request headers?
 Why even use WiFi at all for a _lamp_? Is there no way to use my phone to control the lamp over BTLE?
@@ -95,6 +99,7 @@ I did a quick search for a few things that I hoped would show up in the dumped O
 ❯ cat interesting_strings.txt| wc -l
 710
 ```
+
 🤨
 
 Here are some of the highlights:
@@ -113,7 +118,7 @@ http://dlg.io.mi.com/v1/ot/upload
 [W] %s: httpdns new resolve start failed, %d (%s,%d)
 ```
 
-There's a lot more interesting things in the dump but they'll have to wait for another day as 
+There's a lot more interesting things in the dump but they'll have to wait for another day as
 immediately after getting eyes on the PCB, I saw an ESP32 chip!
 
 ## A change of plans
@@ -122,7 +127,6 @@ Reverse engineering the firmware to figure out how/why the phone method of remot
 An ESP based chip means Tasmota or ESPHome should be possible.
 
 If I could get either of those alternative firmwares running on the lamp, then cluttering up the desk with yet another remote and/or hacking MQTT support into the lamp via the remote was no longer necessary!
-
 
 # Teardown
 
@@ -138,14 +142,12 @@ Some of the photos below reflect this.
 
 Now that I know how it all is _meant_ to come apart, you will hopefully have an easier time and incur less damage!
 
-
 ## The lamp
 
 A closer look at the marked device information before we move _into_ the lamp.
 The ESP that we will soon flash with Tasmota is just behind this product information.
 
 {{< figure name="lamp01" >}}
-
 
 Locate the small rectangle shaped protrusion from the lamp tube that mates with the magnetic mount. The protrusion has two small pogo pins on it.
 You can see the protrusion in the middle of the tube facing the coiled USB power cable:
@@ -155,7 +157,6 @@ You can see the protrusion in the middle of the tube facing the coiled USB power
 
 With the protrusion facing you, locate the plastic cap closest to the product information.
 This should be plastic cap on the _left_ side of the tube.
-
 
 Use non-marring pliers or similar to grip the plastic cap and twist with enough force to break the glue.
 Do not twist more than a few degrees!
@@ -179,7 +180,6 @@ Be mindful of the two spring like contacts on the back of the PCB that mated wit
 
 You can see the small black plastic bracket holding the pogo pins and the protrusion bit with some of the grip-tape still attached:
 
-
 {{< figure name="td01" >}}
 
 If you try to remove the PCB without first detaching the pogo pins, you'll damage one or both of the spring contacts that mate the PCB to the pogo pins!
@@ -189,7 +189,6 @@ You _don't_ want your `GND` spring to look like mine!
 {{< figure name="feature-td02" >}}
 
 Before realizing that the pogo pins could be removed from the lamp, I removed _both_ caps and tried push/pull the PCB out.
-
 
 The PCB is supported inside the tube with a few black plastic 'sleds' which are heat-staked on to the PCB.
 
@@ -207,7 +206,7 @@ The sled isn't technically required for re-assembly but it's pretty easy to re-a
 {{< figure name="td05" >}}
 
 Here's a closeup of the PCB with most of the test points labeled.
-You can see the `3V3` test point immediately to the left of `R6` in the shadow of the 'sled'. 
+You can see the `3V3` test point immediately to the left of `R6` in the shadow of the 'sled'.
 
 {{< figure name="td03" >}}
 
@@ -229,13 +228,11 @@ The main body / rotary knob lifts away from the midframe.
 
 {{< figure name="puck_module_closeup" >}}
 
-
 Like with the lamp PCB, there are a few test points:
 
 {{< figure name="puck_td_06" >}}
 
 {{< figure name="puck_td_07" >}}
-
 
 # Tasmota
 
@@ -246,11 +243,9 @@ It is likely that both the WW and CW LEDs _will_ briefly light up during the fla
 
 {{< /admonition >}}
 
-
 Having said all that, it's totally worth it:
 
 {{< figure name="lamp_in_ha" >}}
-
 
 ## Flashing
 
@@ -258,7 +253,6 @@ Having said all that, it's totally worth it:
 The ESP32 chip on this PCB is a _single core_ version.
 Follow the [instructions for flashing the ESP32 version of Tasmota](https://tasmota.github.io/docs/ESP32/#flashing), specifically the `tasmota32solo1` version!
 {{< /admonition >}}
-
 
 Solder wires to the usual `RX`, `TX`, `GPIO0` and `GND` test points.
 The `GPIO0` test point is the test point nearest to the ESP32 chip; directly off the bottom right corner.
@@ -316,7 +310,7 @@ load:0x40078000,len:12352
 load:0x40080400,len:2912
 entry 0x400805c4
 
-00:00:00.002-228/73 HDW: ESP32-S0WD-OEM 
+00:00:00.002-228/73 HDW: ESP32-S0WD-OEM
 ./components/esp_littlefs/src/littlefs/lfs.c:1071:error: Corrupted dir pair at {0x0, 0x1}
 00:00:00.777-231/73 UFS: FlashFS mounted with 312 kB free
 00:00:00.782-231/73 CFG: Use defaults
@@ -331,7 +325,6 @@ entry 0x400805c4
 ```
 
 After confirming a successful flash/boot, you can continue to configure Tasmota via the serial console or just power off and de-solder all wires and finish configuration after you re-assemble.
-
 
 ## Templates
 
@@ -376,7 +369,6 @@ Your lamp, eyes and needs will differ so feel free to see if a lower `dimmer` va
 
 That is why you see the `DimmerRange 45,255` command in the above templates.
 
-
 ### PCB/IC Markings
 
 Some of the interesting ICs and PCB markings
@@ -397,13 +389,68 @@ Some of the interesting ICs and PCB markings
 - `MHCB07P`. This is marked on the tiny BTLE module inside the remote. Not too many search [results](https://twitter.com/simransingh931/status/1418120923568246786) show [up](https://www.ec.ust.hk/hackathon/2021/document/xiaomi_0319_eng.pdf).
 - `CMIT ID: 2020DP3172(M)`
 
-
-
 ## MUGJD01YL
-
 
 {{< figure name="MUGJD01YL_04" >}}
 {{< figure name="MUGJD01YL_03" >}}
 {{< figure name="MUGJD01YL_02" >}}
 {{< figure name="MUGJD01YL_01" >}}
+
+## ESPHome
+
+While putting together the ["update"]({{< relref "yeelight-monitor-lamp-teardown-esphome" >}}) to this post, I figured I should update this post with the configuration that I used for ESPHome:
+
+```yaml
+##
+# This is an ESPHome port of https://templates.blakadder.com/xiaomi_MJGJD02YL.html
+##
+esphome:
+  comment: "Xiaomi Mi Computer Monitor Light Bar 1S Light (MJGJD02YL)"
+
+# See: https://github.com/esphome/issues/issues/2955
+esp32:
+  board: esp32dev
+  framework:
+    type: esp-idf
+    sdkconfig_options:
+      CONFIG_FREERTOS_UNICORE: y
+    advanced:
+      # See: https://github.com/esphome/issues/issues/4830
+      ignore_efuse_mac_crc: true
+
+# Enable logging
+logger:
+  level: INFO
+
+# The light bar has two banks of LEDs for WW/CW config
+# See: https://esphome.io/components/light/cwww.html
+##
+light:
+  - platform: cwww
+    id: leds
+    cold_white: out_pwm_cw
+    warm_white: out_pwm_ww
+
+    # The ali express listing indicates 2700/6500K.
+    cold_white_color_temperature: 6600K
+    warm_white_color_temperature: 2700K
+    # Draws a little over 10W at full brightness.
+    # Shouldn't be too hard for a USB power supply to handle but heat dissipation might be an
+    #   issue so don't permit both WW and CW channels to both run 100%.
+    constant_brightness: true
+
+output:
+  # THis is the master kill switch. This GPIO must be high for the WW/CW channels to work.
+  - id: light_enable
+    platform: gpio
+    pin: GPIO04
+
+  - id: out_pwm_ww
+    platform: ledc
+    pin: GPIO21
+
+  - id: out_pwm_cw
+    platform: ledc
+    pin: GPIO19
+```
 
