@@ -30,6 +30,21 @@
   },
   "work": [
     {
+      "company": "Spree3d",
+      "position": "Sr. DevOps Engineer",
+      "website": "https://spree3d.com/",
+      "startDate": "2023-04-17",
+      "summary": "Versatile AWS and DevOps professional with a focus on optimizing cloud infrastructure, streamlining Machine Learning deployment on EKS, and enhancing observability and onboarding processes for greater operational efficiency.",
+      "highlights": [
+        "Optimized AWS resource management by cleaning up abandoned resources, resulting in monthly cost savings of thousands of dollars.",
+        "Containerized multiple Machine Learning and CUDA workloads for deployment on EKS.",
+        "Contributed to the development of the LGTM Stack (Loki, Grafana, Tempo, and Mimir).",
+        "Provided guidance on best practices for enhancing application and platform observability, and created customized dashboards to offer diverse insights into the system.",
+        "Mentored the Machine Learning team in implementing production-grade improvements for Python applications, development tools, and workflows.",
+        "Streamlined the onboarding process by documenting and automating various aspects."
+      ]
+    },
+    {
       "company": "Sprig",
       "position": "Sr. Ops Engineer/SRE",
       "website": "https://sprig.com/",
@@ -206,7 +221,7 @@
       "name": "IaC/Ops Tools",
       "level": "Advanced",
       "keywords": [
-        "Terraform: advanced / 8+ years experience.",
+        "Terraform/OpenToFu: advanced / 8+ years experience.",
         "Packer: advanced",
         "Consul: advanced",
         "Vault: advanced"

@@ -19,7 +19,22 @@ At the end of the day, the software/tools/things/technology I'm responsible for 
 
 ## Work
 
+### Sr. DevOps Engineer, [spree3d](https://spree3d.com/)
+
+> Versatile AWS and DevOps professional with a focus on optimizing cloud infrastructure, streamlining Machine Learning deployment on EKS, and enhancing observability and onboarding processes for greater operational efficiency.
+
+##### 2023-04-17 - Present
+
+- Optimized AWS resource management by cleaning up abandoned resources, resulting in monthly cost savings of thousands of dollars.
+- Containerized multiple Machine Learning and CUDA workloads for deployment on EKS.
+- Contributed to the development of the LGTM Stack (Loki, Grafana, Tempo, and Mimir).
+- Provided guidance on best practices for enhancing application and platform observability, and created customized dashboards to offer diverse insights into the system.
+- Mentored the Machine Learning team in implementing production-grade improvements for Python applications, development tools, and workflows.
+- Streamlined the onboarding process by documenting and automating various aspects.
+
 ### Sr. Ops Engineer/SRE, [Sprig](https://sprig.com/)
+
+> In-house AWS specialist tasked with taming legacy Terraform, k8s configuration and general 'as-needed' tool development / process automation.
 
 ##### 2022-04-01 - 2023-02-17
 
