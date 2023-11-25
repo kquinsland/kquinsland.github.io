@@ -57,7 +57,7 @@
 
 
 <p>I used black PETG, but any material and at least 10% infill should be fine. Tune the layer height to taste.</p>
-<p>The &lsquo;plate&rsquo; does not need any supports nor does the lid if printed in the suggested print orientation shown below 👇. I printed with settings optimized for speed so there was minimal sagging, but nothing substantial. What little there was didn&rsquo;t interfere with clearance of any other internal component and was completely hidden.</p>
+<p>The &lsquo;plate&rsquo; does not need any supports nor does the lid if printed in the suggested print orientation shown below &#x1f447;. I printed with settings optimized for speed so there was minimal sagging, but nothing substantial. What little there was didn&rsquo;t interfere with clearance of any other internal component and was completely hidden.</p>
 <p>If you&rsquo;re not comfortable with bridging long distances, you can optionally enforce support material from the build plate to the top of the lid <strong>or</strong> flip the lid upside down and use supports for the four feet where the screws go. Because any sagging would be hidden inside,</p>
 <figure >
 
@@ -87,14 +87,14 @@
 <li><a href="https://www.amazon.com/gp/product/B07Y9HP4KM/" target="_blank" rel="noopener noreffer">QC 3.0 Charger</a></li>
 </ul>
 <h2 id="assembly">Assembly</h2>
-<p>I don&rsquo;t have any pictures from the assembly 😞, but it&rsquo;s not particularly difficult to figure out from the attached pictures. In general, the steps to take are:</p>
+<p>I don&rsquo;t have any pictures from the assembly &#x1f61e;, but it&rsquo;s not particularly difficult to figure out from the attached pictures. In general, the steps to take are:</p>
 <ol start="0">
 <li>Print everything and clean up the parts as needed</li>
 <li>de-shell the PoE injector and QC3 charger. A plastic pry-tool or a few flat-head screwdrivers will help here!</li>
 <li>desolder the existing mains connections from both modules and solder on new ones. The new ones don&rsquo;t need to be long, just a bit longer than the leads that came on the module PCBs!</li>
 <li>disconnect power from the assembled PSU and remove the case cover</li>
 <li>place the &lsquo;plate&rsquo; onto the top of the PSU and use a pencil to mark all 5 holes on the cover</li>
-<li>remove the plate, drill out all 5 holes and use a file to smooth down any sharp edges on the big hole as that&rsquo;s where the mains wires will go. A burr poking through insulation means the case may become energized @ mains voltages! 💥 💀</li>
+<li>remove the plate, drill out all 5 holes and use a file to smooth down any sharp edges on the big hole as that&rsquo;s where the mains wires will go. A burr poking through insulation means the case may become energized @ mains voltages! &#x1f4a5; &#x1f480;</li>
 <li>crimp connectors onto wires and attach to the mains supply <strong>after</strong> the switch and fuse!</li>
 <li>place the &lsquo;plate&rsquo; back onto the PSU cover</li>
 <li>run the wires through the new hole in the top of the PSU case and through the hole in the &lsquo;plate&rsquo;</li>

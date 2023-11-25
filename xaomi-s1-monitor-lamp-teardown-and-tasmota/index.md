@@ -398,7 +398,7 @@ Some of the interesting ICs and PCB markings
 
 ## ESPHome
 
-While putting together the ["update"]({{< relref "yeelight-monitor-lamp-teardown-esphome" >}}) to this post, I figured I should update this post with the configuration that I used for ESPHome:
+While putting together the ["update"]({{< ref "yeelight-monitor-lamp-teardown-esphome" >}}) to this post, I figured I should update this post with the configuration that I used for ESPHome:
 
 ```yaml
 ##

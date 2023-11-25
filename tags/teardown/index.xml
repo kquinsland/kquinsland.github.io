@@ -2644,7 +2644,7 @@ There is a mechanism for backing up / importing settings using <code>bin</code> 
 </span></span><span class="line"><span class="cl">    Your (client) IP address: 0.0.0.0
 </span></span><span class="line"><span class="cl">    Next server IP address: 0.0.0.0
 </span></span><span class="line"><span class="cl">    Relay agent IP address: 0.0.0.0
-</span></span><span class="line"><span class="cl">    Client MAC address: MurataMa_de:ad:bf (10:98:c3🇩🇪ad:bf)
+</span></span><span class="line"><span class="cl">    Client MAC address: MurataMa_de:ad:bf (10:98:c3:de:ad:bf)
 </span></span><span class="line"><span class="cl">    Client hardware address padding: 00000000000000000000
 </span></span><span class="line"><span class="cl">    Server host name not given
 </span></span><span class="line"><span class="cl">    Boot file name not given
@@ -2655,7 +2655,7 @@ There is a mechanism for backing up / importing settings using <code>bin</code> 
 </span></span><span class="line"><span class="cl">    Option: (61) Client identifier
 </span></span><span class="line"><span class="cl">        Length: 7
 </span></span><span class="line"><span class="cl">        Hardware type: Ethernet (0x01)
-</span></span><span class="line"><span class="cl">        Client MAC address: MurataMa_de:ad:bf (10:98:c3🇩🇪ad:bf)
+</span></span><span class="line"><span class="cl">        Client MAC address: MurataMa_de:ad:bf (10:98:c3:de:ad:bf)
 </span></span><span class="line"><span class="cl">    Option: (57) Maximum DHCP Message Size
 </span></span><span class="line"><span class="cl">        Length: 2
 </span></span><span class="line"><span class="cl">        Maximum DHCP Message Size: 576
@@ -2696,7 +2696,7 @@ There is a mechanism for backing up / importing settings using <code>bin</code> 
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">NOTIFY ALIVE SDDP/1.0
 </span></span><span class="line"><span class="cl">From: &#34;123.456.789.012:1902&#34;
-</span></span><span class="line"><span class="cl">Host: &#34;10:98:c3🇩🇪ad:bf&#34;
+</span></span><span class="line"><span class="cl">Host: &#34;10:98:c3:de:ad:bf&#34;
 </span></span><span class="line"><span class="cl">Max-Age: 300
 </span></span><span class="line"><span class="cl">Type: &#34;venstar:control4_thermostat_proxy:colortouch&#34;
 </span></span><span class="line"><span class="cl">Primary-Proxy: &#34;thermostatV2&#34;

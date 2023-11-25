@@ -33,10 +33,10 @@ I chose this generic looking relay module from AliExpress because it was powered
 </span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">rst:0x1 (POWERON_RESET),boot:0x7 (DOWNLOAD_BOOT(UART0/UART1/SDIO_REI_REO_V2))␍␊
-</span></span><span class="line"><span class="cl">waiting for download␍␊
-</span></span><span class="line"><span class="cl">&lt;break&gt;
-</span></span><span class="line"><span class="cl">&lt;0xff&gt;ets Jun  8 2016 00:22:57␍␊
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">rst</span><span class="p">:</span><span class="mh">0x1</span> <span class="p">(</span><span class="n">POWERON_RESET</span><span class="p">),</span><span class="n">boot</span><span class="p">:</span><span class="mh">0x7</span> <span class="p">(</span><span class="n">DOWNLOAD_BOOT</span><span class="p">(</span><span class="n">UART0</span><span class="o">/</span><span class="n">UART1</span><span class="o">/</span><span class="n">SDIO_REI_REO_V2</span><span class="p">))</span><span class="err">␍␊</span>
+</span></span><span class="line"><span class="cl"><span class="n">waiting</span> <span class="k">for</span> <span class="n">download</span><span class="err">␍␊</span>
+</span></span><span class="line"><span class="cl"><span class="o">&lt;</span><span class="k">break</span><span class="o">&gt;</span>
+</span></span><span class="line"><span class="cl"><span class="o">&lt;</span><span class="mh">0xff</span><span class="o">&gt;</span><span class="n">ets</span> <span class="n">Jun</span>  <span class="mi">8</span> <span class="mi">2016</span> <span class="mi">00</span><span class="p">:</span><span class="mi">22</span><span class="p">:</span><span class="mi">57</span><span class="err">␍␊</span>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>I knew that I didn&rsquo;t brick anything because the ESP would boot right up as soon as i re-flashed the original dump.</p>
@@ -2022,7 +2022,7 @@ Tasmota will let you dim the light as low as possible without flicker.</p>
 
 </p>
 <h2 id="esphome">ESPHome</h2>
-<p>While putting together the <a href="/yeelight-monitor-lamp-teardown-esphome/" rel="">&ldquo;update&rdquo;</a> to this post, I figured I should update this post with the configuration that I used for ESPHome:</p>
+<p>While putting together the <a href="https://karlquinsland.com/yeelight-monitor-lamp-teardown-esphome/" rel="">&ldquo;update&rdquo;</a> to this post, I figured I should update this post with the configuration that I used for ESPHome:</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt"> 1
