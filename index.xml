@@ -1,4 +1,149 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>karl</title><link>https://karlquinsland.com/</link><description>Karl's little corner of the internet</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 11 Nov 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/index.xml" rel="self" type="application/rss+xml"/><item><title>ESPHome for Sonoff T5 family of Switches</title><link>https://karlquinsland.com/sonoff-t5-esphome/</link><pubDate>Sat, 11 Nov 2023 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/sonoff-t5-esphome/</guid><description><![CDATA[<h1 id="esphome-for-sonoff-t5-family-of-switches">ESPHome for Sonoff T5 family of Switches</h1>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>karl</title><link>https://karlquinsland.com/</link><description>Karl's little corner of the internet</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 01 Dec 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Inside of the Pulse-Eight HDMI CEC Injector.</title><link>https://karlquinsland.com/pulse-eight-hdmi-cec-injector-teardown/</link><pubDate>Fri, 01 Dec 2023 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/pulse-eight-hdmi-cec-injector-teardown/</guid><description><![CDATA[<h1 id="inside-the-pulse-eight-hdmi-cec-injector">Inside the Pulse-Eight HDMI CEC Injector</h1>
+<p>To make a long store short, Google recently pushed a few updates to my TV that made it slow as all hell and frustratingly unusable.
+I finally got fed up with the laggy UI and dug out an old mini PC and installed <a href="https://libreelec.tv/" target="_blank" rel="noopener noreffer">LibreELEC</a> on it.</p>
+<p>Everything worked perfectly <em>except</em> for the lack of <a href="https://en.wikipedia.org/wiki/Consumer_Electronics_Control" target="_blank" rel="noopener noreffer">CEC</a> support on the mini PC.</p>
+<p>This is a common enough problem that there&rsquo;s a few different devices out there that can add CEC support to a device that doesn&rsquo;t have it.
+I chose the <a href="https://www.pulse-eight.com/p/104/usb-hdmi-cec-adapter" target="_blank" rel="noopener noreffer">Pulse-Eight HDMI CEC Injector</a> because it&rsquo;s natively supported by LibreELEC.</p>
+<p>I was curious what was inside and I couldn&rsquo;t find any teardowns online so I decided to do one myself.
+There&rsquo;s not much to the device and I&rsquo;m not doing any serious reverse engineering here so let&rsquo;s call this a <a href="/tags/two-minute-teardown/" rel="">&ldquo;Two Minute Teardown&rdquo;</a>.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        The device is small and unassuming.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Opening is trivial. No glue or anything. Just a few pins and sockets. Gently pry the two halves apart and you&#39;re in.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>I wasn&rsquo;t expecting much; I thought CEC was implemented via UART and not SPI so I was expecting to see a cheap FTDI knockoff chip or similar.
+Turns out I was wrong and the device uses an <a href="https://www.microchip.com/en-us/product/at90usb162" target="_blank" rel="noopener noreffer">ATMEL 90USB162</a> which is a USB to SPI bridge.
+I haven&rsquo;t looked too closely at the <a href="https://github.com/Pulse-Eight/libcec" target="_blank" rel="noopener noreffer">firmware</a> but I suspect there&rsquo;s some abstraction layer that makes it look like a <a href="#dmesg" rel="">UART</a> to the OS.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Other than a few passives, there&#39;s only one chip on the board.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Nothing interesting other than a programming header.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        The full PCB sans case.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<h2 id="dmesg"><code>dmesg</code></h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">usb 5-4.1.2.3.2: new full-speed USB device number <span class="m">2</span> using xhci_hcd
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.3.2: New USB device found, <span class="nv">idVendor</span><span class="o">=</span>2548, <span class="nv">idProduct</span><span class="o">=</span>1002, <span class="nv">bcdDevice</span><span class="o">=</span>10.00
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.3.2: New USB device strings: <span class="nv">Mfr</span><span class="o">=</span>1, <span class="nv">Product</span><span class="o">=</span>2, <span class="nv">SerialNumber</span><span class="o">=</span><span class="m">3</span>
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.3.2: Product: CEC Adapter
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.3.2: Manufacturer: Pulse-Eight
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.3.2: SerialNumber: v12
+</span></span><span class="line"><span class="cl">input: Pulse-Eight CEC Adapter as /devices/pci0000:00/0000:00:08.1/0000:0d:00.3/usb5/5-4/5-4.1/5-4.1.2/5-4.1.2.3/5-4.1.2.3.2/5-4.1.2.3.2:1.2/0003:2548:1002.0102/input/input195
+</span></span><span class="line"><span class="cl">hid-generic 0003:2548:1002.0102: input,hidraw10: USB HID v1.10 Mouse <span class="o">[</span>Pulse-Eight CEC Adapter<span class="o">]</span> on usb-0000:0d:00.3-4.1.2.3.2/input2
+</span></span><span class="line"><span class="cl">cdc_acm 5-4.1.2.3.2:1.0: ttyACM0: USB ACM device
+</span></span><span class="line"><span class="cl">usbcore: registered new interface driver cdc_acm
+</span></span><span class="line"><span class="cl">cdc_acm: USB Abstract Control Model driver <span class="k">for</span> USB modems and ISDN adapters
+</span></span></code></pre></td></tr></table>
+</div>
+</div>]]></description></item><item><title>ESPHome for Sonoff T5 family of Switches</title><link>https://karlquinsland.com/sonoff-t5-esphome/</link><pubDate>Sat, 11 Nov 2023 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/sonoff-t5-esphome/</guid><description><![CDATA[<h1 id="esphome-for-sonoff-t5-family-of-switches">ESPHome for Sonoff T5 family of Switches</h1>
 <p>It&rsquo;s hard to beat Sonoff switches when it comes to well-made, affordable, Home Assistant compatible switches.
 Ever since they announced the <a href="https://sonoff.tech/product/smart-wall-switches/tx-ultimate/" target="_blank" rel="noopener noreffer">T5 series</a>, I&rsquo;ve been patiently waiting for the US variant to become available so I could replace my M5 switches with T5 switches.</p>
 <p>Don&rsquo;t get me wrong, the M5 switches are great&hellip; but <a href="#t5-improvements-over-m5" rel="">not perfect</a>.</p>
@@ -7409,423 +7554,4 @@ Coincidentally, the external facing sensor published a value of 27 to Home Assis
 <p>This is not a <em>conclusive</em> test but - at least at <strong>background</strong> radiation levels - using two instances of the same sensor type on the same GPIO might work.</p>
 <p>I don&rsquo;t have any easy way to induce higher counts on the geiger tube so I can&rsquo;t test how well this holds up &ldquo;under load&rdquo; nor can I confirm that this works reliably across all ESP chips/modules and versions of ESPHome/PlatformIO&hellip;etc.</p>
 <p>Doing this with a custom component probably is the better way to do it but I wasn&rsquo;t going to pull that off in the time I had allotted.</p>
-]]></description></item><item><title>Quick look inside two Ali Express mmWave presence detection sensors</title><link>https://karlquinsland.com/two-mmwave-sensors/</link><pubDate>Tue, 01 Nov 2022 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/two-mmwave-sensors/</guid><description><![CDATA[<p>Millimeter Wave technology has recently hit &ldquo;mass consumer product adoption&rdquo; price points.
-A casual search for &ldquo;human presence sensor&rdquo; on Ali Express will turn up a seemingly endless number of sub $40 devices that can detect movement far more accurately than any old PIR sensor.</p>
-<p>Each listing is fairly generic; there&rsquo;s no explicit manufacturer details but they all use the same marketing images:</p>
-<p><figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-</p>
-<p>As the photos below will show, neither device is super well marked with a model number so I&rsquo;ll just refer to each by either the color of the enclosure or by the radar sensor inside.</p>
-<p>Before getting into the specific modules, a brief look at the packaging for both.</p>
-<h2 id="packaging">Packaging</h2>
-<p>The packaging isn&rsquo;t anything special but I am including pictures here in the off chance that some of the Mandarin markings is useful for somebody.</p>
-<p><figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-</p>
-<div class="details admonition warning open">
-        <div class="details-summary admonition-title">
-            <i class="icon fas fa-exclamation-triangle fa-fw"></i>Micro USB in 2022?!<i class="details-icon fas fa-angle-right fa-fw"></i>
-        </div>
-        <div class="details-content">
-            <div class="admonition-content">Both devices featured here have <em>micro</em> USB leads.
-It&rsquo;s 2022 and we&rsquo;re still using MICRO USB for power?
-I know that USB-C connectors are slightly more expensive but it just seems lazy and dated to put a micro USB port on any new design in 2022!</div>
-        </div>
-    </div>
-<div class="details admonition question open">
-        <div class="details-summary admonition-title">
-            <i class="icon fas fa-question-circle fa-fw"></i>uart?<i class="details-icon fas fa-angle-right fa-fw"></i>
-        </div>
-        <div class="details-content">
-            <div class="admonition-content">I did probe both of the 4 pin connectors on the PCB but didn&rsquo;t see any signs of life.
-If those headers are for a UART, the MCU isn&rsquo;t responding to any inputs nor is it putting anything out over it :(.</div>
-        </div>
-    </div>
-<!-- markdownlint-disable-file MD002 -->
-<h2 id="zy-m100-s"><code>ZY-M100-S</code></h2>
-<p>AKA &ldquo;the white one&rdquo;. Box content is bare-bones; the USB lead is comically short for almost any &ldquo;mid height on the wall&rdquo; or ceiling installs so i&rsquo;m not really sure what the point was.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>I&rsquo;m not sure why they went with 3 screws here instead of 4. If you&rsquo;re going to omit <em>a</em> screw for cost-cutting reasons, why not just use clips or a single screw in the middle?</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        No, it&#39;s not the camera or the lighting, the text really is that blurry in real life.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>The interior is more or less as expected; two highly integrated modules with a small MCU gluing them together.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>There is some evidence that the Zigbee version of the white sensor supports ambient brightness.
-Based on the two small holes in the enclosure and the PCB markings, I suspect that <code>d2</code> is being used as a light sensor:
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-</p>
-<p>Nothing of interest on the bottom of the PCB:
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Close up of the sensor MCU
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<h3 id="unique-markings">Unique Markings</h3>
-<ul>
-<li>PCB: <code>ZY-M100</code> and <code>V4.20</code></li>
-<li>TuYa radio: <a href="https://developer.tuya.com/en/docs/iot/wbr3-module-datasheet?id=K9dujs2k5nriy" target="_blank" rel="noopener noreffer"><code>WBR3</code></a></li>
-<li>TuYa mcu: <a href="https://www.gigadevice.com/products/microcontrollers/gd32/arm-cortex-m23/value-line/gd32e230-series/" target="_blank" rel="noopener noreffer"><code>GD32E230</code></a></li>
-<li>Radar sensor: <code>JYSJ_5807_A01</code> with an IC marked <code>SJ 501</code>. <del>No results on this one. Please do <a href="/contact/" rel="">get in touch</a> if you do know anything about it. I&rsquo;d love to re-use the sensor in something else!</del></li>
-</ul>
-<div class="details admonition update open">
-        <div class="details-summary admonition-title">
-            <i class="icon fas fa-pencil-alt fa-fw"></i>We have an ID!<i class="details-icon fas fa-angle-right fa-fw"></i>
-        </div>
-        <div class="details-content">
-            <div class="admonition-content"><p>Thanks to the prolific <a href="https://blakadder.com/zy-m100/" target="_blank" rel="noopener noreffer">blakadder.com for bringing it to my attention</a> and <a href="https://community.home-assistant.io/u/crlogic" target="_blank" rel="noopener noreffer">@crlogic</a> from the Home Assistant community forums <a href="https://community.home-assistant.io/t/mmwave-wars-one-sensor-module-to-rule-them-all/453260/73" target="_blank" rel="noopener noreffer">for identifying the module <em>and</em> linking to a datasheet</a>!</p>
-<p>The module is <a href="http://docs.leapmmw.com/%E4%BC%A0%E6%84%9F%E5%99%A8%E4%BA%A7%E5%93%81/%E6%A8%A1%E5%9D%97/module.html" target="_blank" rel="noopener noreffer"><code>Leapmmw 5.8GHz Motion Detection: MD5G20</code></a></p>
-</div>
-        </div>
-    </div>
-<h2 id="the-micradar-rd24d">The <code>MicRadar RD24D</code></h2>
-<p>AKA &ldquo;the black one&rdquo;.</p>
-<p>Like the M100, there&rsquo;s not a ton in the box.</p>
-<p>The rear enclosure has a simple key-hole slot for mounting to a wall or ceiling and the USB power lead is considerably longer than the M100. Somebody did consider that a celling-mounted device might need a long power lead&hellip;</p>
-<p><figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Yes, that is a neo-pixel LEDin the center of the opaque plastic panel.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-</p>
-<p>Same story here: WiFi module and radar sensor both talk to a MCU over UART.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>Nothing remarkable on the bottom of the PCB:
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        They only soldered in one half of the pins connecting the radar sensor to the main PCB. I wonder how much time/money that saved...
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-</p>
-<p>Here&rsquo;s a close up of the business end of the sensor. This one is considerably more sophisticated and complex relative to the white one.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>And a close up of the coordinating MCU</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<!-- markdownlint-disable-file MD024 -->
-<h3 id="unique-markings-1">Unique Markings</h3>
-<ul>
-<li>PCB: <code>V1.01</code></li>
-<li>TuYa radio: <a href="https://developer.tuya.com/en/docs/iot/cb3s?id=Kai94mec0s076" target="_blank" rel="noopener noreffer"><code>CB3S</code></a></li>
-<li>TuYa mcu: <a href="https://www.stcmicro.com/stc/stc8g1k08.html" target="_blank" rel="noopener noreffer">STC 8G1K17</a></li>
-<li>Radar sensor: <code>MicRadar R24D</code>. I can&rsquo;t find a datasheet for the specific module, but it does seem to be part of <a href="https://www.iflabel.com/product/28.html" target="_blank" rel="noopener noreffer">this product family</a>.
-<ul>
-<li>IC1: <code>MicRadar / T15BT / DAT2230</code></li>
-<li>IC2: This above picture isn&rsquo;t the best but the chip is marked with <code>S3KM11L / N46Y80D1 / 2123H</code>. The <a href="https://www.ic37.com/news/2022-3_293564/" target="_blank" rel="noopener noreffer"><em>only</em> google result</a> does not really indicate <em>who</em> makes the chip.</li>
-</ul>
-</li>
-</ul>
-<h2 id="conclusion">Conclusion</h2>
-<p>Neither are going to be quick/easy to convert or otherwise get working with the likes of ESPHome or Tasmota:</p>
-<ul>
-<li>Neither wifi module is an espressif module. At least some re-flow work would be required to replace the modules with an Espressif module.</li>
-<li>There&rsquo;s a MCU sitting between the WiFi module and the actual sensor. Reverse engineering how the TuYa radio talks to the MCU and how the MCU talks to the radar module just isn&rsquo;t worth the time!</li>
-</ul>
-<p>The sensors cost about as much as the bare radar modules themselves so - if you&rsquo;re willing to spend the time to desolder the radar modules - you get an enclosure for &ldquo;free&rdquo;.</p>
 ]]></description></item></channel></rss>

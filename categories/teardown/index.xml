@@ -1,4 +1,149 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>teardown - Category - karl</title><link>https://karlquinsland.com/categories/teardown/</link><description>teardown - Category - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 11 Nov 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/categories/teardown/" rel="self" type="application/rss+xml"/><item><title>ESPHome for Sonoff T5 family of Switches</title><link>https://karlquinsland.com/sonoff-t5-esphome/</link><pubDate>Sat, 11 Nov 2023 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/sonoff-t5-esphome/</guid><description><![CDATA[<h1 id="esphome-for-sonoff-t5-family-of-switches">ESPHome for Sonoff T5 family of Switches</h1>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>teardown - Category - karl</title><link>https://karlquinsland.com/categories/teardown/</link><description>teardown - Category - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 01 Dec 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/categories/teardown/" rel="self" type="application/rss+xml"/><item><title>Inside of the Pulse-Eight HDMI CEC Injector.</title><link>https://karlquinsland.com/pulse-eight-hdmi-cec-injector-teardown/</link><pubDate>Fri, 01 Dec 2023 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/pulse-eight-hdmi-cec-injector-teardown/</guid><description><![CDATA[<h1 id="inside-the-pulse-eight-hdmi-cec-injector">Inside the Pulse-Eight HDMI CEC Injector</h1>
+<p>To make a long store short, Google recently pushed a few updates to my TV that made it slow as all hell and frustratingly unusable.
+I finally got fed up with the laggy UI and dug out an old mini PC and installed <a href="https://libreelec.tv/" target="_blank" rel="noopener noreffer">LibreELEC</a> on it.</p>
+<p>Everything worked perfectly <em>except</em> for the lack of <a href="https://en.wikipedia.org/wiki/Consumer_Electronics_Control" target="_blank" rel="noopener noreffer">CEC</a> support on the mini PC.</p>
+<p>This is a common enough problem that there&rsquo;s a few different devices out there that can add CEC support to a device that doesn&rsquo;t have it.
+I chose the <a href="https://www.pulse-eight.com/p/104/usb-hdmi-cec-adapter" target="_blank" rel="noopener noreffer">Pulse-Eight HDMI CEC Injector</a> because it&rsquo;s natively supported by LibreELEC.</p>
+<p>I was curious what was inside and I couldn&rsquo;t find any teardowns online so I decided to do one myself.
+There&rsquo;s not much to the device and I&rsquo;m not doing any serious reverse engineering here so let&rsquo;s call this a <a href="/tags/two-minute-teardown/" rel="">&ldquo;Two Minute Teardown&rdquo;</a>.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        The device is small and unassuming.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Opening is trivial. No glue or anything. Just a few pins and sockets. Gently pry the two halves apart and you&#39;re in.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>I wasn&rsquo;t expecting much; I thought CEC was implemented via UART and not SPI so I was expecting to see a cheap FTDI knockoff chip or similar.
+Turns out I was wrong and the device uses an <a href="https://www.microchip.com/en-us/product/at90usb162" target="_blank" rel="noopener noreffer">ATMEL 90USB162</a> which is a USB to SPI bridge.
+I haven&rsquo;t looked too closely at the <a href="https://github.com/Pulse-Eight/libcec" target="_blank" rel="noopener noreffer">firmware</a> but I suspect there&rsquo;s some abstraction layer that makes it look like a <a href="#dmesg" rel="">UART</a> to the OS.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Other than a few passives, there&#39;s only one chip on the board.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Nothing interesting other than a programming header.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        The full PCB sans case.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<h2 id="dmesg"><code>dmesg</code></h2>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">usb 5-4.1.2.3.2: new full-speed USB device number <span class="m">2</span> using xhci_hcd
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.3.2: New USB device found, <span class="nv">idVendor</span><span class="o">=</span>2548, <span class="nv">idProduct</span><span class="o">=</span>1002, <span class="nv">bcdDevice</span><span class="o">=</span>10.00
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.3.2: New USB device strings: <span class="nv">Mfr</span><span class="o">=</span>1, <span class="nv">Product</span><span class="o">=</span>2, <span class="nv">SerialNumber</span><span class="o">=</span><span class="m">3</span>
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.3.2: Product: CEC Adapter
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.3.2: Manufacturer: Pulse-Eight
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.3.2: SerialNumber: v12
+</span></span><span class="line"><span class="cl">input: Pulse-Eight CEC Adapter as /devices/pci0000:00/0000:00:08.1/0000:0d:00.3/usb5/5-4/5-4.1/5-4.1.2/5-4.1.2.3/5-4.1.2.3.2/5-4.1.2.3.2:1.2/0003:2548:1002.0102/input/input195
+</span></span><span class="line"><span class="cl">hid-generic 0003:2548:1002.0102: input,hidraw10: USB HID v1.10 Mouse <span class="o">[</span>Pulse-Eight CEC Adapter<span class="o">]</span> on usb-0000:0d:00.3-4.1.2.3.2/input2
+</span></span><span class="line"><span class="cl">cdc_acm 5-4.1.2.3.2:1.0: ttyACM0: USB ACM device
+</span></span><span class="line"><span class="cl">usbcore: registered new interface driver cdc_acm
+</span></span><span class="line"><span class="cl">cdc_acm: USB Abstract Control Model driver <span class="k">for</span> USB modems and ISDN adapters
+</span></span></code></pre></td></tr></table>
+</div>
+</div>]]></description></item><item><title>ESPHome for Sonoff T5 family of Switches</title><link>https://karlquinsland.com/sonoff-t5-esphome/</link><pubDate>Sat, 11 Nov 2023 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/sonoff-t5-esphome/</guid><description><![CDATA[<h1 id="esphome-for-sonoff-t5-family-of-switches">ESPHome for Sonoff T5 family of Switches</h1>
 <p>It&rsquo;s hard to beat Sonoff switches when it comes to well-made, affordable, Home Assistant compatible switches.
 Ever since they announced the <a href="https://sonoff.tech/product/smart-wall-switches/tx-ultimate/" target="_blank" rel="noopener noreffer">T5 series</a>, I&rsquo;ve been patiently waiting for the US variant to become available so I could replace my M5 switches with T5 switches.</p>
 <p>Don&rsquo;t get me wrong, the M5 switches are great&hellip; but <a href="#t5-improvements-over-m5" rel="">not perfect</a>.</p>
@@ -9309,213 +9454,4 @@ You can also place an order directly with Lanbon for units that do not have the 
 <p>Daughter / &lsquo;power&rsquo; board <code>L8-HS MB V1,14</code></p>
 </li>
 </ul>
-]]></description></item><item><title>Generic RGB Wall Switch teardown</title><link>https://karlquinsland.com/rgb-wall-switch-teardown/</link><pubDate>Sat, 01 Jan 2022 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/rgb-wall-switch-teardown/</guid><description><![CDATA[<p>Yep! Another teardown post! This one was also a cheap &ldquo;because i&rsquo;m curious&rdquo; post.</p>
-<hr>
-<h1 id="what">What</h1>
-<p>It&rsquo;s a &lsquo;decora&rsquo; style wall switch with WiFI and an RGB color changing paddle.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>The product listing was very non specific:</p>
-<blockquote>
-<p>EU US WiFi Smart Wall Switch Push Button Timer Relay Switch Voice Remote Control RGB LED Night Light Lamp TUYA Alexa Google Home</p>
-</blockquote>
-<p>I saw <code>TuYa</code> in the item description and hoped that it would be based on an ESP8266 module or at least use a pin-compatible module. After all, there are a few such devices on the <a href="https://templates.blakadder.com/switch.html" target="_blank" rel="noopener noreffer">Wall Switches and Dimmers section</a> of the tasmota templates repository.</p>
-<h2 id="teardown">Teardown</h2>
-<p>Almost immediately after opening it became clear: the item is a variant of the <a href="https://templates.blakadder.com/moko_SSMS118-01AI.html" target="_blank" rel="noopener noreffer"><code>SSMS118-01AI</code></a> switch.</p>
-<p>Other than that, the internals are pretty predictable / standard.</p>
-<p>From the side you can see plastic clips holding the paddle to the Aluminum substrate.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>No screws on the back, so we probably open it from the front.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Not sure about how code compliant those wire terminal/lugs are.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>If the paddle was removed, the philips screws would be unobstructed.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>RGB leds on a thin PCB with a reflective sticker attached. The sticker probably makes the LEDs appear brighter.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>Philips screws removed and the switch immediately splits in half. I wish everything was this easy to get into!</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>Almost textbook design at this point; keep the mains voltage on it&rsquo;s own PCB and only send back low voltage / signal to the controller PCB.</p>
-<p>The mains PCB attaches to the controller PCB via 3 sets of three male/female pin headers along the top and bottom of the left edge and one side of the right edge.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>Sparsely populated and a generic no-name relay. But at least there&rsquo;s a fuse!</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>Mains PCB is marked <code>HYS-00-004-MAIN_V1.1</code> with a datecode of <code>2019-5-7</code>.</p>
-<p>Equally sparse controller PCB. Aside from the <em>massive</em> mechanical switch and the three transistors for the RGB leds, everything lives on the ESP module.
-At first glance, the module looks like a standard ESP-12&hellip; but it isn&rsquo;t! There are 6 pins on each of the three edges, not the 8 that would be present on an ESP-12 module.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>Controller PCB is marked <code>HYS-00-004-WIFI_V1.1</code> with a datecode of <code>2019-4-11</code>.</p>
-<p>After a bit of reverse image searching, the ESP based module appears to be a WT8266-S1s. The datasheet can be found <a href="https://www.seeedstudio.com/document/word/WT8266-S1%20DataSheet%20V1.0.pdf" target="_blank" rel="noopener noreffer">here</a>.</p>
-<p>To save you a click, here&rsquo;s the useful bit:</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>I checked a few of the pins listed on the  <a href="https://templates.blakadder.com/moko_SSMS118-01AI.html" target="_blank" rel="noopener noreffer"><code>SSMS118-01AI template</code></a> switch and they appeared to match the PCB shown above.</p>
-<p>Thats all for this one!</p>
 ]]></description></item></channel></rss>
