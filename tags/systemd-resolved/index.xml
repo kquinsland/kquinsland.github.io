@@ -7,6 +7,6 @@
 <li>Tell <a href="https://www.freedesktop.org/software/systemd/man/systemd-resolved.service.html" target="_blank" rel="noopener noreffer"><code>systemd-resolved</code></a> that all hostnames with the <code>.consul</code> TLD can be resolved via a DNS server on this local interface</li>
 </ul>
 <p>No need to disable <code>resolved</code> and replace it with dnsmasq &#x1f604;</p>
-<script type="application/javascript" src="https://gist.github.com/kquinsland/5cdc63614a581d9b392f435740b58729.js"></script>
+<script src="https://gist.github.com/kquinsland/5cdc63614a581d9b392f435740b58729.js"></script>
 
 ]]></description></item></channel></rss>

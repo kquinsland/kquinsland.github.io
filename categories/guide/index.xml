@@ -367,8 +367,7 @@ Here is a simple automation that watches a basic number input widget and sets th
 <ul>
 <li>The json payload has been escaped and turned into a string</li>
 <li>The templates inside the string are <a href="https://community.home-assistant.io/t/how-can-i-use-escape-characters-while-templating/135324" target="_blank" rel="noopener noreffer"><em>further</em> escaped</a> by wrapping them in <code>{{ '</code> and <code>'}}</code>.</li>
-</ul>
-</div>
+</ul></div>
         </div>
     </div>
 <p>Here is a pretty formatted JSON document:</p>

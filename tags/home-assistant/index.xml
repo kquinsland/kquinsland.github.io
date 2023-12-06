@@ -3805,6 +3805,17 @@ I chose this generic looking relay module from AliExpress because it was powered
 <p><strong>N.O.P.E.</strong></p>
 <p>This post is a super condensed version of my notes that I&rsquo;m posting in the off chance that they&rsquo;re useful for somebody else.</p>
 <h2 id="esp32-secure-boot">ESP32 Secure Boot</h2>
+<div class="details admonition success open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-check-circle fa-fw"></i>Update: 2023.12<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>I needed a few more of these modules for another project and before placing my order, I asked about the possibility of getting an &ldquo;empty&rdquo; module shipped with no firmware protections set.</p>
+<p>The seller told me to place my order and then message them with the order number and a note asking to <code>send relay board with test firmware</code>.</p>
+<p>I did just that and a little over two weeks later, I received a module with no protections set!</p>
+</div>
+        </div>
+    </div>
 <p>No matter what I did to flash the ESP32 module, it would always boot loop with output like this:</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -3814,10 +3825,10 @@ I chose this generic looking relay module from AliExpress because it was powered
 </span><span class="lnt">4
 </span></code></pre></td>
 <td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="n">rst</span><span class="p">:</span><span class="mh">0x1</span> <span class="p">(</span><span class="n">POWERON_RESET</span><span class="p">),</span><span class="n">boot</span><span class="p">:</span><span class="mh">0x7</span> <span class="p">(</span><span class="n">DOWNLOAD_BOOT</span><span class="p">(</span><span class="n">UART0</span><span class="o">/</span><span class="n">UART1</span><span class="o">/</span><span class="n">SDIO_REI_REO_V2</span><span class="p">))</span><span class="err">␍␊</span>
-</span></span><span class="line"><span class="cl"><span class="n">waiting</span> <span class="k">for</span> <span class="n">download</span><span class="err">␍␊</span>
-</span></span><span class="line"><span class="cl"><span class="o">&lt;</span><span class="k">break</span><span class="o">&gt;</span>
-</span></span><span class="line"><span class="cl"><span class="o">&lt;</span><span class="mh">0xff</span><span class="o">&gt;</span><span class="n">ets</span> <span class="n">Jun</span>  <span class="mi">8</span> <span class="mi">2016</span> <span class="mi">00</span><span class="p">:</span><span class="mi">22</span><span class="p">:</span><span class="mi">57</span><span class="err">␍␊</span>
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">rst:0x1 (POWERON_RESET),boot:0x7 (DOWNLOAD_BOOT(UART0/UART1/SDIO_REI_REO_V2))␍␊
+</span></span><span class="line"><span class="cl">waiting for download␍␊
+</span></span><span class="line"><span class="cl">&lt;break&gt;
+</span></span><span class="line"><span class="cl">&lt;0xff&gt;ets Jun  8 2016 00:22:57␍␊
 </span></span></code></pre></td></tr></table>
 </div>
 </div><p>I knew that I didn&rsquo;t brick anything because the ESP would boot right up as soon as i re-flashed the original dump.</p>
@@ -7160,8 +7171,7 @@ Here is a simple automation that watches a basic number input widget and sets th
 <ul>
 <li>The json payload has been escaped and turned into a string</li>
 <li>The templates inside the string are <a href="https://community.home-assistant.io/t/how-can-i-use-escape-characters-while-templating/135324" target="_blank" rel="noopener noreffer"><em>further</em> escaped</a> by wrapping them in <code>{{ '</code> and <code>'}}</code>.</li>
-</ul>
-</div>
+</ul></div>
         </div>
     </div>
 <p>Here is a pretty formatted JSON document:</p>

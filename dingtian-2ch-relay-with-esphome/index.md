@@ -20,9 +20,18 @@ This post is a super condensed version of my notes that I'm posting in the off c
 
 ## ESP32 Secure Boot
 
+{{< admonition success "Update: 2023.12" >}}
+
+I needed a few more of these modules for another project and before placing my order, I asked about the possibility of getting an "empty" module shipped with no firmware protections set.
+
+The seller told me to place my order and then message them with the order number and a note asking to `send relay board with test firmware`.
+
+I did just that and a little over two weeks later, I received a module with no protections set!
+{{< /admonition >}}
+
 No matter what I did to flash the ESP32 module, it would always boot loop with output like this:
 
-```
+```text
 rst:0x1 (POWERON_RESET),boot:0x7 (DOWNLOAD_BOOT(UART0/UART1/SDIO_REI_REO_V2))␍␊
 waiting for download␍␊
 <break>
