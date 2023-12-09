@@ -1,4 +1,1170 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>teardown - Category - karl</title><link>https://karlquinsland.com/categories/teardown/</link><description>teardown - Category - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 01 Dec 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/categories/teardown/" rel="self" type="application/rss+xml"/><item><title>Inside of the Pulse-Eight HDMI CEC Injector.</title><link>https://karlquinsland.com/pulse-eight-hdmi-cec-injector-teardown/</link><pubDate>Fri, 01 Dec 2023 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/pulse-eight-hdmi-cec-injector-teardown/</guid><description><![CDATA[<h1 id="inside-the-pulse-eight-hdmi-cec-injector">Inside the Pulse-Eight HDMI CEC Injector</h1>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>teardown - Category - karl</title><link>https://karlquinsland.com/categories/teardown/</link><description>teardown - Category - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 02 Dec 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/categories/teardown/" rel="self" type="application/rss+xml"/><item><title>Altinex TE460-137 Teardown</title><link>https://karlquinsland.com/altinex-te460-137-teardown/</link><pubDate>Sat, 02 Dec 2023 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/altinex-te460-137-teardown/</guid><description><![CDATA[<h1 id="altinex-te460-137-teardown">Altinex TE460-137 Teardown</h1>
+<p>It is surprisingly hard to find a device that can dump details about the various protocols and negotiated standards for a HDMI connection.
+For how ubiquitous HDMI is, you&rsquo;d <em>think</em> that there would be a lot of devices that can do this.
+There are LOADS of devices that can snoop USB and Ethernet, but HDMI is a bit of a different beast, apparently.</p>
+<p>After a bit of searching, I found the <a href="https://www.altinex.com/product/te460-137/" target="_blank" rel="noopener noreffer">Altinex TE460-137</a> could do exactly what I wanted.</p>
+<p>Like the <a href="/pulse-eight-hdmi-cec-injector-teardown/" rel="">HDMI CEC dongle</a> this device is a bit specialized and so there&rsquo;s not a lot of readily available information about it online.
+I was curious about what&rsquo;s inside and how it works, so I decided to take a look.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Front of the device.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<h2 id="magnuson-moss-warranty-act">Magnuson-Moss Warranty Act</h2>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        The case split open.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>Notice that pierced <code>Warranty void if removed</code> sticker over the bottom right screw?
+Yeah, that&rsquo;s <a href="https://www.npr.org/sections/thetwo-way/2018/04/11/601582169/warranty-void-if-removed-as-it-turns-out-feds-say-those-warnings-are-illegal" target="_blank" rel="noopener noreffer"><strong>illegal</strong></a>.
+Naturally, companies don&rsquo;t want you to know that the sticker is <a href="https://www.ifixit.com/News/15464/warranty-voiding-stickers-are-illegal-but-these-companies-are-still-using-them" target="_blank" rel="noopener noreffer">unenforceable</a>.</p>
+<p>Consider this a small <a href="https://www.ifixit.com/News/11748/warranty-stickers-are-illegal" target="_blank" rel="noopener noreffer">PSA</a>: if you see a sticker like this, you can safely ignore it.
+The company <em>cannot</em> void your warranty for removing it but they absolutely can make your life difficult if you do.
+If you get pushback, direct them to the <a href="https://www.ftc.gov/business-guidance/resources/businesspersons-guide-federal-warranty-law" target="_blank" rel="noopener noreffer">FTC&rsquo;s official statement</a> on the matter.</p>
+<p>Anyways.</p>
+<h2 id="quick-peek-inside">Quick peek Inside</h2>
+<p>After removing the four screws, the case splits open easily enough.
+The construction is a bit more elaborate than expected; there&rsquo;s a main PCB, a control PCB, and a battery interface PCB.</p>
+<p>I was in a hurry so the photos are &ldquo;as-is&rdquo; and not my best work.
+I&rsquo;ve <a href="#chips-and-other-markings" rel="">noted down the markings on the chips</a> and other components for future reference.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Internals feature three PCBs.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>If the battery ever does leak, the entire PCB assembly can be removed and replaced.
+It also shouldn&rsquo;t be that difficult to just modify the battery interface PCB to use a different battery.
+The thermistor is a nice touch!</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Rear of the battery interface PCB.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>Taking a quick look at the control PCB, we can see a few big ICs&hellip;
+The populated JTAG header is an interesting find.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Top of the control PCB.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>There&rsquo;s not much on the rear of the control PCB:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Bottom of the control PCB.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>Nor is there much on the side of the PCB just behind the OLED screen / front panel.
+Oddly enough, each button gets <em>two</em> sets of contacts&hellip;</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        The side of the main PCB that faces the user from within.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>And there&rsquo;s nothing interesting on the &lsquo;internal&rsquo; side of the front panel:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Interior of the front panel features button matrix and OLED.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<h2 id="some-technical-details">Some Technical Details</h2>
+<p>If you catch the device early enough in boot, you can see the panasonic HDMI switch chip enumerating in it&rsquo;s default state.
+Don&rsquo;t ask me where the 2% overscan comes from&hellip;</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        The default EDID info doesn&#39;t last long; as soon as the device is powered on, it tries to read the EDID from the connected sink and use that.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<h3 id="chips-and-other-markings">Chips and other markings</h3>
+<h4 id="control-pcb">Control PCB</h4>
+<ul>
+<li>The main application processor is the <a href="https://www.nxp.com/part/LPC1830FET100#/" target="_blank" rel="noopener noreffer">NXP LPC1830FET100</a>.</li>
+<li>It seems like all audio is handled by the <a href="https://www.analog.com/en/products/adau1701.html" target="_blank" rel="noopener noreffer">Analog Devices ADAU1701</a>.</li>
+</ul>
+<p>Oddly enough there are <em>two</em> flash chips here. Presumably firmware storage for the  NXP and Analog Devices chips.</p>
+<ul>
+<li><a href="https://www.winbond.com/hq/product/code-storage-flash-memory/serial-nor-flash/?__locale=en&amp;partNo=W25Q32JV" target="_blank" rel="noopener noreffer">Winbond 25Q32JV</a></li>
+<li><a href="https://www.microchip.com/en-us/product/24lc128" target="_blank" rel="noopener noreffer">Microchip 24LC128I</a></li>
+</ul>
+<p>I didn&rsquo;t bother dumping either, but Altinex does make an older version of the firmware <a href="#firmware" rel="">available</a>.</p>
+<h3 id="main-pcb">Main PCB</h3>
+<p>The big QFP144 chip on the main PCB is a <a href="https://panasonic.encompass.com/item/10292549/Panasonic/MN864788/" target="_blank" rel="noopener noreffer">Panasonic MN864788</a>.
+I can&rsquo;t find a data sheet, but one <a href="https://stesys.eu/ocart/index.php?route=product/product&amp;manufacturer_id=135&amp;product_id=2544&amp;limit=75" target="_blank" rel="noopener noreffer">supplier has labeled it</a> a &ldquo;HDMI 2.0 Receiver/Switch&rdquo;.
+Given the proximity to the two HDMI ports &hellip; this makes sense.</p>
+<h3 id="dmesg"><code>dmesg</code></h3>
+<p>For thoroughness, here&rsquo;s how the device enumerates over USB when plugged in when configured in RS-232 mode:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">usb 5-4.1.2.2: new full-speed USB device number <span class="m">91</span> using xhci_hcd
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: New USB device found, <span class="nv">idVendor</span><span class="o">=</span>04e2, <span class="nv">idProduct</span><span class="o">=</span>1411, <span class="nv">bcdDevice</span><span class="o">=</span> 0.01
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: New USB device strings: <span class="nv">Mfr</span><span class="o">=</span>1, <span class="nv">Product</span><span class="o">=</span>2, <span class="nv">SerialNumber</span><span class="o">=</span><span class="m">3</span>
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: Product: XR21B1411
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: Manufacturer: Exar Corp.
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: SerialNumber: Q9065270561
+</span></span><span class="line"><span class="cl">usbcore: registered new interface driver xr_serial
+</span></span><span class="line"><span class="cl">usbserial: USB Serial support registered <span class="k">for</span> xr_serial
+</span></span><span class="line"><span class="cl">xr_serial 5-4.1.2.2:1.0: xr_serial converter detected
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: xr_serial converter now attached to ttyUSB0
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>And when in FW update mode:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">usb 5-4.1.2.2: new high-speed USB device number <span class="m">92</span> using xhci_hcd
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: config <span class="m">1</span> interface <span class="m">0</span> altsetting <span class="m">0</span> bulk endpoint 0x83 has invalid maxpacket <span class="m">64</span>
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: config <span class="m">1</span> interface <span class="m">0</span> altsetting <span class="m">0</span> bulk endpoint 0x2 has invalid maxpacket <span class="m">64</span>
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: New USB device found, <span class="nv">idVendor</span><span class="o">=</span>1fc9, <span class="nv">idProduct</span><span class="o">=</span>8001, <span class="nv">bcdDevice</span><span class="o">=</span> 1.00
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: New USB device strings: <span class="nv">Mfr</span><span class="o">=</span>1, <span class="nv">Product</span><span class="o">=</span>2, <span class="nv">SerialNumber</span><span class="o">=</span><span class="m">0</span>
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: Product: USB Mass Storage            
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: Manufacturer: USB
+</span></span><span class="line"><span class="cl">usb-storage 5-4.1.2.2:1.0: USB Mass Storage device detected
+</span></span><span class="line"><span class="cl">scsi host4: usb-storage 5-4.1.2.2:1.0
+</span></span><span class="line"><span class="cl">scsi 4:0:0:0: Direct-Access     NXP      Dataflash Disk   0.00 PQ: <span class="m">0</span> ANSI: <span class="m">0</span>
+</span></span><span class="line"><span class="cl">sd 4:0:0:0: <span class="o">[</span>sda<span class="o">]</span> <span class="m">3968</span> 512-byte logical blocks: <span class="o">(</span>2.03 MB/1.94 MiB<span class="o">)</span>
+</span></span><span class="line"><span class="cl">sd 4:0:0:0: <span class="o">[</span>sda<span class="o">]</span> Write Protect is off
+</span></span><span class="line"><span class="cl">sd 4:0:0:0: <span class="o">[</span>sda<span class="o">]</span> Mode Sense: <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>
+</span></span><span class="line"><span class="cl">sd 4:0:0:0: <span class="o">[</span>sda<span class="o">]</span> Asking <span class="k">for</span> cache data failed
+</span></span><span class="line"><span class="cl">sd 4:0:0:0: <span class="o">[</span>sda<span class="o">]</span> Assuming drive cache: write through
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: reset high-speed USB device number <span class="m">92</span> using xhci_hcd
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: device descriptor read/64, error -110
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="firmware">Firmware</h3>
+<div class="details admonition note open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-pencil-alt fa-fw"></i>Note<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>The device ships with FW 3.06A/R3.</p>
+<p>Their <a href="https://www.altinex.com/download/te460-137-firmware-update-v-3-04a-easy-mode/" target="_blank" rel="noopener noreffer">website</a> only have 3.04 available.</p>
+</div>
+        </div>
+    </div>
+]]></description></item><item><title>AliExpress 11.11 Sale Teardowns</title><link>https://karlquinsland.com/aliexpress-11-11-sale-teardowns/</link><pubDate>Fri, 01 Dec 2023 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/aliexpress-11-11-sale-teardowns/</guid><description><![CDATA[<!-- markdownlint-disable-file MD024 -->
+<h1 id="11-11-day-teardowns">11-11 day teardowns</h1>
+<p><a href="https://en.wikipedia.org/wiki/Singles%27_Day" target="_blank" rel="noopener noreffer">Single&rsquo;s Day</a> is a big deal in China and AliExpress has a big sale in celebration.</p>
+<p>In addition to project supplies, I found quite a few items that can only be classified as  &ldquo;ohh, that looks interesting and I need another $11 in the cart to unlock free shipping&hellip;&rdquo; items.</p>
+<p>I was planing on doing a series of posts covering some of the stuff I bought but nothing on it&rsquo;s own was really &ldquo;worth&rdquo; a full post so instead of a bunch of short <a href="/tags/two-minute-teardown/" rel="">&ldquo;Two Minute Teardown&rdquo;</a> posts, I decided to just roll everything into this massive post.</p>
+<p>And with that, here&rsquo;s a whole grab bag of worth of #TwoMinuteTeardowns with the appropriate level of detail for each item.</p>
+<h2 id="super-cheap-airtag">Super cheap &lsquo;AirTag&rsquo;</h2>
+<p>Product in question: <a href="https://www.aliexpress.us/item/3256804801453934.html?gatewayAdapt=glo2usa" target="_blank" rel="noopener noreffer">Mini Tracker Bluetooth4.0 Smart Locator Smart Anti Lost Device Locator Mobile Keys Pet Kids Finder For Apple</a></p>
+<p>This was a mistake on my part.
+I saw a BTLE powered device tracker shaped and styled exactly like an air tag for <strong>$5 shipped</strong> and thought &ldquo;why not?&rdquo;
+One good reason why not: it&rsquo;s not compatible with Apple&rsquo;s Find My network.</p>
+<p>In hindsight, if it was only $5 and if it worked &rsquo;natively&rsquo; with apple devices&hellip; I&rsquo;d have heard about it before browsing Ali Express!</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<h3 id="markings-and-other-details">Markings and other details</h3>
+<p>The main CPU appears to be a <a href="https://www.lenzetech.com/public/store/pdf/jsggs/ST17H66B2_BLE_SoC_Datasheet_v1.1.2.pdf" target="_blank" rel="noopener noreffer">Lenze Tech ST17H66B</a></p>
+<p>The instructions point to an <a href="https://www.qrtransfer.com/iSearching.html" target="_blank" rel="noopener noreffer"><code>iSearching</code> app</a>
+I didn&rsquo;t bother installing it, here&rsquo;s what a quick scan of the BTLE characteristics shows quite a few services and characteristics:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<h2 id="tuya-wifi-power-monitor">TuYa WiFi Power Monitor</h2>
+<p>Product in question: <a href="https://s.click.aliexpress.com/e/_mNLeK44" target="_blank" rel="noopener noreffer">16A Tuya WIFI Smart Socket AC220V 110V Digital Wattmeter EU Plug Electricity consumption Power KWH US AU FR Power Energy Meter</a></p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>TuYa module doesn&rsquo;t seem to be running the show; most of the pads are not connected; only the UART pins seem to be going somewhere.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>A bit more going on than you&rsquo;d expect at first; I was expecting a simple Switch Mode power supply driver for DC and then a single MCU to do everything but the WiFi.
+Not so!
+There&rsquo;s a dedicated chip for power monitoring, BT, Power supply, and the main MCU&hellip;</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<h3 id="markings-and-other-details-1">Markings and other details</h3>
+<ul>
+<li>
+<p><a href="https://en.sekorm.com/doc/2232723.html" target="_blank" rel="noopener noreffer">KP3211BSG</a></p>
+</li>
+<li>
+<p><a href="https://www.wch-ic.com/products/CH573.html" target="_blank" rel="noopener noreffer">CH573F</a></p>
+</li>
+<li>
+<p><a href="https://www.aliexpress.us/item/2255799832871961.html?gatewayAdapt=glo2usa4itemAdapt" target="_blank" rel="noopener noreffer">GMT024-01</a></p>
+</li>
+<li>
+<p><a href="https://developer.tuya.com/en/docs/iot/cb3s?id=Kai94mec0s076" target="_blank" rel="noopener noreffer">TuYa CBS3 module</a></p>
+</li>
+<li>
+<p><a href="https://www.lcsc.com/product-detail/Energy-Metering-ICs_BL-Shanghai-Belling-BL0942_C2837510.html" target="_blank" rel="noopener noreffer">BL0942</a></p>
+</li>
+<li>
+<p><code>BP0S229-28A2</code>: This is the same chip that shows up in the <a href="#pet-rfid-tag-reader" rel="">pet RFID reader</a> and I cant&rsquo; find an exact match for it.</p>
+</li>
+<li>
+<p>LCD is marked <code>AVDD AVCL</code> which seems to be pretty generic</p>
+</li>
+</ul>
+<h2 id="tuya-wifi-air-quality-monitor">TuYa WiFi Air Quality Monitor</h2>
+<p>Product in question: <a href="https://s.click.aliexpress.com/e/_mPXVCDO" target="_blank" rel="noopener noreffer">Tuya Wifi Portable Air Quality Meter 8in1 PM1.0 PM2.5 PM10 CO2 TVOC HCHO Temperature and Humidity Tester Carbon Dioxide Detector</a></p>
+<p>Unfortunately you have to peel off the screen cover to get access to the screws.
+At least they&rsquo;re just regular philips screws and not some weird security screws.</p>
+<p>Interesting to see the IR sensor at the top. Presumably this is for proximity sensing to turn the screen on and off and not some kind of IR blaster or remote control.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Makes sense that the various sensors would be facing the vents holes.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Looks like it&rsquo;s using a micro controller to do the heavy lifting and only communicate to the TuYa module via UART.
+This is a common and well-supported pattern for these kinds of devices &hellip; even if it does mean that it won&rsquo;t be <em>trivial</em> to just replace the TuYa module with an ESPHome or Tasmota compatible module.</p>
+<p>Sniffing the UART shouldn&rsquo;t be that difficult but it&rsquo;s not something I&rsquo;m going to do in this post.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>The various sensors aren&rsquo;t easily removed or clearly identified so your guess is as good as mine.
+The main PCB has a few unpopulated connections so this module either works with a different suite of sensors or - more likely - supports a few different footprints for each sensor.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<h3 id="markings-and-other-details-2">Markings and other details</h3>
+<ul>
+<li>Main MCU: FMD B2CACSK. I can&rsquo;t find <em>anything</em> on this chip.</li>
+<li>TuYa module: <a href="https://developer.tuya.com/en/docs/iot/cbu-module-datasheet?id=Ka07pykl5dk4u" target="_blank" rel="noopener noreffer">CBU</a></li>
+</ul>
+<p>PCB is marked with:</p>
+<pre><code>PV28_TFT_v3
+2022/10/25
+</code></pre>
+<p>Screen is marked with:</p>
+<pre><code>LY028S24256
+</code></pre>
+<h2 id="waveshare-poe-rs232485422-adapter">WaveShare PoE RS232/485/422 adapter</h2>
+<p>Product in question: <a href="https://s.click.aliexpress.com/e/_mPR1X7e" target="_blank" rel="noopener noreffer">with POE optional Modbus MQTT JSON serial server RS485 RS232 RS422 to Ethernet TCP/IP to serial converter</a>.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p><a href="https://electronics.stackexchange.com/questions/413295/rs485-termination" target="_blank" rel="noopener noreffer">Line termination resistors</a> that can be switched  in/out via jumpers is a very nice touch!</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Neat and clean PCB layout with adequate protections on the RS485/422/232 lines.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Unfortunately the main MCU has it&rsquo;s markings lasered off so your guess is as good as mine.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<h3 id="markings-and-other-details-3">Markings and other details</h3>
+<p>All the RS485/422/232 seems to be done with Sipex/MaxLinear chips:</p>
+<ul>
+<li>
+<p>RS484/422 via <a href="https://assets.maxlinear.com/web/documents/sipex/datasheets/sp483e.pdf" target="_blank" rel="noopener noreffer">MaxLinear SP483E</a></p>
+</li>
+<li>
+<p>RS232 via <a href="https://assets.maxlinear.com/web/documents/sipex/datasheets/sp3222e_sp3232e.pdf" target="_blank" rel="noopener noreffer">Max Linear (Sipex) SP3222E</a>.</p>
+</li>
+<li>
+<p>Isolation between PoE and Comms via <a href="https://www.aliexpress.us/item/3256804720041549.html?gatewayAdapt=glo2usa4itemAdapt" target="_blank" rel="noopener noreffer">2PAI SEMI 141E61</a></p>
+</li>
+</ul>
+<p>There&rsquo;s also a few Diodes Inc. chips on the board:</p>
+<ul>
+<li>
+<p>PoE rectification via <a href="https://www.diodes.com/assets/Datasheets/MB10F.pdf" target="_blank" rel="noopener noreffer">Diodes Incorporated MB10F</a></p>
+</li>
+<li>
+<p>PoE power switching via <a href="https://www.diodes.com/assets/Datasheets/SBR8U60P5.pdf" target="_blank" rel="noopener noreffer">Diodes Incorporated SBR8U60P5</a></p>
+</li>
+</ul>
+<p>PoE negotiation via <a href="https://www.silan.com.cn/en/index.php/product/details/3145.html" target="_blank" rel="noopener noreffer">Silan SD4950</a></p>
+<h2 id="asometech-wlx-x69-usb-c-power-brick">Asometech WLX-X69 USB-C power brick</h2>
+<p>Product in question: <a href="https://s.click.aliexpress.com/e/_mPlQZcs" target="_blank" rel="noopener noreffer">140W 6 Ports PD Fast Charger 30W Multi USB-C Fast Charging Station with LED Display for IPhone 14 13 Pro Max Samsung Xiaomi lpad</a></p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>The mirror finish &hellip; is certainly a choice.
+It gets better once you remove the protective film, at least.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>There are no screws holding the case together; just pry the back panel off, slide out the power supply and you can access the front PCB that does the actual USB-C power negotiations.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>I am 100% sure that this power supply was originally designed for something else.
+One of the original leads was cut off before the power supply was re-purposed.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>After removing the power distribution board from the case, it&rsquo;s quite clean!
+It would also be trivial to use this board in other projects 🤔.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Single CPU to run the show and a USB-C power negotiation chip per port.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Too much glue keeping everything the power supply together for me to bother taking it apart further.
+It&rsquo;s got some heft to it but I&rsquo;m not able to easily check out quality of transformer or other components.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<h3 id="markings-and-other-details-4">Markings and other details</h3>
+<ul>
+<li>Main CPU is marked <code>FMD A3JMLTH</code> but I can&rsquo;t find any information on it.</li>
+<li>USB-C PD negotiations handled with <a href="https://www.ismartware.com/upload/admin/20210312/202103121815173213.pdf" target="_blank" rel="noopener noreffer">ZHUHAI ISMARTWARE TECHNOLOGY SW3526</a></li>
+</ul>
+<h2 id="pet-rfid-tag-reader">Pet RFID tag reader</h2>
+<p>Product in question: <a href="https://s.click.aliexpress.com/e/_mrfMB5i" target="_blank" rel="noopener noreffer">134.2Khz RFID Animal Tag Reader Handheld Pet Microchip Scanner IISO11784/85/FDX-B/EMID Data Storage Microchip For Pet/Dog/Cat/Pig</a></p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Not much on the back of the PCB: just a beeper and generic battery management IC.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>I honestly thought this would be more integrated.
+Instead there&rsquo;s quite a few chips on the board.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<h3 id="markings-and-other-details-5">Markings and other details</h3>
+<ul>
+<li>
+<p><a href="https://www.microchip.com/en-us/product/mcp602" target="_blank" rel="noopener noreffer">Microchip MCP602</a>: OpAmp, likely used for processing the signal from the antenna.</p>
+</li>
+<li>
+<p><a href="https://datasheetspdf.com/datasheet/XN297.html" target="_blank" rel="noopener noreffer">Panchip XN297L8W</a>: 2.4 ghz radio</p>
+</li>
+<li>
+<p><code>MT00606XA</code>: I can&rsquo;t find any information on this chip.</p>
+</li>
+<li>
+<p><code>BP0S229-28A2</code>: A chip from <a href="https://www.zh-jieli.com/" target="_blank" rel="noopener noreffer">Zhuhai Jieli Technology</a> that I can&rsquo;t seem to 100% identify.
+The markings match the same chip that showed up in the <a href="#tuya-wifi-power-monitor" rel="">power monitor</a> above.
+The power monitor has both WiFi and Bluetooth so it&rsquo;s not a stretch to think that this chip is Bluetooth connectivity.</p>
+</li>
+</ul>
+<p>PCB is marked <code>W90A-V1.9</code></p>
+<h2 id="atk-ptdp100-dc-power-supply">ATK-PTDP100 DC Power Supply</h2>
+<p>Product in question: <a href="https://s.click.aliexpress.com/e/_mOfFkQY" target="_blank" rel="noopener noreffer">DP100 DC Power Supply Adjustable Digital DC Power Supply MINI Portable Lab Source Power Supply Voltage Regulator Switch 30V 5A</a></p>
+<p>This is nothing more than a desk-friendly version of the <a href="/electronics-lab-enhanced-bench-psu/" rel="">RD6006</a> power supply and it&rsquo;s amazing.</p>
+<p>Here&rsquo;s everything that came in the box:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>It shipped with this power supply and a barrel jack to USB-C adapter&hellip; because the DP100 actually expects its power to come <em>from</em> a USB-C/PD capable source.
+It&rsquo;ll be trivial to use this power supply with a USB-C power bank.
+It - annoyingly - has a USB-A <strong><em>male</em></strong> port for data logging / firmware updates.
+At least they included a Male &lt;-&gt; Male USB A cable&hellip;
+I would have preferred two USB-C ports with clear labeling about which was meant for PD input and which was meant for PC communications.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>For reference, the power supply is pretty beefy:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Terminals are compact but decently high quality.
+The little red and black rubber bands are a nice touch.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Annoying security torx screws under the rubber feet.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Screen is a bit cramped and navigation is a bit clunky but once you get used to it, it&rsquo;s not bad.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>After removing the screws and prying the case apart, it&rsquo;s quite clean inside.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Main CPU next to some unpopulated pin headers and some loctite screwing the PCB to the terminals.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>On the other side of the PCB is a metal can with all the fun power conversion stuff.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>They&rsquo;re doing a <a href="https://www.allaboutcircuits.com/textbook/direct-current/chpt-8/kelvin-resistance-measurement/" target="_blank" rel="noopener noreffer">4 wire measurement</a> at the terminals via a small secondary PCB.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>And after removing the can, it&rsquo;s just a bunch of filter caps and an inductor.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<h3 id="markings-and-other-details-6">Markings and other details</h3>
+<p>Unfortunately most of the ICs didn&rsquo;t photograph well or otherwise have scratched / obscured markings.
+Most of the power switching ICs <em>look</em> like they&rsquo;re from Monolithic Power Systems but I can&rsquo;t confirm exactly.</p>
+<p><a href="https://www.lcsc.com/product-detail/USB-ICs_WCH-Jiangsu-Qin-Heng-CH224K_C970725.html" target="_blank" rel="noopener noreffer">WCH(Jiangsu Qin Heng) CH224K</a></p>
+<p>Main CPU is <a href="https://www.arterychip.com/en/product/AT32F415.jsp" target="_blank" rel="noopener noreffer">Artery AT32F415</a></p>
+]]></description></item><item><title>Inside of the Pulse-Eight HDMI CEC Injector.</title><link>https://karlquinsland.com/pulse-eight-hdmi-cec-injector-teardown/</link><pubDate>Fri, 01 Dec 2023 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/pulse-eight-hdmi-cec-injector-teardown/</guid><description><![CDATA[<h1 id="inside-the-pulse-eight-hdmi-cec-injector">Inside the Pulse-Eight HDMI CEC Injector</h1>
 <p>To make a long store short, Google recently pushed a few updates to my TV that made it slow as all hell and frustratingly unusable.
 I finally got fed up with the laggy UI and dug out an old mini PC and installed <a href="https://libreelec.tv/" target="_blank" rel="noopener noreffer">LibreELEC</a> on it.</p>
 <p>Everything worked perfectly <em>except</em> for the lack of <a href="https://en.wikipedia.org/wiki/Consumer_Electronics_Control" target="_blank" rel="noopener noreffer">CEC</a> support on the mini PC.</p>
@@ -7179,2279 +8345,5 @@ BJ</p>
 <li><a href="https://github.com/kquinsland/hdmi-kvm-esphome/blob/main/docs/datasheets/PI5C3251QE-datasheetz.pdf" target="_blank" rel="noopener noreffer"><code>PI5C 3251QE</code></a> - 8:1 Mux/DeMux BusSwitch</li>
 <li><a href="https://github.com/kquinsland/hdmi-kvm-esphome/blob/main/docs/datasheets//2008191807_WCH-Jiangsu-Qin-Heng-CH559L_C150548" target="_blank" rel="noopener noreffer"><code>CH559L</code></a> - 8 bit enhanced USB MCU CH559</li>
 <li><a href="https://github.com/kquinsland/hdmi-kvm-esphome/blob/main/docs/datasheets/FE1.1s%2BData%2BSheet%2B%28Rev.%2B1.0%29.pdf" target="_blank" rel="noopener noreffer"><code>FE1.1s</code></a> - FE1.1S USB 2.0 HIGH SPEED 4-PORT HUB CONTROLLER</li>
-</ul>
-]]></description></item><item><title>Installing Tasmota on the Xiaomi Desk Lamp</title><link>https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/</link><pubDate>Sat, 22 Jan 2022 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/</guid><description><![CDATA[<div class="details admonition note open">
-        <div class="details-summary admonition-title">
-            <i class="icon fas fa-pencil-alt fa-fw"></i>MJGJD02YL vs MUGJD01YL<i class="details-icon fas fa-angle-right fa-fw"></i>
-        </div>
-        <div class="details-content">
-            <div class="admonition-content">There are <em>at least two</em> versions of this lamp. Thanks to <code>@htvekov</code> for confirming that the <code>MUGJD01YL</code> variant <strong>does <em>not</em> contain an ESP32</strong>. It contains a <code>TLSR8368</code>.
-Some photos of the <code>MUGJD01YL</code> internals are provided <a href="#mugjd01yl" rel="">below</a>.</div>
-        </div>
-    </div>
-<p>If you&rsquo;re here just for &ldquo;how do I flash tasmota&rdquo; bit, skip to the <a href="#tasmota" rel="">Tasmota</a> section below.</p>
-<div class="details admonition tip open">
-        <div class="details-summary admonition-title">
-            <i class="icon fas fa-lightbulb fa-fw"></i>Now with ESPHome<i class="details-icon fas fa-angle-right fa-fw"></i>
-        </div>
-        <div class="details-content">
-            <div class="admonition-content">ESPHome support for the single-core ESP32 chip in the lamp has come a long way.
-You can find the ESPHome configuration that I used with this lamp <a href="#esphome" rel="">below</a>.</div>
-        </div>
-    </div>
-<hr>
-<p>I was looking for a way to light my desk my desk without screen glare.
-The easiest way to prevent glare on a screen is to change the orientation of the light relative to the screen either from under or behind the screen.
-This is not practical for ceiling mounted lights or for any floor lamps.</p>
-<p>You can get a nearly glare free light if you mount the light to the top of the screen and direct the light away from the screen at a <em>slight</em> angle.
-Light hitting the screen and bouncing into eyes is minimized and the majority of the light ends up directed down onto the desk where it&rsquo;s needed.</p>
-<p>This isn&rsquo;t a new problem; a quick search of any online retailor will reveal that there are <em>many</em> different options out there at all sorts of price points.
-As this light source would be heavily used for all sorts of work, the <em>quality</em> of the light is incredibly important; a high General CRI (Ra) and adjustable color temperature are <em>requirements</em>.</p>
-<p>I also wanted one that had some basic remote control functions so I don&rsquo;t have to reach to the top of my monitor and risk destabilizing whatever I am working on or getting finger prints on the panel.
-A wired remote would be simpler and thus cheaper but my desk is already too crowded with wires and cords; if the cost difference between a wired and wireless remote was marginal, opt for wireless.</p>
-<p>After a bit of searching, I found the <code>2021 Xiaomi Mijia Lite Desk Lamp 1S</code> which fit the bill exactly.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>Beyond the basic puck shaped wireless remote, the listing indicated that the &rsquo;new 1s version&rsquo; could be controlled with the <code>Xiaomi</code> app.</p>
-<p>🤔</p>
-<p>Instead of some very basic 433Mhz radio, the lamp/remote probably used BTLE.
-In some ways, that&rsquo;s even better; the lamp only has a few simple functions and those shouldn&rsquo;t be that hard to reverse engineer from the Android app.</p>
-<p>Once I know what data to send for on/off/dim/bright/ww/cw selection, I can use an ESP chip as a MQTT &lt;-&gt; BTLE gateway for relatively easy integration into my home automation system.
-Worst case, the fall back plan of using a microcontroller to emulate interacting with the remote and then integrating that microcontroller with my home automation system would work.</p>
-<p>Once the lamp showed up, I of course opened up the remote to see what type of wireless system I was going to be dealing with.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<div class="details admonition note open">
-        <div class="details-summary admonition-title">
-            <i class="icon fas fa-pencil-alt fa-fw"></i>Note<i class="details-icon fas fa-angle-right fa-fw"></i>
-        </div>
-        <div class="details-content">
-            <div class="admonition-content">More photos of the remote are <a href="#teardown" rel="">below</a></div>
-        </div>
-    </div>
-<p>Giving the model number <code>MHCB07P</code> a quick google didn&rsquo;t reveal much information other than confirm that it was using BTLE.
-This almost certainly means that the phone app will <em>also</em> use BTLE to control the lamp!
-If I&rsquo;m lucky, I can capture the entire discovery/pair/command packets using a rooted android device and then I won&rsquo;t have to bother with the puck at all.</p>
-<h1 id="lamp---phone">Lamp &lt;-&gt; Phone</h1>
-<p>After getting the app setup, it did discover the lamp and began to walk me through the setup flow.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>WiFi!? Really!? But why? This must be some generic screen shown for all devices, right?</p>
-<p><strong>Nope</strong>.</p>
-<p>There really is a simple access point inside this lamp!</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>Well now I&rsquo;m curious.</p>
-<p>What could this lamp <em>possibly need</em> WiFi credentials for? The remote used BTLE and every conceivable phone that will also control the lamp supports BTLE&hellip; so why spend the extra money for a WiFi enabled microcontroller at all!?</p>
-<h1 id="et-lamp-phone-home"><del>ET</del> Lamp Phone Home</h1>
-<p>I threw the lamp behind an isolated access point and it sure is <em>chatty</em>&hellip;
-After getting an IP address, the lamp looks up the <code>A</code> record for <code>dk.io.mi.com</code> and then attempts to open a TCP connection and send some bytes:</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>Now I&rsquo;m more than a little bit curious.</p>
-<p>Why send raw bytes to TCP/80 without at least the typical HTTP request headers?
-Why even use WiFi at all for a <em>lamp</em>? Is there no way to use my phone to control the lamp over BTLE?</p>
-<h2 id="dumping-the-fw">Dumping the FW</h2>
-<p>Fortunately, this was pretty easy. After a cursory analysis, the dumped firmware did not appear to be encrypted or otherwise protected.
-I did a quick search for a few things that I hoped would show up in the dumped OEM firmware and was not disappointed:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">❯ cat lamp.bin.strings <span class="p">|</span> grep --ignore-case -E <span class="s1">&#39;certificate|encrypt|tls|agent|http|post|get|verify|remote|{&#34;&#39;</span> &gt; interesting_strings.txt
-</span></span><span class="line"><span class="cl">❯ cat interesting_strings.txt<span class="p">|</span> wc -l
-</span></span><span class="line"><span class="cl"><span class="m">710</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>🤨</p>
-<p>Here are some of the highlights:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">[I] bluetooth_remote_double_click
-</span></span><span class="line"><span class="cl">[E] %s: verify root cert is not valid! (%s,%d)
-</span></span><span class="line"><span class="cl">[W] %s: Fail to get gatt db from connection %04x, ret = %d  (%s,%d)
-</span></span><span class="line"><span class="cl">[E] %s: mbedtls_ecdh_calc_secret error %d (%s,%d)
-</span></span><span class="line"><span class="cl">miio_signature_verify
-</span></span><span class="line"><span class="cl">[E] %s: --&gt;login verify send failed. (%s,%d)
-</span></span><span class="line"><span class="cl">-----BEGIN CERTIFICATE-----
-</span></span><span class="line"><span class="cl">[E] %s: https need root cert. (%s,%d)
-</span></span><span class="line"><span class="cl">User-Agent: MIoT
-</span></span><span class="line"><span class="cl">http://dlg.io.mi.com/v1/ot/upload
-</span></span><span class="line"><span class="cl">[W] %s: httpdns new resolve start failed, %d (%s,%d)
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>There&rsquo;s a lot more interesting things in the dump but they&rsquo;ll have to wait for another day as
-immediately after getting eyes on the PCB, I saw an ESP32 chip!</p>
-<h2 id="a-change-of-plans">A change of plans</h2>
-<p>Reverse engineering the firmware to figure out how/why the phone method of remote control was different from the remotes&rsquo; method no longer really mattered.
-An ESP based chip means Tasmota or ESPHome should be possible.</p>
-<p>If I could get either of those alternative firmwares running on the lamp, then cluttering up the desk with yet another remote and/or hacking MQTT support into the lamp via the remote was no longer necessary!</p>
-<h1 id="teardown">Teardown</h1>
-<div class="details admonition warning open">
-        <div class="details-summary admonition-title">
-            <i class="icon fas fa-exclamation-triangle fa-fw"></i>Warning<i class="details-icon fas fa-angle-right fa-fw"></i>
-        </div>
-        <div class="details-content">
-            <div class="admonition-content">The plastic end caps on either end of the lamp tube are <em>glued in</em>.
-You will need some force to break the glue.
-Even with all possible precautions, getting access to the lamp PCB <em>is a <strong>destructive</strong> process</em>.
-If you are <em>careful</em> you can keep the destruction and cosmetic damage to a minimum.</div>
-        </div>
-    </div>
-<p>I did this teardown the hard way and damaged more of the lamp than necessary.
-Some of the photos below reflect this.</p>
-<p>Now that I know how it all is <em>meant</em> to come apart, you will hopefully have an easier time and incur less damage!</p>
-<h2 id="the-lamp">The lamp</h2>
-<p>A closer look at the marked device information before we move <em>into</em> the lamp.
-The ESP that we will soon flash with Tasmota is just behind this product information.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Product info and regulatory markings
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>Locate the small rectangle shaped protrusion from the lamp tube that mates with the magnetic mount. The protrusion has two small pogo pins on it.
-You can see the protrusion in the middle of the tube facing the coiled USB power cable:</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Everything that came in the box
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>With the protrusion facing you, locate the plastic cap closest to the product information.
-This should be plastic cap on the <em>left</em> side of the tube.</p>
-<p>Use non-marring pliers or similar to grip the plastic cap and twist with enough force to break the glue.
-Do not twist more than a few degrees!
-The plastic cap has some features that will come into contact with and could damage the PCB if rotated too far!</p>
-<p>Use a razor blade or similar to peel back the grip-tape sticker on the protrusion.
-If you&rsquo;re careful and manage to remove the sticker in one piece you might be able to re-apply it during reassembly.
-The lamp functions fine without the sticker, though.</p>
-<p>Underneath the sticker will be two small philips screws.
-Remove them and the metal protrusion and small plastic part containing the two pogo pins should come free.
-Set these aside.</p>
-<p>Gently remove the clear plastic diffuser from the lamp tube and set aside.</p>
-<p>The matte finish on the interior side of the diffuser is a fingerprint magnet.
-Consider using gloves for this step.</p>
-<p>Carefully slide the PCB out of the aluminum tube.
-Be mindful of the two spring like contacts on the back of the PCB that mated with the pogo pins!</p>
-<p>You can see the small black plastic bracket holding the pogo pins and the protrusion bit with some of the grip-tape still attached:</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        If it feels like you&#39;re using too much force to open the lamp... you probably are!
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>If you try to remove the PCB without first detaching the pogo pins, you&rsquo;ll damage one or both of the spring contacts that mate the PCB to the pogo pins!</p>
-<p>You <em>don&rsquo;t</em> want your <code>GND</code> spring to look like mine!</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>Before realizing that the pogo pins could be removed from the lamp, I removed <em>both</em> caps and tried push/pull the PCB out.</p>
-<p>The PCB is supported inside the tube with a few black plastic &lsquo;sleds&rsquo; which are heat-staked on to the PCB.</p>
-<p>The &lsquo;sled&rsquo; closest to the ESP partially covers the <code>3V3</code> test point.
-Rather than use a dedicated 3V power supply during flashing, I found it easiest to use this pin to bring the <code>EN</code> pin up high.</p>
-<p>If you&rsquo;re going to use the <code>3V3</code> test pin instead of a dedicated external power supply, you will probably want to remove the &lsquo;sled&rsquo; to get easy access to the test point.</p>
-<p>You can do this with some flush-cut snips.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Be careful to not scratch the solder mask / PCB with the sharp edges of the snips
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>The sled isn&rsquo;t technically required for re-assembly but it&rsquo;s pretty easy to re-attach to the PCB with some hotglue. Discard it at your peril!</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>Here&rsquo;s a closeup of the PCB with most of the test points labeled.
-You can see the <code>3V3</code> test point immediately to the left of <code>R6</code> in the shadow of the &lsquo;sled&rsquo;.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>Repeat these steps in reverse order to re-assemble the lamp.</p>
-<h3 id="the-puck">The puck</h3>
-<p>Fortunately, opening up the remote is not difficult.</p>
-<p>Remove the two philips screws under the bottom cap.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>The main body / rotary knob lifts away from the midframe.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>Like with the lamp PCB, there are a few test points:</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<h1 id="tasmota">Tasmota</h1>
-<div class="details admonition warning open">
-        <div class="details-summary admonition-title">
-            <i class="icon fas fa-exclamation-triangle fa-fw"></i>Warning<i class="details-icon fas fa-angle-right fa-fw"></i>
-        </div>
-        <div class="details-content">
-            <div class="admonition-content"><p>It is likely that both the WW and CW LEDs <em>will</em> briefly light up during the flashing process. When this happens, you <em>will</em> draw more current than a typical USB &lt;-&gt; Serial adapter can provide. At <em>best</em> you&rsquo;ll cause a brownout and the flash will be interrupted.</p>
-<p><strong>Use a dedicated 5V supply that can provide <em>at least</em> 10W of power</strong> while flashing the lamp! Make sure that the <code>GND</code> wire from your serial programmer <em>and</em> the <code>GND</code> wire for your dedicated 5V@2A/10W supply are tied together or you will likely destroy some of the electronics on both the lamp, your serial adapter <em>and</em> possibly your computer!</p>
-</div>
-        </div>
-    </div>
-<p>Having said all that, it&rsquo;s totally worth it:</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        When all is said and done, the lamp is easily integrated and controlled with Home Assistant
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<h2 id="flashing">Flashing</h2>
-<div class="details admonition info open">
-        <div class="details-summary admonition-title">
-            <i class="icon fas fa-info-circle fa-fw"></i>Info<i class="details-icon fas fa-angle-right fa-fw"></i>
-        </div>
-        <div class="details-content">
-            <div class="admonition-content">The ESP32 chip on this PCB is a <em>single core</em> version.
-Follow the <a href="https://tasmota.github.io/docs/ESP32/#flashing" target="_blank" rel="noopener noreffer">instructions for flashing the ESP32 version of Tasmota</a>, specifically the <code>tasmota32solo1</code> version!</div>
-        </div>
-    </div>
-<p>Solder wires to the usual <code>RX</code>, <code>TX</code>, <code>GPIO0</code> and <code>GND</code> test points.
-The <code>GPIO0</code> test point is the test point nearest to the ESP32 chip; directly off the bottom right corner.
-I used some solid-core cable from a length of cat5 cable but any similarly high gauge wire will work.</p>
-<p>Solder a jumper between the <code>EN</code> and <code>3V3</code> test point. I used a small yellow wire for this.
-The solid blue wire attached to <code>GPIO0</code> and the blue/white wire attached to <code>GND</code> are joined together just out of frame.
-The ESP will not boot into programming mode unless <code>GPIO0</code> is tied to ground.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>Leads from a dedicated 5V power supply are attached to the main contacts with reg/green alligator clips</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>After confirming that each point is soldered sufficiently and wired to the correct pin on your USB &lt;-&gt; Serial programmer, turn the dedicated power supply on and you should be able to flash.</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">❯ esptool.py --chip esp32 --port /dev/ttyUSB0 --baud <span class="m">921600</span> --before default_reset --after hard_reset write_flash -z --flash_mode dout --flash_freq 40m --flash_size detect 0x1000 bootloader_dout_40m.bin 0x8000 partitions.bin 0xe000 boot_app0.bin 0x10000 tasmota32solo1.bin
-</span></span><span class="line"><span class="cl">esptool.py v3.2
-</span></span><span class="line"><span class="cl">Serial port /dev/ttyUSB0
-</span></span><span class="line"><span class="cl">Connecting.....
-</span></span><span class="line"><span class="cl">&lt;...&gt;
-</span></span><span class="line"><span class="cl">Stub running...
-</span></span><span class="line"><span class="cl">Changing baud rate to <span class="m">921600</span>
-</span></span><span class="line"><span class="cl">Changed.
-</span></span><span class="line"><span class="cl">Configuring flash size...
-</span></span><span class="line"><span class="cl">Auto-detected Flash size: 4MB
-</span></span><span class="line"><span class="cl">Flash will be erased from 0x00001000 to 0x00004fff...
-</span></span><span class="line"><span class="cl">Flash will be erased from 0x00008000 to 0x00008fff...
-</span></span><span class="line"><span class="cl">Flash will be erased from 0x0000e000 to 0x0000ffff...
-</span></span><span class="line"><span class="cl">Flash will be erased from 0x00010000 to 0x00157fff...
-</span></span><span class="line"><span class="cl">Compressed <span class="m">15536</span> bytes to 10862...
-</span></span><span class="line"><span class="cl">Wrote <span class="m">15536</span> bytes <span class="o">(</span><span class="m">10862</span> compressed<span class="o">)</span> at 0x00001000 in 0.4 seconds <span class="o">(</span>effective 353.8 kbit/s<span class="o">)</span>...
-</span></span><span class="line"><span class="cl">&lt;...&gt;
-</span></span><span class="line"><span class="cl">Hash of data verified.
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">Leaving...
-</span></span><span class="line"><span class="cl">Hard resetting via RTS pin...
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>Turn off the dedicated 5V supply and desolder the <code>GPIO0</code> wire and the <code>3V3</code> &lt;-&gt; <code>EN</code> jumper.
-Leave the <code>RX</code>, <code>TX</code>, and <code>GND</code> wires in place so you can easily check the boot logs to confirm Tasmota flashed OK:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">❯ screen /dev/ttyUSB0 <span class="m">115200</span>
-</span></span><span class="line"><span class="cl">ets Jun  <span class="m">8</span> <span class="m">2016</span> 00:22:57
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">rst:0x1 <span class="o">(</span>POWERON_RESET<span class="o">)</span>,boot:0x13 <span class="o">(</span>SPI_FAST_FLASH_BOOT<span class="o">)</span>
-</span></span><span class="line"><span class="cl">configsip: 0, SPIWP:0xee
-</span></span><span class="line"><span class="cl">clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
-</span></span><span class="line"><span class="cl">mode:DOUT, clock div:2
-</span></span><span class="line"><span class="cl">load:0x3fff0030,len:184
-</span></span><span class="line"><span class="cl">load:0x40078000,len:12352
-</span></span><span class="line"><span class="cl">load:0x40080400,len:2912
-</span></span><span class="line"><span class="cl">entry 0x400805c4
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">00:00:00.002-228/73 HDW: ESP32-S0WD-OEM
-</span></span><span class="line"><span class="cl">./components/esp_littlefs/src/littlefs/lfs.c:1071:error: Corrupted dir pair at <span class="o">{</span>0x0, 0x1<span class="o">}</span>
-</span></span><span class="line"><span class="cl">00:00:00.777-231/73 UFS: FlashFS mounted with <span class="m">312</span> kB free
-</span></span><span class="line"><span class="cl">00:00:00.782-231/73 CFG: Use defaults
-</span></span><span class="line"><span class="cl">00:00:00.893 QPC: Reset
-</span></span><span class="line"><span class="cl">00:00:00.941 BRY: Berry initialized, RAM <span class="nv">used</span><span class="o">=</span><span class="m">3849</span>
-</span></span><span class="line"><span class="cl">00:00:00.950 BRY: no <span class="s1">&#39;preinit.be&#39;</span>
-</span></span><span class="line"><span class="cl">00:00:00.963 Project tasmota - Tasmota Version 10.1.0<span class="o">(</span>tasmota<span class="o">)</span>-2_0_1_1<span class="o">(</span>2021-12-08T14:50:34<span class="o">)</span>
-</span></span><span class="line"><span class="cl">00:00:00.984 BRY: no <span class="s1">&#39;autoexec.be&#39;</span>
-</span></span><span class="line"><span class="cl">00:00:00.243 WIF: WifiManager active <span class="k">for</span> <span class="m">3</span> minutes
-</span></span><span class="line"><span class="cl">00:00:01.200 HTP: Web server active on tasmota-197907-6407 with IP address 192.168.4.1
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>After confirming a successful flash/boot, you can continue to configure Tasmota via the serial console or just power off and de-solder all wires and finish configuration after you re-assemble.</p>
-<h2 id="templates">Templates</h2>
-<p>The ESP32 controls the lamp via 3 GPIO pins:</p>
-<ul>
-<li><code>GPIO04</code>: Global light enable/disable.</li>
-<li><code>GPIO19</code>: Cold White channel</li>
-<li><code>GPIO21</code>: Warm White channel</li>
-</ul>
-<p>Irrespective of what the WW or CW channel are doing, there will be no light if <code>GPIO4</code> is not high.
-This means you have two choices for how to configure the GPIO.</p>
-<p>Tasmota will disable both <code>GPIO19</code> and <code>GPIO21</code> when the light is switched off so there really is no need for independent control via <code>GPIO4</code>.
-This template keeps <code>GPIO4</code> high and relies on Tasmota setting  to fully off to shut the light off.</p>
-<p>Most people should use this template.</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;NAME&#34;</span><span class="p">:</span><span class="s2">&#34;Mijia Desk Lamp 1S (MJGJD02YL)&#34;</span><span class="p">,</span><span class="nt">&#34;GPIO&#34;</span><span class="p">:[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">3840</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">416</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">417</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="nt">&#34;FLAG&#34;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="nt">&#34;BASE&#34;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="nt">&#34;CMND&#34;</span><span class="p">:</span><span class="s2">&#34;DimmerRange 45,255&#34;</span><span class="p">}</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>If, for some reason, you want to control the global on/off (<code>GPIO04</code>) independently of the WW/CW channels, use this template:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;NAME&#34;</span><span class="p">:</span><span class="s2">&#34;Mijia Desk Lamp 1S (MJGJD02YL)&#34;</span><span class="p">,</span><span class="nt">&#34;GPIO&#34;</span><span class="p">:[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">224</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">416</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">417</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="nt">&#34;FLAG&#34;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="nt">&#34;BASE&#34;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="nt">&#34;CMND&#34;</span><span class="p">:</span><span class="s2">&#34;DimmerRange 45,255&#34;</span><span class="p">}</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>If you do not need dimmer control and only need full on/off control, you can adjust the module so <code>GPIO{04,19,21}</code> are always high, low or simple on/off outputs by configuring them to be of type <code>Relay</code> instead of <code>PWM</code> outputs.</p>
-<h3 id="dimmer-range">Dimmer Range</h3>
-<p>In testing, extremely low brightness values for both the WW and CW channel had some undesirable behavior:</p>
-<ul>
-<li>Values lower than ~30 didn&rsquo;t light at all</li>
-<li>Values between 30-35 caused unpleasant flicker</li>
-<li>Values lower than ~40 would also cause flicker when attempting to light the WW <em>and</em> CW channels together</li>
-</ul>
-<p>For this reason, a <code>DimmerRange</code> of 45-255 is suggested.
-Tasmota will let you dim the light as low as possible without flicker.</p>
-<p>Your lamp, eyes and needs will differ so feel free to see if a lower <code>dimmer</code> value will work for you by unlocking the full dimmer range with <code>DimmerRange 0,255</code> and then playing with the <code>ct</code> and <code>dimmer</code> commands to find the lowest tolerable brightness for your needs.</p>
-<p>That is why you see the <code>DimmerRange 45,255</code> command in the above templates.</p>
-<h3 id="pcbic-markings">PCB/IC Markings</h3>
-<p>Some of the interesting ICs and PCB markings</p>
-<h4 id="lamp">Lamp</h4>
-<ul>
-<li>PCB is labeled <code>Yeelight Spider 1S V06</code>, <code>20210714 by XJD</code>, <code>94V-0</code>,  <code>Y Y21M09D13</code>, <code>JUl 7.820.0874-1</code></li>
-<li>PCB has a QR code / sticker with <code>WF-E32-RWY1</code>, <code>Spider1S</code>, and the device mac address</li>
-<li><code>SGM4065</code>: <a href="https://www.sg-micro.de/show-product-611.html" target="_blank" rel="noopener noreffer">Over-Voltage Protection IC and Li+ Charger Front-End Protection IC with LDO Mode</a></li>
-<li>Some DFN-10 package that is marked with either <code>WRDPA</code> or <code>WRQPA</code> or <code>WR0PA</code>. It&rsquo;s a little hard to tell as the markings are super faint and I can&rsquo;t get them super clear even with high contrast / inverted color image filters. There are several of them with identical circuitry through the length of the board so this IC is some sort of pwm dimmable constant current LED driver.</li>
-<li><code>ESP32-D0WD</code>: the star of the show</li>
-<li><code>GD25Q32(B)</code>: a 4096 kB SPI flash chip</li>
-<li>The lamp body is marked with <code>CMIT ID: 2021DP11423</code></li>
-</ul>
-<h4 id="remote">Remote</h4>
-<ul>
-<li>PCB labeled with <code>100-P806D1-1B-A1</code>, <code>Yeelight Spider 1S RC Board V02</code>, <code>20210716 by XJD</code></li>
-<li><code>MHCB07P</code>. This is marked on the tiny BTLE module inside the remote. Not too many search <a href="https://twitter.com/simransingh931/status/1418120923568246786" target="_blank" rel="noopener noreffer">results</a> show <a href="https://www.ec.ust.hk/hackathon/2021/document/xiaomi_0319_eng.pdf" target="_blank" rel="noopener noreffer">up</a>.</li>
-<li><code>CMIT ID: 2020DP3172(M)</code></li>
-</ul>
-<h2 id="mugjd01yl">MUGJD01YL</h2>
-<p><figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Product details for the lamp that can&#39;t be converted to run Tasmota.
-        
-            Courtesy of @htvekov
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        The PCB is held in the tube with similar plastic &#39;sleds&#39;. They are secured with screws rather than heatstake so they are easier to remove. The move to heatstake in the revised edition was likely to reduce costs.
-        
-            Courtesy of @htvekov
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        
-        
-            Courtesy of @htvekov
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        
-        
-            Courtesy of @htvekov
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-</p>
-<h2 id="esphome">ESPHome</h2>
-<p>While putting together the <a href="https://karlquinsland.com/yeelight-monitor-lamp-teardown-esphome/" rel="">&ldquo;update&rdquo;</a> to this post, I figured I should update this post with the configuration that I used for ESPHome:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c">##</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># This is an ESPHome port of https://templates.blakadder.com/xiaomi_MJGJD02YL.html</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">##</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">esphome</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">comment</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Xiaomi Mi Computer Monitor Light Bar 1S Light (MJGJD02YL)&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># See: https://github.com/esphome/issues/issues/2955</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">esp32</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">board</span><span class="p">:</span><span class="w"> </span><span class="l">esp32dev</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">framework</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">esp-idf</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">sdkconfig_options</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">CONFIG_FREERTOS_UNICORE</span><span class="p">:</span><span class="w"> </span><span class="kc">y</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">advanced</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="c"># See: https://github.com/esphome/issues/issues/4830</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">ignore_efuse_mac_crc</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Enable logging</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">logger</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">level</span><span class="p">:</span><span class="w"> </span><span class="l">INFO</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># The light bar has two banks of LEDs for WW/CW config</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># See: https://esphome.io/components/light/cwww.html</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">##</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">light</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">cwww</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">leds</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">cold_white</span><span class="p">:</span><span class="w"> </span><span class="l">out_pwm_cw</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">warm_white</span><span class="p">:</span><span class="w"> </span><span class="l">out_pwm_ww</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># The ali express listing indicates 2700/6500K.</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">cold_white_color_temperature</span><span class="p">:</span><span class="w"> </span><span class="l">6600K</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">warm_white_color_temperature</span><span class="p">:</span><span class="w"> </span><span class="l">2700K</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Draws a little over 10W at full brightness.</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Shouldn&#39;t be too hard for a USB power supply to handle but heat dissipation might be an</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c">#   issue so don&#39;t permit both WW and CW channels to both run 100%.</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">constant_brightness</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">output</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># THis is the master kill switch. This GPIO must be high for the WW/CW channels to work.</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">light_enable</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">gpio</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">pin</span><span class="p">:</span><span class="w"> </span><span class="l">GPIO04</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">out_pwm_ww</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">ledc</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">pin</span><span class="p">:</span><span class="w"> </span><span class="l">GPIO21</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">out_pwm_cw</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">ledc</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">pin</span><span class="p">:</span><span class="w"> </span><span class="l">GPIO19</span><span class="w">
-</span></span></span></code></pre></td></tr></table>
-</div>
-</div>]]></description></item><item><title>Using Home Assistant to dynamically layout openHasp widgets</title><link>https://karlquinsland.com/lanbon-l8-tuya-lcd-switch-openhasp/</link><pubDate>Tue, 18 Jan 2022 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/lanbon-l8-tuya-lcd-switch-openhasp/</guid><description><![CDATA[<h1 id="background">Background</h1>
-<p>This is one of those posts that sat in the <code>Drafts</code> folder for <em>way</em> too long.
-Just before release, I&rsquo;d discover something new that would warrant substantial rewrites.
-After several delays, false starts and re-writes, I finally have something that is mostly new <em>and</em> worth sharing with the world.</p>
-<p>Like with the past few <a href="https://karlquinsland.com/categories/teardown/" rel="">teardown</a> posts, this one also started off as a &lsquo;cart-stuffer&rsquo; item so I could unlock a more generous discount on the total purchase. The listing that caught my eye had the generic title:</p>
-<pre><code>EU US Wifi LCD Smart Wall Light Touch Switch Tuya Smart Life App Remote Control ON OFF Timer Voice Control For Google Home Alexa
-</code></pre>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>Naturally, a cursory check for existing writeups / teardowns didn&rsquo;t yield much.</p>
-<p>I did have some hope that the <code>Tuya</code> compatibility meant an easily hacked ESP module running the show and not a proprietary module.
-It was unlikely that the device would be Android powered at that price-point and an ESP8266 series would be woefully under powered for direct LCD control so &hellip; fingers crossed for an ESP32 module!
-Or, at the very least there might be a way to retrofit in an ESP module like with the recent Mi-Boxer LED controller that <a href="https://github.com/arendst/Tasmota/issues/7385#issuecomment-991848762" target="_blank" rel="noopener noreffer">I helped to integrate with Tasmota</a>.</p>
-<p>The <em>plan</em> was to do a teardown and dump as much technical data as I could possibly gather in an evening or two and conclude with a feasibility assessment of hacking the device for use with Home Assistant.</p>
-<h2 id="generic-becomes-lanbon">Generic becomes Lanbon</h2>
-<p>Immediately after opening the shipping box and getting eyes on the actual product packaging, it was clear that this was a Lanbon L8 series module.</p>
-<p>A quick google later and it turns out that the venerable blakadder.com has <a href="https://blakadder.com/lanbon-L8/" target="_blank" rel="noopener noreffer">already covered this device</a>&hellip; <em>and</em> documented <a href="https://blakadder.com/lanbon-L8-custom-firmware/" target="_blank" rel="noopener noreffer">it&rsquo;s Tasmota compatibility</a>!</p>
-<p>So much for publishing a teardown and trying to figure out if Home Assistant integration was feasible 😕.</p>
-<p>Funny how once you have the &lsquo;magic query string&rsquo;, google starts to yield <em>a ton</em> of relevant results!
-Just after finding the aforementioned blakadder.com posts on the L8 device, I found two <em>very</em> helpful sources of more information:</p>
-<ul>
-<li>Somebody by the name of Jan Newmarch has published a <a href="https://jan.newmarch.name/IoT/Home/Lanbon/" target="_blank" rel="noopener noreffer">comprehensive dive</a> into the protocol(s) used by the stock firmware / other devices in the Lanbon family.</li>
-<li>This <a href="https://haswitchplate.github.io/openHASP-docs/latest/devices/lanbon-l8/" target="_blank" rel="noopener noreffer">page dedicated to the Lanbon L8</a> from a project called openHasp.</li>
-</ul>
-<p>I thought that second link seemed familiar&hellip;🤔.</p>
-<p>Turns out, the <a href="https://haswitchplate.github.io/openHASP-docs/latest/" target="_blank" rel="noopener noreffer">openHASP project</a> is a <em>substantial</em> rewrite of the initial software that powered my <a href="https://karlquinsland.com/enhanced-homeassistantswitchplate/" rel="">Enhanced HomeAssistant Switch Plate (eHasp)</a> project.</p>
-<div class="details admonition info open">
-        <div class="details-summary admonition-title">
-            <i class="icon fas fa-info-circle fa-fw"></i>Info<i class="details-icon fas fa-angle-right fa-fw"></i>
-        </div>
-        <div class="details-content">
-            <div class="admonition-content">While digging through the above links, I realized that the model I had opened up had a different PCB layout.
-In the interest of adding to the collective internet KB, photos and some other technical details from the model I tore apart are <a href="#teardown" rel="">below</a>.</div>
-        </div>
-    </div>
-<h1 id="openhasp">openHasp</h1>
-<p>As opposed to the <a href="https://github.com/aderusha/HASwitchPlate" target="_blank" rel="noopener noreffer">old HASP project</a>, openHasp leverages more powerful processors that can drive the LCD directly; graphical assets no longer need to be compiled down to a LCD-specific firmware before use and the content of the <em>entire</em> display <strong>can be arbitrarily manipulated at runtime</strong>!</p>
-<p>openHasp <a href="https://haswitchplate.github.io/openHASP-docs/0.6/design/pages/" target="_blank" rel="noopener noreffer">uses <code>json</code> like files</a> to store the UI/widgets layout and configuration.
-On boot, the content of the <code>jsonl</code> is parsed and turned into the actual UI widgets that are displayed on screen.
-For example, <a href="https://haswitchplate.github.io/openHASP-docs/0.6/design/objects/#button" target="_blank" rel="noopener noreffer">here is the example <code>jsonl</code></a> that renders two buttons:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;page&#34;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="nt">&#34;id&#34;</span><span class="p">:</span><span class="mi">2</span><span class="p">,</span><span class="nt">&#34;obj&#34;</span><span class="p">:</span><span class="s2">&#34;btn&#34;</span><span class="p">,</span><span class="nt">&#34;x&#34;</span><span class="p">:</span><span class="mi">10</span><span class="p">,</span><span class="nt">&#34;y&#34;</span><span class="p">:</span><span class="mi">40</span><span class="p">,</span><span class="nt">&#34;w&#34;</span><span class="p">:</span><span class="mi">105</span><span class="p">,</span><span class="nt">&#34;h&#34;</span><span class="p">:</span><span class="mi">90</span><span class="p">,</span><span class="nt">&#34;toggle&#34;</span><span class="p">:</span><span class="kc">false</span><span class="p">,</span><span class="nt">&#34;text&#34;</span><span class="p">:</span><span class="s2">&#34;Button&#34;</span><span class="p">,</span><span class="nt">&#34;mode&#34;</span><span class="p">:</span><span class="s2">&#34;break&#34;</span><span class="p">,</span><span class="nt">&#34;align&#34;</span><span class="p">:</span><span class="s2">&#34;center&#34;</span><span class="p">}</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;page&#34;</span><span class="p">:</span><span class="mi">1</span><span class="p">,</span><span class="nt">&#34;id&#34;</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span><span class="nt">&#34;obj&#34;</span><span class="p">:</span><span class="s2">&#34;btn&#34;</span><span class="p">,</span><span class="nt">&#34;x&#34;</span><span class="p">:</span><span class="mi">125</span><span class="p">,</span><span class="nt">&#34;y&#34;</span><span class="p">:</span><span class="mi">40</span><span class="p">,</span><span class="nt">&#34;w&#34;</span><span class="p">:</span><span class="mi">105</span><span class="p">,</span><span class="nt">&#34;h&#34;</span><span class="p">:</span><span class="mi">90</span><span class="p">,</span><span class="nt">&#34;toggle&#34;</span><span class="p">:</span><span class="kc">true</span><span class="p">,</span><span class="nt">&#34;text&#34;</span><span class="p">:</span><span class="s2">&#34;#FFD700 Toggle# Button&#34;</span><span class="p">,</span><span class="nt">&#34;mode&#34;</span><span class="p">:</span><span class="s2">&#34;break&#34;</span><span class="p">,</span><span class="nt">&#34;align&#34;</span><span class="p">:</span><span class="s2">&#34;center&#34;</span><span class="p">}</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Image credit/source:
-        <a href="https://haswitchplate.github.io/openHASP-docs/0.6/design/objects/#button"> 
-            openHasp Docs
-        </a> 
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>Notice how the absolute coordinates on screen (<code>x</code> and <code>y</code>) and and absolute width (<code>w</code>) and height (<code>w</code>) properties are explicitly declared.
-The only reason the buttons look appropriately sized/positioned in the above screenshot is because someone took the time to calculate the appropriate values for the particular screen resolution and orientation.</p>
-<p>The above <code>jsonl</code> example would look different on any openHasp device with a different screen orientation or resolution!
-Manually calculating the exact size and position of every widget for <em>each</em> class of device isn&rsquo;t so bad if you&rsquo;re planning on deploying the same file to several instances of the same device&hellip; but it starts be become a real headache if you want to deploy the same layout to 2+ different types of device.</p>
-<p>The L8 devices are designed to be installed into a wall electrical box; they don&rsquo;t sit well on my desk so prototyping various interface files on a L8 device isn&rsquo;t the easiest.
-Instead, I am using a <a href="https://haswitchplate.github.io/openHASP-docs/latest/devices/wt32-sc01/" target="_blank" rel="noopener noreffer">device with a higher resolution</a> and bigger screen that <em>does</em> work well on a desk to prototype the various <code>jsonl</code> files.</p>
-<p>If you&rsquo;re thinking that calculating the appropriate location for various UI widgets on one device and then having to re-do the math for the intended deploy targets sounds like a task better suited to a computer&hellip; you&rsquo;re right!</p>
-<h2 id="dynamic-layouts-with-home-assistant">Dynamic Layouts with Home Assistant</h2>
-<p>Fortunately, the properties of <em>every</em> UI widget can be modified over the network even <em>after</em> the <code>jsonl</code> file has been parsed and the initial display has been painted!</p>
-<p>My C++ skills are pretty weak so contributing new code to enable dynamic layouts directly to the openHasp codebase is not immediately practical.
-There is, however, a robust <a href="https://haswitchplate.github.io/openHASP-docs/latest/integrations/home-assistant/howto/" target="_blank" rel="noopener noreffer">Home Assistant integration</a> published in the form of a <a href="https://github.com/HASwitchPlate/openHASP-custom-component" target="_blank" rel="noopener noreffer">custom component</a>.
-Home Assistant means Python and some Python code to calculate the appropriate position/size for a given element <em>is</em> immediately within my means.</p>
-<div class="details admonition warning open">
-        <div class="details-summary admonition-title">
-            <i class="icon fas fa-exclamation-triangle fa-fw"></i>Warning<i class="details-icon fas fa-angle-right fa-fw"></i>
-        </div>
-        <div class="details-content">
-            <div class="admonition-content">A few <a href="https://github.com/HASwitchPlate/openHASP/issues/278" target="_blank" rel="noopener noreffer">(small) changes to the openHasp firmware</a> were required to make this work.
-Any <em>recent</em> build of <code>0.7</code> should work.
-As of 2022-01, there is no release of the custom component that works with <code>0.7</code> out of the box so if installing through <a href="https://hacs.xyz/" target="_blank" rel="noopener noreffer">HACS</a>, <a href="https://github.com/HASwitchPlate/openHASP-custom-component/issues/87" target="_blank" rel="noopener noreffer">you will need to patch the custom component</a> so devices running <code>.0.7</code> can be controlled via Home Assistant.</div>
-        </div>
-    </div>
-<p>Please see the <a href="https://haswitchplate.github.io/openHASP-docs/latest/integrations/home-assistant/sampl_conf/" target="_blank" rel="noopener noreffer">openHasp &lt;-&gt; Home Assistant docs</a> for background information, examples and a lot more detail on how Home Assistant and openHasp work together or if any of the <code>jsonl</code> and <code>yaml</code> below does not make sense.</p>
-<div class="details admonition warning open">
-        <div class="details-summary admonition-title">
-            <i class="icon fas fa-exclamation-triangle fa-fw"></i>Warning<i class="details-icon fas fa-angle-right fa-fw"></i>
-        </div>
-        <div class="details-content">
-            <div class="admonition-content">Please make sure that your openHasp device can connect to your MQTT broker and that the openHasp custom integration can discover and &lsquo;register&rsquo; your device with Home Assistant before proceeding!</div>
-        </div>
-    </div>
-<h3 id="two-devices-one-pagesjsonl">Two devices, one <code>pages.jsonl</code></h3>
-<p>The <code>pages.jsonl</code> file used for this post and the screenshots below is a (lightly) modified versions of the <a href="https://haswitchplate.github.io/openHASP-docs/latest/integrations/home-assistant/sampl_conf/#display-clock-and-temperature" target="_blank" rel="noopener noreffer">clock and temperature example</a> and the
-<a href="https://haswitchplate.github.io/openHASP-docs/latest/integrations/examples/example-pagination/" target="_blank" rel="noopener noreffer">simple page navigation</a> examples with a room specific set of ui widgets.</p>
-<p>That <em>singular</em> <code>pages.jsonl</code> file was uploaded it to two devices:</p>
-<ul>
-<li>Lanbon L8 with a 240x320 resolution</li>
-<li>WT32-SC01 module with a 320x480 resolution</li>
-</ul>
-<p>Each screenshot was taken with the device display configured to 0º and 90º of rotation.
-A reboot was required for the configuration change to take effect but I made <em>zero</em> changes to the <code>pages.jsonl</code> file on the device between changing the screen orientation.</p>
-<p><figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Lanbon L8 in it&#39;s rotated &#39;landscape&#39; orientation
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Lanbon L8 in it&#39;s default &#39;portrait&#39; orientation
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-</p>
-<p><figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        wt32-sc01 in &#39;landscape&#39; orientation.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        wt32-sc01 in &#39;portrait&#39; orientation.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-</p>
-<h3 id="building-a-pagesjsonl">building a <code>pages.jsonl</code></h3>
-<p>You don&rsquo;t need to use this <em>exact</em> technique to build the <code>pages.jsonl</code> file; it works well for my needs / development flow.
-All that matters is that you get every UI element for every page into a single <code>pages.jsonl</code> file and then get that file uploaded to the device(s) in question.
-The page/id values declared in your <code>jsonl</code> file <em>must match</em> the object IDs that you will use to configure the Home Assistant integration.</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">❯ cat header.frag.jsonl footer.frag.jsonl room.frag.jsonl &gt; pages.jsonl
-</span></span><span class="line"><span class="cl">❯ curl http://roomPlateIpv4Here/edit --form <span class="nv">name</span><span class="o">=</span>data --form <span class="nv">data</span><span class="o">=</span>@pages.jsonl
-</span></span></code></pre></td></tr></table>
-</div>
-</div><div class="details admonition info open">
-        <div class="details-summary admonition-title">
-            <i class="icon fas fa-info-circle fa-fw"></i>Info<i class="details-icon fas fa-angle-right fa-fw"></i>
-        </div>
-        <div class="details-content">
-            <div class="admonition-content"><p>I store the combined files in <code>pages.jsonl</code> because this is the default page that an openHasp device will render.
-You can change this setting via the web UI: <code>http://roomPlateIpv4Here/config/hasp</code> or via telnet:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">❯ telnet roomPlateIpv4Here
-</span></span><span class="line"><span class="cl">&lt;...&gt;
-</span></span><span class="line"><span class="cl">prompt&gt; config/hasp <span class="o">{</span><span class="s2">&#34;pages&#34;</span>:<span class="s2">&#34;/foo.jsonl&#34;</span><span class="o">}</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div></div>
-        </div>
-    </div>
-<h4 id="headerfragjsonl"><code>header.frag.jsonl</code></h4>
-<p>This contains the three text labels that I wish to have at the top of <em>every</em> openHasp device I deploy.</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;page&#34;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;comment&#34;</span><span class="p">:</span> <span class="s2">&#34;Default to page0 as the header and page/layout&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;comment&#34;</span><span class="p">:</span> <span class="s2">&#34;Time in the top left&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;obj&#34;</span><span class="p">:</span> <span class="s2">&#34;label&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;00:00&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;align&#34;</span><span class="p">:</span> <span class="s2">&#34;center&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;bg_color&#34;</span><span class="p">:</span> <span class="s2">&#34;#2C3E50&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;comment&#34;</span><span class="p">:</span> <span class="s2">&#34;Temp in the middle&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;obj&#34;</span><span class="p">:</span> <span class="s2">&#34;label&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;00.0°C&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;align&#34;</span><span class="p">:</span> <span class="s2">&#34;center&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;bg_color&#34;</span><span class="p">:</span> <span class="s2">&#34;#2C3E50&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;comment&#34;</span><span class="p">:</span> <span class="s2">&#34;Humidity in the top right&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;obj&#34;</span><span class="p">:</span> <span class="s2">&#34;label&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;00.0%&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;align&#34;</span><span class="p">:</span> <span class="s2">&#34;right&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;bg_color&#34;</span><span class="p">:</span> <span class="s2">&#34;#2C3E50&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h4 id="footerfragjsonl"><code>footer.frag.jsonl</code></h4>
-<p>This contains the three page navigation buttons that I wish to have at the bottom of <em>every</em> openHasp device that I deploy.</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="mi">6</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;comment&#34;</span><span class="p">:</span> <span class="s2">&#34;tab nav on the bottom, prev&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;obj&#34;</span><span class="p">:</span> <span class="s2">&#34;btn&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;action&#34;</span><span class="p">:</span> <span class="s2">&#34;prev&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;bg_color&#34;</span><span class="p">:</span> <span class="s2">&#34;#2C3E50&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;\uE141&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;text_color&#34;</span><span class="p">:</span> <span class="s2">&#34;#FFFFFF&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;radius&#34;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;border_side&#34;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;text_font&#34;</span><span class="p">:</span> <span class="mi">28</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;obj&#34;</span><span class="p">:</span> <span class="s2">&#34;btn&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;action&#34;</span><span class="p">:</span> <span class="s2">&#34;back&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;bg_color&#34;</span><span class="p">:</span> <span class="s2">&#34;#2C3E50&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;\uE2DC&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;text_color&#34;</span><span class="p">:</span> <span class="s2">&#34;#FFFFFF&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;radius&#34;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;border_side&#34;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;text_font&#34;</span><span class="p">:</span> <span class="mi">22</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;obj&#34;</span><span class="p">:</span> <span class="s2">&#34;btn&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;action&#34;</span><span class="p">:</span> <span class="s2">&#34;next&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;bg_color&#34;</span><span class="p">:</span> <span class="s2">&#34;#2C3E50&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;\uE142&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;text_color&#34;</span><span class="p">:</span> <span class="s2">&#34;#FFFFFF&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;radius&#34;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;border_side&#34;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;text_font&#34;</span><span class="p">:</span> <span class="mi">28</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h4 id="roomfragjson"><code>room.frag.json</code></h4>
-<p>This file should contain all the page(s) and UI widgets that are unique to the openHasp device deployed into the room that I will call <code>room</code> for the purposes of this post.
-As a <strong>demonstration</strong>, I have set up three buttons that control each of the three relays on a L8 device; you will almost certainly want to add multiple pages / other UI widgets as needed.</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;page&#34;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;comment&#34;</span><span class="p">:</span> <span class="s2">&#34;primary controls for the 3 relays&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="mi">101</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;comment&#34;</span><span class="p">:</span> <span class="s2">&#34;relay1&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;obj&#34;</span><span class="p">:</span> <span class="s2">&#34;btn&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;toggle&#34;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;relay1&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;mode&#34;</span><span class="p">:</span> <span class="s2">&#34;break&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;align&#34;</span><span class="p">:</span> <span class="s2">&#34;center&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;groupid&#34;</span><span class="p">:</span> <span class="mi">1</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="mi">102</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;comment&#34;</span><span class="p">:</span> <span class="s2">&#34;relay2&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;obj&#34;</span><span class="p">:</span> <span class="s2">&#34;btn&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;toggle&#34;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;relay2&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;mode&#34;</span><span class="p">:</span> <span class="s2">&#34;break&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;align&#34;</span><span class="p">:</span> <span class="s2">&#34;center&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;groupid&#34;</span><span class="p">:</span> <span class="mi">2</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="mi">103</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;comment&#34;</span><span class="p">:</span> <span class="s2">&#34;relay3&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;obj&#34;</span><span class="p">:</span> <span class="s2">&#34;btn&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;toggle&#34;</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;text&#34;</span><span class="p">:</span> <span class="s2">&#34;relay3&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;mode&#34;</span><span class="p">:</span> <span class="s2">&#34;break&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;align&#34;</span><span class="p">:</span> <span class="s2">&#34;center&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;groupid&#34;</span><span class="p">:</span> <span class="mi">3</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="configure-home-assistant">Configure Home Assistant</h3>
-<p>After the <code>pages.jsonl</code> is deployed to <em>each</em> of the openHasp devices, you will need to create a configuration file for Home Assistant.
-For the above screenshots, I created two <em>identical</em> ⃰ copies of the yaml below</p>
-<p>⃰  Other than the device name; in one file, the name was changed from <code>plate00</code> to <code>plate01</code>.</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">  1
-</span><span class="lnt">  2
-</span><span class="lnt">  3
-</span><span class="lnt">  4
-</span><span class="lnt">  5
-</span><span class="lnt">  6
-</span><span class="lnt">  7
-</span><span class="lnt">  8
-</span><span class="lnt">  9
-</span><span class="lnt"> 10
-</span><span class="lnt"> 11
-</span><span class="lnt"> 12
-</span><span class="lnt"> 13
-</span><span class="lnt"> 14
-</span><span class="lnt"> 15
-</span><span class="lnt"> 16
-</span><span class="lnt"> 17
-</span><span class="lnt"> 18
-</span><span class="lnt"> 19
-</span><span class="lnt"> 20
-</span><span class="lnt"> 21
-</span><span class="lnt"> 22
-</span><span class="lnt"> 23
-</span><span class="lnt"> 24
-</span><span class="lnt"> 25
-</span><span class="lnt"> 26
-</span><span class="lnt"> 27
-</span><span class="lnt"> 28
-</span><span class="lnt"> 29
-</span><span class="lnt"> 30
-</span><span class="lnt"> 31
-</span><span class="lnt"> 32
-</span><span class="lnt"> 33
-</span><span class="lnt"> 34
-</span><span class="lnt"> 35
-</span><span class="lnt"> 36
-</span><span class="lnt"> 37
-</span><span class="lnt"> 38
-</span><span class="lnt"> 39
-</span><span class="lnt"> 40
-</span><span class="lnt"> 41
-</span><span class="lnt"> 42
-</span><span class="lnt"> 43
-</span><span class="lnt"> 44
-</span><span class="lnt"> 45
-</span><span class="lnt"> 46
-</span><span class="lnt"> 47
-</span><span class="lnt"> 48
-</span><span class="lnt"> 49
-</span><span class="lnt"> 50
-</span><span class="lnt"> 51
-</span><span class="lnt"> 52
-</span><span class="lnt"> 53
-</span><span class="lnt"> 54
-</span><span class="lnt"> 55
-</span><span class="lnt"> 56
-</span><span class="lnt"> 57
-</span><span class="lnt"> 58
-</span><span class="lnt"> 59
-</span><span class="lnt"> 60
-</span><span class="lnt"> 61
-</span><span class="lnt"> 62
-</span><span class="lnt"> 63
-</span><span class="lnt"> 64
-</span><span class="lnt"> 65
-</span><span class="lnt"> 66
-</span><span class="lnt"> 67
-</span><span class="lnt"> 68
-</span><span class="lnt"> 69
-</span><span class="lnt"> 70
-</span><span class="lnt"> 71
-</span><span class="lnt"> 72
-</span><span class="lnt"> 73
-</span><span class="lnt"> 74
-</span><span class="lnt"> 75
-</span><span class="lnt"> 76
-</span><span class="lnt"> 77
-</span><span class="lnt"> 78
-</span><span class="lnt"> 79
-</span><span class="lnt"> 80
-</span><span class="lnt"> 81
-</span><span class="lnt"> 82
-</span><span class="lnt"> 83
-</span><span class="lnt"> 84
-</span><span class="lnt"> 85
-</span><span class="lnt"> 86
-</span><span class="lnt"> 87
-</span><span class="lnt"> 88
-</span><span class="lnt"> 89
-</span><span class="lnt"> 90
-</span><span class="lnt"> 91
-</span><span class="lnt"> 92
-</span><span class="lnt"> 93
-</span><span class="lnt"> 94
-</span><span class="lnt"> 95
-</span><span class="lnt"> 96
-</span><span class="lnt"> 97
-</span><span class="lnt"> 98
-</span><span class="lnt"> 99
-</span><span class="lnt">100
-</span><span class="lnt">101
-</span><span class="lnt">102
-</span><span class="lnt">103
-</span><span class="lnt">104
-</span><span class="lnt">105
-</span><span class="lnt">106
-</span><span class="lnt">107
-</span><span class="lnt">108
-</span><span class="lnt">109
-</span><span class="lnt">110
-</span><span class="lnt">111
-</span><span class="lnt">112
-</span><span class="lnt">113
-</span><span class="lnt">114
-</span><span class="lnt">115
-</span><span class="lnt">116
-</span><span class="lnt">117
-</span><span class="lnt">118
-</span><span class="lnt">119
-</span><span class="lnt">120
-</span><span class="lnt">121
-</span><span class="lnt">122
-</span><span class="lnt">123
-</span><span class="lnt">124
-</span><span class="lnt">125
-</span><span class="lnt">126
-</span><span class="lnt">127
-</span><span class="lnt">128
-</span><span class="lnt">129
-</span><span class="lnt">130
-</span><span class="lnt">131
-</span><span class="lnt">132
-</span><span class="lnt">133
-</span><span class="lnt">134
-</span><span class="lnt">135
-</span><span class="lnt">136
-</span><span class="lnt">137
-</span><span class="lnt">138
-</span><span class="lnt">139
-</span><span class="lnt">140
-</span><span class="lnt">141
-</span><span class="lnt">142
-</span><span class="lnt">143
-</span><span class="lnt">144
-</span><span class="lnt">145
-</span><span class="lnt">146
-</span><span class="lnt">147
-</span><span class="lnt">148
-</span><span class="lnt">149
-</span><span class="lnt">150
-</span><span class="lnt">151
-</span><span class="lnt">152
-</span><span class="lnt">153
-</span><span class="lnt">154
-</span><span class="lnt">155
-</span><span class="lnt">156
-</span><span class="lnt">157
-</span><span class="lnt">158
-</span><span class="lnt">159
-</span><span class="lnt">160
-</span><span class="lnt">161
-</span><span class="lnt">162
-</span><span class="lnt">163
-</span><span class="lnt">164
-</span><span class="lnt">165
-</span><span class="lnt">166
-</span><span class="lnt">167
-</span><span class="lnt">168
-</span><span class="lnt">169
-</span><span class="lnt">170
-</span><span class="lnt">171
-</span><span class="lnt">172
-</span><span class="lnt">173
-</span><span class="lnt">174
-</span><span class="lnt">175
-</span><span class="lnt">176
-</span><span class="lnt">177
-</span><span class="lnt">178
-</span><span class="lnt">179
-</span><span class="lnt">180
-</span><span class="lnt">181
-</span><span class="lnt">182
-</span><span class="lnt">183
-</span><span class="lnt">184
-</span><span class="lnt">185
-</span><span class="lnt">186
-</span><span class="lnt">187
-</span><span class="lnt">188
-</span><span class="lnt">189
-</span><span class="lnt">190
-</span><span class="lnt">191
-</span><span class="lnt">192
-</span><span class="lnt">193
-</span><span class="lnt">194
-</span><span class="lnt">195
-</span><span class="lnt">196
-</span><span class="lnt">197
-</span><span class="lnt">198
-</span><span class="lnt">199
-</span><span class="lnt">200
-</span><span class="lnt">201
-</span><span class="lnt">202
-</span><span class="lnt">203
-</span><span class="lnt">204
-</span><span class="lnt">205
-</span><span class="lnt">206
-</span><span class="lnt">207
-</span><span class="lnt">208
-</span><span class="lnt">209
-</span><span class="lnt">210
-</span><span class="lnt">211
-</span><span class="lnt">212
-</span><span class="lnt">213
-</span><span class="lnt">214
-</span><span class="lnt">215
-</span><span class="lnt">216
-</span><span class="lnt">217
-</span><span class="lnt">218
-</span><span class="lnt">219
-</span><span class="lnt">220
-</span><span class="lnt">221
-</span><span class="lnt">222
-</span><span class="lnt">223
-</span><span class="lnt">224
-</span><span class="lnt">225
-</span><span class="lnt">226
-</span><span class="lnt">227
-</span><span class="lnt">228
-</span><span class="lnt">229
-</span><span class="lnt">230
-</span><span class="lnt">231
-</span><span class="lnt">232
-</span><span class="lnt">233
-</span><span class="lnt">234
-</span><span class="lnt">235
-</span><span class="lnt">236
-</span><span class="lnt">237
-</span><span class="lnt">238
-</span><span class="lnt">239
-</span><span class="lnt">240
-</span><span class="lnt">241
-</span><span class="lnt">242
-</span><span class="lnt">243
-</span><span class="lnt">244
-</span><span class="lnt">245
-</span><span class="lnt">246
-</span><span class="lnt">247
-</span><span class="lnt">248
-</span><span class="lnt">249
-</span><span class="lnt">250
-</span><span class="lnt">251
-</span><span class="lnt">252
-</span><span class="lnt">253
-</span><span class="lnt">254
-</span><span class="lnt">255
-</span><span class="lnt">256
-</span><span class="lnt">257
-</span><span class="lnt">258
-</span><span class="lnt">259
-</span><span class="lnt">260
-</span><span class="lnt">261
-</span><span class="lnt">262
-</span><span class="lnt">263
-</span><span class="lnt">264
-</span><span class="lnt">265
-</span><span class="lnt">266
-</span><span class="lnt">267
-</span><span class="lnt">268
-</span><span class="lnt">269
-</span><span class="lnt">270
-</span><span class="lnt">271
-</span><span class="lnt">272
-</span><span class="lnt">273
-</span><span class="lnt">274
-</span><span class="lnt">275
-</span><span class="lnt">276
-</span><span class="lnt">277
-</span><span class="lnt">278
-</span><span class="lnt">279
-</span><span class="lnt">280
-</span><span class="lnt">281
-</span><span class="lnt">282
-</span><span class="lnt">283
-</span><span class="lnt">284
-</span><span class="lnt">285
-</span><span class="lnt">286
-</span><span class="lnt">287
-</span><span class="lnt">288
-</span><span class="lnt">289
-</span><span class="lnt">290
-</span><span class="lnt">291
-</span><span class="lnt">292
-</span><span class="lnt">293
-</span><span class="lnt">294
-</span><span class="lnt">295
-</span><span class="lnt">296
-</span><span class="lnt">297
-</span><span class="lnt">298
-</span><span class="lnt">299
-</span><span class="lnt">300
-</span><span class="lnt">301
-</span><span class="lnt">302
-</span><span class="lnt">303
-</span><span class="lnt">304
-</span><span class="lnt">305
-</span><span class="lnt">306
-</span><span class="lnt">307
-</span><span class="lnt">308
-</span><span class="lnt">309
-</span><span class="lnt">310
-</span><span class="lnt">311
-</span><span class="lnt">312
-</span><span class="lnt">313
-</span><span class="lnt">314
-</span><span class="lnt">315
-</span><span class="lnt">316
-</span><span class="lnt">317
-</span><span class="lnt">318
-</span><span class="lnt">319
-</span><span class="lnt">320
-</span><span class="lnt">321
-</span><span class="lnt">322
-</span><span class="lnt">323
-</span><span class="lnt">324
-</span><span class="lnt">325
-</span><span class="lnt">326
-</span><span class="lnt">327
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c"># plate00 is a test L8 module</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Has a resolution of 240x320</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># The top left corner is 0,0, X grows positive to the right and Y grows positive down</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">##</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">plate00</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">## TODO: is there a way to fix this? Maybe a HA feature request or openHasp/CC change...</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># Would be really nice if HA had some way to save templates and load them</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#   that way I don&#39;t have to declare the same variables over and over...</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">objects</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c">###</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># COMMON</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c">###</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Header: Time</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">obj</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;p0b1&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">properties</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Align left most, If we do go over our permitted length, loop</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;align&#34;: </span><span class="s2">&#34;left&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;text&#34;: </span><span class="s2">&#34;{{ states(&#39;sensor.time&#39;) }}&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;mode&#34;: </span><span class="s2">&#34;loop&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c">##</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Draw the labels with a 1% margin from the top and sides</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;x&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrHorMargin}}</span><span class="w">          
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;y&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrVrtMargin = (scnHt*0.01) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrVrtMargin}}</span><span class="w">          
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Width is 1/3 of the screen width after subtracting margins</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c">##</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;w&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set numObj = 3 %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set usableHdrWd = scnWd-(2*hdrHorMargin) %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrLblWd = (usableHdrWd/numObj) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrLblWd}}</span><span class="w">          
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Height is 10% of the screen, after margin</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c">##</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;h&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrVrtMargin = (scnHt*0.01) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHt = (scnHt*0.1) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrLblHt = hdrHt-hdrVrtMargin %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrLblHt}}</span><span class="w">          
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Header: Temp</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">obj</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;p0b2&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">properties</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Align center, If we do go over our permitted length, loop</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;align&#34;: </span><span class="s2">&#34;center&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;text&#34;: </span><span class="s2">&#34;{{ states(&#39;sensor.room_temperature&#39;) }}°C&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;mode&#34;: </span><span class="s2">&#34;loop&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c">##</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Draw the labels with a 1% margin from the top and sides</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;x&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set numObj = 3 %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set usableHdrWd = scnWd-(2*hdrHorMargin) %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrLblWd = (usableHdrWd/numObj) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrHorMargin+hdrLblWd}}</span><span class="w">          
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;y&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrVrtMargin = (scnHt*0.01) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrVrtMargin}}</span><span class="w">          
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Width is 1/3 of the screen width after subtracting margins</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c">##</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;w&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set numObj = 3 %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set usableHdrWd = scnWd-(2*hdrHorMargin) %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrLblWd = (usableHdrWd/numObj) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrLblWd}}</span><span class="w">          
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Height is 10% of the screen, after margin</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c">##</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;h&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrVrtMargin = (scnHt*0.01) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHt = (scnHt*0.1) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrLblHt = hdrHt-hdrVrtMargin %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrLblHt}}</span><span class="w">          
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Header: Humidity</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">obj</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;p0b3&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">properties</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Align right most, If we do go over our permitted length, loop</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;align&#34;: </span><span class="s2">&#34;right&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;text&#34;: </span><span class="s2">&#34;{{ states(&#39;sensor.room_humidity&#39;) }}%&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;mode&#34;: </span><span class="s2">&#34;loop&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c">##</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Draw the labels with a 1% margin from the top and sides</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;x&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set numObj = 3 %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set usableHdrWd = scnWd-(2*hdrHorMargin) %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrLblWd = (usableHdrWd/numObj) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrHorMargin+(2*hdrLblWd)}}</span><span class="w">          
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;y&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrVrtMargin = (scnHt*0.01) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrVrtMargin}}</span><span class="w">          
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Width is 1/3 of the screen width after subtracting margins</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c">##</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;w&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set numObj = 3 %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set usableHdrWd = scnWd-(2*hdrHorMargin) %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrLblWd = (usableHdrWd/numObj) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrLblWd}}</span><span class="w">          
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Height is 10% of the screen, after margin</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c">##</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;h&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrVrtMargin = (scnHt*0.01) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHt = (scnHt*0.1) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrLblHt = hdrHt-hdrVrtMargin %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrLblHt}}</span><span class="w">          
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># bottom nav: previous</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">obj</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;p0b6&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">properties</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Left most button sits all the way up against the left side of the screen</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;x&#34;: </span><span class="m">0</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Start drawing the button from the bottom most pixel</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;y&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHt = (scnHt*0.1) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{scnHt-hdrHt}}</span><span class="w">          
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># And since we have 3 buttons, 1/3 of the width</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;w&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set numObj = 3 %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set ftrBtnWd = (scnWd/numObj) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{ftrBtnWd-1}}</span><span class="w">          
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># We want the bottom nav buttons to consume the bottom 10% of the screen</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;h&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set ftrHt = (scnHt*0.1) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{ftrHt}}</span><span class="w">          
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># bottom nav: home</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">obj</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;p0b7&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">properties</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Start drawing exactly the next pixel over from where the first button stopped</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;x&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set numObj = 3 %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set ftrBtnWd = (scnWd/numObj) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{ftrBtnWd}}</span><span class="w">          
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Start drawing the button from the bottom most pixel</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;y&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHt = (scnHt*0.1) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{scnHt-hdrHt}}</span><span class="w">          
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># And since we have 3 buttons, 1/3 of the width</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;w&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set numObj = 3 %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set ftrBtnWd = (scnWd/numObj) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{ftrBtnWd-1}}</span><span class="w">          
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># We want the bottom nav buttons to consume the bottom 10% of the screen</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;h&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set ftrHt = (scnHt*0.1) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{ftrHt}}</span><span class="w">          
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># bottom nav: next</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">obj</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;p0b8&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">properties</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Start drawing exactly the next pixel over from where the first button stopped</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;x&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set numObj = 3 %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set ftrBtnWd = (scnWd/numObj) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{ftrBtnWd*2}}</span><span class="w">          
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Start drawing the button from the bottom most pixel</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;y&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHt = (scnHt*0.1) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{scnHt-hdrHt}}</span><span class="w">          
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># And since we have 3 buttons, 1/3 of the width</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;w&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set numObj = 3 %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set ftrBtnWd = (scnWd/numObj) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{ftrBtnWd}}</span><span class="w">          
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># We want the bottom nav buttons to consume the bottom 10% of the screen</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;h&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set ftrHt = (scnHt*0.1) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{ftrHt}}</span><span class="w">          
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># ###</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># # Room Specific</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># ###</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># relay toggle 1</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">obj</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;p1b101&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">properties</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;x&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrHorMargin}}</span><span class="w">          
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Figure out how tall the display is, subtract out the height of the header/footer and that&#39;s the usable</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c">#   space. Within that usable space, we will want small margins.</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c">##</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;y&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrVrtMargin = (scnHt*0.01) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHt = (scnHt*0.1) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrHt+hdrVrtMargin}}</span><span class="w">          
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;w&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set usableHdrWd = scnWd-(2*hdrHorMargin) %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyWd = usableHdrWd %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{bdyWd}}</span><span class="w">          
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># We want the bottom nav buttons to consume the bottom 10% of the screen</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;h&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set numObj = 3 %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHt = (scnHt*0.1) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set ftrHt = (scnHt*0.1) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrVrtMargin = (scnHt*0.01) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyHt = (scnHt - (hdrHt+ftrHt) - (2*hdrVrtMargin)) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyBtnVrtMargin = (bdyHt * 0.02) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyBtnHt = ((bdyHt-((numObj-1)*bdyBtnVrtMargin))/numObj) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{bdyBtnHt}}</span><span class="w">          
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># relay toggle 2</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">obj</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;p1b102&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">properties</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;x&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrHorMargin}}</span><span class="w">          
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Figure out how tall the display is, subtract out the height of the header/footer and that&#39;s the usable</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c">#   space. Within that usable space, we will want small margins.</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c">##</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;y&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set numObj = 3 %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrVrtMargin = (scnHt*0.01) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHt = (scnHt*0.1) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set ftrHt = (scnHt*0.1) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyHt = (scnHt - (hdrHt+ftrHt) - (2*hdrVrtMargin)) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyBtnVrtMargin = (bdyHt * 0.02) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyBtnHt = ((bdyHt-((numObj-1)*bdyBtnVrtMargin))/numObj) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrHt+hdrVrtMargin+(1*bdyBtnHt+bdyBtnVrtMargin)}}</span><span class="w">          
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;w&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set usableHdrWd = scnWd-(2*hdrHorMargin) %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyWd = usableHdrWd %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{bdyWd}}</span><span class="w">          
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># We want the bottom nav buttons to consume the bottom 10% of the screen</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;h&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set numObj = 3 %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHt = (scnHt*0.1) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set ftrHt = (scnHt*0.1) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrVrtMargin = (scnHt*0.01) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyHt = (scnHt - (hdrHt+ftrHt) - (2*hdrVrtMargin)) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyBtnVrtMargin = (bdyHt * 0.02) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyBtnHt = ((bdyHt-((numObj-1)*bdyBtnVrtMargin))/numObj) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{bdyBtnHt}}</span><span class="w">          
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># relay toggle 3</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">obj</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;p1b103&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">properties</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;x&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrHorMargin}}</span><span class="w">          
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Figure out how tall the display is, subtract out the height of the header/footer and that&#39;s the usable</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c">#   space. Within that usable space, we will want small margins.</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c">##</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;y&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set numObj = 3 %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrVrtMargin = (scnHt*0.01) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHt = (scnHt*0.1) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set ftrHt = (scnHt*0.1) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyHt = (scnHt - (hdrHt+ftrHt) - (2*hdrVrtMargin)) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyBtnVrtMargin = (bdyHt * 0.02) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyBtnHt = ((bdyHt-((numObj-1)*bdyBtnVrtMargin))/numObj) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrHt+hdrVrtMargin+(2*(bdyBtnHt+bdyBtnVrtMargin))}}</span><span class="w">          
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;w&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set usableHdrWd = scnWd-(2*hdrHorMargin) %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyWd = usableHdrWd %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{bdyWd}}</span><span class="w">          
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># We want the bottom nav buttons to consume the bottom 10% of the screen</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;h&#34;: </span><span class="p">&gt;-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set numObj = 3 %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHt = (scnHt*0.1) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set ftrHt = (scnHt*0.1) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrVrtMargin = (scnHt*0.01) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyHt = (scnHt - (hdrHt+ftrHt) - (2*hdrVrtMargin)) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyBtnVrtMargin = (bdyHt * 0.02) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyBtnHt = ((bdyHt-((numObj-1)*bdyBtnVrtMargin))/numObj) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{bdyBtnHt}}</span><span class="w">          
-</span></span></span></code></pre></td></tr></table>
-</div>
-</div><div class="details admonition tip open">
-        <div class="details-summary admonition-title">
-            <i class="icon fas fa-lightbulb fa-fw"></i>Tip<i class="details-icon fas fa-angle-right fa-fw"></i>
-        </div>
-        <div class="details-content">
-            <div class="admonition-content"><p>This technique <em>could</em> be considered overkill. Each template incurs some additional memory/cpu overhead on the Home Assistant instance.</p>
-<p>While this technique is pretty helpful during rapid prototyping, at some point the additional resource usage is hard to justify for layouts that do not change often.</p>
-<p>A reasonable compromise would be to leverage the template evaluation functionality via the Home Assistant Developer tools to calculate the positions and locations for each UI elements while building out your interface(s) and then copy the computed values into your <code>pages.jsonl</code> file once the layout has been more or less finalized.</p>
-</div>
-        </div>
-    </div>
-<p>And you&rsquo;re done!
-You might need to restart Home Assistant or reload the openHasp component/configuration so your update YAML is picked up.
-Assuming everything works, you should see a flurry of activity on your MQTT broker or the plate telnet console as the openHasp component renders each template and commands the plate to re-draw each UI element.</p>
-<p>You can then re-configure your device with a new display orientation and then reboot it. As it connects back to your MQTT broker, Home Assistant will re-evaluate the templates with the inverted screen height/width and each UI widget should get re-painted.</p>
-<p>If I had a way to reliably capture the content of the framebuffer as a video rather than a screenshot, I&rsquo;d include it here.
-You&rsquo;ll just have to trust me when I say that It&rsquo;s kinda neat to watch this happen in real time.</p>
-<h2 id="teardown">Teardown</h2>
-<h3 id="product-packaging">Product packaging</h3>
-<p>Since it&rsquo;s all but impossible to find any photos of the product packaging online, here&rsquo;s a few of those:</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Minimal instructions and wasteful packaging. Other than the small foam insert, this entire package can be recycled!
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        The provided screws are NOT the US standard #6 32 thread-per-inch. They are slightly larger and will strip out any screw holes in an electrical box!
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<h3 id="internals">Internals</h3>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        This particular model is the 3 relay version. Packaging claims 200W power. It&#39;s not clear if that is per channel or total. My money is on total.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>You can clearly see the revised PCB that is substantially different from the one featured on <a href="https://blakadder.com/lanbon-L8-custom-firmware/#disassembly" target="_blank" rel="noopener noreffer">this blakadder post</a>.
-My PCB has a parasitic TuYa module also attached.
-Almost none of the pins are connected to the PCB so the TuYa module is 100% self contained and commands the main ESP module via UART.</p>
-<p>Removing the TuYa module is pretty painless with some hot air.
-It can also be left alone and the openHasp binaries will just ignore it.
-You can also place an order directly with Lanbon for units that do not have the TuYa module populated but this will require a minimum order quantity.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Generic relays, generic caps, generic transformers... don&#39;t switch any critical loads with this!
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        A closer look at what appears to be a dedicated power monitoring IC. It appears to monitor the aggregate of all three channels, not each individually. Very likely to make sure no more than 200W is switched at one time...
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<h3 id="pcbic-markings">PCB/IC Markings</h3>
-<p>Some of the interesting ICs and PCB markings:</p>
-<ul>
-<li>
-<p><code>CB3S</code>: TuYa <a href="https://developer.tuya.com/en/docs/iot/cb3s?id=Kai94mec0s076" target="_blank" rel="noopener noreffer">wifi module</a></p>
-</li>
-<li>
-<p><code>HLW8012</code>: Single phase energy monitor chip</p>
-</li>
-<li>
-<p><code>ESP32-WROVER-IB</code>: the primary ESP32 module that runs the show</p>
-</li>
-<li>
-<p>Primary PCB is marked: <code>L8-HS_CB_V1.17(20210805)</code></p>
-</li>
-<li>
-<p>Daughter / &lsquo;power&rsquo; board <code>L8-HS MB V1,14</code></p>
-</li>
 </ul>
 ]]></description></item></channel></rss>

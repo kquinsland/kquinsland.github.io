@@ -1,4 +1,1170 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>two-minute-teardown - Tag - karl</title><link>https://karlquinsland.com/tags/two-minute-teardown/</link><description>two-minute-teardown - Tag - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 01 Dec 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/two-minute-teardown/" rel="self" type="application/rss+xml"/><item><title>Inside of the Pulse-Eight HDMI CEC Injector.</title><link>https://karlquinsland.com/pulse-eight-hdmi-cec-injector-teardown/</link><pubDate>Fri, 01 Dec 2023 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/pulse-eight-hdmi-cec-injector-teardown/</guid><description><![CDATA[<h1 id="inside-the-pulse-eight-hdmi-cec-injector">Inside the Pulse-Eight HDMI CEC Injector</h1>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>two-minute-teardown - Tag - karl</title><link>https://karlquinsland.com/tags/two-minute-teardown/</link><description>two-minute-teardown - Tag - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 02 Dec 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/two-minute-teardown/" rel="self" type="application/rss+xml"/><item><title>Altinex TE460-137 Teardown</title><link>https://karlquinsland.com/altinex-te460-137-teardown/</link><pubDate>Sat, 02 Dec 2023 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/altinex-te460-137-teardown/</guid><description><![CDATA[<h1 id="altinex-te460-137-teardown">Altinex TE460-137 Teardown</h1>
+<p>It is surprisingly hard to find a device that can dump details about the various protocols and negotiated standards for a HDMI connection.
+For how ubiquitous HDMI is, you&rsquo;d <em>think</em> that there would be a lot of devices that can do this.
+There are LOADS of devices that can snoop USB and Ethernet, but HDMI is a bit of a different beast, apparently.</p>
+<p>After a bit of searching, I found the <a href="https://www.altinex.com/product/te460-137/" target="_blank" rel="noopener noreffer">Altinex TE460-137</a> could do exactly what I wanted.</p>
+<p>Like the <a href="/pulse-eight-hdmi-cec-injector-teardown/" rel="">HDMI CEC dongle</a> this device is a bit specialized and so there&rsquo;s not a lot of readily available information about it online.
+I was curious about what&rsquo;s inside and how it works, so I decided to take a look.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Front of the device.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<h2 id="magnuson-moss-warranty-act">Magnuson-Moss Warranty Act</h2>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        The case split open.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>Notice that pierced <code>Warranty void if removed</code> sticker over the bottom right screw?
+Yeah, that&rsquo;s <a href="https://www.npr.org/sections/thetwo-way/2018/04/11/601582169/warranty-void-if-removed-as-it-turns-out-feds-say-those-warnings-are-illegal" target="_blank" rel="noopener noreffer"><strong>illegal</strong></a>.
+Naturally, companies don&rsquo;t want you to know that the sticker is <a href="https://www.ifixit.com/News/15464/warranty-voiding-stickers-are-illegal-but-these-companies-are-still-using-them" target="_blank" rel="noopener noreffer">unenforceable</a>.</p>
+<p>Consider this a small <a href="https://www.ifixit.com/News/11748/warranty-stickers-are-illegal" target="_blank" rel="noopener noreffer">PSA</a>: if you see a sticker like this, you can safely ignore it.
+The company <em>cannot</em> void your warranty for removing it but they absolutely can make your life difficult if you do.
+If you get pushback, direct them to the <a href="https://www.ftc.gov/business-guidance/resources/businesspersons-guide-federal-warranty-law" target="_blank" rel="noopener noreffer">FTC&rsquo;s official statement</a> on the matter.</p>
+<p>Anyways.</p>
+<h2 id="quick-peek-inside">Quick peek Inside</h2>
+<p>After removing the four screws, the case splits open easily enough.
+The construction is a bit more elaborate than expected; there&rsquo;s a main PCB, a control PCB, and a battery interface PCB.</p>
+<p>I was in a hurry so the photos are &ldquo;as-is&rdquo; and not my best work.
+I&rsquo;ve <a href="#chips-and-other-markings" rel="">noted down the markings on the chips</a> and other components for future reference.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Internals feature three PCBs.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>If the battery ever does leak, the entire PCB assembly can be removed and replaced.
+It also shouldn&rsquo;t be that difficult to just modify the battery interface PCB to use a different battery.
+The thermistor is a nice touch!</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Rear of the battery interface PCB.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>Taking a quick look at the control PCB, we can see a few big ICs&hellip;
+The populated JTAG header is an interesting find.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Top of the control PCB.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>There&rsquo;s not much on the rear of the control PCB:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Bottom of the control PCB.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>Nor is there much on the side of the PCB just behind the OLED screen / front panel.
+Oddly enough, each button gets <em>two</em> sets of contacts&hellip;</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        The side of the main PCB that faces the user from within.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>And there&rsquo;s nothing interesting on the &lsquo;internal&rsquo; side of the front panel:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Interior of the front panel features button matrix and OLED.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<h2 id="some-technical-details">Some Technical Details</h2>
+<p>If you catch the device early enough in boot, you can see the panasonic HDMI switch chip enumerating in it&rsquo;s default state.
+Don&rsquo;t ask me where the 2% overscan comes from&hellip;</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        The default EDID info doesn&#39;t last long; as soon as the device is powered on, it tries to read the EDID from the connected sink and use that.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<h3 id="chips-and-other-markings">Chips and other markings</h3>
+<h4 id="control-pcb">Control PCB</h4>
+<ul>
+<li>The main application processor is the <a href="https://www.nxp.com/part/LPC1830FET100#/" target="_blank" rel="noopener noreffer">NXP LPC1830FET100</a>.</li>
+<li>It seems like all audio is handled by the <a href="https://www.analog.com/en/products/adau1701.html" target="_blank" rel="noopener noreffer">Analog Devices ADAU1701</a>.</li>
+</ul>
+<p>Oddly enough there are <em>two</em> flash chips here. Presumably firmware storage for the  NXP and Analog Devices chips.</p>
+<ul>
+<li><a href="https://www.winbond.com/hq/product/code-storage-flash-memory/serial-nor-flash/?__locale=en&amp;partNo=W25Q32JV" target="_blank" rel="noopener noreffer">Winbond 25Q32JV</a></li>
+<li><a href="https://www.microchip.com/en-us/product/24lc128" target="_blank" rel="noopener noreffer">Microchip 24LC128I</a></li>
+</ul>
+<p>I didn&rsquo;t bother dumping either, but Altinex does make an older version of the firmware <a href="#firmware" rel="">available</a>.</p>
+<h3 id="main-pcb">Main PCB</h3>
+<p>The big QFP144 chip on the main PCB is a <a href="https://panasonic.encompass.com/item/10292549/Panasonic/MN864788/" target="_blank" rel="noopener noreffer">Panasonic MN864788</a>.
+I can&rsquo;t find a data sheet, but one <a href="https://stesys.eu/ocart/index.php?route=product/product&amp;manufacturer_id=135&amp;product_id=2544&amp;limit=75" target="_blank" rel="noopener noreffer">supplier has labeled it</a> a &ldquo;HDMI 2.0 Receiver/Switch&rdquo;.
+Given the proximity to the two HDMI ports &hellip; this makes sense.</p>
+<h3 id="dmesg"><code>dmesg</code></h3>
+<p>For thoroughness, here&rsquo;s how the device enumerates over USB when plugged in when configured in RS-232 mode:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">usb 5-4.1.2.2: new full-speed USB device number <span class="m">91</span> using xhci_hcd
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: New USB device found, <span class="nv">idVendor</span><span class="o">=</span>04e2, <span class="nv">idProduct</span><span class="o">=</span>1411, <span class="nv">bcdDevice</span><span class="o">=</span> 0.01
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: New USB device strings: <span class="nv">Mfr</span><span class="o">=</span>1, <span class="nv">Product</span><span class="o">=</span>2, <span class="nv">SerialNumber</span><span class="o">=</span><span class="m">3</span>
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: Product: XR21B1411
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: Manufacturer: Exar Corp.
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: SerialNumber: Q9065270561
+</span></span><span class="line"><span class="cl">usbcore: registered new interface driver xr_serial
+</span></span><span class="line"><span class="cl">usbserial: USB Serial support registered <span class="k">for</span> xr_serial
+</span></span><span class="line"><span class="cl">xr_serial 5-4.1.2.2:1.0: xr_serial converter detected
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: xr_serial converter now attached to ttyUSB0
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>And when in FW update mode:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">usb 5-4.1.2.2: new high-speed USB device number <span class="m">92</span> using xhci_hcd
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: config <span class="m">1</span> interface <span class="m">0</span> altsetting <span class="m">0</span> bulk endpoint 0x83 has invalid maxpacket <span class="m">64</span>
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: config <span class="m">1</span> interface <span class="m">0</span> altsetting <span class="m">0</span> bulk endpoint 0x2 has invalid maxpacket <span class="m">64</span>
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: New USB device found, <span class="nv">idVendor</span><span class="o">=</span>1fc9, <span class="nv">idProduct</span><span class="o">=</span>8001, <span class="nv">bcdDevice</span><span class="o">=</span> 1.00
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: New USB device strings: <span class="nv">Mfr</span><span class="o">=</span>1, <span class="nv">Product</span><span class="o">=</span>2, <span class="nv">SerialNumber</span><span class="o">=</span><span class="m">0</span>
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: Product: USB Mass Storage            
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: Manufacturer: USB
+</span></span><span class="line"><span class="cl">usb-storage 5-4.1.2.2:1.0: USB Mass Storage device detected
+</span></span><span class="line"><span class="cl">scsi host4: usb-storage 5-4.1.2.2:1.0
+</span></span><span class="line"><span class="cl">scsi 4:0:0:0: Direct-Access     NXP      Dataflash Disk   0.00 PQ: <span class="m">0</span> ANSI: <span class="m">0</span>
+</span></span><span class="line"><span class="cl">sd 4:0:0:0: <span class="o">[</span>sda<span class="o">]</span> <span class="m">3968</span> 512-byte logical blocks: <span class="o">(</span>2.03 MB/1.94 MiB<span class="o">)</span>
+</span></span><span class="line"><span class="cl">sd 4:0:0:0: <span class="o">[</span>sda<span class="o">]</span> Write Protect is off
+</span></span><span class="line"><span class="cl">sd 4:0:0:0: <span class="o">[</span>sda<span class="o">]</span> Mode Sense: <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>
+</span></span><span class="line"><span class="cl">sd 4:0:0:0: <span class="o">[</span>sda<span class="o">]</span> Asking <span class="k">for</span> cache data failed
+</span></span><span class="line"><span class="cl">sd 4:0:0:0: <span class="o">[</span>sda<span class="o">]</span> Assuming drive cache: write through
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: reset high-speed USB device number <span class="m">92</span> using xhci_hcd
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: device descriptor read/64, error -110
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="firmware">Firmware</h3>
+<div class="details admonition note open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-pencil-alt fa-fw"></i>Note<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>The device ships with FW 3.06A/R3.</p>
+<p>Their <a href="https://www.altinex.com/download/te460-137-firmware-update-v-3-04a-easy-mode/" target="_blank" rel="noopener noreffer">website</a> only have 3.04 available.</p>
+</div>
+        </div>
+    </div>
+]]></description></item><item><title>AliExpress 11.11 Sale Teardowns</title><link>https://karlquinsland.com/aliexpress-11-11-sale-teardowns/</link><pubDate>Fri, 01 Dec 2023 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/aliexpress-11-11-sale-teardowns/</guid><description><![CDATA[<!-- markdownlint-disable-file MD024 -->
+<h1 id="11-11-day-teardowns">11-11 day teardowns</h1>
+<p><a href="https://en.wikipedia.org/wiki/Singles%27_Day" target="_blank" rel="noopener noreffer">Single&rsquo;s Day</a> is a big deal in China and AliExpress has a big sale in celebration.</p>
+<p>In addition to project supplies, I found quite a few items that can only be classified as  &ldquo;ohh, that looks interesting and I need another $11 in the cart to unlock free shipping&hellip;&rdquo; items.</p>
+<p>I was planing on doing a series of posts covering some of the stuff I bought but nothing on it&rsquo;s own was really &ldquo;worth&rdquo; a full post so instead of a bunch of short <a href="/tags/two-minute-teardown/" rel="">&ldquo;Two Minute Teardown&rdquo;</a> posts, I decided to just roll everything into this massive post.</p>
+<p>And with that, here&rsquo;s a whole grab bag of worth of #TwoMinuteTeardowns with the appropriate level of detail for each item.</p>
+<h2 id="super-cheap-airtag">Super cheap &lsquo;AirTag&rsquo;</h2>
+<p>Product in question: <a href="https://www.aliexpress.us/item/3256804801453934.html?gatewayAdapt=glo2usa" target="_blank" rel="noopener noreffer">Mini Tracker Bluetooth4.0 Smart Locator Smart Anti Lost Device Locator Mobile Keys Pet Kids Finder For Apple</a></p>
+<p>This was a mistake on my part.
+I saw a BTLE powered device tracker shaped and styled exactly like an air tag for <strong>$5 shipped</strong> and thought &ldquo;why not?&rdquo;
+One good reason why not: it&rsquo;s not compatible with Apple&rsquo;s Find My network.</p>
+<p>In hindsight, if it was only $5 and if it worked &rsquo;natively&rsquo; with apple devices&hellip; I&rsquo;d have heard about it before browsing Ali Express!</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<h3 id="markings-and-other-details">Markings and other details</h3>
+<p>The main CPU appears to be a <a href="https://www.lenzetech.com/public/store/pdf/jsggs/ST17H66B2_BLE_SoC_Datasheet_v1.1.2.pdf" target="_blank" rel="noopener noreffer">Lenze Tech ST17H66B</a></p>
+<p>The instructions point to an <a href="https://www.qrtransfer.com/iSearching.html" target="_blank" rel="noopener noreffer"><code>iSearching</code> app</a>
+I didn&rsquo;t bother installing it, here&rsquo;s what a quick scan of the BTLE characteristics shows quite a few services and characteristics:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<h2 id="tuya-wifi-power-monitor">TuYa WiFi Power Monitor</h2>
+<p>Product in question: <a href="https://s.click.aliexpress.com/e/_mNLeK44" target="_blank" rel="noopener noreffer">16A Tuya WIFI Smart Socket AC220V 110V Digital Wattmeter EU Plug Electricity consumption Power KWH US AU FR Power Energy Meter</a></p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>TuYa module doesn&rsquo;t seem to be running the show; most of the pads are not connected; only the UART pins seem to be going somewhere.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>A bit more going on than you&rsquo;d expect at first; I was expecting a simple Switch Mode power supply driver for DC and then a single MCU to do everything but the WiFi.
+Not so!
+There&rsquo;s a dedicated chip for power monitoring, BT, Power supply, and the main MCU&hellip;</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<h3 id="markings-and-other-details-1">Markings and other details</h3>
+<ul>
+<li>
+<p><a href="https://en.sekorm.com/doc/2232723.html" target="_blank" rel="noopener noreffer">KP3211BSG</a></p>
+</li>
+<li>
+<p><a href="https://www.wch-ic.com/products/CH573.html" target="_blank" rel="noopener noreffer">CH573F</a></p>
+</li>
+<li>
+<p><a href="https://www.aliexpress.us/item/2255799832871961.html?gatewayAdapt=glo2usa4itemAdapt" target="_blank" rel="noopener noreffer">GMT024-01</a></p>
+</li>
+<li>
+<p><a href="https://developer.tuya.com/en/docs/iot/cb3s?id=Kai94mec0s076" target="_blank" rel="noopener noreffer">TuYa CBS3 module</a></p>
+</li>
+<li>
+<p><a href="https://www.lcsc.com/product-detail/Energy-Metering-ICs_BL-Shanghai-Belling-BL0942_C2837510.html" target="_blank" rel="noopener noreffer">BL0942</a></p>
+</li>
+<li>
+<p><code>BP0S229-28A2</code>: This is the same chip that shows up in the <a href="#pet-rfid-tag-reader" rel="">pet RFID reader</a> and I cant&rsquo; find an exact match for it.</p>
+</li>
+<li>
+<p>LCD is marked <code>AVDD AVCL</code> which seems to be pretty generic</p>
+</li>
+</ul>
+<h2 id="tuya-wifi-air-quality-monitor">TuYa WiFi Air Quality Monitor</h2>
+<p>Product in question: <a href="https://s.click.aliexpress.com/e/_mPXVCDO" target="_blank" rel="noopener noreffer">Tuya Wifi Portable Air Quality Meter 8in1 PM1.0 PM2.5 PM10 CO2 TVOC HCHO Temperature and Humidity Tester Carbon Dioxide Detector</a></p>
+<p>Unfortunately you have to peel off the screen cover to get access to the screws.
+At least they&rsquo;re just regular philips screws and not some weird security screws.</p>
+<p>Interesting to see the IR sensor at the top. Presumably this is for proximity sensing to turn the screen on and off and not some kind of IR blaster or remote control.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Makes sense that the various sensors would be facing the vents holes.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Looks like it&rsquo;s using a micro controller to do the heavy lifting and only communicate to the TuYa module via UART.
+This is a common and well-supported pattern for these kinds of devices &hellip; even if it does mean that it won&rsquo;t be <em>trivial</em> to just replace the TuYa module with an ESPHome or Tasmota compatible module.</p>
+<p>Sniffing the UART shouldn&rsquo;t be that difficult but it&rsquo;s not something I&rsquo;m going to do in this post.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>The various sensors aren&rsquo;t easily removed or clearly identified so your guess is as good as mine.
+The main PCB has a few unpopulated connections so this module either works with a different suite of sensors or - more likely - supports a few different footprints for each sensor.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<h3 id="markings-and-other-details-2">Markings and other details</h3>
+<ul>
+<li>Main MCU: FMD B2CACSK. I can&rsquo;t find <em>anything</em> on this chip.</li>
+<li>TuYa module: <a href="https://developer.tuya.com/en/docs/iot/cbu-module-datasheet?id=Ka07pykl5dk4u" target="_blank" rel="noopener noreffer">CBU</a></li>
+</ul>
+<p>PCB is marked with:</p>
+<pre><code>PV28_TFT_v3
+2022/10/25
+</code></pre>
+<p>Screen is marked with:</p>
+<pre><code>LY028S24256
+</code></pre>
+<h2 id="waveshare-poe-rs232485422-adapter">WaveShare PoE RS232/485/422 adapter</h2>
+<p>Product in question: <a href="https://s.click.aliexpress.com/e/_mPR1X7e" target="_blank" rel="noopener noreffer">with POE optional Modbus MQTT JSON serial server RS485 RS232 RS422 to Ethernet TCP/IP to serial converter</a>.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p><a href="https://electronics.stackexchange.com/questions/413295/rs485-termination" target="_blank" rel="noopener noreffer">Line termination resistors</a> that can be switched  in/out via jumpers is a very nice touch!</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Neat and clean PCB layout with adequate protections on the RS485/422/232 lines.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Unfortunately the main MCU has it&rsquo;s markings lasered off so your guess is as good as mine.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<h3 id="markings-and-other-details-3">Markings and other details</h3>
+<p>All the RS485/422/232 seems to be done with Sipex/MaxLinear chips:</p>
+<ul>
+<li>
+<p>RS484/422 via <a href="https://assets.maxlinear.com/web/documents/sipex/datasheets/sp483e.pdf" target="_blank" rel="noopener noreffer">MaxLinear SP483E</a></p>
+</li>
+<li>
+<p>RS232 via <a href="https://assets.maxlinear.com/web/documents/sipex/datasheets/sp3222e_sp3232e.pdf" target="_blank" rel="noopener noreffer">Max Linear (Sipex) SP3222E</a>.</p>
+</li>
+<li>
+<p>Isolation between PoE and Comms via <a href="https://www.aliexpress.us/item/3256804720041549.html?gatewayAdapt=glo2usa4itemAdapt" target="_blank" rel="noopener noreffer">2PAI SEMI 141E61</a></p>
+</li>
+</ul>
+<p>There&rsquo;s also a few Diodes Inc. chips on the board:</p>
+<ul>
+<li>
+<p>PoE rectification via <a href="https://www.diodes.com/assets/Datasheets/MB10F.pdf" target="_blank" rel="noopener noreffer">Diodes Incorporated MB10F</a></p>
+</li>
+<li>
+<p>PoE power switching via <a href="https://www.diodes.com/assets/Datasheets/SBR8U60P5.pdf" target="_blank" rel="noopener noreffer">Diodes Incorporated SBR8U60P5</a></p>
+</li>
+</ul>
+<p>PoE negotiation via <a href="https://www.silan.com.cn/en/index.php/product/details/3145.html" target="_blank" rel="noopener noreffer">Silan SD4950</a></p>
+<h2 id="asometech-wlx-x69-usb-c-power-brick">Asometech WLX-X69 USB-C power brick</h2>
+<p>Product in question: <a href="https://s.click.aliexpress.com/e/_mPlQZcs" target="_blank" rel="noopener noreffer">140W 6 Ports PD Fast Charger 30W Multi USB-C Fast Charging Station with LED Display for IPhone 14 13 Pro Max Samsung Xiaomi lpad</a></p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>The mirror finish &hellip; is certainly a choice.
+It gets better once you remove the protective film, at least.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>There are no screws holding the case together; just pry the back panel off, slide out the power supply and you can access the front PCB that does the actual USB-C power negotiations.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>I am 100% sure that this power supply was originally designed for something else.
+One of the original leads was cut off before the power supply was re-purposed.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>After removing the power distribution board from the case, it&rsquo;s quite clean!
+It would also be trivial to use this board in other projects 🤔.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Single CPU to run the show and a USB-C power negotiation chip per port.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Too much glue keeping everything the power supply together for me to bother taking it apart further.
+It&rsquo;s got some heft to it but I&rsquo;m not able to easily check out quality of transformer or other components.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<h3 id="markings-and-other-details-4">Markings and other details</h3>
+<ul>
+<li>Main CPU is marked <code>FMD A3JMLTH</code> but I can&rsquo;t find any information on it.</li>
+<li>USB-C PD negotiations handled with <a href="https://www.ismartware.com/upload/admin/20210312/202103121815173213.pdf" target="_blank" rel="noopener noreffer">ZHUHAI ISMARTWARE TECHNOLOGY SW3526</a></li>
+</ul>
+<h2 id="pet-rfid-tag-reader">Pet RFID tag reader</h2>
+<p>Product in question: <a href="https://s.click.aliexpress.com/e/_mrfMB5i" target="_blank" rel="noopener noreffer">134.2Khz RFID Animal Tag Reader Handheld Pet Microchip Scanner IISO11784/85/FDX-B/EMID Data Storage Microchip For Pet/Dog/Cat/Pig</a></p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Not much on the back of the PCB: just a beeper and generic battery management IC.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>I honestly thought this would be more integrated.
+Instead there&rsquo;s quite a few chips on the board.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<h3 id="markings-and-other-details-5">Markings and other details</h3>
+<ul>
+<li>
+<p><a href="https://www.microchip.com/en-us/product/mcp602" target="_blank" rel="noopener noreffer">Microchip MCP602</a>: OpAmp, likely used for processing the signal from the antenna.</p>
+</li>
+<li>
+<p><a href="https://datasheetspdf.com/datasheet/XN297.html" target="_blank" rel="noopener noreffer">Panchip XN297L8W</a>: 2.4 ghz radio</p>
+</li>
+<li>
+<p><code>MT00606XA</code>: I can&rsquo;t find any information on this chip.</p>
+</li>
+<li>
+<p><code>BP0S229-28A2</code>: A chip from <a href="https://www.zh-jieli.com/" target="_blank" rel="noopener noreffer">Zhuhai Jieli Technology</a> that I can&rsquo;t seem to 100% identify.
+The markings match the same chip that showed up in the <a href="#tuya-wifi-power-monitor" rel="">power monitor</a> above.
+The power monitor has both WiFi and Bluetooth so it&rsquo;s not a stretch to think that this chip is Bluetooth connectivity.</p>
+</li>
+</ul>
+<p>PCB is marked <code>W90A-V1.9</code></p>
+<h2 id="atk-ptdp100-dc-power-supply">ATK-PTDP100 DC Power Supply</h2>
+<p>Product in question: <a href="https://s.click.aliexpress.com/e/_mOfFkQY" target="_blank" rel="noopener noreffer">DP100 DC Power Supply Adjustable Digital DC Power Supply MINI Portable Lab Source Power Supply Voltage Regulator Switch 30V 5A</a></p>
+<p>This is nothing more than a desk-friendly version of the <a href="/electronics-lab-enhanced-bench-psu/" rel="">RD6006</a> power supply and it&rsquo;s amazing.</p>
+<p>Here&rsquo;s everything that came in the box:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>It shipped with this power supply and a barrel jack to USB-C adapter&hellip; because the DP100 actually expects its power to come <em>from</em> a USB-C/PD capable source.
+It&rsquo;ll be trivial to use this power supply with a USB-C power bank.
+It - annoyingly - has a USB-A <strong><em>male</em></strong> port for data logging / firmware updates.
+At least they included a Male &lt;-&gt; Male USB A cable&hellip;
+I would have preferred two USB-C ports with clear labeling about which was meant for PD input and which was meant for PC communications.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>For reference, the power supply is pretty beefy:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Terminals are compact but decently high quality.
+The little red and black rubber bands are a nice touch.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Annoying security torx screws under the rubber feet.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Screen is a bit cramped and navigation is a bit clunky but once you get used to it, it&rsquo;s not bad.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>After removing the screws and prying the case apart, it&rsquo;s quite clean inside.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Main CPU next to some unpopulated pin headers and some loctite screwing the PCB to the terminals.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>On the other side of the PCB is a metal can with all the fun power conversion stuff.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>They&rsquo;re doing a <a href="https://www.allaboutcircuits.com/textbook/direct-current/chpt-8/kelvin-resistance-measurement/" target="_blank" rel="noopener noreffer">4 wire measurement</a> at the terminals via a small secondary PCB.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>And after removing the can, it&rsquo;s just a bunch of filter caps and an inductor.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<h3 id="markings-and-other-details-6">Markings and other details</h3>
+<p>Unfortunately most of the ICs didn&rsquo;t photograph well or otherwise have scratched / obscured markings.
+Most of the power switching ICs <em>look</em> like they&rsquo;re from Monolithic Power Systems but I can&rsquo;t confirm exactly.</p>
+<p><a href="https://www.lcsc.com/product-detail/USB-ICs_WCH-Jiangsu-Qin-Heng-CH224K_C970725.html" target="_blank" rel="noopener noreffer">WCH(Jiangsu Qin Heng) CH224K</a></p>
+<p>Main CPU is <a href="https://www.arterychip.com/en/product/AT32F415.jsp" target="_blank" rel="noopener noreffer">Artery AT32F415</a></p>
+]]></description></item><item><title>Inside of the Pulse-Eight HDMI CEC Injector.</title><link>https://karlquinsland.com/pulse-eight-hdmi-cec-injector-teardown/</link><pubDate>Fri, 01 Dec 2023 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/pulse-eight-hdmi-cec-injector-teardown/</guid><description><![CDATA[<h1 id="inside-the-pulse-eight-hdmi-cec-injector">Inside the Pulse-Eight HDMI CEC Injector</h1>
 <p>To make a long store short, Google recently pushed a few updates to my TV that made it slow as all hell and frustratingly unusable.
 I finally got fed up with the laggy UI and dug out an old mini PC and installed <a href="https://libreelec.tv/" target="_blank" rel="noopener noreffer">LibreELEC</a> on it.</p>
 <p>Everything worked perfectly <em>except</em> for the lack of <a href="https://en.wikipedia.org/wiki/Consumer_Electronics_Control" target="_blank" rel="noopener noreffer">CEC</a> support on the mini PC.</p>

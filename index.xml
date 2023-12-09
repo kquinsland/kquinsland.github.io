@@ -1,4 +1,1170 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>karl</title><link>https://karlquinsland.com/</link><description>Karl's little corner of the internet</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 01 Dec 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Inside of the Pulse-Eight HDMI CEC Injector.</title><link>https://karlquinsland.com/pulse-eight-hdmi-cec-injector-teardown/</link><pubDate>Fri, 01 Dec 2023 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/pulse-eight-hdmi-cec-injector-teardown/</guid><description><![CDATA[<h1 id="inside-the-pulse-eight-hdmi-cec-injector">Inside the Pulse-Eight HDMI CEC Injector</h1>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>karl</title><link>https://karlquinsland.com/</link><description>Karl's little corner of the internet</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 02 Dec 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Altinex TE460-137 Teardown</title><link>https://karlquinsland.com/altinex-te460-137-teardown/</link><pubDate>Sat, 02 Dec 2023 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/altinex-te460-137-teardown/</guid><description><![CDATA[<h1 id="altinex-te460-137-teardown">Altinex TE460-137 Teardown</h1>
+<p>It is surprisingly hard to find a device that can dump details about the various protocols and negotiated standards for a HDMI connection.
+For how ubiquitous HDMI is, you&rsquo;d <em>think</em> that there would be a lot of devices that can do this.
+There are LOADS of devices that can snoop USB and Ethernet, but HDMI is a bit of a different beast, apparently.</p>
+<p>After a bit of searching, I found the <a href="https://www.altinex.com/product/te460-137/" target="_blank" rel="noopener noreffer">Altinex TE460-137</a> could do exactly what I wanted.</p>
+<p>Like the <a href="/pulse-eight-hdmi-cec-injector-teardown/" rel="">HDMI CEC dongle</a> this device is a bit specialized and so there&rsquo;s not a lot of readily available information about it online.
+I was curious about what&rsquo;s inside and how it works, so I decided to take a look.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Front of the device.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<h2 id="magnuson-moss-warranty-act">Magnuson-Moss Warranty Act</h2>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        The case split open.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>Notice that pierced <code>Warranty void if removed</code> sticker over the bottom right screw?
+Yeah, that&rsquo;s <a href="https://www.npr.org/sections/thetwo-way/2018/04/11/601582169/warranty-void-if-removed-as-it-turns-out-feds-say-those-warnings-are-illegal" target="_blank" rel="noopener noreffer"><strong>illegal</strong></a>.
+Naturally, companies don&rsquo;t want you to know that the sticker is <a href="https://www.ifixit.com/News/15464/warranty-voiding-stickers-are-illegal-but-these-companies-are-still-using-them" target="_blank" rel="noopener noreffer">unenforceable</a>.</p>
+<p>Consider this a small <a href="https://www.ifixit.com/News/11748/warranty-stickers-are-illegal" target="_blank" rel="noopener noreffer">PSA</a>: if you see a sticker like this, you can safely ignore it.
+The company <em>cannot</em> void your warranty for removing it but they absolutely can make your life difficult if you do.
+If you get pushback, direct them to the <a href="https://www.ftc.gov/business-guidance/resources/businesspersons-guide-federal-warranty-law" target="_blank" rel="noopener noreffer">FTC&rsquo;s official statement</a> on the matter.</p>
+<p>Anyways.</p>
+<h2 id="quick-peek-inside">Quick peek Inside</h2>
+<p>After removing the four screws, the case splits open easily enough.
+The construction is a bit more elaborate than expected; there&rsquo;s a main PCB, a control PCB, and a battery interface PCB.</p>
+<p>I was in a hurry so the photos are &ldquo;as-is&rdquo; and not my best work.
+I&rsquo;ve <a href="#chips-and-other-markings" rel="">noted down the markings on the chips</a> and other components for future reference.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Internals feature three PCBs.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>If the battery ever does leak, the entire PCB assembly can be removed and replaced.
+It also shouldn&rsquo;t be that difficult to just modify the battery interface PCB to use a different battery.
+The thermistor is a nice touch!</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Rear of the battery interface PCB.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>Taking a quick look at the control PCB, we can see a few big ICs&hellip;
+The populated JTAG header is an interesting find.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Top of the control PCB.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>There&rsquo;s not much on the rear of the control PCB:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Bottom of the control PCB.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>Nor is there much on the side of the PCB just behind the OLED screen / front panel.
+Oddly enough, each button gets <em>two</em> sets of contacts&hellip;</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        The side of the main PCB that faces the user from within.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>And there&rsquo;s nothing interesting on the &lsquo;internal&rsquo; side of the front panel:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Interior of the front panel features button matrix and OLED.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<h2 id="some-technical-details">Some Technical Details</h2>
+<p>If you catch the device early enough in boot, you can see the panasonic HDMI switch chip enumerating in it&rsquo;s default state.
+Don&rsquo;t ask me where the 2% overscan comes from&hellip;</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        The default EDID info doesn&#39;t last long; as soon as the device is powered on, it tries to read the EDID from the connected sink and use that.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<h3 id="chips-and-other-markings">Chips and other markings</h3>
+<h4 id="control-pcb">Control PCB</h4>
+<ul>
+<li>The main application processor is the <a href="https://www.nxp.com/part/LPC1830FET100#/" target="_blank" rel="noopener noreffer">NXP LPC1830FET100</a>.</li>
+<li>It seems like all audio is handled by the <a href="https://www.analog.com/en/products/adau1701.html" target="_blank" rel="noopener noreffer">Analog Devices ADAU1701</a>.</li>
+</ul>
+<p>Oddly enough there are <em>two</em> flash chips here. Presumably firmware storage for the  NXP and Analog Devices chips.</p>
+<ul>
+<li><a href="https://www.winbond.com/hq/product/code-storage-flash-memory/serial-nor-flash/?__locale=en&amp;partNo=W25Q32JV" target="_blank" rel="noopener noreffer">Winbond 25Q32JV</a></li>
+<li><a href="https://www.microchip.com/en-us/product/24lc128" target="_blank" rel="noopener noreffer">Microchip 24LC128I</a></li>
+</ul>
+<p>I didn&rsquo;t bother dumping either, but Altinex does make an older version of the firmware <a href="#firmware" rel="">available</a>.</p>
+<h3 id="main-pcb">Main PCB</h3>
+<p>The big QFP144 chip on the main PCB is a <a href="https://panasonic.encompass.com/item/10292549/Panasonic/MN864788/" target="_blank" rel="noopener noreffer">Panasonic MN864788</a>.
+I can&rsquo;t find a data sheet, but one <a href="https://stesys.eu/ocart/index.php?route=product/product&amp;manufacturer_id=135&amp;product_id=2544&amp;limit=75" target="_blank" rel="noopener noreffer">supplier has labeled it</a> a &ldquo;HDMI 2.0 Receiver/Switch&rdquo;.
+Given the proximity to the two HDMI ports &hellip; this makes sense.</p>
+<h3 id="dmesg"><code>dmesg</code></h3>
+<p>For thoroughness, here&rsquo;s how the device enumerates over USB when plugged in when configured in RS-232 mode:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">usb 5-4.1.2.2: new full-speed USB device number <span class="m">91</span> using xhci_hcd
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: New USB device found, <span class="nv">idVendor</span><span class="o">=</span>04e2, <span class="nv">idProduct</span><span class="o">=</span>1411, <span class="nv">bcdDevice</span><span class="o">=</span> 0.01
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: New USB device strings: <span class="nv">Mfr</span><span class="o">=</span>1, <span class="nv">Product</span><span class="o">=</span>2, <span class="nv">SerialNumber</span><span class="o">=</span><span class="m">3</span>
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: Product: XR21B1411
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: Manufacturer: Exar Corp.
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: SerialNumber: Q9065270561
+</span></span><span class="line"><span class="cl">usbcore: registered new interface driver xr_serial
+</span></span><span class="line"><span class="cl">usbserial: USB Serial support registered <span class="k">for</span> xr_serial
+</span></span><span class="line"><span class="cl">xr_serial 5-4.1.2.2:1.0: xr_serial converter detected
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: xr_serial converter now attached to ttyUSB0
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>And when in FW update mode:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">usb 5-4.1.2.2: new high-speed USB device number <span class="m">92</span> using xhci_hcd
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: config <span class="m">1</span> interface <span class="m">0</span> altsetting <span class="m">0</span> bulk endpoint 0x83 has invalid maxpacket <span class="m">64</span>
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: config <span class="m">1</span> interface <span class="m">0</span> altsetting <span class="m">0</span> bulk endpoint 0x2 has invalid maxpacket <span class="m">64</span>
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: New USB device found, <span class="nv">idVendor</span><span class="o">=</span>1fc9, <span class="nv">idProduct</span><span class="o">=</span>8001, <span class="nv">bcdDevice</span><span class="o">=</span> 1.00
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: New USB device strings: <span class="nv">Mfr</span><span class="o">=</span>1, <span class="nv">Product</span><span class="o">=</span>2, <span class="nv">SerialNumber</span><span class="o">=</span><span class="m">0</span>
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: Product: USB Mass Storage            
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: Manufacturer: USB
+</span></span><span class="line"><span class="cl">usb-storage 5-4.1.2.2:1.0: USB Mass Storage device detected
+</span></span><span class="line"><span class="cl">scsi host4: usb-storage 5-4.1.2.2:1.0
+</span></span><span class="line"><span class="cl">scsi 4:0:0:0: Direct-Access     NXP      Dataflash Disk   0.00 PQ: <span class="m">0</span> ANSI: <span class="m">0</span>
+</span></span><span class="line"><span class="cl">sd 4:0:0:0: <span class="o">[</span>sda<span class="o">]</span> <span class="m">3968</span> 512-byte logical blocks: <span class="o">(</span>2.03 MB/1.94 MiB<span class="o">)</span>
+</span></span><span class="line"><span class="cl">sd 4:0:0:0: <span class="o">[</span>sda<span class="o">]</span> Write Protect is off
+</span></span><span class="line"><span class="cl">sd 4:0:0:0: <span class="o">[</span>sda<span class="o">]</span> Mode Sense: <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>
+</span></span><span class="line"><span class="cl">sd 4:0:0:0: <span class="o">[</span>sda<span class="o">]</span> Asking <span class="k">for</span> cache data failed
+</span></span><span class="line"><span class="cl">sd 4:0:0:0: <span class="o">[</span>sda<span class="o">]</span> Assuming drive cache: write through
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: reset high-speed USB device number <span class="m">92</span> using xhci_hcd
+</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: device descriptor read/64, error -110
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="firmware">Firmware</h3>
+<div class="details admonition note open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-pencil-alt fa-fw"></i>Note<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>The device ships with FW 3.06A/R3.</p>
+<p>Their <a href="https://www.altinex.com/download/te460-137-firmware-update-v-3-04a-easy-mode/" target="_blank" rel="noopener noreffer">website</a> only have 3.04 available.</p>
+</div>
+        </div>
+    </div>
+]]></description></item><item><title>AliExpress 11.11 Sale Teardowns</title><link>https://karlquinsland.com/aliexpress-11-11-sale-teardowns/</link><pubDate>Fri, 01 Dec 2023 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/aliexpress-11-11-sale-teardowns/</guid><description><![CDATA[<!-- markdownlint-disable-file MD024 -->
+<h1 id="11-11-day-teardowns">11-11 day teardowns</h1>
+<p><a href="https://en.wikipedia.org/wiki/Singles%27_Day" target="_blank" rel="noopener noreffer">Single&rsquo;s Day</a> is a big deal in China and AliExpress has a big sale in celebration.</p>
+<p>In addition to project supplies, I found quite a few items that can only be classified as  &ldquo;ohh, that looks interesting and I need another $11 in the cart to unlock free shipping&hellip;&rdquo; items.</p>
+<p>I was planing on doing a series of posts covering some of the stuff I bought but nothing on it&rsquo;s own was really &ldquo;worth&rdquo; a full post so instead of a bunch of short <a href="/tags/two-minute-teardown/" rel="">&ldquo;Two Minute Teardown&rdquo;</a> posts, I decided to just roll everything into this massive post.</p>
+<p>And with that, here&rsquo;s a whole grab bag of worth of #TwoMinuteTeardowns with the appropriate level of detail for each item.</p>
+<h2 id="super-cheap-airtag">Super cheap &lsquo;AirTag&rsquo;</h2>
+<p>Product in question: <a href="https://www.aliexpress.us/item/3256804801453934.html?gatewayAdapt=glo2usa" target="_blank" rel="noopener noreffer">Mini Tracker Bluetooth4.0 Smart Locator Smart Anti Lost Device Locator Mobile Keys Pet Kids Finder For Apple</a></p>
+<p>This was a mistake on my part.
+I saw a BTLE powered device tracker shaped and styled exactly like an air tag for <strong>$5 shipped</strong> and thought &ldquo;why not?&rdquo;
+One good reason why not: it&rsquo;s not compatible with Apple&rsquo;s Find My network.</p>
+<p>In hindsight, if it was only $5 and if it worked &rsquo;natively&rsquo; with apple devices&hellip; I&rsquo;d have heard about it before browsing Ali Express!</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<h3 id="markings-and-other-details">Markings and other details</h3>
+<p>The main CPU appears to be a <a href="https://www.lenzetech.com/public/store/pdf/jsggs/ST17H66B2_BLE_SoC_Datasheet_v1.1.2.pdf" target="_blank" rel="noopener noreffer">Lenze Tech ST17H66B</a></p>
+<p>The instructions point to an <a href="https://www.qrtransfer.com/iSearching.html" target="_blank" rel="noopener noreffer"><code>iSearching</code> app</a>
+I didn&rsquo;t bother installing it, here&rsquo;s what a quick scan of the BTLE characteristics shows quite a few services and characteristics:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<h2 id="tuya-wifi-power-monitor">TuYa WiFi Power Monitor</h2>
+<p>Product in question: <a href="https://s.click.aliexpress.com/e/_mNLeK44" target="_blank" rel="noopener noreffer">16A Tuya WIFI Smart Socket AC220V 110V Digital Wattmeter EU Plug Electricity consumption Power KWH US AU FR Power Energy Meter</a></p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>TuYa module doesn&rsquo;t seem to be running the show; most of the pads are not connected; only the UART pins seem to be going somewhere.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>A bit more going on than you&rsquo;d expect at first; I was expecting a simple Switch Mode power supply driver for DC and then a single MCU to do everything but the WiFi.
+Not so!
+There&rsquo;s a dedicated chip for power monitoring, BT, Power supply, and the main MCU&hellip;</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<h3 id="markings-and-other-details-1">Markings and other details</h3>
+<ul>
+<li>
+<p><a href="https://en.sekorm.com/doc/2232723.html" target="_blank" rel="noopener noreffer">KP3211BSG</a></p>
+</li>
+<li>
+<p><a href="https://www.wch-ic.com/products/CH573.html" target="_blank" rel="noopener noreffer">CH573F</a></p>
+</li>
+<li>
+<p><a href="https://www.aliexpress.us/item/2255799832871961.html?gatewayAdapt=glo2usa4itemAdapt" target="_blank" rel="noopener noreffer">GMT024-01</a></p>
+</li>
+<li>
+<p><a href="https://developer.tuya.com/en/docs/iot/cb3s?id=Kai94mec0s076" target="_blank" rel="noopener noreffer">TuYa CBS3 module</a></p>
+</li>
+<li>
+<p><a href="https://www.lcsc.com/product-detail/Energy-Metering-ICs_BL-Shanghai-Belling-BL0942_C2837510.html" target="_blank" rel="noopener noreffer">BL0942</a></p>
+</li>
+<li>
+<p><code>BP0S229-28A2</code>: This is the same chip that shows up in the <a href="#pet-rfid-tag-reader" rel="">pet RFID reader</a> and I cant&rsquo; find an exact match for it.</p>
+</li>
+<li>
+<p>LCD is marked <code>AVDD AVCL</code> which seems to be pretty generic</p>
+</li>
+</ul>
+<h2 id="tuya-wifi-air-quality-monitor">TuYa WiFi Air Quality Monitor</h2>
+<p>Product in question: <a href="https://s.click.aliexpress.com/e/_mPXVCDO" target="_blank" rel="noopener noreffer">Tuya Wifi Portable Air Quality Meter 8in1 PM1.0 PM2.5 PM10 CO2 TVOC HCHO Temperature and Humidity Tester Carbon Dioxide Detector</a></p>
+<p>Unfortunately you have to peel off the screen cover to get access to the screws.
+At least they&rsquo;re just regular philips screws and not some weird security screws.</p>
+<p>Interesting to see the IR sensor at the top. Presumably this is for proximity sensing to turn the screen on and off and not some kind of IR blaster or remote control.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Makes sense that the various sensors would be facing the vents holes.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Looks like it&rsquo;s using a micro controller to do the heavy lifting and only communicate to the TuYa module via UART.
+This is a common and well-supported pattern for these kinds of devices &hellip; even if it does mean that it won&rsquo;t be <em>trivial</em> to just replace the TuYa module with an ESPHome or Tasmota compatible module.</p>
+<p>Sniffing the UART shouldn&rsquo;t be that difficult but it&rsquo;s not something I&rsquo;m going to do in this post.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>The various sensors aren&rsquo;t easily removed or clearly identified so your guess is as good as mine.
+The main PCB has a few unpopulated connections so this module either works with a different suite of sensors or - more likely - supports a few different footprints for each sensor.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<h3 id="markings-and-other-details-2">Markings and other details</h3>
+<ul>
+<li>Main MCU: FMD B2CACSK. I can&rsquo;t find <em>anything</em> on this chip.</li>
+<li>TuYa module: <a href="https://developer.tuya.com/en/docs/iot/cbu-module-datasheet?id=Ka07pykl5dk4u" target="_blank" rel="noopener noreffer">CBU</a></li>
+</ul>
+<p>PCB is marked with:</p>
+<pre><code>PV28_TFT_v3
+2022/10/25
+</code></pre>
+<p>Screen is marked with:</p>
+<pre><code>LY028S24256
+</code></pre>
+<h2 id="waveshare-poe-rs232485422-adapter">WaveShare PoE RS232/485/422 adapter</h2>
+<p>Product in question: <a href="https://s.click.aliexpress.com/e/_mPR1X7e" target="_blank" rel="noopener noreffer">with POE optional Modbus MQTT JSON serial server RS485 RS232 RS422 to Ethernet TCP/IP to serial converter</a>.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p><a href="https://electronics.stackexchange.com/questions/413295/rs485-termination" target="_blank" rel="noopener noreffer">Line termination resistors</a> that can be switched  in/out via jumpers is a very nice touch!</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Neat and clean PCB layout with adequate protections on the RS485/422/232 lines.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Unfortunately the main MCU has it&rsquo;s markings lasered off so your guess is as good as mine.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<h3 id="markings-and-other-details-3">Markings and other details</h3>
+<p>All the RS485/422/232 seems to be done with Sipex/MaxLinear chips:</p>
+<ul>
+<li>
+<p>RS484/422 via <a href="https://assets.maxlinear.com/web/documents/sipex/datasheets/sp483e.pdf" target="_blank" rel="noopener noreffer">MaxLinear SP483E</a></p>
+</li>
+<li>
+<p>RS232 via <a href="https://assets.maxlinear.com/web/documents/sipex/datasheets/sp3222e_sp3232e.pdf" target="_blank" rel="noopener noreffer">Max Linear (Sipex) SP3222E</a>.</p>
+</li>
+<li>
+<p>Isolation between PoE and Comms via <a href="https://www.aliexpress.us/item/3256804720041549.html?gatewayAdapt=glo2usa4itemAdapt" target="_blank" rel="noopener noreffer">2PAI SEMI 141E61</a></p>
+</li>
+</ul>
+<p>There&rsquo;s also a few Diodes Inc. chips on the board:</p>
+<ul>
+<li>
+<p>PoE rectification via <a href="https://www.diodes.com/assets/Datasheets/MB10F.pdf" target="_blank" rel="noopener noreffer">Diodes Incorporated MB10F</a></p>
+</li>
+<li>
+<p>PoE power switching via <a href="https://www.diodes.com/assets/Datasheets/SBR8U60P5.pdf" target="_blank" rel="noopener noreffer">Diodes Incorporated SBR8U60P5</a></p>
+</li>
+</ul>
+<p>PoE negotiation via <a href="https://www.silan.com.cn/en/index.php/product/details/3145.html" target="_blank" rel="noopener noreffer">Silan SD4950</a></p>
+<h2 id="asometech-wlx-x69-usb-c-power-brick">Asometech WLX-X69 USB-C power brick</h2>
+<p>Product in question: <a href="https://s.click.aliexpress.com/e/_mPlQZcs" target="_blank" rel="noopener noreffer">140W 6 Ports PD Fast Charger 30W Multi USB-C Fast Charging Station with LED Display for IPhone 14 13 Pro Max Samsung Xiaomi lpad</a></p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>The mirror finish &hellip; is certainly a choice.
+It gets better once you remove the protective film, at least.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>There are no screws holding the case together; just pry the back panel off, slide out the power supply and you can access the front PCB that does the actual USB-C power negotiations.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>I am 100% sure that this power supply was originally designed for something else.
+One of the original leads was cut off before the power supply was re-purposed.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>After removing the power distribution board from the case, it&rsquo;s quite clean!
+It would also be trivial to use this board in other projects 🤔.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Single CPU to run the show and a USB-C power negotiation chip per port.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Too much glue keeping everything the power supply together for me to bother taking it apart further.
+It&rsquo;s got some heft to it but I&rsquo;m not able to easily check out quality of transformer or other components.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<h3 id="markings-and-other-details-4">Markings and other details</h3>
+<ul>
+<li>Main CPU is marked <code>FMD A3JMLTH</code> but I can&rsquo;t find any information on it.</li>
+<li>USB-C PD negotiations handled with <a href="https://www.ismartware.com/upload/admin/20210312/202103121815173213.pdf" target="_blank" rel="noopener noreffer">ZHUHAI ISMARTWARE TECHNOLOGY SW3526</a></li>
+</ul>
+<h2 id="pet-rfid-tag-reader">Pet RFID tag reader</h2>
+<p>Product in question: <a href="https://s.click.aliexpress.com/e/_mrfMB5i" target="_blank" rel="noopener noreffer">134.2Khz RFID Animal Tag Reader Handheld Pet Microchip Scanner IISO11784/85/FDX-B/EMID Data Storage Microchip For Pet/Dog/Cat/Pig</a></p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Not much on the back of the PCB: just a beeper and generic battery management IC.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>I honestly thought this would be more integrated.
+Instead there&rsquo;s quite a few chips on the board.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<h3 id="markings-and-other-details-5">Markings and other details</h3>
+<ul>
+<li>
+<p><a href="https://www.microchip.com/en-us/product/mcp602" target="_blank" rel="noopener noreffer">Microchip MCP602</a>: OpAmp, likely used for processing the signal from the antenna.</p>
+</li>
+<li>
+<p><a href="https://datasheetspdf.com/datasheet/XN297.html" target="_blank" rel="noopener noreffer">Panchip XN297L8W</a>: 2.4 ghz radio</p>
+</li>
+<li>
+<p><code>MT00606XA</code>: I can&rsquo;t find any information on this chip.</p>
+</li>
+<li>
+<p><code>BP0S229-28A2</code>: A chip from <a href="https://www.zh-jieli.com/" target="_blank" rel="noopener noreffer">Zhuhai Jieli Technology</a> that I can&rsquo;t seem to 100% identify.
+The markings match the same chip that showed up in the <a href="#tuya-wifi-power-monitor" rel="">power monitor</a> above.
+The power monitor has both WiFi and Bluetooth so it&rsquo;s not a stretch to think that this chip is Bluetooth connectivity.</p>
+</li>
+</ul>
+<p>PCB is marked <code>W90A-V1.9</code></p>
+<h2 id="atk-ptdp100-dc-power-supply">ATK-PTDP100 DC Power Supply</h2>
+<p>Product in question: <a href="https://s.click.aliexpress.com/e/_mOfFkQY" target="_blank" rel="noopener noreffer">DP100 DC Power Supply Adjustable Digital DC Power Supply MINI Portable Lab Source Power Supply Voltage Regulator Switch 30V 5A</a></p>
+<p>This is nothing more than a desk-friendly version of the <a href="/electronics-lab-enhanced-bench-psu/" rel="">RD6006</a> power supply and it&rsquo;s amazing.</p>
+<p>Here&rsquo;s everything that came in the box:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>It shipped with this power supply and a barrel jack to USB-C adapter&hellip; because the DP100 actually expects its power to come <em>from</em> a USB-C/PD capable source.
+It&rsquo;ll be trivial to use this power supply with a USB-C power bank.
+It - annoyingly - has a USB-A <strong><em>male</em></strong> port for data logging / firmware updates.
+At least they included a Male &lt;-&gt; Male USB A cable&hellip;
+I would have preferred two USB-C ports with clear labeling about which was meant for PD input and which was meant for PC communications.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>For reference, the power supply is pretty beefy:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Terminals are compact but decently high quality.
+The little red and black rubber bands are a nice touch.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Annoying security torx screws under the rubber feet.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Screen is a bit cramped and navigation is a bit clunky but once you get used to it, it&rsquo;s not bad.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>After removing the screws and prying the case apart, it&rsquo;s quite clean inside.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Main CPU next to some unpopulated pin headers and some loctite screwing the PCB to the terminals.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>On the other side of the PCB is a metal can with all the fun power conversion stuff.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>They&rsquo;re doing a <a href="https://www.allaboutcircuits.com/textbook/direct-current/chpt-8/kelvin-resistance-measurement/" target="_blank" rel="noopener noreffer">4 wire measurement</a> at the terminals via a small secondary PCB.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>And after removing the can, it&rsquo;s just a bunch of filter caps and an inductor.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<h3 id="markings-and-other-details-6">Markings and other details</h3>
+<p>Unfortunately most of the ICs didn&rsquo;t photograph well or otherwise have scratched / obscured markings.
+Most of the power switching ICs <em>look</em> like they&rsquo;re from Monolithic Power Systems but I can&rsquo;t confirm exactly.</p>
+<p><a href="https://www.lcsc.com/product-detail/USB-ICs_WCH-Jiangsu-Qin-Heng-CH224K_C970725.html" target="_blank" rel="noopener noreffer">WCH(Jiangsu Qin Heng) CH224K</a></p>
+<p>Main CPU is <a href="https://www.arterychip.com/en/product/AT32F415.jsp" target="_blank" rel="noopener noreffer">Artery AT32F415</a></p>
+]]></description></item><item><title>Inside of the Pulse-Eight HDMI CEC Injector.</title><link>https://karlquinsland.com/pulse-eight-hdmi-cec-injector-teardown/</link><pubDate>Fri, 01 Dec 2023 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/pulse-eight-hdmi-cec-injector-teardown/</guid><description><![CDATA[<h1 id="inside-the-pulse-eight-hdmi-cec-injector">Inside the Pulse-Eight HDMI CEC Injector</h1>
 <p>To make a long store short, Google recently pushed a few updates to my TV that made it slow as all hell and frustratingly unusable.
 I finally got fed up with the laggy UI and dug out an old mini PC and installed <a href="https://libreelec.tv/" target="_blank" rel="noopener noreffer">LibreELEC</a> on it.</p>
 <p>Everything worked perfectly <em>except</em> for the lack of <a href="https://en.wikipedia.org/wiki/Consumer_Electronics_Control" target="_blank" rel="noopener noreffer">CEC</a> support on the mini PC.</p>
@@ -6292,1277 +7458,4 @@ As is, you&rsquo;ll need to fill it out / add in your own versions of some of th
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">domain</span><span class="p">:</span><span class="w"> </span><span class="l">switch</span><span class="w">
 </span></span></span></code></pre></td></tr></table>
 </div>
-</div>]]></description></item><item><title>Teardown and Home Assistant integration with two generic Chinese 'smart' power strips.</title><link>https://karlquinsland.com/esphome-power-strips/</link><pubDate>Sun, 15 Jan 2023 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/esphome-power-strips/</guid><description><![CDATA[<!-- markdownlint-disable-file MD002 -->
-<p>I love the Sonoff-S31 smart plugs.
-They&rsquo;re cheap, well made and - most importantly - trivial to flash with ESPHome and integrate into Home Assistant.
-They do have one obvious draw back, though; optimized for a &ldquo;traditional&rdquo; US style outlet.
-When you try to deploy them to a power strip, you end up loosing about 50% of the outlets on the strip!</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        This is how you loose about 50% of the outlets on your power strip.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>I figured that there must be a power strip out there that had the WiFi radio, power supply and relays built in.</p>
-<p>Looking through the <a href="https://templates.blakadder.com/us.html#Power%20Strip" target="_blank" rel="noopener noreffer"><code>Power Strip</code></a> listing of the excellent Tasmota device/template repository, there are more than a few options out there.
-Upon closer inspection, almost <em>all</em> of them are from super generic/no-name Chinese brands and lack any ETL or UL certifications 😬.</p>
-<p>Searching for smart power strips on Amazon returns several results&hellip; and only a few from name brands.
-The few name brand power strips out there that I could find are using their own microcontrollers internally and are immediately disqualified as they&rsquo;ll be - at best - difficult ot integrate with Home Assistant.</p>
-<p>I&rsquo;m not quite so concerned about any power conditioning/surge suppression as I am not plugging in any valuable or delectate electronics.
-I am concerned with a more integrated / space efficient solution that allows me to retain my ESPHome/Home Assistant integration.</p>
-<p>After cross referencing the Tasmota templates listing with the Amazon search listings, it became clear that there&rsquo;s really only a few designs that get sold under several different brands and that virtually all of the devices that were known to be powered by an ESP micro are no longer for sale on Amazon.</p>
-<p>I eventually took a gamble on two:</p>
-<ul>
-<li><a href="https://www.amazon.com/gp/product/B097NHBPN9" target="_blank" rel="noopener noreffer"><code>BN-LINK U158WT</code></a></li>
-<li><a href="https://www.amazon.com/gp/product/B0B5G6MDQ6" target="_blank" rel="noopener noreffer"><code>POWSAV AHR-083</code></a></li>
-</ul>
-<h2 id="bn-link">BN-Link</h2>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Marketing photo for the BN-Link power strip
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>This opens up with a standard philips screw driver and you only need one bit size for all screws - nice touch!</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>The screws are hiding under the anti-slip pads but instead of those being glued down, the pads use a friction fit on the <code>+</code> shaped locating pegs.
-I really like this design feature as the glued pads never stick quite as well when replaced.
-In addition to the 4 screws, there are several plastic clip/tabs around the permitter that take some work to carefully undo.
-If you have a thin metal pry tool / spudger, it will come in handy!</p>
-<p>Overall, the physical construction is solid enough and - pleasantly - serviceable.</p>
-<p><figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        I&#39;m not loving the sloppy wiring connecting the USB power supply to the mains rails.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-</p>
-<p>Like the USB power supply, the WiFi module is also separate from the main PCB.</p>
-<p><figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        You know what&#39;s cheaper than pin headers? PCB fingers in slots.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-</p>
-<p>Bad news: this module is NOT an ESP powered device.</p>
-<p>Good news: there a Tasmota-like firmware for it: <a href="https://github.com/openshwprojects/OpenBK7231T_App" target="_blank" rel="noopener noreffer">OpenBK7231T</a>!</p>
-<p>I&rsquo;ll go ahead and flash the OpenBK firmware and have a go to at least give it a try.</p>
-<p>The relay switching electronics look reasonable enough:</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>The relays themselves are nothing special to write home about:</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Note the links. I&#39;d bet that it&#39;s simpler to scale a design by copy/pasting a self-contained footprint and adjust the number of links on the BOM as needed.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>There&rsquo;s nothing remarkable about the USB Power supply; standard switch mode power supply topology.
-The power conversion is done by the chip under the metal heat sink; I didn&rsquo;t bother to get an ID on it as the ports don&rsquo;t support any quick charge or power delivery protocols.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>Before putting the strip back together, I secured the USB power supply wires with a bit of electrical tape to lessen the probability of a short due to insulation wearing off.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<h3 id="flashing-openbk">Flashing OpenBK</h3>
-<p>I don&rsquo;t have a ton of notes about the flashing process as it was pretty straight forward.
-Two small things to note:</p>
-<ul>
-<li>The <a href="https://github.com/OpenBekenIOT/hid_download_py" target="_blank" rel="noopener noreffer"><code>hid_download_py/uartprogram</code></a> tool needs a <a href="https://github.com/OpenBekenIOT/hid_download_py/pull/13/files" target="_blank" rel="noopener noreffer">requirements.txt</a>.</li>
-<li>You can get away with only 4 wires (power, gnd, rx, tx) to program the chip but you must move very fast! It took me more than a few attempts to get the tool to connect to the bootloader on the chip; you have a very limited window for the tool to connect to the chip. I had to run connect power to the chip within about 200ms of starting the <code>uartprogram</code>. If i waited much longer, I would get <code>Cannot get bus.</code></li>
-</ul>
-<p>Eventually I was able to program the chip:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span><span class="lnt">9
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">❯ python3 uartprogram ../OpenBK7231T_UA_1.15.308.bin -d /dev/ttyUSB0 -w
-</span></span><span class="line"><span class="cl">UartDownloader....
-</span></span><span class="line"><span class="cl">programm....
-</span></span><span class="line"><span class="cl">Cannot get bus. : <span class="p">|</span>                                                  <span class="p">|</span><span class="o">[</span>    ?k/s<span class="o">]</span>
-</span></span><span class="line"><span class="cl">❯ python3 uartprogram ../OpenBK7231T_UA_1.15.308.bin -d /dev/ttyUSB0 -w
-</span></span><span class="line"><span class="cl">UartDownloader....
-</span></span><span class="line"><span class="cl">programm....
-</span></span><span class="line"><span class="cl">Gotten Bus...   : <span class="p">|</span>                                                  <span class="p">|</span><span class="o">[</span>    ?k/s<span class="o">]</span>caution: ignoring unexpected reply in SetBaudRate
-</span></span><span class="line"><span class="cl">Write Successful: <span class="p">|</span><span class="c1">##################################################|[ 13.2k/s]</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>The <code>caution: ignoring unexpected reply</code> came as soon as I connected the power to the programmer.</p>
-<p>After figuring out the <a href="#bn-gpio-notes" rel="">GPIO assignments</a>, I did manage to get the Home Assistant / MQTT auto discovery working but - like with Tasmota - wasn&rsquo;t impressed with the lack of customization in the mqtt payloads.
-I <strong>highly value</strong> having the correct device/entity class, icon, name &hellip; etc all populating in home assistant automatically; ESPHome lets me do this.</p>
-<p>I&rsquo;ll keep an eye on the project and may find another use for this power strip in the future.
-If ESPHome ever adds support for the <code>BK7231T</code> chips then this is <em>perfect</em>.</p>
-<div class="details admonition tip open">
-        <div class="details-summary admonition-title">
-            <i class="icon fas fa-lightbulb fa-fw"></i>Tip<i class="details-icon fas fa-angle-right fa-fw"></i>
-        </div>
-        <div class="details-content">
-            <div class="admonition-content"><p>While drafting this post, I <a href="https://old.reddit.com/r/esp8266/comments/qfg3yc/replaced_tuya_plug_controller_with_esp8266/" target="_blank" rel="noopener noreffer">came across</a> an ESP based drop in replacement for the <code>WB2S</code> module: the <a href="https://www.lcsc.com/product-detail/WiFi-Modules_Wireless-tag-WT-01N_C477823.html" target="_blank" rel="noopener noreffer"><code>WT-01N</code></a>.
-Had I known, I would have just done the module swap, flashed ESPHome and stopped there.</p>
-<p>While looking for the <code>WT-01N</code>, on Ali Express, I found that there&rsquo;s already a small supply of <a href="https://www.aliexpress.com/w/wholesale--ESP%2525252d02S.html?catId=0&amp;initiative_id=SB_20230114112241&amp;SearchText=%2BESP-02S&amp;spm=a2g0o.home.1000002.0&amp;dida=y" target="_blank" rel="noopener noreffer"><code>ESP-02S</code> modules that should be drop in replacements</a>!</p>
-<p>Next time!</p>
-</div>
-        </div>
-    </div>
-<h4 id="wt-01n-swap">WT-01N swap</h4>
-<div class="details admonition note open">
-        <div class="details-summary admonition-title">
-            <i class="icon fas fa-pencil-alt fa-fw"></i>Note<i class="details-icon fas fa-angle-right fa-fw"></i>
-        </div>
-        <div class="details-content">
-            <div class="admonition-content">On a rainy afternoon in late 2023.03, I got around to doing the module swap.
-Below you&rsquo;ll find the appropriate Tasmota configuration for GPIO pins.</div>
-        </div>
-    </div>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        And here&#39;s the Tasmota configuration for the BN-Link.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<h3 id="bn-gpio-notes">BN GPIO notes</h3>
-<p>The project needs some basic &ldquo;here&rsquo;s how to figure out which GPIOs do what&rdquo; docs similar to <a href="https://Tasmota.github.io/docs/Configuration-Procedure-for-New-Devices/#step-1" target="_blank" rel="noopener noreffer">these</a> but I eventually figured out the following GPIO assignments.</p>
-<table>
-<thead>
-<tr>
-<th>PIN</th>
-<th>Label</th>
-<th>Purpose</th>
-<th>Notes</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>6</td>
-<td>PWM0</td>
-<td><code>Rel</code> 1</td>
-<td>Outlet closest to the power cord.</td>
-</tr>
-<tr>
-<td>7</td>
-<td>PWM1</td>
-<td>NC</td>
-<td>This is not connected to the main PCB.</td>
-</tr>
-<tr>
-<td>8</td>
-<td>PWM2</td>
-<td><code>Rel</code> 4</td>
-<td>Outlet closest to the USB.</td>
-</tr>
-<tr>
-<td>10</td>
-<td>RXD1</td>
-<td><code>Btn</code></td>
-<td>This is the user button.</td>
-</tr>
-<tr>
-<td>11</td>
-<td>TXD1</td>
-<td><code>WiFiLED_n</code></td>
-<td>WiFi status LED.</td>
-</tr>
-<tr>
-<td>23</td>
-<td>ADC3</td>
-<td>NC</td>
-<td>This is not connected to the main PCB.</td>
-</tr>
-<tr>
-<td>24</td>
-<td>PWM4</td>
-<td><code>Rel</code> 2</td>
-<td>Second outlet from power cord.</td>
-</tr>
-<tr>
-<td>26</td>
-<td>PWM5</td>
-<td><code>Rel</code> 3</td>
-<td>Third outlet from power cord.</td>
-</tr>
-</tbody>
-</table>
-<h2 id="powsav">POWSAV</h2>
-<p>Happy that I was able to get open firmware on the first but disappointed with the lack of customization, I moved onto the second candidate.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Marketing photo for the POWSAV power strip
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<div class="details admonition note open">
-        <div class="details-summary admonition-title">
-            <i class="icon fas fa-pencil-alt fa-fw"></i>Note<i class="details-icon fas fa-angle-right fa-fw"></i>
-        </div>
-        <div class="details-content">
-            <div class="admonition-content"><p>At one point in time, this <em>exact same device</em> was sold under the <code>ahrise</code> branding and was <a href="https://templates.blakadder.com/ahrise_AHR-083.html" target="_blank" rel="noopener noreffer">Tasmota compatible</a>.</p>
-<p>The model number is the same, the templates repo picture is identical, the GPIO pinout is identical&hellip; but the linked Amazon listing is no longer available.
-The PCB silk screen also include the old <code>AHR</code> markings so I&rsquo;m guessing that this was just a re-brand with the new <code>POWSAV</code> branding after switching to TuYa?</p>
-</div>
-        </div>
-    </div>
-<p>To open this one, you&rsquo;ll need a 2.2mm triangle bit.
-There are 6 screws. four hidden under the anti-slip pads.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Why are the screw mounting slots not centered :/.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>The USB, WiFI and mains switching are all on a single PCB but the main power cut off and protection features are all on a separate PCB.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Nothing of concern to see on the bottom, everything looks pretty boring... which is good when it comes to mains handling!
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        About what you&#39;d expect for a PCB layout. Plenty of distance between the HV and LV sides!
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>It&rsquo;s nice to see that the surge suppression circuitry is on it&rsquo;s own PCB. Repairs there should be easier to pull off - in theory.</p>
-<p>Here&rsquo;s a few more shots of the primary components/assemblies:</p>
-<p><figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Note the silk screen: this protection PCB is common to the AHR-053 model as well.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        WB3S is a TuYa branded module that is pin compatible with the ubiquitous ESP-8266 modules.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Note the black insulating material separating the USB ports from the mains side of things.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Relatively painless extraction, only partially lifted the pad in the bottom left.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Not even 5 min later, the TuYa modules has been replaced with one running a firmware powered by ESPHome.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-</p>
-<h3 id="powsav-gpio-notes">POWSAV GPIO notes</h3>
-<p>Thanks to <a href="https://Tasmota.github.io/docs/Configuration-Procedure-for-New-Devices/#step-1" target="_blank" rel="noopener noreffer">excellent</a> Tasmota docs, it was pretty easy to figure out the mappings.</p>
-<p>For reference:</p>
-<table>
-<thead>
-<tr>
-<th>PIN</th>
-<th>Type</th>
-<th>Number</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>GPIO2</td>
-<td><code>Led_i</code></td>
-<td>1</td>
-</tr>
-<tr>
-<td>GPIO5</td>
-<td><code>Button_n</code></td>
-<td>1</td>
-</tr>
-<tr>
-<td>GPIO 12</td>
-<td><code>Relay</code></td>
-<td>3</td>
-</tr>
-<tr>
-<td>GPIO 13</td>
-<td><code>Relay</code></td>
-<td>4</td>
-</tr>
-<tr>
-<td>GPIO 14</td>
-<td><code>Relay</code></td>
-<td>2</td>
-</tr>
-<tr>
-<td>GPIO 15</td>
-<td><code>Relay</code></td>
-<td>1</td>
-</tr>
-</tbody>
-</table>
-<p>And the corresponding template:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span><span class="nt">&#34;NAME&#34;</span><span class="p">:</span><span class="s2">&#34;POWSAV_AHR-083&#34;</span><span class="p">,</span><span class="nt">&#34;GPIO&#34;</span><span class="p">:[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">320</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">64</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">226</span><span class="p">,</span><span class="mi">227</span><span class="p">,</span><span class="mi">225</span><span class="p">,</span><span class="mi">224</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="nt">&#34;FLAG&#34;</span><span class="p">:</span><span class="mi">0</span><span class="p">,</span><span class="nt">&#34;BASE&#34;</span><span class="p">:</span><span class="mi">18</span><span class="p">}</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="esphome">Esphome</h3>
-<p>And here&rsquo;s a super basic ESPHome configuration using the mappings from above.</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span><span class="lnt">56
-</span><span class="lnt">57
-</span><span class="lnt">58
-</span><span class="lnt">59
-</span><span class="lnt">60
-</span><span class="lnt">61
-</span><span class="lnt">62
-</span><span class="lnt">63
-</span><span class="lnt">64
-</span><span class="lnt">65
-</span><span class="lnt">66
-</span><span class="lnt">67
-</span><span class="lnt">68
-</span><span class="lnt">69
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">substitutions</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">friendly_name_short</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Power Strip&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">esphome</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;power-strip&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">esp8266</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">board</span><span class="p">:</span><span class="w"> </span><span class="l">esp01_1m</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># Disable writing the switch mode / restore_from_flash</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">restore_from_flash</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">status_led</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">pin</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l">GPIO02</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">inverted</span><span class="p">:</span><span class="w"> </span><span class="kc">True</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">binary_sensor</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># I don&#39;t know what the stock behavior was. For now, only basic control</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;${friendly_name_short} Button&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">gpio</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">internal</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">pin</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l">GPIO05</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l">INPUT_PULLUP</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">inverted</span><span class="p">:</span><span class="w"> </span><span class="kc">False</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Press is momentary quick</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">on_press</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">then</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">switch.toggle</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">sw_relay1</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Not doing anything fancy so we can go with basic GPIO switches</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># See: https://esphome.io/components/switch/gpio.html</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">switch</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Outlet 1&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">sw_relay1</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">gpio</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">pin</span><span class="p">:</span><span class="w"> </span><span class="l">GPIO15</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">icon</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;mdi:numeric-1&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Don&#39;t want to wear down flash storing state, easiest to just not bother remembering</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">restore_mode</span><span class="p">:</span><span class="w"> </span><span class="l">ALWAYS_OFF</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># See: https://developers.home-assistant.io/docs/core/entity/switch/#available-device-classes</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">device_class</span><span class="p">:</span><span class="w"> </span><span class="l">OUTLET</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Outlet 2&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">sw_relay2</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">gpio</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">pin</span><span class="p">:</span><span class="w"> </span><span class="l">GPIO14</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">icon</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;mdi:numeric-2&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">restore_mode</span><span class="p">:</span><span class="w"> </span><span class="l">ALWAYS_OFF</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">device_class</span><span class="p">:</span><span class="w"> </span><span class="l">OUTLET</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Outlet 3&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">sw_relay3</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">gpio</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">pin</span><span class="p">:</span><span class="w"> </span><span class="l">GPIO12</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">icon</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;mdi:numeric-3&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">restore_mode</span><span class="p">:</span><span class="w"> </span><span class="l">ALWAYS_OFF</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">device_class</span><span class="p">:</span><span class="w"> </span><span class="l">OUTLET</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Outlet 4&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">sw_relay4</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">gpio</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">pin</span><span class="p">:</span><span class="w"> </span><span class="l">GPIO13</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">icon</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;mdi:numeric-4&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">restore_mode</span><span class="p">:</span><span class="w"> </span><span class="l">ALWAYS_OFF</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">device_class</span><span class="p">:</span><span class="w"> </span><span class="l">OUTLET</span><span class="w">
-</span></span></span></code></pre></td></tr></table>
-</div>
-</div>]]></description></item><item><title>Integrating ESPHome with a cheap Geiger Counter</title><link>https://karlquinsland.com/esphome-geiger-counter/</link><pubDate>Wed, 09 Nov 2022 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/esphome-geiger-counter/</guid><description><![CDATA[<p>Yes, there have <a href="https://community.home-assistant.io/t/geiger-counter-with-ha-integration/107660/12" target="_blank" rel="noopener noreffer">been</a> <em>loads</em> of <a href="https://www.rhelectronics.store/radiation-detector-geiger-counter-diy-kit-second-edition" target="_blank" rel="noopener noreffer">people</a> doing <a href="https://www.connectix.nl/connecting-a-geiger-counter-to-home-assistant/" target="_blank" rel="noopener noreffer">similar</a> <a href="https://old.reddit.com/r/homeassistant/comments/l92fbf/doomsday_sensor_v10/" target="_blank" rel="noopener noreffer">things</a>! ESPHome already has a tutorial <a href="https://esphome.io/cookbook/geiger-counter.html" target="_blank" rel="noopener noreffer">covering <em>exactly</em> this</a>!</p>
-<p>I&rsquo;m writing this up because the approach that I ended up taking was <em>not</em> the intended/planned approach.</p>
-<!-- markdownlint-disable-file MD002 -->
-<h2 id="the-geiger-counter">The Geiger Counter</h2>
-<p>I originally pulled the trigger on this particular version because it had a built in screen attached to a micro controller.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>I naïvely thought that I&rsquo;d be able to get a simple UART from the 4 pins next to the microcontroller or maybe even get data directly off of the micro USB port.</p>
-<div class="details admonition info open">
-        <div class="details-summary admonition-title">
-            <i class="icon fas fa-info-circle fa-fw"></i>Info<i class="details-icon fas fa-angle-right fa-fw"></i>
-        </div>
-        <div class="details-content">
-            <div class="admonition-content">As of 2022.11, the geiger counter pictured above can be found <a href="https://www.aliexpress.us/item/3256804497523971.html" target="_blank" rel="noopener noreffer">here</a>.
-The listing title is <code>DIY Geiger Counter Kit Assembled Module Nuclear Radiation Detector X γ β rays Iodine 131 Detecting OLED Display Radiation Tester</code></div>
-        </div>
-    </div>
-<h3 id="the-usb--uart-port">The USB / UART port</h3>
-<p>After receiving and unpacking it, I probed around and determined that the micro USB port did have the data lines going to the <code>U5</code> micro and that the 4 pins <em>also</em> went to the micro.</p>
-<p>Unfortunately both seemed dead; the pins didn&rsquo;t have any signal on them and the software on the micro implementing the USB stack didn&rsquo;t seem to be fully implemented.
-Using <code>dmesg</code> I could see <em>a device</em> being plugged in but the device failed to respond to any probes.</p>
-<p>So much for the easy way out.</p>
-<h2 id="plan-b">Plan B</h2>
-<p>With the identifying markings sanded off of the chip, attempting to dump / reverse / re-program the firmware wasn&rsquo;t the most appealing option.</p>
-<p>After some quick testing, I determined that the micro controller toggles the beeper and the LED via <em>distinct</em> GPIO pins and that the LED is pulsed to 3.3v for 5ms.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>For reference, here are the points that I chose to inject power and observe the LED.
-I am injecting 5V into the geiger counter from the ESP module so I can program and power the entire assembly with a single cable.
-If you choose to use separate power supplies for both, make sure that the ESP and geiger counter share a ground!</p>
-<p>Removing <code>R1</code> is optional; keep it if you want the beeper to click as well.
-I have some thoughts on being able to toggle this behavior <a href="#beeper" rel="">below</a></p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        I left R1 in place so it&#39;s easier to reverse the mod.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>And with a bit of hot glue, we&rsquo;re done with the hardware assembly.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        There&#39;s no good place for the ESP module so I chose to strategically obfuscate the portion of the screen that does not display the actual measurements.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<div class="details admonition warning open">
-        <div class="details-summary admonition-title">
-            <i class="icon fas fa-exclamation-triangle fa-fw"></i>Warning<i class="details-icon fas fa-angle-right fa-fw"></i>
-        </div>
-        <div class="details-content">
-            <div class="admonition-content">There&rsquo;s no <em>good</em> place to put the ESP module such that the screen is unobstructed and such that the ESP is not near the geiger tube.
-As the tube is charged up to ~400v, it putting the ESP module directly over it seems like a potential problem.</div>
-        </div>
-    </div>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        I wouldn&#39;t put the ESP right here because a) the tube is partially obstructed and b) the tube is charged to a few hundred volts and putting any delicate electronics that close seems like a bad idea.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<h2 id="esphome">ESPHome</h2>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Ignore that 12 hour gap in the data... I forgot to plug the assembly back in after doing some tests.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>The firmware is pretty simple.
-The configuration below is an abridged version of what I am currently using.
-I&rsquo;ve stripped out unnecessary things but left some comments in to serve as basic documentation.</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span><span class="lnt">56
-</span><span class="lnt">57
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c">##</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># To convert from particles per unit time, there&#39;s supposed to be some conversion factor.</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># This conversion factor depends on the tube and the cheap Ali Express tubes all seem to be J321 style.</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Not a ton of documentation out there, but I did find one source that says J321 is basically J305.</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># See: https://www.radmon.org/index.php/forum/geiger-muller-tubes/1245-information-on-j321-gm-tube</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># But even then, the conversion factor is derived from some known isotope. They expose the tube to some</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#   known isotope and then measure the counts. Because they also know the proper dosing info for the</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#   isotope, the tube then gets a conversion factor.</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Additionally, the micro controller sits between the raw data from the tube and the LED that I am tapping into.</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Each time there is _any_ radiation detected, the micro controller pluses the LED for 5ms. In theory, multiple</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#   radioactive particles could strike the tube in the 5ms window and the microcontroller would know ... but I wouldn&#39;t.</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># At 5ms per pulse, the maximum number of particles per second that I can detect is 200. Even if the TRUE count</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#   is 3x that... 200 is still way more than enough to know that _something_ isn&#39;t right and that&#39;s really what I&#39;m after here.</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># So for now, just stick with basic counts per min w/ the understanding that the signal that I&#39;m observing might not</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#   be with the full resolution that the tube is capable of.</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">##</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">esphome</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># Note: this will be the hostname that device request during the DHCP dance...</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;geiger-counter&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">esp32</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">board</span><span class="p">:</span><span class="w"> </span><span class="l">mhetesp32minikit</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Enable logging</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">logger</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">level</span><span class="p">:</span><span class="w"> </span><span class="l">INFO</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">sensor</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># See: https://esphome.io/components/sensor/pulse_counter.html</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Particle Count</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">pulse_counter</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">sense_p_cnt</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Does not really matter which pin for ESP32</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">pin</span><span class="p">:</span><span class="w"> </span><span class="l">GPIO32</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">use_pcnt</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Measured with oScope: pulse is 5ms _exactly_.</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Docs say to use falling edge detection with the hardware pulse counter</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">count_mode</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">rising_edge</span><span class="p">:</span><span class="w"> </span><span class="l">DISABLE</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">falling_edge</span><span class="p">:</span><span class="w"> </span><span class="l">INCREMENT</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Docs ALSO say that you can&#39;t configure a filter of more than 13us when using the</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c">#   internal pulse counter. 5ms is ... 5000 us and that&#39;s more than 13us so I guess we&#39;ll</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c">#   stick with the defaults?</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c">##</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">internal_filter</span><span class="p">:</span><span class="w"> </span><span class="l">13us</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># As best I can tell, pulses trigger an ISR which just increases some counter somewhere.</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Every update_interval, esphome checks the value in the storage and computes the count</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c">#   per min.</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c">##</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">update_interval</span><span class="p">:</span><span class="w"> </span><span class="l">60s</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">unit_of_measurement</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;cpm&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">state_class</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;measurement&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">icon</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;mdi:radioactive-circle-outline&#34;</span><span class="w">
-</span></span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="beeper">Beeper</h3>
-<p>I can&rsquo;t confirm it, but I suspect that the beeper is driven independently of the LED because the original designer wanted to implement a software toggle for the sound.</p>
-<p>I don&rsquo;t need the sound functionality but I also don&rsquo;t want to <em>permanently</em> disable it. It would be nice to be able to toggle it on/off as needed.
-There are a few ways to get similar functionality:</p>
-<ul>
-<li>
-<p>Hack the hardware&hellip; more. The TO92 driving the beeper (via <code>R1</code>) is a <code>SS9014 NPN</code>. I could add <em>another</em> transistor in series with <code>R1</code> and then control the current flow via another GPIO on the ESP.</p>
-</li>
-<li>
-<p>Inspired by this <a href="https://old.reddit.com/r/Esphome/comments/uhu3uy/trying_to_detect_falling_edge_on_input_where_also/" target="_blank" rel="noopener noreffer">reddit thread</a>, I could try to get the ESP to toggle a beeper directly when a pulse is detected.
-There are some issues with this approach, though.</p>
-</li>
-</ul>
-<p>It is not possible to get <em>direct</em> access to the ISR via ESPHome.
-I&rsquo;d have to create my own custom component to pull this off.
-Not the end of the world but also more time than I wanted to spend so I went with a different approach that <em>appears to work</em>.</p>
-<p>Basically, create <em>two</em> instances of the <a href="https://esphome.io/components/sensor/pulse_counter.html" target="_blank" rel="noopener noreffer"><code>pulse_counter</code></a> sensor using the same GPIO pin.
-One of them will remain external and will publish data to Home Assistant at 60s intervals.
-The other will be internal and will be updated every <code>loop()</code>.
-By attaching a <a href="https://esphome.io/guides/automations.html#lambda-action" target="_blank" rel="noopener noreffer"><code>lambda</code> function</a> to the sensor evaluation loop, we can compare the number of recorded pulses many times per second.
-The number of cycles that the internal pulse counter will sum pulses over is 1 so any time the current value does not match the previous value &hellip; should indicate that a pulse was fired off.</p>
-<p>Here&rsquo;s what I came up with:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">sensor</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># See: https://esphome.io/components/sensor/pulse_counter.html</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">Particle Count</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># &lt;...&gt;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">INTERNAL Particle Count</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">internal</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">pulse_counter</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># &lt;... literally the exact same config as the external pulse counter ...&gt;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c">##</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># 0ms means every loop()</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">update_interval</span><span class="p">:</span><span class="w"> </span><span class="l">0ms</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">filters</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="c"># LogE because we want it to stand out on the console while testing</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          static int num_zeros = 0;
-</span></span></span><span class="line"><span class="cl"><span class="sd">          if (x &gt; 0) {
-</span></span></span><span class="line"><span class="cl"><span class="sd">            // reset
-</span></span></span><span class="line"><span class="cl"><span class="sd">            num_zeros = 0;
-</span></span></span><span class="line"><span class="cl"><span class="sd">            // Indicate that a non 0 measurement was taken and dump to console
-</span></span></span><span class="line"><span class="cl"><span class="sd">            // This is where a beeper would be fired off if desired...
-</span></span></span><span class="line"><span class="cl"><span class="sd">            ESP_LOGE(&#34;filterLambda&#34;, &#34;raw is %f&#34;, x );
-</span></span></span><span class="line"><span class="cl"><span class="sd">          } else {
-</span></span></span><span class="line"><span class="cl"><span class="sd">            num_zeros++;
-</span></span></span><span class="line"><span class="cl"><span class="sd">          }
-</span></span></span><span class="line"><span class="cl"><span class="sd">          // Dont spam console
-</span></span></span><span class="line"><span class="cl"><span class="sd">          if (num_zeros % 1000 == 0) {
-</span></span></span><span class="line"><span class="cl"><span class="sd">            ESP_LOGI(&#34;filterLambda&#34;, &#34;num_zeros is %d&#34;, num_zeros );
-</span></span></span><span class="line"><span class="cl"><span class="sd">          }
-</span></span></span><span class="line"><span class="cl"><span class="sd">          return x;</span><span class="w">          
-</span></span></span></code></pre></td></tr></table>
-</div>
-</div><p>In testing, I would get logs like:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">[17:34:18][E][filterLambda:165]: raw is 10000.000000
-</span></span><span class="line"><span class="cl">[17:34:18][I][filterLambda:170]: num_zeros is 0
-</span></span><span class="line"><span class="cl">[17:34:19][E][filterLambda:165]: raw is 10000.000000
-</span></span><span class="line"><span class="cl">[17:34:19][I][filterLambda:170]: num_zeros is 0
-</span></span><span class="line"><span class="cl">[17:34:19][E][filterLambda:165]: raw is 10000.000000
-</span></span><span class="line"><span class="cl">[17:34:19][I][filterLambda:170]: num_zeros is 0
-</span></span><span class="line"><span class="cl">[17:34:20][E][filterLambda:165]: raw is 10000.000000
-</span></span><span class="line"><span class="cl">[17:34:20][I][filterLambda:170]: num_zeros is 0
-</span></span><span class="line"><span class="cl">[17:34:22][E][filterLambda:165]: raw is 10000.000000
-</span></span><span class="line"><span class="cl">[17:34:22][I][filterLambda:170]: num_zeros is 0
-</span></span><span class="line"><span class="cl">[17:34:24][E][filterLambda:165]: raw is 10000.000000
-</span></span><span class="line"><span class="cl">[17:34:24][I][filterLambda:170]: num_zeros is 0
-</span></span><span class="line"><span class="cl">[17:34:24][E][filterLambda:165]: raw is 10000.000000
-</span></span><span class="line"><span class="cl">[17:34:24][I][filterLambda:170]: num_zeros is 0
-</span></span><span class="line"><span class="cl">[17:34:25][E][filterLambda:165]: raw is 10000.000000
-</span></span><span class="line"><span class="cl">[17:34:25][I][filterLambda:170]: num_zeros is 0
-</span></span><span class="line"><span class="cl">[17:34:26][E][filterLambda:165]: raw is 10000.000000
-</span></span><span class="line"><span class="cl">[17:34:26][I][filterLambda:170]: num_zeros is 0
-</span></span><span class="line"><span class="cl">[17:34:32][E][filterLambda:165]: raw is 10000.000000
-</span></span><span class="line"><span class="cl">[17:34:32][I][filterLambda:170]: num_zeros is 0
-</span></span><span class="line"><span class="cl">[17:34:33][E][filterLambda:165]: raw is 10000.000000
-</span></span><span class="line"><span class="cl">[17:34:33][I][filterLambda:170]: num_zeros is 0
-</span></span><span class="line"><span class="cl">[17:34:35][E][filterLambda:165]: raw is 10000.000000
-</span></span><span class="line"><span class="cl">[17:34:35][I][filterLambda:170]: num_zeros is 0
-</span></span><span class="line"><span class="cl">[17:34:40][E][filterLambda:165]: raw is 10000.000000
-</span></span><span class="line"><span class="cl">[17:34:40][I][filterLambda:170]: num_zeros is 0
-</span></span><span class="line"><span class="cl">[17:34:42][E][filterLambda:165]: raw is 10000.000000
-</span></span><span class="line"><span class="cl">[17:34:42][I][filterLambda:170]: num_zeros is 0
-</span></span><span class="line"><span class="cl">[17:34:43][E][filterLambda:165]: raw is 10000.000000
-</span></span><span class="line"><span class="cl">[17:34:43][I][filterLambda:170]: num_zeros is 0
-</span></span><span class="line"><span class="cl">[17:34:44][E][filterLambda:165]: raw is 10000.000000
-</span></span><span class="line"><span class="cl">[17:34:44][I][filterLambda:170]: num_zeros is 0
-</span></span><span class="line"><span class="cl">[17:34:45][E][filterLambda:165]: raw is 10000.000000
-</span></span><span class="line"><span class="cl">[17:34:45][I][filterLambda:170]: num_zeros is 0
-</span></span><span class="line"><span class="cl">[17:34:46][E][filterLambda:165]: raw is 10000.000000
-</span></span><span class="line"><span class="cl">[17:34:46][I][filterLambda:170]: num_zeros is 0
-</span></span><span class="line"><span class="cl">[17:34:47][E][filterLambda:165]: raw is 10000.000000
-</span></span><span class="line"><span class="cl">[17:34:47][I][filterLambda:170]: num_zeros is 0
-</span></span><span class="line"><span class="cl">[17:34:50][E][filterLambda:165]: raw is 10000.000000
-</span></span><span class="line"><span class="cl">[17:34:50][I][filterLambda:170]: num_zeros is 0
-</span></span><span class="line"><span class="cl">[17:34:52][E][filterLambda:165]: raw is 10000.000000
-</span></span><span class="line"><span class="cl">[17:34:52][I][filterLambda:170]: num_zeros is 0
-</span></span><span class="line"><span class="cl">[17:34:54][E][filterLambda:165]: raw is 10000.000000
-</span></span><span class="line"><span class="cl">[17:34:54][I][filterLambda:170]: num_zeros is 0
-</span></span><span class="line"><span class="cl">[17:34:58][E][filterLambda:165]: raw is 10000.000000
-</span></span><span class="line"><span class="cl">[17:34:58][I][filterLambda:170]: num_zeros is 0
-</span></span><span class="line"><span class="cl">[17:35:00][E][filterLambda:165]: raw is 10000.000000
-</span></span><span class="line"><span class="cl">[17:35:00][I][filterLambda:170]: num_zeros is 0
-</span></span><span class="line"><span class="cl">[17:35:02][E][filterLambda:165]: raw is 10000.000000
-</span></span><span class="line"><span class="cl">[17:35:02][I][filterLambda:170]: num_zeros is 0
-</span></span><span class="line"><span class="cl">[17:35:05][E][filterLambda:165]: raw is 10000.000000
-</span></span><span class="line"><span class="cl">[17:35:05][I][filterLambda:170]: num_zeros is 0
-</span></span><span class="line"><span class="cl">[17:35:11][I][filterLambda:170]: num_zeros is 1000
-</span></span><span class="line"><span class="cl">[17:35:17][E][filterLambda:165]: raw is 10000.000000
-</span></span><span class="line"><span class="cl">[17:35:17][I][filterLambda:170]: num_zeros is 0
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>The period between <code>17:34:18</code> and <code>17:35:17</code> is basically 60 seconds long and the number of times that <code>num_zeros is 0</code> is printed is 27.
-Coincidentally, the external facing sensor published a value of 27 to Home Assistant.</p>
-<p>This is not a <em>conclusive</em> test but - at least at <strong>background</strong> radiation levels - using two instances of the same sensor type on the same GPIO might work.</p>
-<p>I don&rsquo;t have any easy way to induce higher counts on the geiger tube so I can&rsquo;t test how well this holds up &ldquo;under load&rdquo; nor can I confirm that this works reliably across all ESP chips/modules and versions of ESPHome/PlatformIO&hellip;etc.</p>
-<p>Doing this with a custom component probably is the better way to do it but I wasn&rsquo;t going to pull that off in the time I had allotted.</p>
-]]></description></item></channel></rss>
+</div>]]></description></item></channel></rss>
