@@ -1,4 +1,4 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>rant - Tag - karl</title><link>https://karlquinsland.com/tags/rant/</link><description>rant - Tag - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 13 Jan 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/rant/" rel="self" type="application/rss+xml"/><item><title>Unbrick a rievtech PLC after failed firmware upgrade</title><link>https://karlquinsland.com/unbrick-rievtech-plc-failed-firmware-update/</link><pubDate>Wed, 13 Jan 2021 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/unbrick-rievtech-plc-failed-firmware-update/</guid><description><![CDATA[<p>This is &ldquo;reference&rdquo; post for anybody else that happens to have this same very specific problem.</p>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Rant - Tag - karl</title><link>https://karlquinsland.com/tags/rant/</link><description>Rant - Tag - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 13 Jan 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/rant/" rel="self" type="application/rss+xml"/><item><title>Unbrick a rievtech PLC after failed firmware upgrade</title><link>https://karlquinsland.com/unbrick-rievtech-plc-failed-firmware-update/</link><pubDate>Wed, 13 Jan 2021 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/unbrick-rievtech-plc-failed-firmware-update/</guid><description><![CDATA[<p>This is &ldquo;reference&rdquo; post for anybody else that happens to have this same very specific problem.</p>
 <p>I was looking for a way to incorporate some of the <em>many</em> cheap / industrial grade sensors from AliExpress with Home Assistant.
 Long story short: almost everything electronic in the industrial space uses <a href="https://modbus.org/" target="_blank" rel="noopener noreffer">Modbus</a> to communicate, typically with a <a href="https://en.wikipedia.org/wiki/Programmable_logic_controller" target="_blank" rel="noopener noreffer">PLC</a>. While Home Assistant <a href="https://www.home-assistant.io/integrations/modbus/" target="_blank" rel="noopener noreffer">does have support</a> for the Modbus protocol, but wanted to use a PLC that could manage the sensors directly and expose the values over the network in a more standard format; MQTT.</p>
 <p>Turns out, quite a few PLCs come with network interfaces and can speak MQTT now!</p>
@@ -106,7 +106,7 @@ Long story short: almost everything electronic in the industrial space uses <a h
     <li>
         
             <a target="_blank" href="https://karlquinsland.com/unbrick-rievtech-plc-failed-firmware-update/files/How%20to%20update%20the%20hardware.doc.pdf">
-                <i class="far fa-file-doc"></i>
+                <i class="far fa-file-file-code"></i>
                 files/How to update the hardware.doc.pdf:
                 
                 <small style="font-family:'Lucida Console', monospace">pdf</small> <small>file</small>
@@ -122,7 +122,7 @@ Long story short: almost everything electronic in the industrial space uses <a h
     <li>
         
             <a target="_blank" href="https://karlquinsland.com/unbrick-rievtech-plc-failed-firmware-update/files/UpdateFail_PR-18DC-DAI-R-N_V150.zip">
-                <i class="far fa-file-archive"></i>
+                <i class="far fa-file-file-code"></i>
                 files/UpdateFail_PR-18DC-DAI-R-N_V150.zip:
                 
                 <small style="font-family:'Lucida Console', monospace">zip</small> <small>file</small>

@@ -1,4 +1,83 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>prometheus - Tag - karl</title><link>https://karlquinsland.com/tags/prometheus/</link><description>prometheus - Tag - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 27 Dec 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/prometheus/" rel="self" type="application/rss+xml"/><item><title>Monitoring APC AP7900 switched PDU with Prometheus and Grafana</title><link>https://karlquinsland.com/monitoring-ap7900-switched-pdu-prometheus-grafana/</link><pubDate>Sun, 27 Dec 2020 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/monitoring-ap7900-switched-pdu-prometheus-grafana/</guid><description><![CDATA[<p>The APC AP7900 is a 1U single phase PDU with 8 switchable outlets and a network interface. It&rsquo;s been EoL&rsquo;d and can be had for less than 20% of it&rsquo;s original price on <a href="https://www.ebay.com/sch/i.html?_nkw=AP7900" target="_blank" rel="noopener noreffer">eBay</a>. The network interface is so underpowered tha it can&rsquo;t <a href="http://origin-faq.pro-face.com/resources/sites/PROFACE/content/live/FAQS/300000/FA300635/en_US/APC%20AP7000%20Series%20End%20of%20Life%20Notice.pdf" target="_blank" rel="noopener noreffer">support any modern cryptographic ciphers</a>.</p>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Prometheus - Tag - karl</title><link>https://karlquinsland.com/tags/prometheus/</link><description>Prometheus - Tag - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 19 Mar 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/prometheus/" rel="self" type="application/rss+xml"/><item><title>Arris SB8200 Prometheus Exporter</title><link>https://karlquinsland.com/arris-sb8200-prometheus-exporter/</link><pubDate>Tue, 19 Mar 2024 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/arris-sb8200-prometheus-exporter/</guid><description><![CDATA[<!-- markdownlint-disable-file MD002 -->
+<p>This is a very short &ldquo;announcement&rdquo; post.</p>
+<p>To beef up my home-lab observability stack, I&rsquo;ve been working on a few projects to expose more data to Prometheus.
+Getting metrics from my cable modem has been on the &ldquo;todo&rdquo; list for literally years.
+There have been various metric exporters written in the past but they have either been archived/deleted off of GitHub or are otherwise inappropriate for my needs.
+So, I wrote my own.</p>
+<p>The GitHub repo is <a href="https://github.com/kquinsland/sb820_prometheus_exporter/" target="_blank" rel="noopener noreffer">here</a> if you want to dive right in.</p>
+<p>When set up, one possible way to visualize the data looks like this:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        blah
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<h2 id="a-few-observations">A few observations</h2>
+<p>While building out the dashboard / prototyping it, a few things immediately stood out as &ldquo;interesting&rdquo;</p>
+<p>After rebooting the modem, the metrics that keep track of error-corrected symbols sent/received over the connection are 0.
+This makes sense as the modem has just been rebooted and hasn&rsquo;t had time to accumulate any errors yet.
+The first jump in correctable/uncorrectable errors&hellip; happens to corelate directly with a meaningful change in both received/downstream power <em>and</em> transmit/upstream power.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        blah
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>The metric exporter keeps track of how long scraping the modem&rsquo;s web interface takes as well as weather or not the scraped data was complete / well formed.
+The time it takes to scrape a particular endpoint increases pretty quickly after power up before leveling off.
+I&rsquo;d love to know why the web server on the modem slows down so quickly after booting up&hellip;.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        blah
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+]]></description></item><item><title>Monitoring APC AP7900 switched PDU with Prometheus and Grafana</title><link>https://karlquinsland.com/monitoring-ap7900-switched-pdu-prometheus-grafana/</link><pubDate>Sun, 27 Dec 2020 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/monitoring-ap7900-switched-pdu-prometheus-grafana/</guid><description><![CDATA[<p>The APC AP7900 is a 1U single phase PDU with 8 switchable outlets and a network interface. It&rsquo;s been EoL&rsquo;d and can be had for less than 20% of it&rsquo;s original price on <a href="https://www.ebay.com/sch/i.html?_nkw=AP7900" target="_blank" rel="noopener noreffer">eBay</a>. The network interface is so underpowered tha it can&rsquo;t <a href="http://origin-faq.pro-face.com/resources/sites/PROFACE/content/live/FAQS/300000/FA300635/en_US/APC%20AP7000%20Series%20End%20of%20Life%20Notice.pdf" target="_blank" rel="noopener noreffer">support any modern cryptographic ciphers</a>.</p>
 <p>So with that, here&rsquo;s a revised copy of my notes from the process of getting the device reset, updated and monitored.</p>
 <h2 id="the-hardware">The Hardware</h2>
 <figure >

@@ -8,15 +8,14 @@
 
 This is another quick "here's how I did it, hope this help" post.
 
-
 In preparation for the inevitable grid brownouts that summer 2021 would bring, I installed a rather beefy UPS for my home network / lab. After some browsing, I discovered a local eWaste liquidator with a really good deal on some second-hand APC UPSs.
 
-A few hundred dollars and about 150 lbs later, the UPS was installed in the server rack. Despite being a newer generation, the software on the UPS has a _**TON**_ of similarities to the [older style of PDU that I installed in my lab ]({{< ref " /posts/2020/12/monitoring-ap7900-switched-pdu-prometheus-grafana ">}}) a while back. This made it relatively straightforward to use the same
+A few hundred dollars and about 150 lbs later, the UPS was installed in the server rack. Despite being a newer generation, the software on the UPS has a _**TON**_ of similarities to the [older style of PDU that I installed in my lab ]({{< relref "/posts/2020/12/monitoring-ap7900-switched-pdu-prometheus-grafana">}}) a while back. This made it relatively straightforward to use the same
 pattern to start getting UPS metrics into Grafana as well.
 
 After getting the basic monitoring up and running, I started to draft this post to serve as an 'update' to the APC9700 post. Life got in the way and the post sat in the drafts branch where it was completely forgotten about.... until [Home Assistant released their new Energy dashboard](https://www.home-assistant.io/blog/2021/08/04/release-20218/). Now that HA could show the energy consumption of individual devices right next to the cumulative consumption and production data, the post was worth finishing and expanding on.
 
-The configuration that I was _going_ to publish is [below]({{<ref "#current-and-voltage-independently">}}) but after finding [this](https://old.reddit.com/r/homeassistant/comments/pi3pv2/how_to_use_an_apc_ups_as_an_energy_dashboard/hbpqzr6/) comment by [Laxarus](https://old.reddit.com/user/Laxarus) on [Navydevildoc](https://old.reddit.com/user/Navydevildoc)'s [reddit post](https://old.reddit.com/r/homeassistant/comments/pi3pv2/how_to_use_an_apc_ups_as_an_energy_dashboard/), I've got a revised and simpler configuration to share!
+The configuration that I was _going_ to publish is [below]({{<relref "#current-and-voltage-independently">}}) but after finding [this](https://old.reddit.com/r/homeassistant/comments/pi3pv2/how_to_use_an_apc_ups_as_an_energy_dashboard/hbpqzr6/) comment by [Laxarus](https://old.reddit.com/user/Laxarus) on [Navydevildoc](https://old.reddit.com/user/Navydevildoc)'s [reddit post](https://old.reddit.com/r/homeassistant/comments/pi3pv2/how_to_use_an_apc_ups_as_an_energy_dashboard/), I've got a revised and simpler configuration to share!
 
 ## Long Term Statistics in Home Assistant
 
@@ -32,7 +31,7 @@ In testing, I was _not_ able to get a sensor with `state_class: measurement` and
 
 As the LTS framework is still new, many platforms - including the SNMP platform - do not support the required properties:
 
-```
+```log
 Invalid config for [sensor.snmp]: [state_class] is an invalid option for [sensor.snmp]. Check: sensor.snmp->state_class.
 Invalid config for [sensor.snmp]: [device_class] is an invalid option for [sensor.snmp]. Check: sensor.snmp->device_class.
 ```
@@ -42,11 +41,12 @@ So that's the technique to use here; a `template` sensor with the correct `{devi
 
 Hopefully a future release of HA will include `{device,state}_class` support for the `snmp` platform; the `template` sensors in the configuration snips below won't be needed!
 
-#### EDIT (2021-09-19):
+### EDIT (2021-09-19)
 
 You don't need to wrap the snmp sensor in a template sensor. As of home assistant 2021.09, the `snmp` platform does not allow you to set `device_class: energy`... however, you _can_ set the `device_class` attribute on the snmp sensor through `customize.yaml`:
 
 Make sure your configuration file loads the customization file:
+
 ```shell
 ❯ cat configuration.yaml | grep customize
   customize: !include customize.yaml
@@ -75,10 +75,10 @@ template: !include_dir_merge_list devices/template/
 
 Thanks again to [Laxarus](https://old.reddit.com/user/Laxarus) for the [tip](https://old.reddit.com/r/homeassistant/comments/pi3pv2/how_to_use_an_apc_ups_as_an_energy_dashboard/hbpqzr6/) about the `upsHighPrecOutputEnergyUsage` OID!
 
-
 First, create the 'raw' sensor using the `snmp` platform:
 
 `devices/sensor/snmp.yaml`:
+
 ```yaml
 - platform: snmp
   name: "UPS Energy (raw)"
@@ -121,7 +121,7 @@ Restart Home Assistant and you should now be able to add `sensor.ups_energy` to 
 
 After sorting through the _massive_ MIB file that APC publishes; I only found ways to measure the voltage and current via SNMP. I assumed that APC meant for you to calculate the power use on your own from the voltage and current.
 
-As it turns out, APC has a `upsHighPrecOutputEnergyUsage` field which reports: `The output energy usage of the UPS in hundredths of kWh.` If your APC device publishes a value on the OID `.1.3.6.1.4.1.318.1.1.1.4.3.6.0` then you can skip the configuration below; use the more concise configuration [above]({{<ref "#a-single-oid-for-power-consumption">}}). If your devices ***does not*** publish the cumulative energy consumption, it can still be calculated manually.
+As it turns out, APC has a `upsHighPrecOutputEnergyUsage` field which reports: `The output energy usage of the UPS in hundredths of kWh.` If your APC device publishes a value on the OID `.1.3.6.1.4.1.318.1.1.1.4.3.6.0` then you can skip the configuration below; use the more concise configuration [above]({{<relref "#a-single-oid-for-power-consumption">}}). If your devices ***does not*** publish the cumulative energy consumption, it can still be calculated manually.
 
 The manual approach below is a lot like the concise approach above; uses two `snmp` sensors to collect the voltage and current from the UPS and then wrap everything in a LTS-compatible `template` sensor to get the data to show up on the energy dashboard.
 

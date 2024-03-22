@@ -5,7 +5,7 @@ This is a super quick "because the official docs didn't make it super clear so h
 
 -----
 <!-- markdownlint-disable-file MD033 -->
-After some [very disappointing WiFi connectivity issues]({{<ref "../../04/venstar-t7850-teardown-review/index#an-update-on-wifi-connectivity" >}}), I settled on a Zwave based thermostat to replace the Venstar thermostat.
+After some [very disappointing WiFi connectivity issues]({{< relref "posts/2022/04/venstar-t7850-teardown-review#an-update-on-wifi-connectivity"  >}}), I settled on a Zwave based thermostat to replace the Venstar thermostat.
 
 After installing the Honeywell TH6320 and connecting it to the ZwaveJS gateway, a new `climate`` entity appeared in Home Assistant. From there, I was able to see/control:
 

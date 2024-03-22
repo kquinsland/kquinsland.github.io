@@ -1,4 +1,83 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>home-lab - Category - karl</title><link>https://karlquinsland.com/categories/home-lab/</link><description>home-lab - Category - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 15 Oct 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/categories/home-lab/" rel="self" type="application/rss+xml"/><item><title>I made a thing: GPS/PPS clock source for ntpd</title><link>https://karlquinsland.com/yet-another-gps-pps-opnsense/</link><pubDate>Sat, 15 Oct 2022 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/yet-another-gps-pps-opnsense/</guid><description><![CDATA[<div class="details admonition tip open">
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Home-Lab - Category - karl</title><link>https://karlquinsland.com/categories/home-lab/</link><description>Home-Lab - Category - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 19 Mar 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/categories/home-lab/" rel="self" type="application/rss+xml"/><item><title>Arris SB8200 Prometheus Exporter</title><link>https://karlquinsland.com/arris-sb8200-prometheus-exporter/</link><pubDate>Tue, 19 Mar 2024 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/arris-sb8200-prometheus-exporter/</guid><description><![CDATA[<!-- markdownlint-disable-file MD002 -->
+<p>This is a very short &ldquo;announcement&rdquo; post.</p>
+<p>To beef up my home-lab observability stack, I&rsquo;ve been working on a few projects to expose more data to Prometheus.
+Getting metrics from my cable modem has been on the &ldquo;todo&rdquo; list for literally years.
+There have been various metric exporters written in the past but they have either been archived/deleted off of GitHub or are otherwise inappropriate for my needs.
+So, I wrote my own.</p>
+<p>The GitHub repo is <a href="https://github.com/kquinsland/sb820_prometheus_exporter/" target="_blank" rel="noopener noreffer">here</a> if you want to dive right in.</p>
+<p>When set up, one possible way to visualize the data looks like this:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        blah
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<h2 id="a-few-observations">A few observations</h2>
+<p>While building out the dashboard / prototyping it, a few things immediately stood out as &ldquo;interesting&rdquo;</p>
+<p>After rebooting the modem, the metrics that keep track of error-corrected symbols sent/received over the connection are 0.
+This makes sense as the modem has just been rebooted and hasn&rsquo;t had time to accumulate any errors yet.
+The first jump in correctable/uncorrectable errors&hellip; happens to corelate directly with a meaningful change in both received/downstream power <em>and</em> transmit/upstream power.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        blah
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>The metric exporter keeps track of how long scraping the modem&rsquo;s web interface takes as well as weather or not the scraped data was complete / well formed.
+The time it takes to scrape a particular endpoint increases pretty quickly after power up before leveling off.
+I&rsquo;d love to know why the web server on the modem slows down so quickly after booting up&hellip;.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        blah
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+]]></description></item><item><title>I made a thing: GPS/PPS clock source for ntpd</title><link>https://karlquinsland.com/yet-another-gps-pps-opnsense/</link><pubDate>Sat, 15 Oct 2022 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/yet-another-gps-pps-opnsense/</guid><description><![CDATA[<div class="details admonition tip open">
         <div class="details-summary admonition-title">
             <i class="icon fas fa-lightbulb fa-fw"></i>Tip<i class="details-icon fas fa-angle-right fa-fw"></i>
         </div>
@@ -50,7 +129,7 @@ One LCSC order, one mouser order and about a week later, I had a basic RS232 &lt
 <hr>
 <p>This is another quick &ldquo;here&rsquo;s how I did it, hope this help&rdquo; post.</p>
 <p>In preparation for the inevitable grid brownouts that summer 2021 would bring, I installed a rather beefy UPS for my home network / lab. After some browsing, I discovered a local eWaste liquidator with a really good deal on some second-hand APC UPSs.</p>
-<p>A few hundred dollars and about 150 lbs later, the UPS was installed in the server rack. Despite being a newer generation, the software on the UPS has a <em><strong>TON</strong></em> of similarities to the <a href="https://karlquinsland.com/monitoring-ap7900-switched-pdu-prometheus-grafana/" rel="">older style of PDU that I installed in my lab </a> a while back. This made it relatively straightforward to use the same
+<p>A few hundred dollars and about 150 lbs later, the UPS was installed in the server rack. Despite being a newer generation, the software on the UPS has a <em><strong>TON</strong></em> of similarities to the <a href="/monitoring-ap7900-switched-pdu-prometheus-grafana/" rel="">older style of PDU that I installed in my lab </a> a while back. This made it relatively straightforward to use the same
 pattern to start getting UPS metrics into Grafana as well.</p>
 <p>After getting the basic monitoring up and running, I started to draft this post to serve as an &lsquo;update&rsquo; to the APC9700 post. Life got in the way and the post sat in the drafts branch where it was completely forgotten about&hellip;. until <a href="https://www.home-assistant.io/blog/2021/08/04/release-20218/" target="_blank" rel="noopener noreffer">Home Assistant released their new Energy dashboard</a>. Now that HA could show the energy consumption of individual devices right next to the cumulative consumption and production data, the post was worth finishing and expanding on.</p>
 <p>The configuration that I was <em>going</em> to publish is <a href="#current-and-voltage-independently" rel="">below</a> but after finding <a href="https://old.reddit.com/r/homeassistant/comments/pi3pv2/how_to_use_an_apc_ups_as_an_energy_dashboard/hbpqzr6/" target="_blank" rel="noopener noreffer">this</a> comment by <a href="https://old.reddit.com/user/Laxarus" target="_blank" rel="noopener noreffer">Laxarus</a> on <a href="https://old.reddit.com/user/Navydevildoc" target="_blank" rel="noopener noreffer">Navydevildoc</a>&rsquo;s <a href="https://old.reddit.com/r/homeassistant/comments/pi3pv2/how_to_use_an_apc_ups_as_an_energy_dashboard/" target="_blank" rel="noopener noreffer">reddit post</a>, I&rsquo;ve got a revised and simpler configuration to share!</p>
@@ -77,7 +156,7 @@ For a sensor/entity to &lsquo;work&rsquo; with the long term stats system it mus
 </div><p>The <code>template</code> platform <em>has</em> been updated to work with the <code>device_class</code> or <code>state_class</code> properties though.
 So that&rsquo;s the technique to use here; a <code>template</code> sensor with the correct <code>{device,state}_class</code> properties set will wrap the snmp sensor.</p>
 <p>Hopefully a future release of HA will include <code>{device,state}_class</code> support for the <code>snmp</code> platform; the <code>template</code> sensors in the configuration snips below won&rsquo;t be needed!</p>
-<h4 id="edit-2021-09-19">EDIT (2021-09-19):</h4>
+<h3 id="edit-2021-09-19">EDIT (2021-09-19)</h3>
 <p>You don&rsquo;t need to wrap the snmp sensor in a template sensor. As of home assistant 2021.09, the <code>snmp</code> platform does not allow you to set <code>device_class: energy</code>&hellip; however, you <em>can</em> set the <code>device_class</code> attribute on the snmp sensor through <code>customize.yaml</code>:</p>
 <p>Make sure your configuration file loads the customization file:</p>
 <div class="highlight"><div class="chroma">
@@ -846,9 +925,6 @@ Once the screw is fully inserted, allow it to fully cool (~5min) so the softened
                 
                 <small style="font-family:'Lucida Console', monospace">yaml</small> <small>file</small>
                 
-                
-                <br>
-                <small>sha1: aa0076b7bee08f09568536463c8794f15a2f59b2</small>
                 
             </a>
         

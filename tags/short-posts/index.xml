@@ -1,4 +1,83 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>short-posts - Tag - karl</title><link>https://karlquinsland.com/tags/short-posts/</link><description>short-posts - Tag - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 04 Feb 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/short-posts/" rel="self" type="application/rss+xml"/><item><title>Quick and dirty hack to extend the MK3S print area.</title><link>https://karlquinsland.com/extending-the-mk3s-print-area/</link><pubDate>Sun, 04 Feb 2024 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/extending-the-mk3s-print-area/</guid><description><![CDATA[<!-- markdownlint-disable-file MD002 -->
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Short-Posts - Tag - karl</title><link>https://karlquinsland.com/tags/short-posts/</link><description>Short-Posts - Tag - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Tue, 19 Mar 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/short-posts/" rel="self" type="application/rss+xml"/><item><title>Arris SB8200 Prometheus Exporter</title><link>https://karlquinsland.com/arris-sb8200-prometheus-exporter/</link><pubDate>Tue, 19 Mar 2024 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/arris-sb8200-prometheus-exporter/</guid><description><![CDATA[<!-- markdownlint-disable-file MD002 -->
+<p>This is a very short &ldquo;announcement&rdquo; post.</p>
+<p>To beef up my home-lab observability stack, I&rsquo;ve been working on a few projects to expose more data to Prometheus.
+Getting metrics from my cable modem has been on the &ldquo;todo&rdquo; list for literally years.
+There have been various metric exporters written in the past but they have either been archived/deleted off of GitHub or are otherwise inappropriate for my needs.
+So, I wrote my own.</p>
+<p>The GitHub repo is <a href="https://github.com/kquinsland/sb820_prometheus_exporter/" target="_blank" rel="noopener noreffer">here</a> if you want to dive right in.</p>
+<p>When set up, one possible way to visualize the data looks like this:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        blah
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<h2 id="a-few-observations">A few observations</h2>
+<p>While building out the dashboard / prototyping it, a few things immediately stood out as &ldquo;interesting&rdquo;</p>
+<p>After rebooting the modem, the metrics that keep track of error-corrected symbols sent/received over the connection are 0.
+This makes sense as the modem has just been rebooted and hasn&rsquo;t had time to accumulate any errors yet.
+The first jump in correctable/uncorrectable errors&hellip; happens to corelate directly with a meaningful change in both received/downstream power <em>and</em> transmit/upstream power.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        blah
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>The metric exporter keeps track of how long scraping the modem&rsquo;s web interface takes as well as weather or not the scraped data was complete / well formed.
+The time it takes to scrape a particular endpoint increases pretty quickly after power up before leveling off.
+I&rsquo;d love to know why the web server on the modem slows down so quickly after booting up&hellip;.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        blah
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+]]></description></item><item><title>Quick and dirty hack to extend the MK3S print area.</title><link>https://karlquinsland.com/extending-the-mk3s-print-area/</link><pubDate>Sun, 04 Feb 2024 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/extending-the-mk3s-print-area/</guid><description><![CDATA[<!-- markdownlint-disable-file MD002 -->
 <p>This isn&rsquo;t going to be a long post. I&rsquo;m working on a larger project but hit a snag and I didn&rsquo;t find any easy/obvious solutions online so I thought I&rsquo;d share what I came up with.</p>
 <p>Details will come later when the bigger project is ready to be released so you&rsquo;ll have to forgive me for the lack of context.
 Essentially I have a large / multi-hour print that <strong>almost</strong> fits on my MK3s print bed but is too large to slice as is.</p>
