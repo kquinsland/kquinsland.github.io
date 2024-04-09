@@ -13,39 +13,43 @@
 
 ## Summary
 
-Seasoned SRE and SysAdmin with a knack for automation and systematization all facets of life.
-Serial skill acquirer in pursuit of a more automated and optimal life; I pickup, replace and augment skills as needed.
-At the end of the day, the software/tools/things/technology I'm responsible for should be reliable, performant and ideally put a smile on people's faces.
+Skilled SRE and SysAdmin with a knack for automation in all facets of life.
+Firm believer in the power of Infrastructure as Code and [Docs as Code](https://www.writethedocs.org/guide/docs-as-code/).
+Passionate about harnessing the potential of generative AI, I actively incorporate it to streamline processes and accelerate outcomes.
+As an experienced Python and proficient Rust developer, I continuously evolve my skill set to build and maintain systems that not only meet performance standards but also delight users with their reliability and efficiency.
+My ultimate goal is to create solutions that are not just effective but also spark joy.
 
 ## Work
 
-### Sr. DevOps Engineer, [spree3d](https://spree3d.com/)
+### Sr. DevOps Engineer, [Spree3D/SpreeAI](https://spreeai.com/)
 
-> Versatile AWS and DevOps professional with a focus on optimizing cloud infrastructure, streamlining Machine Learning deployment on EKS, and enhancing observability and onboarding processes for greater operational efficiency.
+> AWS architect, Incident Management Specialist and versatile DevSecOps professional.
+> Focus on automating cloud infrastructure, streamlining Machine Learning deployment on EKS, and enhancing platform observability to ensure system stability at scale.
 
-##### 2023-04-17 - Present
+##### 2023-04-17
 
-- Optimized AWS resource management by cleaning up abandoned resources, resulting in monthly cost savings of thousands of dollars.
-- Containerized multiple Machine Learning and CUDA workloads for deployment on EKS.
-- Contributed to the development of the LGTM Stack (Loki, Grafana, Tempo, and Mimir).
-- Provided guidance on best practices for enhancing application and platform observability, and created customized dashboards to offer diverse insights into the system.
-- Mentored the Machine Learning team in implementing production-grade improvements for Python applications, development tools, and workflows.
-- Streamlined the onboarding process by documenting and automating various aspects.
+- Accelerated Terraform apply cycles by ~30x and reduced monthly costs significantly by refactoring a large legacy codebase.
+- Designed and implemented a scalable DNS management strategy across AWS regions, facilitating active failover and geographic routing. Led efforts to migrate away from chaotic Route53 sprawl to this manageable and secure setup.
+- Established a scalable incident management process, promoting its adoption and standardization.
+- Containerized multiple Machine Learning and CUDA workloads for deployment on EKS using home-grown tooling and KubeFlow.
+- Rolled out observability stack (Loki, Grafana, Tempo, and Mimir) across dozens of EC2/RDS workloads, k8s clusters and lambda functions.
+- Leveraging LGTM stack, created dashboards to guide application and platform stability initiatives.
+- Mentored the Machine Learning team on production-grade Python coding patterns, development tools, and workflows.
+- Simplified the onboarding process through comprehensive automation and documentation.
 
 ### Sr. Ops Engineer/SRE, [Sprig](https://sprig.com/)
 
-> In-house AWS specialist tasked with taming legacy Terraform, k8s configuration and general 'as-needed' tool development / process automation.
+> In-house AWS specialist tasked with taming legacy Terraform, modernizing kubernetes tooling, workflows and configuration. Provided ML support and general 'as-needed' tool development / process automation.
 
 ##### 2022-04-01 - 2023-02-17
 
-- Modernized legacy Terraform and consolidated infrastructure saving thousands of $/month in AWS costs.
-- Architected and deployed highly scalable CI/CD pipe for both IaC (infrastructure as code) and Lambda functions cutting expensive dev time to provision traditional and EKS based infrastructure, manage networking/security resources.
-- Wrote extensive documentation for - and provided training on - new IaC/tooling. Automated document generation for existing IaC.
-- Introduced and consistently coached colleagues on standardized ADR (architecture design review) based approach to documenting and debating merits of architecture.
-- Led efforts to eliminate nuisance pages and implement consistent incident management process leading to faster/cheaper recovery.
-- Responsible for running bug bounty program, triage reports and prioritizing remediation work for internal teams.
-- Performed security focused code and architecture review for new product features. In-house AWS specialist tasked with taming legacy Terraform, k8s configuration and general 'as-needed' tool development / process automation.
-- Improved home-grown EKS deployment pipeline and tooling.
+- Reduced monthly AWS costs by thousands through Terraform modernization and infrastructure consolidation.
+- Architected and deployed highly scalable CI/CD pipe for both IaC and Lambda functions; fastest "merged" to "deployed and taking traffic" was sub 20s.
+- Wrote extensive documentation for - and provided training on - new IaC tooling. Automated document generation for existing IaC leading to large reduction in dev time to provision traditional and EKS based infrastructure.
+- Implemented a standardized ADR (architecture design review) process, enhancing architectural discussions and documentation through regular coaching.
+- Spearheaded efforts to eliminate nuisance pages and standardized incident management, improving recovery speed and cost.
+- Managed the bug bounty program, triaging and prioritizing remediation efforts across teams.
+- Performed security focused code and architecture review for new product features.
 
 ### Sr. Ops Engineer/SRE, [Kiddom](https://www.kiddom.co/)
 
@@ -147,17 +151,18 @@ At the end of the day, the software/tools/things/technology I'm responsible for 
 ### Cloud Providers
 
 - AWS: advanced / 10+ years experience.
-- DigitalOcean: intermediate. 3+ Years experience.
-- Google: passable
+- DigitalOcean: intermediate. 3+ years experience.
+- Azure/Google: passable
 
 ### Containerization
 
 - Docker: advanced
-- kubernetes: advanced / 5+ years experience.
+- kubernetes/k8s: advanced / 5+ years experience.
 
-### IaC/Ops Tools
+### K8s/IaC/Ops Tools
 
-- Terraform: advanced / 8+ years experience.
+- Terraform/[OpenTofu](https://opentofu.org/): advanced / 9+ years experience.
+- Argo/Flux/LGTM: advanced
 - Packer: advanced
 - Consul: advanced
 - Vault: advanced
@@ -171,8 +176,8 @@ At the end of the day, the software/tools/things/technology I'm responsible for 
 
 ## Languages
 
-- Native in 🇺🇸 English
-- No asombroso, suficiente in 🇪🇸 Spanish
+- 🇺🇸 English: Native  English
+- 🇪🇸 Spanish: No asombroso, suficiente
 
 ## Interests
 
