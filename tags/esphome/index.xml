@@ -1,4 +1,939 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Esphome - Tag - karl</title><link>https://karlquinsland.com/tags/esphome/</link><description>Esphome - Tag - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 11 Nov 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/esphome/" rel="self" type="application/rss+xml"/><item><title>ESPHome for Sonoff T5 family of Switches</title><link>https://karlquinsland.com/sonoff-t5-esphome/</link><pubDate>Sat, 11 Nov 2023 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/sonoff-t5-esphome/</guid><description><![CDATA[<h1 id="esphome-for-sonoff-t5-family-of-switches">ESPHome for Sonoff T5 family of Switches</h1>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Esphome - Tag - karl</title><link>https://karlquinsland.com/tags/esphome/</link><description>Esphome - Tag - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 09 Jun 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/esphome/" rel="self" type="application/rss+xml"/><item><title>Using ESPHome to Automatically restart frozen cable modem</title><link>https://karlquinsland.com/automatic-modem-restart-with-esphome/</link><pubDate>Sun, 09 Jun 2024 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/automatic-modem-restart-with-esphome/</guid><description><![CDATA[<!-- markdownlint-disable-file MD002 -->
+<p>Part of the reason for developing my <a href="/arris-sb8200-prometheus-exporter/" rel="">SB8200 monitor</a> was to get to the bottom of some infrequent but regular outages.</p>
+<p>To make a long story short, the <a href="https://en.wikipedia.org/wiki/Link_aggregation" target="_blank" rel="noopener noreffer">LAG</a> implementation on the modem seems to have some issues.
+A quick google will return many complaint threads detailing issues with the modem regularly locking up all traffic stopping.
+More annoyingly, these reports date back <em>years</em> and allege that later revisions of the firmware <em>might</em> fix the issue for good.</p>
+<p>My ISP is <a href="https://deadline.com/2014/09/netflix-discovery-response-comcast-extortion-840530" target="_blank" rel="noopener noreffer">evil</a> and doesn&rsquo;t give me a way to check for or manually update the firmware on device.</p>
+<p>As expected, their stance is that all my issues will go away if I rent  <em>their</em> modem and let them up-sell me a faster service tier, though 🙄.</p>
+<p>When the modem falls over, it&rsquo;s pretty sudden; things will be fine one moment and then no traffic flows the next.
+The exact timing seems to vary a bit, but the average time between lockups is about 10 days with very little variance.</p>
+<p>I&rsquo;ve been &ldquo;lucky&rdquo; in the sense that most of these lockups have happened during the day while I was at home; I could notice the issue, triage and fix it pretty quickly.
+My dashboards have at most 300 seconds of down time or so.</p>
+<p>There&rsquo;s only so much luck to go around, though; what happens when I&rsquo;m out of the house?I&rsquo;ve been thinking about how to automate the process of restarting the modem and this is what I came up with.</p>
+<h2 id="the-fix">The &ldquo;fix&rdquo;</h2>
+<p>My modem is powered through a <a href="https://devices.esphome.io/devices/Sonoff-S31" target="_blank" rel="noopener noreffer">Sonoff S31 plug</a> running <a href="https://esphome.io/" target="_blank" rel="noopener noreffer">ESPHome</a>.</p>
+<p>Every 10 seconds, the S31 tries to fetch the modem&rsquo;s http interface using the <a href="https://esphome.io/components/http_request.html" target="_blank" rel="noopener noreffer"><code>http_request</code></a> component.
+If - after 2 seconds - the modem doesn&rsquo;t respond, a counter is incremented.
+Once the counter reaches 5 consecutive failures, the power to the modem is briefly interrupted just as if I had unplugged it, counted to 10 and plugged it back in.</p>
+<p>To make this bit of ESPHome configuration re-usable, I&rsquo;ve packaged up the functionality into a pair of standalone files that can be included into an existing ESPHome configuration.</p>
+<p>Documentation for why/how things work has been put in the comments of each file to aid understanding.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        How the S31 powering modem appears in Home Assistant
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<h3 id="baseyaml"><code>base.yaml</code></h3>
+<p>This implements 95% of the logic and everything that&rsquo;s not implementation specific:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span><span class="lnt">114
+</span><span class="lnt">115
+</span><span class="lnt">116
+</span><span class="lnt">117
+</span><span class="lnt">118
+</span><span class="lnt">119
+</span><span class="lnt">120
+</span><span class="lnt">121
+</span><span class="lnt">122
+</span><span class="lnt">123
+</span><span class="lnt">124
+</span><span class="lnt">125
+</span><span class="lnt">126
+</span><span class="lnt">127
+</span><span class="lnt">128
+</span><span class="lnt">129
+</span><span class="lnt">130
+</span><span class="lnt">131
+</span><span class="lnt">132
+</span><span class="lnt">133
+</span><span class="lnt">134
+</span><span class="lnt">135
+</span><span class="lnt">136
+</span><span class="lnt">137
+</span><span class="lnt">138
+</span><span class="lnt">139
+</span><span class="lnt">140
+</span><span class="lnt">141
+</span><span class="lnt">142
+</span><span class="lnt">143
+</span><span class="lnt">144
+</span><span class="lnt">145
+</span><span class="lnt">146
+</span><span class="lnt">147
+</span><span class="lnt">148
+</span><span class="lnt">149
+</span><span class="lnt">150
+</span><span class="lnt">151
+</span><span class="lnt">152
+</span><span class="lnt">153
+</span><span class="lnt">154
+</span><span class="lnt">155
+</span><span class="lnt">156
+</span><span class="lnt">157
+</span><span class="lnt">158
+</span><span class="lnt">159
+</span><span class="lnt">160
+</span><span class="lnt">161
+</span><span class="lnt">162
+</span><span class="lnt">163
+</span><span class="lnt">164
+</span><span class="lnt">165
+</span><span class="lnt">166
+</span><span class="lnt">167
+</span><span class="lnt">168
+</span><span class="lnt">169
+</span><span class="lnt">170
+</span><span class="lnt">171
+</span><span class="lnt">172
+</span><span class="lnt">173
+</span><span class="lnt">174
+</span><span class="lnt">175
+</span><span class="lnt">176
+</span><span class="lnt">177
+</span><span class="lnt">178
+</span><span class="lnt">179
+</span><span class="lnt">180
+</span><span class="lnt">181
+</span><span class="lnt">182
+</span><span class="lnt">183
+</span><span class="lnt">184
+</span><span class="lnt">185
+</span><span class="lnt">186
+</span><span class="lnt">187
+</span><span class="lnt">188
+</span><span class="lnt">189
+</span><span class="lnt">190
+</span><span class="lnt">191
+</span><span class="lnt">192
+</span><span class="lnt">193
+</span><span class="lnt">194
+</span><span class="lnt">195
+</span><span class="lnt">196
+</span><span class="lnt">197
+</span><span class="lnt">198
+</span><span class="lnt">199
+</span><span class="lnt">200
+</span><span class="lnt">201
+</span><span class="lnt">202
+</span><span class="lnt">203
+</span><span class="lnt">204
+</span><span class="lnt">205
+</span><span class="lnt">206
+</span><span class="lnt">207
+</span><span class="lnt">208
+</span><span class="lnt">209
+</span><span class="lnt">210
+</span><span class="lnt">211
+</span><span class="lnt">212
+</span><span class="lnt">213
+</span><span class="lnt">214
+</span><span class="lnt">215
+</span><span class="lnt">216
+</span><span class="lnt">217
+</span><span class="lnt">218
+</span><span class="lnt">219
+</span><span class="lnt">220
+</span><span class="lnt">221
+</span><span class="lnt">222
+</span><span class="lnt">223
+</span><span class="lnt">224
+</span><span class="lnt">225
+</span><span class="lnt">226
+</span><span class="lnt">227
+</span><span class="lnt">228
+</span><span class="lnt">229
+</span><span class="lnt">230
+</span><span class="lnt">231
+</span><span class="lnt">232
+</span><span class="lnt">233
+</span><span class="lnt">234
+</span><span class="lnt">235
+</span><span class="lnt">236
+</span><span class="lnt">237
+</span><span class="lnt">238
+</span><span class="lnt">239
+</span><span class="lnt">240
+</span><span class="lnt">241
+</span><span class="lnt">242
+</span><span class="lnt">243
+</span><span class="lnt">244
+</span><span class="lnt">245
+</span><span class="lnt">246
+</span><span class="lnt">247
+</span><span class="lnt">248
+</span><span class="lnt">249
+</span><span class="lnt">250
+</span><span class="lnt">251
+</span><span class="lnt">252
+</span><span class="lnt">253
+</span><span class="lnt">254
+</span><span class="lnt">255
+</span><span class="lnt">256
+</span><span class="lnt">257
+</span><span class="lnt">258
+</span><span class="lnt">259
+</span><span class="lnt">260
+</span><span class="lnt">261
+</span><span class="lnt">262
+</span><span class="lnt">263
+</span><span class="lnt">264
+</span><span class="lnt">265
+</span><span class="lnt">266
+</span><span class="lnt">267
+</span><span class="lnt">268
+</span><span class="lnt">269
+</span><span class="lnt">270
+</span><span class="lnt">271
+</span><span class="lnt">272
+</span><span class="lnt">273
+</span><span class="lnt">274
+</span><span class="lnt">275
+</span><span class="lnt">276
+</span><span class="lnt">277
+</span><span class="lnt">278
+</span><span class="lnt">279
+</span><span class="lnt">280
+</span><span class="lnt">281
+</span><span class="lnt">282
+</span><span class="lnt">283
+</span><span class="lnt">284
+</span><span class="lnt">285
+</span><span class="lnt">286
+</span><span class="lnt">287
+</span><span class="lnt">288
+</span><span class="lnt">289
+</span><span class="lnt">290
+</span><span class="lnt">291
+</span><span class="lnt">292
+</span><span class="lnt">293
+</span><span class="lnt">294
+</span><span class="lnt">295
+</span><span class="lnt">296
+</span><span class="lnt">297
+</span><span class="lnt">298
+</span><span class="lnt">299
+</span><span class="lnt">300
+</span><span class="lnt">301
+</span><span class="lnt">302
+</span><span class="lnt">303
+</span><span class="lnt">304
+</span><span class="lnt">305
+</span><span class="lnt">306
+</span><span class="lnt">307
+</span><span class="lnt">308
+</span><span class="lnt">309
+</span><span class="lnt">310
+</span><span class="lnt">311
+</span><span class="lnt">312
+</span><span class="lnt">313
+</span><span class="lnt">314
+</span><span class="lnt">315
+</span><span class="lnt">316
+</span><span class="lnt">317
+</span><span class="lnt">318
+</span><span class="lnt">319
+</span><span class="lnt">320
+</span><span class="lnt">321
+</span><span class="lnt">322
+</span><span class="lnt">323
+</span><span class="lnt">324
+</span><span class="lnt">325
+</span><span class="lnt">326
+</span><span class="lnt">327
+</span><span class="lnt">328
+</span><span class="lnt">329
+</span><span class="lnt">330
+</span><span class="lnt">331
+</span><span class="lnt">332
+</span><span class="lnt">333
+</span><span class="lnt">334
+</span><span class="lnt">335
+</span><span class="lnt">336
+</span><span class="lnt">337
+</span><span class="lnt">338
+</span><span class="lnt">339
+</span><span class="lnt">340
+</span><span class="lnt">341
+</span><span class="lnt">342
+</span><span class="lnt">343
+</span><span class="lnt">344
+</span><span class="lnt">345
+</span><span class="lnt">346
+</span><span class="lnt">347
+</span><span class="lnt">348
+</span><span class="lnt">349
+</span><span class="lnt">350
+</span><span class="lnt">351
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">substitutions</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># How many seconds between http requests</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">poll_interval_seconds</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;10&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># How many failed requests before we take action</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># If polling happens every 10 seconds and runs for at most 2 seconds then</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># 5 failures in a row would mean that the host has been in a failed state for</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># somewhere between 50 and 60 seconds before we take action.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">consecutive_failure_threshold</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;5&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># How many polls to wait for until action can be taken again</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">lockout_ticks_count</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;20&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">globals</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># How many seconds between checking the remote host</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">glbl_http_poll_interval_ticks</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">int</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">restore_value</span><span class="p">:</span><span class="w"> </span><span class="kc">yes</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">initial_value</span><span class="p">:</span><span class="w"> </span><span class="l">${poll_interval_seconds}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># Not clear if script execution is blocked while the http request is in flight.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># It appears to be, so I might be able to safely remove this?</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">_glbl_http_poll_request_in_flight</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">bool</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">restore_value</span><span class="p">:</span><span class="w"> </span><span class="kc">no</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">initial_value</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;false&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># Lockout/cool-down prevents a failed result from immediately triggering another cycle</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># E.g.: if the poll target is down and we power cycle it and then immediately check... it won&#39;t respond</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># which will mean another power cycle ...</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">_glbl_http_poll_lockout_ticks</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">int</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">restore_value</span><span class="p">:</span><span class="w"> </span><span class="kc">yes</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">initial_value</span><span class="p">:</span><span class="w"> </span><span class="l">${lockout_ticks_count}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># Need to keep track of the number of ticks since we last took the failure action</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">_glbl_http_poll_ticks_since_last_failure_action</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">int</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">restore_value</span><span class="p">:</span><span class="w"> </span><span class="kc">no</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">initial_value</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;0&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># Monotonically increasing counter</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">_glbl_http_poll_ticks</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">int</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">restore_value</span><span class="p">:</span><span class="w"> </span><span class="kc">no</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">initial_value</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;0&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># How many failures have we had?</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">_glbl_http_poll_failures_count</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">int</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">restore_value</span><span class="p">:</span><span class="w"> </span><span class="kc">no</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">initial_value</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;0&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># How many failures before we do something?</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">glbl_http_poll_failures_threshold</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">int</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">restore_value</span><span class="p">:</span><span class="w"> </span><span class="kc">no</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">initial_value</span><span class="p">:</span><span class="w"> </span><span class="l">${consecutive_failure_threshold}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># Allows for disconnecting consecutive failure action if needed.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">_glbl_http_poll_consecutive_failure_action_enabled</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">bool</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">restore_value</span><span class="p">:</span><span class="w"> </span><span class="kc">no</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">initial_value</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;true&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Expose the current state of the poll/lockout timer</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">text_sensor</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;HTTP Poll Status&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">txt_operation_mode</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">icon</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;mdi:information-off-outline&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">entity_category</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;diagnostic&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Will be called to update as necessary from other components</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">update_interval</span><span class="p">:</span><span class="w"> </span><span class="l">never</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">      // This lambda function should never be called / we should never update the text sensor this way
+</span></span></span><span class="line"><span class="cl"><span class="sd">      return {&#34;Unknown&#34;};</span><span class="w">      
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Expose the current success/failure counts for stats</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">sensor</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Consecutive Poll Failure Count&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">s_consecutive_poll_failure_count</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">icon</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;mdi:progress-alert&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">entity_category</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;diagnostic&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">      if (id(_glbl_http_poll_failures_count)) {
+</span></span></span><span class="line"><span class="cl"><span class="sd">        return id(_glbl_http_poll_failures_count);
+</span></span></span><span class="line"><span class="cl"><span class="sd">      } else {
+</span></span></span><span class="line"><span class="cl"><span class="sd">        return 0.0;
+</span></span></span><span class="line"><span class="cl"><span class="sd">      }</span><span class="w">      
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Will be called to update as necessary from other components</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">update_interval</span><span class="p">:</span><span class="w"> </span><span class="l">never</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">##</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Allow tweaking the poll interval and failure threshold via Home Assistant</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># See: https://esphome.io/components/number/template.html</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">##</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">number</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Poll Interval&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">num_poll_interval</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">icon</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;mdi:timer-sand&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">entity_category</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;config&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">unit_of_measurement</span><span class="p">:</span><span class="w"> </span><span class="l">seconds</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l">box</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">min_value</span><span class="p">:</span><span class="w"> </span><span class="m">2</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">max_value</span><span class="p">:</span><span class="w"> </span><span class="m">120</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">step</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">      return (int) id(glbl_http_poll_interval_ticks);</span><span class="w">      
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">set_action</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">then</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Store the val</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">globals.set</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">glbl_http_poll_interval_ticks</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span>!<span class="l">lambda |-</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="l">return (int) x;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Consecutive Failure Threshold&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">num_consecutive_failure_threshold</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">icon</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;mdi:alert-minus-outline&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">entity_category</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;config&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">unit_of_measurement</span><span class="p">:</span><span class="w"> </span><span class="l">failures</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l">box</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">min_value</span><span class="p">:</span><span class="w"> </span><span class="m">2</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">max_value</span><span class="p">:</span><span class="w"> </span><span class="m">10</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">step</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">      return (int) id(glbl_http_poll_failures_threshold);</span><span class="w">      
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">set_action</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">then</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Store the val</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">globals.set</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">glbl_http_poll_failures_threshold</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span>!<span class="l">lambda |-</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="l">return (int) x;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">switch</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># A global arm/disarm switch for the http poll</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;HTTP Request Check&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">sw_http_request</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">icon</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;mdi:web-sync&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">entity_category</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;config&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># It&#39;s OK to have this set to ON at boot since we immediately go into lockout mode before we start polling</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">restore_mode</span><span class="p">:</span><span class="w"> </span><span class="l">RESTORE_DEFAULT_ON</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># This way we don&#39;t need to create a global for the state</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">optimistic</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">on_turn_on</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">script.execute</span><span class="p">:</span><span class="w"> </span><span class="l">_on_http_poll_turned_on</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">on_turn_off</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">script.execute</span><span class="p">:</span><span class="w"> </span><span class="l">_on_http_poll_turned_off</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># In addition to polling, also gate the actual consecutive failure action.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># This way, action can be disabled without disabling the polling itself; useful for testing polling</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#   or just gathering stats about how often the poll fails...</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">##</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Consecutive Failure Action Enable&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">sw_cons_failure_action</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">icon</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;mdi:alert-outline&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">entity_category</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;config&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># It&#39;s OK to have this set to ON at boot since we immediately go into lockout mode before we start polling</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">restore_mode</span><span class="p">:</span><span class="w"> </span><span class="l">RESTORE_DEFAULT_ON</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># This way we don&#39;t need to create a global for the state</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">      return id(_glbl_http_poll_consecutive_failure_action_enabled);</span><span class="w">      
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">turn_on_action</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">globals.set</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">_glbl_http_poll_consecutive_failure_action_enabled</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;true&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">turn_off_action</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">globals.set</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">_glbl_http_poll_consecutive_failure_action_enabled</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;false&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">script</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># When polling starts back up, we have some variable initialization to do</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">_on_http_poll_turned_on</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l">single</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">then</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_glbl_http_poll_ticks) = 0;
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_glbl_http_poll_ticks_since_last_failure_action) = 0;
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_glbl_http_poll_failures_count) = 0;
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_glbl_http_poll_request_in_flight) = false;
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(txt_operation_mode).publish_state(&#34;Armed&#34;);
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_http_poll_tick).execute();</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># When polling function is turned off, there&#39;s a few things to clean up</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">_on_http_poll_turned_off</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l">single</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">then</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_glbl_http_poll_ticks) = 0;
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_glbl_http_poll_ticks_since_last_failure_action) = 0;
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_glbl_http_poll_request_in_flight) = false;
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(txt_operation_mode).publish_state(&#34;Disarmed&#34;);
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_do_poll).stop();
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_http_poll_tick).stop();</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># What do we do when we get a 200 response?</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">_on_http_poll_ok</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l">single</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">then</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="c"># Poll was OK, indicate status and reset the _glbl_http_poll_failures_count</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          auto const static TAG = &#34;_on_http_poll_ok&#34;;
+</span></span></span><span class="line"><span class="cl"><span class="sd">          ESP_LOGD(TAG, &#34;Poll OK. Resetting failure count.&#34;);
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_glbl_http_poll_failures_count) = 0;
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(s_consecutive_poll_failure_count).update();
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(txt_operation_mode).publish_state(&#34;Success&#34;);</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># What do we do when we get a non-200 response?</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">_on_http_poll_failure</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l">single</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">then</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="c"># Disable timer, have the text sensor update</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          auto const static TAG = &#34;_on_http_poll_failure&#34;;
+</span></span></span><span class="line"><span class="cl"><span class="sd">          // Count and publish
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_glbl_http_poll_failures_count)++;
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(s_consecutive_poll_failure_count).update();
+</span></span></span><span class="line"><span class="cl"><span class="sd">          
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(txt_operation_mode).publish_state(&#34;Failure&#34;);
+</span></span></span><span class="line"><span class="cl"><span class="sd">          ESP_LOGW(TAG, &#34;Failures: %i, Threshold: %i&#34;, id(_glbl_http_poll_failures_count), id(glbl_http_poll_failures_threshold));
+</span></span></span><span class="line"><span class="cl"><span class="sd">          
+</span></span></span><span class="line"><span class="cl"><span class="sd">          if( id(_glbl_http_poll_failures_count) &gt;= id(glbl_http_poll_failures_threshold) ) {
+</span></span></span><span class="line"><span class="cl"><span class="sd">            id(_on_http_poll_failure_threshold_met).execute();
+</span></span></span><span class="line"><span class="cl"><span class="sd">          }</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># And when failure count reaches threshold, what do we do?</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">_on_http_poll_failure_threshold_met</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l">single</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">then</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="c"># Disable timer, have the text sensor update</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          auto const static TAG = &#34;_on_http_poll_failure_threshold_met&#34;;
+</span></span></span><span class="line"><span class="cl"><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          ESP_LOGE(TAG, &#34;Consecutive failure threshold met!&#34;);
+</span></span></span><span class="line"><span class="cl"><span class="sd">          if (id(_glbl_http_poll_consecutive_failure_action_enabled)) {
+</span></span></span><span class="line"><span class="cl"><span class="sd">            ESP_LOGE(TAG, &#34;Executing action!&#34;);
+</span></span></span><span class="line"><span class="cl"><span class="sd">            // User must provide _valid_ C++ code here to be substituted in at compile time
+</span></span></span><span class="line"><span class="cl"><span class="sd">            ${failure_threshold_met_action}
+</span></span></span><span class="line"><span class="cl"><span class="sd">          } else {
+</span></span></span><span class="line"><span class="cl"><span class="sd">            ESP_LOGE(TAG, &#34;Action disabled!&#34;);
+</span></span></span><span class="line"><span class="cl"><span class="sd">          }
+</span></span></span><span class="line"><span class="cl"><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          // Reset the failure count
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_glbl_http_poll_failures_count) = 0;
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(s_consecutive_poll_failure_count).update();
+</span></span></span><span class="line"><span class="cl"><span class="sd">          // Reset the time since last failure counter to enter lockout mode
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_glbl_http_poll_ticks_since_last_failure_action) = 0;</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">_do_poll</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># DO NOT start a new run until the previous one completes!</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l">single</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">then</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="c"># Tell the user we&#39;re polling</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          // Indicate we are now polling
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(txt_operation_mode).publish_state(&#34;Polling&#34;);
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_glbl_http_poll_request_in_flight) = true;</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="c"># Fire off the http request</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">http_request.get</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">http_poll</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">url</span><span class="p">:</span><span class="w"> </span><span class="l">${http_url}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">verify_ssl</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="c"># In testing, was able to confirm that this will be called even if there&#39;s an error.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="c"># If failure occurred before HTTP could happen, status will be negative integer</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="c">##</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="c"># ESPHome does not permit defining lambda functions &#34;externally&#34;... but we can do this with scripts.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="c"># To make this package as re-usable as possible, call into a `handle_on_response` script and expect the user</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="c"># to provide one at compile time.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="c">##</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">on_response</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">then</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span>- <span class="nt">script.execute</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                  </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">handle_on_response</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                  </span><span class="nt">status_code</span><span class="p">:</span><span class="w"> </span>!<span class="l">lambda |- </span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="l">return status_code;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                  </span><span class="nt">duration_ms</span><span class="p">:</span><span class="w"> </span>!<span class="l">lambda |-</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="l">return duration_ms;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">_http_poll_tick</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Start a new run after previous runs completes. This will happen until timer.stop() is called on us</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c">##</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l">queued</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">max_runs</span><span class="p">:</span><span class="w"> </span><span class="m">0</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">then</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="c"># A single &#39;tick&#39; is 1 second long</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">delay</span><span class="p">:</span><span class="w"> </span><span class="l">1s</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          /*
+</span></span></span><span class="line"><span class="cl"><span class="sd">            The &#34;super loop&#34; scheduler.
+</span></span></span><span class="line"><span class="cl"><span class="sd">            This script is called every second and is responsible for determining if it&#39;s time to poll the target.
+</span></span></span><span class="line"><span class="cl"><span class="sd">          */
+</span></span></span><span class="line"><span class="cl"><span class="sd">          auto const static TAG = &#34;lambda._http_poll_tick&#34;;
+</span></span></span><span class="line"><span class="cl"><span class="sd">          static int num_ticks = 0;
+</span></span></span><span class="line"><span class="cl"><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          // Count this tick
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_glbl_http_poll_ticks) += 1;
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_glbl_http_poll_ticks_since_last_failure_action)++;
+</span></span></span><span class="line"><span class="cl"><span class="sd">          num_ticks = id(_glbl_http_poll_ticks);
+</span></span></span><span class="line"><span class="cl"><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          // Are we supposed to be running at all?
+</span></span></span><span class="line"><span class="cl"><span class="sd">          if( !id(sw_http_request) ) {
+</span></span></span><span class="line"><span class="cl"><span class="sd">            ESP_LOGD(TAG, &#34;Not running. sw_http_request: %i&#34;, id(sw_http_request).state);
+</span></span></span><span class="line"><span class="cl"><span class="sd">            id(_on_http_poll_turned_off).execute();
+</span></span></span><span class="line"><span class="cl"><span class="sd">            return;
+</span></span></span><span class="line"><span class="cl"><span class="sd">          }
+</span></span></span><span class="line"><span class="cl"><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          // Check if there&#39;s already a request in flight.
+</span></span></span><span class="line"><span class="cl"><span class="sd">          // Note that there appears to be a yaml only way of checking if a script is already running?
+</span></span></span><span class="line"><span class="cl"><span class="sd">          // I can&#39;t find an API that allows me to do this ... so for now we have to keep track of this flag in a global bool.
+</span></span></span><span class="line"><span class="cl"><span class="sd">          if (id(_glbl_http_poll_request_in_flight)) {
+</span></span></span><span class="line"><span class="cl"><span class="sd">            ESP_LOGD(TAG, &#34;Request in flight! Nothing to do...&#34;);
+</span></span></span><span class="line"><span class="cl"><span class="sd">            id(_on_http_poll_turned_off).execute();
+</span></span></span><span class="line"><span class="cl"><span class="sd">            return;
+</span></span></span><span class="line"><span class="cl"><span class="sd">          }
+</span></span></span><span class="line"><span class="cl"><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          // We should be running and there is currently no request in flight... Are we in lockout?
+</span></span></span><span class="line"><span class="cl"><span class="sd">          if( id(_glbl_http_poll_ticks_since_last_failure_action) &lt; id(_glbl_http_poll_lockout_ticks) ) {
+</span></span></span><span class="line"><span class="cl"><span class="sd">            ESP_LOGD(TAG, &#34;In lockout! ticks_since_last_failure_action: %i, lockout_ticks: %i&#34;, id(_glbl_http_poll_ticks_since_last_failure_action), id(_glbl_http_poll_lockout_ticks));
+</span></span></span><span class="line"><span class="cl"><span class="sd">            
+</span></span></span><span class="line"><span class="cl"><span class="sd">            // TODO: add the lockout time remaining to the text sensor?
+</span></span></span><span class="line"><span class="cl"><span class="sd">            id(txt_operation_mode).publish_state(&#34;Locked Out&#34;);
+</span></span></span><span class="line"><span class="cl"><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">            id(_http_poll_tick).execute();
+</span></span></span><span class="line"><span class="cl"><span class="sd">            return;
+</span></span></span><span class="line"><span class="cl"><span class="sd">          }
+</span></span></span><span class="line"><span class="cl"><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          // We&#39;re not in lock out...Is it time to poll?
+</span></span></span><span class="line"><span class="cl"><span class="sd">          if( num_ticks % id(glbl_http_poll_interval_ticks) != 0 ) {
+</span></span></span><span class="line"><span class="cl"><span class="sd">            ESP_LOGD(TAG, &#34;Not time to poll. num_ticks: %i, interval_ticks: %i&#34;, num_ticks, id(glbl_http_poll_interval_ticks));
+</span></span></span><span class="line"><span class="cl"><span class="sd">            id(txt_operation_mode).publish_state(&#34;Waiting&#34;);
+</span></span></span><span class="line"><span class="cl"><span class="sd">          } else {
+</span></span></span><span class="line"><span class="cl"><span class="sd">            ESP_LOGD(TAG, &#34;Time to poll! num_ticks: %i, glbl_http_poll_interval_ticks: %i&#34;, num_ticks, id(glbl_http_poll_interval_ticks));
+</span></span></span><span class="line"><span class="cl"><span class="sd">            id(_do_poll).execute();
+</span></span></span><span class="line"><span class="cl"><span class="sd">          }
+</span></span></span><span class="line"><span class="cl"><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          // re-schedule so we&#39;re called again in a second!
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_http_poll_tick).execute();</span><span class="w">          
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="modemyaml"><code>modem.yaml</code></h3>
+<p>This file is the &ldquo;implementation specific&rdquo; details that can&rsquo;t be done in <code>base.yaml</code>.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">packages</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">base</span><span class="p">:</span><span class="w"> </span>!<span class="l">include</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">file</span><span class="p">:</span><span class="w"> </span><span class="l">base.yaml</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">vars</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="c"># Comcast does not permit users to change this address on their own modems... 😡</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">http_url</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;http://192.168.100.1&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="c"># When enough consecutive failures have been detected, this is what is &#34;injected&#34; into the</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="c"># `_on_http_poll_failure_threshold_met` script. It must be _valid_ c++ code or compilation will fail.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="c"># Elsewhere in my main ESPHome configuration, I have button that triggers an automation to </span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="c"># briefly cut and then restore power to effectively power cycle the modem.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="c"># This code is the same as the user manually pressing that button.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">failure_threshold_met_action</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;id(btn_modem_restart).press();&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="c"># In testing, the web server on modem does come up quickly but seems to go back down after</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="c"># ISP pushes their configuration down. Web server comes back up a few seconds later.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="c"># Best to just wait a while for things to stabilize.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">lockout_ticks_count</span><span class="p">:</span><span class="w"> </span><span class="m">120</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Note: not possible to have this defined in `base.yaml` and tweaked with !extend here</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># See: https://github.com/esphome/issues/issues/5360</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">##</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">http_request</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">http_poll</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">follow_redirects</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">timeout</span><span class="p">:</span><span class="w"> </span><span class="l">2s</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># Note: omit this for ESP32 devices :)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">esp8266_disable_ssl_support</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># This is where a request result is classified into either a failure or success.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># It lives outside of the base package because each http server is different.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">script</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">handle_on_response</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">parameters</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="c"># status_code, duration_ms</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">status_code</span><span class="p">:</span><span class="w"> </span><span class="l">int</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">duration_ms</span><span class="p">:</span><span class="w"> </span><span class="l">int</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">then</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          auto const static TAG = &#34;_do_poll.on_response&#34;;
+</span></span></span><span class="line"><span class="cl"><span class="sd">          // Request is no longer in flight
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_glbl_http_poll_request_in_flight) = false;
+</span></span></span><span class="line"><span class="cl"><span class="sd">          ESP_LOGD(TAG, &#34;Response status: %d, Duration: %u ms&#34;, status_code, duration_ms);
+</span></span></span><span class="line"><span class="cl"><span class="sd">          // Nominally, 200/OK is the ONLY success condition but since modem uses 302 redirect to HTTPS
+</span></span></span><span class="line"><span class="cl"><span class="sd">          // and the ESP8266 does not support TLS, we can&#39;t follow the redirect to the 200/OK page and
+</span></span></span><span class="line"><span class="cl"><span class="sd">          // must consider the 302 redirect as a success as well.
+</span></span></span><span class="line"><span class="cl"><span class="sd">          switch( status_code ) {
+</span></span></span><span class="line"><span class="cl"><span class="sd">              case 200:
+</span></span></span><span class="line"><span class="cl"><span class="sd">                id(_on_http_poll_ok).execute();
+</span></span></span><span class="line"><span class="cl"><span class="sd">                break;
+</span></span></span><span class="line"><span class="cl"><span class="sd">              case 302:
+</span></span></span><span class="line"><span class="cl"><span class="sd">                id(_on_http_poll_ok).execute();
+</span></span></span><span class="line"><span class="cl"><span class="sd">                break;
+</span></span></span><span class="line"><span class="cl"><span class="sd">              default:
+</span></span></span><span class="line"><span class="cl"><span class="sd">                ESP_LOGW(TAG, &#34;Response status: %d, Duration: %u ms&#34;, status_code, duration_ms);
+</span></span></span><span class="line"><span class="cl"><span class="sd">                id(_on_http_poll_failure).execute();
+</span></span></span><span class="line"><span class="cl"><span class="sd">                break;
+</span></span></span><span class="line"><span class="cl"><span class="sd">            }</span><span class="w">          
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="all-together-now">All together now</h3>
+<p>Hopefully it&rsquo;s clear to see that <code>modem.yaml</code> wraps/includes <code>base.yaml</code>.
+This is how <code>modem.yaml</code> is injected into the existing configuration that I have deployed on the S31 powering my modem.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c"># See: https://esphome.io/guides/configuration-types.html#packages</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">packages</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># Omitted: common packages for Network info, NTP, OTA, MQTT, </span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#   relay/gpio and other device specific things... etc</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># Add http polling configured for this specific application</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">http_poll</span><span class="p">:</span><span class="w"> </span>!<span class="l">include packages/http_poll/modem.yaml</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">logger</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#  &lt;...&gt;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">logs</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># ESPHome considers anything not 200/OK as a failure and will WARN about it.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># See: https://github.com/esphome/esphome/blob/38b7bed2faa522e7e065d8362d6ea0bcaf1c64d5/esphome/components/http_request/http_request.cpp#L92</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># This is technically correct but results in log spam that is not useful to me.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># For my purposes, hearing anything back from the modem (302 or 200) counts as a success.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Silence log spam by hiding all http_request log lines unless they&#39;re ERROR level</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">http_request</span><span class="p">:</span><span class="w"> </span><span class="l">ERROR</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">button</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># Note: must not conflict with the button named &#34;Restart&#34; which reboots the ESP, not toggles the relay!</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Modem Restart&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">btn_modem_restart</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">icon</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;mdi:restart&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">on_press</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">switch.turn_off</span><span class="p">:</span><span class="w"> </span><span class="l">sw_relay_toggle</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">delay</span><span class="p">:</span><span class="w"> </span><span class="l">15s</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">switch.turn_on</span><span class="p">:</span><span class="w"> </span><span class="l">sw_relay_toggle</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div>]]></description></item><item><title>ESPHome for Sonoff T5 family of Switches</title><link>https://karlquinsland.com/sonoff-t5-esphome/</link><pubDate>Sat, 11 Nov 2023 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/sonoff-t5-esphome/</guid><description><![CDATA[<h1 id="esphome-for-sonoff-t5-family-of-switches">ESPHome for Sonoff T5 family of Switches</h1>
 <p>It&rsquo;s hard to beat Sonoff switches when it comes to well-made, affordable, Home Assistant compatible switches.
 Ever since they announced the <a href="https://sonoff.tech/product/smart-wall-switches/tx-ultimate/" target="_blank" rel="noopener noreffer">T5 series</a>, I&rsquo;ve been patiently waiting for the US variant to become available so I could replace my M5 switches with T5 switches.</p>
 <p>Don&rsquo;t get me wrong, the M5 switches are great&hellip; but <a href="#t5-improvements-over-m5" rel="">not perfect</a>.</p>
@@ -7621,805 +8556,4 @@ The details are <a href="https://github.com/arendst/Tasmota/issues/15636#issueco
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">restore_mode</span><span class="p">:</span><span class="w"> </span><span class="l">ALWAYS_OFF</span><span class="w">
 </span></span></span></code></pre></td></tr></table>
 </div>
-</div>]]></description></item><item><title>Inside a generic/white-label HDMI KVM Switch</title><link>https://karlquinsland.com/hdmi-kvm-teardown-and-esphome/</link><pubDate>Sat, 16 Apr 2022 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/hdmi-kvm-teardown-and-esphome/</guid><description><![CDATA[<p>If you&rsquo;re here just for &ldquo;how do I get it working with ESPHome&rdquo; bit, skip to the <a href="#esphome-component" rel="">ESPHome Component</a> section below.</p>
-<hr>
-<div class="details admonition important open">
-        <div class="details-summary admonition-title">
-            <i class="icon fas fa-pencil-alt fa-fw"></i>Update 2022.05.14<i class="details-icon fas fa-angle-right fa-fw"></i>
-        </div>
-        <div class="details-content">
-            <div class="admonition-content">I have just uploaded a basic PCB and enclosure to the  <a href="#esphome-component" rel="">ESPHome Component Repository</a>.</div>
-        </div>
-    </div>
-<p>For the last few months, I have been looking for a KVM switch to simplify switching between work and personal computers.
-Initially, I didn&rsquo;t think my criteria were that unreasonable, but for whatever reason there is no KVM switch that:</p>
-<ul>
-<li>Supports at least 4 hosts. Preferably dual monitors per host to ensure relevancy for years. Converting between HDMI and Display Port isn&rsquo;t that difficult so no strong preference as long as the KVM uses HDMI2.0+ or Display Port 1.4+ as my primary monitor is 4k.</li>
-<li>USB 3 support. At least 5 gbps and Ideally using a USBC jack.</li>
-<li>Some sort of programmatic control over which host is &lsquo;active&rsquo;. Ideally this interface would be bi-directional (RS232/RS485 or IP) but I&rsquo;d settle for having to record the IR remote codes and re-broadcast those with my own microcontroller if needed.</li>
-<li>Works with the <a href="https://drop.com/buy/drop-shift-mechanical-keyboard" target="_blank" rel="noopener noreffer">DROP: SHIFT keyboard</a>; internally this keyboard presents as it&rsquo;s own USB Hub and requires more than the standard 500ma to operate. Some KVM switches don&rsquo;t supply enough current and others results in the number of USB hubs between the root and the keyboard being &gt; 5 which the USB spec does not support.</li>
-<li>Costs less than $75 per host/port.</li>
-</ul>
-<p>Try as I might, I was not able to find anything that could satisfy all the requirements. If you know of any, <a href="https://karlquinsland.com/contact/" rel="">please do get in touch</a>!</p>
-<p>I spent a decent chunk of time searching through the usual consumer/IT electronics sites and they all had similar offerings&hellip; none of which were sufficient.
-I had some close contenders, but they are victims of the current chip shortage or otherwise very expensive unobtanium.</p>
-<p>I recently read <a href="https://overengineer.dev/blog/2021/04/25/usb-c-hub-madness.html" target="_blank" rel="noopener noreffer">USB-C hubs and my slow descent into madness - Dennis Schubert</a> which prompted me to broaden my search horizons to include the marketplaces closer to where all the KVM switches I was seeing in my searches were actually designed.
-After a bit of searching, I found the <a href="https://www.aliexpress.com/item/1005003927404402.html" target="_blank" rel="noopener noreffer"><code>PX-UHDKVM801-2.0</code></a>:</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>A single video channel isn&rsquo;t a deal breaker; ultra wide screens can render more pixels off of one HDMI port than 2 screens from a few years ago could. Assuming this continues, by the time my current monitor dies dual video might not matter at all.
-Likewise, speedy USB is a &ldquo;nice to have&rdquo;. My keyboard, mouse and web cam <strong>must</strong> work with the KVM. If the webcam streams in SD over USB2 but full HD over a USB3 link that&rsquo;s a <em>nice</em> benefit but not a deal breaker. For the occasional times where I need to transfer a file and can&rsquo;t do it over the network, I can either plug directly into the host computers&rsquo; USB3.2 port or settle for slow USB2 file transfer speeds. Not the end of the world!</p>
-<p>Of all the KVMs that I considered, this one came with the least compromises and came with explicit documentation about how to integrate/control the switch via TCP or RS232. Buoyed by the thought of not having to reverse engineer any IR remote codes or otherwise resort to some hackery, I pulled the trigger.</p>
-<div class="details admonition note open">
-        <div class="details-summary admonition-title">
-            <i class="icon fas fa-pencil-alt fa-fw"></i>A quick note about the &#39;generic&#39; switch<i class="details-icon fas fa-angle-right fa-fw"></i>
-        </div>
-        <div class="details-content">
-            <div class="admonition-content"><p>I say &ldquo;generic&rdquo; because there are a few different brands / names on this thing and it&rsquo;s not clear who the actual manufacturer is.</p>
-<p>I got it from a seller by the name of <a href="https://www.pourxuan.com/Product/9867345045.html" target="_blank" rel="noopener noreffer"><code>PourXuan</code></a> which does seem to be the OEM behind it.
-However, there are a few other <a href="#ics-and-distinguishing-markings" rel="">interesting markings</a> that could indicate other companies contributing to / designing some internal components.</p>
-</div>
-        </div>
-    </div>
-<p>Anyways, lets look inside.</p>
-<h1 id="teardown">Teardown</h1>
-<p>TL;DR: It&rsquo;s been built down to a cost&hellip; but not <em>the lowest possible cost</em>.
-The construction isn&rsquo;t flimsy and I didn&rsquo;t find any glaringly obvious safety issues / construction shortcuts.
-None of the ICs have their markings scraped off and the internal architecture is simple and scalable.
-I did not check, but I suspect that each of the primary functions / PCBs communicates over a simple serial bus so this switch is likely pretty hackable/serviceable, too.</p>
-<h2 id="packaging--shipping">Packaging / shipping</h2>
-<p>The switch came well packed in some nondescript packaging.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>The small white box containing the power supply and some accessory hardware crumpled up the single page user manual.</p>
-<p>I have uploaded a copy of this paper and the other software/documentation provided by the seller to the same git repository hosting the <a href="#esphome-component" rel="">ESPHome Component</a>.</p>
-<p><figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        An overview of everything that came in the box
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-</p>
-<p><figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Rack Mount ears, two extra screws and the proper connector block needed to interface with the UART.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-</p>
-<p>I have not opened up the power supply to check its construction but it doesn&rsquo;t feel incredibly cheap.
-It&rsquo;s rated for 2 Amps @ 12v but the switch only drew about 3.75 Watt when measured from the wall.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Nothing special. It doesn&#39;t feel cheap.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<h2 id="the-switch">The switch</h2>
-<p>The metal shell is generic; there are holes on the side for ventilation fans that are not populated.
-Other than not-so-well hidden screw, the case is easy to open.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Don&#39;t forget the screw behind the sticker
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>With all screws out, the two halves slide apart easily to give us the first look at the internals!</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>It looks like this is a pretty modular design:</p>
-<ul>
-<li>A standalone front panel input and network control.</li>
-<li>A dedicated PCB for each type of data; a HDMI/video plane and a HID/USB plane.</li>
-<li>Each plane uses dedicated ASICs to route the signals.</li>
-<li>A minimal number of microprocessors / wires coordinating between the PCBs.</li>
-</ul>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        The small cable from the IR jack on the back is all that holds the two halves of the case together.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>The LAN module plugs into the HDMI PCB very close to where the RS232 port is and the protocol specific documentation from the seller indicates that the payloads to control the switch are the same irrespective of the transport.</p>
-<p>Each group of 4 HDMI &lsquo;inputs&rsquo; is routed to an identical looking IC and the differential signal pairs from <em>those</em> ICs are routed to the big one next to the output and RS232 and LAN circuitry.</p>
-<p>The little micro next to the buzzer and grey ribbon cable is likely the main controller for the entire switch.
-The small IC <em>on</em> the front panel is probably watching for IR signals, scanning the physical buttons, driving the LED display and communicating with the rest of the system over some serial bus.</p>
-<p>This architecture would be pretty scalable; for a 16 port model, just add another HDMI and USB PCB and tweak the firmware on the main controller.</p>
-<h3 id="front-pcb">Front PCB</h3>
-<p>Nothing particularly interesting here. The single IC (<code>STM8S003F3</code>) is a cheap 8 bit microcontroller that - based on the PCB traces - is driving the LED display and handling the button matrix scanning and IR codes.</p>
-<p>Most of the lines from the grey ribbon cable are not actually connected to the pcb so I&rsquo;d bet that this micro communicates with the &lsquo;main&rsquo; PCBs over some serial bus.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Sorry for the glare. There&#39;s a lot of flux residue on this PCB.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Notice how at least 4 of the pins from the ribbon cable connector are note soldered to the PCB...
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        This PCB is means to be used in other SKUs that come with two extra buttons that are unpopulated here.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<h3 id="the-lan-module">The LAN module</h3>
-<p>Very simple / standalone module. There&rsquo;s a dedicated PHY (<code>CH395Q</code>) and the same <code>STM8S003F3</code> micro controller again. The documentation that I received from the seller indicated that the LAN module did NOT use DHCP and there didn&rsquo;t seem to be a way to change the IP address configuration so I didn&rsquo;t bother with trying to automate via LAN.</p>
-<p>Only after I made it most of the way through the ESPHome integration development did the seller provide <em>additional</em> documentation that indicates the IP address <em>can</em> be changed&hellip; but only if you use a Windows program.
-I opted to keep going with the ESPHome &lt;-&gt; RS232 integration as that would be the most flexible and accessible approach.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        The small LAN pcb is attached directly to the front panel with screws mating with some 90 degree flanges soldered to the PCB
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<h2 id="hdmi">HDMI</h2>
-<p>In addition to the HDMI switching duties, the HDMI PCB hosts the UART electronics:</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>TTL to RS232 handled by the <code>SIPEX SP3223EEX</code>:</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>The main application processor appears to be a STM32 clone known as the <code>CHIPSEA F031C8T6</code>.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>Switching / routing the HDMI is done with two <code>IT66341TE</code> chips reducing the 4 HDMI inputs down to a single output and a <code>IT66321E</code> to switch between those two streams.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        2 to 1 HDMI mux to switch between the two outputs from the 4 -&gt; 1 muxes on board.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        4 to 1 HDMI mux; one of two on the board
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>I would bet that the unpopulated connector in the bottom right is the bus connection to a second HDMI PCB in the 16 port model but I don&rsquo;t see where the differential pairs for the HDMI signal would come from so who knows 🤷.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        4 to 1 HDMI mux; one of two on the board
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<h2 id="usb">USB</h2>
-<p>Like the HDMI PCB, the USB PCB uses a series of ASICs and a microprocessor to coordinate them all.
-Near the 4 &lsquo;output&rsquo; USB ports, you can see the <code>CH559L</code> which runs the show. This IC is monitoring the USB bus for key codes from the keyboard for display switching purposes; press some key combination to switch inputs.</p>
-<p>This is usually <code>PrtScrn</code> a few times quickly followed by the number of the input bank you wish to switch to.
-I have not tested / verified this functionality but the seller does advertise that there is similar functionality</p>
-<p><figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-</p>
-<p>Each &lsquo;input&rsquo; USB port is the same: unpopulated headphone jack footprint for audio input and a <code>FE1.1s USB 2.0 HUB</code> ASIC and an unknown IC that looks like it&rsquo;s related to the unpopulated headphone jack.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Each &#39;input&#39; USB port is managed with the same IC. Note the unpopulated Headphone jack footprint on the PCB
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        I can&#39;t make out the markings, but the 16 pin square IC is almost certainly an audio ID for the unpopulated headphone jack.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>There&rsquo;s some generic 8:1 GPIO mux chips in the form of <code>3251QE</code>.
-They are simple IO expanders that would allow a microcontroller to read/write 8 GPIO pins using just 3 GPIO.
-I don&rsquo;t know why they&rsquo;re here or why an 8 port switch needs 2 of them&hellip; both on the USB PCB.</p>
-<p><figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-</p>
-<p>That&rsquo;s it for teardown!</p>
-<h3 id="dmesg"><code>dmesg</code></h3>
-<p>Just for completeness, here is how the KVM presents to the computer via USB.</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="o">[</span>183000.909155<span class="o">]</span> usb 1-6: new high-speed USB device number <span class="m">63</span> using xhci_hcd
-</span></span><span class="line"><span class="cl"><span class="o">[</span>183001.050545<span class="o">]</span> usb 1-6: New USB device found, <span class="nv">idVendor</span><span class="o">=</span>1a40, <span class="nv">idProduct</span><span class="o">=</span>0101, <span class="nv">bcdDevice</span><span class="o">=</span> 1.11
-</span></span><span class="line"><span class="cl"><span class="o">[</span>183001.050550<span class="o">]</span> usb 1-6: New USB device strings: <span class="nv">Mfr</span><span class="o">=</span>0, <span class="nv">Product</span><span class="o">=</span>1, <span class="nv">SerialNumber</span><span class="o">=</span><span class="m">0</span>
-</span></span><span class="line"><span class="cl"><span class="o">[</span>183001.050551<span class="o">]</span> usb 1-6: Product: USB 2.0 Hub
-</span></span><span class="line"><span class="cl"><span class="o">[</span>183001.112333<span class="o">]</span> hub 1-6:1.0: USB hub found
-</span></span><span class="line"><span class="cl"><span class="o">[</span>183001.112549<span class="o">]</span> hub 1-6:1.0: <span class="m">4</span> ports detected
-</span></span><span class="line"><span class="cl"><span class="o">[</span>183001.495837<span class="o">]</span> usb 1-6.1: new high-speed USB device number <span class="m">64</span> using xhci_hcd
-</span></span><span class="line"><span class="cl"><span class="o">[</span>183001.687327<span class="o">]</span> usb 1-6.1: New USB device found, <span class="nv">idVendor</span><span class="o">=</span>1a40, <span class="nv">idProduct</span><span class="o">=</span>0101, <span class="nv">bcdDevice</span><span class="o">=</span> 1.11
-</span></span><span class="line"><span class="cl"><span class="o">[</span>183001.687332<span class="o">]</span> usb 1-6.1: New USB device strings: <span class="nv">Mfr</span><span class="o">=</span>0, <span class="nv">Product</span><span class="o">=</span>1, <span class="nv">SerialNumber</span><span class="o">=</span><span class="m">0</span>
-</span></span><span class="line"><span class="cl"><span class="o">[</span>183001.687333<span class="o">]</span> usb 1-6.1: Product: USB 2.0 Hub
-</span></span><span class="line"><span class="cl"><span class="o">[</span>183001.720379<span class="o">]</span> hub 1-6.1:1.0: USB hub found
-</span></span><span class="line"><span class="cl"><span class="o">[</span>183001.720579<span class="o">]</span> hub 1-6.1:1.0: <span class="m">4</span> ports detected
-</span></span><span class="line"><span class="cl"><span class="o">[</span>183001.912509<span class="o">]</span> usb 1-6.2: new low-speed USB device number <span class="m">65</span> using xhci_hcd
-</span></span><span class="line"><span class="cl"><span class="o">[</span>183002.137295<span class="o">]</span> usb 1-6.2: New USB device found, <span class="nv">idVendor</span><span class="o">=</span>0c45, <span class="nv">idProduct</span><span class="o">=</span>7403, <span class="nv">bcdDevice</span><span class="o">=</span> 0.01
-</span></span><span class="line"><span class="cl"><span class="o">[</span>183002.137300<span class="o">]</span> usb 1-6.2: New USB device strings: <span class="nv">Mfr</span><span class="o">=</span>1, <span class="nv">Product</span><span class="o">=</span>2, <span class="nv">SerialNumber</span><span class="o">=</span><span class="m">0</span>
-</span></span><span class="line"><span class="cl"><span class="o">[</span>183002.137301<span class="o">]</span> usb 1-6.2: Product: USB Device
-</span></span><span class="line"><span class="cl"><span class="o">[</span>183002.137303<span class="o">]</span> usb 1-6.2: Manufacturer: SONiX
-</span></span><span class="line"><span class="cl"><span class="o">[</span>183002.239461<span class="o">]</span> input: SONiX USB Device as /devices/pci0000:00/0000:00:01.2/0000:02:00.0/0000:03:08.0/0000:05:00.1/usb1/1-6/1-6.2/1-6.2:1.0/0003:0C45:7403.00E4/input/input288
-</span></span><span class="line"><span class="cl"><span class="o">[</span>183002.296065<span class="o">]</span> hid-generic 0003:0C45:7403.00E4: input,hidraw9: USB HID v1.00 Keyboard <span class="o">[</span>SONiX USB Device<span class="o">]</span> on usb-0000:05:00.1-6.2/input0
-</span></span><span class="line"><span class="cl"><span class="o">[</span>183002.302457<span class="o">]</span> input: SONiX USB Device Mouse as /devices/pci0000:00/0000:00:01.2/0000:02:00.0/0000:03:08.0/0000:05:00.1/usb1/1-6/1-6.2/1-6.2:1.1/0003:0C45:7403.00E5/input/input289
-</span></span><span class="line"><span class="cl"><span class="o">[</span>183002.302535<span class="o">]</span> input: SONiX USB Device System Control as /devices/pci0000:00/0000:00:01.2/0000:02:00.0/0000:03:08.0/0000:05:00.1/usb1/1-6/1-6.2/1-6.2:1.1/0003:0C45:7403.00E5/input/input290
-</span></span><span class="line"><span class="cl"><span class="o">[</span>183002.359252<span class="o">]</span> hid-generic 0003:0C45:7403.00E5: input,hidraw10: USB HID v1.00 Mouse <span class="o">[</span>SONiX USB Device<span class="o">]</span> on usb-0000:05:00.1-6.2/input1
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>And <code>lsusb</code> shows:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="p">|</span>__ Port 6: Dev 63, If 0, <span class="nv">Class</span><span class="o">=</span>Hub, <span class="nv">Driver</span><span class="o">=</span>hub/4p, 480M
-</span></span><span class="line"><span class="cl">    ID 1a40:0101 Terminus Technology Inc. Hub
-</span></span><span class="line"><span class="cl">    /sys/bus/usb/devices/1-6  /dev/bus/usb/001/063
-</span></span><span class="line"><span class="cl">    <span class="p">|</span>__ Port 2: Dev 65, If 0, <span class="nv">Class</span><span class="o">=</span>Human Interface Device, <span class="nv">Driver</span><span class="o">=</span>usbhid, 1.5M
-</span></span><span class="line"><span class="cl">        ID 0c45:7403 Microdia Foot Switch
-</span></span><span class="line"><span class="cl">        /sys/bus/usb/devices/1-6.2  /dev/bus/usb/001/065
-</span></span><span class="line"><span class="cl">    <span class="p">|</span>__ Port 2: Dev 65, If 1, <span class="nv">Class</span><span class="o">=</span>Human Interface Device, <span class="nv">Driver</span><span class="o">=</span>usbhid, 1.5M
-</span></span><span class="line"><span class="cl">        ID 0c45:7403 Microdia Foot Switch
-</span></span><span class="line"><span class="cl">        /sys/bus/usb/devices/1-6.2  /dev/bus/usb/001/065
-</span></span><span class="line"><span class="cl">    <span class="p">|</span>__ Port 1: Dev 64, If 0, <span class="nv">Class</span><span class="o">=</span>Hub, <span class="nv">Driver</span><span class="o">=</span>hub/4p, 480M
-</span></span><span class="line"><span class="cl">        ID 1a40:0101 Terminus Technology Inc. Hub
-</span></span><span class="line"><span class="cl">        /sys/bus/usb/devices/1-6.1  /dev/bus/usb/001/064
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>The <a href="http://blog.ssokolow.com/archives/2017/04/10/getting-your-cheap-chinese-usb-foot-pedal-doing-useful-things-on-linux/" target="_blank" rel="noopener noreffer"><code>Microdia Foot Switch</code> bit</a> is odd.
-Could that have something to do with the <code>3251QE</code> muxes?
-Perhaps this device indicates to the computer weather or not it is the activated one? 🤔 But why would you need two?</p>
-<p>I did not dump <a href="https://en.wikipedia.org/wiki/Extended_Display_Identification_Data" target="_blank" rel="noopener noreffer"><code>EDID</code></a> information for the HDMI but I suspect that the switch is smart enough to just copy exactly what the display provides so the computers don&rsquo;t &lsquo;see&rsquo; the loss/change of a display which might re-arrange windows or adjust scaling.</p>
-<h2 id="esphome-component">ESPHome component</h2>
-<div class="details admonition info open">
-        <div class="details-summary admonition-title">
-            <i class="icon fas fa-info-circle fa-fw"></i>Info<i class="details-icon fas fa-angle-right fa-fw"></i>
-        </div>
-        <div class="details-content">
-            <div class="admonition-content">The ESPHome component and some additional documentation/software/details are over at <a href="https://github.com/kquinsland/hdmi-kvm-esphome" target="_blank" rel="noopener noreffer"><code>kquinsland/hdmi-kvm-esphome</code></a>.</div>
-        </div>
-    </div>
-<p>Yes, I wanted to be able to control this KVM from my Home Assistant install.
-Some sort of API was a strong desire/requirement for KVM switches for a reason!</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>I am still working on a complementary ESPHome component to automate my standing desk (to be published soon!) but to give you an idea of the automations this KVM will be used in:</p>
-<ul>
-<li>
-<p>Push a single button to:</p>
-<ul>
-<li>Turn on the VR computer</li>
-<li>Switch KVM to the VR computer</li>
-<li>Adjust the lighting as needed; turn most lights off as they&rsquo;re not needed with a VR headset on but turn on ambient lighting so the room isn&rsquo;t pitch dark when the headset is removed.</li>
-</ul>
-</li>
-<li>
-<p>When personal/work computer are not in use, switch to a host running Grafana dashboards on rotation</p>
-</li>
-<li>
-<p>Allow me to track how much time per week is spent with each host</p>
-</li>
-</ul>
-<h2 id="ics-and-distinguishing-markings">ICs and distinguishing markings</h2>
-<p>The front panel PCB is labeled: <code>20170622</code> and features:</p>
-<ul>
-<li><a href="https://github.com/kquinsland/hdmi-kvm-esphome/blob/main/docs/datasheets/stm8s003f3.pdf" target="_blank" rel="noopener noreffer"><code>8S003F3P6</code></a> - A cheapish 8 bit micro controller.</li>
-</ul>
-<p>The LAN module PCB is marked with <code>20151030</code> and features:\</p>
-<ul>
-<li><a href="https://github.com/kquinsland/hdmi-kvm-esphome/blob/main/docs/datasheets/stm8s003f3.pdf" target="_blank" rel="noopener noreffer"><code>8S003F3P6</code></a> - The same micro used on the front panel</li>
-<li><a href="https://github.com/kquinsland/hdmi-kvm-esphome/blob/main/docs/datasheets/2009031206_WCH-Jiangsu-Qin-Heng-CH395Q_C87390.pdf" target="_blank" rel="noopener noreffer"><code>CH395Q</code></a> - A dedicated ethernet interface.</li>
-</ul>
-<p>The HDMI PCB is populated with:</p>
-<ul>
-<li>
-<p><a href="https://www.google.com/search?q=CHIPSEA&#43;F031C8T6" target="_blank" rel="noopener noreffer"><code>CHIPSEA F031C8T6</code></a> - STM32 clone; likely the main applications processor. I can&rsquo;t find a datasheet on this specific on the english speaking web but the naming is oddly similar to how some STM32 processors are named.</p>
-</li>
-<li>
-<p><a href="https://github.com/kquinsland/hdmi-kvm-esphome/blob/main/docs/datasheets/sp3222_3232e.pdf" target="_blank" rel="noopener noreffer"><code>SIPEX SP3223EEX</code></a> - Basic TTL &lt;-&gt; RS232 chip, similar to MAX232.</p>
-</li>
-<li>
-<p><a href="https://www.ite.com.tw/en/product/view?mid=100" target="_blank" rel="noopener noreffer"><code>IT66321E</code></a> - 2 IN to 1 OUT HDMI2.0 18Gb/s Switch with Audio In/Out</p>
-</li>
-<li>
-<p><a href="https://www.ite.com.tw/en/product/view?mid=99" target="_blank" rel="noopener noreffer"><code>IT66341TE</code></a> - 4 IN to 1 OUT HDMI2.0 18Gb/s Switch with Audio In/Out</p>
-</li>
-<li>
-<p>A sticker with the markings:</p>
-<blockquote>
-<p>XUFUNG
-33.01.0072
-2012020074</p>
-</blockquote>
-</li>
-<li>
-<p>The PCB is marked with:</p>
-<blockquote>
-<p>HK20801AU
-32.02.0119
-BJ</p>
-</blockquote>
-</li>
-</ul>
-<p>The USB PCB is marked with <code>HK20801A30-KVM</code> and is populated with:</p>
-<ul>
-<li><a href="https://github.com/kquinsland/hdmi-kvm-esphome/blob/main/docs/datasheets/PI5C3251QE-datasheetz.pdf" target="_blank" rel="noopener noreffer"><code>PI5C 3251QE</code></a> - 8:1 Mux/DeMux BusSwitch</li>
-<li><a href="https://github.com/kquinsland/hdmi-kvm-esphome/blob/main/docs/datasheets//2008191807_WCH-Jiangsu-Qin-Heng-CH559L_C150548" target="_blank" rel="noopener noreffer"><code>CH559L</code></a> - 8 bit enhanced USB MCU CH559</li>
-<li><a href="https://github.com/kquinsland/hdmi-kvm-esphome/blob/main/docs/datasheets/FE1.1s%2BData%2BSheet%2B%28Rev.%2B1.0%29.pdf" target="_blank" rel="noopener noreffer"><code>FE1.1s</code></a> - FE1.1S USB 2.0 HIGH SPEED 4-PORT HUB CONTROLLER</li>
-</ul>
-]]></description></item></channel></rss>
+</div>]]></description></item></channel></rss>
