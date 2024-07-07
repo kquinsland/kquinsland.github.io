@@ -1,4 +1,453 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>All Posts - karl</title><link>https://karlquinsland.com/posts/</link><description>All Posts | karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 09 Jun 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/posts/" rel="self" type="application/rss+xml"/><item><title>Using ESPHome to Automatically restart frozen cable modem</title><link>https://karlquinsland.com/automatic-modem-restart-with-esphome/</link><pubDate>Sun, 09 Jun 2024 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/automatic-modem-restart-with-esphome/</guid><description><![CDATA[<!-- markdownlint-disable-file MD002 -->
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>All Posts - karl</title><link>https://karlquinsland.com/posts/</link><description>All Posts | karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 01 Jul 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/posts/" rel="self" type="application/rss+xml"/><item><title>Arizer XQ2 Teardown</title><link>https://karlquinsland.com/arizer-xq2-teardown/</link><pubDate>Mon, 01 Jul 2024 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/arizer-xq2-teardown/</guid><description><![CDATA[<!-- markdownlint-disable-file MD002 -->
+<h1 id="arizer-xq2-teardown">Arizer XQ2 Teardown</h1>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>A friend of mine reached out and asked me about automating some aspects of their <a href="https://www.webmd.com/balance/stress-management/aromatherapy-overview" target="_blank" rel="noopener noreffer">aroma therapy</a> treatment.</p>
+<div class="details admonition note open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-pencil-alt fa-fw"></i>Note<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">I was not given permission to share the specifics of their medical condition or the larger treatment plan so this post is going to deal with <em>just</em> the technical aspects of the device.</div>
+        </div>
+    </div>
+<p>The device they&rsquo;re using for aromatherapy is the <a href="https://arizer.com/xq2/" target="_blank" rel="noopener noreffer">Arizer XQ2</a> and we agreed that integration with their existing Home Assistant setup would be ideal.</p>
+<p>I know nothing about aroma therapy but I do suffer from an obsession that compels me to integrate ESPHome with <em>everything</em>&hellip;I was intrigued!</p>
+<p>At worst, I get a new toy to tear down and at best, I&rsquo;d be able to deliver a solution that would make their life a little easier.</p>
+<h2 id="the-plan">The plan</h2>
+<p>First, the bad news.</p>
+<p>There&rsquo;s next to no technical information about the XQ2 online.</p>
+<p>The device has no radio connectivity so there&rsquo;s no FCC filings.
+There are several reviews of the device online, but none of them tear it down or provide any technical information.</p>
+<p>Now, the good news.</p>
+<p>The device does have an IR remote control!</p>
+<p>It is not difficult to capture the IR signals from the remote and replay them with an ESP32 or similar device.
+This meant that the likely outcome would be an <a href="https://en.wikipedia.org/wiki/Open-loop_controller" target="_blank" rel="noopener noreffer">open-loop control system</a>; building something to to send commands to the device would be trivial but confirming that a particular command had been executed would be tedious at best.</p>
+<p>This put us in an awkward position.</p>
+<p>After some back and forth, we agreed that closed-loop would be ideal, but open-loop control would be acceptable for their needs given that the device is meant to be used in close proximity to the user and already features a few safety features.</p>
+<p>Unless there was some lucky break discovered while tearing down the device, I&rsquo;d be stuck with emulating the IR remote control.
+This isn&rsquo;t ideal, but it also means that there&rsquo;s virtually no risk that any of the built-in safety features would be bypassed/disabled.</p>
+<h2 id="teardown">Teardown</h2>
+<p>The manufacturer has clearly designed this thing to be serviceable!</p>
+<p>They <a href="https://vimeo.com/648841530" target="_blank" rel="noopener noreffer">have a guide</a> for replacing a common wear item (the ceramic heating element) and it turns out that the rest of the device is just as easy to access.</p>
+<p>From the bottom of the device, there are 4 rubber feet that can be removed to reveal 4 screws.
+Amazingly, these feet are NOT glued in <em>and</em> they have tiny holes in them to allow the screws to be removed without removing the feet! 😚👌.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Once the screws are removed, the bottom cover just lifts off.
+Again, no glue, no clips, no nothing!</p>
+<p>This reveals the main PCB. I&rsquo;ve identified a few of the main ICs <a href="#notable-chips-and-stuff" rel="">below</a>.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        View from the bottom just after removing the panel.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Close up of the main application processor.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>Note that the DC jack is on a separate board that is easily removed.
+This is a nice touch as it makes it easy to replace if it ever breaks; it&rsquo;s a standard 5.5mm OD barrel jack so sourcing a replacement should be easy.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Close up of the two MOSFETs used to control the heating element.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>The PCB is <em>almost</em> entirely single sided; only a few passives and connectors for the various peripherals are on the top side.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        The top side of the main PCB. Sorry for the off-center angle and the glare.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>The power supply isn&rsquo;t exotic so sourcing a replacement should be easy if it ever fails.
+It&rsquo;s also worth noting that the 19V / 3.42A rated output is <em>really close</em> to 20V / 3 A output profile from <a href="https://web.archive.org/web/20190711152956/https://github.com/vi117/ppkos/blob/master/extdoc/usb_31_060115/USB%20Type-C/USB%20Type-C%20Specification%20Release%201.1.pdf" target="_blank" rel="noopener noreffer">USB-C PD 1.0 spec</a> and totally within the adjustable range of a USB-C PD 2.0+ power supply.
+It should be possible to adapt this device to use USB-C PD power with minimal effort if needed.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Power supply is pretty standard; feels well made.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>All in all, I&rsquo;m impressed with the build quality of the device!</p>
+<p>It&rsquo;s well made and easy to service. No glue or clips to break, no hidden screws to find, no proprietary connectors to deal with.</p>
+<p>The main PCB is well laid out, all components are marked with crisp silkscreen and nobody lasered off the markings on the ICs.</p>
+<p>The most dangerous part of the device it the heating element and there are <em>multiple</em> heat-shields between it and the user and all the heat-shields are easily replaceable!</p>
+<p>The PCB designer also knew that MOSFETs can fail short so they use both a high <em>and</em> low side FET to control the heating element!</p>
+<p>Normally little piezo beepers are annoying but this one can be attenuated or disabled in software.</p>
+<p>I was pleasantly surprised to find that the device <em>does</em> have a UART and programming port onboard <strong>but I was not given permission to probe further.</strong></p>
+<p>My friend decided that IR control would be sufficient for their needs so I don&rsquo;t have any more information about the UART.</p>
+<h3 id="notable-chips-and-stuff">Notable Chips and stuff</h3>
+<ul>
+<li><code>SWM260CBT7-50</code>: This is the main application processor. The manufacturer&rsquo;s <a href="https://www.synwit.cn/gaishu313/" target="_blank" rel="noopener noreffer">product details page</a> has both a (Chinese) <a href="https://www.synwit.cn/uploads/soft/20221222/1-221222144341C1.pdf" target="_blank" rel="noopener noreffer">datasheet</a> and a collection of <a href="https://www.synwit.cn/uploads/soft/20231114/1-23111414411W47.rar" target="_blank" rel="noopener noreffer">reference code</a>.</li>
+</ul>
+<p>Assuming the read/write protect fuses aren&rsquo;t blown, it should be possible to dump the firmware from this chip and possibly come up with an open-source replacement firmware for the device.
+With the UART so nicely broken out, adding in an ESP32 or similar to provide wireless control should be trivial&hellip; :D.</p>
+<ul>
+<li>
+<p><a href="https://item.szlcsc.com/5893434.html" target="_blank" rel="noopener noreffer"><code>CMOS CMS6679</code></a>: MOSFET driver for the heating element.</p>
+</li>
+<li>
+<p><a href="https://www.mouser.com/ProductDetail/Toshiba/TPC8062-HLQCM?qs=QrGA9tEX17N%2FMHC76X%252B99w%3D%3D" target="_blank" rel="noopener noreffer"><code>TPC8062</code></a>: MOSFET driver for the heating element.</p>
+</li>
+</ul>
+<h2 id="esphome-ir-remote">ESPHome IR Remote</h2>
+<p>I already mentioned this above but it&rsquo;s worth repeating!</p>
+<div class="details admonition warning open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-exclamation-triangle fa-fw"></i>Open Loop controls suck<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>Basically, the code below emulates the IR remote control that comes with the device.
+As there is no way for the device to communicate back to the original remote to say &ldquo;I got your command&rdquo; or &ldquo;I&rsquo;m busy right now, try again later&rdquo;, there&rsquo;s no way to know if the device is in the state you think it is.</p>
+<p>The human operator can see the device&rsquo;s state and confirm that it&rsquo;s doing what they want&hellip; but this is <em>not</em> the case for the ESPHome/Home Assistant integration.</p>
+<p>The device also has a few safety features built in that the &ldquo;remote&rdquo; can&rsquo;t bypass.
+If - somehow - the integration becomes fully broken, it&rsquo;s no different from sitting on the remote or otherwise spamming some signal.
+In this case, the device will still operate safely.</p>
+</div>
+        </div>
+    </div>
+<p>If you understand the risks and still want to proceed, here&rsquo;s a simple ESPHome configuration that will allow you to control the XQ2 via IR blaster.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">button</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Power&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">on_press</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">remote_transmitter.transmit_nec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">address</span><span class="p">:</span><span class="w"> </span><span class="l">0xFE01</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="l">0xE41B</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command_repeats</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Fan Off&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">on_press</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">remote_transmitter.transmit_nec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">address</span><span class="p">:</span><span class="w"> </span><span class="l">0xFE01</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="l">0xFE01</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command_repeats</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Fan Low&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">on_press</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">remote_transmitter.transmit_nec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">address</span><span class="p">:</span><span class="w"> </span><span class="l">0xFE01</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="l">0xF609</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command_repeats</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Fan Med&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">on_press</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">remote_transmitter.transmit_nec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">address</span><span class="p">:</span><span class="w"> </span><span class="l">0xFE01</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="l">0xFB04</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command_repeats</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Fan High&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">on_press</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">remote_transmitter.transmit_nec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">address</span><span class="p">:</span><span class="w"> </span><span class="l">0xFE01</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="l">0xF807</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command_repeats</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Preset 1&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">on_press</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">remote_transmitter.transmit_nec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">address</span><span class="p">:</span><span class="w"> </span><span class="l">0xFE01</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="l">0xEF10</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command_repeats</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Preset 2&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">on_press</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">remote_transmitter.transmit_nec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">address</span><span class="p">:</span><span class="w"> </span><span class="l">0xFE01</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="l">0xF906</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command_repeats</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Preset 3&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">on_press</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">remote_transmitter.transmit_nec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">address</span><span class="p">:</span><span class="w"> </span><span class="l">0xFE01</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="l">0xE01F</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command_repeats</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Temp UP&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">on_press</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">remote_transmitter.transmit_nec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">address</span><span class="p">:</span><span class="w"> </span><span class="l">0xFE01</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="l">0xFA05</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command_repeats</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Temp DOWN&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">on_press</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">remote_transmitter.transmit_nec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">address</span><span class="p">:</span><span class="w"> </span><span class="l">0xFE01</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="l">0xF50A</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command_repeats</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Speaker&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">on_press</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">remote_transmitter.transmit_nec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">address</span><span class="p">:</span><span class="w"> </span><span class="l">0xFE01</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="l">0xED12</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command_repeats</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Auto Off Timer&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">on_press</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">remote_transmitter.transmit_nec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">address</span><span class="p">:</span><span class="w"> </span><span class="l">0xFE01</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="l">0xF708</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command_repeats</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Light&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">on_press</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">remote_transmitter.transmit_nec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">address</span><span class="p">:</span><span class="w"> </span><span class="l">0xFE01</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="l">0xE11E</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command_repeats</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">remote_transmitter</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">transmitter</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">pin</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Your values here will likely be different</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l">GPIO14</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">mode</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">output</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">carrier_duty_percent</span><span class="p">:</span><span class="w"> </span><span class="m">50</span><span class="l">%</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div>]]></description></item><item><title>Using ESPHome to Automatically restart frozen cable modem</title><link>https://karlquinsland.com/automatic-modem-restart-with-esphome/</link><pubDate>Sun, 09 Jun 2024 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/automatic-modem-restart-with-esphome/</guid><description><![CDATA[<!-- markdownlint-disable-file MD002 -->
 <p>Part of the reason for developing my <a href="/arris-sb8200-prometheus-exporter/" rel="">SB8200 monitor</a> was to get to the bottom of some infrequent but regular outages.</p>
 <p>To make a long story short, the <a href="https://en.wikipedia.org/wiki/Link_aggregation" target="_blank" rel="noopener noreffer">LAG</a> implementation on the modem seems to have some issues.
 A quick google will return many complaint threads detailing issues with the modem regularly locking up all traffic stopping.
@@ -1196,6 +1645,7 @@ If anybody knows why Prusa &ldquo;reserves&rdquo; this space, I&rsquo;d love to 
 For how ubiquitous HDMI is, you&rsquo;d <em>think</em> that there would be a lot of devices that can do this.
 There are LOADS of devices that can snoop USB and Ethernet, but HDMI is a bit of a different beast, apparently.</p>
 <p>After a bit of searching, I found the <a href="https://www.altinex.com/product/te460-137/" target="_blank" rel="noopener noreffer">Altinex TE460-137</a> could do exactly what I wanted.</p>
+<p>(/enhanced-homeassistantswitchplate/) project.</p>
 <p>Like the <a href="/pulse-eight-hdmi-cec-injector-teardown/" rel="">HDMI CEC dongle</a> this device is a bit specialized and so there&rsquo;s not a lot of readily available information about it online.
 I was curious about what&rsquo;s inside and how it works, so I decided to take a look.</p>
 <figure >
@@ -6552,343 +7002,4 @@ Note the crack&hellip;</p>
 </figure>
 
 </p>
-]]></description></item><item><title>Roborock S8 Pro Ultra Teardown</title><link>https://karlquinsland.com/roborock-s8-pro-ultra-dock-teardown/</link><pubDate>Sat, 06 May 2023 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/roborock-s8-pro-ultra-dock-teardown/</guid><description><![CDATA[<h1 id="roborock-s8-teardown">Roborock S8 teardown</h1>
-<p>I recently acquired the new S8 from Roborock to replace my rapidly failing roomba.</p>
-<p>While I am patiently waiting for <a href="https://dontvacuum.me/" target="_blank" rel="noopener noreffer">Dennis</a> and <a href="https://github.com/Hypfer" target="_blank" rel="noopener noreffer">Hypfer</a> to add <a href="https://github.com/Hypfer/Valetudo" target="_blank" rel="noopener noreffer">Valetudo</a> support, I thought I&rsquo;d have a peek inside to see if this model will be any more serviceable or maintainable than my current vacuum.</p>
-<p>From what I&rsquo;m told, the S7 and the S8 are supposed to be pretty similar so here&rsquo;s to hoping that it&rsquo;s not too much more of a wait.</p>
-<p>In the mean time this post is going &ldquo;live&rdquo; with photos of the docking station internals and a few photos of the vacuum.
-I ran out of time to finish the S8 teardown but I&rsquo;ll update this post when I have made progress.
-Assuming the S8 is similar to the S7, I imagine that the procedure and internals will be similar.</p>
-<h2 id="the-dock">The dock</h2>
-<p>Fortunately, it&rsquo;s pretty easy to open the <em>huge</em> charging station/dock up.
-Really, you just need a single philips screwdriver for the ~10 screws on the rear.
-There is one sticker covering a screw on the rear but it&rsquo;s not the &ldquo;tamper-evident&rdquo; kind so it should be easy enough to replace if needed.</p>
-<hr>
-<p>Excess cable slack can be looped around the rear of the docking station to minimize errant cords.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Note the white sticker covering the screw in the middle on the bottom.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>Near the mains input is a simple USB-C port.
-<code>dmesg</code> doesn&rsquo;t show any signs of life on the port both with and without the mains cable plugged in. I have not yet tried with the robot docked so there may be some simple handshake that&rsquo;s needed before this port becomes interesting.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>With screws removed, the rear panel lifts off to reveal the internals.
-The overall layout seems logical and there&rsquo;s lots of room between components which is nice to see.
-Each component is well labeled secured to the main body with standard screws and Zip-Ties.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>In addition to the small features molded into the body for cable management, the cables to the components that move are protected with an easy to remove cable chain.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>The strong vaccuum motor that empties the mobile dustbin into the larger bin is powered directly via mains but isn&rsquo;t easily accessible.
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-</p>
-<p>The mains PSU is nothing special to write home about.
-There is a low-voltage connection right next to the mains cabling that heads down to the main &ldquo;evacuation&rdquo; suction motor but there is no obvious relay.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>Here&rsquo;s a closeup of the main control board for the docking station.</p>
-<p>Each of the connectors around the edge is a different size/number of pins os it&rsquo;s virtually impossible to plug the wrong cable in to the wrong port - nice!</p>
-<p>The conformal coating does obscure component IDs and traces, but you can still get a high-level idea of the topology.
-More than likely, all sensors and actuators are controlled by the <a href="https://www.nationstech.com/en/N32G455MCUs/" target="_blank" rel="noopener noreffer">Nation N32G455</a> and the ESP32 is (probably) just there for communicating status to the robot and/or cloud.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>From this angle it&rsquo;s a bit easier to see where the USB-C traces go but since the ESP32 module is BGA packaged and everything is conformally coated, I skipped the tedious work of trying to beep things out.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        At least the conformal coating is pretty easy to rub off the IC.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<h2 id="the-vacuum">The vacuum</h2>
-<p>More photos coming in a later update, but here&rsquo;s what I have so far.</p>
-<p><figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        It would be better if Roborock provided tools to verify this claim, but at least they&#39;re trying to address consumer privacy concerns.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Like with the S7, the panel surrounding the LIDAR puck can be pried off.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-</p>
-<p>Nice to see that the labeling for which roller goes into which position is molding into the robot body for ultimate wear-resistance.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>And here&rsquo;s a shot of the LIDAR pcb.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>As for getting into the rest of the robot, it&rsquo;s not that difficult.
-Standard &ldquo;keep track of all the screws and take photos at each step&rdquo; advice applies here.</p>
-<p>You can follow the the <a href="https://www.youtube.com/watch?v=TKMD-VOvILc" target="_blank" rel="noopener noreffer">existing S7 teardown guides</a> for the initial steps but once you remove the front bumper just look for screws that hold the top lid onto the body of the robot.
-There are two obvious ones, two next to the castor wheel and a few more hiding under the mop pad.
-With those removed, the lid slides off pretty easily to reveal the PCB:</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>There&rsquo;s a few interesting things to note here:</p>
-<ul>
-<li>
-<p>The roller brush assembly and mop head are lifted up via small steel cables. You can see the actuator motor for the main brush assembly just off of the top left corner of the PCB. The steel cable runs through the white plastic guides which route it around other internal components. The &ldquo;space claim&rdquo; portion of this design must have been pretty interesting :).</p>
-</li>
-<li>
-<p>There are only two small locating features for the PCB. When installing the PCB back in to the chassis start with the small plastic peg between the screw and the micro USB port. If you seat this corner of the PCB first and everything else should fall into place nicely.</p>
-</li>
-</ul>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>The conformal coating is annoying but here&rsquo;s the big players:</p>
-<ul>
-<li>
-<p>An Allwinner <a href="https://github.com/mangopi-sbc/aw-doc/blob/main/A133-MR813-R818/MR813_Datasheet_V1.6.pdf" target="_blank" rel="noopener noreffer"><code>MR813</code></a> runs the show.</p>
-</li>
-<li>
-<p>Samsung <a href="https://semiconductor.samsung.com/estorage/emmc/emmc-5-1/klm4g1fete-b041/" target="_blank" rel="noopener noreffer"><code>KLM4G1</code></a> for RAM.</p>
-</li>
-<li>
-<p>A GigaDevice <a href="https://item.szlcsc.com/3292467.html#pdf-view" target="_blank" rel="noopener noreffer"><code>GDQ2BFAA-CE</code></a> 4Gb flash chip for OS storage.</p>
-</li>
-<li>
-<p>A <a href="https://www.sekorm.com/doc/2446002.html" target="_blank" rel="noopener noreffer"><code>GDQ2BFAA</code></a> handles everything low level.</p>
-</li>
-<li>
-<p>WiFi provided by <a href="https://www.realtek.com/en/products/communications-network-ics/item/rtl8189ftv" target="_blank" rel="noopener noreffer"><code>RTL8189FTV</code></a>.</p>
-</li>
-</ul>
 ]]></description></item></channel></rss>

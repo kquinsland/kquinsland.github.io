@@ -9,7 +9,9 @@ There are LOADS of devices that can snoop USB and Ethernet, but HDMI is a bit of
 
 After a bit of searching, I found the [Altinex TE460-137](https://www.altinex.com/product/te460-137/) could do exactly what I wanted.
 
-Like the [HDMI CEC dongle]({{< relref "/pulse-eight-hdmi-cec-injector-teardown" >}}) this device is a bit specialized and so there's not a lot of readily available information about it online.
+({{< relref "posts/2020/10/Enhanced HomeAssistantSwitchPlate" >}}) project.
+
+Like the [HDMI CEC dongle]({{< relref "posts/2023/12/pulse-eight-hdmi-cec-injector-teardown" >}}) this device is a bit specialized and so there's not a lot of readily available information about it online.
 I was curious about what's inside and how it works, so I decided to take a look.
 
 {{< figure name="feat-td07" >}}

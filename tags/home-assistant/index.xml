@@ -1,4 +1,453 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Home-Assistant - Tag - karl</title><link>https://karlquinsland.com/tags/home-assistant/</link><description>Home-Assistant - Tag - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 09 Jun 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/home-assistant/" rel="self" type="application/rss+xml"/><item><title>Using ESPHome to Automatically restart frozen cable modem</title><link>https://karlquinsland.com/automatic-modem-restart-with-esphome/</link><pubDate>Sun, 09 Jun 2024 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/automatic-modem-restart-with-esphome/</guid><description><![CDATA[<!-- markdownlint-disable-file MD002 -->
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Home Assistant - Tag - karl</title><link>https://karlquinsland.com/tags/home-assistant/</link><description>Home Assistant - Tag - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 01 Jul 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/home-assistant/" rel="self" type="application/rss+xml"/><item><title>Arizer XQ2 Teardown</title><link>https://karlquinsland.com/arizer-xq2-teardown/</link><pubDate>Mon, 01 Jul 2024 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/arizer-xq2-teardown/</guid><description><![CDATA[<!-- markdownlint-disable-file MD002 -->
+<h1 id="arizer-xq2-teardown">Arizer XQ2 Teardown</h1>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>A friend of mine reached out and asked me about automating some aspects of their <a href="https://www.webmd.com/balance/stress-management/aromatherapy-overview" target="_blank" rel="noopener noreffer">aroma therapy</a> treatment.</p>
+<div class="details admonition note open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-pencil-alt fa-fw"></i>Note<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">I was not given permission to share the specifics of their medical condition or the larger treatment plan so this post is going to deal with <em>just</em> the technical aspects of the device.</div>
+        </div>
+    </div>
+<p>The device they&rsquo;re using for aromatherapy is the <a href="https://arizer.com/xq2/" target="_blank" rel="noopener noreffer">Arizer XQ2</a> and we agreed that integration with their existing Home Assistant setup would be ideal.</p>
+<p>I know nothing about aroma therapy but I do suffer from an obsession that compels me to integrate ESPHome with <em>everything</em>&hellip;I was intrigued!</p>
+<p>At worst, I get a new toy to tear down and at best, I&rsquo;d be able to deliver a solution that would make their life a little easier.</p>
+<h2 id="the-plan">The plan</h2>
+<p>First, the bad news.</p>
+<p>There&rsquo;s next to no technical information about the XQ2 online.</p>
+<p>The device has no radio connectivity so there&rsquo;s no FCC filings.
+There are several reviews of the device online, but none of them tear it down or provide any technical information.</p>
+<p>Now, the good news.</p>
+<p>The device does have an IR remote control!</p>
+<p>It is not difficult to capture the IR signals from the remote and replay them with an ESP32 or similar device.
+This meant that the likely outcome would be an <a href="https://en.wikipedia.org/wiki/Open-loop_controller" target="_blank" rel="noopener noreffer">open-loop control system</a>; building something to to send commands to the device would be trivial but confirming that a particular command had been executed would be tedious at best.</p>
+<p>This put us in an awkward position.</p>
+<p>After some back and forth, we agreed that closed-loop would be ideal, but open-loop control would be acceptable for their needs given that the device is meant to be used in close proximity to the user and already features a few safety features.</p>
+<p>Unless there was some lucky break discovered while tearing down the device, I&rsquo;d be stuck with emulating the IR remote control.
+This isn&rsquo;t ideal, but it also means that there&rsquo;s virtually no risk that any of the built-in safety features would be bypassed/disabled.</p>
+<h2 id="teardown">Teardown</h2>
+<p>The manufacturer has clearly designed this thing to be serviceable!</p>
+<p>They <a href="https://vimeo.com/648841530" target="_blank" rel="noopener noreffer">have a guide</a> for replacing a common wear item (the ceramic heating element) and it turns out that the rest of the device is just as easy to access.</p>
+<p>From the bottom of the device, there are 4 rubber feet that can be removed to reveal 4 screws.
+Amazingly, these feet are NOT glued in <em>and</em> they have tiny holes in them to allow the screws to be removed without removing the feet! 😚👌.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Once the screws are removed, the bottom cover just lifts off.
+Again, no glue, no clips, no nothing!</p>
+<p>This reveals the main PCB. I&rsquo;ve identified a few of the main ICs <a href="#notable-chips-and-stuff" rel="">below</a>.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        View from the bottom just after removing the panel.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Close up of the main application processor.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>Note that the DC jack is on a separate board that is easily removed.
+This is a nice touch as it makes it easy to replace if it ever breaks; it&rsquo;s a standard 5.5mm OD barrel jack so sourcing a replacement should be easy.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Close up of the two MOSFETs used to control the heating element.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>The PCB is <em>almost</em> entirely single sided; only a few passives and connectors for the various peripherals are on the top side.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        The top side of the main PCB. Sorry for the off-center angle and the glare.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>The power supply isn&rsquo;t exotic so sourcing a replacement should be easy if it ever fails.
+It&rsquo;s also worth noting that the 19V / 3.42A rated output is <em>really close</em> to 20V / 3 A output profile from <a href="https://web.archive.org/web/20190711152956/https://github.com/vi117/ppkos/blob/master/extdoc/usb_31_060115/USB%20Type-C/USB%20Type-C%20Specification%20Release%201.1.pdf" target="_blank" rel="noopener noreffer">USB-C PD 1.0 spec</a> and totally within the adjustable range of a USB-C PD 2.0+ power supply.
+It should be possible to adapt this device to use USB-C PD power with minimal effort if needed.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Power supply is pretty standard; feels well made.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>All in all, I&rsquo;m impressed with the build quality of the device!</p>
+<p>It&rsquo;s well made and easy to service. No glue or clips to break, no hidden screws to find, no proprietary connectors to deal with.</p>
+<p>The main PCB is well laid out, all components are marked with crisp silkscreen and nobody lasered off the markings on the ICs.</p>
+<p>The most dangerous part of the device it the heating element and there are <em>multiple</em> heat-shields between it and the user and all the heat-shields are easily replaceable!</p>
+<p>The PCB designer also knew that MOSFETs can fail short so they use both a high <em>and</em> low side FET to control the heating element!</p>
+<p>Normally little piezo beepers are annoying but this one can be attenuated or disabled in software.</p>
+<p>I was pleasantly surprised to find that the device <em>does</em> have a UART and programming port onboard <strong>but I was not given permission to probe further.</strong></p>
+<p>My friend decided that IR control would be sufficient for their needs so I don&rsquo;t have any more information about the UART.</p>
+<h3 id="notable-chips-and-stuff">Notable Chips and stuff</h3>
+<ul>
+<li><code>SWM260CBT7-50</code>: This is the main application processor. The manufacturer&rsquo;s <a href="https://www.synwit.cn/gaishu313/" target="_blank" rel="noopener noreffer">product details page</a> has both a (Chinese) <a href="https://www.synwit.cn/uploads/soft/20221222/1-221222144341C1.pdf" target="_blank" rel="noopener noreffer">datasheet</a> and a collection of <a href="https://www.synwit.cn/uploads/soft/20231114/1-23111414411W47.rar" target="_blank" rel="noopener noreffer">reference code</a>.</li>
+</ul>
+<p>Assuming the read/write protect fuses aren&rsquo;t blown, it should be possible to dump the firmware from this chip and possibly come up with an open-source replacement firmware for the device.
+With the UART so nicely broken out, adding in an ESP32 or similar to provide wireless control should be trivial&hellip; :D.</p>
+<ul>
+<li>
+<p><a href="https://item.szlcsc.com/5893434.html" target="_blank" rel="noopener noreffer"><code>CMOS CMS6679</code></a>: MOSFET driver for the heating element.</p>
+</li>
+<li>
+<p><a href="https://www.mouser.com/ProductDetail/Toshiba/TPC8062-HLQCM?qs=QrGA9tEX17N%2FMHC76X%252B99w%3D%3D" target="_blank" rel="noopener noreffer"><code>TPC8062</code></a>: MOSFET driver for the heating element.</p>
+</li>
+</ul>
+<h2 id="esphome-ir-remote">ESPHome IR Remote</h2>
+<p>I already mentioned this above but it&rsquo;s worth repeating!</p>
+<div class="details admonition warning open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-exclamation-triangle fa-fw"></i>Open Loop controls suck<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>Basically, the code below emulates the IR remote control that comes with the device.
+As there is no way for the device to communicate back to the original remote to say &ldquo;I got your command&rdquo; or &ldquo;I&rsquo;m busy right now, try again later&rdquo;, there&rsquo;s no way to know if the device is in the state you think it is.</p>
+<p>The human operator can see the device&rsquo;s state and confirm that it&rsquo;s doing what they want&hellip; but this is <em>not</em> the case for the ESPHome/Home Assistant integration.</p>
+<p>The device also has a few safety features built in that the &ldquo;remote&rdquo; can&rsquo;t bypass.
+If - somehow - the integration becomes fully broken, it&rsquo;s no different from sitting on the remote or otherwise spamming some signal.
+In this case, the device will still operate safely.</p>
+</div>
+        </div>
+    </div>
+<p>If you understand the risks and still want to proceed, here&rsquo;s a simple ESPHome configuration that will allow you to control the XQ2 via IR blaster.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">  1
+</span><span class="lnt">  2
+</span><span class="lnt">  3
+</span><span class="lnt">  4
+</span><span class="lnt">  5
+</span><span class="lnt">  6
+</span><span class="lnt">  7
+</span><span class="lnt">  8
+</span><span class="lnt">  9
+</span><span class="lnt"> 10
+</span><span class="lnt"> 11
+</span><span class="lnt"> 12
+</span><span class="lnt"> 13
+</span><span class="lnt"> 14
+</span><span class="lnt"> 15
+</span><span class="lnt"> 16
+</span><span class="lnt"> 17
+</span><span class="lnt"> 18
+</span><span class="lnt"> 19
+</span><span class="lnt"> 20
+</span><span class="lnt"> 21
+</span><span class="lnt"> 22
+</span><span class="lnt"> 23
+</span><span class="lnt"> 24
+</span><span class="lnt"> 25
+</span><span class="lnt"> 26
+</span><span class="lnt"> 27
+</span><span class="lnt"> 28
+</span><span class="lnt"> 29
+</span><span class="lnt"> 30
+</span><span class="lnt"> 31
+</span><span class="lnt"> 32
+</span><span class="lnt"> 33
+</span><span class="lnt"> 34
+</span><span class="lnt"> 35
+</span><span class="lnt"> 36
+</span><span class="lnt"> 37
+</span><span class="lnt"> 38
+</span><span class="lnt"> 39
+</span><span class="lnt"> 40
+</span><span class="lnt"> 41
+</span><span class="lnt"> 42
+</span><span class="lnt"> 43
+</span><span class="lnt"> 44
+</span><span class="lnt"> 45
+</span><span class="lnt"> 46
+</span><span class="lnt"> 47
+</span><span class="lnt"> 48
+</span><span class="lnt"> 49
+</span><span class="lnt"> 50
+</span><span class="lnt"> 51
+</span><span class="lnt"> 52
+</span><span class="lnt"> 53
+</span><span class="lnt"> 54
+</span><span class="lnt"> 55
+</span><span class="lnt"> 56
+</span><span class="lnt"> 57
+</span><span class="lnt"> 58
+</span><span class="lnt"> 59
+</span><span class="lnt"> 60
+</span><span class="lnt"> 61
+</span><span class="lnt"> 62
+</span><span class="lnt"> 63
+</span><span class="lnt"> 64
+</span><span class="lnt"> 65
+</span><span class="lnt"> 66
+</span><span class="lnt"> 67
+</span><span class="lnt"> 68
+</span><span class="lnt"> 69
+</span><span class="lnt"> 70
+</span><span class="lnt"> 71
+</span><span class="lnt"> 72
+</span><span class="lnt"> 73
+</span><span class="lnt"> 74
+</span><span class="lnt"> 75
+</span><span class="lnt"> 76
+</span><span class="lnt"> 77
+</span><span class="lnt"> 78
+</span><span class="lnt"> 79
+</span><span class="lnt"> 80
+</span><span class="lnt"> 81
+</span><span class="lnt"> 82
+</span><span class="lnt"> 83
+</span><span class="lnt"> 84
+</span><span class="lnt"> 85
+</span><span class="lnt"> 86
+</span><span class="lnt"> 87
+</span><span class="lnt"> 88
+</span><span class="lnt"> 89
+</span><span class="lnt"> 90
+</span><span class="lnt"> 91
+</span><span class="lnt"> 92
+</span><span class="lnt"> 93
+</span><span class="lnt"> 94
+</span><span class="lnt"> 95
+</span><span class="lnt"> 96
+</span><span class="lnt"> 97
+</span><span class="lnt"> 98
+</span><span class="lnt"> 99
+</span><span class="lnt">100
+</span><span class="lnt">101
+</span><span class="lnt">102
+</span><span class="lnt">103
+</span><span class="lnt">104
+</span><span class="lnt">105
+</span><span class="lnt">106
+</span><span class="lnt">107
+</span><span class="lnt">108
+</span><span class="lnt">109
+</span><span class="lnt">110
+</span><span class="lnt">111
+</span><span class="lnt">112
+</span><span class="lnt">113
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">button</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Power&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">on_press</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">remote_transmitter.transmit_nec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">address</span><span class="p">:</span><span class="w"> </span><span class="l">0xFE01</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="l">0xE41B</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command_repeats</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Fan Off&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">on_press</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">remote_transmitter.transmit_nec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">address</span><span class="p">:</span><span class="w"> </span><span class="l">0xFE01</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="l">0xFE01</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command_repeats</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Fan Low&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">on_press</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">remote_transmitter.transmit_nec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">address</span><span class="p">:</span><span class="w"> </span><span class="l">0xFE01</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="l">0xF609</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command_repeats</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Fan Med&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">on_press</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">remote_transmitter.transmit_nec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">address</span><span class="p">:</span><span class="w"> </span><span class="l">0xFE01</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="l">0xFB04</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command_repeats</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Fan High&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">on_press</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">remote_transmitter.transmit_nec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">address</span><span class="p">:</span><span class="w"> </span><span class="l">0xFE01</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="l">0xF807</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command_repeats</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Preset 1&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">on_press</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">remote_transmitter.transmit_nec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">address</span><span class="p">:</span><span class="w"> </span><span class="l">0xFE01</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="l">0xEF10</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command_repeats</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Preset 2&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">on_press</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">remote_transmitter.transmit_nec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">address</span><span class="p">:</span><span class="w"> </span><span class="l">0xFE01</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="l">0xF906</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command_repeats</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Preset 3&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">on_press</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">remote_transmitter.transmit_nec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">address</span><span class="p">:</span><span class="w"> </span><span class="l">0xFE01</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="l">0xE01F</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command_repeats</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Temp UP&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">on_press</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">remote_transmitter.transmit_nec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">address</span><span class="p">:</span><span class="w"> </span><span class="l">0xFE01</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="l">0xFA05</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command_repeats</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Temp DOWN&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">on_press</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">remote_transmitter.transmit_nec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">address</span><span class="p">:</span><span class="w"> </span><span class="l">0xFE01</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="l">0xF50A</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command_repeats</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Speaker&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">on_press</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">remote_transmitter.transmit_nec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">address</span><span class="p">:</span><span class="w"> </span><span class="l">0xFE01</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="l">0xED12</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command_repeats</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Auto Off Timer&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">on_press</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">remote_transmitter.transmit_nec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">address</span><span class="p">:</span><span class="w"> </span><span class="l">0xFE01</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="l">0xF708</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command_repeats</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Light&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">on_press</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">remote_transmitter.transmit_nec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">address</span><span class="p">:</span><span class="w"> </span><span class="l">0xFE01</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command</span><span class="p">:</span><span class="w"> </span><span class="l">0xE11E</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">command_repeats</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">remote_transmitter</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">transmitter</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">pin</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Your values here will likely be different</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">number</span><span class="p">:</span><span class="w"> </span><span class="l">GPIO14</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">mode</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">output</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">carrier_duty_percent</span><span class="p">:</span><span class="w"> </span><span class="m">50</span><span class="l">%</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div>]]></description></item><item><title>Using ESPHome to Automatically restart frozen cable modem</title><link>https://karlquinsland.com/automatic-modem-restart-with-esphome/</link><pubDate>Sun, 09 Jun 2024 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/automatic-modem-restart-with-esphome/</guid><description><![CDATA[<!-- markdownlint-disable-file MD002 -->
 <p>Part of the reason for developing my <a href="/arris-sb8200-prometheus-exporter/" rel="">SB8200 monitor</a> was to get to the bottom of some infrequent but regular outages.</p>
 <p>To make a long story short, the <a href="https://en.wikipedia.org/wiki/Link_aggregation" target="_blank" rel="noopener noreffer">LAG</a> implementation on the modem seems to have some issues.
 A quick google will return many complaint threads detailing issues with the modem regularly locking up all traffic stopping.
@@ -7737,463 +8186,4 @@ The details are <a href="https://github.com/arendst/Tasmota/issues/15636#issueco
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">restore_mode</span><span class="p">:</span><span class="w"> </span><span class="l">ALWAYS_OFF</span><span class="w">
 </span></span></span></code></pre></td></tr></table>
 </div>
-</div>]]></description></item><item><title>Configuring additional ZwaveJS entities in Home Assistant over MQTT</title><link>https://karlquinsland.com/zwavejs-autodiscovery-additional-entities/</link><pubDate>Thu, 12 May 2022 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/zwavejs-autodiscovery-additional-entities/</guid><description><![CDATA[<p>This is a super quick &ldquo;because the official docs didn&rsquo;t make it super clear so here&rsquo;s what ended up working for me&rdquo; post.</p>
-<hr>
-<!-- markdownlint-disable-file MD033 -->
-<p>After some <a href="/venstar-t7850-teardown-review/#an-update-on-wifi-connectivity" rel="">very disappointing WiFi connectivity issues</a>, I settled on a Zwave based thermostat to replace the Venstar thermostat.</p>
-<p>After installing the Honeywell TH6320 and connecting it to the ZwaveJS gateway, a new `climate`` entity appeared in Home Assistant. From there, I was able to see/control:</p>
-<ul>
-<li>The current thermostat setpoint/mode</li>
-<li>The current air temp and humidity</li>
-<li>The current battery level / if the thermostat thought the battery was low</li>
-</ul>
-<p>I knew that it was possible to adjust the the screen backlight from the thermostat itself so I was a bit confused when there was no such configuration entity exposed in Home Assistant.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Note the `Idle_brightness` sensor. That&#39;s not part of the &#39;default&#39; zwavejs2mqtt install.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>After playing around with the ZwaveJS2MQTT web interface for bit, I discovered that it was possible to adjust the backlight brightness&hellip;and over 40 other settings under the <code>Configuration v4</code> section.</p>
-<p>I can totally understand why only the &ldquo;core&rdquo; functionality would be automatically exposed to Home Assistant; most of the 40+ knobs are things that do not need to be set beyond the initial installation.</p>
-<p>So, How do I go about getting ZwaveJS2MQTT to automatically tell Home Assistant about the current backlight level?</p>
-<h2 id="exposing-idle-brightness-to-home-assistant-as-a-sensor">Exposing &lsquo;idle brightness&rsquo; to Home Assistant as a Sensor</h2>
-<p>From the <code>Configuration v4</code> tab for the thermostat node, I found the input field <code>[4-112-0-39] Idle Brightness</code> which let me control the thermostat screen backlight level.
-I don&rsquo;t know what the numbers mean, but they are important / uniquely identify <em>a specific setting</em>.</p>
-<div class="details admonition note open">
-        <div class="details-summary admonition-title">
-            <i class="icon fas fa-pencil-alt fa-fw"></i>Note<i class="details-icon fas fa-angle-right fa-fw"></i>
-        </div>
-        <div class="details-content">
-            <div class="admonition-content">If you are using this as a guide but for a <em>different</em> setting (perhaps you want to keep an eye on <code>[4-112-0-28] Minimum Cool Temperature</code>, for example) then you will want to substitute your parameter setting &lsquo;address&rsquo; as appropriate.</div>
-        </div>
-    </div>
-<p>After some more experimentation and trying to grok <a href="https://zwave-js.github.io/zwavejs2mqtt/#/homeassistant/homeassistant-mqtt?id=add-new-component" target="_blank" rel="noopener noreffer">documentation</a>, I figured out how to get ZwaveJS to advertise the current value for the backlight brightness as a sensor in Home Assistant.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        The &#39;HOME ASSISTANT&#39; tab of my thermostats&#39; page.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>Here&rsquo;s how to do it:</p>
-<ul>
-<li>Select the <code>node</code> in question from the <code>Control Panel</code> page on the ZwaveJS2MQTT web UI. In this case, you can see that my thermostat is node <code>4</code>. Yours will likely be different.</li>
-<li>Select the <code>Home Assistant</code> tab from the left. You can see it selected in the above screenshot.</li>
-<li>In the blank <code>Hass Device JSON</code> box, paste the JSON document that describes the sensor / entity you wish to expose to Home Assistant. I struggled for some time trying to figure out what the document should look like but was able to &lsquo;reverse engineer&rsquo; a working payload by studying the <code>sensor_humidity_air</code> entity that was automatically created.</li>
-<li>Then click the <code>ADD</code> button that should have activated just above the <code>Hass Device JSON</code>. A new row should appear in the <code>Home Assistant - Devices table</code></li>
-<li>Click the newly added row so the <code>Hass Device JSON</code> field is populated with the JSON document you have added.</li>
-<li>Click the <code>UPDATE</code> button that should appear just above the <code>Hass Device JSON</code> label</li>
-<li>Assuming no issues, this will send the MQTT message which tells Home Assistant about your new sensor. You may wish to use a MQTT broker inspection app to monitor the exact payload that is sent to the <code>homeassistant/...</code> topic as well as <code>tail -f home-assistant.log</code>. If Home Assistant gets the message, any validation errors will show up in the HA log.</li>
-<li>Once you are satisfied with how the entity is presented in Home Assistant, click the <code>STORE</code> button just below the <code>Home Assistant - Devices</code> heading on the ZwaveJS2MQTT web UI.</li>
-</ul>
-<p>When all is said and done, this is what you should see:</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<h3 id="example-payload">Example payload</h3>
-<p>Here is a (slightly edited) version of the JSON document I added via the <code>Hass Device JSON</code> entry.</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="nt">&#34;type&#34;</span><span class="p">:</span> <span class="s2">&#34;sensor&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">  <span class="nt">&#34;object_id&#34;</span><span class="p">:</span> <span class="s2">&#34;idle_brightness&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">  <span class="nt">&#34;discovery_payload&#34;</span><span class="p">:</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;value_template&#34;</span><span class="p">:</span> <span class="s2">&#34;{{ value_json.value }}&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;state_topic&#34;</span><span class="p">:</span> <span class="s2">&#34;zwave/YourThermostat_NameHere/112/0/39&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;json_attributes_topic&#34;</span><span class="p">:</span> <span class="s2">&#34;zwave/YourThermostat_NameHere/112/0/39&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;device&#34;</span><span class="p">:</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">      <span class="nt">&#34;identifiers&#34;</span><span class="p">:</span> <span class="p">[</span>
-</span></span><span class="line"><span class="cl">        <span class="s2">&#34;zwavejs2mqtt_0xdeadbeef_node4&#34;</span>
-</span></span><span class="line"><span class="cl">      <span class="p">],</span>
-</span></span><span class="line"><span class="cl">      <span class="nt">&#34;manufacturer&#34;</span><span class="p">:</span> <span class="s2">&#34;Honeywell&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">      <span class="nt">&#34;model&#34;</span><span class="p">:</span> <span class="s2">&#34;T6 Pro Z-Wave Programmable Thermostat (TH6320ZW)&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">      <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;YourThermostat NameHere&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">      <span class="nt">&#34;sw_version&#34;</span><span class="p">:</span> <span class="s2">&#34;1.3&#34;</span>
-</span></span><span class="line"><span class="cl">    <span class="p">},</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;name&#34;</span><span class="p">:</span> <span class="s2">&#34;YourThermostat NameHere idle_brightness&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;unique_id&#34;</span><span class="p">:</span> <span class="s2">&#34;zwavejs2mqtt_0xdeadbeef_4-112-0-Idle_Brightness&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;entity_category&#34;</span><span class="p">:</span> <span class="s2">&#34;config&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">    <span class="nt">&#34;icon&#34;</span><span class="p">:</span> <span class="s2">&#34;mdi:brightness-percent&#34;</span>
-</span></span><span class="line"><span class="cl">  <span class="p">},</span>
-</span></span><span class="line"><span class="cl">  <span class="nt">&#34;discoveryTopic&#34;</span><span class="p">:</span> <span class="s2">&#34;sensor/YourThermostat_NameHere/idle_brightness/config&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">  <span class="nt">&#34;values&#34;</span><span class="p">:</span> <span class="p">[</span>
-</span></span><span class="line"><span class="cl">    <span class="s2">&#34;112-0-39&#34;</span>
-</span></span><span class="line"><span class="cl">  <span class="p">],</span>
-</span></span><span class="line"><span class="cl">  <span class="nt">&#34;persistent&#34;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">  <span class="nt">&#34;ignoreDiscovery&#34;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">  <span class="nt">&#34;id&#34;</span><span class="p">:</span> <span class="s2">&#34;sensor_idle_brightness&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>I have replaced a few things in the example payload. You will want to retrieve the correct values for your payload from one of the automatically generated payloads. I used the <code>sensor_humidity_air</code> device as a starting point for my payload.</p>
-<h2 id="ok-but-what-about-writing-to-the-thermostat">Ok, but what about writing to the thermostat?</h2>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        A basic &#39;helper&#39; widget for use in Home Assistant Automations.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>Once the sensor exists in Home Assistant, you will probably want to use it in an automation.
-Here is a simple automation that watches a basic number input widget and sets the backlight brightness for the thermostat based on what the widget is set to:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l">Sync thermostat brightness to input select</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="l">An Example automation.</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">trigger</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">state</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">entity_id</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">sensor.yourthermostat_namehere_idle_brightness</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">physical</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">state</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">entity_id</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">input_number.thermostat_backlight</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">virtual</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">condition</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">action</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">choose</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">conditions</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="nt">condition</span><span class="p">:</span><span class="w"> </span><span class="l">trigger</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">virtual</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">sequence</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="nt">service</span><span class="p">:</span><span class="w"> </span><span class="l">mqtt.publish</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">data</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">topic</span><span class="p">:</span><span class="w"> </span><span class="l">zwave/YourThermostat_NameHere/112/0/39/set</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">payload_template</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;{{trigger.to_state.state}}&#39;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">conditions</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="nt">condition</span><span class="p">:</span><span class="w"> </span><span class="l">trigger</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">physical</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">sequence</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="nt">service</span><span class="p">:</span><span class="w"> </span><span class="l">input_number.set_value</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">target</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">entity_id</span><span class="p">:</span><span class="w"> </span><span class="l">input_number.thermostat_backlight</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">data_template</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;{{trigger.to_state.state | float}}&#39;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">default</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l">single</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">max_exceeded</span><span class="p">:</span><span class="w"> </span><span class="l">silent</span><span class="w">
-</span></span></span></code></pre></td></tr></table>
-</div>
-</div><p>This <em>works</em> but it&rsquo;s not <em>automagic</em>. We can do better!</p>
-<h2 id="more-automagic-more-better">More Automagic, More Better</h2>
-<p>The primary downside with the above automation is that the user (read: you) needs to create the <code>input_number</code> widget and then spend the time telling Home Assistant what to do when the value changes.</p>
-<p>This isn&rsquo;t a particularly difficult task - only ~30 lines of yaml&hellip; but what if we didn&rsquo;t have to do that?</p>
-<p>What if Home Assistant had a robust auto discovery mechanism that we could take advantage of to <em>automagically</em> set up a basic input widget that would transmit the necessary MQTT payload to adjust the backlight &hellip; automatically?</p>
-<p>I have good news and bad news.</p>
-<p>The good news is that we totally can do this. 🎉</p>
-<p>The bad news is that ZwaveJS2MQTT does not appear to support the <a href="https://www.home-assistant.io/integrations/input_select/" target="_blank" rel="noopener noreffer"><code>input_select</code></a> type of entity that we&rsquo;ll need to pull this off. 👎</p>
-<p>I am not super familiar with the ZwaveJS2MQTT code base, but it looks like there is no validation on the JSON you enter under the <code>Hass Device JSON</code> field but there <em>is</em> some validation / filtering on the MQTT message that is sent for auto discovery. <a href="https://github.com/zwave-js/zwavejs2mqtt/blob/master/hass/configurations.ts#L6" target="_blank" rel="noopener noreffer">ZwaveJS2MQTT does not seem to support <code>select</code> components via MQTT</a> so the payload that is sent to Home Assistant is incomplete and results in errors:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">│ ERROR <span class="o">(</span>MainThread<span class="o">)</span> <span class="o">[</span>homeassistant.util.logging<span class="o">]</span> Exception in discovery_callback when dispatching <span class="s1">&#39;mqtt_discovery_updated_(&#39;</span><span class="k">select</span><span class="s1">&#39;, &#39;</span>YourThermostat NameHere idle_brightness │
-</span></span><span class="line"><span class="cl">│ Traceback <span class="o">(</span>most recent call last<span class="o">)</span>:
-</span></span><span class="line"><span class="cl">│   File <span class="s2">&#34;/usr/src/homeassistant/homeassistant/components/mqtt/mixins.py&#34;</span>, line 724, in discovery_callback      
-</span></span><span class="line"><span class="cl">│     await self._discovery_update<span class="o">(</span>payload<span class="o">)</span>    
-</span></span><span class="line"><span class="cl">│   File <span class="s2">&#34;/usr/src/homeassistant/homeassistant/components/mqtt/mixins.py&#34;</span>, line 886, in discovery_update        
-</span></span><span class="line"><span class="cl">│     <span class="nv">config</span> <span class="o">=</span> self.config_schema<span class="o">()(</span>discovery_payload<span class="o">)</span>                                                          
-</span></span><span class="line"><span class="cl">│   File <span class="s2">&#34;/usr/local/lib/python3.9/site-packages/voluptuous/validators.py&#34;</span>, line 232, in __call__               
-</span></span><span class="line"><span class="cl">│     <span class="k">return</span> self._exec<span class="o">((</span>Schema<span class="o">(</span>val<span class="o">)</span> <span class="k">for</span> val in self.validators<span class="o">)</span>, v<span class="o">)</span>                                            
-</span></span><span class="line"><span class="cl">│   File <span class="s2">&#34;/usr/local/lib/python3.9/site-packages/voluptuous/validators.py&#34;</span>, line 355, in _exec                  
-</span></span><span class="line"><span class="cl">│     raise e <span class="k">if</span> self.msg is None <span class="k">else</span> AllInvalid<span class="o">(</span>self.msg, <span class="nv">path</span><span class="o">=</span>path<span class="o">)</span>                                          
-</span></span><span class="line"><span class="cl">│   File <span class="s2">&#34;/usr/local/lib/python3.9/site-packages/voluptuous/validators.py&#34;</span>, line 351, in _exec                  
-</span></span><span class="line"><span class="cl">│     <span class="nv">v</span> <span class="o">=</span> func<span class="o">(</span>v<span class="o">)</span>                              
-</span></span><span class="line"><span class="cl">│   File <span class="s2">&#34;/usr/local/lib/python3.9/site-packages/voluptuous/schema_builder.py&#34;</span>, line 272, in __call__           
-</span></span><span class="line"><span class="cl">│     <span class="k">return</span> self._compiled<span class="o">([]</span>, data<span class="o">)</span>          
-</span></span><span class="line"><span class="cl">│   File <span class="s2">&#34;/usr/local/lib/python3.9/site-packages/voluptuous/schema_builder.py&#34;</span>, line 818, in validate_callable  
-</span></span><span class="line"><span class="cl">│     <span class="k">return</span> schema<span class="o">(</span>data<span class="o">)</span>                      
-</span></span><span class="line"><span class="cl">│   File <span class="s2">&#34;/usr/local/lib/python3.9/site-packages/voluptuous/schema_builder.py&#34;</span>, line 272, in __call__           
-</span></span><span class="line"><span class="cl">│     <span class="k">return</span> self._compiled<span class="o">([]</span>, data<span class="o">)</span>          
-</span></span><span class="line"><span class="cl">│   File <span class="s2">&#34;/usr/local/lib/python3.9/site-packages/voluptuous/schema_builder.py&#34;</span>, line 595, in validate_dict      
-</span></span><span class="line"><span class="cl">│     <span class="k">return</span> base_validate<span class="o">(</span>path, iteritems<span class="o">(</span>data<span class="o">)</span>, out<span class="o">)</span>                                                          
-</span></span><span class="line"><span class="cl">│   File <span class="s2">&#34;/usr/local/lib/python3.9/site-packages/voluptuous/schema_builder.py&#34;</span>, line 433, in validate_mapping   
-</span></span><span class="line"><span class="cl">│     raise er.MultipleInvalid<span class="o">(</span>errors<span class="o">)</span>         
-</span></span><span class="line"><span class="cl">│ voluptuous.error.MultipleInvalid: required key not provided @ data<span class="o">[</span><span class="s1">&#39;options&#39;</span><span class="o">]</span>   
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>While it would be nice if ZwaveJS2MQTT would support more device types, we have a pretty simple fix: use another device to publish a valid configuration payload.</p>
-<p>And as it turns out, it&rsquo;s <em>trivial</em> to get Home Assistant to publish an arbitrary payload to an arbitrary topic when it starts up.</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">alias</span><span class="p">:</span><span class="w"> </span><span class="l">Autoconfigure Thermostat Backlight select</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">description</span><span class="p">:</span><span class="w"> </span><span class="p">&gt;-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">  On HA start up, publish MQTT payload so HA auto-discovers the input_select to
-</span></span></span><span class="line"><span class="cl"><span class="sd">  automate thermostat backlight brightness</span><span class="w">  
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">trigger</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">homeassistant</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">event</span><span class="p">:</span><span class="w"> </span><span class="l">start</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">condition</span><span class="p">:</span><span class="w"> </span><span class="p">[]</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">action</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">service</span><span class="p">:</span><span class="w"> </span><span class="l">mqtt.publish</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">data</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">topic</span><span class="p">:</span><span class="w"> </span><span class="l">homeassistant/select/YourThermostat_NameHere/idle_brightness/config</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">payload</span><span class="p">:</span><span class="w"> </span><span class="p">&gt;-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">        {&#34;options&#34;:[&#34;0&#34;,&#34;1&#34;,&#34;2&#34;,&#34;3&#34;,&#34;4&#34;,&#34;5&#34;],&#34;name&#34;:&#34;MainThermostat idle_brightness&#34;,&#34;state_topic&#34;:&#34;zwave/YourThermostat_NameHere/112/0/39&#34;,&#34;value_template&#34;:&#34;{{&#39;{{value_json.value}}&#39;}}&#34;,&#34;command_topic&#34;:&#34;zwave/YourThermostat_NameHere/112/0/39/set&#34;,&#34;command_template&#34;:&#34;{{&#39;{{value}}&#39;}}&#34;,&#34;unique_id&#34;:&#34;zwavejs2mqtt_0xdeadbeef_4-112-0-Idle_Brightness_Select&#34;,&#34;device&#34;:{&#34;identifiers&#34;:[&#34;zwavejs2mqtt_0xdeadbeef_node4&#34;],&#34;manufacturer&#34;:&#34;Honeywell&#34;,&#34;model&#34;:&#34;T6ProZ-WaveProgrammableThermostat(TH6320ZW)&#34;,&#34;name&#34;:&#34;MainThermostat&#34;,&#34;sw_version&#34;:&#34;1.3&#34;},&#34;entity_category&#34;:&#34;config&#34;,&#34;icon&#34;:&#34;mdi:brightness-percent&#34;}</span><span class="w">        
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l">single</span><span class="w">
-</span></span></span></code></pre></td></tr></table>
-</div>
-</div><div class="details admonition important open">
-        <div class="details-summary admonition-title">
-            <i class="icon fas fa-pencil-alt fa-fw"></i>Notice<i class="details-icon fas fa-angle-right fa-fw"></i>
-        </div>
-        <div class="details-content">
-            <div class="admonition-content"><p>If you look carefully, you will notice two things:</p>
-<ul>
-<li>The json payload has been escaped and turned into a string</li>
-<li>The templates inside the string are <a href="https://community.home-assistant.io/t/how-can-i-use-escape-characters-while-templating/135324" target="_blank" rel="noopener noreffer"><em>further</em> escaped</a> by wrapping them in <code>{{ '</code> and <code>'}}</code>.</li>
-</ul></div>
-        </div>
-    </div>
-<p>Here is a pretty formatted JSON document:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-json" data-lang="json"><span class="line"><span class="cl"><span class="p">{</span>
-</span></span><span class="line"><span class="cl">   <span class="nt">&#34;options&#34;</span><span class="p">:[</span>
-</span></span><span class="line"><span class="cl">      <span class="s2">&#34;0&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">      <span class="s2">&#34;1&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">      <span class="s2">&#34;2&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">      <span class="s2">&#34;3&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">      <span class="s2">&#34;4&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">      <span class="s2">&#34;5&#34;</span>
-</span></span><span class="line"><span class="cl">   <span class="p">],</span>
-</span></span><span class="line"><span class="cl">   <span class="nt">&#34;name&#34;</span><span class="p">:</span><span class="s2">&#34;YourThermostat NameHere idle_brightness&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">   <span class="nt">&#34;state_topic&#34;</span><span class="p">:</span><span class="s2">&#34;zwave/YourThermostat_NameHere/112/0/39&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">   <span class="nt">&#34;value_template&#34;</span><span class="p">:</span><span class="s2">&#34;{{ &#39;{{value_json.value}}&#39; }}&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">   <span class="nt">&#34;command_topic&#34;</span><span class="p">:</span><span class="s2">&#34;zwave/YourThermostat_NameHere/112/0/39/set&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">   <span class="nt">&#34;command_template&#34;</span><span class="p">:</span><span class="s2">&#34;{{ &#39;{{value}}&#39; }}&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">   <span class="nt">&#34;unique_id&#34;</span><span class="p">:</span><span class="s2">&#34;zwavejs2mqtt_0xdeadbeef_4-112-0-Idle_Brightness_Select&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">   <span class="nt">&#34;device&#34;</span><span class="p">:{</span>
-</span></span><span class="line"><span class="cl">      <span class="nt">&#34;identifiers&#34;</span><span class="p">:[</span>
-</span></span><span class="line"><span class="cl">         <span class="s2">&#34;zwavejs2mqtt_0xdeadbeef_node4&#34;</span>
-</span></span><span class="line"><span class="cl">      <span class="p">],</span>
-</span></span><span class="line"><span class="cl">      <span class="nt">&#34;manufacturer&#34;</span><span class="p">:</span><span class="s2">&#34;Honeywell&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">      <span class="nt">&#34;model&#34;</span><span class="p">:</span><span class="s2">&#34;T6 Pro Z-Wave Programmable Thermostat (TH6320ZW)&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">      <span class="nt">&#34;name&#34;</span><span class="p">:</span><span class="s2">&#34;YourThermostat NameHere&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">      <span class="nt">&#34;sw_version&#34;</span><span class="p">:</span><span class="s2">&#34;1.3&#34;</span>
-</span></span><span class="line"><span class="cl">   <span class="p">},</span>
-</span></span><span class="line"><span class="cl">   <span class="nt">&#34;entity_category&#34;</span><span class="p">:</span><span class="s2">&#34;config&#34;</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">   <span class="nt">&#34;icon&#34;</span><span class="p">:</span><span class="s2">&#34;mdi:brightness-percent&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>Once the automation is created, save it. You can test your work by clicking &ldquo;run actions&rdquo; and monitoring the home assistant log file.</p>
-<p>When the payload is properly escaped, you should see a new entity added to the Device page:</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Automatically created!
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>When you select a brightness value from the drop down, the backlight brightness should change.
-That&rsquo;s how you get a &rsquo;non standard&rsquo; thermostat configuration value to automatically show up on the correct device page.</p>
-<p>You now no longer need the example automation from <a href="#ok-but-what-about-writing-to-the-thermostat" rel="">above</a>. 😎.</p>
-]]></description></item></channel></rss>
+</div>]]></description></item></channel></rss>
