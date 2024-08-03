@@ -1,4 +1,287 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>All Posts - karl</title><link>https://karlquinsland.com/posts/</link><description>All Posts | karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Mon, 01 Jul 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/posts/" rel="self" type="application/rss+xml"/><item><title>Arizer XQ2 Teardown</title><link>https://karlquinsland.com/arizer-xq2-teardown/</link><pubDate>Mon, 01 Jul 2024 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/arizer-xq2-teardown/</guid><description><![CDATA[<!-- markdownlint-disable-file MD002 -->
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>All Posts - karl</title><link>https://karlquinsland.com/posts/</link><description>All Posts | karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 01 Aug 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/posts/" rel="self" type="application/rss+xml"/><item><title>AKASO DL12 Dashcam Teardown</title><link>https://karlquinsland.com/akaso-dl12-teardown/</link><pubDate>Thu, 01 Aug 2024 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/akaso-dl12-teardown/</guid><description><![CDATA[<!-- markdownlint-disable-file MD002 -->
+<h1 id="akaso-dl12-dashcam-teardown">AKASO DL12 Dashcam Teardown</h1>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        If the double yellow lines are in the middle of your rear-view mirror, you&#39;re doing it wrong.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>This was my dashcam for a while until the front camera stopped working.
+It was a good dashcam while it lasted but there are better options now&hellip; so let&rsquo;s take it apart!</p>
+<p>Ultimately, it&rsquo;s a highly integrated consumer-grade bit of electronics.
+Everything&rsquo;s built down to a price and anything that didn&rsquo;t need to be done &hellip; wasn&rsquo;t.
+There&rsquo;s not much to see and not much to say so this is a <a href="/tags/two-minute-teardown/" rel="">&ldquo;two minute teardown&rdquo; </a>.</p>
+<h2 id="teardown">Teardown</h2>
+<p>There are 4 screws holding the case together. They are hidden under the rubber feet.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        There are 4 screws holding the case together. Remove and the case comes apart easily.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>Once the screws are removed, the case comes apart easily to reveal a mostly empty shell.
+The LiPo battery is an interesting choice given the heat that can build up in a car.
+As far as I know, this is only needed for the few seconds after power loss so the camera can save the current recording and shut down cleanly.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Lift the screen side away to reveal the paltry internals
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>Close up of the rear of the main PCB shows a few test points and populated but unused connectors.</p>
+<p>I love the <code>TV_IN</code> silkscreen for the rear camera connector. Almost makes me wonder if this was a re-purposed schematic from a different product.</p>
+<p>Why there&rsquo;s a dedicated <code>RTC_BAT</code> connector and not sipper power from the main battery is a mystery to me.
+The unit does have a GPS module so there&rsquo;s really no need for an RTC battery&hellip; just use the GPS time!</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Close up of the &#39;screen&#39; side of the main PCB. Not much to see here.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>The &lsquo;forward facing&rsquo; side of the PCB has a few more populated/un-used connectors and a heat-spreader over the main CPU.
+The two push buttons in the top left are not accessible from the outside of the case so there&rsquo;s probably something interesting that happens when they&rsquo;re pressed.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        The &#39;rear&#39; of the main PCB has a few unpopulated footprints and a flimsy heat-spreader.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>Removing it reveals a HiSilicon Hi3556 SoC, EEPROM and what is probably the image processor for the rear camera.
+The large unpopulated footprint in the top right looks like it&rsquo;s meant for a radio module.
+Not sure if it&rsquo;s for a wireless link to the rear camera or for something like a <a href="https://en.wikipedia.org/wiki/Tire-pressure_monitoring_system" target="_blank" rel="noopener noreffer">TPMS sensor</a> or possibly WiFi for a phone app.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Close up of the most interesting part of the main PCB.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        The forward facing camera is in a swivel mount and is highly integrated; there&#39;s nothing under that black tape.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<h2 id="pcb-markings">PCB Markings</h2>
+<p>AKA SEO optimization 😉</p>
+<p>Main PCB is marked:</p>
+<blockquote>
+<p>77-56V200(20) V3.411</p>
+<p>6105</p>
+<p>V200-AMWG-V3.411
+2019.12.03</p>
+</blockquote>
+<p>And on the rear:</p>
+<blockquote>
+<p>F02Z1B
+F15Z1B</p>
+</blockquote>
+<p>The main CPU is <a href="https://silicondevice.com/file.upload/images/Gid1551Pdf_Hi3556%20V100%20HD%20Mobile%20Camera%20SoC%20Brief%20Data%20Sheet.pdf" target="_blank" rel="noopener noreffer">meant for consumer cameras</a> and is marked:</p>
+<blockquote>
+<p>Hi 3556</p>
+<p>RBCV200</p>
+<p>CP9881938</p>
+<p>1939-CN</p>
+</blockquote>
+<p>The LCD is marked:</p>
+<blockquote>
+<p>XTY TB118-I4018E30A-01</p>
+<p>T B118-45a164200402-J</p>
+</blockquote>
+<p>I can&rsquo;t find a datasheet for what I suspect is the rear-camera processor but it&rsquo;s marked:</p>
+<blockquote>
+<p>pixelplus</p>
+<p>PR2020</p>
+<p>S3CWN</p>
+<p>KAG2006</p>
+</blockquote>
+<h2 id="firmware">Firmware</h2>
+<p>Just for giggles, I dumped the firmware from the SPI flash to get an idea of what software powers this device.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">❯ flashrom --force -c <span class="s2">&#34;GD25B128B/GD25Q128B&#34;</span> --verbose --programmer ch341a_spi --read oem.bin
+</span></span><span class="line"><span class="cl">&lt;...&gt;
+</span></span><span class="line"><span class="cl">Reading flash... 
+</span></span><span class="line"><span class="cl">&lt;...&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>I did run <code>strings</code> on it and there&rsquo;s some mildly interesting stuff in there but nothing interesting enough to warrant a deep dive.</p>
+<p><code>binwalk</code> didn&rsquo;t have any trouble extracting things but I&rsquo;m not going to spend any time reversing this firmware.</p>
+<p>It looked like the usual &ldquo;bootloader and two identical copies of the application firmware&rdquo; setup.
+Taking a look at what I think is the main application:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">Scan Time:     2024-08-02 16:52:43
+</span></span><span class="line"><span class="cl">Target File:   /home/karl/scratch/dash-fw/_oem.bin.extracted/media_app.bin
+</span></span><span class="line"><span class="cl">MD5 Checksum:  557e5a7578dfb20ed8328888479bc973
+</span></span><span class="line"><span class="cl">Signatures:    <span class="m">436</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">DECIMAL       HEXADECIMAL     DESCRIPTION
+</span></span><span class="line"><span class="cl">--------------------------------------------------------------------------------
+</span></span><span class="line"><span class="cl"><span class="m">510070</span>        0x7C876         JBOOT STAG header, image id: 10, timestamp 0x3AF8E51B, image size: <span class="m">454878491</span> bytes, image JBOOT checksum: 0xE51B, header JBOOT checksum: 0x3233
+</span></span><span class="line"><span class="cl"><span class="m">2689033</span>       0x290809        Certificate in DER format <span class="o">(</span>x509 v3<span class="o">)</span>, header length: 4, sequence length: <span class="m">5380</span>
+</span></span><span class="line"><span class="cl"><span class="m">3038273</span>       0x2E5C41        Certificate in DER format <span class="o">(</span>x509 v3<span class="o">)</span>, header length: 4, sequence length: <span class="m">5380</span>
+</span></span><span class="line"><span class="cl"><span class="m">3828721</span>       0x3A6BF1        Certificate in DER format <span class="o">(</span>x509 v3<span class="o">)</span>, header length: 4, sequence length: <span class="m">13692</span>
+</span></span><span class="line"><span class="cl"><span class="m">4056525</span>       0x3DE5CD        ESP Image <span class="o">(</span>ESP32<span class="o">)</span>: segment count: 15, flash mode: QUIO, flash size: 2MB, entry address: 0x40006a7
+</span></span><span class="line"><span class="cl"><span class="m">4732974</span>       0x48382E        eCos RTOS string reference: <span class="s2">&#34;eCostInSystem&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="m">4732991</span>       0x48383F        eCos RTOS string reference: <span class="s2">&#34;eCostInSystem&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="m">4771774</span>       0x48CFBE        TIFF image data, big-endian, offset of first image directory: <span class="m">8</span>
+</span></span><span class="line"><span class="cl"><span class="m">4773180</span>       0x48D53C        TIFF image data, big-endian, offset of first image directory: <span class="m">8</span>
+</span></span><span class="line"><span class="cl"><span class="m">4980260</span>       0x4BFE24        Unix path: /home/user04/work/kashite/3556-11.8-v1013-AKASO/osdrv/components/ipcm/ipcm/message/ipcm.c
+</span></span><span class="line"><span class="cl"><span class="m">4982320</span>       0x4C0630        Unix path: /home/user04/work/kashite/3556-11.8-v1013-AKASO/osdrv/components/ipcm/ipcm/message/ipcm_data.c
+</span></span><span class="line"><span class="cl"><span class="m">4983576</span>       0x4C0B18        Unix path: /home/user04/work/kashite/3556-11.8-v1013-AKASO/osdrv/platform/liteos/kernel/base/ipc/los_mux.c
+</span></span><span class="line"><span class="cl"><span class="m">4983960</span>       0x4C0C98        Unix path: /home/user04/work/kashite/3556-11.8-v1013-AKASO/osdrv/platform/liteos/kernel/base/core/los_task.c
+</span></span><span class="line"><span class="cl"><span class="m">4986708</span>       0x4C1754        Unix path: /home/user04/work/kashite/3556-11.8-v1013-AKASO/osdrv/platform/liteos/kernel/base/mem/mem_bestfit/los_memory.c
+</span></span><span class="line"><span class="cl"><span class="m">4998096</span>       0x4C43D0        Unix path: /usr/local/etc/zoneinfo
+</span></span><span class="line"><span class="cl"><span class="m">4999016</span>       0x4C4768        Unix path: /home/user04/work/kashite/3556-11.8-v1013-AKASO/osdrv/platform/liteos/lib/libc/src/time/time64.c
+</span></span><span class="line"><span class="cl"><span class="m">5000336</span>       0x4C4C90        Unix path: /home/user04/work/kashite/3556-11.8-v1013-AKASO/osdrv/platform/liteos/compat/posix/src/pthread_mutex.c
+</span></span><span class="line"><span class="cl"><span class="m">5001228</span>       0x4C500C        Unix path: /home/user04/work/kashite/3556-11.8-v1013-AKASO/osdrv/platform/liteos/fs/vfs/inode/fs_inode.c
+</span></span><span class="line"><span class="cl"><span class="m">5006876</span>       0x4C661C        Unix path: /home/user04/work/kashite/3556-11.8-v1013-AKASO/osdrv/platform/liteos/platform/bsp/board/hi3556v200/include/hisoc/spi.h
+</span></span><span class="line"><span class="cl"><span class="m">5194272</span>       0x4F4220        ESP Image <span class="o">(</span>ESP32<span class="o">)</span>: segment count: 11, flash mode: QUIO, flash speed: 40MHz, flash size: 1MB, entry address: 0x4003d1
+</span></span><span class="line"><span class="cl"><span class="m">5363994</span>       0x51D91A        ESP Image <span class="o">(</span>ESP32<span class="o">)</span>: segment count: 1, flash mode: QUIO, flash speed: 40MHz, flash size: 1MB, entry address: 0x0
+</span></span></code></pre></td></tr></table>
+</div>
+</div>]]></description></item><item><title>Arizer XQ2 Teardown</title><link>https://karlquinsland.com/arizer-xq2-teardown/</link><pubDate>Mon, 01 Jul 2024 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/arizer-xq2-teardown/</guid><description><![CDATA[<!-- markdownlint-disable-file MD002 -->
 <h1 id="arizer-xq2-teardown">Arizer XQ2 Teardown</h1>
 <figure >
 
@@ -6733,273 +7016,4 @@ Print it in whatever material and color you want but be mindful of dimensional a
 <li><a href="https://datasheet.lcsc.com/lcsc/1810011020_FUDAN-MICRO-FM24C02C-SO-T-G_C189501.pdf" target="_blank" rel="noopener noreffer"><code>FM24C02C</code></a>: Flash rom for the <code>TLSR83</code>. I didn&rsquo;t bother to desolder and dump this chip.</li>
 <li>3x ICs marked with <code>WRFAA</code> in a <code>2x5 SON</code> package. I can&rsquo;t find any info on these chips, but given that there are three LED channels and their proximity to power regulation circuitry, I assume that they are LED drivers.</li>
 </ul>
-]]></description></item><item><title>Solum 2.2 inch Electronic Shelf Label Teardown</title><link>https://karlquinsland.com/solum-el022hwra-teardown/</link><pubDate>Thu, 20 Jul 2023 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/solum-el022hwra-teardown/</guid><description><![CDATA[<h1 id="quick-peek-inside-the-el029f3wra">Quick peek inside the EL029F3WRA</h1>
-<p>In light of the recent news that the <a href="https://github.com/jjwbruijn/OpenEPaperLink" target="_blank" rel="noopener noreffer">OpenEPaperLink</a> firmware has been <a href="https://www.youtube.com/watch?v=Ph5BXFcugC4" target="_blank" rel="noopener noreffer">ported to the <code>nRF52811</code></a> series of chips, I decided to take a look inside the Solum EL029F3WRA to see if it was a viable candidate for a project.</p>
-<p>As it turns out, it is very similar to the <a href="https://github.com/jjwbruijn/OpenEPaperLink/wiki/2.9%22-EL029H3WRA" target="_blank" rel="noopener noreffer">2.9 inch</a> tags.
-I hope to soon have a simple CAD model of the ESL which I&rsquo;ll use to model a basic pogo-pin programming jig for this particular ESL.</p>
-<hr>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        The rear of the ESL is clipped in and can be removed with a plastic spudger.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        All programming pins are accessible from the rear once the batteries are removed.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Batteries are held in with moulded plastic clips.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Side profile of the ESL.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        The outer front panel is glued in place. Careful prying was enough to remove it.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Unfortunately, there&#39;s more glue holding the eInk panel to the PCB and the whole PCB assembly in the case.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<div class="details admonition warning open">
-        <div class="details-summary admonition-title">
-            <i class="icon fas fa-exclamation-triangle fa-fw"></i>Warning<i class="details-icon fas fa-angle-right fa-fw"></i>
-        </div>
-        <div class="details-content">
-            <div class="admonition-content"><p>DO NOT DO THIS.</p>
-<p>The PCB <strong>can</strong> be pried out of the case but doing so will likely damage the eInk panel unless you apply pressure equally from multiple corners.</p>
-<p>The glass on the eInk panel is very thin and far less flexible than the PCB.
-Note the crack&hellip;</p>
-</div>
-        </div>
-    </div>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        The residue is not there by default. Since I had already ruined the panel, I was testing the effect of different solvents on the panel hoping to find one that would dissolve the glue without damaging the panel.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        The eInk panel is attached to the PCB with a thin layer of glue. The same tool/technique used to remove the front panel can be used to remove the eInk panel.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p><figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        PCB as seen from the rear of the ESL.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        A close up look at the micro and related pcb traces.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Close up look at the second half of the PCB.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Closeup of the side of the PCB normally covered by the eInk panel. Note the thin layer of glue around the edge of the PCB used to hold the eInk panel in place.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-</p>
 ]]></description></item></channel></rss>
