@@ -1,4 +1,332 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>IMadeAThing - Category - karl</title><link>https://karlquinsland.com/categories/imadeathing/</link><description>IMadeAThing - Category - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 09 Nov 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/categories/imadeathing/" rel="self" type="application/rss+xml"/><item><title>Integrating ESPHome with a cheap Geiger Counter</title><link>https://karlquinsland.com/esphome-geiger-counter/</link><pubDate>Wed, 09 Nov 2022 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/esphome-geiger-counter/</guid><description><![CDATA[<p>Yes, there have <a href="https://community.home-assistant.io/t/geiger-counter-with-ha-integration/107660/12" target="_blank" rel="noopener noreffer">been</a> <em>loads</em> of <a href="https://www.rhelectronics.store/radiation-detector-geiger-counter-diy-kit-second-edition" target="_blank" rel="noopener noreffer">people</a> doing <a href="https://www.connectix.nl/connecting-a-geiger-counter-to-home-assistant/" target="_blank" rel="noopener noreffer">similar</a> <a href="https://old.reddit.com/r/homeassistant/comments/l92fbf/doomsday_sensor_v10/" target="_blank" rel="noopener noreffer">things</a>! ESPHome already has a tutorial <a href="https://esphome.io/cookbook/geiger-counter.html" target="_blank" rel="noopener noreffer">covering <em>exactly</em> this</a>!</p>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>IMadeAThing - Category - karl</title><link>https://karlquinsland.com/categories/imadeathing/</link><description>IMadeAThing - Category - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 14 Sep 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/categories/imadeathing/" rel="self" type="application/rss+xml"/><item><title>Watch Band RFID fob</title><link>https://karlquinsland.com/watch-band-rfid/</link><pubDate>Sat, 14 Sep 2024 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/watch-band-rfid/</guid><description><![CDATA[<h1 id="watch-band-rfid-fob">Watch Band RFID fob</h1>
+<p>This is a quick project to create a wearable RFID fob that can be easily attached to a watch band.
+The idea is to have a small RFID tag that can be used for various purposes, such as access control or identification that is - more or less - as convenient as a surgically implanted tag, but without the need for embedding anything in your body.</p>
+<p>I was inspired by both the <a href="https://en.wikipedia.org/wiki/Microchip_implant_%28human%29" target="_blank" rel="noopener noreffer">bio-hacking community</a> and the medical-alert &lsquo;accessory bands&rsquo; for Android Wear devices.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        The inspiration for this project
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>Don&rsquo;t mind the few small print imperfections; <em>this was a prototype</em> printed with a .6mm nozzle.
+A final version of this would be printed with a smaller nozzle, a finer layer height and probably a different color/material.</p>
+<p>The point is to have a small, unobtrusive design that can be easily attached to a watch band.
+Because of the wide variety of watch bands available, I have <a href="#files" rel="">included</a> the raw Fusion360 file for you to modify as needed.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Installed on a watch band.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        A single watch band pin is used to secure the plastic part to the band.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Hopefully this gives you an idea of how the parts come together.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<h2 id="bill-of-materials">Bill of Materials</h2>
+<p>The core component of this project is the <a href="#sourcing-the-rfid-tag" rel="">RFID tag</a> which needs to be small and reprogrammable.</p>
+<p>Other than that, you will need to design or print your own enclosure and secure it to the watch band with a standard pin.
+Sourcing these is quite easy; a local watch shop or jeweler should have them available or you can buy a watch-band kit online.
+A kit is advisable if you need to prototype multiple designs / play with different pin diameters/lengths.</p>
+<p>Printing the tag enclosure is straightforward but due to it&rsquo;s small size, the more precise your printer is, the better the results will be.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Suggested print orientation for best results
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<h2 id="sourcing-the-rfid-tag">Sourcing the RFID tag</h2>
+<p>This application is severely space constrained, so you need the smallest possible tag that is also reprogrammable.
+If you search for tags meant to be embedded under the skin of animals, you will find many options&hellip; but they are not reprogrammable.</p>
+<p>There are also tags meant for <a href="https://dangerousthings.com/category/implants/x-series/" target="_blank" rel="noopener noreffer">humans</a> but they&rsquo;re not cheap!
+I did eventually find a suitable tag on eBay:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        eBay listing for the RFID tag
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>eBay being what it is, there&rsquo;s no guarantee that <a href="https://www.ebay.com/itm/254607033331" target="_blank" rel="noopener noreffer">the same listing I purchased from</a> will still be active in the future so I am including a copy of the listing description that you can use for reference when searching for a suitable tag:</p>
+<blockquote>
+<p>New 2pcs T5577 125KHz E/H Rewrite Writable R/W Proximity Bio Glass Tag 2.12x12mm</p>
+</blockquote>
+<p>A portion of the listing text:</p>
+<blockquote>
+<p>Specifications:</p>
+<p>This is the 125KHZ T5577 Glass RFID Writeable tags Proximity Induction For animal identification or other 125KHz RFID Access controller.</p>
+<p>FEATURES:</p>
+<ul>
+<li>
+<p>This tag very small so difficult to read or write,please use the better device or sensor strong device.</p>
+</li>
+<li>
+<p>Operation frequency: 125Khz</p>
+</li>
+<li>
+<p>Chip:T5577,Rewrite Writable EM4100 &amp; HID Chip(This Chip better and factory cost high than EM4305)</p>
+</li>
+<li>
+<p>Compatible with 125KHz EM4100 or 125KHz HID reader to gain access controller and the animal identification.</p>
+</li>
+<li>
+<p>Detecting distance: 0-5cm(if the Reader sensor Different so the Read Distance will Different ).</p>
+</li>
+<li>
+<p>Glass Housing Material:Bio-glass.</p>
+</li>
+<li>
+<p>Size:2.12 x12mm</p>
+</li>
+<li>
+<p>Page included: 2pcs 125KHz T5577 Writeable Glass RFID TAGS</p>
+</li>
+</ul>
+</blockquote>
+<h2 id="files">Files</h2>
+<ul>
+    
+    <li>
+        
+
+            
+            
+        
+            <figure>
+                <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/eBay-listing.png">
+                    
+                </a>
+                
+                <figcaption>
+                    <small>eBay listing for the RFID tag</small>
+                </figcaption>
+                
+            </figure>
+
+        
+    </li>
+    
+    <li>
+        
+            <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/files/fusion-export.step">
+                <i class="far fa-file-"></i>
+                files/fusion-export.step:
+                
+                
+            </a>
+        
+    </li>
+    
+    <li>
+        
+            <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/files/main.f3z">
+                <i class="far fa-file-"></i>
+                files/main.f3z:
+                
+                
+            </a>
+        
+    </li>
+    
+    <li>
+        
+
+            
+            
+        
+            <figure>
+                <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/official-medical-band-render.webp">
+                    
+                </a>
+                
+                <figcaption>
+                    <small>The inspiration for this project</small>
+                </figcaption>
+                
+            </figure>
+
+        
+    </li>
+    
+    <li>
+        
+
+            
+            
+        
+            <figure>
+                <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/suggested-print-orientation.png">
+                    
+                </a>
+                
+                <figcaption>
+                    <small>Suggested print orientation for best results</small>
+                </figcaption>
+                
+            </figure>
+
+        
+    </li>
+    
+    <li>
+        
+
+            
+            
+        
+            <figure>
+                <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/prototype01.jpg">
+                    
+                </a>
+                
+                <figcaption>
+                    <small>Hopefully this gives you an idea of how the parts come together.</small>
+                </figcaption>
+                
+            </figure>
+
+        
+    </li>
+    
+    <li>
+        
+
+            
+            
+        
+            <figure>
+                <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/prototype02.jpg">
+                    
+                </a>
+                
+                <figcaption>
+                    <small>A single watch band pin is used to secure the plastic part to the band.</small>
+                </figcaption>
+                
+            </figure>
+
+        
+    </li>
+    
+    <li>
+        
+
+            
+            
+        
+            <figure>
+                <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/prototype03.jpg">
+                    
+                </a>
+                
+                <figcaption>
+                    <small>Installed on a watch band.</small>
+                </figcaption>
+                
+            </figure>
+
+        
+    </li>
+    
+</ul>
+
+]]></description></item><item><title>Integrating ESPHome with a cheap Geiger Counter</title><link>https://karlquinsland.com/esphome-geiger-counter/</link><pubDate>Wed, 09 Nov 2022 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/esphome-geiger-counter/</guid><description><![CDATA[<p>Yes, there have <a href="https://community.home-assistant.io/t/geiger-counter-with-ha-integration/107660/12" target="_blank" rel="noopener noreffer">been</a> <em>loads</em> of <a href="https://www.rhelectronics.store/radiation-detector-geiger-counter-diy-kit-second-edition" target="_blank" rel="noopener noreffer">people</a> doing <a href="https://www.connectix.nl/connecting-a-geiger-counter-to-home-assistant/" target="_blank" rel="noopener noreffer">similar</a> <a href="https://old.reddit.com/r/homeassistant/comments/l92fbf/doomsday_sensor_v10/" target="_blank" rel="noopener noreffer">things</a>! ESPHome already has a tutorial <a href="https://esphome.io/cookbook/geiger-counter.html" target="_blank" rel="noopener noreffer">covering <em>exactly</em> this</a>!</p>
 <p>I&rsquo;m writing this up because the approach that I ended up taking was <em>not</em> the intended/planned approach.</p>
 <!-- markdownlint-disable-file MD002 -->
 <h2 id="the-geiger-counter">The Geiger Counter</h2>

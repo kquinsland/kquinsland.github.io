@@ -4859,55 +4859,55 @@ That something is the plastic lens closest to the now removed end cap.</p>
 <h2 id="esp32-retrofit">ESP32 Retrofit</h2>
 <p>Fortunately, each wire connecting the ESP8266 module to the main PCB is clearly labeled.</p>
 <table>
-<thead>
-<tr>
-<th>Pin</th>
-<th>Label</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-<td><code>GND</code></td>
-<td>Ground for the ESP module</td>
-</tr>
-<tr>
-<td>2</td>
-<td><code>3v3</code></td>
-<td>Power for the ESP module</td>
-</tr>
-<tr>
-<td>3</td>
-<td><code>SCL</code></td>
-<td>I2C. (probably, see note below)</td>
-</tr>
-<tr>
-<td>4</td>
-<td><code>SDA</code></td>
-<td>I2C. (probably, see note below)</td>
-</tr>
-<tr>
-<td>5</td>
-<td><code>RGB</code></td>
-<td>Standard neopixel data bus</td>
-</tr>
-<tr>
-<td>6</td>
-<td><code>C</code></td>
-<td>PWM signal for cold white channel</td>
-</tr>
-<tr>
-<td>7</td>
-<td><code>EN</code></td>
-<td>Master enable/disable for all light output</td>
-</tr>
-<tr>
-<td>8</td>
-<td><code>W</code></td>
-<td>PWM signal for warm white channel</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th style="text-align: left">Pin</th>
+          <th style="text-align: left">Label</th>
+          <th style="text-align: left">Description</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">1</td>
+          <td style="text-align: left"><code>GND</code></td>
+          <td style="text-align: left">Ground for the ESP module</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">2</td>
+          <td style="text-align: left"><code>3v3</code></td>
+          <td style="text-align: left">Power for the ESP module</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">3</td>
+          <td style="text-align: left"><code>SCL</code></td>
+          <td style="text-align: left">I2C. (probably, see note below)</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">4</td>
+          <td style="text-align: left"><code>SDA</code></td>
+          <td style="text-align: left">I2C. (probably, see note below)</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">5</td>
+          <td style="text-align: left"><code>RGB</code></td>
+          <td style="text-align: left">Standard neopixel data bus</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">6</td>
+          <td style="text-align: left"><code>C</code></td>
+          <td style="text-align: left">PWM signal for cold white channel</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">7</td>
+          <td style="text-align: left"><code>EN</code></td>
+          <td style="text-align: left">Master enable/disable for all light output</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">8</td>
+          <td style="text-align: left"><code>W</code></td>
+          <td style="text-align: left">PWM signal for warm white channel</td>
+      </tr>
+  </tbody>
 </table>
 <div class="details admonition note open">
         <div class="details-summary admonition-title">
@@ -5422,45 +5422,45 @@ Nothing was going to compete with 10 minute to heat-soak and remove the ESP modu
 
 <p>With a &ldquo;fresh&rdquo; ESP module installed, figuring out th GPIO assignments wasn&rsquo;t particularly difficult.</p>
 <table>
-<thead>
-<tr>
-<th>Function</th>
-<th>Pin</th>
-<th>Note</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Relay 1</td>
-<td><code>GPIO2</code></td>
-<td>&ndash;</td>
-</tr>
-<tr>
-<td>Relay 2</td>
-<td><code>GPIO16</code></td>
-<td>&ndash;</td>
-</tr>
-<tr>
-<td>Input 1</td>
-<td><code>GPIO36</code></td>
-<td>Normally at 3.3V. Pull to ground to trigger.</td>
-</tr>
-<tr>
-<td>Input 2</td>
-<td><code>GPIO39</code></td>
-<td>Same as <code>Input 1</code>.</td>
-</tr>
-<tr>
-<td>Input 3</td>
-<td><code>GPIO34</code></td>
-<td>This is the <code>FACTORY</code> button. Same as <code>Input 1</code>.</td>
-</tr>
-<tr>
-<td>LED 1</td>
-<td><code>GPIO32</code></td>
-<td>This is the second little red LED next to the <code>FACTORY</code> button. Inverted.</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th style="text-align: left">Function</th>
+          <th style="text-align: left">Pin</th>
+          <th style="text-align: left">Note</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">Relay 1</td>
+          <td style="text-align: left"><code>GPIO2</code></td>
+          <td style="text-align: left">&ndash;</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Relay 2</td>
+          <td style="text-align: left"><code>GPIO16</code></td>
+          <td style="text-align: left">&ndash;</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Input 1</td>
+          <td style="text-align: left"><code>GPIO36</code></td>
+          <td style="text-align: left">Normally at 3.3V. Pull to ground to trigger.</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Input 2</td>
+          <td style="text-align: left"><code>GPIO39</code></td>
+          <td style="text-align: left">Same as <code>Input 1</code>.</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">Input 3</td>
+          <td style="text-align: left"><code>GPIO34</code></td>
+          <td style="text-align: left">This is the <code>FACTORY</code> button. Same as <code>Input 1</code>.</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">LED 1</td>
+          <td style="text-align: left"><code>GPIO32</code></td>
+          <td style="text-align: left">This is the second little red LED next to the <code>FACTORY</code> button. Inverted.</td>
+      </tr>
+  </tbody>
 </table>
 <h2 id="tasmota">Tasmota</h2>
 <p>And here&rsquo;s the working Tasmota template:</p>

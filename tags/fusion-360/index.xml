@@ -1,4 +1,332 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Fusion-360 - Tag - karl</title><link>https://karlquinsland.com/tags/fusion-360/</link><description>Fusion-360 - Tag - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 15 Oct 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/fusion-360/" rel="self" type="application/rss+xml"/><item><title>I made a thing: GPS/PPS clock source for ntpd</title><link>https://karlquinsland.com/yet-another-gps-pps-opnsense/</link><pubDate>Sat, 15 Oct 2022 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/yet-another-gps-pps-opnsense/</guid><description><![CDATA[<div class="details admonition tip open">
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Fusion-360 - Tag - karl</title><link>https://karlquinsland.com/tags/fusion-360/</link><description>Fusion-360 - Tag - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 14 Sep 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/fusion-360/" rel="self" type="application/rss+xml"/><item><title>Watch Band RFID fob</title><link>https://karlquinsland.com/watch-band-rfid/</link><pubDate>Sat, 14 Sep 2024 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/watch-band-rfid/</guid><description><![CDATA[<h1 id="watch-band-rfid-fob">Watch Band RFID fob</h1>
+<p>This is a quick project to create a wearable RFID fob that can be easily attached to a watch band.
+The idea is to have a small RFID tag that can be used for various purposes, such as access control or identification that is - more or less - as convenient as a surgically implanted tag, but without the need for embedding anything in your body.</p>
+<p>I was inspired by both the <a href="https://en.wikipedia.org/wiki/Microchip_implant_%28human%29" target="_blank" rel="noopener noreffer">bio-hacking community</a> and the medical-alert &lsquo;accessory bands&rsquo; for Android Wear devices.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        The inspiration for this project
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>Don&rsquo;t mind the few small print imperfections; <em>this was a prototype</em> printed with a .6mm nozzle.
+A final version of this would be printed with a smaller nozzle, a finer layer height and probably a different color/material.</p>
+<p>The point is to have a small, unobtrusive design that can be easily attached to a watch band.
+Because of the wide variety of watch bands available, I have <a href="#files" rel="">included</a> the raw Fusion360 file for you to modify as needed.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Installed on a watch band.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        A single watch band pin is used to secure the plastic part to the band.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Hopefully this gives you an idea of how the parts come together.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<h2 id="bill-of-materials">Bill of Materials</h2>
+<p>The core component of this project is the <a href="#sourcing-the-rfid-tag" rel="">RFID tag</a> which needs to be small and reprogrammable.</p>
+<p>Other than that, you will need to design or print your own enclosure and secure it to the watch band with a standard pin.
+Sourcing these is quite easy; a local watch shop or jeweler should have them available or you can buy a watch-band kit online.
+A kit is advisable if you need to prototype multiple designs / play with different pin diameters/lengths.</p>
+<p>Printing the tag enclosure is straightforward but due to it&rsquo;s small size, the more precise your printer is, the better the results will be.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Suggested print orientation for best results
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<h2 id="sourcing-the-rfid-tag">Sourcing the RFID tag</h2>
+<p>This application is severely space constrained, so you need the smallest possible tag that is also reprogrammable.
+If you search for tags meant to be embedded under the skin of animals, you will find many options&hellip; but they are not reprogrammable.</p>
+<p>There are also tags meant for <a href="https://dangerousthings.com/category/implants/x-series/" target="_blank" rel="noopener noreffer">humans</a> but they&rsquo;re not cheap!
+I did eventually find a suitable tag on eBay:</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        eBay listing for the RFID tag
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>eBay being what it is, there&rsquo;s no guarantee that <a href="https://www.ebay.com/itm/254607033331" target="_blank" rel="noopener noreffer">the same listing I purchased from</a> will still be active in the future so I am including a copy of the listing description that you can use for reference when searching for a suitable tag:</p>
+<blockquote>
+<p>New 2pcs T5577 125KHz E/H Rewrite Writable R/W Proximity Bio Glass Tag 2.12x12mm</p>
+</blockquote>
+<p>A portion of the listing text:</p>
+<blockquote>
+<p>Specifications:</p>
+<p>This is the 125KHZ T5577 Glass RFID Writeable tags Proximity Induction For animal identification or other 125KHz RFID Access controller.</p>
+<p>FEATURES:</p>
+<ul>
+<li>
+<p>This tag very small so difficult to read or write,please use the better device or sensor strong device.</p>
+</li>
+<li>
+<p>Operation frequency: 125Khz</p>
+</li>
+<li>
+<p>Chip:T5577,Rewrite Writable EM4100 &amp; HID Chip(This Chip better and factory cost high than EM4305)</p>
+</li>
+<li>
+<p>Compatible with 125KHz EM4100 or 125KHz HID reader to gain access controller and the animal identification.</p>
+</li>
+<li>
+<p>Detecting distance: 0-5cm(if the Reader sensor Different so the Read Distance will Different ).</p>
+</li>
+<li>
+<p>Glass Housing Material:Bio-glass.</p>
+</li>
+<li>
+<p>Size:2.12 x12mm</p>
+</li>
+<li>
+<p>Page included: 2pcs 125KHz T5577 Writeable Glass RFID TAGS</p>
+</li>
+</ul>
+</blockquote>
+<h2 id="files">Files</h2>
+<ul>
+    
+    <li>
+        
+
+            
+            
+        
+            <figure>
+                <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/eBay-listing.png">
+                    
+                </a>
+                
+                <figcaption>
+                    <small>eBay listing for the RFID tag</small>
+                </figcaption>
+                
+            </figure>
+
+        
+    </li>
+    
+    <li>
+        
+            <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/files/fusion-export.step">
+                <i class="far fa-file-"></i>
+                files/fusion-export.step:
+                
+                
+            </a>
+        
+    </li>
+    
+    <li>
+        
+            <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/files/main.f3z">
+                <i class="far fa-file-"></i>
+                files/main.f3z:
+                
+                
+            </a>
+        
+    </li>
+    
+    <li>
+        
+
+            
+            
+        
+            <figure>
+                <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/official-medical-band-render.webp">
+                    
+                </a>
+                
+                <figcaption>
+                    <small>The inspiration for this project</small>
+                </figcaption>
+                
+            </figure>
+
+        
+    </li>
+    
+    <li>
+        
+
+            
+            
+        
+            <figure>
+                <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/suggested-print-orientation.png">
+                    
+                </a>
+                
+                <figcaption>
+                    <small>Suggested print orientation for best results</small>
+                </figcaption>
+                
+            </figure>
+
+        
+    </li>
+    
+    <li>
+        
+
+            
+            
+        
+            <figure>
+                <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/prototype01.jpg">
+                    
+                </a>
+                
+                <figcaption>
+                    <small>Hopefully this gives you an idea of how the parts come together.</small>
+                </figcaption>
+                
+            </figure>
+
+        
+    </li>
+    
+    <li>
+        
+
+            
+            
+        
+            <figure>
+                <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/prototype02.jpg">
+                    
+                </a>
+                
+                <figcaption>
+                    <small>A single watch band pin is used to secure the plastic part to the band.</small>
+                </figcaption>
+                
+            </figure>
+
+        
+    </li>
+    
+    <li>
+        
+
+            
+            
+        
+            <figure>
+                <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/prototype03.jpg">
+                    
+                </a>
+                
+                <figcaption>
+                    <small>Installed on a watch band.</small>
+                </figcaption>
+                
+            </figure>
+
+        
+    </li>
+    
+</ul>
+
+]]></description></item><item><title>I made a thing: GPS/PPS clock source for ntpd</title><link>https://karlquinsland.com/yet-another-gps-pps-opnsense/</link><pubDate>Sat, 15 Oct 2022 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/yet-another-gps-pps-opnsense/</guid><description><![CDATA[<div class="details admonition tip open">
         <div class="details-summary admonition-title">
             <i class="icon fas fa-lightbulb fa-fw"></i>Tip<i class="details-icon fas fa-angle-right fa-fw"></i>
         </div>
@@ -1182,46 +1510,46 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 <h3 id="wire-harness">Wire Harness</h3>
 <p>There are only six wires for the two components and the LED tape is the only component where polarity matters. A table mapping each pin on the HASP PCB to each component lead is below.</p>
 <table>
-<thead>
-<tr>
-<th>HASP PCB Pin</th>
-<th>Component</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>GND</td>
-<td>LED Tape, 10KΩ resistor</td>
-</tr>
-<tr>
-<td>+5V</td>
-<td>LED Tape VCC in</td>
-</tr>
-<tr>
-<td>+3.3V</td>
-<td>LDR</td>
-</tr>
-<tr>
-<td>A0</td>
-<td>LDR &amp; 10KΩ resistor junction</td>
-</tr>
-<tr>
-<td>D0</td>
-<td>N/A</td>
-</tr>
-<tr>
-<td>D1</td>
-<td>LED Tape CLK/DTA  in</td>
-</tr>
-<tr>
-<td>D2</td>
-<td>N/A</td>
-</tr>
-<tr>
-<td>DBG</td>
-<td>N/A</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th style="text-align: left">HASP PCB Pin</th>
+          <th style="text-align: left">Component</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">GND</td>
+          <td style="text-align: left">LED Tape, 10KΩ resistor</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">+5V</td>
+          <td style="text-align: left">LED Tape VCC in</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">+3.3V</td>
+          <td style="text-align: left">LDR</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">A0</td>
+          <td style="text-align: left">LDR &amp; 10KΩ resistor junction</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">D0</td>
+          <td style="text-align: left">N/A</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">D1</td>
+          <td style="text-align: left">LED Tape CLK/DTA  in</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">D2</td>
+          <td style="text-align: left">N/A</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">DBG</td>
+          <td style="text-align: left">N/A</td>
+      </tr>
+  </tbody>
 </table>
 <p>You are <strong>strongly</strong> encouraged to test / check your work after each step with a simple multimeter. Complete assembly involves irreversible steps, like shrinking HST. If you make a mistake, it&rsquo;s best to catch it before &lsquo;finalizing&rsquo; things as you&rsquo;re almost certainly going to have to destroy the component and or wiring harness to repair it.</p>
 <p>Additionally, you can flash my <a href="https://github.com/kquinsland/HASwitchPlate" target="_blank" rel="noopener noreffer">modified HASP firmware</a> to a fully assembled HASP device and use that as a testing device. On boot up, the modified firmware briefly flashes each LED in sequence. About every 10 seconds after boot, the LDR value will be read and published to MQTT. Cover the LDR with your hand and check your MQTT broker or HA to confirm that the value changes significantly between exposed and covered states.</p>
@@ -2516,55 +2844,55 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 <p>There&rsquo;s no ready-made cable out there that&rsquo;ll join the two devices so one must be made. Fortunately, there&rsquo;s only 6 wires to deal with&hellip; 4 of them are distinct.</p>
 <p>Sacrifice the cable that comes with the PM2.5 sensor and the RJ11 cable by cutting them in half and solder the correct wires together. The <em>color</em> of the wires that come in both the RJ11 cable and the PM2.5 cable are likely going to differ from the ones I used so I&rsquo;ve left those details out and provided a table showing which pins are to be joined together:</p>
 <table>
-<thead>
-<tr>
-<th>Pin #</th>
-<th>PM2.5 Sensor Pin</th>
-<th>WS3 Pin</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-<td>VCC</td>
-<td>5V</td>
-</tr>
-<tr>
-<td>2</td>
-<td>GND</td>
-<td>GND</td>
-</tr>
-<tr>
-<td>3</td>
-<td>SET</td>
-<td>ENABLE</td>
-</tr>
-<tr>
-<td>4</td>
-<td>RX</td>
-<td>RX</td>
-</tr>
-<tr>
-<td>5</td>
-<td>TX</td>
-<td>GND</td>
-</tr>
-<tr>
-<td>6</td>
-<td>RESET</td>
-<td>5V</td>
-</tr>
-<tr>
-<td>7</td>
-<td>NC</td>
-<td></td>
-</tr>
-<tr>
-<td>8</td>
-<td>NC</td>
-<td></td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th style="text-align: left">Pin #</th>
+          <th style="text-align: left">PM2.5 Sensor Pin</th>
+          <th style="text-align: left">WS3 Pin</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">1</td>
+          <td style="text-align: left">VCC</td>
+          <td style="text-align: left">5V</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">2</td>
+          <td style="text-align: left">GND</td>
+          <td style="text-align: left">GND</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">3</td>
+          <td style="text-align: left">SET</td>
+          <td style="text-align: left">ENABLE</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">4</td>
+          <td style="text-align: left">RX</td>
+          <td style="text-align: left">RX</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">5</td>
+          <td style="text-align: left">TX</td>
+          <td style="text-align: left">GND</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">6</td>
+          <td style="text-align: left">RESET</td>
+          <td style="text-align: left">5V</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">7</td>
+          <td style="text-align: left">NC</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">8</td>
+          <td style="text-align: left">NC</td>
+          <td style="text-align: left"></td>
+      </tr>
+  </tbody>
 </table>
 <p>For reference, Pin 1 on both the WS3 and PM2.5 Sensor:</p>
 <figure >

@@ -897,46 +897,46 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 <h3 id="wire-harness">Wire Harness</h3>
 <p>There are only six wires for the two components and the LED tape is the only component where polarity matters. A table mapping each pin on the HASP PCB to each component lead is below.</p>
 <table>
-<thead>
-<tr>
-<th>HASP PCB Pin</th>
-<th>Component</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>GND</td>
-<td>LED Tape, 10KΩ resistor</td>
-</tr>
-<tr>
-<td>+5V</td>
-<td>LED Tape VCC in</td>
-</tr>
-<tr>
-<td>+3.3V</td>
-<td>LDR</td>
-</tr>
-<tr>
-<td>A0</td>
-<td>LDR &amp; 10KΩ resistor junction</td>
-</tr>
-<tr>
-<td>D0</td>
-<td>N/A</td>
-</tr>
-<tr>
-<td>D1</td>
-<td>LED Tape CLK/DTA  in</td>
-</tr>
-<tr>
-<td>D2</td>
-<td>N/A</td>
-</tr>
-<tr>
-<td>DBG</td>
-<td>N/A</td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th style="text-align: left">HASP PCB Pin</th>
+          <th style="text-align: left">Component</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">GND</td>
+          <td style="text-align: left">LED Tape, 10KΩ resistor</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">+5V</td>
+          <td style="text-align: left">LED Tape VCC in</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">+3.3V</td>
+          <td style="text-align: left">LDR</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">A0</td>
+          <td style="text-align: left">LDR &amp; 10KΩ resistor junction</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">D0</td>
+          <td style="text-align: left">N/A</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">D1</td>
+          <td style="text-align: left">LED Tape CLK/DTA  in</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">D2</td>
+          <td style="text-align: left">N/A</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">DBG</td>
+          <td style="text-align: left">N/A</td>
+      </tr>
+  </tbody>
 </table>
 <p>You are <strong>strongly</strong> encouraged to test / check your work after each step with a simple multimeter. Complete assembly involves irreversible steps, like shrinking HST. If you make a mistake, it&rsquo;s best to catch it before &lsquo;finalizing&rsquo; things as you&rsquo;re almost certainly going to have to destroy the component and or wiring harness to repair it.</p>
 <p>Additionally, you can flash my <a href="https://github.com/kquinsland/HASwitchPlate" target="_blank" rel="noopener noreffer">modified HASP firmware</a> to a fully assembled HASP device and use that as a testing device. On boot up, the modified firmware briefly flashes each LED in sequence. About every 10 seconds after boot, the LDR value will be read and published to MQTT. Cover the LDR with your hand and check your MQTT broker or HA to confirm that the value changes significantly between exposed and covered states.</p>
@@ -2231,55 +2231,55 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 <p>There&rsquo;s no ready-made cable out there that&rsquo;ll join the two devices so one must be made. Fortunately, there&rsquo;s only 6 wires to deal with&hellip; 4 of them are distinct.</p>
 <p>Sacrifice the cable that comes with the PM2.5 sensor and the RJ11 cable by cutting them in half and solder the correct wires together. The <em>color</em> of the wires that come in both the RJ11 cable and the PM2.5 cable are likely going to differ from the ones I used so I&rsquo;ve left those details out and provided a table showing which pins are to be joined together:</p>
 <table>
-<thead>
-<tr>
-<th>Pin #</th>
-<th>PM2.5 Sensor Pin</th>
-<th>WS3 Pin</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>1</td>
-<td>VCC</td>
-<td>5V</td>
-</tr>
-<tr>
-<td>2</td>
-<td>GND</td>
-<td>GND</td>
-</tr>
-<tr>
-<td>3</td>
-<td>SET</td>
-<td>ENABLE</td>
-</tr>
-<tr>
-<td>4</td>
-<td>RX</td>
-<td>RX</td>
-</tr>
-<tr>
-<td>5</td>
-<td>TX</td>
-<td>GND</td>
-</tr>
-<tr>
-<td>6</td>
-<td>RESET</td>
-<td>5V</td>
-</tr>
-<tr>
-<td>7</td>
-<td>NC</td>
-<td></td>
-</tr>
-<tr>
-<td>8</td>
-<td>NC</td>
-<td></td>
-</tr>
-</tbody>
+  <thead>
+      <tr>
+          <th style="text-align: left">Pin #</th>
+          <th style="text-align: left">PM2.5 Sensor Pin</th>
+          <th style="text-align: left">WS3 Pin</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: left">1</td>
+          <td style="text-align: left">VCC</td>
+          <td style="text-align: left">5V</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">2</td>
+          <td style="text-align: left">GND</td>
+          <td style="text-align: left">GND</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">3</td>
+          <td style="text-align: left">SET</td>
+          <td style="text-align: left">ENABLE</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">4</td>
+          <td style="text-align: left">RX</td>
+          <td style="text-align: left">RX</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">5</td>
+          <td style="text-align: left">TX</td>
+          <td style="text-align: left">GND</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">6</td>
+          <td style="text-align: left">RESET</td>
+          <td style="text-align: left">5V</td>
+      </tr>
+      <tr>
+          <td style="text-align: left">7</td>
+          <td style="text-align: left">NC</td>
+          <td style="text-align: left"></td>
+      </tr>
+      <tr>
+          <td style="text-align: left">8</td>
+          <td style="text-align: left">NC</td>
+          <td style="text-align: left"></td>
+      </tr>
+  </tbody>
 </table>
 <p>For reference, Pin 1 on both the WS3 and PM2.5 Sensor:</p>
 <figure >
