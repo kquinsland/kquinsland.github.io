@@ -318,60 +318,60 @@ Below you&rsquo;ll find the appropriate Tasmota configuration for GPIO pins.</di
 <table>
   <thead>
       <tr>
-          <th style="text-align: left">PIN</th>
-          <th style="text-align: left">Label</th>
-          <th style="text-align: left">Purpose</th>
-          <th style="text-align: left">Notes</th>
+          <th>PIN</th>
+          <th>Label</th>
+          <th>Purpose</th>
+          <th>Notes</th>
       </tr>
   </thead>
   <tbody>
       <tr>
-          <td style="text-align: left">6</td>
-          <td style="text-align: left">PWM0</td>
-          <td style="text-align: left"><code>Rel</code> 1</td>
-          <td style="text-align: left">Outlet closest to the power cord.</td>
+          <td>6</td>
+          <td>PWM0</td>
+          <td><code>Rel</code> 1</td>
+          <td>Outlet closest to the power cord.</td>
       </tr>
       <tr>
-          <td style="text-align: left">7</td>
-          <td style="text-align: left">PWM1</td>
-          <td style="text-align: left">NC</td>
-          <td style="text-align: left">This is not connected to the main PCB.</td>
+          <td>7</td>
+          <td>PWM1</td>
+          <td>NC</td>
+          <td>This is not connected to the main PCB.</td>
       </tr>
       <tr>
-          <td style="text-align: left">8</td>
-          <td style="text-align: left">PWM2</td>
-          <td style="text-align: left"><code>Rel</code> 4</td>
-          <td style="text-align: left">Outlet closest to the USB.</td>
+          <td>8</td>
+          <td>PWM2</td>
+          <td><code>Rel</code> 4</td>
+          <td>Outlet closest to the USB.</td>
       </tr>
       <tr>
-          <td style="text-align: left">10</td>
-          <td style="text-align: left">RXD1</td>
-          <td style="text-align: left"><code>Btn</code></td>
-          <td style="text-align: left">This is the user button.</td>
+          <td>10</td>
+          <td>RXD1</td>
+          <td><code>Btn</code></td>
+          <td>This is the user button.</td>
       </tr>
       <tr>
-          <td style="text-align: left">11</td>
-          <td style="text-align: left">TXD1</td>
-          <td style="text-align: left"><code>WiFiLED_n</code></td>
-          <td style="text-align: left">WiFi status LED.</td>
+          <td>11</td>
+          <td>TXD1</td>
+          <td><code>WiFiLED_n</code></td>
+          <td>WiFi status LED.</td>
       </tr>
       <tr>
-          <td style="text-align: left">23</td>
-          <td style="text-align: left">ADC3</td>
-          <td style="text-align: left">NC</td>
-          <td style="text-align: left">This is not connected to the main PCB.</td>
+          <td>23</td>
+          <td>ADC3</td>
+          <td>NC</td>
+          <td>This is not connected to the main PCB.</td>
       </tr>
       <tr>
-          <td style="text-align: left">24</td>
-          <td style="text-align: left">PWM4</td>
-          <td style="text-align: left"><code>Rel</code> 2</td>
-          <td style="text-align: left">Second outlet from power cord.</td>
+          <td>24</td>
+          <td>PWM4</td>
+          <td><code>Rel</code> 2</td>
+          <td>Second outlet from power cord.</td>
       </tr>
       <tr>
-          <td style="text-align: left">26</td>
-          <td style="text-align: left">PWM5</td>
-          <td style="text-align: left"><code>Rel</code> 3</td>
-          <td style="text-align: left">Third outlet from power cord.</td>
+          <td>26</td>
+          <td>PWM5</td>
+          <td><code>Rel</code> 3</td>
+          <td>Third outlet from power cord.</td>
       </tr>
   </tbody>
 </table>
@@ -588,41 +588,41 @@ There are 6 screws. four hidden under the anti-slip pads.</p>
 <table>
   <thead>
       <tr>
-          <th style="text-align: left">PIN</th>
-          <th style="text-align: left">Type</th>
-          <th style="text-align: left">Number</th>
+          <th>PIN</th>
+          <th>Type</th>
+          <th>Number</th>
       </tr>
   </thead>
   <tbody>
       <tr>
-          <td style="text-align: left">GPIO2</td>
-          <td style="text-align: left"><code>Led_i</code></td>
-          <td style="text-align: left">1</td>
+          <td>GPIO2</td>
+          <td><code>Led_i</code></td>
+          <td>1</td>
       </tr>
       <tr>
-          <td style="text-align: left">GPIO5</td>
-          <td style="text-align: left"><code>Button_n</code></td>
-          <td style="text-align: left">1</td>
+          <td>GPIO5</td>
+          <td><code>Button_n</code></td>
+          <td>1</td>
       </tr>
       <tr>
-          <td style="text-align: left">GPIO 12</td>
-          <td style="text-align: left"><code>Relay</code></td>
-          <td style="text-align: left">3</td>
+          <td>GPIO 12</td>
+          <td><code>Relay</code></td>
+          <td>3</td>
       </tr>
       <tr>
-          <td style="text-align: left">GPIO 13</td>
-          <td style="text-align: left"><code>Relay</code></td>
-          <td style="text-align: left">4</td>
+          <td>GPIO 13</td>
+          <td><code>Relay</code></td>
+          <td>4</td>
       </tr>
       <tr>
-          <td style="text-align: left">GPIO 14</td>
-          <td style="text-align: left"><code>Relay</code></td>
-          <td style="text-align: left">2</td>
+          <td>GPIO 14</td>
+          <td><code>Relay</code></td>
+          <td>2</td>
       </tr>
       <tr>
-          <td style="text-align: left">GPIO 15</td>
-          <td style="text-align: left"><code>Relay</code></td>
-          <td style="text-align: left">1</td>
+          <td>GPIO 15</td>
+          <td><code>Relay</code></td>
+          <td>1</td>
       </tr>
   </tbody>
 </table>
