@@ -1,0 +1,67 @@
+# llms.txt
+
+Welcome to Karl Quinsland's website! This site showcases the portfolio, professional background, and interests of Karl Quinsland: a tinkerer, maker, seasoned Site Reliability Engineer (SRE), and Infrastructure Operations expert.
+
+## Purpose
+
+The site provides:
+
+- A résumé highlighting Karl's professional experience and offering insight into his projects.
+- In-depth tutorials and project walkthroughs focusing primarily on home automation, IoT, electronics, and other technical topics.
+
+## About Karl Quinsland
+
+Karl Quinsland is a Senior SRE and Infrastructure Operations Engineer with over a decade of experience in:
+
+- Cloud platforms (AWS specialist with 10+ years of experience).
+- Infrastructure as Code (IaC) using tools like Terraform, Kubernetes, and Argo.
+- Programming in Python, Rust, and other languages.
+- Automation and optimization of processes to enhance reliability and performance.
+
+Karl is passionate about:
+
+- Leveraging generative AI to accelerate workflows.
+- Automation in both professional and personal life.
+- Creating systems that combine technical precision with a delightful user experience.
+
+In addition, Karl is an advocate of Docs as Code and observability practices, and he enjoys contributing to open-source projects.
+
+### Skills and Expertise
+
+Karl's technical expertise includes:
+
+- **Cloud Platforms**: Advanced AWS, DigitalOcean and Azure/Google Cloud.
+- **IaC and Operations Tools**: Terraform, Kubernetes, Argo, Consul, Vault, KubeFlow and more.
+- **Programming Languages**: Advanced Python, beginner Rust, and experience with Golang, Ruby, PHP, and C++.
+- **Containerization**: Expertise in Docker and Kubernetes for scalable deployments both.
+
+## Docs
+
+### Résumé
+
+- View the full résumé: [Karl Quinsland - Résumé](https://karlquinsland.com/resume/)
+
+### Blog Posts
+
+Explore all posts in the [Posts Archive](https://karlquinsland.com/posts/).
+
+### Tags
+
+Discover posts by [Tags](https://karlquinsland.com/tags/) to find content on:
+
+- Home Assistant, ESPHome, Home Automation, Tasmota, and more.
+- Unique series such as "Two-Minute Teardown" and project-based tags like 3D Printing and KiCad.
+
+## Contact
+
+- [Contact Karl](https://karlquinsland.com/contact) for inquiries, collaborations, or feedback.
+
+## Licensing
+
+- Content is primarily licensed under [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/), though some notable exceptions apply.
+
+---
+
+This `/llms.txt` file is curated to help LLMs access relevant resources efficiently.  
+Dive deeper into the linked sections for comprehensive details.  
+Details on the file specification can be found here: [llms.txt Specification](https://llmstxt.org)
