@@ -1,4 +1,410 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>All Posts - karl</title><link>https://karlquinsland.com/posts/</link><description>All Posts | karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 02 Nov 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/posts/" rel="self" type="application/rss+xml"/><item><title>Monitoring HVAC system with ESPHome</title><link>https://karlquinsland.com/esphome-hvac-monitor/</link><pubDate>Sat, 02 Nov 2024 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/esphome-hvac-monitor/</guid><description><![CDATA[<h1 id="using-esphome-to-monitor-hvac-system">Using ESPHome to Monitor HVAC System</h1>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>All Posts - karl</title><link>https://karlquinsland.com/posts/</link><description>All Posts | karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 25 Dec 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/posts/" rel="self" type="application/rss+xml"/><item><title>Multi-Material Printing Hack for Prusa XL</title><link>https://karlquinsland.com/multi-material-printing-hack/</link><pubDate>Wed, 25 Dec 2024 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/multi-material-printing-hack/</guid><description><![CDATA[<!-- markdownlint-disable-file MD002 -->
+<p>In the same spirit as <a href="/extending-the-mk3s-print-area/" rel="">an earlier post</a>, here is a quick hack I used to get my <strong>dual</strong>-headed Prusa XL printer to print with <strong>three</strong> materials at once.</p>
+<p>While the technique worked, it may not be the best method, so proceed with caution.</p>
+<h2 id="the-problem">The problem</h2>
+<p>I am trying to print a part that requires two different materials at the same time: ABS and TPU.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        The shaded blue area is meant to be TPU/FLEX material. The shaded yellow area is meant to be ABS material.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>The first complication comes from the &ldquo;unfriendly&rdquo; shape; the part is spherical and has no ideal orientation for printing without any supports.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Grey is TPU, Green is ABS, and the Blue/Grey mix is the support material composed of interleaved PLA and TPU layers.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>To make matters slightly more complicated, TPU is one of those filaments that likes to stick to pretty much everything; I have few good options for support material.
+The <a href="https://www.youtube.com/watch?v=5VV2fbJ0apg" target="_blank" rel="noopener noreffer"><em>least</em> sticky material</a> is PLA.</p>
+<p>So now I have a single job that requires three materials: ABS, TPU, and PLA&hellip;. but still only two print heads to work with.</p>
+<p>What to do?</p>
+<p>Usually when faced with the &ldquo;more materials than heads&rdquo; problem, the solution is to use the <a href="https://marlinfw.org/docs/gcode/M600.html" target="_blank" rel="noopener noreffer"><code>M600</code></a> gCode command to have the printer pause, eject the current material and wait for the user to load the new material.</p>
+<p>This technique is not new; it&rsquo;s widely supported and works perfectly <strong>if</strong> the materials are similar enough that the extrusion settings can be shared between them.</p>
+<p>For my part, the tool head will have to transition from <code>PLA</code> to <code>ABS</code> which means virtually every instruction in the gCode will have to change as well.</p>
+<h2 id="the-loophole">The loophole</h2>
+<p>Fortunately, the geometry for this part has a &ldquo;gap&rdquo; between the initial section where supports are needed and the internal section where the ABS material is needed.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        This is the &#39;per-layer&#39; view from the slicer with a &#39;bottom-up&#39; perspective. As before, Grey is TPU, Green is ABS, and the thin blue circle represents the topmost layer of the support material.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>Notice that the <em>last</em> support layer (blue circle) is still a few layers away from the first ABS layer (the green section).</p>
+<p>Essentially, I do need three materials, <strong>but only two at a time</strong>.
+What a coincidence that I have a printer with two heads!</p>
+<h2 id="the-solution-hack">The <del>solution</del> hack</h2>
+<div class="details admonition warning open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-exclamation-triangle fa-fw"></i>Warning<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>This is a hack and may not work for all printers or all slicers.
+Think of this more as a &ldquo;proof of concept&rdquo; than a reliable technique.
+You can likely adapt this technique to other printers but you will need to understand the gCode generated by your slicer and the firmware running on your printer.</p>
+<p>Ideally, this serves as a demonstration and inspires the development of a more robust solution; conceivably, the prusa slicer/firmware could be modified to support this use case directly with not much effort.</p>
+</div>
+        </div>
+    </div>
+<p>The solution is to lie to the slicer and tell it that I have three tool heads.
+This way, I can use correct profiles for each material and the slicer will generate the correct gCode for each material.</p>
+<p>All I have to do is post-process the gCode to pause for a manual material swap at the correct time and then replace all references to the third tool head with the second tool head after the swap.</p>
+<p>Simple, right?</p>
+<p>(yes, but not as simple as I thought)</p>
+<p>This particular part has a little over 400K lines of gCode so I&rsquo;m not going to do this by hand!
+Here&rsquo;s a quick and dirty Python script that rewrote the gCode for me:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="ch">#!/usr/bin/env -S uv run</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># /// script</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># requires-python = &#34;&gt;=3.13&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># dependencies = [</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#   &#34;structlog&#34;,</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># ]</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># ///</span>
+</span></span><span class="line"><span class="cl"><span class="c1">##</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># See: https://github.com/prusa3d/Prusa-Firmware-Buddy/blob/master/lib/Marlin/Marlin/src/gcode/control/T.cpp</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># See: https://help.prusa3d.com/article/buddy-firmware-specific-g-code-commands_633112</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># See: https://old.reddit.com/r/prusa3d/comments/15djlgu/change_filament_settings_mid_print_not_just_colour/ju2c37f/</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">re</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">structlog</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">log</span> <span class="o">=</span> <span class="n">structlog</span><span class="o">.</span><span class="n">get_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">replace_t2_with_t1_after_m600</span><span class="p">(</span><span class="n">input_file</span><span class="p">,</span> <span class="n">output_file</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;&#34;&#34;
+</span></span></span><span class="line"><span class="cl"><span class="s2">    Modifies a GCode file based on the following rules:
+</span></span></span><span class="line"><span class="cl"><span class="s2">    1. Before the `M600` line, comment out any lines mentioning `T2` by adding `; HACK ;`.
+</span></span></span><span class="line"><span class="cl"><span class="s2">    2. After the `M600` line, replace all instances of `T2` with `T1` if surrounded by whitespace.
+</span></span></span><span class="line"><span class="cl"><span class="s2">    3. Lines beginning with `;` are always ignored.
+</span></span></span><span class="line"><span class="cl"><span class="s2">
+</span></span></span><span class="line"><span class="cl"><span class="s2">    Args:
+</span></span></span><span class="line"><span class="cl"><span class="s2">    - input_file: Path to the input GCode file.
+</span></span></span><span class="line"><span class="cl"><span class="s2">    - output_file: Path to the output GCode file.
+</span></span></span><span class="line"><span class="cl"><span class="s2">    &#34;&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">m600_found</span> <span class="o">=</span> <span class="kc">False</span>
+</span></span><span class="line"><span class="cl">    <span class="n">line_number</span> <span class="o">=</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">    <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&#34;Starting...&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">input_file</span><span class="p">,</span> <span class="s2">&#34;r&#34;</span><span class="p">)</span> <span class="k">as</span> <span class="n">infile</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_file</span><span class="p">,</span> <span class="s2">&#34;w&#34;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">infile</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="c1"># For debugging / status</span>
+</span></span><span class="line"><span class="cl">            <span class="n">line_number</span> <span class="o">+=</span> <span class="mi">1</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="c1"># Skip lines starting with a semicolon</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&#34;;&#34;</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">                <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="c1"># For all intents and purposes, tool head 3 (T2) does not exist.</span>
+</span></span><span class="line"><span class="cl">            <span class="c1"># AT the time of the &#34;color swap&#34;, The second tool head stops being a PLA and starts being an ABS tool.</span>
+</span></span><span class="line"><span class="cl">            <span class="c1"># This means that we need to comment out all mentions of T2 before the swap and</span>
+</span></span><span class="line"><span class="cl">            <span class="c1">#   after the swap, re-write everything.</span>
+</span></span><span class="line"><span class="cl">            <span class="c1"># In all cases, we should never refer to T2.</span>
+</span></span><span class="line"><span class="cl">            <span class="c1">##</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="ow">not</span> <span class="n">m600_found</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="c1"># Check for M600 line</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="k">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&#34;^M600$&#34;</span><span class="p">,</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()):</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">m600_found</span> <span class="o">=</span> <span class="kc">True</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&#34;&#39;M600&#39; found!&#34;</span><span class="p">,</span> <span class="n">line_number</span><span class="o">=</span><span class="n">line_number</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                    <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">                <span class="c1"># Comment out lines mentioning T2 before M600</span>
+</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">&#34;\bT2\b&#34;</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">line</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&#34;; HACK ;</span><span class="si">{</span><span class="n">line</span><span class="si">}</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">                        <span class="s2">&#34;Removing mention of Tool Head 3 (t2)&#34;</span><span class="p">,</span> <span class="n">line_number</span><span class="o">=</span><span class="n">line_number</span>
+</span></span><span class="line"><span class="cl">                    <span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="k">continue</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">            <span class="c1"># Replace &#39;T2&#39; with &#39;T1&#39; only if surrounded by whitespace after M600</span>
+</span></span><span class="line"><span class="cl">            <span class="n">modified_line</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&#34;\bT2\b&#34;</span><span class="p">,</span> <span class="s2">&#34;T1&#34;</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">modified_line</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">input_file</span> <span class="o">=</span> <span class="s2">&#34;your_gcode_file_here.gcode&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">output_file</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&#34;MOD.</span><span class="si">{</span><span class="n">input_file</span><span class="si">}</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">replace_t2_with_t1_after_m600</span><span class="p">(</span><span class="n">input_file</span><span class="p">,</span> <span class="n">output_file</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&#34;Done!&#34;</span><span class="p">)</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>I ran that script, loaded the modified gCode into the printer, and&hellip;was not able to fool the printer.</p>
+<figure >
+
+    
+        
+    
+
+    
+
+    <figcaption>
+        
+        <p>
+        Prusa XL refusing to start the print because it knows I&#39;m trying to cheat.
+        
+            
+        
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>The printer was - somehow - aware that the gCode wanted three heads with three distinct materials and refused to start the print until I added a third head.</p>
+<p>As it turns out, that python script isn&rsquo;t quite enough to fool the printer.
+I&rsquo;ll spare you from the many iterative attempts to get this working and say that the following additional optimizations/deletions were necessary:</p>
+<h3 id="manual-fix-1-remove-all-routines-for-the-third-tool-head">Manual fix 1: Remove all routines for the third tool head</h3>
+<p>Somewhere early on in the gCode is a section that looks like this</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="p">;</span> <span class="n">purge</span> <span class="n">third</span> <span class="k">tool</span>
+</span></span><span class="line"><span class="cl"><span class="p">;</span>
+</span></span><span class="line"><span class="cl"><span class="n">G1</span> <span class="n">F24000</span>
+</span></span><span class="line"><span class="cl"><span class="n">P0</span> <span class="n">S1</span> <span class="n">L2</span> <span class="n">D0</span><span class="p">;</span> <span class="n">park</span> <span class="n">the</span> <span class="k">tool</span>
+</span></span><span class="line"><span class="cl"><span class="n">M109</span> <span class="n">T2</span> <span class="n">S255</span>
+</span></span><span class="line"><span class="cl"><span class="n">T2</span> <span class="n">S1</span> <span class="n">L0</span> <span class="n">D0</span><span class="p">;</span> <span class="n">pick</span> <span class="n">the</span> <span class="k">tool</span>
+</span></span><span class="line"><span class="cl"><span class="n">G92</span> <span class="n">E0</span> <span class="p">;</span> <span class="n">reset</span> <span class="n">extruder</span> <span class="n">position</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">M104</span><span class="o">.</span><span class="mi">1</span> <span class="n">T0</span> <span class="n">P13</span> <span class="n">Q13</span> <span class="n">S230</span>
+</span></span><span class="line"><span class="cl"><span class="n">G0</span> <span class="n">X210</span> <span class="n">Y</span><span class="o">-</span><span class="mi">7</span> <span class="n">Z10</span> <span class="n">F24000</span> <span class="p">;</span> <span class="n">move</span> <span class="n">close</span> <span class="n">to</span> <span class="n">the</span> <span class="n">sheet</span><span class="s1">&#39;s edge</span>
+</span></span><span class="line"><span class="cl"><span class="n">G0</span> <span class="n">E30</span> <span class="n">X220</span> <span class="n">Z0</span><span class="o">.</span><span class="mi">2</span> <span class="n">F170</span> <span class="p">;</span> <span class="n">purge</span> <span class="k">while</span> <span class="n">moving</span> <span class="n">towards</span> <span class="n">the</span> <span class="n">sheet</span>
+</span></span><span class="line"><span class="cl"><span class="n">G0</span> <span class="n">X250</span> <span class="n">E9</span> <span class="n">F800</span> <span class="p">;</span> <span class="k">continue</span> <span class="n">purging</span> <span class="ow">and</span> <span class="n">wipe</span> <span class="n">the</span> <span class="n">nozzle</span>
+</span></span><span class="line"><span class="cl"><span class="n">G0</span> <span class="n">X253</span> <span class="n">Z0</span><span class="o">.</span><span class="mi">05</span> <span class="n">F8000</span> <span class="p">;</span> <span class="n">wipe</span><span class="p">,</span> <span class="n">move</span> <span class="n">close</span> <span class="n">to</span> <span class="n">the</span> <span class="n">bed</span>
+</span></span><span class="line"><span class="cl"><span class="n">G0</span> <span class="n">X256</span> <span class="n">Z0</span><span class="o">.</span><span class="mi">2</span> <span class="n">F8000</span> <span class="p">;</span> <span class="n">wipe</span><span class="p">,</span> <span class="n">move</span> <span class="n">quickly</span> <span class="n">away</span> <span class="n">from</span> <span class="n">the</span> <span class="n">bed</span>
+</span></span><span class="line"><span class="cl"><span class="n">G1</span> <span class="n">E</span><span class="o">-</span><span class="mf">1.05</span> <span class="n">F2400</span> <span class="p">;</span> <span class="n">retract</span>
+</span></span><span class="line"><span class="cl"> <span class="p">;</span> <span class="n">update</span> <span class="n">slicer</span> <span class="n">internal</span> <span class="n">retract</span> <span class="n">variable</span>
+</span></span><span class="line"><span class="cl"><span class="n">G92</span> <span class="n">E0</span> <span class="p">;</span> <span class="n">reset</span> <span class="n">extruder</span> <span class="n">position</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">M104</span> <span class="n">S100</span> <span class="n">T2</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>This can be removed from the gCode as there is no physical 3rd head to purge or park, heat up, probe&hellip;etc.</p>
+<p>If the python script naïvely replaced <em>all</em> instances of <code>T2</code> with <code>T1</code>, this section would be left in the gCode and would waste time running the second print head through the same routine twice.</p>
+<h3 id="manual-fix-2-remove-all-metadata">Manual fix 2: Remove all metadata</h3>
+<p>This one took quite a few trial/error attempts to figure out.
+At the tail end of the unmodified gCode there are some &ldquo;shutdown&rdquo; commands and then a ton of metadata:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;... many many lines omitted ...&gt;
+</span></span><span class="line"><span class="cl">; turn off extruder heaters
+</span></span><span class="line"><span class="cl"> M104 T0 S0 
+</span></span><span class="line"><span class="cl"> M104 T1 S0 
+</span></span><span class="line"><span class="cl"> M104 T2 S0 
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">&lt;...&gt;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">; objects_info = {&#34;objects&#34;:&lt;...&gt;}
+</span></span><span class="line"><span class="cl">; filament used [mm] = 24022.62, 2012.80, 3975.01
+</span></span><span class="line"><span class="cl">; filament used [cm3] = 57.78, 4.84, 9.56
+</span></span><span class="line"><span class="cl">&lt;...&gt;
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">; prusaslicer_config = begin
+</span></span><span class="line"><span class="cl">&lt;...&gt;
+</span></span><span class="line"><span class="cl">; filament_type = FLEX;PLA;ABS
+</span></span><span class="line"><span class="cl">&lt;...&gt;
+</span></span><span class="line"><span class="cl">; filament_colour = #408080;#FF8000;#FFF2EC
+</span></span><span class="line"><span class="cl">&lt;...&gt;
+</span></span><span class="line"><span class="cl">; prusaslicer_config = end
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>As best as I can tell, there&rsquo;s a few hundred lines that encode some basic metadata about the part(s) and the filament(s) used / print times and the slicer specific configuration information.
+If you look closely, you can see that a fair number of properties have three values: one for each tool head:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;...&gt;
+</span></span><span class="line"><span class="cl">; filament_type = FLEX;PLA;ABS
+</span></span><span class="line"><span class="cl">&lt;...&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>I spent a few iterations trying to identify what each property did and if it was safe to drop the third value but wasn&rsquo;t making a ton of progress.
+Eventually I just decided to drop <em>all</em> of the metadata&hellip; and that worked!</p>
+<p>Initially I didn&rsquo;t think that the printer firmware would be reading <em>ANY</em> of the <strong>commented out</strong> sections of the file but I guess this makes sense for metadata and anything else that&rsquo;s not a gCode instruction.</p>
+<p>As best as I can tell, nothing contained in the metadata sections changes how the actual print is executed.
+All of the values are for the slicer UI and - in some cases - for the printer firmware to sanity check the gCode before starting the print.</p>
+<p>I could be wrong about this but I don&rsquo;t have the time/patience/resources to properly test this. The gCode works well enough for my needs without the metadata so I&rsquo;m content to move on to the next steps on this project.</p>
+<p>If I am wrong about what the metadata sections do and it turns out that they do help refine/improve how the printer firmware processes instructions&hellip;please do let me know!</p>
+<h2 id="tldr">TL;DR</h2>
+<p>If you have a need to print with more materials than you have tool heads, you <strong>might</strong> be able to trick the slicer/printer into re-configuring a print head mid-print.</p>
+<p>To do this, get the slicer to generate valid and correct gCode for each material/tool head combination as if you had an appropriately configured printer.
+After the gCode has been generated, map every &ldquo;virtual&rdquo; too head to a real tool head and remove any additional references to the virtual tool heads.</p>
+]]></description></item><item><title>Monitoring HVAC system with ESPHome</title><link>https://karlquinsland.com/esphome-hvac-monitor/</link><pubDate>Sat, 02 Nov 2024 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/esphome-hvac-monitor/</guid><description><![CDATA[<h1 id="using-esphome-to-monitor-hvac-system">Using ESPHome to Monitor HVAC System</h1>
 <p>Here&rsquo;s a quick &ldquo;show-and-tell&rdquo; about a recent project I completed.</p>
 <h2 id="the-concept">The concept</h2>
 <p>I&rsquo;m not sure how I first came across the idea of measuring air pressure drop across a filter to gauge its remaining life, but I remember thinking it was a great idea.</p>
@@ -4108,149 +4514,4 @@ The little red and black rubber bands are a nice touch.</p>
 Most of the power switching ICs <em>look</em> like they&rsquo;re from Monolithic Power Systems but I can&rsquo;t confirm exactly.</p>
 <p><a href="https://www.lcsc.com/product-detail/USB-ICs_WCH-Jiangsu-Qin-Heng-CH224K_C970725.html" target="_blank" rel="noopener noreffer">WCH(Jiangsu Qin Heng) CH224K</a></p>
 <p>Main CPU is <a href="https://www.arterychip.com/en/product/AT32F415.jsp" target="_blank" rel="noopener noreffer">Artery AT32F415</a></p>
-]]></description></item><item><title>Inside of the Pulse-Eight HDMI CEC Injector.</title><link>https://karlquinsland.com/pulse-eight-hdmi-cec-injector-teardown/</link><pubDate>Fri, 01 Dec 2023 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/pulse-eight-hdmi-cec-injector-teardown/</guid><description><![CDATA[<h1 id="inside-the-pulse-eight-hdmi-cec-injector">Inside the Pulse-Eight HDMI CEC Injector</h1>
-<p>To make a long store short, Google recently pushed a few updates to my TV that made it slow as all hell and frustratingly unusable.
-I finally got fed up with the laggy UI and dug out an old mini PC and installed <a href="https://libreelec.tv/" target="_blank" rel="noopener noreffer">LibreELEC</a> on it.</p>
-<p>Everything worked perfectly <em>except</em> for the lack of <a href="https://en.wikipedia.org/wiki/Consumer_Electronics_Control" target="_blank" rel="noopener noreffer">CEC</a> support on the mini PC.</p>
-<p>This is a common enough problem that there&rsquo;s a few different devices out there that can add CEC support to a device that doesn&rsquo;t have it.
-I chose the <a href="https://www.pulse-eight.com/p/104/usb-hdmi-cec-adapter" target="_blank" rel="noopener noreffer">Pulse-Eight HDMI CEC Injector</a> because it&rsquo;s natively supported by LibreELEC.</p>
-<p>I was curious what was inside and I couldn&rsquo;t find any teardowns online so I decided to do one myself.
-There&rsquo;s not much to the device and I&rsquo;m not doing any serious reverse engineering here so let&rsquo;s call this a <a href="/tags/two-minute-teardown/" rel="">&ldquo;Two Minute Teardown&rdquo;</a>.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        The device is small and unassuming.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Opening is trivial. No glue or anything. Just a few pins and sockets. Gently pry the two halves apart and you&#39;re in.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>I wasn&rsquo;t expecting much; I thought CEC was implemented via UART and not SPI so I was expecting to see a cheap FTDI knockoff chip or similar.
-Turns out I was wrong and the device uses an <a href="https://www.microchip.com/en-us/product/at90usb162" target="_blank" rel="noopener noreffer">ATMEL 90USB162</a> which is a USB to SPI bridge.
-I haven&rsquo;t looked too closely at the <a href="https://github.com/Pulse-Eight/libcec" target="_blank" rel="noopener noreffer">firmware</a> but I suspect there&rsquo;s some abstraction layer that makes it look like a <a href="#dmesg" rel="">UART</a> to the OS.</p>
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Other than a few passives, there&#39;s only one chip on the board.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        Nothing interesting other than a programming header.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-    
-
-    
-
-    <figcaption>
-        
-        <p>
-        The full PCB sans case.
-        
-            
-        
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<h2 id="dmesg"><code>dmesg</code></h2>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">usb 5-4.1.2.3.2: new full-speed USB device number <span class="m">2</span> using xhci_hcd
-</span></span><span class="line"><span class="cl">usb 5-4.1.2.3.2: New USB device found, <span class="nv">idVendor</span><span class="o">=</span>2548, <span class="nv">idProduct</span><span class="o">=</span>1002, <span class="nv">bcdDevice</span><span class="o">=</span>10.00
-</span></span><span class="line"><span class="cl">usb 5-4.1.2.3.2: New USB device strings: <span class="nv">Mfr</span><span class="o">=</span>1, <span class="nv">Product</span><span class="o">=</span>2, <span class="nv">SerialNumber</span><span class="o">=</span><span class="m">3</span>
-</span></span><span class="line"><span class="cl">usb 5-4.1.2.3.2: Product: CEC Adapter
-</span></span><span class="line"><span class="cl">usb 5-4.1.2.3.2: Manufacturer: Pulse-Eight
-</span></span><span class="line"><span class="cl">usb 5-4.1.2.3.2: SerialNumber: v12
-</span></span><span class="line"><span class="cl">input: Pulse-Eight CEC Adapter as /devices/pci0000:00/0000:00:08.1/0000:0d:00.3/usb5/5-4/5-4.1/5-4.1.2/5-4.1.2.3/5-4.1.2.3.2/5-4.1.2.3.2:1.2/0003:2548:1002.0102/input/input195
-</span></span><span class="line"><span class="cl">hid-generic 0003:2548:1002.0102: input,hidraw10: USB HID v1.10 Mouse <span class="o">[</span>Pulse-Eight CEC Adapter<span class="o">]</span> on usb-0000:0d:00.3-4.1.2.3.2/input2
-</span></span><span class="line"><span class="cl">cdc_acm 5-4.1.2.3.2:1.0: ttyACM0: USB ACM device
-</span></span><span class="line"><span class="cl">usbcore: registered new interface driver cdc_acm
-</span></span><span class="line"><span class="cl">cdc_acm: USB Abstract Control Model driver <span class="k">for</span> USB modems and ISDN adapters
-</span></span></code></pre></td></tr></table>
-</div>
-</div>]]></description></item></channel></rss>
+]]></description></item></channel></rss>

@@ -1,0 +1,263 @@
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><meta http-equiv=X-UA-Compatible content="IE=edge, chrome=1"><title>Multi-Material Printing Hack for Prusa XL - karl</title><meta name=Description content="A quick hack to print with three materials on a dual-headed Prusa XL."><meta property="og:url" content="https://karlquinsland.com/multi-material-printing-hack/">
+<meta property="og:site_name" content="karl"><meta property="og:title" content="Multi-Material Printing Hack for Prusa XL"><meta property="og:description" content="A quick hack to print with three materials on a dual-headed Prusa XL."><meta property="og:locale" content="en_us"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2024-12-25T00:00:00+00:00"><meta property="article:modified_time" content="2024-12-25T10:08:52-08:00"><meta property="article:tag" content="Short-Posts"><meta property="article:tag" content="Tip"><meta property="og:image" content="https://karlquinsland.com/images/avatar.png"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://karlquinsland.com/images/avatar.png"><meta name=twitter:title content="Multi-Material Printing Hack for Prusa XL"><meta name=twitter:description content="A quick hack to print with three materials on a dual-headed Prusa XL."><meta name=twitter:site content="@somerandomguy"><meta name=application-name content="karl"><meta name=apple-mobile-web-app-title content="karl"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=https://karlquinsland.com/favicon.ico><link rel=icon type=image/png sizes=32x32 href=https://karlquinsland.com/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=https://karlquinsland.com/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=https://karlquinsland.com/apple-touch-icon.png><link rel=mask-icon href=https://karlquinsland.com/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=https://karlquinsland.com/site.webmanifest><link rel=canonical href=https://karlquinsland.com/multi-material-printing-hack/><link rel=prev href=https://karlquinsland.com/esphome-hvac-monitor/><link rel=stylesheet href=https://karlquinsland.com/lib/normalize/normalize.min.055364f5be272caa092b0e6654c165828707f8ab971e2656383a6d6392bc345e.css integrity="sha256-BVNk9b4nLKoJKw5mVMFlgocH+KuXHiZWODptY5K8NF4="><link rel=stylesheet href=https://karlquinsland.com/css/style.min.1e2694bed152fa2922dbe909a441838ed693d88b1330f97485bfa8ed78da42df.css integrity="sha256-HiaUvtFS+iki2+kJpEGDjtaT2IsTMPl0hb+o7XjaQt8="><link rel=stylesheet href=https://karlquinsland.com/lib/fontawesome-free/all.min.876d023d9d10c97941b80c3b03e2a5b94631ff7a4af9cee5604a6a2d39718d84.css integrity="sha256-h20CPZ0QyXlBuAw7A+KluUYx/3pK+c7lYEpqLTlxjYQ="><link rel=stylesheet href=https://karlquinsland.com/lib/animate/animate.min.3c770e90f98eb21b0c042fafb49755af93306fbaf42e449524f94fae9fc83295.css integrity="sha256-PHcOkPmOshsMBC+vtJdVr5Mwb7r0LkSVJPlPrp/IMpU="><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Multi-Material Printing Hack for Prusa XL","inLanguage":"en-us","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/karlquinsland.com\/multi-material-printing-hack\/"},"genre":"posts","keywords":"short-posts, tip","wordcount":1727,"url":"https:\/\/karlquinsland.com\/multi-material-printing-hack\/","datePublished":"2024-12-25T00:00:00+00:00","dateModified":"2024-12-25T10:08:52-08:00","publisher":{"@type":"Organization","name":""},"author":{"@type":"Person","name":"Author"},"description":"A quick hack to print with three materials on a dual-headed Prusa XL."}</script></head><body header-desktop=fixed header-mobile=auto><script type=text/javascript>(window.localStorage&&localStorage.getItem("theme")?localStorage.getItem("theme")==="dark":"auto"==="auto"?window.matchMedia("(prefers-color-scheme: dark)").matches:"auto"==="dark")&&document.body.setAttribute("theme","dark")</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=https://karlquinsland.com/ title=karl>Karl</a></div><div class=menu><div class=menu-inner><a class=menu-item href=https://karlquinsland.com/posts/><i class="fas fa-blog"></i> Posts </a><a class=menu-item href=https://karlquinsland.com/resume/ title="Hire Me!"><i class="fas fa-briefcase"></i> Résumé </a><a class=menu-item href=https://karlquinsland.com/tags/ title="Can you tell that I don't have a super consistent or clear taxonomy?"><i class="fas fa-tags"></i> Tags </a><a class=menu-item href=https://karlquinsland.com/contact/><i class="fas fa-address-book"></i> Contact </a><span class="menu-item delimiter"></span><span class="menu-item search" id=search-desktop>
+<input type=text placeholder="Search titles or contents..." id=search-input-desktop>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=Search><i class="fas fa-search fa-fw"></i>
+</a><a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=Clear><i class="fas fa-times-circle fa-fw"></i>
+</a><span class="search-button search-loading" id=search-loading-desktop><i class="fas fa-spinner fa-fw fa-spin"></i>
+</span></span><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme"><i class="fas fa-adjust fa-fw"></i></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=https://karlquinsland.com/ title=karl>Karl</a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><div class=search-wrapper><div class="search mobile" id=search-mobile><input type=text placeholder="Search titles or contents..." id=search-input-mobile>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=Search><i class="fas fa-search fa-fw"></i>
+</a><a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=Clear><i class="fas fa-times-circle fa-fw"></i>
+</a><span class="search-button search-loading" id=search-loading-mobile><i class="fas fa-spinner fa-fw fa-spin"></i></span></div><a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>Cancel</a></div><a class=menu-item href=https://karlquinsland.com/posts/ title><i class="fas fa-blog"></i>Posts</a><a class=menu-item href=https://karlquinsland.com/resume/ title="Hire Me!"><i class="fas fa-briefcase"></i>Résumé</a><a class=menu-item href=https://karlquinsland.com/tags/ title="Can you tell that I don't have a super consistent or clear taxonomy?"><i class="fas fa-tags"></i>Tags</a><a class=menu-item href=https://karlquinsland.com/contact/ title><i class="fas fa-address-book"></i>Contact</a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw"></i></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>Contents</h2><div class=toc-content id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animated flipInX">Multi-Material Printing Hack for Prusa XL</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=https://karlquinsland.com/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw"></i>Author</a></span>&nbsp;<span class=post-category>included in <a href=https://karlquinsland.com/categories/3d-printing/><i class="far fa-folder fa-fw"></i>3D Printing</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw"></i>&nbsp;<time datetime=2024-12-25>2024-12-25</time>&nbsp;<i class="fas fa-pencil-alt fa-fw"></i>&nbsp;1727 words&nbsp;
+<i class="far fa-clock fa-fw"></i>&nbsp;9 minutes&nbsp;</div></div><div class="details toc" id=toc-static kept=true><div class="details-summary toc-title"><span>Contents</span>
+<span><i class="details-icon fas fa-angle-right"></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><ul><li><a href=#the-problem>The problem</a></li><li><a href=#the-loophole>The loophole</a></li><li><a href=#the-solution-hack>The <del>solution</del> hack</a><ul><li><a href=#manual-fix-1-remove-all-routines-for-the-third-tool-head>Manual fix 1: Remove all routines for the third tool head</a></li><li><a href=#manual-fix-2-remove-all-metadata>Manual fix 2: Remove all metadata</a></li></ul></li><li><a href=#tldr>TL;DR</a></li></ul></li></ul></nav></div></div><div class=content id=content><p>In the same spirit as <a href=https://karlquinsland.com/extending-the-mk3s-print-area/ rel>an earlier post</a>, here is a quick hack I used to get my <strong>dual</strong>-headed Prusa XL printer to print with <strong>three</strong> materials at once.</p><p>While the technique worked, it may not be the best method, so proceed with caution.</p><h2 id=the-problem>The problem</h2><p>I am trying to print a part that requires two different materials at the same time: ABS and TPU.</p><figure><img src=https://karlquinsland.com/multi-material-printing-hack/images/ball_sa_01.png alt="The shaded blue area is meant to be TPU/FLEX material. The shaded yellow area is meant to be ABS material."><figcaption><p>The shaded blue area is meant to be TPU/FLEX material. The shaded yellow area is meant to be ABS material.</p></figcaption></figure><p>The first complication comes from the &ldquo;unfriendly&rdquo; shape; the part is spherical and has no ideal orientation for printing without any supports.</p><figure><img src=https://karlquinsland.com/multi-material-printing-hack/images/ball_slicer_01.png alt="Grey is TPU, Green is ABS, and the Blue/Grey mix is the support material composed of interleaved PLA and TPU layers."><figcaption><p>Grey is TPU, Green is ABS, and the Blue/Grey mix is the support material composed of interleaved PLA and TPU layers.</p></figcaption></figure><p>To make matters slightly more complicated, TPU is one of those filaments that likes to stick to pretty much everything; I have few good options for support material.
+The <a href="https://www.youtube.com/watch?v=5VV2fbJ0apg" target=_blank rel="noopener noreffer"><em>least</em> sticky material</a> is PLA.</p><p>So now I have a single job that requires three materials: ABS, TPU, and PLA&mldr;. but still only two print heads to work with.</p><p>What to do?</p><p>Usually when faced with the &ldquo;more materials than heads&rdquo; problem, the solution is to use the <a href=https://marlinfw.org/docs/gcode/M600.html target=_blank rel="noopener noreffer"><code>M600</code></a> gCode command to have the printer pause, eject the current material and wait for the user to load the new material.</p><p>This technique is not new; it&rsquo;s widely supported and works perfectly <strong>if</strong> the materials are similar enough that the extrusion settings can be shared between them.</p><p>For my part, the tool head will have to transition from <code>PLA</code> to <code>ABS</code> which means virtually every instruction in the gCode will have to change as well.</p><h2 id=the-loophole>The loophole</h2><p>Fortunately, the geometry for this part has a &ldquo;gap&rdquo; between the initial section where supports are needed and the internal section where the ABS material is needed.</p><figure><img src=https://karlquinsland.com/multi-material-printing-hack/images/ball_slicer_02.png alt="This is the 'per-layer' view from the slicer with a 'bottom-up' perspective. As before, Grey is TPU, Green is ABS, and the thin blue circle represents the topmost layer of the support material."><figcaption><p>This is the 'per-layer' view from the slicer with a 'bottom-up' perspective. As before, Grey is TPU, Green is ABS, and the thin blue circle represents the topmost layer of the support material.</p></figcaption></figure><p>Notice that the <em>last</em> support layer (blue circle) is still a few layers away from the first ABS layer (the green section).</p><p>Essentially, I do need three materials, <strong>but only two at a time</strong>.
+What a coincidence that I have a printer with two heads!</p><h2 id=the-solution-hack>The <del>solution</del> hack</h2><div class="details admonition warning open"><div class="details-summary admonition-title"><i class="icon fas fa-exclamation-triangle fa-fw"></i>Warning<i class="details-icon fas fa-angle-right fa-fw"></i></div><div class=details-content><div class=admonition-content><p>This is a hack and may not work for all printers or all slicers.
+Think of this more as a &ldquo;proof of concept&rdquo; than a reliable technique.
+You can likely adapt this technique to other printers but you will need to understand the gCode generated by your slicer and the firmware running on your printer.</p><p>Ideally, this serves as a demonstration and inspires the development of a more robust solution; conceivably, the prusa slicer/firmware could be modified to support this use case directly with not much effort.</p></div></div></div><p>The solution is to lie to the slicer and tell it that I have three tool heads.
+This way, I can use correct profiles for each material and the slicer will generate the correct gCode for each material.</p><p>All I have to do is post-process the gCode to pause for a manual material swap at the correct time and then replace all references to the third tool head with the second tool head after the swap.</p><p>Simple, right?</p><p>(yes, but not as simple as I thought)</p><p>This particular part has a little over 400K lines of gCode so I&rsquo;m not going to do this by hand!
+Here&rsquo;s a quick and dirty Python script that rewrote the gCode for me:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span><span class=lnt>42
+</span><span class=lnt>43
+</span><span class=lnt>44
+</span><span class=lnt>45
+</span><span class=lnt>46
+</span><span class=lnt>47
+</span><span class=lnt>48
+</span><span class=lnt>49
+</span><span class=lnt>50
+</span><span class=lnt>51
+</span><span class=lnt>52
+</span><span class=lnt>53
+</span><span class=lnt>54
+</span><span class=lnt>55
+</span><span class=lnt>56
+</span><span class=lnt>57
+</span><span class=lnt>58
+</span><span class=lnt>59
+</span><span class=lnt>60
+</span><span class=lnt>61
+</span><span class=lnt>62
+</span><span class=lnt>63
+</span><span class=lnt>64
+</span><span class=lnt>65
+</span><span class=lnt>66
+</span><span class=lnt>67
+</span><span class=lnt>68
+</span><span class=lnt>69
+</span><span class=lnt>70
+</span><span class=lnt>71
+</span><span class=lnt>72
+</span><span class=lnt>73
+</span><span class=lnt>74
+</span><span class=lnt>75
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-python data-lang=python><span class=line><span class=cl><span class=ch>#!/usr/bin/env -S uv run</span>
+</span></span><span class=line><span class=cl><span class=c1># /// script</span>
+</span></span><span class=line><span class=cl><span class=c1># requires-python = &#34;&gt;=3.13&#34;</span>
+</span></span><span class=line><span class=cl><span class=c1># dependencies = [</span>
+</span></span><span class=line><span class=cl><span class=c1>#   &#34;structlog&#34;,</span>
+</span></span><span class=line><span class=cl><span class=c1># ]</span>
+</span></span><span class=line><span class=cl><span class=c1># ///</span>
+</span></span><span class=line><span class=cl><span class=c1>##</span>
+</span></span><span class=line><span class=cl><span class=c1># See: https://github.com/prusa3d/Prusa-Firmware-Buddy/blob/master/lib/Marlin/Marlin/src/gcode/control/T.cpp</span>
+</span></span><span class=line><span class=cl><span class=c1># See: https://help.prusa3d.com/article/buddy-firmware-specific-g-code-commands_633112</span>
+</span></span><span class=line><span class=cl><span class=c1># See: https://old.reddit.com/r/prusa3d/comments/15djlgu/change_filament_settings_mid_print_not_just_colour/ju2c37f/</span>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>re</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=kn>import</span> <span class=nn>structlog</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>log</span> <span class=o>=</span> <span class=n>structlog</span><span class=o>.</span><span class=n>get_logger</span><span class=p>(</span><span class=vm>__name__</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=k>def</span> <span class=nf>replace_t2_with_t1_after_m600</span><span class=p>(</span><span class=n>input_file</span><span class=p>,</span> <span class=n>output_file</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>    <span class=s2>&#34;&#34;&#34;
+</span></span></span><span class=line><span class=cl><span class=s2>    Modifies a GCode file based on the following rules:
+</span></span></span><span class=line><span class=cl><span class=s2>    1. Before the `M600` line, comment out any lines mentioning `T2` by adding `; HACK ;`.
+</span></span></span><span class=line><span class=cl><span class=s2>    2. After the `M600` line, replace all instances of `T2` with `T1` if surrounded by whitespace.
+</span></span></span><span class=line><span class=cl><span class=s2>    3. Lines beginning with `;` are always ignored.
+</span></span></span><span class=line><span class=cl><span class=s2>
+</span></span></span><span class=line><span class=cl><span class=s2>    Args:
+</span></span></span><span class=line><span class=cl><span class=s2>    - input_file: Path to the input GCode file.
+</span></span></span><span class=line><span class=cl><span class=s2>    - output_file: Path to the output GCode file.
+</span></span></span><span class=line><span class=cl><span class=s2>    &#34;&#34;&#34;</span>
+</span></span><span class=line><span class=cl>    <span class=n>m600_found</span> <span class=o>=</span> <span class=kc>False</span>
+</span></span><span class=line><span class=cl>    <span class=n>line_number</span> <span class=o>=</span> <span class=mi>0</span>
+</span></span><span class=line><span class=cl>    <span class=n>log</span><span class=o>.</span><span class=n>info</span><span class=p>(</span><span class=s2>&#34;Starting...&#34;</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>    <span class=k>with</span> <span class=nb>open</span><span class=p>(</span><span class=n>input_file</span><span class=p>,</span> <span class=s2>&#34;r&#34;</span><span class=p>)</span> <span class=k>as</span> <span class=n>infile</span><span class=p>,</span> <span class=nb>open</span><span class=p>(</span><span class=n>output_file</span><span class=p>,</span> <span class=s2>&#34;w&#34;</span><span class=p>)</span> <span class=k>as</span> <span class=n>outfile</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>        <span class=k>for</span> <span class=n>line</span> <span class=ow>in</span> <span class=n>infile</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>            <span class=c1># For debugging / status</span>
+</span></span><span class=line><span class=cl>            <span class=n>line_number</span> <span class=o>+=</span> <span class=mi>1</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>            <span class=c1># Skip lines starting with a semicolon</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=n>line</span><span class=o>.</span><span class=n>strip</span><span class=p>()</span><span class=o>.</span><span class=n>startswith</span><span class=p>(</span><span class=s2>&#34;;&#34;</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>                <span class=n>outfile</span><span class=o>.</span><span class=n>write</span><span class=p>(</span><span class=n>line</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>                <span class=k>continue</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>            <span class=c1># For all intents and purposes, tool head 3 (T2) does not exist.</span>
+</span></span><span class=line><span class=cl>            <span class=c1># AT the time of the &#34;color swap&#34;, The second tool head stops being a PLA and starts being an ABS tool.</span>
+</span></span><span class=line><span class=cl>            <span class=c1># This means that we need to comment out all mentions of T2 before the swap and</span>
+</span></span><span class=line><span class=cl>            <span class=c1>#   after the swap, re-write everything.</span>
+</span></span><span class=line><span class=cl>            <span class=c1># In all cases, we should never refer to T2.</span>
+</span></span><span class=line><span class=cl>            <span class=c1>##</span>
+</span></span><span class=line><span class=cl>            <span class=k>if</span> <span class=ow>not</span> <span class=n>m600_found</span><span class=p>:</span>
+</span></span><span class=line><span class=cl>                <span class=c1># Check for M600 line</span>
+</span></span><span class=line><span class=cl>                <span class=k>if</span> <span class=n>re</span><span class=o>.</span><span class=k>match</span><span class=p>(</span><span class=sa>r</span><span class=s2>&#34;^M600$&#34;</span><span class=p>,</span> <span class=n>line</span><span class=o>.</span><span class=n>strip</span><span class=p>()):</span>
+</span></span><span class=line><span class=cl>                    <span class=n>m600_found</span> <span class=o>=</span> <span class=kc>True</span>
+</span></span><span class=line><span class=cl>                    <span class=n>log</span><span class=o>.</span><span class=n>info</span><span class=p>(</span><span class=s2>&#34;&#39;M600&#39; found!&#34;</span><span class=p>,</span> <span class=n>line_number</span><span class=o>=</span><span class=n>line_number</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>                    <span class=n>outfile</span><span class=o>.</span><span class=n>write</span><span class=p>(</span><span class=n>line</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>                    <span class=k>continue</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>                <span class=c1># Comment out lines mentioning T2 before M600</span>
+</span></span><span class=line><span class=cl>                <span class=k>if</span> <span class=n>re</span><span class=o>.</span><span class=n>search</span><span class=p>(</span><span class=sa>r</span><span class=s2>&#34;\bT2\b&#34;</span><span class=p>,</span> <span class=n>line</span><span class=p>):</span>
+</span></span><span class=line><span class=cl>                    <span class=n>line</span> <span class=o>=</span> <span class=sa>f</span><span class=s2>&#34;; HACK ;</span><span class=si>{</span><span class=n>line</span><span class=si>}</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl>                    <span class=n>log</span><span class=o>.</span><span class=n>debug</span><span class=p>(</span>
+</span></span><span class=line><span class=cl>                        <span class=s2>&#34;Removing mention of Tool Head 3 (t2)&#34;</span><span class=p>,</span> <span class=n>line_number</span><span class=o>=</span><span class=n>line_number</span>
+</span></span><span class=line><span class=cl>                    <span class=p>)</span>
+</span></span><span class=line><span class=cl>                <span class=n>outfile</span><span class=o>.</span><span class=n>write</span><span class=p>(</span><span class=n>line</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>                <span class=k>continue</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>            <span class=c1># Replace &#39;T2&#39; with &#39;T1&#39; only if surrounded by whitespace after M600</span>
+</span></span><span class=line><span class=cl>            <span class=n>modified_line</span> <span class=o>=</span> <span class=n>re</span><span class=o>.</span><span class=n>sub</span><span class=p>(</span><span class=sa>r</span><span class=s2>&#34;\bT2\b&#34;</span><span class=p>,</span> <span class=s2>&#34;T1&#34;</span><span class=p>,</span> <span class=n>line</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>            <span class=n>outfile</span><span class=o>.</span><span class=n>write</span><span class=p>(</span><span class=n>modified_line</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>input_file</span> <span class=o>=</span> <span class=s2>&#34;your_gcode_file_here.gcode&#34;</span>
+</span></span><span class=line><span class=cl><span class=n>output_file</span> <span class=o>=</span> <span class=sa>f</span><span class=s2>&#34;MOD.</span><span class=si>{</span><span class=n>input_file</span><span class=si>}</span><span class=s2>&#34;</span>
+</span></span><span class=line><span class=cl><span class=n>replace_t2_with_t1_after_m600</span><span class=p>(</span><span class=n>input_file</span><span class=p>,</span> <span class=n>output_file</span><span class=p>)</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>log</span><span class=o>.</span><span class=n>info</span><span class=p>(</span><span class=s2>&#34;Done!&#34;</span><span class=p>)</span>
+</span></span></code></pre></td></tr></table></div></div><p>I ran that script, loaded the modified gCode into the printer, and&mldr;was not able to fool the printer.</p><figure><img src=https://karlquinsland.com/multi-material-printing-hack/images/printer_01.jpg alt="Prusa XL refusing to start the print because it knows I'm trying to cheat."><figcaption><p>Prusa XL refusing to start the print because it knows I'm trying to cheat.</p></figcaption></figure><p>The printer was - somehow - aware that the gCode wanted three heads with three distinct materials and refused to start the print until I added a third head.</p><p>As it turns out, that python script isn&rsquo;t quite enough to fool the printer.
+I&rsquo;ll spare you from the many iterative attempts to get this working and say that the following additional optimizations/deletions were necessary:</p><h3 id=manual-fix-1-remove-all-routines-for-the-third-tool-head>Manual fix 1: Remove all routines for the third tool head</h3><p>Somewhere early on in the gCode is a section that looks like this</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-gdscript3 data-lang=gdscript3><span class=line><span class=cl><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=p>;</span> <span class=n>purge</span> <span class=n>third</span> <span class=k>tool</span>
+</span></span><span class=line><span class=cl><span class=p>;</span>
+</span></span><span class=line><span class=cl><span class=n>G1</span> <span class=n>F24000</span>
+</span></span><span class=line><span class=cl><span class=n>P0</span> <span class=n>S1</span> <span class=n>L2</span> <span class=n>D0</span><span class=p>;</span> <span class=n>park</span> <span class=n>the</span> <span class=k>tool</span>
+</span></span><span class=line><span class=cl><span class=n>M109</span> <span class=n>T2</span> <span class=n>S255</span>
+</span></span><span class=line><span class=cl><span class=n>T2</span> <span class=n>S1</span> <span class=n>L0</span> <span class=n>D0</span><span class=p>;</span> <span class=n>pick</span> <span class=n>the</span> <span class=k>tool</span>
+</span></span><span class=line><span class=cl><span class=n>G92</span> <span class=n>E0</span> <span class=p>;</span> <span class=n>reset</span> <span class=n>extruder</span> <span class=n>position</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>M104</span><span class=o>.</span><span class=mi>1</span> <span class=n>T0</span> <span class=n>P13</span> <span class=n>Q13</span> <span class=n>S230</span>
+</span></span><span class=line><span class=cl><span class=n>G0</span> <span class=n>X210</span> <span class=n>Y</span><span class=o>-</span><span class=mi>7</span> <span class=n>Z10</span> <span class=n>F24000</span> <span class=p>;</span> <span class=n>move</span> <span class=n>close</span> <span class=n>to</span> <span class=n>the</span> <span class=n>sheet</span><span class=s1>&#39;s edge</span>
+</span></span><span class=line><span class=cl><span class=n>G0</span> <span class=n>E30</span> <span class=n>X220</span> <span class=n>Z0</span><span class=o>.</span><span class=mi>2</span> <span class=n>F170</span> <span class=p>;</span> <span class=n>purge</span> <span class=k>while</span> <span class=n>moving</span> <span class=n>towards</span> <span class=n>the</span> <span class=n>sheet</span>
+</span></span><span class=line><span class=cl><span class=n>G0</span> <span class=n>X250</span> <span class=n>E9</span> <span class=n>F800</span> <span class=p>;</span> <span class=k>continue</span> <span class=n>purging</span> <span class=ow>and</span> <span class=n>wipe</span> <span class=n>the</span> <span class=n>nozzle</span>
+</span></span><span class=line><span class=cl><span class=n>G0</span> <span class=n>X253</span> <span class=n>Z0</span><span class=o>.</span><span class=mi>05</span> <span class=n>F8000</span> <span class=p>;</span> <span class=n>wipe</span><span class=p>,</span> <span class=n>move</span> <span class=n>close</span> <span class=n>to</span> <span class=n>the</span> <span class=n>bed</span>
+</span></span><span class=line><span class=cl><span class=n>G0</span> <span class=n>X256</span> <span class=n>Z0</span><span class=o>.</span><span class=mi>2</span> <span class=n>F8000</span> <span class=p>;</span> <span class=n>wipe</span><span class=p>,</span> <span class=n>move</span> <span class=n>quickly</span> <span class=n>away</span> <span class=n>from</span> <span class=n>the</span> <span class=n>bed</span>
+</span></span><span class=line><span class=cl><span class=n>G1</span> <span class=n>E</span><span class=o>-</span><span class=mf>1.05</span> <span class=n>F2400</span> <span class=p>;</span> <span class=n>retract</span>
+</span></span><span class=line><span class=cl> <span class=p>;</span> <span class=n>update</span> <span class=n>slicer</span> <span class=n>internal</span> <span class=n>retract</span> <span class=n>variable</span>
+</span></span><span class=line><span class=cl><span class=n>G92</span> <span class=n>E0</span> <span class=p>;</span> <span class=n>reset</span> <span class=n>extruder</span> <span class=n>position</span>
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl><span class=n>M104</span> <span class=n>S100</span> <span class=n>T2</span>
+</span></span></code></pre></td></tr></table></div></div><p>This can be removed from the gCode as there is no physical 3rd head to purge or park, heat up, probe&mldr;etc.</p><p>If the python script naïvely replaced <em>all</em> instances of <code>T2</code> with <code>T1</code>, this section would be left in the gCode and would waste time running the second print head through the same routine twice.</p><h3 id=manual-fix-2-remove-all-metadata>Manual fix 2: Remove all metadata</h3><p>This one took quite a few trial/error attempts to figure out.
+At the tail end of the unmodified gCode there are some &ldquo;shutdown&rdquo; commands and then a ton of metadata:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>&lt;... many many lines omitted ...&gt;
+</span></span><span class=line><span class=cl>; turn off extruder heaters
+</span></span><span class=line><span class=cl> M104 T0 S0 
+</span></span><span class=line><span class=cl> M104 T1 S0 
+</span></span><span class=line><span class=cl> M104 T2 S0 
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>&lt;...&gt;
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>; objects_info = {&#34;objects&#34;:&lt;...&gt;}
+</span></span><span class=line><span class=cl>; filament used [mm] = 24022.62, 2012.80, 3975.01
+</span></span><span class=line><span class=cl>; filament used [cm3] = 57.78, 4.84, 9.56
+</span></span><span class=line><span class=cl>&lt;...&gt;
+</span></span><span class=line><span class=cl>
+</span></span><span class=line><span class=cl>; prusaslicer_config = begin
+</span></span><span class=line><span class=cl>&lt;...&gt;
+</span></span><span class=line><span class=cl>; filament_type = FLEX;PLA;ABS
+</span></span><span class=line><span class=cl>&lt;...&gt;
+</span></span><span class=line><span class=cl>; filament_colour = #408080;#FF8000;#FFF2EC
+</span></span><span class=line><span class=cl>&lt;...&gt;
+</span></span><span class=line><span class=cl>; prusaslicer_config = end
+</span></span></code></pre></td></tr></table></div></div><p>As best as I can tell, there&rsquo;s a few hundred lines that encode some basic metadata about the part(s) and the filament(s) used / print times and the slicer specific configuration information.
+If you look closely, you can see that a fair number of properties have three values: one for each tool head:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-fallback data-lang=fallback><span class=line><span class=cl>&lt;...&gt;
+</span></span><span class=line><span class=cl>; filament_type = FLEX;PLA;ABS
+</span></span><span class=line><span class=cl>&lt;...&gt;
+</span></span></code></pre></td></tr></table></div></div><p>I spent a few iterations trying to identify what each property did and if it was safe to drop the third value but wasn&rsquo;t making a ton of progress.
+Eventually I just decided to drop <em>all</em> of the metadata&mldr; and that worked!</p><p>Initially I didn&rsquo;t think that the printer firmware would be reading <em>ANY</em> of the <strong>commented out</strong> sections of the file but I guess this makes sense for metadata and anything else that&rsquo;s not a gCode instruction.</p><p>As best as I can tell, nothing contained in the metadata sections changes how the actual print is executed.
+All of the values are for the slicer UI and - in some cases - for the printer firmware to sanity check the gCode before starting the print.</p><p>I could be wrong about this but I don&rsquo;t have the time/patience/resources to properly test this. The gCode works well enough for my needs without the metadata so I&rsquo;m content to move on to the next steps on this project.</p><p>If I am wrong about what the metadata sections do and it turns out that they do help refine/improve how the printer firmware processes instructions&mldr;please do let me know!</p><h2 id=tldr>TL;DR</h2><p>If you have a need to print with more materials than you have tool heads, you <strong>might</strong> be able to trick the slicer/printer into re-configuring a print head mid-print.</p><p>To do this, get the slicer to generate valid and correct gCode for each material/tool head combination as if you had an appropriately configured printer.
+After the gCode has been generated, map every &ldquo;virtual&rdquo; too head to a real tool head and remove any additional references to the virtual tool heads.</p></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>Updated on 2024-12-25&nbsp;<a class=git-hash href=https://github.com/kquinsland/kquinsland.github.io/commit/fdc113bf7bd27b934b97d0022410a68115a86cbf target=_blank title="commit by karl(github@karlquinsland.com) fdc113bf7bd27b934b97d0022410a68115a86cbf: bit more polish">
+<i class="fas fa-hashtag fa-fw"></i>fdc113b</a></span></div><div class=post-info-license></div></div><div class=post-info-line><div class=post-info-md><span><a class=link-to-markdown href=https://karlquinsland.com/multi-material-printing-hack/index.md target=_blank>Read Markdown</a></span></div><div class=post-info-share><span></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=https://karlquinsland.com/tags/short-posts/>Short-Posts</a>,&nbsp;<a href=https://karlquinsland.com/tags/tip/>Tip</a></section><section><span><a href=javascript:void(0); onclick=window.history.back()>Back</a></span>&nbsp;|&nbsp;<span><a href=https://karlquinsland.com/>Home</a></span></section></div><div class=post-nav><a href=https://karlquinsland.com/esphome-hvac-monitor/ class=prev rel=prev title="Monitoring HVAC system with ESPHome"><i class="fas fa-angle-left fa-fw"></i>Monitoring HVAC system with ESPHome</a></div></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line>¯\_(ツ)_/¯</div><div class=footer-line>Powered by <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.140.1">Hugo</a> | Theme - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a></div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2019 - 2024</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=https://karlquinsland.com/ target=_blank></a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top"><i class="fas fa-arrow-up fa-fw"></i>
+</a><a href=# id=view-comments class=fixed-button title="View Comments"><i class="fas fa-comment fa-fw"></i></a></div><link rel=stylesheet href=https://karlquinsland.com/lib/katex/katex.min.4710034e669c7ff17f823f9ba12cf8a36582d65b007f79cbc4a3c11d7db2e4ca.css integrity="sha256-RxADTmacf/F/gj+boSz4o2WC1lsAf3nLxKPBHX2y5Mo="><link rel=stylesheet href=https://karlquinsland.com/lib/katex/copy-tex.min.bf9ff4137fec38f6255419e142d0883c9c52090885d746f80eee12b273d9b3e0.css integrity="sha256-v5/0E3/sOPYlVBnhQtCIPJxSCQiF10b4Du4SsnPZs+A="><script type=text/javascript src=https://karlquinsland.com/lib/smooth-scroll/smooth-scroll.min.bcff85fb5e00d68802850b393ac7792c997f722f536f38e26638c46dca8e5eb6.js integrity="sha256-vP+F+14A1ogChQs5Osd5LJl/ci9TbzjiZjjEbcqOXrY="></script><script type=text/javascript src=https://karlquinsland.com/lib/autocomplete/autocomplete.min.615590a2ca2b667afa7c02ef396f5500b62e22795ddbb46448f90494605d09a5.js integrity="sha256-YVWQosorZnr6fALvOW9VALYuInld27RkSPkElGBdCaU="></script><script type=text/javascript src=https://karlquinsland.com/lib/lunr/lunr.min.df84a2d58ea594c04a3371b48d020b55ea10284c2ec636e4e331965d7313e29b.js integrity="sha256-34Si1Y6llMBKM3G0jQILVeoQKEwuxjbk4zGWXXMT4ps="></script><script type=text/javascript src=https://karlquinsland.com/lib/lazysizes/lazysizes.min.fb649fcae62177dfe63e67081ddceb830b5ce1f05a4184e9bbb7d87ac4b8f4e5.js integrity="sha256-+2SfyuYhd9/mPmcIHdzrgwtc4fBaQYTpu7fYesS49OU="></script><script type=text/javascript src=https://karlquinsland.com/lib/clipboard/clipboard.min.8a7739925f4c03586479852df840b7061948832a7fda30c8c812d2ea4dd4c4f2.js integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/katex.min.17f5dd6b9f123dd7140abfb18521b3f4c036cd004f6f40121182a8865f140877.js integrity="sha256-F/Xda58SPdcUCr+xhSGz9MA2zQBPb0ASEYKohl8UCHc="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/auto-render.min.f74776a677f0d2be0af0264058f928e2ba455d0b19bc985304660d922a43a6b2.js integrity="sha256-90d2pnfw0r4K8CZAWPko4rpFXQsZvJhTBGYNkipDprI="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/copy-tex.min.2ab2237329021bc443986c8327f6e61357fb68a54e5d233d224023718c02207d.js integrity="sha256-KrIjcykCG8RDmGyDJ/bmE1f7aKVOXSM9IkAjcYwCIH0="></script><script type=text/javascript src=https://karlquinsland.com/lib/katex/mhchem.min.5cea356d6025c5a2f18c454c83ec5674dbb04fab1cd1d75569e77788c6b6f888.js integrity="sha256-XOo1bWAlxaLxjEVMg+xWdNuwT6sc0ddVaed3iMa2+Ig="></script><script type=text/javascript>window.config={code:{copyTitle:"Copy to clipboard",maxShownLines:10},comment:{},math:{delimiters:[{display:!0,left:"$$",right:"$$"},{display:!0,left:"\\[",right:"\\]"},{display:!1,left:"$",right:"$"},{display:!1,left:"\\(",right:"\\)"}],strict:!1},search:{highlightTag:"em",lunrIndexURL:"/index.json",maxResultLength:10,noResultsFound:"No results found",snippetLength:30,type:"lunr"}}</script><script type=text/javascript src=https://karlquinsland.com/js/theme.min.f51938f3065a40ee841bcb558e4330e31fd26c0ea55343fff8770b88b0319a3c.js integrity="sha256-9Rk48wZaQO6EG8tVjkMw4x/SbA6lU0P/+HcLiLAxmjw="></script><script type=text/javascript>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-3WZ55XG701",{anonymize_ip:!0})</script><script type=text/javascript src="https://www.googletagmanager.com/gtag/js?id=G-3WZ55XG701" async></script></body></html>
