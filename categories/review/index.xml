@@ -20,17 +20,17 @@ If I had found the equivalent of this post while doing my research, I would have
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Official marketing photo
-        
+            Official marketing photo
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -44,17 +44,17 @@ The arms that the upper sled attaches to are spring loaded for additional clampi
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Only one of the two units in a pair comes equipped with the light sensor.
-        
+            Only one of the two units in a pair comes equipped with the light sensor.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -68,17 +68,17 @@ The arms that the upper sled attaches to are spring loaded for additional clampi
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Relatively well packaged. The seller that I purchased from had explicit listings for different curtain rod styles so I am not sure why I received hardware for all styles. There does not appear to be any easy way to install this hardware.
-        
+            Relatively well packaged. The seller that I purchased from had explicit listings for different curtain rod styles so I am not sure why I received hardware for all styles. There does not appear to be any easy way to install this hardware.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -90,17 +90,17 @@ The arms that the upper sled attaches to are spring loaded for additional clampi
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        I am getting some vague Portal2 Turret vibes...
-        
+            I am getting some vague Portal2 Turret vibes...
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -112,17 +112,17 @@ The arms that the upper sled attaches to are spring loaded for additional clampi
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        The ratchet/paws seem to indicate compatibility with some comically large diameter curtain rods!
-        
+            The ratchet/paws seem to indicate compatibility with some comically large diameter curtain rods!
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -133,17 +133,17 @@ The arms that the upper sled attaches to are spring loaded for additional clampi
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Obligatory &#39;i void warranties&#39; reference.
-        
+            Obligatory &#39;i void warranties&#39; reference.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -155,17 +155,17 @@ The arms that the upper sled attaches to are spring loaded for additional clampi
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Screw hiding under warranty void sticker and obvious mechanical/snap seam make it pretty obvious how this will come apart.
-        
+            Screw hiding under warranty void sticker and obvious mechanical/snap seam make it pretty obvious how this will come apart.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -191,17 +191,17 @@ only a few passive components besides some radio-on-module</li>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Huh. Was not expecting the PCB to be quite so big or complex!
-        
+            Huh. Was not expecting the PCB to be quite so big or complex!
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -213,17 +213,17 @@ only a few passive components besides some radio-on-module</li>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Grateful that they didn&#39;t solder the battery directly to the PCB.
-        
+            Grateful that they didn&#39;t solder the battery directly to the PCB.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -234,17 +234,17 @@ only a few passive components besides some radio-on-module</li>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        I have not tested the battery to see accurate the labeled capacity is.
-        
+            I have not tested the battery to see accurate the labeled capacity is.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -257,17 +257,17 @@ only a few passive components besides some radio-on-module</li>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Something tells me that the PCB with two radio modules is the &#39;leader&#39; out of the two.
-        
+            Something tells me that the PCB with two radio modules is the &#39;leader&#39; out of the two.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -284,17 +284,17 @@ I did find <a href="https://old.reddit.com/r/esp32/comments/q3omwh/can_somebody_
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        No, I didn&#39;t hook a scope up or trace out the obvious programming/debug header.
-        
+            No, I didn&#39;t hook a scope up or trace out the obvious programming/debug header.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -307,17 +307,17 @@ I did find <a href="https://old.reddit.com/r/esp32/comments/q3omwh/can_somebody_
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        BTLE Pair/Provisioning was straightforward
-        
+            BTLE Pair/Provisioning was straightforward
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -331,7 +331,7 @@ I did find <a href="https://old.reddit.com/r/esp32/comments/q3omwh/can_somebody_
 
     
         
-    
+        
 
     
 
@@ -347,17 +347,17 @@ I did find <a href="https://old.reddit.com/r/esp32/comments/q3omwh/can_somebody_
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        I have only skimmed the TuYa developer documentation but I think that the VirtualID is common to _all_ of the curtain robots.
-        
+            I have only skimmed the TuYa developer documentation but I think that the VirtualID is common to _all_ of the curtain robots.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -371,17 +371,17 @@ I can&rsquo;t use this product as is for my intended application; the motor is j
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        The brains(?)
-        
+            The brains(?)
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -406,17 +406,17 @@ The solution that I end up implementing will be designed with my heavy drapes in
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        A simple brushed DC motor with no position encoder and what is probably a cheaply made gearbox. What could go wrong?
-        
+            A simple brushed DC motor with no position encoder and what is probably a cheaply made gearbox. What could go wrong?
             
-        
+                
+                
         </p> 
     </figcaption>
     

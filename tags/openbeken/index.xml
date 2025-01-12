@@ -7,17 +7,17 @@ When you try to deploy them to a power strip, you end up loosing about 50% of th
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        This is how you loose about 50% of the outlets on your power strip.
-        
+            This is how you loose about 50% of the outlets on your power strip.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -42,17 +42,17 @@ I am concerned with a more integrated / space efficient solution that allows me 
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Marketing photo for the BN-Link power strip
-        
+            Marketing photo for the BN-Link power strip
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -64,7 +64,7 @@ I am concerned with a more integrated / space efficient solution that allows me 
 
     
         
-    
+        
 
     
 
@@ -85,7 +85,7 @@ If you have a thin metal pry tool / spudger, it will come in handy!</p>
 
     
         
-    
+        
 
     
 
@@ -101,17 +101,17 @@ If you have a thin metal pry tool / spudger, it will come in handy!</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        I&#39;m not loving the sloppy wiring connecting the USB power supply to the mains rails.
-        
+            I&#39;m not loving the sloppy wiring connecting the USB power supply to the mains rails.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -123,17 +123,17 @@ If you have a thin metal pry tool / spudger, it will come in handy!</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        You know what&#39;s cheaper than pin headers? PCB fingers in slots.
-        
+            You know what&#39;s cheaper than pin headers? PCB fingers in slots.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -144,7 +144,7 @@ If you have a thin metal pry tool / spudger, it will come in handy!</p>
 
     
         
-    
+        
 
     
 
@@ -164,7 +164,7 @@ If you have a thin metal pry tool / spudger, it will come in handy!</p>
 
     
         
-    
+        
 
     
 
@@ -181,17 +181,17 @@ If you have a thin metal pry tool / spudger, it will come in handy!</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Note the links. I&#39;d bet that it&#39;s simpler to scale a design by copy/pasting a self-contained footprint and adjust the number of links on the BOM as needed.
-        
+            Note the links. I&#39;d bet that it&#39;s simpler to scale a design by copy/pasting a self-contained footprint and adjust the number of links on the BOM as needed.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -204,7 +204,7 @@ The power conversion is done by the chip under the metal heat sink; I didn&rsquo
 
     
         
-    
+        
 
     
 
@@ -221,7 +221,7 @@ The power conversion is done by the chip under the metal heat sink; I didn&rsquo
 
     
         
-    
+        
 
     
 
@@ -296,17 +296,17 @@ Below you&rsquo;ll find the appropriate Tasmota configuration for GPIO pins.</di
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        And here&#39;s the Tasmota configuration for the BN-Link.
-        
+            And here&#39;s the Tasmota configuration for the BN-Link.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -381,17 +381,17 @@ Below you&rsquo;ll find the appropriate Tasmota configuration for GPIO pins.</di
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Marketing photo for the POWSAV power strip
-        
+            Marketing photo for the POWSAV power strip
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -415,17 +415,17 @@ There are 6 screws. four hidden under the anti-slip pads.</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Why are the screw mounting slots not centered :/.
-        
+            Why are the screw mounting slots not centered :/.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -437,17 +437,17 @@ There are 6 screws. four hidden under the anti-slip pads.</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Nothing of concern to see on the bottom, everything looks pretty boring... which is good when it comes to mains handling!
-        
+            Nothing of concern to see on the bottom, everything looks pretty boring... which is good when it comes to mains handling!
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -458,17 +458,17 @@ There are 6 screws. four hidden under the anti-slip pads.</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        About what you&#39;d expect for a PCB layout. Plenty of distance between the HV and LV sides!
-        
+            About what you&#39;d expect for a PCB layout. Plenty of distance between the HV and LV sides!
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -481,17 +481,17 @@ There are 6 screws. four hidden under the anti-slip pads.</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Note the silk screen: this protection PCB is common to the AHR-053 model as well.
-        
+            Note the silk screen: this protection PCB is common to the AHR-053 model as well.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -502,17 +502,17 @@ There are 6 screws. four hidden under the anti-slip pads.</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        WB3S is a TuYa branded module that is pin compatible with the ubiquitous ESP-8266 modules.
-        
+            WB3S is a TuYa branded module that is pin compatible with the ubiquitous ESP-8266 modules.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -523,17 +523,17 @@ There are 6 screws. four hidden under the anti-slip pads.</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Note the black insulating material separating the USB ports from the mains side of things.
-        
+            Note the black insulating material separating the USB ports from the mains side of things.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -544,17 +544,17 @@ There are 6 screws. four hidden under the anti-slip pads.</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Relatively painless extraction, only partially lifted the pad in the bottom left.
-        
+            Relatively painless extraction, only partially lifted the pad in the bottom left.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -565,17 +565,17 @@ There are 6 screws. four hidden under the anti-slip pads.</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Not even 5 min later, the TuYa modules has been replaced with one running a firmware powered by ESPHome.
-        
+            Not even 5 min later, the TuYa modules has been replaced with one running a firmware powered by ESPHome.
             
-        
+                
+                
         </p> 
     </figcaption>
     

@@ -36,7 +36,6 @@ We all know that I'm not getting any free time back from this.
 
 {{< figure name="xkcd-1319" >}}
 
-
 I've written this software to suit my needs, but the decision to make it a bit more robust and featured before release is because I've noticed a few 'new' tools to better augment ToDoist:
 
 - [autodoist](https://github.com/Hoffelhas/autodoist)

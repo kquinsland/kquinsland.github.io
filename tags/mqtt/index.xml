@@ -2,17 +2,17 @@
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        The lights are much brighter than they appear in this picture; had to intentionally darken the image to prevent camera from blowing out the colors.
-        
+            The lights are much brighter than they appear in this picture; had to intentionally darken the image to prevent camera from blowing out the colors.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -36,17 +36,17 @@ It was immediately obvious that an ESP32 module would be <strong>ideal</strong> 
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Stack light is controlled via MQTT making it easy to control from Home Assistant or any other program that can speak MQTT.
-        
+            Stack light is controlled via MQTT making it easy to control from Home Assistant or any other program that can speak MQTT.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -78,17 +78,17 @@ The shorter m4 screws are for attaching the base (yellow) to the lid (dark blue)
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        About to start melting threads into the 3D printed parts.
-        
+            About to start melting threads into the 3D printed parts.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -132,17 +132,17 @@ They&rsquo;re the only surface mount (SOT-23-4) component; everything else can b
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        I wasn&#39;t sure where I&#39;d want to install this, so there are a few options for attaching the base to surfaces.
-        
+            I wasn&#39;t sure where I&#39;d want to install this, so there are a few options for attaching the base to surfaces.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -154,17 +154,17 @@ They&rsquo;re the only surface mount (SOT-23-4) component; everything else can b
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Insert your magnets before the layer covering thee 6 cavities is printed.
-        
+            Insert your magnets before the layer covering thee 6 cavities is printed.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -191,17 +191,17 @@ Once the screw is fully inserted, allow it to fully cool (~5min) so the softened
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        If the screws protrude even a fraction of a millimeter, the light can wobble and the magnetic attachment is weakened.
-        
+            If the screws protrude even a fraction of a millimeter, the light can wobble and the magnetic attachment is weakened.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -214,17 +214,17 @@ Once the screw is fully inserted, allow it to fully cool (~5min) so the softened
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        I cut a few inches off the Ethernet cable and power leads so everything fits in the enclosure better.
-        
+            I cut a few inches off the Ethernet cable and power leads so everything fits in the enclosure better.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -236,17 +236,17 @@ Once the screw is fully inserted, allow it to fully cool (~5min) so the softened
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        PCB should be flush against the mounting posts.
-        
+            PCB should be flush against the mounting posts.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -260,17 +260,17 @@ Once the screw is fully inserted, allow it to fully cool (~5min) so the softened
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Use the plate as a lever to carefully push, then hold, the PoE dongle in place.
-        
+            Use the plate as a lever to carefully push, then hold, the PoE dongle in place.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -282,17 +282,17 @@ Once the screw is fully inserted, allow it to fully cool (~5min) so the softened
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        RJ45 jack should be flush to the outer wall of the enclosure.
-        
+            RJ45 jack should be flush to the outer wall of the enclosure.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -304,17 +304,17 @@ Once the screw is fully inserted, allow it to fully cool (~5min) so the softened
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Translucent white lenses for much less ambiguity than the stack lights with colored lenses.
-        
+            Translucent white lenses for much less ambiguity than the stack lights with colored lenses.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -329,220 +329,280 @@ Once the screw is fully inserted, allow it to fully cool (~5min) so the softened
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/poe-stack-light/images/complete/01_all_off.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Translucent white lenses for much less ambiguity than the stack lights with colored lenses.</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
         
 
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/poe-stack-light/images/assemble/base_mounting_options.png">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>I wasn&#39;t sure where I&#39;d want to install this, so there are a few options for attaching the base to surfaces.</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/poe-stack-light/images/assemble/04_close.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Use the plate as a lever to carefully push, then hold, the PoE dongle in place.</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/poe-stack-light/images/complete/02_all_on.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>The lights are much brighter than they appear in this picture; had to intentionally darken the image to prevent camera from blowing out the colors.</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/poe-stack-light/files/easy_eda_gerber.zip">
-                <i class="far fa-file-"></i>
-                files/easy_eda_gerber.zip:
-                
-                
-                <br>
-                <small>sha1: d7686b0ad88a1686a5a11cb009632b53ca474c75</small>
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/poe-stack-light/images/complete/01_all_off.jpg">
                 
             </a>
+            
+            <figcaption>
+                <small>Translucent white lenses for much less ambiguity than the stack lights with colored lenses.</small>
+            </figcaption>
+            
+        </figure>
+
         
     </li>
     
     <li>
         
-            <a target="_blank" href="https://karlquinsland.com/poe-stack-light/files/easy_eda_source.zip">
-                <i class="far fa-file-"></i>
-                files/easy_eda_source.zip:
-                
-                
-                <br>
-                <small>sha1: e05a00cdca9af94dd0e8d1d8f3aa998b75c14a08</small>
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/poe-stack-light/images/assemble/base_mounting_options.png">
                 
             </a>
+            
+            <figcaption>
+                <small>I wasn&#39;t sure where I&#39;d want to install this, so there are a few options for attaching the base to surfaces.</small>
+            </figcaption>
+            
+        </figure>
+
         
     </li>
     
     <li>
         
-            <a target="_blank" href="https://karlquinsland.com/poe-stack-light/files/enclosure-lid-m1v2.stl">
-                <i class="far fa-file-code"></i>
-                files/enclosure-lid-m1v2.stl:
-                
-                <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
-                
-                
-                <br>
-                <small>sha1: 3870a674d9cf08bf26e3607e42ee766e9816ac6c</small>
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/poe-stack-light/images/assemble/04_close.jpg">
                 
             </a>
+            
+            <figcaption>
+                <small>Use the plate as a lever to carefully push, then hold, the PoE dongle in place.</small>
+            </figcaption>
+            
+        </figure>
+
         
     </li>
     
     <li>
         
-            <a target="_blank" href="https://karlquinsland.com/poe-stack-light/files/enclosure-plate-m1v2.stl">
-                <i class="far fa-file-code"></i>
-                files/enclosure-plate-m1v2.stl:
-                
-                <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
-                
-                
-                <br>
-                <small>sha1: 8f90b54be2a798cf87bc6ca4fc118b82669e0668</small>
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/poe-stack-light/images/complete/02_all_on.jpg">
                 
             </a>
+            
+            <figcaption>
+                <small>The lights are much brighter than they appear in this picture; had to intentionally darken the image to prevent camera from blowing out the colors.</small>
+            </figcaption>
+            
+        </figure>
+
         
     </li>
     
     <li>
         
-            <a target="_blank" href="https://karlquinsland.com/poe-stack-light/files/esphome_confg.yaml">
-                <i class="far fa-file-code"></i>
-                files/esphome_confg.yaml:
-                
-                <small style="font-family:'Lucida Console', monospace">yaml</small> <small>file</small>
-                
+        <a target="_blank" href="https://karlquinsland.com/poe-stack-light/files/easy_eda_gerber.zip">
+            <i class="far fa-file-"></i>
+            files/easy_eda_gerber.zip:
+            
+            
+            <br>
+            <small>sha1: d7686b0ad88a1686a5a11cb009632b53ca474c75</small>
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/poe-stack-light/files/easy_eda_source.zip">
+            <i class="far fa-file-"></i>
+            files/easy_eda_source.zip:
+            
+            
+            <br>
+            <small>sha1: e05a00cdca9af94dd0e8d1d8f3aa998b75c14a08</small>
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/poe-stack-light/files/enclosure-lid-m1v2.stl">
+            <i class="far fa-file-code"></i>
+            files/enclosure-lid-m1v2.stl:
+            
+            <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
+            
+            
+            <br>
+            <small>sha1: 3870a674d9cf08bf26e3607e42ee766e9816ac6c</small>
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/poe-stack-light/files/enclosure-plate-m1v2.stl">
+            <i class="far fa-file-code"></i>
+            files/enclosure-plate-m1v2.stl:
+            
+            <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
+            
+            
+            <br>
+            <small>sha1: 8f90b54be2a798cf87bc6ca4fc118b82669e0668</small>
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/poe-stack-light/files/esphome_confg.yaml">
+            <i class="far fa-file-code"></i>
+            files/esphome_confg.yaml:
+            
+            <small style="font-family:'Lucida Console', monospace">yaml</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/poe-stack-light/files/pcb.step">
+            <i class="far fa-file-code"></i>
+            files/pcb.step:
+            
+            <small style="font-family:'Lucida Console', monospace">step</small> <small>file</small>
+            
+            
+            <br>
+            <small>sha1: e212f3cd3d90a639e6518b7d11bc5cc20df09b67</small>
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/poe-stack-light/files/poe-dongle.step">
+            <i class="far fa-file-code"></i>
+            files/poe-dongle.step:
+            
+            <small style="font-family:'Lucida Console', monospace">step</small> <small>file</small>
+            
+            
+            <br>
+            <small>sha1: a698c249d89f2ab2c981427df49620cb09ce5f66</small>
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/poe-stack-light/files/stack-light-base.step">
+            <i class="far fa-file-code"></i>
+            files/stack-light-base.step:
+            
+            <small style="font-family:'Lucida Console', monospace">step</small> <small>file</small>
+            
+            
+            <br>
+            <small>sha1: 3c3d0d6162a985b4f09d0f9a58fdacb3f08beb78</small>
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/poe-stack-light/images/assemble/00_flush_screws.jpg">
                 
             </a>
+            
+            <figcaption>
+                <small>If the screws protrude even a fraction of a millimeter, the light can wobble and the magnetic attachment is weakened.</small>
+            </figcaption>
+            
+        </figure>
+
         
     </li>
     
     <li>
         
-            <a target="_blank" href="https://karlquinsland.com/poe-stack-light/files/pcb.step">
-                <i class="far fa-file-code"></i>
-                files/pcb.step:
-                
-                <small style="font-family:'Lucida Console', monospace">step</small> <small>file</small>
-                
-                
-                <br>
-                <small>sha1: e212f3cd3d90a639e6518b7d11bc5cc20df09b67</small>
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/poe-stack-light/images/home-assistant.png">
                 
             </a>
+            
+            <figcaption>
+                <small>Stack light is controlled via MQTT making it easy to control from Home Assistant or any other program that can speak MQTT.</small>
+            </figcaption>
+            
+        </figure>
+
         
     </li>
     
     <li>
         
-            <a target="_blank" href="https://karlquinsland.com/poe-stack-light/files/poe-dongle.step">
-                <i class="far fa-file-code"></i>
-                files/poe-dongle.step:
-                
-                <small style="font-family:'Lucida Console', monospace">step</small> <small>file</small>
-                
-                
-                <br>
-                <small>sha1: a698c249d89f2ab2c981427df49620cb09ce5f66</small>
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/poe-stack-light/images/assemble/02_pcb_attached.jpg">
                 
             </a>
+            
+            <figcaption>
+                <small>PCB should be flush against the mounting posts.</small>
+            </figcaption>
+            
+        </figure>
+
         
     </li>
     
     <li>
         
-            <a target="_blank" href="https://karlquinsland.com/poe-stack-light/files/stack-light-base.step">
-                <i class="far fa-file-code"></i>
-                files/stack-light-base.step:
-                
-                <small style="font-family:'Lucida Console', monospace">step</small> <small>file</small>
-                
-                
-                <br>
-                <small>sha1: 3c3d0d6162a985b4f09d0f9a58fdacb3f08beb78</small>
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/poe-stack-light/images/complete/00_plugged_in.jpg">
                 
             </a>
-        
-    </li>
-    
-    <li>
-        
-
             
+            <figcaption>
+                <small>RJ45 jack should be flush to the outer wall of the enclosure.</small>
+            </figcaption>
             
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/poe-stack-light/images/assemble/00_flush_screws.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>If the screws protrude even a fraction of a millimeter, the light can wobble and the magnetic attachment is weakened.</small>
-                </figcaption>
-                
-            </figure>
+        </figure>
 
         
     </li>
@@ -550,19 +610,19 @@ Once the screw is fully inserted, allow it to fully cool (~5min) so the softened
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/poe-stack-light/images/home-assistant.png">
-                    
-                </a>
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/poe-stack-light/images/assemble/01_prep.jpg">
                 
-                <figcaption>
-                    <small>Stack light is controlled via MQTT making it easy to control from Home Assistant or any other program that can speak MQTT.</small>
-                </figcaption>
-                
-            </figure>
+            </a>
+            
+            <figcaption>
+                <small>About to start melting threads into the 3D printed parts.</small>
+            </figcaption>
+            
+        </figure>
 
         
     </li>
@@ -570,19 +630,19 @@ Once the screw is fully inserted, allow it to fully cool (~5min) so the softened
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/poe-stack-light/images/assemble/02_pcb_attached.jpg">
-                    
-                </a>
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/poe-stack-light/images/slicer.png">
                 
-                <figcaption>
-                    <small>PCB should be flush against the mounting posts.</small>
-                </figcaption>
-                
-            </figure>
+            </a>
+            
+            <figcaption>
+                <small>Insert your magnets before the layer covering thee 6 cavities is printed.</small>
+            </figcaption>
+            
+        </figure>
 
         
     </li>
@@ -590,79 +650,19 @@ Once the screw is fully inserted, allow it to fully cool (~5min) so the softened
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/poe-stack-light/images/complete/00_plugged_in.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>RJ45 jack should be flush to the outer wall of the enclosure.</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
         
 
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/poe-stack-light/images/assemble/01_prep.jpg">
-                    
-                </a>
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/poe-stack-light/images/assemble/03_wire.jpg">
                 
-                <figcaption>
-                    <small>About to start melting threads into the 3D printed parts.</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
+            </a>
             
+            <figcaption>
+                <small>I cut a few inches off the Ethernet cable and power leads so everything fits in the enclosure better.</small>
+            </figcaption>
             
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/poe-stack-light/images/slicer.png">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Insert your magnets before the layer covering thee 6 cavities is printed.</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/poe-stack-light/images/assemble/03_wire.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>I cut a few inches off the Ethernet cable and power leads so everything fits in the enclosure better.</small>
-                </figcaption>
-                
-            </figure>
+        </figure>
 
         
     </li>

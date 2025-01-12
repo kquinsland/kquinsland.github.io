@@ -7,17 +7,17 @@
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        The shaded blue area is meant to be TPU/FLEX material. The shaded yellow area is meant to be ABS material.
-        
+            The shaded blue area is meant to be TPU/FLEX material. The shaded yellow area is meant to be ABS material.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -29,17 +29,17 @@
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Grey is TPU, Green is ABS, and the Blue/Grey mix is the support material composed of interleaved PLA and TPU layers.
-        
+            Grey is TPU, Green is ABS, and the Blue/Grey mix is the support material composed of interleaved PLA and TPU layers.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -59,17 +59,17 @@ The <a href="https://www.youtube.com/watch?v=5VV2fbJ0apg" target="_blank" rel="n
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        This is the &#39;per-layer&#39; view from the slicer with a &#39;bottom-up&#39; perspective. As before, Grey is TPU, Green is ABS, and the thin blue circle represents the topmost layer of the support material.
-        
+            This is the &#39;per-layer&#39; view from the slicer with a &#39;bottom-up&#39; perspective. As before, Grey is TPU, Green is ABS, and the thin blue circle represents the topmost layer of the support material.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -260,17 +260,17 @@ Here&rsquo;s a quick and dirty Python script that rewrote the gCode for me:</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Prusa XL refusing to start the print because it knows I&#39;m trying to cheat.
-        
+            Prusa XL refusing to start the print because it knows I&#39;m trying to cheat.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -423,17 +423,17 @@ Essentially I have a large / multi-hour print that <strong>almost</strong> fits 
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        The part JUST BARELY fits on the print bed. This whole trick only works because the dark blue portion is so small.
-        
+            The part JUST BARELY fits on the print bed. This whole trick only works because the dark blue portion is so small.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -484,7 +484,7 @@ To do this:</p>
 
     
         
-    
+        
 
     
 
@@ -563,17 +563,17 @@ To do this:</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Ignore the wrinkles just to the right of the PINDA probe; it&#39;s a separate issue.
-        
+            Ignore the wrinkles just to the right of the PINDA probe; it&#39;s a separate issue.
             
-        
+                
+                
         </p> 
     </figcaption>
     

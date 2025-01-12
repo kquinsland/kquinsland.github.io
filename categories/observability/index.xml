@@ -10,17 +10,17 @@ So, I wrote my own.</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        blah
-        
+            blah
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -36,17 +36,17 @@ The first jump in correctable/uncorrectable errors&hellip; happens to corelate d
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        blah
-        
+            blah
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -60,17 +60,17 @@ I&rsquo;d love to know why the web server on the modem slows down so quickly aft
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        blah
-        
+            blah
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -408,7 +408,7 @@ So that&rsquo;s the technique to use here; a <code>template</code> sensor with t
 
     
         
-    
+        
 
     
 
@@ -852,17 +852,17 @@ I hit a few snags and below is an updated <code>Dockerfile</code> that gave me a
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Simple dashboard in grafana
-        
+            Simple dashboard in grafana
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -879,50 +879,50 @@ I hit a few snags and below is an updated <code>Dockerfile</code> that gave me a
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/monitoring-ap7900-switched-pdu-prometheus-grafana/images/ap7900.png">
-                    
-                </a>
-                
-                
-            </figure>
+        
 
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/monitoring-ap7900-switched-pdu-prometheus-grafana/files/dashboard.json">
-                <i class="far fa-file-file-code"></i>
-                files/dashboard.json:
-                
-                
-                <br>
-                <small>sha1(dashboard.json): 400edb0c4064068f12e17c2f1f0d6862d3b8d449</small>
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/monitoring-ap7900-switched-pdu-prometheus-grafana/images/ap7900.png">
                 
             </a>
+            
+            
+        </figure>
+
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/monitoring-ap7900-switched-pdu-prometheus-grafana/files/dashboard.json">
+            <i class="far fa-file-file-code"></i>
+            files/dashboard.json:
+            
+            
+            <br>
+            <small>sha1(dashboard.json): 400edb0c4064068f12e17c2f1f0d6862d3b8d449</small>
+            
+        </a>
         
     </li>
     
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/monitoring-ap7900-switched-pdu-prometheus-grafana/images/grafana.png">
-                    
-                </a>
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/monitoring-ap7900-switched-pdu-prometheus-grafana/images/grafana.png">
                 
-                <figcaption>
-                    <small>Simple dashboard in grafana</small>
-                </figcaption>
-                
-            </figure>
+            </a>
+            
+            <figcaption>
+                <small>Simple dashboard in grafana</small>
+            </figcaption>
+            
+        </figure>
 
         
     </li>
@@ -941,17 +941,17 @@ I hit a few snags and below is an updated <code>Dockerfile</code> that gave me a
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Excuse the awkward camera angle; sensor is deployed in an awkward to photograph location.
-        
+            Excuse the awkward camera angle; sensor is deployed in an awkward to photograph location.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -964,17 +964,17 @@ I hit a few snags and below is an updated <code>Dockerfile</code> that gave me a
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Smoke particles are between .4μm to .7μm in size... which explains the elevated red line relative to other particle sizes.
-        
+            Smoke particles are between .4μm to .7μm in size... which explains the elevated red line relative to other particle sizes.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -990,7 +990,7 @@ I hit a few snags and below is an updated <code>Dockerfile</code> that gave me a
 
     
         
-    
+        
 
     
 
@@ -1009,24 +1009,24 @@ I hit a few snags and below is an updated <code>Dockerfile</code> that gave me a
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Upper and lower chambers for exhaust and intake.
-        
+            Upper and lower chambers for exhaust and intake.
             
-        
+                
+                
         </p> 
     </figcaption>
     
 </figure>
 
 
-<p>While designing the enclosure, I used this <a href="https://grabcad.com/library/pms5003-2" target="_blank" rel="noopener noreffer"><code>PMS5003</code> model</a> from Leclercq Gregory. &#x1f64f;</p>
+<p>While designing the enclosure, I used this <a href="https://grabcad.com/library/pms5003-2" target="_blank" rel="noopener noreffer"><code>PMS5003</code> model</a> from Leclercq Gregory. :pray:</p>
 <h3 id="printing">Printing</h3>
 <p>This is a functional part with only three small surfaces that require reasonably tight precision to properly hold onto the sensor. The <code>SPEED</code> setting with a <code>.2mm</code> layer height and a reasonable 20% infill gave me part that works and feels water tight. The walls and ceiling need to keep water out so dipping below 15% infill or otherwise using settings that wont give solid layer adhesion is not advised. I printed using ABS for durability, but PLA will probably work if you can deploy into a shaded environment.</p>
 <p>The shroud and the base are not optional, the triangle shaped block is intended to turn the flat roof of the shroud into a slanted roof so water can&rsquo;t collect. It is optional but shown below.</p>
@@ -1034,17 +1034,17 @@ I hit a few snags and below is an updated <code>Dockerfile</code> that gave me a
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        No raft/support when printed in this orientation.
-        
+            No raft/support when printed in this orientation.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1068,17 +1068,17 @@ I hit a few snags and below is an updated <code>Dockerfile</code> that gave me a
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        More or less everything needed to assemble.
-        
+            More or less everything needed to assemble.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1171,7 +1171,7 @@ I hit a few snags and below is an updated <code>Dockerfile</code> that gave me a
 
     
         
-    
+        
 
     
 
@@ -1187,7 +1187,7 @@ I hit a few snags and below is an updated <code>Dockerfile</code> that gave me a
 
     
         
-    
+        
 
     
 
@@ -1204,17 +1204,17 @@ I hit a few snags and below is an updated <code>Dockerfile</code> that gave me a
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Sensor has been press-fit into the enclosure and wire fed through the base plate.
-        
+            Sensor has been press-fit into the enclosure and wire fed through the base plate.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1226,17 +1226,17 @@ I hit a few snags and below is an updated <code>Dockerfile</code> that gave me a
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        I suggest waiting until the end to glue on the optional roof and waiting until just before that to glue on the optional mesh screens.
-        
+            I suggest waiting until the end to glue on the optional roof and waiting until just before that to glue on the optional mesh screens.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1334,187 +1334,224 @@ I hit a few snags and below is an updated <code>Dockerfile</code> that gave me a
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/02.assemble.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Sensor has been press-fit into the enclosure and wire fed through the base plate.</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
         
 
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/03.glue.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>I suggest waiting until the end to glue on the optional roof and waiting until just before that to glue on the optional mesh screens.</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/example_dashboard.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Smoke particles are between .4μm to .7μm in size... which explains the elevated red line relative to other particle sizes.</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/04.installed.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Excuse the awkward camera angle; sensor is deployed in an awkward to photograph location.</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/BASE.step">
-                <i class="far fa-file-code"></i>
-                models/BASE.step:
-                
-                <small style="font-family:'Lucida Console', monospace">step</small> <small>file</small>
-                
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/02.assemble.jpg">
                 
             </a>
+            
+            <figcaption>
+                <small>Sensor has been press-fit into the enclosure and wire fed through the base plate.</small>
+            </figcaption>
+            
+        </figure>
+
         
     </li>
     
     <li>
         
-            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/BODY.step">
-                <i class="far fa-file-code"></i>
-                models/BODY.step:
-                
-                <small style="font-family:'Lucida Console', monospace">step</small> <small>file</small>
-                
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/03.glue.jpg">
                 
             </a>
+            
+            <figcaption>
+                <small>I suggest waiting until the end to glue on the optional roof and waiting until just before that to glue on the optional mesh screens.</small>
+            </figcaption>
+            
+        </figure>
+
         
     </li>
     
     <li>
         
-            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/LID.step">
-                <i class="far fa-file-code"></i>
-                models/LID.step:
-                
-                <small style="font-family:'Lucida Console', monospace">step</small> <small>file</small>
-                
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/example_dashboard.jpg">
                 
             </a>
+            
+            <figcaption>
+                <small>Smoke particles are between .4μm to .7μm in size... which explains the elevated red line relative to other particle sizes.</small>
+            </figcaption>
+            
+        </figure>
+
         
     </li>
     
     <li>
         
-            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/base.stl">
-                <i class="far fa-file-code"></i>
-                models/base.stl:
-                
-                <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
-                
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/04.installed.jpg">
                 
             </a>
+            
+            <figcaption>
+                <small>Excuse the awkward camera angle; sensor is deployed in an awkward to photograph location.</small>
+            </figcaption>
+            
+        </figure>
+
         
     </li>
     
     <li>
         
-            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/body.stl">
-                <i class="far fa-file-code"></i>
-                models/body.stl:
-                
-                <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
-                
+        <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/BASE.step">
+            <i class="far fa-file-code"></i>
+            models/BASE.step:
+            
+            <small style="font-family:'Lucida Console', monospace">step</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/BODY.step">
+            <i class="far fa-file-code"></i>
+            models/BODY.step:
+            
+            <small style="font-family:'Lucida Console', monospace">step</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/LID.step">
+            <i class="far fa-file-code"></i>
+            models/LID.step:
+            
+            <small style="font-family:'Lucida Console', monospace">step</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/base.stl">
+            <i class="far fa-file-code"></i>
+            models/base.stl:
+            
+            <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/body.stl">
+            <i class="far fa-file-code"></i>
+            models/body.stl:
+            
+            <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/combined.3mf">
+            <i class="far fa-file-archive"></i>
+            models/combined.3mf:
+            
+            <small style="font-family:'Lucida Console', monospace">3mf</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/lid.stl">
+            <i class="far fa-file-code"></i>
+            models/lid.stl:
+            
+            <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/pin_out/PM2.5_Pins.jpg">
                 
             </a>
+            
+            
+        </figure>
+
         
     </li>
     
     <li>
         
-            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/combined.3mf">
-                <i class="far fa-file-archive"></i>
-                models/combined.3mf:
-                
-                <small style="font-family:'Lucida Console', monospace">3mf</small> <small>file</small>
-                
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/pin_out/WS3_Pins.jpg">
                 
             </a>
+            
+            
+        </figure>
+
         
     </li>
     
     <li>
         
-            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/lid.stl">
-                <i class="far fa-file-code"></i>
-                models/lid.stl:
-                
-                <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
-                
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/01.collect.jpg">
                 
             </a>
-        
-    </li>
-    
-    <li>
-        
-
             
+            <figcaption>
+                <small>More or less everything needed to assemble.</small>
+            </figcaption>
             
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/pin_out/PM2.5_Pins.jpg">
-                    
-                </a>
-                
-                
-            </figure>
+        </figure>
 
         
     </li>
@@ -1522,16 +1559,19 @@ I hit a few snags and below is an updated <code>Dockerfile</code> that gave me a
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/pin_out/WS3_Pins.jpg">
-                    
-                </a>
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/suggested_print_orientation.jpg">
                 
-                
-            </figure>
+            </a>
+            
+            <figcaption>
+                <small>No raft/support when printed in this orientation.</small>
+            </figcaption>
+            
+        </figure>
 
         
     </li>
@@ -1539,19 +1579,16 @@ I hit a few snags and below is an updated <code>Dockerfile</code> that gave me a
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/01.collect.jpg">
-                    
-                </a>
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/f360_air_channels.jpg">
                 
-                <figcaption>
-                    <small>More or less everything needed to assemble.</small>
-                </figcaption>
-                
-            </figure>
+            </a>
+            
+            
+        </figure>
 
         
     </li>
@@ -1559,56 +1596,19 @@ I hit a few snags and below is an updated <code>Dockerfile</code> that gave me a
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/suggested_print_orientation.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>No raft/support when printed in this orientation.</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
         
 
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/f360_air_channels.jpg">
-                    
-                </a>
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/f360_side_profile.jpg">
                 
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
+            </a>
             
+            <figcaption>
+                <small>Upper and lower chambers for exhaust and intake.</small>
+            </figcaption>
             
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/f360_side_profile.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Upper and lower chambers for exhaust and intake.</small>
-                </figcaption>
-                
-            </figure>
+        </figure>
 
         
     </li>

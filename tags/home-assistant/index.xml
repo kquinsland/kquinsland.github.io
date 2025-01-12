@@ -6,17 +6,17 @@
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Conceptual diagram for the project.
-        
+            Conceptual diagram for the project.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -54,17 +54,17 @@ Use this as a starting point and adapt it to your needs.</div>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Fully assembled PCB just before final assembly.
-        
+            Fully assembled PCB just before final assembly.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -76,17 +76,17 @@ Use this as a starting point and adapt it to your needs.</div>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        A picture of the probe installed and operating. The air filter has been removed and you can see the AC evaporator.
-        
+            A picture of the probe installed and operating. The air filter has been removed and you can see the AC evaporator.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -98,17 +98,17 @@ Use this as a starting point and adapt it to your needs.</div>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        How the sensor shows up in HomeAssistant.
-        
+            How the sensor shows up in HomeAssistant.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -694,7 +694,7 @@ Use this as a starting point and adapt it to your needs.</div>
 
     
         
-    
+        
 
     
 
@@ -740,7 +740,7 @@ Amazingly, these feet are NOT glued in <em>and</em> they have tiny holes in them
 
     
         
-    
+        
 
     
 
@@ -759,17 +759,17 @@ Again, no glue, no clips, no nothing!</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        View from the bottom just after removing the panel.
-        
+            View from the bottom just after removing the panel.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -780,17 +780,17 @@ Again, no glue, no clips, no nothing!</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Close up of the main application processor.
-        
+            Close up of the main application processor.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -803,17 +803,17 @@ This is a nice touch as it makes it easy to replace if it ever breaks; it&rsquo;
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Close up of the two MOSFETs used to control the heating element.
-        
+            Close up of the two MOSFETs used to control the heating element.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -825,17 +825,17 @@ This is a nice touch as it makes it easy to replace if it ever breaks; it&rsquo;
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        The top side of the main PCB. Sorry for the off-center angle and the glare.
-        
+            The top side of the main PCB. Sorry for the off-center angle and the glare.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -849,17 +849,17 @@ It should be possible to adapt this device to use USB-C PD power with minimal ef
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Power supply is pretty standard; feels well made.
-        
+            Power supply is pretty standard; feels well made.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1160,17 +1160,17 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        How the S31 powering modem appears in Home Assistant
-        
+            How the S31 powering modem appears in Home Assistant
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -2100,17 +2100,17 @@ As far as I can tell, the face plates are interchangeable between the 1, 2, 3 an
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Clear shot of the PCB showing location of each LED. This is from the rear so the numbers on the right will be on the left when looking at the front of the switch.
-        
+            Clear shot of the PCB showing location of each LED. This is from the rear so the numbers on the right will be on the left when looking at the front of the switch.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -2151,17 +2151,17 @@ There&rsquo;s no reason why the physical touch zones couldn&rsquo;t use the enti
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Unlike the International version of the M5 series, the US version doesn&#39;t use the full surface of the switch for touch input.
-        
+            Unlike the International version of the M5 series, the US version doesn&#39;t use the full surface of the switch for touch input.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -2173,17 +2173,17 @@ There&rsquo;s no reason why the physical touch zones couldn&rsquo;t use the enti
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Instead of a single touch zone, the entire surface is touch sensitive.
-        
+            Instead of a single touch zone, the entire surface is touch sensitive.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -2196,17 +2196,17 @@ Look at these two styles of face plates for the T5 series and see if you can ide
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Which face plate belongs to which variant? You can&#39;t tell just by looking at them!
-        
+            Which face plate belongs to which variant? You can&#39;t tell just by looking at them!
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -2224,17 +2224,17 @@ As a group, these indicator LEDs can be dimmed to indicate where to touch to tri
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        You can _clearly_ tell that this is a 3 relay variant and the left most relay is ON.
-        
+            You can _clearly_ tell that this is a 3 relay variant and the left most relay is ON.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -2248,17 +2248,17 @@ As a group, these indicator LEDs can be dimmed to indicate where to touch to tri
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Please ignore the smudge on the bottom half of the switch that I didn&#39;t notice until after I took the picture.
-        
+            Please ignore the smudge on the bottom half of the switch that I didn&#39;t notice until after I took the picture.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -2275,17 +2275,17 @@ Excluding the RGB LEDs on the top/bottom of the switch, this gives us up to 8 pa
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        1 Relay variant with timer for light counting down.
-        
+            1 Relay variant with timer for light counting down.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -2362,17 +2362,17 @@ In the second photo, relay 1 is off but 2 and 3 are on.</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Lightish blue is easy to see / spot in the daytime.
-        
+            Lightish blue is easy to see / spot in the daytime.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -2383,17 +2383,17 @@ In the second photo, relay 1 is off but 2 and 3 are on.</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        The dark red color looks a lot better at night.
-        
+            The dark red color looks a lot better at night.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -5208,17 +5208,17 @@ Enter the <a href="https://www.aliexpress.us/item/3256801709519092.html" target=
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        YeeLight marketing photo from AliExpress listing. The background wash light really does help reduce eye strain and fatigue.
-        
+            YeeLight marketing photo from AliExpress listing. The background wash light really does help reduce eye strain and fatigue.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -5233,17 +5233,17 @@ The shipping damage is just part of the Ali Express experience!</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        The box isn&#39;t anything to write home about.
-        
+            The box isn&#39;t anything to write home about.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -5254,17 +5254,17 @@ The shipping damage is just part of the Ali Express experience!</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Neatly packed, for what it&#39;s worth.
-        
+            Neatly packed, for what it&#39;s worth.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -5275,7 +5275,7 @@ The shipping damage is just part of the Ali Express experience!</p>
 
     
         
-    
+        
 
     
 
@@ -5293,17 +5293,17 @@ It&rsquo;s 100% compatible with the mounting bracket that Xaomi shipped with the
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Xaomi desk lamp on top, Yeelight on bottom.
-        
+            Xaomi desk lamp on top, Yeelight on bottom.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -5333,17 +5333,17 @@ Not only does this cap have a grip feature moulded in, it&rsquo;s also secured t
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        The cap is trivial to remove.
-        
+            The cap is trivial to remove.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -5357,17 +5357,17 @@ If you&rsquo;re careful, this is all the disassembly you need to do to access th
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        There&#39;s not much room to work with. Left most is the cw/ww led strip and reflector. Middle is ribbon cable connecting leds to main pcb. Right most is the ESP8266 module.
-        
+            There&#39;s not much room to work with. Left most is the cw/ww led strip and reflector. Middle is ribbon cable connecting leds to main pcb. Right most is the ESP8266 module.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -5381,17 +5381,17 @@ I was under a bit of time pressure and wanted to use a more &ldquo;future proof&
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        It&#39;s clearly an ESP8266 module but the pinout/form-factor are unusual.
-        
+            It&#39;s clearly an ESP8266 module but the pinout/form-factor are unusual.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -5402,7 +5402,7 @@ I was under a bit of time pressure and wanted to use a more &ldquo;future proof&
 
     
         
-    
+        
 
     
 
@@ -5421,17 +5421,17 @@ That something is the plastic lens closest to the now removed end cap.</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Note the plastic lense that used to cover the RGB LEDs.
-        
+            Note the plastic lense that used to cover the RGB LEDs.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -5443,17 +5443,17 @@ That something is the plastic lens closest to the now removed end cap.</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        There&#39;s not much to it, really. Tube, big PCB and small ESP8266 module on a ribbon cable.
-        
+            There&#39;s not much to it, really. Tube, big PCB and small ESP8266 module on a ribbon cable.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -5466,17 +5466,17 @@ That something is the plastic lens closest to the now removed end cap.</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        A look at the power regulation and LED drive circuitry.
-        
+            A look at the power regulation and LED drive circuitry.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -5487,17 +5487,17 @@ That something is the plastic lens closest to the now removed end cap.</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        A closer look at the chips for the remote control puck.
-        
+            A closer look at the chips for the remote control puck.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -5508,17 +5508,17 @@ That something is the plastic lens closest to the now removed end cap.</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        A closer look at the power regulation circuitry.
-        
+            A closer look at the power regulation circuitry.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -5529,17 +5529,17 @@ That something is the plastic lens closest to the now removed end cap.</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        This is what happens when you are impatient and set the hotplate to an aggressive temperature.
-        
+            This is what happens when you are impatient and set the hotplate to an aggressive temperature.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -5612,17 +5612,17 @@ There&rsquo;s nothing else on the PCB that would need I2C, but I haven&rsquo;t b
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        I am eternally grateful for every PCB designer that bothers with clear silkscreen labels.
-        
+            I am eternally grateful for every PCB designer that bothers with clear silkscreen labels.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -5638,17 +5638,17 @@ If you don&rsquo;t care about that, you can use any ESP32 module you have on han
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Tube is quite narrow and the ESP32 module takes up almost all of the available space.
-        
+            Tube is quite narrow and the ESP32 module takes up almost all of the available space.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -5666,17 +5666,17 @@ This replacement cap specifically does not have any features that extend deep in
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Suggested print orientation. Choose resolution, material and color to suit your needs.
-        
+            Suggested print orientation. Choose resolution, material and color to suit your needs.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -5861,7 +5861,7 @@ I chose this generic looking relay module from AliExpress because it was powered
 
     
         
-    
+        
 
     
 
@@ -6076,17 +6076,17 @@ Nothing was going to compete with 10 minute to heat-soak and remove the ESP modu
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Note the sharpie next to the pin headers. Order is GND, RX, TX, EN, GPIO0, VCC from top to bottom.
-        
+            Note the sharpie next to the pin headers. Order is GND, RX, TX, EN, GPIO0, VCC from top to bottom.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -6098,7 +6098,7 @@ Nothing was going to compete with 10 minute to heat-soak and remove the ESP modu
 
     
         
-    
+        
 
     
 
@@ -6167,17 +6167,17 @@ Nothing was going to compete with 10 minute to heat-soak and remove the ESP modu
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        This configuration works even though GPIO34 should be Button_i.
-        
+            This configuration works even though GPIO34 should be Button_i.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -6917,17 +6917,17 @@ Naturally, I went with the amazing Sonoff S31 but you can get similar results wi
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        S31 powered coffee maker in Home Assistant. Note that the bloom settings can be adjusted on the fly.
-        
+            S31 powered coffee maker in Home Assistant. Note that the bloom settings can be adjusted on the fly.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -7622,7 +7622,7 @@ As is, you&rsquo;ll need to fill it out / add in your own versions of some of th
 
     
         
-    
+        
 
     
 
@@ -7656,7 +7656,7 @@ Using <code>dmesg</code> I could see <em>a device</em> being plugged in but the 
 
     
         
-    
+        
 
     
 
@@ -7677,17 +7677,17 @@ I have some thoughts on being able to toggle this behavior <a href="#beeper" rel
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        I left R1 in place so it&#39;s easier to reverse the mod.
-        
+            I left R1 in place so it&#39;s easier to reverse the mod.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -7699,17 +7699,17 @@ I have some thoughts on being able to toggle this behavior <a href="#beeper" rel
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        There&#39;s no good place for the ESP module so I chose to strategically obfuscate the portion of the screen that does not display the actual measurements.
-        
+            There&#39;s no good place for the ESP module so I chose to strategically obfuscate the portion of the screen that does not display the actual measurements.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -7729,17 +7729,17 @@ As the tube is charged up to ~400v, it putting the ESP module directly over it s
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        I wouldn&#39;t put the ESP right here because a) the tube is partially obstructed and b) the tube is charged to a few hundred volts and putting any delicate electronics that close seems like a bad idea.
-        
+            I wouldn&#39;t put the ESP right here because a) the tube is partially obstructed and b) the tube is charged to a few hundred volts and putting any delicate electronics that close seems like a bad idea.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -7751,17 +7751,17 @@ As the tube is charged up to ~400v, it putting the ESP module directly over it s
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Ignore that 12 hour gap in the data... I forgot to plug the assembly back in after doing some tests.
-        
+            Ignore that 12 hour gap in the data... I forgot to plug the assembly back in after doing some tests.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -8128,7 +8128,7 @@ Most appear to use TuYa MCUs so it&rsquo;s not immediately clear if/how those de
 
     
         
-    
+        
 
     
 
@@ -8144,7 +8144,7 @@ Most appear to use TuYa MCUs so it&rsquo;s not immediately clear if/how those de
 
     
         
-    
+        
 
     
 

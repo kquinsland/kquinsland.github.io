@@ -9,7 +9,7 @@ After several delays, false starts and re-writes, I finally have something that 
 
     
         
-    
+        
 
     
 
@@ -68,17 +68,17 @@ For example, <a href="https://haswitchplate.github.io/openHASP-docs/0.6/design/o
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Image credit/source:
-        <a href="https://haswitchplate.github.io/openHASP-docs/0.6/design/objects/#button"> 
-            openHasp Docs
-        </a> 
+            Image credit/source:
+            <a href="https://haswitchplate.github.io/openHASP-docs/0.6/design/objects/#button"> 
+                openHasp Docs
+                </a> 
         </p> 
     </figcaption>
     
@@ -130,17 +130,17 @@ A reboot was required for the configuration change to take effect but I made <em
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Lanbon L8 in it&#39;s rotated &#39;landscape&#39; orientation
-        
+            Lanbon L8 in it&#39;s rotated &#39;landscape&#39; orientation
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -151,17 +151,17 @@ A reboot was required for the configuration change to take effect but I made <em
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Lanbon L8 in it&#39;s default &#39;portrait&#39; orientation
-        
+            Lanbon L8 in it&#39;s default &#39;portrait&#39; orientation
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -172,17 +172,17 @@ A reboot was required for the configuration change to take effect but I made <em
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        wt32-sc01 in &#39;landscape&#39; orientation.
-        
+            wt32-sc01 in &#39;landscape&#39; orientation.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -193,17 +193,17 @@ A reboot was required for the configuration change to take effect but I made <em
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        wt32-sc01 in &#39;portrait&#39; orientation.
-        
+            wt32-sc01 in &#39;portrait&#39; orientation.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1151,7 +1151,7 @@ You&rsquo;ll just have to trust me when I say that It&rsquo;s kinda neat to watc
 
     
         
-    
+        
 
     
 
@@ -1167,7 +1167,7 @@ You&rsquo;ll just have to trust me when I say that It&rsquo;s kinda neat to watc
 
     
         
-    
+        
 
     
 
@@ -1183,17 +1183,17 @@ You&rsquo;ll just have to trust me when I say that It&rsquo;s kinda neat to watc
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Minimal instructions and wasteful packaging. Other than the small foam insert, this entire package can be recycled!
-        
+            Minimal instructions and wasteful packaging. Other than the small foam insert, this entire package can be recycled!
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1204,17 +1204,17 @@ You&rsquo;ll just have to trust me when I say that It&rsquo;s kinda neat to watc
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        The provided screws are NOT the US standard #6 32 thread-per-inch. They are slightly larger and will strip out any screw holes in an electrical box!
-        
+            The provided screws are NOT the US standard #6 32 thread-per-inch. They are slightly larger and will strip out any screw holes in an electrical box!
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1226,17 +1226,17 @@ You&rsquo;ll just have to trust me when I say that It&rsquo;s kinda neat to watc
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        This particular model is the 3 relay version. Packaging claims 200W power. It&#39;s not clear if that is per channel or total. My money is on total.
-        
+            This particular model is the 3 relay version. Packaging claims 200W power. It&#39;s not clear if that is per channel or total. My money is on total.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1247,7 +1247,7 @@ You&rsquo;ll just have to trust me when I say that It&rsquo;s kinda neat to watc
 
     
         
-    
+        
 
     
 
@@ -1269,7 +1269,7 @@ You can also place an order directly with Lanbon for units that do not have the 
 
     
         
-    
+        
 
     
 
@@ -1285,17 +1285,17 @@ You can also place an order directly with Lanbon for units that do not have the 
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Generic relays, generic caps, generic transformers... don&#39;t switch any critical loads with this!
-        
+            Generic relays, generic caps, generic transformers... don&#39;t switch any critical loads with this!
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1306,17 +1306,17 @@ You can also place an order directly with Lanbon for units that do not have the 
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        A closer look at what appears to be a dedicated power monitoring IC. It appears to monitor the aggregate of all three channels, not each individually. Very likely to make sure no more than 200W is switched at one time...
-        
+            A closer look at what appears to be a dedicated power monitoring IC. It appears to monitor the aggregate of all three channels, not each individually. Very likely to make sure no more than 200W is switched at one time...
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1327,7 +1327,7 @@ You can also place an order directly with Lanbon for units that do not have the 
 
     
         
-    
+        
 
     
 

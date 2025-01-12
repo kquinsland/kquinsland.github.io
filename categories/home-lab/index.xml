@@ -10,17 +10,17 @@ So, I wrote my own.</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        blah
-        
+            blah
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -36,17 +36,17 @@ The first jump in correctable/uncorrectable errors&hellip; happens to corelate d
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        blah
-        
+            blah
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -60,17 +60,17 @@ I&rsquo;d love to know why the web server on the modem slows down so quickly aft
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        blah
-        
+            blah
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -96,7 +96,7 @@ One LCSC order, one mouser order and about a week later, I had a basic RS232 &lt
 
     
         
-    
+        
 
     
 
@@ -113,7 +113,7 @@ One LCSC order, one mouser order and about a week later, I had a basic RS232 &lt
 
     
         
-    
+        
 
     
 
@@ -453,17 +453,17 @@ So that&rsquo;s the technique to use here; a <code>template</code> sensor with t
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        The lights are much brighter than they appear in this picture; had to intentionally darken the image to prevent camera from blowing out the colors.
-        
+            The lights are much brighter than they appear in this picture; had to intentionally darken the image to prevent camera from blowing out the colors.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -487,17 +487,17 @@ It was immediately obvious that an ESP32 module would be <strong>ideal</strong> 
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Stack light is controlled via MQTT making it easy to control from Home Assistant or any other program that can speak MQTT.
-        
+            Stack light is controlled via MQTT making it easy to control from Home Assistant or any other program that can speak MQTT.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -529,17 +529,17 @@ The shorter m4 screws are for attaching the base (yellow) to the lid (dark blue)
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        About to start melting threads into the 3D printed parts.
-        
+            About to start melting threads into the 3D printed parts.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -583,17 +583,17 @@ They&rsquo;re the only surface mount (SOT-23-4) component; everything else can b
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        I wasn&#39;t sure where I&#39;d want to install this, so there are a few options for attaching the base to surfaces.
-        
+            I wasn&#39;t sure where I&#39;d want to install this, so there are a few options for attaching the base to surfaces.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -605,17 +605,17 @@ They&rsquo;re the only surface mount (SOT-23-4) component; everything else can b
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Insert your magnets before the layer covering thee 6 cavities is printed.
-        
+            Insert your magnets before the layer covering thee 6 cavities is printed.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -642,17 +642,17 @@ Once the screw is fully inserted, allow it to fully cool (~5min) so the softened
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        If the screws protrude even a fraction of a millimeter, the light can wobble and the magnetic attachment is weakened.
-        
+            If the screws protrude even a fraction of a millimeter, the light can wobble and the magnetic attachment is weakened.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -665,17 +665,17 @@ Once the screw is fully inserted, allow it to fully cool (~5min) so the softened
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        I cut a few inches off the Ethernet cable and power leads so everything fits in the enclosure better.
-        
+            I cut a few inches off the Ethernet cable and power leads so everything fits in the enclosure better.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -687,17 +687,17 @@ Once the screw is fully inserted, allow it to fully cool (~5min) so the softened
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        PCB should be flush against the mounting posts.
-        
+            PCB should be flush against the mounting posts.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -711,17 +711,17 @@ Once the screw is fully inserted, allow it to fully cool (~5min) so the softened
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Use the plate as a lever to carefully push, then hold, the PoE dongle in place.
-        
+            Use the plate as a lever to carefully push, then hold, the PoE dongle in place.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -733,17 +733,17 @@ Once the screw is fully inserted, allow it to fully cool (~5min) so the softened
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        RJ45 jack should be flush to the outer wall of the enclosure.
-        
+            RJ45 jack should be flush to the outer wall of the enclosure.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -755,17 +755,17 @@ Once the screw is fully inserted, allow it to fully cool (~5min) so the softened
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Translucent white lenses for much less ambiguity than the stack lights with colored lenses.
-        
+            Translucent white lenses for much less ambiguity than the stack lights with colored lenses.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -780,220 +780,280 @@ Once the screw is fully inserted, allow it to fully cool (~5min) so the softened
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/poe-stack-light/images/complete/01_all_off.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Translucent white lenses for much less ambiguity than the stack lights with colored lenses.</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
         
 
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/poe-stack-light/images/assemble/base_mounting_options.png">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>I wasn&#39;t sure where I&#39;d want to install this, so there are a few options for attaching the base to surfaces.</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/poe-stack-light/images/assemble/04_close.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Use the plate as a lever to carefully push, then hold, the PoE dongle in place.</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/poe-stack-light/images/complete/02_all_on.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>The lights are much brighter than they appear in this picture; had to intentionally darken the image to prevent camera from blowing out the colors.</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/poe-stack-light/files/easy_eda_gerber.zip">
-                <i class="far fa-file-"></i>
-                files/easy_eda_gerber.zip:
-                
-                
-                <br>
-                <small>sha1: d7686b0ad88a1686a5a11cb009632b53ca474c75</small>
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/poe-stack-light/images/complete/01_all_off.jpg">
                 
             </a>
+            
+            <figcaption>
+                <small>Translucent white lenses for much less ambiguity than the stack lights with colored lenses.</small>
+            </figcaption>
+            
+        </figure>
+
         
     </li>
     
     <li>
         
-            <a target="_blank" href="https://karlquinsland.com/poe-stack-light/files/easy_eda_source.zip">
-                <i class="far fa-file-"></i>
-                files/easy_eda_source.zip:
-                
-                
-                <br>
-                <small>sha1: e05a00cdca9af94dd0e8d1d8f3aa998b75c14a08</small>
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/poe-stack-light/images/assemble/base_mounting_options.png">
                 
             </a>
+            
+            <figcaption>
+                <small>I wasn&#39;t sure where I&#39;d want to install this, so there are a few options for attaching the base to surfaces.</small>
+            </figcaption>
+            
+        </figure>
+
         
     </li>
     
     <li>
         
-            <a target="_blank" href="https://karlquinsland.com/poe-stack-light/files/enclosure-lid-m1v2.stl">
-                <i class="far fa-file-code"></i>
-                files/enclosure-lid-m1v2.stl:
-                
-                <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
-                
-                
-                <br>
-                <small>sha1: 3870a674d9cf08bf26e3607e42ee766e9816ac6c</small>
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/poe-stack-light/images/assemble/04_close.jpg">
                 
             </a>
+            
+            <figcaption>
+                <small>Use the plate as a lever to carefully push, then hold, the PoE dongle in place.</small>
+            </figcaption>
+            
+        </figure>
+
         
     </li>
     
     <li>
         
-            <a target="_blank" href="https://karlquinsland.com/poe-stack-light/files/enclosure-plate-m1v2.stl">
-                <i class="far fa-file-code"></i>
-                files/enclosure-plate-m1v2.stl:
-                
-                <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
-                
-                
-                <br>
-                <small>sha1: 8f90b54be2a798cf87bc6ca4fc118b82669e0668</small>
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/poe-stack-light/images/complete/02_all_on.jpg">
                 
             </a>
+            
+            <figcaption>
+                <small>The lights are much brighter than they appear in this picture; had to intentionally darken the image to prevent camera from blowing out the colors.</small>
+            </figcaption>
+            
+        </figure>
+
         
     </li>
     
     <li>
         
-            <a target="_blank" href="https://karlquinsland.com/poe-stack-light/files/esphome_confg.yaml">
-                <i class="far fa-file-code"></i>
-                files/esphome_confg.yaml:
-                
-                <small style="font-family:'Lucida Console', monospace">yaml</small> <small>file</small>
-                
+        <a target="_blank" href="https://karlquinsland.com/poe-stack-light/files/easy_eda_gerber.zip">
+            <i class="far fa-file-"></i>
+            files/easy_eda_gerber.zip:
+            
+            
+            <br>
+            <small>sha1: d7686b0ad88a1686a5a11cb009632b53ca474c75</small>
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/poe-stack-light/files/easy_eda_source.zip">
+            <i class="far fa-file-"></i>
+            files/easy_eda_source.zip:
+            
+            
+            <br>
+            <small>sha1: e05a00cdca9af94dd0e8d1d8f3aa998b75c14a08</small>
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/poe-stack-light/files/enclosure-lid-m1v2.stl">
+            <i class="far fa-file-code"></i>
+            files/enclosure-lid-m1v2.stl:
+            
+            <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
+            
+            
+            <br>
+            <small>sha1: 3870a674d9cf08bf26e3607e42ee766e9816ac6c</small>
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/poe-stack-light/files/enclosure-plate-m1v2.stl">
+            <i class="far fa-file-code"></i>
+            files/enclosure-plate-m1v2.stl:
+            
+            <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
+            
+            
+            <br>
+            <small>sha1: 8f90b54be2a798cf87bc6ca4fc118b82669e0668</small>
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/poe-stack-light/files/esphome_confg.yaml">
+            <i class="far fa-file-code"></i>
+            files/esphome_confg.yaml:
+            
+            <small style="font-family:'Lucida Console', monospace">yaml</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/poe-stack-light/files/pcb.step">
+            <i class="far fa-file-code"></i>
+            files/pcb.step:
+            
+            <small style="font-family:'Lucida Console', monospace">step</small> <small>file</small>
+            
+            
+            <br>
+            <small>sha1: e212f3cd3d90a639e6518b7d11bc5cc20df09b67</small>
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/poe-stack-light/files/poe-dongle.step">
+            <i class="far fa-file-code"></i>
+            files/poe-dongle.step:
+            
+            <small style="font-family:'Lucida Console', monospace">step</small> <small>file</small>
+            
+            
+            <br>
+            <small>sha1: a698c249d89f2ab2c981427df49620cb09ce5f66</small>
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/poe-stack-light/files/stack-light-base.step">
+            <i class="far fa-file-code"></i>
+            files/stack-light-base.step:
+            
+            <small style="font-family:'Lucida Console', monospace">step</small> <small>file</small>
+            
+            
+            <br>
+            <small>sha1: 3c3d0d6162a985b4f09d0f9a58fdacb3f08beb78</small>
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/poe-stack-light/images/assemble/00_flush_screws.jpg">
                 
             </a>
+            
+            <figcaption>
+                <small>If the screws protrude even a fraction of a millimeter, the light can wobble and the magnetic attachment is weakened.</small>
+            </figcaption>
+            
+        </figure>
+
         
     </li>
     
     <li>
         
-            <a target="_blank" href="https://karlquinsland.com/poe-stack-light/files/pcb.step">
-                <i class="far fa-file-code"></i>
-                files/pcb.step:
-                
-                <small style="font-family:'Lucida Console', monospace">step</small> <small>file</small>
-                
-                
-                <br>
-                <small>sha1: e212f3cd3d90a639e6518b7d11bc5cc20df09b67</small>
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/poe-stack-light/images/home-assistant.png">
                 
             </a>
+            
+            <figcaption>
+                <small>Stack light is controlled via MQTT making it easy to control from Home Assistant or any other program that can speak MQTT.</small>
+            </figcaption>
+            
+        </figure>
+
         
     </li>
     
     <li>
         
-            <a target="_blank" href="https://karlquinsland.com/poe-stack-light/files/poe-dongle.step">
-                <i class="far fa-file-code"></i>
-                files/poe-dongle.step:
-                
-                <small style="font-family:'Lucida Console', monospace">step</small> <small>file</small>
-                
-                
-                <br>
-                <small>sha1: a698c249d89f2ab2c981427df49620cb09ce5f66</small>
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/poe-stack-light/images/assemble/02_pcb_attached.jpg">
                 
             </a>
+            
+            <figcaption>
+                <small>PCB should be flush against the mounting posts.</small>
+            </figcaption>
+            
+        </figure>
+
         
     </li>
     
     <li>
         
-            <a target="_blank" href="https://karlquinsland.com/poe-stack-light/files/stack-light-base.step">
-                <i class="far fa-file-code"></i>
-                files/stack-light-base.step:
-                
-                <small style="font-family:'Lucida Console', monospace">step</small> <small>file</small>
-                
-                
-                <br>
-                <small>sha1: 3c3d0d6162a985b4f09d0f9a58fdacb3f08beb78</small>
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/poe-stack-light/images/complete/00_plugged_in.jpg">
                 
             </a>
-        
-    </li>
-    
-    <li>
-        
-
             
+            <figcaption>
+                <small>RJ45 jack should be flush to the outer wall of the enclosure.</small>
+            </figcaption>
             
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/poe-stack-light/images/assemble/00_flush_screws.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>If the screws protrude even a fraction of a millimeter, the light can wobble and the magnetic attachment is weakened.</small>
-                </figcaption>
-                
-            </figure>
+        </figure>
 
         
     </li>
@@ -1001,19 +1061,19 @@ Once the screw is fully inserted, allow it to fully cool (~5min) so the softened
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/poe-stack-light/images/home-assistant.png">
-                    
-                </a>
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/poe-stack-light/images/assemble/01_prep.jpg">
                 
-                <figcaption>
-                    <small>Stack light is controlled via MQTT making it easy to control from Home Assistant or any other program that can speak MQTT.</small>
-                </figcaption>
-                
-            </figure>
+            </a>
+            
+            <figcaption>
+                <small>About to start melting threads into the 3D printed parts.</small>
+            </figcaption>
+            
+        </figure>
 
         
     </li>
@@ -1021,19 +1081,19 @@ Once the screw is fully inserted, allow it to fully cool (~5min) so the softened
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/poe-stack-light/images/assemble/02_pcb_attached.jpg">
-                    
-                </a>
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/poe-stack-light/images/slicer.png">
                 
-                <figcaption>
-                    <small>PCB should be flush against the mounting posts.</small>
-                </figcaption>
-                
-            </figure>
+            </a>
+            
+            <figcaption>
+                <small>Insert your magnets before the layer covering thee 6 cavities is printed.</small>
+            </figcaption>
+            
+        </figure>
 
         
     </li>
@@ -1041,79 +1101,19 @@ Once the screw is fully inserted, allow it to fully cool (~5min) so the softened
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/poe-stack-light/images/complete/00_plugged_in.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>RJ45 jack should be flush to the outer wall of the enclosure.</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
         
 
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/poe-stack-light/images/assemble/01_prep.jpg">
-                    
-                </a>
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/poe-stack-light/images/assemble/03_wire.jpg">
                 
-                <figcaption>
-                    <small>About to start melting threads into the 3D printed parts.</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
+            </a>
             
+            <figcaption>
+                <small>I cut a few inches off the Ethernet cable and power leads so everything fits in the enclosure better.</small>
+            </figcaption>
             
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/poe-stack-light/images/slicer.png">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Insert your magnets before the layer covering thee 6 cavities is printed.</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/poe-stack-light/images/assemble/03_wire.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>I cut a few inches off the Ethernet cable and power leads so everything fits in the enclosure better.</small>
-                </figcaption>
-                
-            </figure>
+        </figure>
 
         
     </li>
@@ -1127,7 +1127,7 @@ Once the screw is fully inserted, allow it to fully cool (~5min) so the softened
 
     
         
-    
+        
 
     
 
@@ -1571,17 +1571,17 @@ I hit a few snags and below is an updated <code>Dockerfile</code> that gave me a
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Simple dashboard in grafana
-        
+            Simple dashboard in grafana
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1598,50 +1598,50 @@ I hit a few snags and below is an updated <code>Dockerfile</code> that gave me a
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/monitoring-ap7900-switched-pdu-prometheus-grafana/images/ap7900.png">
-                    
-                </a>
-                
-                
-            </figure>
+        
 
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/monitoring-ap7900-switched-pdu-prometheus-grafana/files/dashboard.json">
-                <i class="far fa-file-file-code"></i>
-                files/dashboard.json:
-                
-                
-                <br>
-                <small>sha1(dashboard.json): 400edb0c4064068f12e17c2f1f0d6862d3b8d449</small>
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/monitoring-ap7900-switched-pdu-prometheus-grafana/images/ap7900.png">
                 
             </a>
+            
+            
+        </figure>
+
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/monitoring-ap7900-switched-pdu-prometheus-grafana/files/dashboard.json">
+            <i class="far fa-file-file-code"></i>
+            files/dashboard.json:
+            
+            
+            <br>
+            <small>sha1(dashboard.json): 400edb0c4064068f12e17c2f1f0d6862d3b8d449</small>
+            
+        </a>
         
     </li>
     
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/monitoring-ap7900-switched-pdu-prometheus-grafana/images/grafana.png">
-                    
-                </a>
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/monitoring-ap7900-switched-pdu-prometheus-grafana/images/grafana.png">
                 
-                <figcaption>
-                    <small>Simple dashboard in grafana</small>
-                </figcaption>
-                
-            </figure>
+            </a>
+            
+            <figcaption>
+                <small>Simple dashboard in grafana</small>
+            </figcaption>
+            
+        </figure>
 
         
     </li>
@@ -1653,17 +1653,17 @@ I hit a few snags and below is an updated <code>Dockerfile</code> that gave me a
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Picture showing designed parts deployed as intended (please ignore the lingering dust! 💨)
-        
+            Picture showing designed parts deployed as intended (please ignore the lingering dust! 💨)
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1679,17 +1679,17 @@ I hit a few snags and below is an updated <code>Dockerfile</code> that gave me a
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Screenshot from Fusion360 showing dimensions between screw holes
-        
+            Screenshot from Fusion360 showing dimensions between screw holes
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1704,17 +1704,17 @@ I hit a few snags and below is an updated <code>Dockerfile</code> that gave me a
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Screenshot showing suggested print bed arrangement
-        
+            Screenshot showing suggested print bed arrangement
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1728,140 +1728,19 @@ I hit a few snags and below is an updated <code>Dockerfile</code> that gave me a
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/images/hole-dimensions.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Screenshot from Fusion360 showing dimensions between screw holes</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
         
 
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/images/horizontal-model.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Picture showing the CAD model for horizontal variant</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/images/installed.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Picture showing designed parts deployed as intended (please ignore the lingering dust! 💨)</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/models/combined.3mf">
-                <i class="far fa-file-archive"></i>
-                models/combined.3mf:
-                
-                <small style="font-family:'Lucida Console', monospace">3mf</small> <small>file</small>
-                
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/images/hole-dimensions.jpg">
                 
             </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/models/horizontal.f3d">
-                <i class="far fa-file-"></i>
-                models/horizontal.f3d:
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/models/horizontal.stl">
-                <i class="far fa-file-code"></i>
-                Horizontal STL:
-                
-                <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/models/vertical.f3d">
-                <i class="far fa-file-"></i>
-                models/vertical.f3d:
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/models/vertical.stl">
-                <i class="far fa-file-code"></i>
-                Vertical STL:
-                
-                <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-
             
+            <figcaption>
+                <small>Screenshot from Fusion360 showing dimensions between screw holes</small>
+            </figcaption>
             
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/images/suggested_print_orientation.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Screenshot showing suggested print bed arrangement</small>
-                </figcaption>
-                
-            </figure>
+        </figure>
 
         
     </li>
@@ -1869,19 +1748,140 @@ I hit a few snags and below is an updated <code>Dockerfile</code> that gave me a
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/images/vertical-model.jpg">
-                    
-                </a>
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/images/horizontal-model.jpg">
                 
-                <figcaption>
-                    <small>Picture showing the CAD model for vertical variant</small>
-                </figcaption>
+            </a>
+            
+            <figcaption>
+                <small>Picture showing the CAD model for horizontal variant</small>
+            </figcaption>
+            
+        </figure>
+
+        
+    </li>
+    
+    <li>
+        
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/images/installed.jpg">
                 
-            </figure>
+            </a>
+            
+            <figcaption>
+                <small>Picture showing designed parts deployed as intended (please ignore the lingering dust! 💨)</small>
+            </figcaption>
+            
+        </figure>
+
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/models/combined.3mf">
+            <i class="far fa-file-archive"></i>
+            models/combined.3mf:
+            
+            <small style="font-family:'Lucida Console', monospace">3mf</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/models/horizontal.f3d">
+            <i class="far fa-file-"></i>
+            models/horizontal.f3d:
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/models/horizontal.stl">
+            <i class="far fa-file-code"></i>
+            Horizontal STL:
+            
+            <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/models/vertical.f3d">
+            <i class="far fa-file-"></i>
+            models/vertical.f3d:
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/models/vertical.stl">
+            <i class="far fa-file-code"></i>
+            Vertical STL:
+            
+            <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/images/suggested_print_orientation.jpg">
+                
+            </a>
+            
+            <figcaption>
+                <small>Screenshot showing suggested print bed arrangement</small>
+            </figcaption>
+            
+        </figure>
+
+        
+    </li>
+    
+    <li>
+        
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/images/vertical-model.jpg">
+                
+            </a>
+            
+            <figcaption>
+                <small>Picture showing the CAD model for vertical variant</small>
+            </figcaption>
+            
+        </figure>
 
         
     </li>
@@ -1895,7 +1895,7 @@ I hit a few snags and below is an updated <code>Dockerfile</code> that gave me a
 
     
         
-    
+        
 
     
 
@@ -1911,17 +1911,17 @@ I hit a few snags and below is an updated <code>Dockerfile</code> that gave me a
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Yes, I do need to re-do the cable runs; they&#39;re a mess
-        
+            Yes, I do need to re-do the cable runs; they&#39;re a mess
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1953,137 +1953,16 @@ Tolerances on the jacks are somewhat tight so printing at a more accurate settin
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/home-lab-keystone-bracket/images/rear-installed.jpg">
-                    
-                </a>
-                
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
         
 
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/home-lab-keystone-bracket/images/front-installed.jpg">
-                    
-                </a>
-                
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/home-lab-keystone-bracket/models/v1_keystone-bracket.3mf">
-                <i class="far fa-file-archive"></i>
-                models/v1_keystone-bracket.3mf:
-                
-                <small style="font-family:'Lucida Console', monospace">3mf</small> <small>file</small>
-                
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/home-lab-keystone-bracket/images/rear-installed.jpg">
                 
             </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/home-lab-keystone-bracket/models/v1_keystone-bracket.f3z">
-                <i class="far fa-file-archive"></i>
-                models/v1_keystone-bracket.f3z:
-                
-                <small style="font-family:'Lucida Console', monospace">f3z</small> <small>file</small>
-                
-                
-                <br>
-                <small>Fusion360 Archive</small>
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/home-lab-keystone-bracket/models/v1_keystone-bracket.stl">
-                <i class="far fa-file-code"></i>
-                models/v1_keystone-bracket.stl:
-                
-                <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/home-lab-keystone-bracket/models/v2.3mf">
-                <i class="far fa-file-archive"></i>
-                models/v2.3mf:
-                
-                <small style="font-family:'Lucida Console', monospace">3mf</small> <small>file</small>
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/home-lab-keystone-bracket/models/v2.step">
-                <i class="far fa-file-archive"></i>
-                models/v2.step:
-                
-                <small style="font-family:'Lucida Console', monospace">step</small> <small>file</small>
-                
-                
-                <br>
-                <small>STEP file</small>
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/home-lab-keystone-bracket/models/v2.stl">
-                <i class="far fa-file-code"></i>
-                models/v2.stl:
-                
-                <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-
             
             
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/home-lab-keystone-bracket/images/print_orientation.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Suggested print orientation</small>
-                </figcaption>
-                
-            </figure>
+        </figure>
 
         
     </li>
@@ -2091,16 +1970,120 @@ Tolerances on the jacks are somewhat tight so printing at a more accurate settin
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/home-lab-keystone-bracket/images/v2_installed_front.jpg">
-                    
-                </a>
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/home-lab-keystone-bracket/images/front-installed.jpg">
                 
+            </a>
+            
+            
+        </figure>
+
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/home-lab-keystone-bracket/models/v1_keystone-bracket.3mf">
+            <i class="far fa-file-archive"></i>
+            models/v1_keystone-bracket.3mf:
+            
+            <small style="font-family:'Lucida Console', monospace">3mf</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/home-lab-keystone-bracket/models/v1_keystone-bracket.f3z">
+            <i class="far fa-file-archive"></i>
+            models/v1_keystone-bracket.f3z:
+            
+            <small style="font-family:'Lucida Console', monospace">f3z</small> <small>file</small>
+            
+            
+            <br>
+            <small>Fusion360 Archive</small>
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/home-lab-keystone-bracket/models/v1_keystone-bracket.stl">
+            <i class="far fa-file-code"></i>
+            models/v1_keystone-bracket.stl:
+            
+            <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/home-lab-keystone-bracket/models/v2.3mf">
+            <i class="far fa-file-archive"></i>
+            models/v2.3mf:
+            
+            <small style="font-family:'Lucida Console', monospace">3mf</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/home-lab-keystone-bracket/models/v2.step">
+            <i class="far fa-file-archive"></i>
+            models/v2.step:
+            
+            <small style="font-family:'Lucida Console', monospace">step</small> <small>file</small>
+            
+            
+            <br>
+            <small>STEP file</small>
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/home-lab-keystone-bracket/models/v2.stl">
+            <i class="far fa-file-code"></i>
+            models/v2.stl:
+            
+            <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/home-lab-keystone-bracket/images/print_orientation.jpg">
                 
-            </figure>
+            </a>
+            
+            <figcaption>
+                <small>Suggested print orientation</small>
+            </figcaption>
+            
+        </figure>
 
         
     </li>
@@ -2108,19 +2091,36 @@ Tolerances on the jacks are somewhat tight so printing at a more accurate settin
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/home-lab-keystone-bracket/images/v2_installed_rear.jpg">
-                    
-                </a>
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/home-lab-keystone-bracket/images/v2_installed_front.jpg">
                 
-                <figcaption>
-                    <small>Yes, I do need to re-do the cable runs; they&#39;re a mess</small>
-                </figcaption>
+            </a>
+            
+            
+        </figure>
+
+        
+    </li>
+    
+    <li>
+        
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/home-lab-keystone-bracket/images/v2_installed_rear.jpg">
                 
-            </figure>
+            </a>
+            
+            <figcaption>
+                <small>Yes, I do need to re-do the cable runs; they&#39;re a mess</small>
+            </figcaption>
+            
+        </figure>
 
         
     </li>
@@ -2140,213 +2140,213 @@ Tolerances on the jacks are somewhat tight so printing at a more accurate settin
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/images/built.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Fully Assembled; ignore the messy workbench</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
         
 
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/images/cad-back.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>component view, from rear</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/images/cad-front.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>component view, from front</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/images/core.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Print Bed arrangement, green is support structures</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/images/meter-panel.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>meter panel print orientation</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/models/2x-lrs-psu.f3z">
-                <i class="far fa-file-archive"></i>
-                Consolidated PSU CAD:
-                
-                <small style="font-family:'Lucida Console', monospace">f3z</small> <small>file</small>
-                
-                
-                <br>
-                <small>Fusion360 Archive</small>
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/images/built.jpg">
                 
             </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/models/box.stl">
-                <i class="far fa-file-code"></i>
-                Box:
-                
-                <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/models/brace.stl">
-                <i class="far fa-file-code"></i>
-                Brace:
-                
-                <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/models/core.3mf">
-                <i class="far fa-file-archive"></i>
-                Core Components:
-                
-                <small style="font-family:'Lucida Console', monospace">3mf</small> <small>file</small>
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/models/lid.stl">
-                <i class="far fa-file-code"></i>
-                Lid:
-                
-                <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/models/meter-panel.3mf">
-                <i class="far fa-file-archive"></i>
-                (Optional) Meter Panel:
-                
-                <small style="font-family:'Lucida Console', monospace">3mf</small> <small>file</small>
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/models/meter-panel.stl">
-                <i class="far fa-file-code"></i>
-                (Optional) Meter Panel:
-                
-                <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
-                
-                
-            </a>
+            
+            <figcaption>
+                <small>Fully Assembled; ignore the messy workbench</small>
+            </figcaption>
+            
+        </figure>
+
         
     </li>
     
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/images/meter-panel-slice.jpg">
-                    
-                </a>
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/images/cad-back.jpg">
                 
-                <figcaption>
-                    <small>using slic3r too remove the second meter cutout</small>
-                </figcaption>
+            </a>
+            
+            <figcaption>
+                <small>component view, from rear</small>
+            </figcaption>
+            
+        </figure>
+
+        
+    </li>
+    
+    <li>
+        
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/images/cad-front.jpg">
                 
-            </figure>
+            </a>
+            
+            <figcaption>
+                <small>component view, from front</small>
+            </figcaption>
+            
+        </figure>
+
+        
+    </li>
+    
+    <li>
+        
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/images/core.jpg">
+                
+            </a>
+            
+            <figcaption>
+                <small>Print Bed arrangement, green is support structures</small>
+            </figcaption>
+            
+        </figure>
+
+        
+    </li>
+    
+    <li>
+        
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/images/meter-panel.jpg">
+                
+            </a>
+            
+            <figcaption>
+                <small>meter panel print orientation</small>
+            </figcaption>
+            
+        </figure>
+
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/models/2x-lrs-psu.f3z">
+            <i class="far fa-file-archive"></i>
+            Consolidated PSU CAD:
+            
+            <small style="font-family:'Lucida Console', monospace">f3z</small> <small>file</small>
+            
+            
+            <br>
+            <small>Fusion360 Archive</small>
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/models/box.stl">
+            <i class="far fa-file-code"></i>
+            Box:
+            
+            <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/models/brace.stl">
+            <i class="far fa-file-code"></i>
+            Brace:
+            
+            <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/models/core.3mf">
+            <i class="far fa-file-archive"></i>
+            Core Components:
+            
+            <small style="font-family:'Lucida Console', monospace">3mf</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/models/lid.stl">
+            <i class="far fa-file-code"></i>
+            Lid:
+            
+            <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/models/meter-panel.3mf">
+            <i class="far fa-file-archive"></i>
+            (Optional) Meter Panel:
+            
+            <small style="font-family:'Lucida Console', monospace">3mf</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/models/meter-panel.stl">
+            <i class="far fa-file-code"></i>
+            (Optional) Meter Panel:
+            
+            <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/images/meter-panel-slice.jpg">
+                
+            </a>
+            
+            <figcaption>
+                <small>using slic3r too remove the second meter cutout</small>
+            </figcaption>
+            
+        </figure>
 
         
     </li>

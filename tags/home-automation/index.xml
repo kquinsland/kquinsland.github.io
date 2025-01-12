@@ -6,17 +6,17 @@
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Conceptual diagram for the project.
-        
+            Conceptual diagram for the project.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -54,17 +54,17 @@ Use this as a starting point and adapt it to your needs.</div>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Fully assembled PCB just before final assembly.
-        
+            Fully assembled PCB just before final assembly.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -76,17 +76,17 @@ Use this as a starting point and adapt it to your needs.</div>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        A picture of the probe installed and operating. The air filter has been removed and you can see the AC evaporator.
-        
+            A picture of the probe installed and operating. The air filter has been removed and you can see the AC evaporator.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -98,17 +98,17 @@ Use this as a starting point and adapt it to your needs.</div>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        How the sensor shows up in HomeAssistant.
-        
+            How the sensor shows up in HomeAssistant.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -711,17 +711,17 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        How the S31 powering modem appears in Home Assistant
-        
+            How the S31 powering modem appears in Home Assistant
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1641,17 +1641,17 @@ Naturally, I went with the amazing Sonoff S31 but you can get similar results wi
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        S31 powered coffee maker in Home Assistant. Note that the bloom settings can be adjusted on the fly.
-        
+            S31 powered coffee maker in Home Assistant. Note that the bloom settings can be adjusted on the fly.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -2488,17 +2488,17 @@ The details are <a href="https://github.com/arendst/Tasmota/issues/15636#issueco
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        The default auto-configuration leads Home Assistant to believe the fan can only be switched on/off.
-        
+            The default auto-configuration leads Home Assistant to believe the fan can only be switched on/off.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -2644,17 +2644,17 @@ The details are <a href="https://github.com/arendst/Tasmota/issues/15636#issueco
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        The DS03 device entity after the variable speed configuration document is received by Home Assistant.
-        
+            The DS03 device entity after the variable speed configuration document is received by Home Assistant.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -2671,17 +2671,17 @@ The details are <a href="https://github.com/arendst/Tasmota/issues/15636#issueco
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Toggle &#39;Enable entity&#39; off to hide the basic binary switch that Tasmota configured Home Assistant with.
-        
+            Toggle &#39;Enable entity&#39; off to hide the basic binary switch that Tasmota configured Home Assistant with.
             
-        
+                
+                
         </p> 
     </figcaption>
     

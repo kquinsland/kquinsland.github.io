@@ -6,17 +6,17 @@
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Conceptual diagram for the project.
-        
+            Conceptual diagram for the project.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -54,17 +54,17 @@ Use this as a starting point and adapt it to your needs.</div>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Fully assembled PCB just before final assembly.
-        
+            Fully assembled PCB just before final assembly.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -76,17 +76,17 @@ Use this as a starting point and adapt it to your needs.</div>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        A picture of the probe installed and operating. The air filter has been removed and you can see the AC evaporator.
-        
+            A picture of the probe installed and operating. The air filter has been removed and you can see the AC evaporator.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -98,17 +98,17 @@ Use this as a starting point and adapt it to your needs.</div>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        How the sensor shows up in HomeAssistant.
-        
+            How the sensor shows up in HomeAssistant.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -696,17 +696,17 @@ The idea is to have a small RFID tag that can be used for various purposes, such
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        The inspiration for this project
-        
+            The inspiration for this project
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -721,17 +721,17 @@ Because of the wide variety of watch bands available, I have <a href="#files" re
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Installed on a watch band.
-        
+            Installed on a watch band.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -742,17 +742,17 @@ Because of the wide variety of watch bands available, I have <a href="#files" re
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        A single watch band pin is used to secure the plastic part to the band.
-        
+            A single watch band pin is used to secure the plastic part to the band.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -763,17 +763,17 @@ Because of the wide variety of watch bands available, I have <a href="#files" re
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Hopefully this gives you an idea of how the parts come together.
-        
+            Hopefully this gives you an idea of how the parts come together.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -790,17 +790,17 @@ A kit is advisable if you need to prototype multiple designs / play with differe
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Suggested print orientation for best results
-        
+            Suggested print orientation for best results
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -816,17 +816,17 @@ I did eventually find a suitable tag on eBay:</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        eBay listing for the RFID tag
-        
+            eBay listing for the RFID tag
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -875,61 +875,61 @@ I did eventually find a suitable tag on eBay:</p>
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/eBay-listing.png">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>eBay listing for the RFID tag</small>
-                </figcaption>
-                
-            </figure>
+        
 
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/files/fusion-export.step">
-                <i class="far fa-file-"></i>
-                files/fusion-export.step:
-                
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/eBay-listing.png">
                 
             </a>
+            
+            <figcaption>
+                <small>eBay listing for the RFID tag</small>
+            </figcaption>
+            
+        </figure>
+
         
     </li>
     
     <li>
         
-            <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/files/main.f3z">
-                <i class="far fa-file-"></i>
-                files/main.f3z:
-                
+        <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/files/fusion-export.step">
+            <i class="far fa-file-"></i>
+            files/fusion-export.step:
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/files/main.f3z">
+            <i class="far fa-file-"></i>
+            files/main.f3z:
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/official-medical-band-render.webp">
                 
             </a>
-        
-    </li>
-    
-    <li>
-        
-
             
+            <figcaption>
+                <small>The inspiration for this project</small>
+            </figcaption>
             
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/official-medical-band-render.webp">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>The inspiration for this project</small>
-                </figcaption>
-                
-            </figure>
+        </figure>
 
         
     </li>
@@ -937,19 +937,19 @@ I did eventually find a suitable tag on eBay:</p>
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/suggested-print-orientation.png">
-                    
-                </a>
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/suggested-print-orientation.png">
                 
-                <figcaption>
-                    <small>Suggested print orientation for best results</small>
-                </figcaption>
-                
-            </figure>
+            </a>
+            
+            <figcaption>
+                <small>Suggested print orientation for best results</small>
+            </figcaption>
+            
+        </figure>
 
         
     </li>
@@ -957,19 +957,19 @@ I did eventually find a suitable tag on eBay:</p>
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/prototype01.jpg">
-                    
-                </a>
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/prototype01.jpg">
                 
-                <figcaption>
-                    <small>Hopefully this gives you an idea of how the parts come together.</small>
-                </figcaption>
-                
-            </figure>
+            </a>
+            
+            <figcaption>
+                <small>Hopefully this gives you an idea of how the parts come together.</small>
+            </figcaption>
+            
+        </figure>
 
         
     </li>
@@ -977,19 +977,19 @@ I did eventually find a suitable tag on eBay:</p>
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/prototype02.jpg">
-                    
-                </a>
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/prototype02.jpg">
                 
-                <figcaption>
-                    <small>A single watch band pin is used to secure the plastic part to the band.</small>
-                </figcaption>
-                
-            </figure>
+            </a>
+            
+            <figcaption>
+                <small>A single watch band pin is used to secure the plastic part to the band.</small>
+            </figcaption>
+            
+        </figure>
 
         
     </li>
@@ -997,19 +997,19 @@ I did eventually find a suitable tag on eBay:</p>
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/prototype03.jpg">
-                    
-                </a>
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/prototype03.jpg">
                 
-                <figcaption>
-                    <small>Installed on a watch band.</small>
-                </figcaption>
-                
-            </figure>
+            </a>
+            
+            <figcaption>
+                <small>Installed on a watch band.</small>
+            </figcaption>
+            
+        </figure>
 
         
     </li>
@@ -1025,7 +1025,7 @@ I did eventually find a suitable tag on eBay:</p>
 
     
         
-    
+        
 
     
 
@@ -1059,7 +1059,7 @@ Using <code>dmesg</code> I could see <em>a device</em> being plugged in but the 
 
     
         
-    
+        
 
     
 
@@ -1080,17 +1080,17 @@ I have some thoughts on being able to toggle this behavior <a href="#beeper" rel
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        I left R1 in place so it&#39;s easier to reverse the mod.
-        
+            I left R1 in place so it&#39;s easier to reverse the mod.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1102,17 +1102,17 @@ I have some thoughts on being able to toggle this behavior <a href="#beeper" rel
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        There&#39;s no good place for the ESP module so I chose to strategically obfuscate the portion of the screen that does not display the actual measurements.
-        
+            There&#39;s no good place for the ESP module so I chose to strategically obfuscate the portion of the screen that does not display the actual measurements.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1132,17 +1132,17 @@ As the tube is charged up to ~400v, it putting the ESP module directly over it s
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        I wouldn&#39;t put the ESP right here because a) the tube is partially obstructed and b) the tube is charged to a few hundred volts and putting any delicate electronics that close seems like a bad idea.
-        
+            I wouldn&#39;t put the ESP right here because a) the tube is partially obstructed and b) the tube is charged to a few hundred volts and putting any delicate electronics that close seems like a bad idea.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1154,17 +1154,17 @@ As the tube is charged up to ~400v, it putting the ESP module directly over it s
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Ignore that 12 hour gap in the data... I forgot to plug the assembly back in after doing some tests.
-        
+            Ignore that 12 hour gap in the data... I forgot to plug the assembly back in after doing some tests.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1531,7 +1531,7 @@ Most appear to use TuYa MCUs so it&rsquo;s not immediately clear if/how those de
 
     
         
-    
+        
 
     
 
@@ -1547,7 +1547,7 @@ Most appear to use TuYa MCUs so it&rsquo;s not immediately clear if/how those de
 
     
         
-    
+        
 
     
 
@@ -2166,7 +2166,7 @@ One LCSC order, one mouser order and about a week later, I had a basic RS232 &lt
 
     
         
-    
+        
 
     
 
@@ -2183,7 +2183,7 @@ One LCSC order, one mouser order and about a week later, I had a basic RS232 &lt
 
     
         
-    
+        
 
     
 
@@ -2215,17 +2215,17 @@ This appears to be based on a MediaTek based module module from <a href="https:/
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        The green elements are meant to be printed in TPU or another gasket like material. The cable channel runs from the RCA jack enclosure in the rear (pink color), under the gasket material to the main speaker cavity.
-        
+            The green elements are meant to be printed in TPU or another gasket like material. The cable channel runs from the RCA jack enclosure in the rear (pink color), under the gasket material to the main speaker cavity.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -2253,17 +2253,17 @@ This appears to be based on a MediaTek based module module from <a href="https:/
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        The dark blue represents the path that gasket cord material should be laid down.
-        
+            The dark blue represents the path that gasket cord material should be laid down.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -2274,17 +2274,17 @@ This appears to be based on a MediaTek based module module from <a href="https:/
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        When properly joined, there will be a slight interference between the panel and the gasket material; this ensures a fantastic seal.
-        
+            When properly joined, there will be a slight interference between the panel and the gasket material; this ensures a fantastic seal.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -2303,17 +2303,17 @@ This appears to be based on a MediaTek based module module from <a href="https:/
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        The support material hides the hole almost perfectly. If the image brightness wasn&#39;t turned up, you&#39;d never notice :D
-        
+            The support material hides the hole almost perfectly. If the image brightness wasn&#39;t turned up, you&#39;d never notice :D
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -2407,17 +2407,17 @@ This appears to be based on a MediaTek based module module from <a href="https:/
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        The amp enclosure as seen from the front corner.
-        
+            The amp enclosure as seen from the front corner.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -2428,17 +2428,17 @@ This appears to be based on a MediaTek based module module from <a href="https:/
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        The amp enclosure as seen from the rear corner.
-        
+            The amp enclosure as seen from the rear corner.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -2451,17 +2451,17 @@ This appears to be based on a MediaTek based module module from <a href="https:/
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Viewed from the rear corner, the PCB (purple) sits on top of a midplate (green, highlighted) which sits on top of the power supply (also purple, bottom).
-        
+            Viewed from the rear corner, the PCB (purple) sits on top of a midplate (green, highlighted) which sits on top of the power supply (also purple, bottom).
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -2472,17 +2472,17 @@ This appears to be based on a MediaTek based module module from <a href="https:/
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        To make printing easier, the midplate is actually two components joined together by the two screws furthest from the knobs.
-        
+            To make printing easier, the midplate is actually two components joined together by the two screws furthest from the knobs.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -2549,17 +2549,17 @@ The excess friction <em>will</em> soften the plastic in the vicinity of the scre
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        All 11(!) of the m4 screws driven into the sub body waiting for the plastic to set
-        
+            All 11(!) of the m4 screws driven into the sub body waiting for the plastic to set
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -2572,7 +2572,7 @@ Nearly every one of the holes had some (small) build up of material:</p>
 
     
         
-    
+        
 
     
 
@@ -2589,7 +2589,7 @@ Nearly every one of the holes had some (small) build up of material:</p>
 
     
         
-    
+        
 
     
 
@@ -2607,7 +2607,7 @@ Simply use a different screw for final assembly or use scrape tool or flame to r
 
     
         
-    
+        
 
     
 
@@ -2624,7 +2624,7 @@ Simply use a different screw for final assembly or use scrape tool or flame to r
 
     
         
-    
+        
 
     
 
@@ -2642,17 +2642,17 @@ As the screw drives deeper, the tip will push molten plastic into this &ldquo;we
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        The extra depth on the screw hole gives the molten plastic somewhere to go.
-        
+            The extra depth on the screw hole gives the molten plastic somewhere to go.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -2666,7 +2666,7 @@ As the screw drives deeper, the tip will push molten plastic into this &ldquo;we
 
     
         
-    
+        
 
     
 
@@ -2682,7 +2682,7 @@ As the screw drives deeper, the tip will push molten plastic into this &ldquo;we
 
     
         
-    
+        
 
     
 
@@ -2714,17 +2714,17 @@ As the screw drives deeper, the tip will push molten plastic into this &ldquo;we
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Be mindful of the gasket as you secure the panel to the subwoofer body. Too much torque/clamping force can cause the gasket to distort.
-        
+            Be mindful of the gasket as you secure the panel to the subwoofer body. Too much torque/clamping force can cause the gasket to distort.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -2739,7 +2739,7 @@ Don&rsquo;t forget to use heat shrink tubing or similar to insulate/protect the 
 
     
         
-    
+        
 
     
 
@@ -2768,17 +2768,17 @@ You will almost certainly want to use superglue or similar to help you hold the 
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        The speaker wire should press-fit into the cable channel more or less sealing it completely.
-        
+            The speaker wire should press-fit into the cable channel more or less sealing it completely.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -2799,17 +2799,17 @@ You will almost certainly want to use superglue or similar to help you hold the 
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Notice the holes on the left that have been &#34;rightsized&#34; during threading and the holes on the top right that are relatively deformed still.
-        
+            Notice the holes on the left that have been &#34;rightsized&#34; during threading and the holes on the top right that are relatively deformed still.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -2823,17 +2823,17 @@ This cavity is actually <em>oversized</em> in the CAD model but due to various p
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        After the screw has pulled the nut into place, it should stay put.
-        
+            After the screw has pulled the nut into place, it should stay put.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -2847,17 +2847,17 @@ This cavity is actually <em>oversized</em> in the CAD model but due to various p
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Pro tip: print the MAC addresses of a network device somewhere on the device... Also, don&#39;t put unique device IDs onto the internet!
-        
+            Pro tip: print the MAC addresses of a network device somewhere on the device... Also, don&#39;t put unique device IDs onto the internet!
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -2873,17 +2873,17 @@ Start with the screw closest to the Powercon connector:</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Room inside the enclosure is intentionally tight so do as much wiring/connecting as possible before you start securing things to the enclosure.
-        
+            Room inside the enclosure is intentionally tight so do as much wiring/connecting as possible before you start securing things to the enclosure.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -2895,7 +2895,7 @@ Start with the screw closest to the Powercon connector:</p>
 
     
         
-    
+        
 
     
 
@@ -2912,7 +2912,7 @@ Start with the screw closest to the Powercon connector:</p>
 
     
         
-    
+        
 
     
 
@@ -2931,7 +2931,7 @@ Route the DC wires up and around to the DC plug on the PCB.</p>
 
     
         
-    
+        
 
     
 
@@ -2948,7 +2948,7 @@ Route the DC wires up and around to the DC plug on the PCB.</p>
 
     
         
-    
+        
 
     
 
@@ -2966,17 +2966,17 @@ I forgot to get a picture of the USB cable but it works more or less the exact s
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        A 6 inch patch cable was quicker but a custom length cable would almost certainly look better. Good thing this will soon be hidden away!
-        
+            A 6 inch patch cable was quicker but a custom length cable would almost certainly look better. Good thing this will soon be hidden away!
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -2989,17 +2989,17 @@ I forgot to get a picture of the USB cable but it works more or less the exact s
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Don&#39;t forget the washer/nut!
-        
+            Don&#39;t forget the washer/nut!
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -3011,17 +3011,17 @@ I forgot to get a picture of the USB cable but it works more or less the exact s
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Subwoofer and amp enclosure mounted to the leg of my desk. Please ignore the mess of wires in the background!
-        
+            Subwoofer and amp enclosure mounted to the leg of my desk. Please ignore the mess of wires in the background!
             
-        
+                
+                
         </p> 
     </figcaption>
     

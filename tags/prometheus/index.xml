@@ -10,17 +10,17 @@ So, I wrote my own.</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        blah
-        
+            blah
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -36,17 +36,17 @@ The first jump in correctable/uncorrectable errors&hellip; happens to corelate d
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        blah
-        
+            blah
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -60,17 +60,17 @@ I&rsquo;d love to know why the web server on the modem slows down so quickly aft
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        blah
-        
+            blah
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -84,7 +84,7 @@ I&rsquo;d love to know why the web server on the modem slows down so quickly aft
 
     
         
-    
+        
 
     
 
@@ -528,17 +528,17 @@ I hit a few snags and below is an updated <code>Dockerfile</code> that gave me a
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Simple dashboard in grafana
-        
+            Simple dashboard in grafana
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -555,50 +555,50 @@ I hit a few snags and below is an updated <code>Dockerfile</code> that gave me a
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/monitoring-ap7900-switched-pdu-prometheus-grafana/images/ap7900.png">
-                    
-                </a>
-                
-                
-            </figure>
+        
 
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/monitoring-ap7900-switched-pdu-prometheus-grafana/files/dashboard.json">
-                <i class="far fa-file-file-code"></i>
-                files/dashboard.json:
-                
-                
-                <br>
-                <small>sha1(dashboard.json): 400edb0c4064068f12e17c2f1f0d6862d3b8d449</small>
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/monitoring-ap7900-switched-pdu-prometheus-grafana/images/ap7900.png">
                 
             </a>
+            
+            
+        </figure>
+
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/monitoring-ap7900-switched-pdu-prometheus-grafana/files/dashboard.json">
+            <i class="far fa-file-file-code"></i>
+            files/dashboard.json:
+            
+            
+            <br>
+            <small>sha1(dashboard.json): 400edb0c4064068f12e17c2f1f0d6862d3b8d449</small>
+            
+        </a>
         
     </li>
     
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/monitoring-ap7900-switched-pdu-prometheus-grafana/images/grafana.png">
-                    
-                </a>
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/monitoring-ap7900-switched-pdu-prometheus-grafana/images/grafana.png">
                 
-                <figcaption>
-                    <small>Simple dashboard in grafana</small>
-                </figcaption>
-                
-            </figure>
+            </a>
+            
+            <figcaption>
+                <small>Simple dashboard in grafana</small>
+            </figcaption>
+            
+        </figure>
 
         
     </li>

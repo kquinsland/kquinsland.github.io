@@ -6,7 +6,7 @@ I chose this generic looking relay module from AliExpress because it was powered
 
     
         
-    
+        
 
     
 
@@ -221,17 +221,17 @@ Nothing was going to compete with 10 minute to heat-soak and remove the ESP modu
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Note the sharpie next to the pin headers. Order is GND, RX, TX, EN, GPIO0, VCC from top to bottom.
-        
+            Note the sharpie next to the pin headers. Order is GND, RX, TX, EN, GPIO0, VCC from top to bottom.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -243,7 +243,7 @@ Nothing was going to compete with 10 minute to heat-soak and remove the ESP modu
 
     
         
-    
+        
 
     
 
@@ -312,17 +312,17 @@ Nothing was going to compete with 10 minute to heat-soak and remove the ESP modu
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        This configuration works even though GPIO34 should be Button_i.
-        
+            This configuration works even though GPIO34 should be Button_i.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -454,17 +454,17 @@ When you try to deploy them to a power strip, you end up loosing about 50% of th
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        This is how you loose about 50% of the outlets on your power strip.
-        
+            This is how you loose about 50% of the outlets on your power strip.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -489,17 +489,17 @@ I am concerned with a more integrated / space efficient solution that allows me 
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Marketing photo for the BN-Link power strip
-        
+            Marketing photo for the BN-Link power strip
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -511,7 +511,7 @@ I am concerned with a more integrated / space efficient solution that allows me 
 
     
         
-    
+        
 
     
 
@@ -532,7 +532,7 @@ If you have a thin metal pry tool / spudger, it will come in handy!</p>
 
     
         
-    
+        
 
     
 
@@ -548,17 +548,17 @@ If you have a thin metal pry tool / spudger, it will come in handy!</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        I&#39;m not loving the sloppy wiring connecting the USB power supply to the mains rails.
-        
+            I&#39;m not loving the sloppy wiring connecting the USB power supply to the mains rails.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -570,17 +570,17 @@ If you have a thin metal pry tool / spudger, it will come in handy!</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        You know what&#39;s cheaper than pin headers? PCB fingers in slots.
-        
+            You know what&#39;s cheaper than pin headers? PCB fingers in slots.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -591,7 +591,7 @@ If you have a thin metal pry tool / spudger, it will come in handy!</p>
 
     
         
-    
+        
 
     
 
@@ -611,7 +611,7 @@ If you have a thin metal pry tool / spudger, it will come in handy!</p>
 
     
         
-    
+        
 
     
 
@@ -628,17 +628,17 @@ If you have a thin metal pry tool / spudger, it will come in handy!</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Note the links. I&#39;d bet that it&#39;s simpler to scale a design by copy/pasting a self-contained footprint and adjust the number of links on the BOM as needed.
-        
+            Note the links. I&#39;d bet that it&#39;s simpler to scale a design by copy/pasting a self-contained footprint and adjust the number of links on the BOM as needed.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -651,7 +651,7 @@ The power conversion is done by the chip under the metal heat sink; I didn&rsquo
 
     
         
-    
+        
 
     
 
@@ -668,7 +668,7 @@ The power conversion is done by the chip under the metal heat sink; I didn&rsquo
 
     
         
-    
+        
 
     
 
@@ -743,17 +743,17 @@ Below you&rsquo;ll find the appropriate Tasmota configuration for GPIO pins.</di
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        And here&#39;s the Tasmota configuration for the BN-Link.
-        
+            And here&#39;s the Tasmota configuration for the BN-Link.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -828,17 +828,17 @@ Below you&rsquo;ll find the appropriate Tasmota configuration for GPIO pins.</di
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Marketing photo for the POWSAV power strip
-        
+            Marketing photo for the POWSAV power strip
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -862,17 +862,17 @@ There are 6 screws. four hidden under the anti-slip pads.</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Why are the screw mounting slots not centered :/.
-        
+            Why are the screw mounting slots not centered :/.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -884,17 +884,17 @@ There are 6 screws. four hidden under the anti-slip pads.</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Nothing of concern to see on the bottom, everything looks pretty boring... which is good when it comes to mains handling!
-        
+            Nothing of concern to see on the bottom, everything looks pretty boring... which is good when it comes to mains handling!
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -905,17 +905,17 @@ There are 6 screws. four hidden under the anti-slip pads.</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        About what you&#39;d expect for a PCB layout. Plenty of distance between the HV and LV sides!
-        
+            About what you&#39;d expect for a PCB layout. Plenty of distance between the HV and LV sides!
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -928,17 +928,17 @@ There are 6 screws. four hidden under the anti-slip pads.</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Note the silk screen: this protection PCB is common to the AHR-053 model as well.
-        
+            Note the silk screen: this protection PCB is common to the AHR-053 model as well.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -949,17 +949,17 @@ There are 6 screws. four hidden under the anti-slip pads.</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        WB3S is a TuYa branded module that is pin compatible with the ubiquitous ESP-8266 modules.
-        
+            WB3S is a TuYa branded module that is pin compatible with the ubiquitous ESP-8266 modules.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -970,17 +970,17 @@ There are 6 screws. four hidden under the anti-slip pads.</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Note the black insulating material separating the USB ports from the mains side of things.
-        
+            Note the black insulating material separating the USB ports from the mains side of things.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -991,17 +991,17 @@ There are 6 screws. four hidden under the anti-slip pads.</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Relatively painless extraction, only partially lifted the pad in the bottom left.
-        
+            Relatively painless extraction, only partially lifted the pad in the bottom left.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1012,17 +1012,17 @@ There are 6 screws. four hidden under the anti-slip pads.</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Not even 5 min later, the TuYa modules has been replaced with one running a firmware powered by ESPHome.
-        
+            Not even 5 min later, the TuYa modules has been replaced with one running a firmware powered by ESPHome.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1262,7 +1262,7 @@ A wired remote would be simpler and thus cheaper but my desk is already too crow
 
     
         
-    
+        
 
     
 
@@ -1285,7 +1285,7 @@ Worst case, the fall back plan of using a microcontroller to emulate interacting
 
     
         
-    
+        
 
     
 
@@ -1314,7 +1314,7 @@ If I&rsquo;m lucky, I can capture the entire discovery/pair/command packets usin
 
     
         
-    
+        
 
     
 
@@ -1333,7 +1333,7 @@ If I&rsquo;m lucky, I can capture the entire discovery/pair/command packets usin
 
     
         
-    
+        
 
     
 
@@ -1354,7 +1354,7 @@ After getting an IP address, the lamp looks up the <code>A</code> record for <co
 
     
         
-    
+        
 
     
 
@@ -1442,17 +1442,17 @@ The ESP that we will soon flash with Tasmota is just behind this product informa
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Product info and regulatory markings
-        
+            Product info and regulatory markings
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1465,17 +1465,17 @@ You can see the protrusion in the middle of the tube facing the coiled USB power
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Everything that came in the box
-        
+            Everything that came in the box
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1503,17 +1503,17 @@ Be mindful of the two spring like contacts on the back of the PCB that mated wit
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        If it feels like you&#39;re using too much force to open the lamp... you probably are!
-        
+            If it feels like you&#39;re using too much force to open the lamp... you probably are!
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1526,7 +1526,7 @@ Be mindful of the two spring like contacts on the back of the PCB that mated wit
 
     
         
-    
+        
 
     
 
@@ -1548,17 +1548,17 @@ Rather than use a dedicated 3V power supply during flashing, I found it easiest 
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Be careful to not scratch the solder mask / PCB with the sharp edges of the snips
-        
+            Be careful to not scratch the solder mask / PCB with the sharp edges of the snips
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1570,7 +1570,7 @@ Rather than use a dedicated 3V power supply during flashing, I found it easiest 
 
     
         
-    
+        
 
     
 
@@ -1588,7 +1588,7 @@ You can see the <code>3V3</code> test point immediately to the left of <code>R6<
 
     
         
-    
+        
 
     
 
@@ -1608,7 +1608,7 @@ You can see the <code>3V3</code> test point immediately to the left of <code>R6<
 
     
         
-    
+        
 
     
 
@@ -1625,7 +1625,7 @@ You can see the <code>3V3</code> test point immediately to the left of <code>R6<
 
     
         
-    
+        
 
     
 
@@ -1641,7 +1641,7 @@ You can see the <code>3V3</code> test point immediately to the left of <code>R6<
 
     
         
-    
+        
 
     
 
@@ -1657,7 +1657,7 @@ You can see the <code>3V3</code> test point immediately to the left of <code>R6<
 
     
         
-    
+        
 
     
 
@@ -1674,7 +1674,7 @@ You can see the <code>3V3</code> test point immediately to the left of <code>R6<
 
     
         
-    
+        
 
     
 
@@ -1690,7 +1690,7 @@ You can see the <code>3V3</code> test point immediately to the left of <code>R6<
 
     
         
-    
+        
 
     
 
@@ -1718,17 +1718,17 @@ You can see the <code>3V3</code> test point immediately to the left of <code>R6<
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        When all is said and done, the lamp is easily integrated and controlled with Home Assistant
-        
+            When all is said and done, the lamp is easily integrated and controlled with Home Assistant
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1755,7 +1755,7 @@ The ESP will not boot into programming mode unless <code>GPIO0</code> is tied to
 
     
         
-    
+        
 
     
 
@@ -1772,7 +1772,7 @@ The ESP will not boot into programming mode unless <code>GPIO0</code> is tied to
 
     
         
-    
+        
 
     
 
@@ -1952,17 +1952,17 @@ Tasmota will let you dim the light as low as possible without flicker.</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Product details for the lamp that can&#39;t be converted to run Tasmota.
-        
-            Courtesy of @htvekov
-        
+            Product details for the lamp that can&#39;t be converted to run Tasmota.
+            
+                Courtesy of @htvekov
+                
         </p> 
     </figcaption>
     
@@ -1973,17 +1973,17 @@ Tasmota will let you dim the light as low as possible without flicker.</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        The PCB is held in the tube with similar plastic &#39;sleds&#39;. They are secured with screws rather than heatstake so they are easier to remove. The move to heatstake in the revised edition was likely to reduce costs.
-        
-            Courtesy of @htvekov
-        
+            The PCB is held in the tube with similar plastic &#39;sleds&#39;. They are secured with screws rather than heatstake so they are easier to remove. The move to heatstake in the revised edition was likely to reduce costs.
+            
+                Courtesy of @htvekov
+                
         </p> 
     </figcaption>
     
@@ -1994,17 +1994,17 @@ Tasmota will let you dim the light as low as possible without flicker.</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        
-        
-            Courtesy of @htvekov
-        
+            
+            
+                Courtesy of @htvekov
+                
         </p> 
     </figcaption>
     
@@ -2015,17 +2015,17 @@ Tasmota will let you dim the light as low as possible without flicker.</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        
-        
-            Courtesy of @htvekov
-        
+            
+            
+                Courtesy of @htvekov
+                
         </p> 
     </figcaption>
     
@@ -2161,17 +2161,17 @@ Tasmota will let you dim the light as low as possible without flicker.</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        The default auto-configuration leads Home Assistant to believe the fan can only be switched on/off.
-        
+            The default auto-configuration leads Home Assistant to believe the fan can only be switched on/off.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -2317,17 +2317,17 @@ Tasmota will let you dim the light as low as possible without flicker.</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        The DS03 device entity after the variable speed configuration document is received by Home Assistant.
-        
+            The DS03 device entity after the variable speed configuration document is received by Home Assistant.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -2344,17 +2344,17 @@ Tasmota will let you dim the light as low as possible without flicker.</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Toggle &#39;Enable entity&#39; off to hide the basic binary switch that Tasmota configured Home Assistant with.
-        
+            Toggle &#39;Enable entity&#39; off to hide the basic binary switch that Tasmota configured Home Assistant with.
             
-        
+                
+                
         </p> 
     </figcaption>
     

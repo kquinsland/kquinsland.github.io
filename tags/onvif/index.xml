@@ -18,17 +18,17 @@ As of writing, the latest firmware available is version <code>V2.620.00AC000.3.R
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        FW for all Amcrest devices can be fetched from https://amcrest.com/firmwaredownloads.
-        
+            FW for all Amcrest devices can be fetched from https://amcrest.com/firmwaredownloads.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -55,17 +55,17 @@ force the web UI to be served over HTTPS 😢.</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        *sigh*
-        
+            *sigh*
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -77,17 +77,17 @@ force the web UI to be served over HTTPS 😢.</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        I&#39;ll leave you to determine if it&#39;s a good idea for the web interface to generate a self-signed certificate or not.
-        
+            I&#39;ll leave you to determine if it&#39;s a good idea for the web interface to generate a self-signed certificate or not.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -140,17 +140,17 @@ While going through the config flow, I&rsquo;d get a super useful <code>an unkno
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        &#39;Authentication&#39; is misleading. It should be labeled something along the lines of &#39;allow just ADMIN to use onvif or allow anybody to use onvif&#39;
-        
+            &#39;Authentication&#39; is misleading. It should be labeled something along the lines of &#39;allow just ADMIN to use onvif or allow anybody to use onvif&#39;
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -185,17 +185,17 @@ While going through the config flow, I&rsquo;d get a super useful <code>an unkno
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Admin users have all 34 permissions enabled
-        
+            Admin users have all 34 permissions enabled
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -207,7 +207,7 @@ While going through the config flow, I&rsquo;d get a super useful <code>an unkno
 
     
         
-    
+        
 
     
 
@@ -225,17 +225,17 @@ While going through the config flow, I&rsquo;d get a super useful <code>an unkno
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Source: https://amcrest.com/forum/ip-cameras-f18/firmware-security-bug-regarding-onvif--t13445-s10.html
-        
+            Source: https://amcrest.com/forum/ip-cameras-f18/firmware-security-bug-regarding-onvif--t13445-s10.html
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -246,17 +246,17 @@ While going through the config flow, I&rsquo;d get a super useful <code>an unkno
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Source: https://amcrest.com/forum/ip-cameras-f18/ip3m-941b-onvif-and-user-management-t12647.html
-        
+            Source: https://amcrest.com/forum/ip-cameras-f18/ip3m-941b-onvif-and-user-management-t12647.html
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -278,17 +278,17 @@ While going through the config flow, I&rsquo;d get a super useful <code>an unkno
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        ...
-        
+            ...
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -299,17 +299,17 @@ While going through the config flow, I&rsquo;d get a super useful <code>an unkno
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        ...
-        
+            ...
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -331,17 +331,17 @@ While going through the config flow, I&rsquo;d get a super useful <code>an unkno
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        This is *literally* the first thing you see when unpacking the camera.
-        
+            This is *literally* the first thing you see when unpacking the camera.
             
-        
+                
+                
         </p> 
     </figcaption>
     

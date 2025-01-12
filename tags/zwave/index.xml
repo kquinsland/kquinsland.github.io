@@ -13,17 +13,17 @@
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Note the `Idle_brightness` sensor. That&#39;s not part of the &#39;default&#39; zwavejs2mqtt install.
-        
+            Note the `Idle_brightness` sensor. That&#39;s not part of the &#39;default&#39; zwavejs2mqtt install.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -49,17 +49,17 @@ I don&rsquo;t know what the numbers mean, but they are important / uniquely iden
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        The &#39;HOME ASSISTANT&#39; tab of my thermostats&#39; page.
-        
+            The &#39;HOME ASSISTANT&#39; tab of my thermostats&#39; page.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -82,7 +82,7 @@ I don&rsquo;t know what the numbers mean, but they are important / uniquely iden
 
     
         
-    
+        
 
     
 
@@ -166,17 +166,17 @@ I don&rsquo;t know what the numbers mean, but they are important / uniquely iden
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        A basic &#39;helper&#39; widget for use in Home Assistant Automations.
-        
+            A basic &#39;helper&#39; widget for use in Home Assistant Automations.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -437,17 +437,17 @@ Here is a simple automation that watches a basic number input widget and sets th
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Automatically created!
-        
+            Automatically created!
             
-        
+                
+                
         </p> 
     </figcaption>
     

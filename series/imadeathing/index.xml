@@ -6,17 +6,17 @@
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Conceptual diagram for the project.
-        
+            Conceptual diagram for the project.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -54,17 +54,17 @@ Use this as a starting point and adapt it to your needs.</div>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Fully assembled PCB just before final assembly.
-        
+            Fully assembled PCB just before final assembly.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -76,17 +76,17 @@ Use this as a starting point and adapt it to your needs.</div>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        A picture of the probe installed and operating. The air filter has been removed and you can see the AC evaporator.
-        
+            A picture of the probe installed and operating. The air filter has been removed and you can see the AC evaporator.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -98,17 +98,17 @@ Use this as a starting point and adapt it to your needs.</div>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        How the sensor shows up in HomeAssistant.
-        
+            How the sensor shows up in HomeAssistant.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -696,17 +696,17 @@ The idea is to have a small RFID tag that can be used for various purposes, such
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        The inspiration for this project
-        
+            The inspiration for this project
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -721,17 +721,17 @@ Because of the wide variety of watch bands available, I have <a href="#files" re
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Installed on a watch band.
-        
+            Installed on a watch band.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -742,17 +742,17 @@ Because of the wide variety of watch bands available, I have <a href="#files" re
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        A single watch band pin is used to secure the plastic part to the band.
-        
+            A single watch band pin is used to secure the plastic part to the band.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -763,17 +763,17 @@ Because of the wide variety of watch bands available, I have <a href="#files" re
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Hopefully this gives you an idea of how the parts come together.
-        
+            Hopefully this gives you an idea of how the parts come together.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -790,17 +790,17 @@ A kit is advisable if you need to prototype multiple designs / play with differe
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Suggested print orientation for best results
-        
+            Suggested print orientation for best results
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -816,17 +816,17 @@ I did eventually find a suitable tag on eBay:</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        eBay listing for the RFID tag
-        
+            eBay listing for the RFID tag
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -875,61 +875,61 @@ I did eventually find a suitable tag on eBay:</p>
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/eBay-listing.png">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>eBay listing for the RFID tag</small>
-                </figcaption>
-                
-            </figure>
+        
 
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/files/fusion-export.step">
-                <i class="far fa-file-"></i>
-                files/fusion-export.step:
-                
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/eBay-listing.png">
                 
             </a>
+            
+            <figcaption>
+                <small>eBay listing for the RFID tag</small>
+            </figcaption>
+            
+        </figure>
+
         
     </li>
     
     <li>
         
-            <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/files/main.f3z">
-                <i class="far fa-file-"></i>
-                files/main.f3z:
-                
+        <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/files/fusion-export.step">
+            <i class="far fa-file-"></i>
+            files/fusion-export.step:
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/files/main.f3z">
+            <i class="far fa-file-"></i>
+            files/main.f3z:
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/official-medical-band-render.webp">
                 
             </a>
-        
-    </li>
-    
-    <li>
-        
-
             
+            <figcaption>
+                <small>The inspiration for this project</small>
+            </figcaption>
             
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/official-medical-band-render.webp">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>The inspiration for this project</small>
-                </figcaption>
-                
-            </figure>
+        </figure>
 
         
     </li>
@@ -937,19 +937,19 @@ I did eventually find a suitable tag on eBay:</p>
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/suggested-print-orientation.png">
-                    
-                </a>
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/suggested-print-orientation.png">
                 
-                <figcaption>
-                    <small>Suggested print orientation for best results</small>
-                </figcaption>
-                
-            </figure>
+            </a>
+            
+            <figcaption>
+                <small>Suggested print orientation for best results</small>
+            </figcaption>
+            
+        </figure>
 
         
     </li>
@@ -957,19 +957,19 @@ I did eventually find a suitable tag on eBay:</p>
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/prototype01.jpg">
-                    
-                </a>
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/prototype01.jpg">
                 
-                <figcaption>
-                    <small>Hopefully this gives you an idea of how the parts come together.</small>
-                </figcaption>
-                
-            </figure>
+            </a>
+            
+            <figcaption>
+                <small>Hopefully this gives you an idea of how the parts come together.</small>
+            </figcaption>
+            
+        </figure>
 
         
     </li>
@@ -977,19 +977,19 @@ I did eventually find a suitable tag on eBay:</p>
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/prototype02.jpg">
-                    
-                </a>
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/prototype02.jpg">
                 
-                <figcaption>
-                    <small>A single watch band pin is used to secure the plastic part to the band.</small>
-                </figcaption>
-                
-            </figure>
+            </a>
+            
+            <figcaption>
+                <small>A single watch band pin is used to secure the plastic part to the band.</small>
+            </figcaption>
+            
+        </figure>
 
         
     </li>
@@ -997,19 +997,19 @@ I did eventually find a suitable tag on eBay:</p>
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/prototype03.jpg">
-                    
-                </a>
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/prototype03.jpg">
                 
-                <figcaption>
-                    <small>Installed on a watch band.</small>
-                </figcaption>
-                
-            </figure>
+            </a>
+            
+            <figcaption>
+                <small>Installed on a watch band.</small>
+            </figcaption>
+            
+        </figure>
 
         
     </li>
@@ -1035,7 +1035,7 @@ One LCSC order, one mouser order and about a week later, I had a basic RS232 &lt
 
     
         
-    
+        
 
     
 
@@ -1052,7 +1052,7 @@ One LCSC order, one mouser order and about a week later, I had a basic RS232 &lt
 
     
         
-    
+        
 
     
 

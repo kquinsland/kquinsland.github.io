@@ -3,17 +3,17 @@
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Picture showing designed parts deployed as intended (please ignore the lingering dust! 💨)
-        
+            Picture showing designed parts deployed as intended (please ignore the lingering dust! 💨)
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -29,17 +29,17 @@
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Screenshot from Fusion360 showing dimensions between screw holes
-        
+            Screenshot from Fusion360 showing dimensions between screw holes
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -54,17 +54,17 @@
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Screenshot showing suggested print bed arrangement
-        
+            Screenshot showing suggested print bed arrangement
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -78,140 +78,19 @@
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/images/hole-dimensions.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Screenshot from Fusion360 showing dimensions between screw holes</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
         
 
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/images/horizontal-model.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Picture showing the CAD model for horizontal variant</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/images/installed.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Picture showing designed parts deployed as intended (please ignore the lingering dust! 💨)</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/models/combined.3mf">
-                <i class="far fa-file-archive"></i>
-                models/combined.3mf:
-                
-                <small style="font-family:'Lucida Console', monospace">3mf</small> <small>file</small>
-                
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/images/hole-dimensions.jpg">
                 
             </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/models/horizontal.f3d">
-                <i class="far fa-file-"></i>
-                models/horizontal.f3d:
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/models/horizontal.stl">
-                <i class="far fa-file-code"></i>
-                Horizontal STL:
-                
-                <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/models/vertical.f3d">
-                <i class="far fa-file-"></i>
-                models/vertical.f3d:
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/models/vertical.stl">
-                <i class="far fa-file-code"></i>
-                Vertical STL:
-                
-                <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-
             
+            <figcaption>
+                <small>Screenshot from Fusion360 showing dimensions between screw holes</small>
+            </figcaption>
             
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/images/suggested_print_orientation.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Screenshot showing suggested print bed arrangement</small>
-                </figcaption>
-                
-            </figure>
+        </figure>
 
         
     </li>
@@ -219,19 +98,140 @@
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/images/vertical-model.jpg">
-                    
-                </a>
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/images/horizontal-model.jpg">
                 
-                <figcaption>
-                    <small>Picture showing the CAD model for vertical variant</small>
-                </figcaption>
+            </a>
+            
+            <figcaption>
+                <small>Picture showing the CAD model for horizontal variant</small>
+            </figcaption>
+            
+        </figure>
+
+        
+    </li>
+    
+    <li>
+        
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/images/installed.jpg">
                 
-            </figure>
+            </a>
+            
+            <figcaption>
+                <small>Picture showing designed parts deployed as intended (please ignore the lingering dust! 💨)</small>
+            </figcaption>
+            
+        </figure>
+
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/models/combined.3mf">
+            <i class="far fa-file-archive"></i>
+            models/combined.3mf:
+            
+            <small style="font-family:'Lucida Console', monospace">3mf</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/models/horizontal.f3d">
+            <i class="far fa-file-"></i>
+            models/horizontal.f3d:
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/models/horizontal.stl">
+            <i class="far fa-file-code"></i>
+            Horizontal STL:
+            
+            <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/models/vertical.f3d">
+            <i class="far fa-file-"></i>
+            models/vertical.f3d:
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/models/vertical.stl">
+            <i class="far fa-file-code"></i>
+            Vertical STL:
+            
+            <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/images/suggested_print_orientation.jpg">
+                
+            </a>
+            
+            <figcaption>
+                <small>Screenshot showing suggested print bed arrangement</small>
+            </figcaption>
+            
+        </figure>
+
+        
+    </li>
+    
+    <li>
+        
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/images/vertical-model.jpg">
+                
+            </a>
+            
+            <figcaption>
+                <small>Picture showing the CAD model for vertical variant</small>
+            </figcaption>
+            
+        </figure>
 
         
     </li>

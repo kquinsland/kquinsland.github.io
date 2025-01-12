@@ -40,17 +40,17 @@ I have put clarifying comments throughout the file as there is some similar but 
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        This is how my entity shows up in HA. I can toggle the timeout period and disable the functionality altogether.
-        
+            This is how my entity shows up in HA. I can toggle the timeout period and disable the functionality altogether.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -784,17 +784,17 @@ The details are <a href="https://github.com/arendst/Tasmota/issues/15636#issueco
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        The default auto-configuration leads Home Assistant to believe the fan can only be switched on/off.
-        
+            The default auto-configuration leads Home Assistant to believe the fan can only be switched on/off.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -940,17 +940,17 @@ The details are <a href="https://github.com/arendst/Tasmota/issues/15636#issueco
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        The DS03 device entity after the variable speed configuration document is received by Home Assistant.
-        
+            The DS03 device entity after the variable speed configuration document is received by Home Assistant.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -967,17 +967,17 @@ The details are <a href="https://github.com/arendst/Tasmota/issues/15636#issueco
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Toggle &#39;Enable entity&#39; off to hide the basic binary switch that Tasmota configured Home Assistant with.
-        
+            Toggle &#39;Enable entity&#39; off to hide the basic binary switch that Tasmota configured Home Assistant with.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1215,14 +1215,14 @@ Without the <code>Rule2 0</code>, the console/logs for the device would be full 
 <hr>
 <p><strong>EDIT:</strong> 2021-09-24: small typo fixes. Thanks for pointing them out :).</p>
 ]]></description></item><item><title>Systemd Resolved With Consul Agent</title><link>https://karlquinsland.com/systemd-resolved-with-consul-agent/</link><pubDate>Tue, 21 Jul 2020 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/systemd-resolved-with-consul-agent/</guid><description><![CDATA[<p>I pieced this technique together a while back and created a gist for it. I&rsquo;m creating <em>this</em> post as a pointer to that gist so I have something that&rsquo;s a bit easier to reference and refer others to.</p>
-<p>And i want to test out the <a href="https://gohugo.io/content-management/shortcodes/#gist" target="_blank" rel="noopener noreffer">hugo shortcode for embedding a gist</a> &#x1f60f;.</p>
+<p>And i want to test out the <a href="https://gohugo.io/content-management/shortcodes/#gist" target="_blank" rel="noopener noreffer">hugo shortcode for embedding a gist</a> :smirk:.</p>
 <p>The really short version:</p>
 <ul>
 <li>Create a dedicated interface that can only be accessed from the local system</li>
 <li>Bind the consul-agent&rsquo;s DNS service to this local only interface</li>
 <li>Tell <a href="https://www.freedesktop.org/software/systemd/man/systemd-resolved.service.html" target="_blank" rel="noopener noreffer"><code>systemd-resolved</code></a> that all hostnames with the <code>.consul</code> TLD can be resolved via a DNS server on this local interface</li>
 </ul>
-<p>No need to disable <code>resolved</code> and replace it with dnsmasq &#x1f604;</p>
+<p>No need to disable <code>resolved</code> and replace it with dnsmasq :smile:</p>
 <script src="https://gist.github.com/kquinsland/5cdc63614a581d9b392f435740b58729.js"></script>
 
 ]]></description></item></channel></rss>

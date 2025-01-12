@@ -7,7 +7,7 @@ Long story short: almost everything electronic in the industrial space uses <a h
 
     
         
-    
+        
 
     
 
@@ -25,17 +25,17 @@ Long story short: almost everything electronic in the industrial space uses <a h
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        SO close!
-        
+            SO close!
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -47,17 +47,17 @@ Long story short: almost everything electronic in the industrial space uses <a h
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Blank white screen. Non responsive buttons, Occasional blinking Ethernet lights. Fun! 🙃
-        
+            Blank white screen. Non responsive buttons, Occasional blinking Ethernet lights. Fun! 🙃
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -83,17 +83,17 @@ Long story short: almost everything electronic in the industrial space uses <a h
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Able to flash Version 152 w/o issue!
-        
+            Able to flash Version 152 w/o issue!
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -105,52 +105,69 @@ Long story short: almost everything electronic in the industrial space uses <a h
     
     <li>
         
-            <a target="_blank" href="https://karlquinsland.com/unbrick-rievtech-plc-failed-firmware-update/files/How%20to%20update%20the%20hardware.doc.pdf">
-                <i class="far fa-file-file-code"></i>
-                files/How to update the hardware.doc.pdf:
-                
-                <small style="font-family:'Lucida Console', monospace">pdf</small> <small>file</small>
-                
-                
-                <br>
-                <small>sha1(How to update the hardware.doc.pdf): 0b451b11938b58c384465f5bf350b2f133848649</small>
+        <a target="_blank" href="https://karlquinsland.com/unbrick-rievtech-plc-failed-firmware-update/files/How%20to%20update%20the%20hardware.doc.pdf">
+            <i class="far fa-file-file-code"></i>
+            files/How to update the hardware.doc.pdf:
+            
+            <small style="font-family:'Lucida Console', monospace">pdf</small> <small>file</small>
+            
+            
+            <br>
+            <small>sha1(How to update the hardware.doc.pdf): 0b451b11938b58c384465f5bf350b2f133848649</small>
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/unbrick-rievtech-plc-failed-firmware-update/files/UpdateFail_PR-18DC-DAI-R-N_V150.zip">
+            <i class="far fa-file-file-code"></i>
+            files/UpdateFail_PR-18DC-DAI-R-N_V150.zip:
+            
+            <small style="font-family:'Lucida Console', monospace">zip</small> <small>file</small>
+            
+            
+            <br>
+            <small>sha1(UpdateFail_PR-18DC-DAI-R-N_V150.zip): 60c306b521cdb15589b0e36dc73df484c2117539</small>
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/unbrick-rievtech-plc-failed-firmware-update/images/plc-01.jpg">
                 
             </a>
+            
+            <figcaption>
+                <small>Blank white screen. Non responsive buttons, Occasional blinking Ethernet lights. Fun! 🙃</small>
+            </figcaption>
+            
+        </figure>
+
         
     </li>
     
     <li>
         
-            <a target="_blank" href="https://karlquinsland.com/unbrick-rievtech-plc-failed-firmware-update/files/UpdateFail_PR-18DC-DAI-R-N_V150.zip">
-                <i class="far fa-file-file-code"></i>
-                files/UpdateFail_PR-18DC-DAI-R-N_V150.zip:
-                
-                <small style="font-family:'Lucida Console', monospace">zip</small> <small>file</small>
-                
-                
-                <br>
-                <small>sha1(UpdateFail_PR-18DC-DAI-R-N_V150.zip): 60c306b521cdb15589b0e36dc73df484c2117539</small>
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/unbrick-rievtech-plc-failed-firmware-update/images/plc-00.jpg">
                 
             </a>
-        
-    </li>
-    
-    <li>
-        
-
             
             
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/unbrick-rievtech-plc-failed-firmware-update/images/plc-01.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Blank white screen. Non responsive buttons, Occasional blinking Ethernet lights. Fun! 🙃</small>
-                </figcaption>
-                
-            </figure>
+        </figure>
 
         
     </li>
@@ -158,16 +175,19 @@ Long story short: almost everything electronic in the industrial space uses <a h
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/unbrick-rievtech-plc-failed-firmware-update/images/plc-00.jpg">
-                    
-                </a>
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/unbrick-rievtech-plc-failed-firmware-update/images/recovery-01.png">
                 
-                
-            </figure>
+            </a>
+            
+            <figcaption>
+                <small>Able to flash Version 152 w/o issue!</small>
+            </figcaption>
+            
+        </figure>
 
         
     </li>
@@ -175,39 +195,19 @@ Long story short: almost everything electronic in the industrial space uses <a h
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/unbrick-rievtech-plc-failed-firmware-update/images/recovery-01.png">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Able to flash Version 152 w/o issue!</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
         
 
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/unbrick-rievtech-plc-failed-firmware-update/images/update-01.png">
-                    
-                </a>
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/unbrick-rievtech-plc-failed-firmware-update/images/update-01.png">
                 
-                <figcaption>
-                    <small>SO close!</small>
-                </figcaption>
-                
-            </figure>
+            </a>
+            
+            <figcaption>
+                <small>SO close!</small>
+            </figcaption>
+            
+        </figure>
 
         
     </li>

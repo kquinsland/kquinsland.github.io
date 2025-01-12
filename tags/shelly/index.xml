@@ -11,7 +11,7 @@ These &rsquo;next generation&rsquo; devices appear to all use a <a href="https:/
 
     
         
-    
+        
 
     
 
@@ -40,17 +40,17 @@ Layouts are almost always a bit weird when the electronics have to be designed t
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        40A at 240V is a _lot_ of power to fit into a fairly compact device!
-        
+            40A at 240V is a _lot_ of power to fit into a fairly compact device!
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -62,7 +62,7 @@ Layouts are almost always a bit weird when the electronics have to be designed t
 
     
         
-    
+        
 
     
 
@@ -79,7 +79,7 @@ Layouts are almost always a bit weird when the electronics have to be designed t
 
     
         
-    
+        
 
     
 
@@ -99,17 +99,17 @@ Layouts are almost always a bit weird when the electronics have to be designed t
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        How much do you want to bet that the pins on the debug header are the usual &#43;3.3, GND, IO0, RX, TX for ESP flashing?
-        
+            How much do you want to bet that the pins on the debug header are the usual &#43;3.3, GND, IO0, RX, TX for ESP flashing?
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -123,7 +123,7 @@ Layouts are almost always a bit weird when the electronics have to be designed t
 
     
         
-    
+        
 
     
 
@@ -147,7 +147,7 @@ Layouts are almost always a bit weird when the electronics have to be designed t
 
     
         
-    
+        
 
     
 
@@ -164,17 +164,17 @@ Layouts are almost always a bit weird when the electronics have to be designed t
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Just a few very tiny passives!
-        
+            Just a few very tiny passives!
             
-        
+                
+                
         </p> 
     </figcaption>
     

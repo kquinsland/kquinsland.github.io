@@ -6,17 +6,17 @@ The idea is to have a small RFID tag that can be used for various purposes, such
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        The inspiration for this project
-        
+            The inspiration for this project
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -31,17 +31,17 @@ Because of the wide variety of watch bands available, I have <a href="#files" re
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Installed on a watch band.
-        
+            Installed on a watch band.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -52,17 +52,17 @@ Because of the wide variety of watch bands available, I have <a href="#files" re
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        A single watch band pin is used to secure the plastic part to the band.
-        
+            A single watch band pin is used to secure the plastic part to the band.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -73,17 +73,17 @@ Because of the wide variety of watch bands available, I have <a href="#files" re
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Hopefully this gives you an idea of how the parts come together.
-        
+            Hopefully this gives you an idea of how the parts come together.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -100,17 +100,17 @@ A kit is advisable if you need to prototype multiple designs / play with differe
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Suggested print orientation for best results
-        
+            Suggested print orientation for best results
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -126,17 +126,17 @@ I did eventually find a suitable tag on eBay:</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        eBay listing for the RFID tag
-        
+            eBay listing for the RFID tag
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -185,61 +185,61 @@ I did eventually find a suitable tag on eBay:</p>
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/eBay-listing.png">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>eBay listing for the RFID tag</small>
-                </figcaption>
-                
-            </figure>
+        
 
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/files/fusion-export.step">
-                <i class="far fa-file-"></i>
-                files/fusion-export.step:
-                
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/eBay-listing.png">
                 
             </a>
+            
+            <figcaption>
+                <small>eBay listing for the RFID tag</small>
+            </figcaption>
+            
+        </figure>
+
         
     </li>
     
     <li>
         
-            <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/files/main.f3z">
-                <i class="far fa-file-"></i>
-                files/main.f3z:
-                
+        <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/files/fusion-export.step">
+            <i class="far fa-file-"></i>
+            files/fusion-export.step:
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/files/main.f3z">
+            <i class="far fa-file-"></i>
+            files/main.f3z:
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/official-medical-band-render.webp">
                 
             </a>
-        
-    </li>
-    
-    <li>
-        
-
             
+            <figcaption>
+                <small>The inspiration for this project</small>
+            </figcaption>
             
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/official-medical-band-render.webp">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>The inspiration for this project</small>
-                </figcaption>
-                
-            </figure>
+        </figure>
 
         
     </li>
@@ -247,19 +247,19 @@ I did eventually find a suitable tag on eBay:</p>
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/suggested-print-orientation.png">
-                    
-                </a>
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/suggested-print-orientation.png">
                 
-                <figcaption>
-                    <small>Suggested print orientation for best results</small>
-                </figcaption>
-                
-            </figure>
+            </a>
+            
+            <figcaption>
+                <small>Suggested print orientation for best results</small>
+            </figcaption>
+            
+        </figure>
 
         
     </li>
@@ -267,19 +267,19 @@ I did eventually find a suitable tag on eBay:</p>
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/prototype01.jpg">
-                    
-                </a>
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/prototype01.jpg">
                 
-                <figcaption>
-                    <small>Hopefully this gives you an idea of how the parts come together.</small>
-                </figcaption>
-                
-            </figure>
+            </a>
+            
+            <figcaption>
+                <small>Hopefully this gives you an idea of how the parts come together.</small>
+            </figcaption>
+            
+        </figure>
 
         
     </li>
@@ -287,19 +287,19 @@ I did eventually find a suitable tag on eBay:</p>
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/prototype02.jpg">
-                    
-                </a>
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/prototype02.jpg">
                 
-                <figcaption>
-                    <small>A single watch band pin is used to secure the plastic part to the band.</small>
-                </figcaption>
-                
-            </figure>
+            </a>
+            
+            <figcaption>
+                <small>A single watch band pin is used to secure the plastic part to the band.</small>
+            </figcaption>
+            
+        </figure>
 
         
     </li>
@@ -307,19 +307,19 @@ I did eventually find a suitable tag on eBay:</p>
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/prototype03.jpg">
-                    
-                </a>
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/prototype03.jpg">
                 
-                <figcaption>
-                    <small>Installed on a watch band.</small>
-                </figcaption>
-                
-            </figure>
+            </a>
+            
+            <figcaption>
+                <small>Installed on a watch band.</small>
+            </figcaption>
+            
+        </figure>
 
         
     </li>
@@ -345,7 +345,7 @@ One LCSC order, one mouser order and about a week later, I had a basic RS232 &lt
 
     
         
-    
+        
 
     
 
@@ -362,7 +362,7 @@ One LCSC order, one mouser order and about a week later, I had a basic RS232 &lt
 
     
         
-    
+        
 
     
 
@@ -394,17 +394,17 @@ This appears to be based on a MediaTek based module module from <a href="https:/
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        The green elements are meant to be printed in TPU or another gasket like material. The cable channel runs from the RCA jack enclosure in the rear (pink color), under the gasket material to the main speaker cavity.
-        
+            The green elements are meant to be printed in TPU or another gasket like material. The cable channel runs from the RCA jack enclosure in the rear (pink color), under the gasket material to the main speaker cavity.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -432,17 +432,17 @@ This appears to be based on a MediaTek based module module from <a href="https:/
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        The dark blue represents the path that gasket cord material should be laid down.
-        
+            The dark blue represents the path that gasket cord material should be laid down.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -453,17 +453,17 @@ This appears to be based on a MediaTek based module module from <a href="https:/
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        When properly joined, there will be a slight interference between the panel and the gasket material; this ensures a fantastic seal.
-        
+            When properly joined, there will be a slight interference between the panel and the gasket material; this ensures a fantastic seal.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -482,17 +482,17 @@ This appears to be based on a MediaTek based module module from <a href="https:/
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        The support material hides the hole almost perfectly. If the image brightness wasn&#39;t turned up, you&#39;d never notice :D
-        
+            The support material hides the hole almost perfectly. If the image brightness wasn&#39;t turned up, you&#39;d never notice :D
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -586,17 +586,17 @@ This appears to be based on a MediaTek based module module from <a href="https:/
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        The amp enclosure as seen from the front corner.
-        
+            The amp enclosure as seen from the front corner.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -607,17 +607,17 @@ This appears to be based on a MediaTek based module module from <a href="https:/
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        The amp enclosure as seen from the rear corner.
-        
+            The amp enclosure as seen from the rear corner.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -630,17 +630,17 @@ This appears to be based on a MediaTek based module module from <a href="https:/
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Viewed from the rear corner, the PCB (purple) sits on top of a midplate (green, highlighted) which sits on top of the power supply (also purple, bottom).
-        
+            Viewed from the rear corner, the PCB (purple) sits on top of a midplate (green, highlighted) which sits on top of the power supply (also purple, bottom).
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -651,17 +651,17 @@ This appears to be based on a MediaTek based module module from <a href="https:/
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        To make printing easier, the midplate is actually two components joined together by the two screws furthest from the knobs.
-        
+            To make printing easier, the midplate is actually two components joined together by the two screws furthest from the knobs.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -728,17 +728,17 @@ The excess friction <em>will</em> soften the plastic in the vicinity of the scre
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        All 11(!) of the m4 screws driven into the sub body waiting for the plastic to set
-        
+            All 11(!) of the m4 screws driven into the sub body waiting for the plastic to set
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -751,7 +751,7 @@ Nearly every one of the holes had some (small) build up of material:</p>
 
     
         
-    
+        
 
     
 
@@ -768,7 +768,7 @@ Nearly every one of the holes had some (small) build up of material:</p>
 
     
         
-    
+        
 
     
 
@@ -786,7 +786,7 @@ Simply use a different screw for final assembly or use scrape tool or flame to r
 
     
         
-    
+        
 
     
 
@@ -803,7 +803,7 @@ Simply use a different screw for final assembly or use scrape tool or flame to r
 
     
         
-    
+        
 
     
 
@@ -821,17 +821,17 @@ As the screw drives deeper, the tip will push molten plastic into this &ldquo;we
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        The extra depth on the screw hole gives the molten plastic somewhere to go.
-        
+            The extra depth on the screw hole gives the molten plastic somewhere to go.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -845,7 +845,7 @@ As the screw drives deeper, the tip will push molten plastic into this &ldquo;we
 
     
         
-    
+        
 
     
 
@@ -861,7 +861,7 @@ As the screw drives deeper, the tip will push molten plastic into this &ldquo;we
 
     
         
-    
+        
 
     
 
@@ -893,17 +893,17 @@ As the screw drives deeper, the tip will push molten plastic into this &ldquo;we
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Be mindful of the gasket as you secure the panel to the subwoofer body. Too much torque/clamping force can cause the gasket to distort.
-        
+            Be mindful of the gasket as you secure the panel to the subwoofer body. Too much torque/clamping force can cause the gasket to distort.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -918,7 +918,7 @@ Don&rsquo;t forget to use heat shrink tubing or similar to insulate/protect the 
 
     
         
-    
+        
 
     
 
@@ -947,17 +947,17 @@ You will almost certainly want to use superglue or similar to help you hold the 
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        The speaker wire should press-fit into the cable channel more or less sealing it completely.
-        
+            The speaker wire should press-fit into the cable channel more or less sealing it completely.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -978,17 +978,17 @@ You will almost certainly want to use superglue or similar to help you hold the 
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Notice the holes on the left that have been &#34;rightsized&#34; during threading and the holes on the top right that are relatively deformed still.
-        
+            Notice the holes on the left that have been &#34;rightsized&#34; during threading and the holes on the top right that are relatively deformed still.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1002,17 +1002,17 @@ This cavity is actually <em>oversized</em> in the CAD model but due to various p
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        After the screw has pulled the nut into place, it should stay put.
-        
+            After the screw has pulled the nut into place, it should stay put.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1026,17 +1026,17 @@ This cavity is actually <em>oversized</em> in the CAD model but due to various p
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Pro tip: print the MAC addresses of a network device somewhere on the device... Also, don&#39;t put unique device IDs onto the internet!
-        
+            Pro tip: print the MAC addresses of a network device somewhere on the device... Also, don&#39;t put unique device IDs onto the internet!
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1052,17 +1052,17 @@ Start with the screw closest to the Powercon connector:</p>
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Room inside the enclosure is intentionally tight so do as much wiring/connecting as possible before you start securing things to the enclosure.
-        
+            Room inside the enclosure is intentionally tight so do as much wiring/connecting as possible before you start securing things to the enclosure.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1074,7 +1074,7 @@ Start with the screw closest to the Powercon connector:</p>
 
     
         
-    
+        
 
     
 
@@ -1091,7 +1091,7 @@ Start with the screw closest to the Powercon connector:</p>
 
     
         
-    
+        
 
     
 
@@ -1110,7 +1110,7 @@ Route the DC wires up and around to the DC plug on the PCB.</p>
 
     
         
-    
+        
 
     
 
@@ -1127,7 +1127,7 @@ Route the DC wires up and around to the DC plug on the PCB.</p>
 
     
         
-    
+        
 
     
 
@@ -1145,17 +1145,17 @@ I forgot to get a picture of the USB cable but it works more or less the exact s
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        A 6 inch patch cable was quicker but a custom length cable would almost certainly look better. Good thing this will soon be hidden away!
-        
+            A 6 inch patch cable was quicker but a custom length cable would almost certainly look better. Good thing this will soon be hidden away!
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1168,17 +1168,17 @@ I forgot to get a picture of the USB cable but it works more or less the exact s
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Don&#39;t forget the washer/nut!
-        
+            Don&#39;t forget the washer/nut!
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1190,17 +1190,17 @@ I forgot to get a picture of the USB cable but it works more or less the exact s
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Subwoofer and amp enclosure mounted to the leg of my desk. Please ignore the mess of wires in the background!
-        
+            Subwoofer and amp enclosure mounted to the leg of my desk. Please ignore the mess of wires in the background!
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1304,17 +1304,17 @@ I forgot to get a picture of the USB cable but it works more or less the exact s
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        ignore the spikes just before noon, those are due to to testing with a flash light
-        
+            ignore the spikes just before noon, those are due to to testing with a flash light
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1326,17 +1326,17 @@ I forgot to get a picture of the USB cable but it works more or less the exact s
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        HomeSeer&#39;s WS200 has a delightful innovation... RGB LEDs!
-        
+            HomeSeer&#39;s WS200 has a delightful innovation... RGB LEDs!
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1348,17 +1348,17 @@ I forgot to get a picture of the USB cable but it works more or less the exact s
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Ignore the dirt on the switch. Notice how you can&#39;t tell there&#39;s an LDR beneath the surface
-        
+            Ignore the dirt on the switch. Notice how you can&#39;t tell there&#39;s an LDR beneath the surface
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1371,17 +1371,17 @@ I forgot to get a picture of the USB cable but it works more or less the exact s
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Section analysis from f360 showing small channels around the LCD for wires to LDR and LEDs
-        
+            Section analysis from f360 showing small channels around the LCD for wires to LDR and LEDs
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1393,17 +1393,17 @@ I forgot to get a picture of the USB cable but it works more or less the exact s
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        The only way to fit the HASP in my 2-gang electric boxes is to cut out a small section
-        
+            The only way to fit the HASP in my 2-gang electric boxes is to cut out a small section
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1443,17 +1443,17 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        All the components needed for assembly
-        
+            All the components needed for assembly
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1468,17 +1468,17 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Molten plastic can&#39;t flow into a filled insert
-        
+            Molten plastic can&#39;t flow into a filled insert
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1490,17 +1490,17 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        screws make it easy to perform final alignment on inserts and act as a heatsink
-        
+            screws make it easy to perform final alignment on inserts and act as a heatsink
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1559,17 +1559,17 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        LDR under the LCD w/ trimmed leads...
-        
+            LDR under the LCD w/ trimmed leads...
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1581,17 +1581,17 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        rough layout of LDR harness
-        
+            rough layout of LDR harness
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1603,17 +1603,17 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        strip ~1cm off the end of the wire, wrap around the lead, then solder
-        
+            strip ~1cm off the end of the wire, wrap around the lead, then solder
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1625,17 +1625,17 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        No room for mechanically strong solder joints
-        
+            No room for mechanically strong solder joints
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1647,17 +1647,17 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        same wrapping technique, just with two leads this time
-        
+            same wrapping technique, just with two leads this time
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1669,17 +1669,17 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        get everything nicely protected behind HST
-        
+            get everything nicely protected behind HST
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1694,17 +1694,17 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        know which way the LED tape wires will need to point to make it into the &#39;channel&#39; prior to soldering
-        
+            know which way the LED tape wires will need to point to make it into the &#39;channel&#39; prior to soldering
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1716,17 +1716,17 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        twist the wires together for a more compact and robust cable
-        
+            twist the wires together for a more compact and robust cable
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1740,17 +1740,17 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        remove the pin from the plastic &#39;frame&#39; and carefully solder the wires to the pins
-        
+            remove the pin from the plastic &#39;frame&#39; and carefully solder the wires to the pins
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1762,17 +1762,17 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        A few pins are not needed
-        
+            A few pins are not needed
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1784,7 +1784,7 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 
     
         
-    
+        
 
     
 
@@ -1801,17 +1801,17 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Align and ensure no pinched wires!
-        
+            Align and ensure no pinched wires!
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1824,17 +1824,17 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        The obvious orientation is the best, no supports needed
-        
+            The obvious orientation is the best, no supports needed
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1848,17 +1848,17 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        HASP removed from electrical box, heat from the AC-DC converter radiating through the enclosure
-        
+            HASP removed from electrical box, heat from the AC-DC converter radiating through the enclosure
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1869,17 +1869,17 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        similar to first picture, parts inside enclosure radiate heat through the enclosure, bringing it to about 20 degrees above ambient temperature
-        
+            similar to first picture, parts inside enclosure radiate heat through the enclosure, bringing it to about 20 degrees above ambient temperature
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1890,17 +1890,17 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        there are clear hot-spots on the enclosure that match up with the location of the ESP and the AC-DC converter
-        
+            there are clear hot-spots on the enclosure that match up with the location of the ESP and the AC-DC converter
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1911,17 +1911,17 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Less heat is radiated through the front of the HASP; the LCD backlight and embedded LEDs are clearly the warmest components
-        
+            Less heat is radiated through the front of the HASP; the LCD backlight and embedded LEDs are clearly the warmest components
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1933,17 +1933,17 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        PNP Transistor is clearly warmest internal component, ESP8266 cooler than expected
-        
+            PNP Transistor is clearly warmest internal component, ESP8266 cooler than expected
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -1955,17 +1955,17 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        a little bit of ambient heat radiating through the gap between LCD and switch as well as through the switch
-        
+            a little bit of ambient heat radiating through the gap between LCD and switch as well as through the switch
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -2012,485 +2012,139 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/CAD-channel-profile.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Section analysis from f360 showing small channels around the LCD for wires to LDR and LEDs</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
         
 
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/electric-box-clearance.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>The only way to fit the HASP in my 2-gang electric boxes is to cut out a small section</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/00.prep-electronics.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>All the components needed for assembly</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/01.prep-brass-inserts.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Molten plastic can&#39;t flow into a filled insert</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/02.inserts-cooling.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>screws make it easy to perform final alignment on inserts and act as a heatsink</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/03.ldr-position.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>LDR under the LCD w/ trimmed leads...</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/04.wire-harness.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>rough layout of LDR harness</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/05.ldr-wire-wrap.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>strip ~1cm off the end of the wire, wrap around the lead, then solder</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/06.ldr-ground.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>No room for mechanically strong solder joints</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/07.ldr-signal.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>same wrapping technique, just with two leads this time</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/08.hst.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>get everything nicely protected behind HST</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/09.wire-alignment.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>know which way the LED tape wires will need to point to make it into the &#39;channel&#39; prior to soldering</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/10.twisted-cable.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>twist the wires together for a more compact and robust cable</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/11.process.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>remove the pin from the plastic &#39;frame&#39; and carefully solder the wires to the pins</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/12.unused-pins.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>A few pins are not needed</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/13.harness-finished.jpg">
-                    
-                </a>
-                
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/14.finished.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Align and ensure no pinched wires!</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/installed.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>If the LEDs weren&#39;t on, you&#39;d never know they were there 😊</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/ldr-graph.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>ignore the spikes just before noon, those are due to to testing with a flash light</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/models/box.step">
-                <i class="far fa-file-code"></i>
-                models/box.step:
-                
-                <small style="font-family:'Lucida Console', monospace">step</small> <small>file</small>
-                
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/CAD-channel-profile.jpg">
                 
             </a>
+            
+            <figcaption>
+                <small>Section analysis from f360 showing small channels around the LCD for wires to LDR and LEDs</small>
+            </figcaption>
+            
+        </figure>
+
         
     </li>
     
     <li>
         
-            <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/models/box.stl">
-                <i class="far fa-file-code"></i>
-                models/box.stl:
-                
-                <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
-                
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/electric-box-clearance.jpg">
                 
             </a>
+            
+            <figcaption>
+                <small>The only way to fit the HASP in my 2-gang electric boxes is to cut out a small section</small>
+            </figcaption>
+            
+        </figure>
+
         
     </li>
     
     <li>
         
-            <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/models/combined.3mf">
-                <i class="far fa-file-archive"></i>
-                models/combined.3mf:
-                
-                <small style="font-family:'Lucida Console', monospace">3mf</small> <small>file</small>
-                
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/00.prep-electronics.jpg">
                 
             </a>
+            
+            <figcaption>
+                <small>All the components needed for assembly</small>
+            </figcaption>
+            
+        </figure>
+
         
     </li>
     
     <li>
         
-            <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/models/combined.step">
-                <i class="far fa-file-code"></i>
-                models/combined.step:
-                
-                <small style="font-family:'Lucida Console', monospace">step</small> <small>file</small>
-                
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/01.prep-brass-inserts.jpg">
                 
             </a>
+            
+            <figcaption>
+                <small>Molten plastic can&#39;t flow into a filled insert</small>
+            </figcaption>
+            
+        </figure>
+
         
     </li>
     
     <li>
         
-            <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/models/enhanced-HASP.f3z">
-                <i class="far fa-file-"></i>
-                models/enhanced-HASP.f3z:
-                
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/02.inserts-cooling.jpg">
                 
             </a>
+            
+            <figcaption>
+                <small>screws make it easy to perform final alignment on inserts and act as a heatsink</small>
+            </figcaption>
+            
+        </figure>
+
         
     </li>
     
     <li>
         
-            <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/models/plate.step">
-                <i class="far fa-file-code"></i>
-                models/plate.step:
-                
-                <small style="font-family:'Lucida Console', monospace">step</small> <small>file</small>
-                
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/03.ldr-position.jpg">
                 
             </a>
+            
+            <figcaption>
+                <small>LDR under the LCD w/ trimmed leads...</small>
+            </figcaption>
+            
+        </figure>
+
         
     </li>
     
     <li>
         
-            <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/models/plate.stl">
-                <i class="far fa-file-code"></i>
-                models/plate.stl:
-                
-                <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
-                
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/04.wire-harness.jpg">
                 
             </a>
-        
-    </li>
-    
-    <li>
-        
-
             
+            <figcaption>
+                <small>rough layout of LDR harness</small>
+            </figcaption>
             
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/prototype-leds.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Ignore the dirt on the switch. Notice how you can&#39;t tell there&#39;s an LDR beneath the surface</small>
-                </figcaption>
-                
-            </figure>
+        </figure>
 
         
     </li>
@@ -2498,19 +2152,19 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/suggested-print.jpg">
-                    
-                </a>
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/05.ldr-wire-wrap.jpg">
                 
-                <figcaption>
-                    <small>The obvious orientation is the best, no supports needed</small>
-                </figcaption>
-                
-            </figure>
+            </a>
+            
+            <figcaption>
+                <small>strip ~1cm off the end of the wire, wrap around the lead, then solder</small>
+            </figcaption>
+            
+        </figure>
 
         
     </li>
@@ -2518,19 +2172,19 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/thermals/01.removed-side-rear.png">
-                    
-                </a>
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/06.ldr-ground.jpg">
                 
-                <figcaption>
-                    <small>HASP removed from electrical box, heat from the AC-DC converter radiating through the enclosure</small>
-                </figcaption>
-                
-            </figure>
+            </a>
+            
+            <figcaption>
+                <small>No room for mechanically strong solder joints</small>
+            </figcaption>
+            
+        </figure>
 
         
     </li>
@@ -2538,19 +2192,19 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/thermals/02.removed-top-side.png">
-                    
-                </a>
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/07.ldr-signal.jpg">
                 
-                <figcaption>
-                    <small>similar to first picture, parts inside enclosure radiate heat through the enclosure, bringing it to about 20 degrees above ambient temperature</small>
-                </figcaption>
-                
-            </figure>
+            </a>
+            
+            <figcaption>
+                <small>same wrapping technique, just with two leads this time</small>
+            </figcaption>
+            
+        </figure>
 
         
     </li>
@@ -2558,19 +2212,19 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/thermals/03.removed-rear-side.png">
-                    
-                </a>
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/08.hst.jpg">
                 
-                <figcaption>
-                    <small>there are clear hot-spots on the enclosure that match up with the location of the ESP and the AC-DC converter</small>
-                </figcaption>
-                
-            </figure>
+            </a>
+            
+            <figcaption>
+                <small>get everything nicely protected behind HST</small>
+            </figcaption>
+            
+        </figure>
 
         
     </li>
@@ -2578,19 +2232,19 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/thermals/04.front-leds-on.png">
-                    
-                </a>
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/09.wire-alignment.jpg">
                 
-                <figcaption>
-                    <small>Less heat is radiated through the front of the HASP; the LCD backlight and embedded LEDs are clearly the warmest components</small>
-                </figcaption>
-                
-            </figure>
+            </a>
+            
+            <figcaption>
+                <small>know which way the LED tape wires will need to point to make it into the &#39;channel&#39; prior to soldering</small>
+            </figcaption>
+            
+        </figure>
 
         
     </li>
@@ -2598,19 +2252,19 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/thermals/05.internals.png">
-                    
-                </a>
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/10.twisted-cable.jpg">
                 
-                <figcaption>
-                    <small>PNP Transistor is clearly warmest internal component, ESP8266 cooler than expected</small>
-                </figcaption>
-                
-            </figure>
+            </a>
+            
+            <figcaption>
+                <small>twist the wires together for a more compact and robust cable</small>
+            </figcaption>
+            
+        </figure>
 
         
     </li>
@@ -2618,19 +2272,19 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/thermals/06.installed-markup.jpg">
-                    
-                </a>
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/11.process.jpg">
                 
-                <figcaption>
-                    <small>a little bit of ambient heat radiating through the gap between LCD and switch as well as through the switch</small>
-                </figcaption>
-                
-            </figure>
+            </a>
+            
+            <figcaption>
+                <small>remove the pin from the plastic &#39;frame&#39; and carefully solder the wires to the pins</small>
+            </figcaption>
+            
+        </figure>
 
         
     </li>
@@ -2638,19 +2292,365 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/HS-WD200-Modes.jpg">
-                    
-                </a>
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/12.unused-pins.jpg">
                 
-                <figcaption>
-                    <small>HomeSeer&#39;s WS200 has a delightful innovation... RGB LEDs!</small>
-                </figcaption>
+            </a>
+            
+            <figcaption>
+                <small>A few pins are not needed</small>
+            </figcaption>
+            
+        </figure>
+
+        
+    </li>
+    
+    <li>
+        
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/13.harness-finished.jpg">
                 
-            </figure>
+            </a>
+            
+            
+        </figure>
+
+        
+    </li>
+    
+    <li>
+        
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/14.finished.jpg">
+                
+            </a>
+            
+            <figcaption>
+                <small>Align and ensure no pinched wires!</small>
+            </figcaption>
+            
+        </figure>
+
+        
+    </li>
+    
+    <li>
+        
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/installed.jpg">
+                
+            </a>
+            
+            <figcaption>
+                <small>If the LEDs weren&#39;t on, you&#39;d never know they were there 😊</small>
+            </figcaption>
+            
+        </figure>
+
+        
+    </li>
+    
+    <li>
+        
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/ldr-graph.jpg">
+                
+            </a>
+            
+            <figcaption>
+                <small>ignore the spikes just before noon, those are due to to testing with a flash light</small>
+            </figcaption>
+            
+        </figure>
+
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/models/box.step">
+            <i class="far fa-file-code"></i>
+            models/box.step:
+            
+            <small style="font-family:'Lucida Console', monospace">step</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/models/box.stl">
+            <i class="far fa-file-code"></i>
+            models/box.stl:
+            
+            <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/models/combined.3mf">
+            <i class="far fa-file-archive"></i>
+            models/combined.3mf:
+            
+            <small style="font-family:'Lucida Console', monospace">3mf</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/models/combined.step">
+            <i class="far fa-file-code"></i>
+            models/combined.step:
+            
+            <small style="font-family:'Lucida Console', monospace">step</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/models/enhanced-HASP.f3z">
+            <i class="far fa-file-"></i>
+            models/enhanced-HASP.f3z:
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/models/plate.step">
+            <i class="far fa-file-code"></i>
+            models/plate.step:
+            
+            <small style="font-family:'Lucida Console', monospace">step</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/models/plate.stl">
+            <i class="far fa-file-code"></i>
+            models/plate.stl:
+            
+            <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/prototype-leds.jpg">
+                
+            </a>
+            
+            <figcaption>
+                <small>Ignore the dirt on the switch. Notice how you can&#39;t tell there&#39;s an LDR beneath the surface</small>
+            </figcaption>
+            
+        </figure>
+
+        
+    </li>
+    
+    <li>
+        
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/suggested-print.jpg">
+                
+            </a>
+            
+            <figcaption>
+                <small>The obvious orientation is the best, no supports needed</small>
+            </figcaption>
+            
+        </figure>
+
+        
+    </li>
+    
+    <li>
+        
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/thermals/01.removed-side-rear.png">
+                
+            </a>
+            
+            <figcaption>
+                <small>HASP removed from electrical box, heat from the AC-DC converter radiating through the enclosure</small>
+            </figcaption>
+            
+        </figure>
+
+        
+    </li>
+    
+    <li>
+        
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/thermals/02.removed-top-side.png">
+                
+            </a>
+            
+            <figcaption>
+                <small>similar to first picture, parts inside enclosure radiate heat through the enclosure, bringing it to about 20 degrees above ambient temperature</small>
+            </figcaption>
+            
+        </figure>
+
+        
+    </li>
+    
+    <li>
+        
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/thermals/03.removed-rear-side.png">
+                
+            </a>
+            
+            <figcaption>
+                <small>there are clear hot-spots on the enclosure that match up with the location of the ESP and the AC-DC converter</small>
+            </figcaption>
+            
+        </figure>
+
+        
+    </li>
+    
+    <li>
+        
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/thermals/04.front-leds-on.png">
+                
+            </a>
+            
+            <figcaption>
+                <small>Less heat is radiated through the front of the HASP; the LCD backlight and embedded LEDs are clearly the warmest components</small>
+            </figcaption>
+            
+        </figure>
+
+        
+    </li>
+    
+    <li>
+        
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/thermals/05.internals.png">
+                
+            </a>
+            
+            <figcaption>
+                <small>PNP Transistor is clearly warmest internal component, ESP8266 cooler than expected</small>
+            </figcaption>
+            
+        </figure>
+
+        
+    </li>
+    
+    <li>
+        
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/thermals/06.installed-markup.jpg">
+                
+            </a>
+            
+            <figcaption>
+                <small>a little bit of ambient heat radiating through the gap between LCD and switch as well as through the switch</small>
+            </figcaption>
+            
+        </figure>
+
+        
+    </li>
+    
+    <li>
+        
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/enhanced-homeassistantswitchplate/images/HS-WD200-Modes.jpg">
+                
+            </a>
+            
+            <figcaption>
+                <small>HomeSeer&#39;s WS200 has a delightful innovation... RGB LEDs!</small>
+            </figcaption>
+            
+        </figure>
 
         
     </li>
@@ -2669,17 +2669,17 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Excuse the awkward camera angle; sensor is deployed in an awkward to photograph location.
-        
+            Excuse the awkward camera angle; sensor is deployed in an awkward to photograph location.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -2692,17 +2692,17 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Smoke particles are between .4μm to .7μm in size... which explains the elevated red line relative to other particle sizes.
-        
+            Smoke particles are between .4μm to .7μm in size... which explains the elevated red line relative to other particle sizes.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -2718,7 +2718,7 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 
     
         
-    
+        
 
     
 
@@ -2737,24 +2737,24 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Upper and lower chambers for exhaust and intake.
-        
+            Upper and lower chambers for exhaust and intake.
             
-        
+                
+                
         </p> 
     </figcaption>
     
 </figure>
 
 
-<p>While designing the enclosure, I used this <a href="https://grabcad.com/library/pms5003-2" target="_blank" rel="noopener noreffer"><code>PMS5003</code> model</a> from Leclercq Gregory. &#x1f64f;</p>
+<p>While designing the enclosure, I used this <a href="https://grabcad.com/library/pms5003-2" target="_blank" rel="noopener noreffer"><code>PMS5003</code> model</a> from Leclercq Gregory. :pray:</p>
 <h3 id="printing">Printing</h3>
 <p>This is a functional part with only three small surfaces that require reasonably tight precision to properly hold onto the sensor. The <code>SPEED</code> setting with a <code>.2mm</code> layer height and a reasonable 20% infill gave me part that works and feels water tight. The walls and ceiling need to keep water out so dipping below 15% infill or otherwise using settings that wont give solid layer adhesion is not advised. I printed using ABS for durability, but PLA will probably work if you can deploy into a shaded environment.</p>
 <p>The shroud and the base are not optional, the triangle shaped block is intended to turn the flat roof of the shroud into a slanted roof so water can&rsquo;t collect. It is optional but shown below.</p>
@@ -2762,17 +2762,17 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        No raft/support when printed in this orientation.
-        
+            No raft/support when printed in this orientation.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -2796,17 +2796,17 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        More or less everything needed to assemble.
-        
+            More or less everything needed to assemble.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -2899,7 +2899,7 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 
     
         
-    
+        
 
     
 
@@ -2915,7 +2915,7 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 
     
         
-    
+        
 
     
 
@@ -2932,17 +2932,17 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Sensor has been press-fit into the enclosure and wire fed through the base plate.
-        
+            Sensor has been press-fit into the enclosure and wire fed through the base plate.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -2954,17 +2954,17 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        I suggest waiting until the end to glue on the optional roof and waiting until just before that to glue on the optional mesh screens.
-        
+            I suggest waiting until the end to glue on the optional roof and waiting until just before that to glue on the optional mesh screens.
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -3062,187 +3062,224 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/02.assemble.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Sensor has been press-fit into the enclosure and wire fed through the base plate.</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
         
 
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/03.glue.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>I suggest waiting until the end to glue on the optional roof and waiting until just before that to glue on the optional mesh screens.</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/example_dashboard.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Smoke particles are between .4μm to .7μm in size... which explains the elevated red line relative to other particle sizes.</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/04.installed.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Excuse the awkward camera angle; sensor is deployed in an awkward to photograph location.</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/BASE.step">
-                <i class="far fa-file-code"></i>
-                models/BASE.step:
-                
-                <small style="font-family:'Lucida Console', monospace">step</small> <small>file</small>
-                
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/02.assemble.jpg">
                 
             </a>
+            
+            <figcaption>
+                <small>Sensor has been press-fit into the enclosure and wire fed through the base plate.</small>
+            </figcaption>
+            
+        </figure>
+
         
     </li>
     
     <li>
         
-            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/BODY.step">
-                <i class="far fa-file-code"></i>
-                models/BODY.step:
-                
-                <small style="font-family:'Lucida Console', monospace">step</small> <small>file</small>
-                
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/03.glue.jpg">
                 
             </a>
+            
+            <figcaption>
+                <small>I suggest waiting until the end to glue on the optional roof and waiting until just before that to glue on the optional mesh screens.</small>
+            </figcaption>
+            
+        </figure>
+
         
     </li>
     
     <li>
         
-            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/LID.step">
-                <i class="far fa-file-code"></i>
-                models/LID.step:
-                
-                <small style="font-family:'Lucida Console', monospace">step</small> <small>file</small>
-                
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/example_dashboard.jpg">
                 
             </a>
+            
+            <figcaption>
+                <small>Smoke particles are between .4μm to .7μm in size... which explains the elevated red line relative to other particle sizes.</small>
+            </figcaption>
+            
+        </figure>
+
         
     </li>
     
     <li>
         
-            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/base.stl">
-                <i class="far fa-file-code"></i>
-                models/base.stl:
-                
-                <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
-                
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/04.installed.jpg">
                 
             </a>
+            
+            <figcaption>
+                <small>Excuse the awkward camera angle; sensor is deployed in an awkward to photograph location.</small>
+            </figcaption>
+            
+        </figure>
+
         
     </li>
     
     <li>
         
-            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/body.stl">
-                <i class="far fa-file-code"></i>
-                models/body.stl:
-                
-                <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
-                
+        <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/BASE.step">
+            <i class="far fa-file-code"></i>
+            models/BASE.step:
+            
+            <small style="font-family:'Lucida Console', monospace">step</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/BODY.step">
+            <i class="far fa-file-code"></i>
+            models/BODY.step:
+            
+            <small style="font-family:'Lucida Console', monospace">step</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/LID.step">
+            <i class="far fa-file-code"></i>
+            models/LID.step:
+            
+            <small style="font-family:'Lucida Console', monospace">step</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/base.stl">
+            <i class="far fa-file-code"></i>
+            models/base.stl:
+            
+            <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/body.stl">
+            <i class="far fa-file-code"></i>
+            models/body.stl:
+            
+            <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/combined.3mf">
+            <i class="far fa-file-archive"></i>
+            models/combined.3mf:
+            
+            <small style="font-family:'Lucida Console', monospace">3mf</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/lid.stl">
+            <i class="far fa-file-code"></i>
+            models/lid.stl:
+            
+            <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/pin_out/PM2.5_Pins.jpg">
                 
             </a>
+            
+            
+        </figure>
+
         
     </li>
     
     <li>
         
-            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/combined.3mf">
-                <i class="far fa-file-archive"></i>
-                models/combined.3mf:
-                
-                <small style="font-family:'Lucida Console', monospace">3mf</small> <small>file</small>
-                
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/pin_out/WS3_Pins.jpg">
                 
             </a>
+            
+            
+        </figure>
+
         
     </li>
     
     <li>
         
-            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/lid.stl">
-                <i class="far fa-file-code"></i>
-                models/lid.stl:
-                
-                <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
-                
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/01.collect.jpg">
                 
             </a>
-        
-    </li>
-    
-    <li>
-        
-
             
+            <figcaption>
+                <small>More or less everything needed to assemble.</small>
+            </figcaption>
             
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/pin_out/PM2.5_Pins.jpg">
-                    
-                </a>
-                
-                
-            </figure>
+        </figure>
 
         
     </li>
@@ -3250,16 +3287,19 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/pin_out/WS3_Pins.jpg">
-                    
-                </a>
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/suggested_print_orientation.jpg">
                 
-                
-            </figure>
+            </a>
+            
+            <figcaption>
+                <small>No raft/support when printed in this orientation.</small>
+            </figcaption>
+            
+        </figure>
 
         
     </li>
@@ -3267,19 +3307,16 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/01.collect.jpg">
-                    
-                </a>
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/f360_air_channels.jpg">
                 
-                <figcaption>
-                    <small>More or less everything needed to assemble.</small>
-                </figcaption>
-                
-            </figure>
+            </a>
+            
+            
+        </figure>
 
         
     </li>
@@ -3287,56 +3324,19 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/suggested_print_orientation.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>No raft/support when printed in this orientation.</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
         
 
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/f360_air_channels.jpg">
-                    
-                </a>
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/f360_side_profile.jpg">
                 
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
+            </a>
             
+            <figcaption>
+                <small>Upper and lower chambers for exhaust and intake.</small>
+            </figcaption>
             
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/f360_side_profile.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Upper and lower chambers for exhaust and intake.</small>
-                </figcaption>
-                
-            </figure>
+        </figure>
 
         
     </li>
@@ -3348,17 +3348,17 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Picture showing designed parts deployed as intended (please ignore the lingering dust! 💨)
-        
+            Picture showing designed parts deployed as intended (please ignore the lingering dust! 💨)
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -3374,17 +3374,17 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Screenshot from Fusion360 showing dimensions between screw holes
-        
+            Screenshot from Fusion360 showing dimensions between screw holes
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -3399,17 +3399,17 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Screenshot showing suggested print bed arrangement
-        
+            Screenshot showing suggested print bed arrangement
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -3423,140 +3423,19 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/images/hole-dimensions.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Screenshot from Fusion360 showing dimensions between screw holes</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
         
 
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/images/horizontal-model.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Picture showing the CAD model for horizontal variant</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/images/installed.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Picture showing designed parts deployed as intended (please ignore the lingering dust! 💨)</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/models/combined.3mf">
-                <i class="far fa-file-archive"></i>
-                models/combined.3mf:
-                
-                <small style="font-family:'Lucida Console', monospace">3mf</small> <small>file</small>
-                
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/images/hole-dimensions.jpg">
                 
             </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/models/horizontal.f3d">
-                <i class="far fa-file-"></i>
-                models/horizontal.f3d:
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/models/horizontal.stl">
-                <i class="far fa-file-code"></i>
-                Horizontal STL:
-                
-                <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/models/vertical.f3d">
-                <i class="far fa-file-"></i>
-                models/vertical.f3d:
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/models/vertical.stl">
-                <i class="far fa-file-code"></i>
-                Vertical STL:
-                
-                <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-
             
+            <figcaption>
+                <small>Screenshot from Fusion360 showing dimensions between screw holes</small>
+            </figcaption>
             
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/images/suggested_print_orientation.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Screenshot showing suggested print bed arrangement</small>
-                </figcaption>
-                
-            </figure>
+        </figure>
 
         
     </li>
@@ -3564,19 +3443,140 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/images/vertical-model.jpg">
-                    
-                </a>
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/images/horizontal-model.jpg">
                 
-                <figcaption>
-                    <small>Picture showing the CAD model for vertical variant</small>
-                </figcaption>
+            </a>
+            
+            <figcaption>
+                <small>Picture showing the CAD model for horizontal variant</small>
+            </figcaption>
+            
+        </figure>
+
+        
+    </li>
+    
+    <li>
+        
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/images/installed.jpg">
                 
-            </figure>
+            </a>
+            
+            <figcaption>
+                <small>Picture showing designed parts deployed as intended (please ignore the lingering dust! 💨)</small>
+            </figcaption>
+            
+        </figure>
+
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/models/combined.3mf">
+            <i class="far fa-file-archive"></i>
+            models/combined.3mf:
+            
+            <small style="font-family:'Lucida Console', monospace">3mf</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/models/horizontal.f3d">
+            <i class="far fa-file-"></i>
+            models/horizontal.f3d:
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/models/horizontal.stl">
+            <i class="far fa-file-code"></i>
+            Horizontal STL:
+            
+            <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/models/vertical.f3d">
+            <i class="far fa-file-"></i>
+            models/vertical.f3d:
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/models/vertical.stl">
+            <i class="far fa-file-code"></i>
+            Vertical STL:
+            
+            <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/images/suggested_print_orientation.jpg">
+                
+            </a>
+            
+            <figcaption>
+                <small>Screenshot showing suggested print bed arrangement</small>
+            </figcaption>
+            
+        </figure>
+
+        
+    </li>
+    
+    <li>
+        
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/home-lab-simple-printable-cable-org/images/vertical-model.jpg">
+                
+            </a>
+            
+            <figcaption>
+                <small>Picture showing the CAD model for vertical variant</small>
+            </figcaption>
+            
+        </figure>
 
         
     </li>
@@ -3593,17 +3593,17 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        As seen on AliExpress
-        
+            As seen on AliExpress
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -3622,19 +3622,19 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 
     
         
-    
+        
 
     
 
     <figcaption>
         
-            <h4>Colorized Components</h4>
+        <h4>Colorized Components</h4>
         
         <p>
-        Relevant components, colored in F360
-        
+            Relevant components, colored in F360
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -3642,23 +3642,23 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 
 
 <p>I used black PETG, but any material and at least 10% infill should be fine. Tune the layer height to taste.</p>
-<p>The &lsquo;plate&rsquo; does not need any supports nor does the lid if printed in the suggested print orientation shown below &#x1f447;. I printed with settings optimized for speed so there was minimal sagging, but nothing substantial. What little there was didn&rsquo;t interfere with clearance of any other internal component and was completely hidden.</p>
+<p>The &lsquo;plate&rsquo; does not need any supports nor does the lid if printed in the suggested print orientation shown below :point_down:. I printed with settings optimized for speed so there was minimal sagging, but nothing substantial. What little there was didn&rsquo;t interfere with clearance of any other internal component and was completely hidden.</p>
 <p>If you&rsquo;re not comfortable with bridging long distances, you can optionally enforce support material from the build plate to the top of the lid <strong>or</strong> flip the lid upside down and use supports for the four feet where the screws go. Because any sagging would be hidden inside,</p>
 <figure >
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        suggested print orientation
-        
+            suggested print orientation
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -3672,14 +3672,14 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 <li><a href="https://www.amazon.com/gp/product/B07Y9HP4KM/" target="_blank" rel="noopener noreffer">QC 3.0 Charger</a></li>
 </ul>
 <h2 id="assembly">Assembly</h2>
-<p>I don&rsquo;t have any pictures from the assembly &#x1f61e;, but it&rsquo;s not particularly difficult to figure out from the attached pictures. In general, the steps to take are:</p>
+<p>I don&rsquo;t have any pictures from the assembly :disappointed:, but it&rsquo;s not particularly difficult to figure out from the attached pictures. In general, the steps to take are:</p>
 <ol start="0">
 <li>Print everything and clean up the parts as needed</li>
 <li>de-shell the PoE injector and QC3 charger. A plastic pry-tool or a few flat-head screwdrivers will help here!</li>
 <li>desolder the existing mains connections from both modules and solder on new ones. The new ones don&rsquo;t need to be long, just a bit longer than the leads that came on the module PCBs!</li>
 <li>disconnect power from the assembled PSU and remove the case cover</li>
 <li>place the &lsquo;plate&rsquo; onto the top of the PSU and use a pencil to mark all 5 holes on the cover</li>
-<li>remove the plate, drill out all 5 holes and use a file to smooth down any sharp edges on the big hole as that&rsquo;s where the mains wires will go. A burr poking through insulation means the case may become energized @ mains voltages! &#x1f4a5; &#x1f480;</li>
+<li>remove the plate, drill out all 5 holes and use a file to smooth down any sharp edges on the big hole as that&rsquo;s where the mains wires will go. A burr poking through insulation means the case may become energized @ mains voltages! :boom: :skull:</li>
 <li>crimp connectors onto wires and attach to the mains supply <strong>after</strong> the switch and fuse!</li>
 <li>place the &lsquo;plate&rsquo; back onto the PSU cover</li>
 <li>run the wires through the new hole in the top of the PSU case and through the hole in the &lsquo;plate&rsquo;</li>
@@ -3694,17 +3694,17 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        components seated and wired
-        
+            components seated and wired
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -3716,17 +3716,17 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        everything assembled and powered up
-        
+            everything assembled and powered up
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -3741,98 +3741,98 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/electronics-lab-enhanced-bench-psu/images/modded-assembled.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>everything assembled and powered up</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
         
 
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/electronics-lab-enhanced-bench-psu/images/plate_and_lid.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Relevant components, colored in F360</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/electronics-lab-enhanced-bench-psu/models/combined.3mf">
-                <i class="far fa-file-archive"></i>
-                models/combined.3mf:
-                
-                <small style="font-family:'Lucida Console', monospace">3mf</small> <small>file</small>
-                
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/electronics-lab-enhanced-bench-psu/images/modded-assembled.jpg">
                 
             </a>
+            
+            <figcaption>
+                <small>everything assembled and powered up</small>
+            </figcaption>
+            
+        </figure>
+
         
     </li>
     
     <li>
         
-            <a target="_blank" href="https://karlquinsland.com/electronics-lab-enhanced-bench-psu/models/lid.stl">
-                <i class="far fa-file-code"></i>
-                models/lid.stl:
-                
-                <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
-                
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/electronics-lab-enhanced-bench-psu/images/plate_and_lid.jpg">
                 
             </a>
+            
+            <figcaption>
+                <small>Relevant components, colored in F360</small>
+            </figcaption>
+            
+        </figure>
+
         
     </li>
     
     <li>
         
-            <a target="_blank" href="https://karlquinsland.com/electronics-lab-enhanced-bench-psu/models/plate.stl">
-                <i class="far fa-file-code"></i>
-                models/plate.stl:
-                
-                <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
-                
+        <a target="_blank" href="https://karlquinsland.com/electronics-lab-enhanced-bench-psu/models/combined.3mf">
+            <i class="far fa-file-archive"></i>
+            models/combined.3mf:
+            
+            <small style="font-family:'Lucida Console', monospace">3mf</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/electronics-lab-enhanced-bench-psu/models/lid.stl">
+            <i class="far fa-file-code"></i>
+            models/lid.stl:
+            
+            <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/electronics-lab-enhanced-bench-psu/models/plate.stl">
+            <i class="far fa-file-code"></i>
+            models/plate.stl:
+            
+            <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/electronics-lab-enhanced-bench-psu/images/cover-and-screws-off.jpg">
                 
             </a>
-        
-    </li>
-    
-    <li>
-        
-
             
+            <figcaption>
+                <small>components seated and wired</small>
+            </figcaption>
             
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/electronics-lab-enhanced-bench-psu/images/cover-and-screws-off.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>components seated and wired</small>
-                </figcaption>
-                
-            </figure>
+        </figure>
 
         
     </li>
@@ -3840,19 +3840,19 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/electronics-lab-enhanced-bench-psu/images/print_orientation.jpg">
-                    
-                </a>
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/electronics-lab-enhanced-bench-psu/images/print_orientation.jpg">
                 
-                <figcaption>
-                    <small>suggested print orientation</small>
-                </figcaption>
-                
-            </figure>
+            </a>
+            
+            <figcaption>
+                <small>suggested print orientation</small>
+            </figcaption>
+            
+        </figure>
 
         
     </li>
@@ -3860,19 +3860,19 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/electronics-lab-enhanced-bench-psu/images/rd6012-assembled.jpg">
-                    
-                </a>
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/electronics-lab-enhanced-bench-psu/images/rd6012-assembled.jpg">
                 
-                <figcaption>
-                    <small>As seen on AliExpress</small>
-                </figcaption>
-                
-            </figure>
+            </a>
+            
+            <figcaption>
+                <small>As seen on AliExpress</small>
+            </figcaption>
+            
+        </figure>
 
         
     </li>
@@ -3886,7 +3886,7 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 
     
         
-    
+        
 
     
 
@@ -3902,17 +3902,17 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 
     
         
-    
+        
 
     
 
     <figcaption>
         
         <p>
-        Yes, I do need to re-do the cable runs; they&#39;re a mess
-        
+            Yes, I do need to re-do the cable runs; they&#39;re a mess
             
-        
+                
+                
         </p> 
     </figcaption>
     
@@ -3944,137 +3944,16 @@ Tolerances on the jacks are somewhat tight so printing at a more accurate settin
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/home-lab-keystone-bracket/images/rear-installed.jpg">
-                    
-                </a>
-                
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
         
 
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/home-lab-keystone-bracket/images/front-installed.jpg">
-                    
-                </a>
-                
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/home-lab-keystone-bracket/models/v1_keystone-bracket.3mf">
-                <i class="far fa-file-archive"></i>
-                models/v1_keystone-bracket.3mf:
-                
-                <small style="font-family:'Lucida Console', monospace">3mf</small> <small>file</small>
-                
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/home-lab-keystone-bracket/images/rear-installed.jpg">
                 
             </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/home-lab-keystone-bracket/models/v1_keystone-bracket.f3z">
-                <i class="far fa-file-archive"></i>
-                models/v1_keystone-bracket.f3z:
-                
-                <small style="font-family:'Lucida Console', monospace">f3z</small> <small>file</small>
-                
-                
-                <br>
-                <small>Fusion360 Archive</small>
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/home-lab-keystone-bracket/models/v1_keystone-bracket.stl">
-                <i class="far fa-file-code"></i>
-                models/v1_keystone-bracket.stl:
-                
-                <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/home-lab-keystone-bracket/models/v2.3mf">
-                <i class="far fa-file-archive"></i>
-                models/v2.3mf:
-                
-                <small style="font-family:'Lucida Console', monospace">3mf</small> <small>file</small>
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/home-lab-keystone-bracket/models/v2.step">
-                <i class="far fa-file-archive"></i>
-                models/v2.step:
-                
-                <small style="font-family:'Lucida Console', monospace">step</small> <small>file</small>
-                
-                
-                <br>
-                <small>STEP file</small>
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/home-lab-keystone-bracket/models/v2.stl">
-                <i class="far fa-file-code"></i>
-                models/v2.stl:
-                
-                <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-
             
             
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/home-lab-keystone-bracket/images/print_orientation.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Suggested print orientation</small>
-                </figcaption>
-                
-            </figure>
+        </figure>
 
         
     </li>
@@ -4082,16 +3961,120 @@ Tolerances on the jacks are somewhat tight so printing at a more accurate settin
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/home-lab-keystone-bracket/images/v2_installed_front.jpg">
-                    
-                </a>
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/home-lab-keystone-bracket/images/front-installed.jpg">
                 
+            </a>
+            
+            
+        </figure>
+
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/home-lab-keystone-bracket/models/v1_keystone-bracket.3mf">
+            <i class="far fa-file-archive"></i>
+            models/v1_keystone-bracket.3mf:
+            
+            <small style="font-family:'Lucida Console', monospace">3mf</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/home-lab-keystone-bracket/models/v1_keystone-bracket.f3z">
+            <i class="far fa-file-archive"></i>
+            models/v1_keystone-bracket.f3z:
+            
+            <small style="font-family:'Lucida Console', monospace">f3z</small> <small>file</small>
+            
+            
+            <br>
+            <small>Fusion360 Archive</small>
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/home-lab-keystone-bracket/models/v1_keystone-bracket.stl">
+            <i class="far fa-file-code"></i>
+            models/v1_keystone-bracket.stl:
+            
+            <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/home-lab-keystone-bracket/models/v2.3mf">
+            <i class="far fa-file-archive"></i>
+            models/v2.3mf:
+            
+            <small style="font-family:'Lucida Console', monospace">3mf</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/home-lab-keystone-bracket/models/v2.step">
+            <i class="far fa-file-archive"></i>
+            models/v2.step:
+            
+            <small style="font-family:'Lucida Console', monospace">step</small> <small>file</small>
+            
+            
+            <br>
+            <small>STEP file</small>
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/home-lab-keystone-bracket/models/v2.stl">
+            <i class="far fa-file-code"></i>
+            models/v2.stl:
+            
+            <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/home-lab-keystone-bracket/images/print_orientation.jpg">
                 
-            </figure>
+            </a>
+            
+            <figcaption>
+                <small>Suggested print orientation</small>
+            </figcaption>
+            
+        </figure>
 
         
     </li>
@@ -4099,19 +4082,36 @@ Tolerances on the jacks are somewhat tight so printing at a more accurate settin
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/home-lab-keystone-bracket/images/v2_installed_rear.jpg">
-                    
-                </a>
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/home-lab-keystone-bracket/images/v2_installed_front.jpg">
                 
-                <figcaption>
-                    <small>Yes, I do need to re-do the cable runs; they&#39;re a mess</small>
-                </figcaption>
+            </a>
+            
+            
+        </figure>
+
+        
+    </li>
+    
+    <li>
+        
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/home-lab-keystone-bracket/images/v2_installed_rear.jpg">
                 
-            </figure>
+            </a>
+            
+            <figcaption>
+                <small>Yes, I do need to re-do the cable runs; they&#39;re a mess</small>
+            </figcaption>
+            
+        </figure>
 
         
     </li>
@@ -4131,213 +4131,213 @@ Tolerances on the jacks are somewhat tight so printing at a more accurate settin
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/images/built.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Fully Assembled; ignore the messy workbench</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
         
 
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/images/cad-back.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>component view, from rear</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/images/cad-front.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>component view, from front</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/images/core.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>Print Bed arrangement, green is support structures</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-            
-            
-        
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/images/meter-panel.jpg">
-                    
-                </a>
-                
-                <figcaption>
-                    <small>meter panel print orientation</small>
-                </figcaption>
-                
-            </figure>
-
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/models/2x-lrs-psu.f3z">
-                <i class="far fa-file-archive"></i>
-                Consolidated PSU CAD:
-                
-                <small style="font-family:'Lucida Console', monospace">f3z</small> <small>file</small>
-                
-                
-                <br>
-                <small>Fusion360 Archive</small>
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/images/built.jpg">
                 
             </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/models/box.stl">
-                <i class="far fa-file-code"></i>
-                Box:
-                
-                <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/models/brace.stl">
-                <i class="far fa-file-code"></i>
-                Brace:
-                
-                <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/models/core.3mf">
-                <i class="far fa-file-archive"></i>
-                Core Components:
-                
-                <small style="font-family:'Lucida Console', monospace">3mf</small> <small>file</small>
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/models/lid.stl">
-                <i class="far fa-file-code"></i>
-                Lid:
-                
-                <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/models/meter-panel.3mf">
-                <i class="far fa-file-archive"></i>
-                (Optional) Meter Panel:
-                
-                <small style="font-family:'Lucida Console', monospace">3mf</small> <small>file</small>
-                
-                
-            </a>
-        
-    </li>
-    
-    <li>
-        
-            <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/models/meter-panel.stl">
-                <i class="far fa-file-code"></i>
-                (Optional) Meter Panel:
-                
-                <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
-                
-                
-            </a>
+            
+            <figcaption>
+                <small>Fully Assembled; ignore the messy workbench</small>
+            </figcaption>
+            
+        </figure>
+
         
     </li>
     
     <li>
         
 
-            
-            
         
-            <figure>
-                <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/images/meter-panel-slice.jpg">
-                    
-                </a>
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/images/cad-back.jpg">
                 
-                <figcaption>
-                    <small>using slic3r too remove the second meter cutout</small>
-                </figcaption>
+            </a>
+            
+            <figcaption>
+                <small>component view, from rear</small>
+            </figcaption>
+            
+        </figure>
+
+        
+    </li>
+    
+    <li>
+        
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/images/cad-front.jpg">
                 
-            </figure>
+            </a>
+            
+            <figcaption>
+                <small>component view, from front</small>
+            </figcaption>
+            
+        </figure>
+
+        
+    </li>
+    
+    <li>
+        
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/images/core.jpg">
+                
+            </a>
+            
+            <figcaption>
+                <small>Print Bed arrangement, green is support structures</small>
+            </figcaption>
+            
+        </figure>
+
+        
+    </li>
+    
+    <li>
+        
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/images/meter-panel.jpg">
+                
+            </a>
+            
+            <figcaption>
+                <small>meter panel print orientation</small>
+            </figcaption>
+            
+        </figure>
+
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/models/2x-lrs-psu.f3z">
+            <i class="far fa-file-archive"></i>
+            Consolidated PSU CAD:
+            
+            <small style="font-family:'Lucida Console', monospace">f3z</small> <small>file</small>
+            
+            
+            <br>
+            <small>Fusion360 Archive</small>
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/models/box.stl">
+            <i class="far fa-file-code"></i>
+            Box:
+            
+            <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/models/brace.stl">
+            <i class="far fa-file-code"></i>
+            Brace:
+            
+            <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/models/core.3mf">
+            <i class="far fa-file-archive"></i>
+            Core Components:
+            
+            <small style="font-family:'Lucida Console', monospace">3mf</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/models/lid.stl">
+            <i class="far fa-file-code"></i>
+            Lid:
+            
+            <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/models/meter-panel.3mf">
+            <i class="far fa-file-archive"></i>
+            (Optional) Meter Panel:
+            
+            <small style="font-family:'Lucida Console', monospace">3mf</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+        <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/models/meter-panel.stl">
+            <i class="far fa-file-code"></i>
+            (Optional) Meter Panel:
+            
+            <small style="font-family:'Lucida Console', monospace">stl</small> <small>file</small>
+            
+            
+        </a>
+        
+    </li>
+    
+    <li>
+        
+
+        
+        
+
+        <figure>
+            <a target="_blank" href="https://karlquinsland.com/home-lab-consolidated-psu/images/meter-panel-slice.jpg">
+                
+            </a>
+            
+            <figcaption>
+                <small>using slic3r too remove the second meter cutout</small>
+            </figcaption>
+            
+        </figure>
 
         
     </li>
