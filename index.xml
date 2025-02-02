@@ -1,4 +1,212 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>karl</title><link>https://karlquinsland.com/</link><description>Karl's little corner of the internet</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 25 Dec 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Multi-Material Printing Hack for Prusa XL</title><link>https://karlquinsland.com/multi-material-printing-hack/</link><pubDate>Wed, 25 Dec 2024 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/multi-material-printing-hack/</guid><description><![CDATA[<!-- markdownlint-disable-file MD002 -->
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>karl</title><link>https://karlquinsland.com/</link><description>Karl's little corner of the internet</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 01 Feb 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/index.xml" rel="self" type="application/rss+xml"/><item><title>#TwoMinuteTeardown: Home Assistant Voice - Preview Edition</title><link>https://karlquinsland.com/home-assistant-voice-pe-teardown/</link><pubDate>Sat, 01 Feb 2025 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/home-assistant-voice-pe-teardown/</guid><description><![CDATA[<h1 id="home-assistant-voice-preview-edition-teardown">Home Assistant Voice: Preview Edition teardown</h1>
+<p>This is a quick <a href="/tags/two-minute-teardown/" rel="">#TwoMinuteTeardown</a> post for the recently released <a href="https://www.home-assistant.io/voice-pe/" target="_blank" rel="noopener noreffer">Home Assistant Voice Node - Preview edition</a>.</p>
+<p>Normally, I&rsquo;d be doing a full teardown, but this is a little different; the Home Assistant team has done a <em>lot</em> of the work out in the open.
+With just a quick Google, you can find official:</p>
+<ul>
+<li>teardown instructions <a href="https://voice-pe.home-assistant.io/guides/disassemble/" target="_blank" rel="noopener noreffer">here</a>.</li>
+<li>source code <a href="https://github.com/esphome/home-assistant-voice-pe" target="_blank" rel="noopener noreffer">here</a>.</li>
+<li>3D printable case <a href="https://www.printables.com/model/1110526-home-assistant-voice-preview-edition-enclosure" target="_blank" rel="noopener noreffer">files</a>.</li>
+<li>Instructions for adding custom devices <a href="https://voice-pe.home-assistant.io/guides/grove_port/" target="_blank" rel="noopener noreffer">here</a>.</li>
+</ul>
+<p>I am grateful for such a well-documented and open project.
+Truly, by hackers for hackers!</p>
+<h2 id="teardown">Teardown</h2>
+<p>See the official instructions if you can&rsquo;t figure it out.</p>
+<p>There&rsquo;s not much to the device, really.
+The top half hosts the physical buttons and the microphones.
+The thin, metal-looking piece in the top right is the antenna.</p>
+<p>In the bottom right, there&rsquo;s a small switch that appears to mux between the main application processor (ESP32) and the audio processor.</p>
+<p>I wonder weather this is &ldquo;leftover&rdquo; from development and they haven&rsquo;t gotten around to simplifying the BOM yet or if this is intentionally populated for users to re-program the audio processor.</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>All of the &ldquo;fun&rdquo; stuff is on the bottom half.</p>
+<p>Immediately, you notice the PCB has multiple <em>populated</em> pin headers for hacking. Bonus, they&rsquo;re all labeled!</p>
+<p>The layout and BOM is about what you&rsquo;d expect for a ~$50 single-purpose device.</p>
+<p>Where possible, I&rsquo;ve <a href="#ics" rel="">identified</a> the big ICs.</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<h3 id="wishful-thinking">wishful thinking</h3>
+<p>In a word: Ethernet.</p>
+<p>Most of the ESP32 product line does not have support for ethernet via <a href="https://en.wikipedia.org/wiki/Media-independent_interface#RMII" target="_blank" rel="noopener noreffer">RMII</a> (unfortunately) but there is always SPI based ethernet.</p>
+<p>There are a few areas where the PCB is bare/empty and with a few tweaks to the layout, it would have been possible to also expose SPI headers next to the <a href="https://wiki.seeedstudio.com/Grove-I2C_Hub/" target="_blank" rel="noopener noreffer">grove connector</a>.</p>
+<p>Assuming there&rsquo;s a spare SPI peripheral to use, SPI based ethernet would have latency and throughput as good as or better than WiFi.</p>
+<p>It would have been a nice option for those of us who prefer the reliability of wired connections.</p>
+<p>Oh well.</p>
+<h2 id="ics">ICs</h2>
+<p>This is just the big ones that were going to be easy-ish to positively identify.
+I skipped a few of the super small ICs that had a few characters (at most!) of identification on them.</p>
+<p>Two flash chips, one for the ESP32 and one for the &ldquo;ai&rdquo; chip which is maybe doing detection and is almost certainly doing some other DSP stuff.
+TI parts for the audio codec and a few miscellaneous bits as well.</p>
+<h3 id="zbit-semiconductor-zb25vq128">zbit semiconductor ZB25VQ128</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">AN2414
+</span></span><span class="line"><span class="cl">25VQ128DSJG
+</span></span><span class="line"><span class="cl">P3S952
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a href="https://linux-chenxing.org/pioneer3/sv50pd/ZB25VQ128.pdf" target="_blank" rel="noopener noreffer">This</a> is a clone of a super common winbond nor flash chip with the same part number.</p>
+<h3 id="zbit-semiconductor-zb25vq32">zbit semiconductor ZB25VQ32</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">KN2444
+</span></span><span class="line"><span class="cl">25VQ32DSJG
+</span></span><span class="line"><span class="cl">EQ4537
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a href="https://semic-boutique.com/wp-content/uploads/2016/05/ZB25VQ32.pdf" target="_blank" rel="noopener noreffer">Same</a> as above, but smaller.</p>
+<h3 id="ti-tlv320aic3204">TI TLV320AIC3204</h3>
+<p><a href="https://www.ti.com/product/TLV320AIC3204" target="_blank" rel="noopener noreffer">This</a> is the audio codec.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">AIC
+</span></span><span class="line"><span class="cl">3204
+</span></span><span class="line"><span class="cl">TI 48I
+</span></span><span class="line"><span class="cl">A69Y G4
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="ti-sn74lvc125a">TI SN74LVC125A</h3>
+<p><a href="https://www.ti.com/product/SN74LVC125A" target="_blank" rel="noopener noreffer">This</a> is a pretty common buffer IC and I don&rsquo;t know for sure what it&rsquo;s being used for.
+I am 99% certain that the LEDs under the rotary encoder are neopixels and those can be driven directly from the ESP32.
+The only other thing that comes to mind is a &ldquo;switch&rdquo; to physically cut power to the microphones when the user has engaged the mute switch.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">LC125A
+</span></span><span class="line"><span class="cl">TI44K
+</span></span><span class="line"><span class="cl">C237
+</span></span><span class="line"><span class="cl">9F
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="xmos-xu316">XMOS XU316</h3>
+<p>The <a href="https://www.xmos.com/download/XU316-1024-QF60A-xcore_ai-Datasheet%2826%29.pdf" target="_blank" rel="noopener noreffer">XU316-1024-QF60A</a> is an interesting chip.
+The product name and datasheet suggest that it&rsquo;s instrumental in &ldquo;ai&rdquo; workloads 🙄 but the datasheet is a bit more concrete:</p>
+<blockquote>
+<p>The xcore.ai series is a comprehensive range of 32-bit multicore microcontrollers that brings the low latency and timing determinism of the xCORE architecture to mainstream embedded applications.
+Unlike conventional microcontrollers, xCORE multicore microcontrollers execute multiple real-time tasks simultaneously and communicate between tasks using a high speed network.
+Because xCORE multicore microcontrollers are completely deterministic when executing from internal memory, you can write software to implement functions that traditionally require dedicated hardware.</p></blockquote>
+<p>This is doing real time audio processing - presumably to cancel background noise/echo - and might also be doing wake word detection.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">XMOS
+</span></span><span class="line"><span class="cl">V16A0
+</span></span><span class="line"><span class="cl">GT2446P2
+</span></span><span class="line"><span class="cl">TMCY48.00
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="espressif-esp32-s3">Espressif ESP32-S3</h3>
+<p>This chip needs no introduction!</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">ESP32-S3
+</span></span><span class="line"><span class="cl">242024
+</span></span><span class="line"><span class="cl">R8MRK668000
+</span></span><span class="line"><span class="cl">UC00MBE423
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="the-little-guys">The little guys</h3>
+<p>All the ICs that are too small to have full/meaningful part numbers.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">FE
+</span></span><span class="line"><span class="cl">NZ
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">f9
+</span></span><span class="line"><span class="cl">GkA
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">CEDTI
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Given the proximity to both the speaker connector and the <a href="#ti-tlv320aic3204" rel="">audio codec</a>, I am guessing this is an audio amplifier, probably also from TI.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">TI 45
+</span></span><span class="line"><span class="cl">AYK
+</span></span></code></pre></td></tr></table>
+</div>
+</div>]]></description></item><item><title>Multi-Material Printing Hack for Prusa XL</title><link>https://karlquinsland.com/multi-material-printing-hack/</link><pubDate>Wed, 25 Dec 2024 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/multi-material-printing-hack/</guid><description><![CDATA[<!-- markdownlint-disable-file MD002 -->
 <p>In the same spirit as <a href="/extending-the-mk3s-print-area/" rel="">an earlier post</a>, here is a quick hack I used to get my <strong>dual</strong>-headed Prusa XL printer to print with <strong>three</strong> materials at once.</p>
 <p>While the technique worked, it may not be the best method, so proceed with caution.</p>
 <h2 id="the-problem">The problem</h2>
@@ -1741,13 +1949,11 @@ It&rsquo;s still a basic LCD screen behind a matrix of clear buttons.</p>
 <p>I can&rsquo;t find <em>anything</em> when googling the main IC, unfortunately.</p>
 <blockquote>
 <p>ARX29025</p>
-<p>Q2402</p>
-</blockquote>
+<p>Q2402</p></blockquote>
 <p>The silk screen is:</p>
 <blockquote>
 <p>HSV293-N3-LCD-V2P1</p>
-<p>20240620</p>
-</blockquote>
+<p>20240620</p></blockquote>
 <p><figure >
 
     
@@ -2163,8 +2369,7 @@ Conceivably, you could embed a tiny raspberry pi zero or other <em>small</em> co
 <p>HSV293-N4-LCD</p>
 <p>20240807</p>
 <p>HSV293-N4-SW</p>
-<p>202400711</p>
-</blockquote>
+<p>202400711</p></blockquote>
 <p>And the USB hub PCB in the base doesn&rsquo;t have a part number, just a date code.
 I&rsquo;d bet that they started designing this product in spring of 2024 and they finished the simplest part - the USB hub - first.</p>
 <figure >
@@ -2792,7 +2997,7 @@ Use this as a starting point and adapt it to your needs.</div>
 </span></span></span><span class="line"><span class="cl"><span class="sd">            }
 </span></span></span><span class="line"><span class="cl"><span class="sd">          }
 </span></span></span><span class="line"><span class="cl"><span class="sd">          // Log the new values
-</span></span></span><span class="line"><span class="cl"><span class="sd">          ESP_LOGD(&#34;sense_air_pressure_delta_raw_pa.on_value&#34;, &#34;glbl_air_pressure_delta_hwm_pa: %f&#34;, id(glbl_air_pressure_delta_hwm_pa));</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="sd">          ESP_LOGD(&#34;sense_air_pressure_delta_raw_pa.on_value&#34;, &#34;glbl_air_pressure_delta_hwm_pa: %f&#34;, id(glbl_air_pressure_delta_hwm_pa));</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Air Pressure Delta (Smoothed)&#34;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
@@ -2835,7 +3040,7 @@ Use this as a starting point and adapt it to your needs.</div>
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">state_class</span><span class="p">:</span><span class="w"> </span><span class="l">TOTAL_INCREASING</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">update_interval</span><span class="p">:</span><span class="w"> </span><span class="l">never</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">      return id(glbl_air_pressure_delta_hwm_pa);</span><span class="w">      
+</span></span></span><span class="line"><span class="cl"><span class="sd">      return id(glbl_air_pressure_delta_hwm_pa);</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">on_value</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="l">id(sense_est_filter_life_remaining).update();</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
@@ -2856,7 +3061,7 @@ Use this as a starting point and adapt it to your needs.</div>
 </span></span></span><span class="line"><span class="cl"><span class="sd">      } else {
 </span></span></span><span class="line"><span class="cl"><span class="sd">        ESP_LOGD(&#34;sense_est_filter_life_remaining&#34;, &#34;[CalcCase] glbl_air_pressure_delta_hwm_pa: %f glbl_air_pressure_delta_virgin_pa: %f, glbl_air_pressure_delta_clogged_pa: %f&#34;, id(glbl_air_pressure_delta_hwm_pa), id(glbl_air_pressure_delta_virgin_pa), id(glbl_air_pressure_delta_clogged_pa));
 </span></span></span><span class="line"><span class="cl"><span class="sd">        return 100 - ((id(glbl_air_pressure_delta_hwm_pa) - id(glbl_air_pressure_delta_virgin_pa)) / (id(glbl_air_pressure_delta_clogged_pa) - id(glbl_air_pressure_delta_virgin_pa)) * 100);
-</span></span></span><span class="line"><span class="cl"><span class="sd">      }</span><span class="w">      
+</span></span></span><span class="line"><span class="cl"><span class="sd">      }</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Button to clear the high water mark</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># This button should be pressed when a new filter is installed</span><span class="w">
@@ -2895,12 +3100,12 @@ Use this as a starting point and adapt it to your needs.</div>
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">max_value</span><span class="p">:</span><span class="w"> </span><span class="l">${template_number_input_max_hpa}</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">step</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">      return id(glbl_air_pressure_delta_virgin_pa)/100;</span><span class="w">      
+</span></span></span><span class="line"><span class="cl"><span class="sd">      return id(glbl_air_pressure_delta_virgin_pa)/100;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">set_action</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          id(glbl_air_pressure_delta_virgin_pa) = abs(x)*100;</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(glbl_air_pressure_delta_virgin_pa) = abs(x)*100;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          id(sense_est_filter_life_remaining).update();</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(sense_est_filter_life_remaining).update();</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Clogged Filter Pressure Delta&#34;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
@@ -2913,12 +3118,12 @@ Use this as a starting point and adapt it to your needs.</div>
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">max_value</span><span class="p">:</span><span class="w"> </span><span class="l">${template_number_input_max_hpa}</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">step</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">      return id(glbl_air_pressure_delta_clogged_pa)/100;</span><span class="w">      
+</span></span></span><span class="line"><span class="cl"><span class="sd">      return id(glbl_air_pressure_delta_clogged_pa)/100;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">set_action</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          id(glbl_air_pressure_delta_clogged_pa) = abs(x)*100;</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(glbl_air_pressure_delta_clogged_pa) = abs(x)*100;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          id(sense_est_filter_life_remaining).update();</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(sense_est_filter_life_remaining).update();</span><span class="w">
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div>]]></description></item><item><title>Watch Band RFID fob</title><link>https://karlquinsland.com/watch-band-rfid/</link><pubDate>Sat, 14 Sep 2024 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/watch-band-rfid/</guid><description><![CDATA[<h1 id="watch-band-rfid-fob">Watch Band RFID fob</h1>
@@ -3068,8 +3273,7 @@ I did eventually find a suitable tag on eBay:</p>
 
 <p>eBay being what it is, there&rsquo;s no guarantee that <a href="https://www.ebay.com/itm/254607033331" target="_blank" rel="noopener noreffer">the same listing I purchased from</a> will still be active in the future so I am including a copy of the listing description that you can use for reference when searching for a suitable tag:</p>
 <blockquote>
-<p>New 2pcs T5577 125KHz E/H Rewrite Writable R/W Proximity Bio Glass Tag 2.12x12mm</p>
-</blockquote>
+<p>New 2pcs T5577 125KHz E/H Rewrite Writable R/W Proximity Bio Glass Tag 2.12x12mm</p></blockquote>
 <p>A portion of the listing text:</p>
 <blockquote>
 <p>Specifications:</p>
@@ -3100,8 +3304,7 @@ I did eventually find a suitable tag on eBay:</p>
 <li>
 <p>Page included: 2pcs 125KHz T5577 Writeable Glass RFID TAGS</p>
 </li>
-</ul>
-</blockquote>
+</ul></blockquote>
 <h2 id="files">Files</h2>
 <ul>
     
@@ -3424,32 +3627,27 @@ Not sure if it&rsquo;s for a wireless link to the rear camera or for something l
 <p>77-56V200(20) V3.411</p>
 <p>6105</p>
 <p>V200-AMWG-V3.411
-2019.12.03</p>
-</blockquote>
+2019.12.03</p></blockquote>
 <p>And on the rear:</p>
 <blockquote>
 <p>F02Z1B
-F15Z1B</p>
-</blockquote>
+F15Z1B</p></blockquote>
 <p>The main CPU is <a href="https://silicondevice.com/file.upload/images/Gid1551Pdf_Hi3556%20V100%20HD%20Mobile%20Camera%20SoC%20Brief%20Data%20Sheet.pdf" target="_blank" rel="noopener noreffer">meant for consumer cameras</a> and is marked:</p>
 <blockquote>
 <p>Hi 3556</p>
 <p>RBCV200</p>
 <p>CP9881938</p>
-<p>1939-CN</p>
-</blockquote>
+<p>1939-CN</p></blockquote>
 <p>The LCD is marked:</p>
 <blockquote>
 <p>XTY TB118-I4018E30A-01</p>
-<p>T B118-45a164200402-J</p>
-</blockquote>
+<p>T B118-45a164200402-J</p></blockquote>
 <p>I can&rsquo;t find a datasheet for what I suspect is the rear-camera processor but it&rsquo;s marked:</p>
 <blockquote>
 <p>pixelplus</p>
 <p>PR2020</p>
 <p>S3CWN</p>
-<p>KAG2006</p>
-</blockquote>
+<p>KAG2006</p></blockquote>
 <h2 id="firmware">Firmware</h2>
 <p>Just for giggles, I dumped the firmware from the SPI flash to get an idea of what software powers this device.</p>
 <div class="highlight"><div class="chroma">
@@ -4454,7 +4652,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">update_interval</span><span class="p">:</span><span class="w"> </span><span class="l">never</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">      // This lambda function should never be called / we should never update the text sensor this way
-</span></span></span><span class="line"><span class="cl"><span class="sd">      return {&#34;Unknown&#34;};</span><span class="w">      
+</span></span></span><span class="line"><span class="cl"><span class="sd">      return {&#34;Unknown&#34;};</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Expose the current success/failure counts for stats</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">sensor</span><span class="p">:</span><span class="w">
@@ -4468,7 +4666,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class="line"><span class="cl"><span class="sd">        return id(_glbl_http_poll_failures_count);
 </span></span></span><span class="line"><span class="cl"><span class="sd">      } else {
 </span></span></span><span class="line"><span class="cl"><span class="sd">        return 0.0;
-</span></span></span><span class="line"><span class="cl"><span class="sd">      }</span><span class="w">      
+</span></span></span><span class="line"><span class="cl"><span class="sd">      }</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Will be called to update as necessary from other components</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">update_interval</span><span class="p">:</span><span class="w"> </span><span class="l">never</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
@@ -4488,7 +4686,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">max_value</span><span class="p">:</span><span class="w"> </span><span class="m">120</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">step</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">      return (int) id(glbl_http_poll_interval_ticks);</span><span class="w">      
+</span></span></span><span class="line"><span class="cl"><span class="sd">      return (int) id(glbl_http_poll_interval_ticks);</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">set_action</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">then</span><span class="p">:</span><span class="w">
@@ -4509,7 +4707,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">max_value</span><span class="p">:</span><span class="w"> </span><span class="m">10</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">step</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">      return (int) id(glbl_http_poll_failures_threshold);</span><span class="w">      
+</span></span></span><span class="line"><span class="cl"><span class="sd">      return (int) id(glbl_http_poll_failures_threshold);</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">set_action</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">then</span><span class="p">:</span><span class="w">
@@ -4548,7 +4746,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">restore_mode</span><span class="p">:</span><span class="w"> </span><span class="l">RESTORE_DEFAULT_ON</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># This way we don&#39;t need to create a global for the state</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">      return id(_glbl_http_poll_consecutive_failure_action_enabled);</span><span class="w">      
+</span></span></span><span class="line"><span class="cl"><span class="sd">      return id(_glbl_http_poll_consecutive_failure_action_enabled);</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">turn_on_action</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">globals.set</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">_glbl_http_poll_consecutive_failure_action_enabled</span><span class="w">
@@ -4569,7 +4767,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class="line"><span class="cl"><span class="sd">          id(_glbl_http_poll_failures_count) = 0;
 </span></span></span><span class="line"><span class="cl"><span class="sd">          id(_glbl_http_poll_request_in_flight) = false;
 </span></span></span><span class="line"><span class="cl"><span class="sd">          id(txt_operation_mode).publish_state(&#34;Armed&#34;);
-</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_http_poll_tick).execute();</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_http_poll_tick).execute();</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># When polling function is turned off, there&#39;s a few things to clean up</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">_on_http_poll_turned_off</span><span class="w">
@@ -4581,7 +4779,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class="line"><span class="cl"><span class="sd">          id(_glbl_http_poll_request_in_flight) = false;
 </span></span></span><span class="line"><span class="cl"><span class="sd">          id(txt_operation_mode).publish_state(&#34;Disarmed&#34;);
 </span></span></span><span class="line"><span class="cl"><span class="sd">          id(_do_poll).stop();
-</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_http_poll_tick).stop();</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_http_poll_tick).stop();</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># What do we do when we get a 200 response?</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">_on_http_poll_ok</span><span class="w">
@@ -4593,7 +4791,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class="line"><span class="cl"><span class="sd">          ESP_LOGD(TAG, &#34;Poll OK. Resetting failure count.&#34;);
 </span></span></span><span class="line"><span class="cl"><span class="sd">          id(_glbl_http_poll_failures_count) = 0;
 </span></span></span><span class="line"><span class="cl"><span class="sd">          id(s_consecutive_poll_failure_count).update();
-</span></span></span><span class="line"><span class="cl"><span class="sd">          id(txt_operation_mode).publish_state(&#34;Success&#34;);</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(txt_operation_mode).publish_state(&#34;Success&#34;);</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># What do we do when we get a non-200 response?</span><span class="w">
@@ -4612,7 +4810,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class="line"><span class="cl"><span class="sd">          
 </span></span></span><span class="line"><span class="cl"><span class="sd">          if( id(_glbl_http_poll_failures_count) &gt;= id(glbl_http_poll_failures_threshold) ) {
 </span></span></span><span class="line"><span class="cl"><span class="sd">            id(_on_http_poll_failure_threshold_met).execute();
-</span></span></span><span class="line"><span class="cl"><span class="sd">          }</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="sd">          }</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># And when failure count reaches threshold, what do we do?</span><span class="w">
@@ -4636,7 +4834,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class="line"><span class="cl"><span class="sd">          id(_glbl_http_poll_failures_count) = 0;
 </span></span></span><span class="line"><span class="cl"><span class="sd">          id(s_consecutive_poll_failure_count).update();
 </span></span></span><span class="line"><span class="cl"><span class="sd">          // Reset the time since last failure counter to enter lockout mode
-</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_glbl_http_poll_ticks_since_last_failure_action) = 0;</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_glbl_http_poll_ticks_since_last_failure_action) = 0;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">_do_poll</span><span class="w">
@@ -4647,7 +4845,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">          // Indicate we are now polling
 </span></span></span><span class="line"><span class="cl"><span class="sd">          id(txt_operation_mode).publish_state(&#34;Polling&#34;);
-</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_glbl_http_poll_request_in_flight) = true;</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_glbl_http_poll_request_in_flight) = true;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="c"># Fire off the http request</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">http_request.get</span><span class="p">:</span><span class="w">
@@ -4728,7 +4926,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class="line"><span class="cl"><span class="sd">          }
 </span></span></span><span class="line"><span class="cl"><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">          // re-schedule so we&#39;re called again in a second!
-</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_http_poll_tick).execute();</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_http_poll_tick).execute();</span><span class="w">
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="modemyaml"><code>modem.yaml</code></h3>
@@ -4848,7 +5046,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class="line"><span class="cl"><span class="sd">                ESP_LOGW(TAG, &#34;Response status: %d, Duration: %u ms&#34;, status_code, duration_ms);
 </span></span></span><span class="line"><span class="cl"><span class="sd">                id(_on_http_poll_failure).execute();
 </span></span></span><span class="line"><span class="cl"><span class="sd">                break;
-</span></span></span><span class="line"><span class="cl"><span class="sd">            }</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="sd">            }</span><span class="w">
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="all-together-now">All together now</h3>
@@ -5008,8 +5206,7 @@ Essentially I have a large / multi-hour print that <strong>almost</strong> fits 
 <h2 id="the-problem">The problem</h2>
 <p>PrusaSlicer refuses to slice the part and gives the following error message:</p>
 <blockquote>
-<p>&ldquo;An object outside the print area was detected. Resolve the current problem to continue slicing.</p>
-</blockquote>
+<p>&ldquo;An object outside the print area was detected. Resolve the current problem to continue slicing.</p></blockquote>
 <figure >
 
     
@@ -5174,322 +5371,4 @@ To do this:</p>
 <p>Note that the edge of the circle just barely touches the edge of the print bed on the right and &ldquo;sits&rdquo; a few mm below the &ldquo;usable&rdquo; print bed area on the left.</p>
 <p>Hopefully that&rsquo;s helpful to someone else out there.
 If anybody knows why Prusa &ldquo;reserves&rdquo; this space, I&rsquo;d love to know.</p>
-]]></description></item><item><title>Altinex TE460-137 Teardown</title><link>https://karlquinsland.com/altinex-te460-137-teardown/</link><pubDate>Sat, 02 Dec 2023 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/altinex-te460-137-teardown/</guid><description><![CDATA[<h1 id="altinex-te460-137-teardown">Altinex TE460-137 Teardown</h1>
-<p>It is surprisingly hard to find a device that can dump details about the various protocols and negotiated standards for a HDMI connection.
-For how ubiquitous HDMI is, you&rsquo;d <em>think</em> that there would be a lot of devices that can do this.
-There are LOADS of devices that can snoop USB and Ethernet, but HDMI is a bit of a different beast, apparently.</p>
-<p>After a bit of searching, I found the <a href="https://www.altinex.com/product/te460-137/" target="_blank" rel="noopener noreffer">Altinex TE460-137</a> could do exactly what I wanted.</p>
-<p>(/enhanced-homeassistantswitchplate/) project.</p>
-<p>Like the <a href="/pulse-eight-hdmi-cec-injector-teardown/" rel="">HDMI CEC dongle</a> this device is a bit specialized and so there&rsquo;s not a lot of readily available information about it online.
-I was curious about what&rsquo;s inside and how it works, so I decided to take a look.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            Front of the device.
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<h2 id="magnuson-moss-warranty-act">Magnuson-Moss Warranty Act</h2>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            The case split open.
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>Notice that pierced <code>Warranty void if removed</code> sticker over the bottom right screw?
-Yeah, that&rsquo;s <a href="https://www.npr.org/sections/thetwo-way/2018/04/11/601582169/warranty-void-if-removed-as-it-turns-out-feds-say-those-warnings-are-illegal" target="_blank" rel="noopener noreffer"><strong>illegal</strong></a>.
-Naturally, companies don&rsquo;t want you to know that the sticker is <a href="https://www.ifixit.com/News/15464/warranty-voiding-stickers-are-illegal-but-these-companies-are-still-using-them" target="_blank" rel="noopener noreffer">unenforceable</a>.</p>
-<p>Consider this a small <a href="https://www.ifixit.com/News/11748/warranty-stickers-are-illegal" target="_blank" rel="noopener noreffer">PSA</a>: if you see a sticker like this, you can safely ignore it.
-The company <em>cannot</em> void your warranty for removing it but they absolutely can make your life difficult if you do.
-If you get pushback, direct them to the <a href="https://www.ftc.gov/business-guidance/resources/businesspersons-guide-federal-warranty-law" target="_blank" rel="noopener noreffer">FTC&rsquo;s official statement</a> on the matter.</p>
-<p>Anyways.</p>
-<h2 id="quick-peek-inside">Quick peek Inside</h2>
-<p>After removing the four screws, the case splits open easily enough.
-The construction is a bit more elaborate than expected; there&rsquo;s a main PCB, a control PCB, and a battery interface PCB.</p>
-<p>I was in a hurry so the photos are &ldquo;as-is&rdquo; and not my best work.
-I&rsquo;ve <a href="#chips-and-other-markings" rel="">noted down the markings on the chips</a> and other components for future reference.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            Internals feature three PCBs.
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>If the battery ever does leak, the entire PCB assembly can be removed and replaced.
-It also shouldn&rsquo;t be that difficult to just modify the battery interface PCB to use a different battery.
-The thermistor is a nice touch!</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            Rear of the battery interface PCB.
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>Taking a quick look at the control PCB, we can see a few big ICs&hellip;
-The populated JTAG header is an interesting find.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            Top of the control PCB.
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>There&rsquo;s not much on the rear of the control PCB:</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            Bottom of the control PCB.
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>Nor is there much on the side of the PCB just behind the OLED screen / front panel.
-Oddly enough, each button gets <em>two</em> sets of contacts&hellip;</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            The side of the main PCB that faces the user from within.
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>And there&rsquo;s nothing interesting on the &lsquo;internal&rsquo; side of the front panel:</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            Interior of the front panel features button matrix and OLED.
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<h2 id="some-technical-details">Some Technical Details</h2>
-<p>If you catch the device early enough in boot, you can see the panasonic HDMI switch chip enumerating in it&rsquo;s default state.
-Don&rsquo;t ask me where the 2% overscan comes from&hellip;</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            The default EDID info doesn&#39;t last long; as soon as the device is powered on, it tries to read the EDID from the connected sink and use that.
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<h3 id="chips-and-other-markings">Chips and other markings</h3>
-<h4 id="control-pcb">Control PCB</h4>
-<ul>
-<li>The main application processor is the <a href="https://www.nxp.com/part/LPC1830FET100#/" target="_blank" rel="noopener noreffer">NXP LPC1830FET100</a>.</li>
-<li>It seems like all audio is handled by the <a href="https://www.analog.com/en/products/adau1701.html" target="_blank" rel="noopener noreffer">Analog Devices ADAU1701</a>.</li>
-</ul>
-<p>Oddly enough there are <em>two</em> flash chips here. Presumably firmware storage for the  NXP and Analog Devices chips.</p>
-<ul>
-<li><a href="https://www.winbond.com/hq/product/code-storage-flash-memory/serial-nor-flash/?__locale=en&amp;partNo=W25Q32JV" target="_blank" rel="noopener noreffer">Winbond 25Q32JV</a></li>
-<li><a href="https://www.microchip.com/en-us/product/24lc128" target="_blank" rel="noopener noreffer">Microchip 24LC128I</a></li>
-</ul>
-<p>I didn&rsquo;t bother dumping either, but Altinex does make an older version of the firmware <a href="#firmware" rel="">available</a>.</p>
-<h3 id="main-pcb">Main PCB</h3>
-<p>The big QFP144 chip on the main PCB is a <a href="https://panasonic.encompass.com/item/10292549/Panasonic/MN864788/" target="_blank" rel="noopener noreffer">Panasonic MN864788</a>.
-I can&rsquo;t find a data sheet, but one <a href="https://stesys.eu/ocart/index.php?route=product/product&amp;manufacturer_id=135&amp;product_id=2544&amp;limit=75" target="_blank" rel="noopener noreffer">supplier has labeled it</a> a &ldquo;HDMI 2.0 Receiver/Switch&rdquo;.
-Given the proximity to the two HDMI ports &hellip; this makes sense.</p>
-<h3 id="dmesg"><code>dmesg</code></h3>
-<p>For thoroughness, here&rsquo;s how the device enumerates over USB when plugged in when configured in RS-232 mode:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">usb 5-4.1.2.2: new full-speed USB device number <span class="m">91</span> using xhci_hcd
-</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: New USB device found, <span class="nv">idVendor</span><span class="o">=</span>04e2, <span class="nv">idProduct</span><span class="o">=</span>1411, <span class="nv">bcdDevice</span><span class="o">=</span> 0.01
-</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: New USB device strings: <span class="nv">Mfr</span><span class="o">=</span>1, <span class="nv">Product</span><span class="o">=</span>2, <span class="nv">SerialNumber</span><span class="o">=</span><span class="m">3</span>
-</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: Product: XR21B1411
-</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: Manufacturer: Exar Corp.
-</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: SerialNumber: Q9065270561
-</span></span><span class="line"><span class="cl">usbcore: registered new interface driver xr_serial
-</span></span><span class="line"><span class="cl">usbserial: USB Serial support registered <span class="k">for</span> xr_serial
-</span></span><span class="line"><span class="cl">xr_serial 5-4.1.2.2:1.0: xr_serial converter detected
-</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: xr_serial converter now attached to ttyUSB0
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>And when in FW update mode:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">usb 5-4.1.2.2: new high-speed USB device number <span class="m">92</span> using xhci_hcd
-</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: config <span class="m">1</span> interface <span class="m">0</span> altsetting <span class="m">0</span> bulk endpoint 0x83 has invalid maxpacket <span class="m">64</span>
-</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: config <span class="m">1</span> interface <span class="m">0</span> altsetting <span class="m">0</span> bulk endpoint 0x2 has invalid maxpacket <span class="m">64</span>
-</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: New USB device found, <span class="nv">idVendor</span><span class="o">=</span>1fc9, <span class="nv">idProduct</span><span class="o">=</span>8001, <span class="nv">bcdDevice</span><span class="o">=</span> 1.00
-</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: New USB device strings: <span class="nv">Mfr</span><span class="o">=</span>1, <span class="nv">Product</span><span class="o">=</span>2, <span class="nv">SerialNumber</span><span class="o">=</span><span class="m">0</span>
-</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: Product: USB Mass Storage            
-</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: Manufacturer: USB
-</span></span><span class="line"><span class="cl">usb-storage 5-4.1.2.2:1.0: USB Mass Storage device detected
-</span></span><span class="line"><span class="cl">scsi host4: usb-storage 5-4.1.2.2:1.0
-</span></span><span class="line"><span class="cl">scsi 4:0:0:0: Direct-Access     NXP      Dataflash Disk   0.00 PQ: <span class="m">0</span> ANSI: <span class="m">0</span>
-</span></span><span class="line"><span class="cl">sd 4:0:0:0: <span class="o">[</span>sda<span class="o">]</span> <span class="m">3968</span> 512-byte logical blocks: <span class="o">(</span>2.03 MB/1.94 MiB<span class="o">)</span>
-</span></span><span class="line"><span class="cl">sd 4:0:0:0: <span class="o">[</span>sda<span class="o">]</span> Write Protect is off
-</span></span><span class="line"><span class="cl">sd 4:0:0:0: <span class="o">[</span>sda<span class="o">]</span> Mode Sense: <span class="m">00</span> <span class="m">00</span> <span class="m">00</span> <span class="m">00</span>
-</span></span><span class="line"><span class="cl">sd 4:0:0:0: <span class="o">[</span>sda<span class="o">]</span> Asking <span class="k">for</span> cache data failed
-</span></span><span class="line"><span class="cl">sd 4:0:0:0: <span class="o">[</span>sda<span class="o">]</span> Assuming drive cache: write through
-</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: reset high-speed USB device number <span class="m">92</span> using xhci_hcd
-</span></span><span class="line"><span class="cl">usb 5-4.1.2.2: device descriptor read/64, error -110
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="firmware">Firmware</h3>
-<div class="details admonition note open">
-        <div class="details-summary admonition-title">
-            <i class="icon fas fa-pencil-alt fa-fw"></i>Note<i class="details-icon fas fa-angle-right fa-fw"></i>
-        </div>
-        <div class="details-content">
-            <div class="admonition-content"><p>The device ships with FW 3.06A/R3.</p>
-<p>Their <a href="https://www.altinex.com/download/te460-137-firmware-update-v-3-04a-easy-mode/" target="_blank" rel="noopener noreffer">website</a> only have 3.04 available.</p>
-</div>
-        </div>
-    </div>
 ]]></description></item></channel></rss>

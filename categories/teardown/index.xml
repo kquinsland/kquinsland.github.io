@@ -1,4 +1,212 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Teardown - Category - karl</title><link>https://karlquinsland.com/categories/teardown/</link><description>Teardown - Category - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 01 Dec 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/categories/teardown/" rel="self" type="application/rss+xml"/><item><title>AliExpress 11.11 Sale Teardowns (2024 edition)</title><link>https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/</link><pubDate>Sun, 01 Dec 2024 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/</guid><description><![CDATA[<!-- markdownlint-disable-file MD024 -->
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Teardown - Category - karl</title><link>https://karlquinsland.com/categories/teardown/</link><description>Teardown - Category - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 01 Feb 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/categories/teardown/" rel="self" type="application/rss+xml"/><item><title>#TwoMinuteTeardown: Home Assistant Voice - Preview Edition</title><link>https://karlquinsland.com/home-assistant-voice-pe-teardown/</link><pubDate>Sat, 01 Feb 2025 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/home-assistant-voice-pe-teardown/</guid><description><![CDATA[<h1 id="home-assistant-voice-preview-edition-teardown">Home Assistant Voice: Preview Edition teardown</h1>
+<p>This is a quick <a href="/tags/two-minute-teardown/" rel="">#TwoMinuteTeardown</a> post for the recently released <a href="https://www.home-assistant.io/voice-pe/" target="_blank" rel="noopener noreffer">Home Assistant Voice Node - Preview edition</a>.</p>
+<p>Normally, I&rsquo;d be doing a full teardown, but this is a little different; the Home Assistant team has done a <em>lot</em> of the work out in the open.
+With just a quick Google, you can find official:</p>
+<ul>
+<li>teardown instructions <a href="https://voice-pe.home-assistant.io/guides/disassemble/" target="_blank" rel="noopener noreffer">here</a>.</li>
+<li>source code <a href="https://github.com/esphome/home-assistant-voice-pe" target="_blank" rel="noopener noreffer">here</a>.</li>
+<li>3D printable case <a href="https://www.printables.com/model/1110526-home-assistant-voice-preview-edition-enclosure" target="_blank" rel="noopener noreffer">files</a>.</li>
+<li>Instructions for adding custom devices <a href="https://voice-pe.home-assistant.io/guides/grove_port/" target="_blank" rel="noopener noreffer">here</a>.</li>
+</ul>
+<p>I am grateful for such a well-documented and open project.
+Truly, by hackers for hackers!</p>
+<h2 id="teardown">Teardown</h2>
+<p>See the official instructions if you can&rsquo;t figure it out.</p>
+<p>There&rsquo;s not much to the device, really.
+The top half hosts the physical buttons and the microphones.
+The thin, metal-looking piece in the top right is the antenna.</p>
+<p>In the bottom right, there&rsquo;s a small switch that appears to mux between the main application processor (ESP32) and the audio processor.</p>
+<p>I wonder weather this is &ldquo;leftover&rdquo; from development and they haven&rsquo;t gotten around to simplifying the BOM yet or if this is intentionally populated for users to re-program the audio processor.</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>All of the &ldquo;fun&rdquo; stuff is on the bottom half.</p>
+<p>Immediately, you notice the PCB has multiple <em>populated</em> pin headers for hacking. Bonus, they&rsquo;re all labeled!</p>
+<p>The layout and BOM is about what you&rsquo;d expect for a ~$50 single-purpose device.</p>
+<p>Where possible, I&rsquo;ve <a href="#ics" rel="">identified</a> the big ICs.</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<h3 id="wishful-thinking">wishful thinking</h3>
+<p>In a word: Ethernet.</p>
+<p>Most of the ESP32 product line does not have support for ethernet via <a href="https://en.wikipedia.org/wiki/Media-independent_interface#RMII" target="_blank" rel="noopener noreffer">RMII</a> (unfortunately) but there is always SPI based ethernet.</p>
+<p>There are a few areas where the PCB is bare/empty and with a few tweaks to the layout, it would have been possible to also expose SPI headers next to the <a href="https://wiki.seeedstudio.com/Grove-I2C_Hub/" target="_blank" rel="noopener noreffer">grove connector</a>.</p>
+<p>Assuming there&rsquo;s a spare SPI peripheral to use, SPI based ethernet would have latency and throughput as good as or better than WiFi.</p>
+<p>It would have been a nice option for those of us who prefer the reliability of wired connections.</p>
+<p>Oh well.</p>
+<h2 id="ics">ICs</h2>
+<p>This is just the big ones that were going to be easy-ish to positively identify.
+I skipped a few of the super small ICs that had a few characters (at most!) of identification on them.</p>
+<p>Two flash chips, one for the ESP32 and one for the &ldquo;ai&rdquo; chip which is maybe doing detection and is almost certainly doing some other DSP stuff.
+TI parts for the audio codec and a few miscellaneous bits as well.</p>
+<h3 id="zbit-semiconductor-zb25vq128">zbit semiconductor ZB25VQ128</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">AN2414
+</span></span><span class="line"><span class="cl">25VQ128DSJG
+</span></span><span class="line"><span class="cl">P3S952
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a href="https://linux-chenxing.org/pioneer3/sv50pd/ZB25VQ128.pdf" target="_blank" rel="noopener noreffer">This</a> is a clone of a super common winbond nor flash chip with the same part number.</p>
+<h3 id="zbit-semiconductor-zb25vq32">zbit semiconductor ZB25VQ32</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">KN2444
+</span></span><span class="line"><span class="cl">25VQ32DSJG
+</span></span><span class="line"><span class="cl">EQ4537
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a href="https://semic-boutique.com/wp-content/uploads/2016/05/ZB25VQ32.pdf" target="_blank" rel="noopener noreffer">Same</a> as above, but smaller.</p>
+<h3 id="ti-tlv320aic3204">TI TLV320AIC3204</h3>
+<p><a href="https://www.ti.com/product/TLV320AIC3204" target="_blank" rel="noopener noreffer">This</a> is the audio codec.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">AIC
+</span></span><span class="line"><span class="cl">3204
+</span></span><span class="line"><span class="cl">TI 48I
+</span></span><span class="line"><span class="cl">A69Y G4
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="ti-sn74lvc125a">TI SN74LVC125A</h3>
+<p><a href="https://www.ti.com/product/SN74LVC125A" target="_blank" rel="noopener noreffer">This</a> is a pretty common buffer IC and I don&rsquo;t know for sure what it&rsquo;s being used for.
+I am 99% certain that the LEDs under the rotary encoder are neopixels and those can be driven directly from the ESP32.
+The only other thing that comes to mind is a &ldquo;switch&rdquo; to physically cut power to the microphones when the user has engaged the mute switch.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">LC125A
+</span></span><span class="line"><span class="cl">TI44K
+</span></span><span class="line"><span class="cl">C237
+</span></span><span class="line"><span class="cl">9F
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="xmos-xu316">XMOS XU316</h3>
+<p>The <a href="https://www.xmos.com/download/XU316-1024-QF60A-xcore_ai-Datasheet%2826%29.pdf" target="_blank" rel="noopener noreffer">XU316-1024-QF60A</a> is an interesting chip.
+The product name and datasheet suggest that it&rsquo;s instrumental in &ldquo;ai&rdquo; workloads 🙄 but the datasheet is a bit more concrete:</p>
+<blockquote>
+<p>The xcore.ai series is a comprehensive range of 32-bit multicore microcontrollers that brings the low latency and timing determinism of the xCORE architecture to mainstream embedded applications.
+Unlike conventional microcontrollers, xCORE multicore microcontrollers execute multiple real-time tasks simultaneously and communicate between tasks using a high speed network.
+Because xCORE multicore microcontrollers are completely deterministic when executing from internal memory, you can write software to implement functions that traditionally require dedicated hardware.</p></blockquote>
+<p>This is doing real time audio processing - presumably to cancel background noise/echo - and might also be doing wake word detection.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">XMOS
+</span></span><span class="line"><span class="cl">V16A0
+</span></span><span class="line"><span class="cl">GT2446P2
+</span></span><span class="line"><span class="cl">TMCY48.00
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="espressif-esp32-s3">Espressif ESP32-S3</h3>
+<p>This chip needs no introduction!</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">ESP32-S3
+</span></span><span class="line"><span class="cl">242024
+</span></span><span class="line"><span class="cl">R8MRK668000
+</span></span><span class="line"><span class="cl">UC00MBE423
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="the-little-guys">The little guys</h3>
+<p>All the ICs that are too small to have full/meaningful part numbers.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">FE
+</span></span><span class="line"><span class="cl">NZ
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">f9
+</span></span><span class="line"><span class="cl">GkA
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">CEDTI
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Given the proximity to both the speaker connector and the <a href="#ti-tlv320aic3204" rel="">audio codec</a>, I am guessing this is an audio amplifier, probably also from TI.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">TI 45
+</span></span><span class="line"><span class="cl">AYK
+</span></span></code></pre></td></tr></table>
+</div>
+</div>]]></description></item><item><title>AliExpress 11.11 Sale Teardowns (2024 edition)</title><link>https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/</link><pubDate>Sun, 01 Dec 2024 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/</guid><description><![CDATA[<!-- markdownlint-disable-file MD024 -->
 <h1 id="11-11-day-teardowns-2024-edition">11-11 day teardowns (2024 edition)</h1>
 <p>I guess this is becoming a <a href="http://localhost:1313/categories/11.11-sale/" target="_blank" rel="noopener noreffer">tradition</a> now?</p>
 <p>During China&rsquo;s Single&rsquo;s Day sale on AliExpress, I bought various gadgets - both for projects and out of curiosity.
@@ -1335,13 +1543,11 @@ It&rsquo;s still a basic LCD screen behind a matrix of clear buttons.</p>
 <p>I can&rsquo;t find <em>anything</em> when googling the main IC, unfortunately.</p>
 <blockquote>
 <p>ARX29025</p>
-<p>Q2402</p>
-</blockquote>
+<p>Q2402</p></blockquote>
 <p>The silk screen is:</p>
 <blockquote>
 <p>HSV293-N3-LCD-V2P1</p>
-<p>20240620</p>
-</blockquote>
+<p>20240620</p></blockquote>
 <p><figure >
 
     
@@ -1757,8 +1963,7 @@ Conceivably, you could embed a tiny raspberry pi zero or other <em>small</em> co
 <p>HSV293-N4-LCD</p>
 <p>20240807</p>
 <p>HSV293-N4-SW</p>
-<p>202400711</p>
-</blockquote>
+<p>202400711</p></blockquote>
 <p>And the USB hub PCB in the base doesn&rsquo;t have a part number, just a date code.
 I&rsquo;d bet that they started designing this product in spring of 2024 and they finished the simplest part - the USB hub - first.</p>
 <figure >
@@ -2000,32 +2205,27 @@ Not sure if it&rsquo;s for a wireless link to the rear camera or for something l
 <p>77-56V200(20) V3.411</p>
 <p>6105</p>
 <p>V200-AMWG-V3.411
-2019.12.03</p>
-</blockquote>
+2019.12.03</p></blockquote>
 <p>And on the rear:</p>
 <blockquote>
 <p>F02Z1B
-F15Z1B</p>
-</blockquote>
+F15Z1B</p></blockquote>
 <p>The main CPU is <a href="https://silicondevice.com/file.upload/images/Gid1551Pdf_Hi3556%20V100%20HD%20Mobile%20Camera%20SoC%20Brief%20Data%20Sheet.pdf" target="_blank" rel="noopener noreffer">meant for consumer cameras</a> and is marked:</p>
 <blockquote>
 <p>Hi 3556</p>
 <p>RBCV200</p>
 <p>CP9881938</p>
-<p>1939-CN</p>
-</blockquote>
+<p>1939-CN</p></blockquote>
 <p>The LCD is marked:</p>
 <blockquote>
 <p>XTY TB118-I4018E30A-01</p>
-<p>T B118-45a164200402-J</p>
-</blockquote>
+<p>T B118-45a164200402-J</p></blockquote>
 <p>I can&rsquo;t find a datasheet for what I suspect is the rear-camera processor but it&rsquo;s marked:</p>
 <blockquote>
 <p>pixelplus</p>
 <p>PR2020</p>
 <p>S3CWN</p>
-<p>KAG2006</p>
-</blockquote>
+<p>KAG2006</p></blockquote>
 <h2 id="firmware">Firmware</h2>
 <p>Just for giggles, I dumped the firmware from the SPI flash to get an idea of what software powers this device.</p>
 <div class="highlight"><div class="chroma">
@@ -4682,7 +4882,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class="line"><span class="cl"><span class="sd">          } else {
 </span></span></span><span class="line"><span class="cl"><span class="sd">            id(out_3).turn_on().perform();
 </span></span></span><span class="line"><span class="cl"><span class="sd">          }
-</span></span></span><span class="line"><span class="cl"><span class="sd">        }</span><span class="w">        
+</span></span></span><span class="line"><span class="cl"><span class="sd">        }</span><span class="w">
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><h4 id="packagesbaseesphomeyaml"><code>packages/base.esphome.yaml</code></h4>
@@ -5547,7 +5747,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class="line"><span class="cl"><span class="sd">        return true;
 </span></span></span><span class="line"><span class="cl"><span class="sd">      } else {
 </span></span></span><span class="line"><span class="cl"><span class="sd">        return false;
-</span></span></span><span class="line"><span class="cl"><span class="sd">      }</span><span class="w">      
+</span></span></span><span class="line"><span class="cl"><span class="sd">      }</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">turn_on_action</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">then</span><span class="p">:</span><span class="w">
@@ -5564,7 +5764,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class="line"><span class="cl"><span class="sd">              ESP_LOGD(TAG, &#34;Timeout Automation ARMED with &#39;${timer_control_entity_id}&#39;&#39; NOT on... nothing to do!&#34;);
 </span></span></span><span class="line"><span class="cl"><span class="sd">            }
 </span></span></span><span class="line"><span class="cl"><span class="sd">            // Don&#39;t wait for ESPHome to schedule updating the text sensor to re-draw the HA ui
-</span></span></span><span class="line"><span class="cl"><span class="sd">            id(s_txt_timeout_remaining_${instance_uid}).update();</span><span class="w">            
+</span></span></span><span class="line"><span class="cl"><span class="sd">            id(s_txt_timeout_remaining_${instance_uid}).update();</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">turn_off_action</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">then</span><span class="p">:</span><span class="w">
@@ -5576,7 +5776,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class="line"><span class="cl"><span class="sd">            id(glbl_timeout_armed_${instance_uid}) = false;
 </span></span></span><span class="line"><span class="cl"><span class="sd">            id(on_timer_stop_${instance_uid}).execute();
 </span></span></span><span class="line"><span class="cl"><span class="sd">            // Don&#39;t wait for ESPHome to schedule updating the text sensor to re-draw the HA ui
-</span></span></span><span class="line"><span class="cl"><span class="sd">            id(s_txt_timeout_remaining_${instance_uid}).update();</span><span class="w">            
+</span></span></span><span class="line"><span class="cl"><span class="sd">            id(s_txt_timeout_remaining_${instance_uid}).update();</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Expose a control to HA so we can adjust timer length</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># See: https://esphome.io/components/number/template.html</span><span class="w">
@@ -5605,7 +5805,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">      // HA expects value in minutes, we do everything in seconds so convert
-</span></span></span><span class="line"><span class="cl"><span class="sd">      return (int) id(glbl_timeout_length_ticks_${instance_uid})/60;</span><span class="w">      
+</span></span></span><span class="line"><span class="cl"><span class="sd">      return (int) id(glbl_timeout_length_ticks_${instance_uid})/60;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">set_action</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">then</span><span class="p">:</span><span class="w">
@@ -5657,7 +5857,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class="line"><span class="cl"><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">      snprintf(buff, 15, &#34;%02d:%02d:%02d&#34;, hr, min, sec);
 </span></span></span><span class="line"><span class="cl"><span class="sd">      ESP_LOGD(TAG, &#34;buff: %s&#34;, buff);
-</span></span></span><span class="line"><span class="cl"><span class="sd">      return to_string(buff);</span><span class="w">      
+</span></span></span><span class="line"><span class="cl"><span class="sd">      return to_string(buff);</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">script</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># End meaning the natural conclusion of the timer. Do whatever we&#39;re supposed to do when the timer fires off</span><span class="w">
@@ -5667,7 +5867,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">          auto call = id(${timer_control_entity_id});
 </span></span></span><span class="line"><span class="cl"><span class="sd">          call-&gt;${timer_control_action_exp}.perform();
-</span></span></span><span class="line"><span class="cl"><span class="sd">          ESP_LOGI(&#34;script.on_timer_end_${instance_uid}&#34;, &#34;output should be ${timer_control_action_exp}!&#34;);</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="sd">          ESP_LOGI(&#34;script.on_timer_end_${instance_uid}&#34;, &#34;output should be ${timer_control_action_exp}!&#34;);</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Stop meaning the pre-mature ending of the timer</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">on_timer_stop_${instance_uid}</span><span class="w">
@@ -5682,7 +5882,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class="line"><span class="cl"><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">          id(_timer_tick_${instance_uid}).stop();
 </span></span></span><span class="line"><span class="cl"><span class="sd">          id(_glbl_timeout_ticks_${instance_uid}) = 0;
-</span></span></span><span class="line"><span class="cl"><span class="sd">          ESP_LOGD(TAG, &#34;_timer_tick_${instance_uid} now stopped and _glbl_timeout_ticks_${instance_uid} is %d&#34;, id(_glbl_timeout_ticks_${instance_uid}));</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="sd">          ESP_LOGD(TAG, &#34;_timer_tick_${instance_uid} now stopped and _glbl_timeout_ticks_${instance_uid} is %d&#34;, id(_glbl_timeout_ticks_${instance_uid}));</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">_timer_tick_${instance_uid}</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Start a new run after previous runs completes. This will happen until timer.stop() is called on us</span><span class="w">
@@ -5728,7 +5928,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class="line"><span class="cl"><span class="sd">              id(_timer_tick_${instance_uid}).execute();
 </span></span></span><span class="line"><span class="cl"><span class="sd">            }
 </span></span></span><span class="line"><span class="cl"><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          }</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="sd">          }</span><span class="w">
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><h4 id="packageslight-automationsyaml"><code>packages/light-automations.yaml</code></h4>
@@ -5991,7 +6191,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class="line"><span class="cl"><span class="sd">          } else {
 </span></span></span><span class="line"><span class="cl"><span class="sd">            id(do_daytime_mode_active).execute();
 </span></span></span><span class="line"><span class="cl"><span class="sd">          }
-</span></span></span><span class="line"><span class="cl"><span class="sd">          id(resume_normal_regime_for_leds).execute();</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(resume_normal_regime_for_leds).execute();</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Switch to control different bits of functionality</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">switch</span><span class="p">:</span><span class="w">
@@ -6010,16 +6210,16 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class="line"><span class="cl"><span class="sd">        return true;
 </span></span></span><span class="line"><span class="cl"><span class="sd">      } else {
 </span></span></span><span class="line"><span class="cl"><span class="sd">        return false;
-</span></span></span><span class="line"><span class="cl"><span class="sd">      }</span><span class="w">      
+</span></span></span><span class="line"><span class="cl"><span class="sd">      }</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">turn_on_action</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">then</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">            id(glbl_automation_sun_position_triggers_light_modes) = true;</span><span class="w">            
+</span></span></span><span class="line"><span class="cl"><span class="sd">            id(glbl_automation_sun_position_triggers_light_modes) = true;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">turn_off_action</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">then</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">            id(glbl_automation_sun_position_triggers_light_modes) = false;</span><span class="w">            
+</span></span></span><span class="line"><span class="cl"><span class="sd">            id(glbl_automation_sun_position_triggers_light_modes) = false;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># See: https://esphome.io/components/sun.html</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">sun</span><span class="p">:</span><span class="w">
@@ -6226,15 +6426,15 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class="line"><span class="cl"><span class="sd">        return true;
 </span></span></span><span class="line"><span class="cl"><span class="sd">      } else {
 </span></span></span><span class="line"><span class="cl"><span class="sd">        return false;
-</span></span></span><span class="line"><span class="cl"><span class="sd">      }</span><span class="w">      
+</span></span></span><span class="line"><span class="cl"><span class="sd">      }</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">turn_on_action</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">then</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">            id(glbl_sw_touch_enable) = true;</span><span class="w">            
+</span></span></span><span class="line"><span class="cl"><span class="sd">            id(glbl_sw_touch_enable) = true;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">turn_off_action</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">then</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">            id(glbl_sw_touch_enable) = false;</span><span class="w">            
+</span></span></span><span class="line"><span class="cl"><span class="sd">            id(glbl_sw_touch_enable) = false;</span><span class="w">
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><h4 id="packagesvariantc3yaml"><code>packages/variant.c3.yaml</code></h4>
@@ -6648,7 +6848,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class="line"><span class="cl"><span class="sd">          ESP_LOGD(&#34;script.do_nighttime_mode_active&#34;, &#34;Setting TEMPLATE(s) =&gt; R: %f G: %f B: %f BR: %f&#34;, red, green, blue, bright);
 </span></span></span><span class="line"><span class="cl"><span class="sd">          id(template_light_1).turn_on().set_rgb( red, green, blue ).set_brightness(bright).set_transition_length(0).perform();
 </span></span></span><span class="line"><span class="cl"><span class="sd">          id(template_light_2).turn_on().set_rgb( red, green, blue ).set_brightness(bright).set_transition_length(0).perform();
-</span></span></span><span class="line"><span class="cl"><span class="sd">          id(template_light_3).turn_on().set_rgb( red, green, blue ).set_brightness(bright).set_transition_length(0).perform();</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(template_light_3).turn_on().set_rgb( red, green, blue ).set_brightness(bright).set_transition_length(0).perform();</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">do_daytime_mode_active</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">then</span><span class="p">:</span><span class="w">
@@ -6663,7 +6863,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class="line"><span class="cl"><span class="sd">          ESP_LOGD(&#34;script.do_daytime_mode_active&#34;, &#34;Setting TEMPLATE(s) =&gt; R: %f G: %f B: %f BR: %f&#34;, red, green, blue, bright);
 </span></span></span><span class="line"><span class="cl"><span class="sd">          id(template_light_1).turn_on().set_rgb( red, green, blue ).set_brightness(bright).set_transition_length(0).perform();
 </span></span></span><span class="line"><span class="cl"><span class="sd">          id(template_light_2).turn_on().set_rgb( red, green, blue ).set_brightness(bright).set_transition_length(0).perform();
-</span></span></span><span class="line"><span class="cl"><span class="sd">          id(template_light_3).turn_on().set_rgb( red, green, blue ).set_brightness(bright).set_transition_length(0).perform();</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(template_light_3).turn_on().set_rgb( red, green, blue ).set_brightness(bright).set_transition_length(0).perform();</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">figure_out_which_partition_to_light</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l">single</span><span class="w">
@@ -6731,7 +6931,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class="line"><span class="cl"><span class="sd">              default:
 </span></span></span><span class="line"><span class="cl"><span class="sd">                ESP_LOGE(TAG, &#34;Unknown output number: %d&#34;, output_num);
 </span></span></span><span class="line"><span class="cl"><span class="sd">                return;
-</span></span></span><span class="line"><span class="cl"><span class="sd">            }</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="sd">            }</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># Called on boot or any time we&#39;re transitioning from mood-light to a &#34;normal&#34; mode</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">resume_normal_regime_for_leds</span><span class="w">
@@ -6827,7 +7027,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class="line"><span class="cl"><span class="sd">      auto template_light_3 = new TemplateLight();
 </span></span></span><span class="line"><span class="cl"><span class="sd">      App.register_component(template_light_3);
 </span></span></span><span class="line"><span class="cl"><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">      return {template_light_1, template_light_2, template_light_3};</span><span class="w">      
+</span></span></span><span class="line"><span class="cl"><span class="sd">      return {template_light_1, template_light_2, template_light_3};</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lights</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Indicator 1&#34;</span><span class="w">
@@ -6869,7 +7069,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class="line"><span class="cl"><span class="sd">              // Pass through should happen ONLY in the on_state and on_turn_off hooks so just log here
 </span></span></span><span class="line"><span class="cl"><span class="sd">              // Since we have ZERO gamma correction, the values here should _match_ the ones set in HA
 </span></span></span><span class="line"><span class="cl"><span class="sd">              // They&#39;ll just be normalized though. So HA sends red: 255, here, we get 1.0
-</span></span></span><span class="line"><span class="cl"><span class="sd">              ESP_LOGD(&#34;template_light_1.on_turn_on&#34;, &#34;ON_TURN_ON =&gt; R: %f, G: %f, B: %f BR: %f&#34;, red, green, blue, br);</span><span class="w">              
+</span></span></span><span class="line"><span class="cl"><span class="sd">              ESP_LOGD(&#34;template_light_1.on_turn_on&#34;, &#34;ON_TURN_ON =&gt; R: %f, G: %f, B: %f BR: %f&#34;, red, green, blue, br);</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">on_turn_off</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
@@ -6880,7 +7080,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class="line"><span class="cl"><span class="sd">              // OFF means OFF so both partitions should be off
 </span></span></span><span class="line"><span class="cl"><span class="sd">              ESP_LOGD(&#34;template_light_1.on_turn_off&#34;, &#34;TURN OFF&#34;);
 </span></span></span><span class="line"><span class="cl"><span class="sd">              id(leds_button_1_left).turn_off().set_rgb( red, green, blue ).set_brightness(br).set_transition_length(0).perform();
-</span></span></span><span class="line"><span class="cl"><span class="sd">              id(leds_button_1_right).turn_off().set_rgb( red, green, blue ).set_brightness(br).set_transition_length(0).perform();</span><span class="w">              
+</span></span></span><span class="line"><span class="cl"><span class="sd">              id(leds_button_1_right).turn_off().set_rgb( red, green, blue ).set_brightness(br).set_transition_length(0).perform();</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">on_state</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
@@ -6888,7 +7088,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class="line"><span class="cl"><span class="sd">              float red, green, blue, br;
 </span></span></span><span class="line"><span class="cl"><span class="sd">              id(template_light_1).current_values_as_rgb(&amp;red, &amp;green, &amp;blue);
 </span></span></span><span class="line"><span class="cl"><span class="sd">              id(template_light_1).current_values_as_brightness(&amp;br);
-</span></span></span><span class="line"><span class="cl"><span class="sd">              ESP_LOGD(&#34;template_light_1.on_state&#34;, &#34;State =&gt; R: %f, G: %f, B: %f BR: %f&#34;, red, green, blue, br);</span><span class="w">              
+</span></span></span><span class="line"><span class="cl"><span class="sd">              ESP_LOGD(&#34;template_light_1.on_state&#34;, &#34;State =&gt; R: %f, G: %f, B: %f BR: %f&#34;, red, green, blue, br);</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="c"># Figure out which partition light to light up now that we have an updated state</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="nt">script.execute</span><span class="p">:</span><span class="w">
@@ -6914,7 +7114,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class="line"><span class="cl"><span class="sd">              // Pass through should happen ONLY in the on_state and on_turn_off hooks so just log here
 </span></span></span><span class="line"><span class="cl"><span class="sd">              // Since we have ZERO gamma correction, the values here should _match_ the ones set in HA
 </span></span></span><span class="line"><span class="cl"><span class="sd">              // They&#39;ll just be normalized though. So HA sends red: 255, here, we get 1.0
-</span></span></span><span class="line"><span class="cl"><span class="sd">              ESP_LOGD(&#34;template_light_2.on_turn_on&#34;, &#34;ON_TURN_ON =&gt; R: %f, G: %f, B: %f BR: %f&#34;, red, green, blue, br);</span><span class="w">              
+</span></span></span><span class="line"><span class="cl"><span class="sd">              ESP_LOGD(&#34;template_light_2.on_turn_on&#34;, &#34;ON_TURN_ON =&gt; R: %f, G: %f, B: %f BR: %f&#34;, red, green, blue, br);</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">on_turn_off</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
@@ -6925,7 +7125,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class="line"><span class="cl"><span class="sd">              // OFF means OFF so both partitions should be off
 </span></span></span><span class="line"><span class="cl"><span class="sd">              ESP_LOGD(&#34;template_light_2.on_turn_off&#34;, &#34;TURN OFF&#34;);
 </span></span></span><span class="line"><span class="cl"><span class="sd">              id(leds_button_2_left).turn_off().set_rgb( red, green, blue ).set_brightness(br).set_transition_length(0).perform();
-</span></span></span><span class="line"><span class="cl"><span class="sd">              id(leds_button_2_right).turn_off().set_rgb( red, green, blue ).set_brightness(br).set_transition_length(0).perform();</span><span class="w">              
+</span></span></span><span class="line"><span class="cl"><span class="sd">              id(leds_button_2_right).turn_off().set_rgb( red, green, blue ).set_brightness(br).set_transition_length(0).perform();</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">on_state</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
@@ -6933,7 +7133,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class="line"><span class="cl"><span class="sd">              float red, green, blue, br;
 </span></span></span><span class="line"><span class="cl"><span class="sd">              id(template_light_2).current_values_as_rgb(&amp;red, &amp;green, &amp;blue);
 </span></span></span><span class="line"><span class="cl"><span class="sd">              id(template_light_2).current_values_as_brightness(&amp;br);
-</span></span></span><span class="line"><span class="cl"><span class="sd">              ESP_LOGD(&#34;template_light_2.on_state&#34;, &#34;State =&gt; R: %f, G: %f, B: %f BR: %f&#34;, red, green, blue, br);</span><span class="w">              
+</span></span></span><span class="line"><span class="cl"><span class="sd">              ESP_LOGD(&#34;template_light_2.on_state&#34;, &#34;State =&gt; R: %f, G: %f, B: %f BR: %f&#34;, red, green, blue, br);</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="nt">script.execute</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">figure_out_which_partition_to_light</span><span class="w">
@@ -6958,7 +7158,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class="line"><span class="cl"><span class="sd">              // Pass through should happen ONLY in the on_state and on_turn_off hooks so just log here
 </span></span></span><span class="line"><span class="cl"><span class="sd">              // Since we have ZERO gamma correction, the values here should _match_ the ones set in HA
 </span></span></span><span class="line"><span class="cl"><span class="sd">              // They&#39;ll just be normalized though. So HA sends red: 255, here, we get 1.0
-</span></span></span><span class="line"><span class="cl"><span class="sd">              ESP_LOGD(&#34;template_light_3.on_turn_on&#34;, &#34;ON_TURN_ON =&gt; R: %f, G: %f, B: %f BR: %f&#34;, red, green, blue, br);</span><span class="w">              
+</span></span></span><span class="line"><span class="cl"><span class="sd">              ESP_LOGD(&#34;template_light_3.on_turn_on&#34;, &#34;ON_TURN_ON =&gt; R: %f, G: %f, B: %f BR: %f&#34;, red, green, blue, br);</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">on_turn_off</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
@@ -6969,7 +7169,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class="line"><span class="cl"><span class="sd">              // OFF means OFF so both partitions should be off
 </span></span></span><span class="line"><span class="cl"><span class="sd">              ESP_LOGD(&#34;template_light_3.on_turn_off&#34;, &#34;TURN OFF&#34;);
 </span></span></span><span class="line"><span class="cl"><span class="sd">              id(leds_button_3_left).turn_off().set_rgb( red, green, blue ).set_brightness(br).set_transition_length(0).perform();
-</span></span></span><span class="line"><span class="cl"><span class="sd">              id(leds_button_3_right).turn_off().set_rgb( red, green, blue ).set_brightness(br).set_transition_length(0).perform();</span><span class="w">              
+</span></span></span><span class="line"><span class="cl"><span class="sd">              id(leds_button_3_right).turn_off().set_rgb( red, green, blue ).set_brightness(br).set_transition_length(0).perform();</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">on_state</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
@@ -6977,7 +7177,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class="line"><span class="cl"><span class="sd">              float red, green, blue, br;
 </span></span></span><span class="line"><span class="cl"><span class="sd">              id(template_light_3).current_values_as_rgb(&amp;red, &amp;green, &amp;blue);
 </span></span></span><span class="line"><span class="cl"><span class="sd">              id(template_light_3).current_values_as_brightness(&amp;br);
-</span></span></span><span class="line"><span class="cl"><span class="sd">              ESP_LOGD(&#34;template_light_3.on_state&#34;, &#34;State =&gt; R: %f, G: %f, B: %f BR: %f&#34;, red, green, blue, br);</span><span class="w">              
+</span></span></span><span class="line"><span class="cl"><span class="sd">              ESP_LOGD(&#34;template_light_3.on_state&#34;, &#34;State =&gt; R: %f, G: %f, B: %f BR: %f&#34;, red, green, blue, br);</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="nt">script.execute</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">figure_out_which_partition_to_light</span><span class="w">
@@ -8433,423 +8633,4 @@ There are 6 screws. four hidden under the anti-slip pads.</p>
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">device_class</span><span class="p">:</span><span class="w"> </span><span class="l">OUTLET</span><span class="w">
 </span></span></span></code></pre></td></tr></table>
 </div>
-</div>]]></description></item><item><title>Quick look inside two Ali Express mmWave presence detection sensors</title><link>https://karlquinsland.com/two-mmwave-sensors/</link><pubDate>Tue, 01 Nov 2022 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/two-mmwave-sensors/</guid><description><![CDATA[<p>Millimeter Wave technology has recently hit &ldquo;mass consumer product adoption&rdquo; price points.
-A casual search for &ldquo;human presence sensor&rdquo; on Ali Express will turn up a seemingly endless number of sub $40 devices that can detect movement far more accurately than any old PIR sensor.</p>
-<p>Each listing is fairly generic; there&rsquo;s no explicit manufacturer details but they all use the same marketing images:</p>
-<p><figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-</p>
-<p>As the photos below will show, neither device is super well marked with a model number so I&rsquo;ll just refer to each by either the color of the enclosure or by the radar sensor inside.</p>
-<p>Before getting into the specific modules, a brief look at the packaging for both.</p>
-<h2 id="packaging">Packaging</h2>
-<p>The packaging isn&rsquo;t anything special but I am including pictures here in the off chance that some of the Mandarin markings is useful for somebody.</p>
-<p><figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-</p>
-<div class="details admonition warning open">
-        <div class="details-summary admonition-title">
-            <i class="icon fas fa-exclamation-triangle fa-fw"></i>Micro USB in 2022?!<i class="details-icon fas fa-angle-right fa-fw"></i>
-        </div>
-        <div class="details-content">
-            <div class="admonition-content">Both devices featured here have <em>micro</em> USB leads.
-It&rsquo;s 2022 and we&rsquo;re still using MICRO USB for power?
-I know that USB-C connectors are slightly more expensive but it just seems lazy and dated to put a micro USB port on any new design in 2022!</div>
-        </div>
-    </div>
-<div class="details admonition question open">
-        <div class="details-summary admonition-title">
-            <i class="icon fas fa-question-circle fa-fw"></i>uart?<i class="details-icon fas fa-angle-right fa-fw"></i>
-        </div>
-        <div class="details-content">
-            <div class="admonition-content">I did probe both of the 4 pin connectors on the PCB but didn&rsquo;t see any signs of life.
-If those headers are for a UART, the MCU isn&rsquo;t responding to any inputs nor is it putting anything out over it :(.</div>
-        </div>
-    </div>
-<!-- markdownlint-disable-file MD002 -->
-<h2 id="zy-m100-s"><code>ZY-M100-S</code></h2>
-<p>AKA &ldquo;the white one&rdquo;. Box content is bare-bones; the USB lead is comically short for almost any &ldquo;mid height on the wall&rdquo; or ceiling installs so i&rsquo;m not really sure what the point was.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>I&rsquo;m not sure why they went with 3 screws here instead of 4. If you&rsquo;re going to omit <em>a</em> screw for cost-cutting reasons, why not just use clips or a single screw in the middle?</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            No, it&#39;s not the camera or the lighting, the text really is that blurry in real life.
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>The interior is more or less as expected; two highly integrated modules with a small MCU gluing them together.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>There is some evidence that the Zigbee version of the white sensor supports ambient brightness.
-Based on the two small holes in the enclosure and the PCB markings, I suspect that <code>d2</code> is being used as a light sensor:
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-</p>
-<p>Nothing of interest on the bottom of the PCB:
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            Close up of the sensor MCU
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<h3 id="unique-markings">Unique Markings</h3>
-<ul>
-<li>PCB: <code>ZY-M100</code> and <code>V4.20</code></li>
-<li>TuYa radio: <a href="https://developer.tuya.com/en/docs/iot/wbr3-module-datasheet?id=K9dujs2k5nriy" target="_blank" rel="noopener noreffer"><code>WBR3</code></a></li>
-<li>TuYa mcu: <a href="https://www.gigadevice.com/products/microcontrollers/gd32/arm-cortex-m23/value-line/gd32e230-series/" target="_blank" rel="noopener noreffer"><code>GD32E230</code></a></li>
-<li>Radar sensor: <code>JYSJ_5807_A01</code> with an IC marked <code>SJ 501</code>. <del>No results on this one. Please do <a href="/contact/" rel="">get in touch</a> if you do know anything about it. I&rsquo;d love to re-use the sensor in something else!</del></li>
-</ul>
-<div class="details admonition update open">
-        <div class="details-summary admonition-title">
-            <i class="icon fas fa-pencil-alt fa-fw"></i>We have an ID!<i class="details-icon fas fa-angle-right fa-fw"></i>
-        </div>
-        <div class="details-content">
-            <div class="admonition-content"><p>Thanks to the prolific <a href="https://blakadder.com/zy-m100/" target="_blank" rel="noopener noreffer">blakadder.com for bringing it to my attention</a> and <a href="https://community.home-assistant.io/u/crlogic" target="_blank" rel="noopener noreffer">@crlogic</a> from the Home Assistant community forums <a href="https://community.home-assistant.io/t/mmwave-wars-one-sensor-module-to-rule-them-all/453260/73" target="_blank" rel="noopener noreffer">for identifying the module <em>and</em> linking to a datasheet</a>!</p>
-<p>The module is <a href="http://docs.leapmmw.com/%E4%BC%A0%E6%84%9F%E5%99%A8%E4%BA%A7%E5%93%81/%E6%A8%A1%E5%9D%97/module.html" target="_blank" rel="noopener noreffer"><code>Leapmmw 5.8GHz Motion Detection: MD5G20</code></a></p>
-</div>
-        </div>
-    </div>
-<h2 id="the-micradar-rd24d">The <code>MicRadar RD24D</code></h2>
-<p>AKA &ldquo;the black one&rdquo;.</p>
-<p>Like the M100, there&rsquo;s not a ton in the box.</p>
-<p>The rear enclosure has a simple key-hole slot for mounting to a wall or ceiling and the USB power lead is considerably longer than the M100. Somebody did consider that a celling-mounted device might need a long power lead&hellip;</p>
-<p><figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            Yes, that is a neo-pixel LEDin the center of the opaque plastic panel.
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-</p>
-<p>Same story here: WiFi module and radar sensor both talk to a MCU over UART.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>Nothing remarkable on the bottom of the PCB:
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            They only soldered in one half of the pins connecting the radar sensor to the main PCB. I wonder how much time/money that saved...
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-</p>
-<p>Here&rsquo;s a close up of the business end of the sensor. This one is considerably more sophisticated and complex relative to the white one.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>And a close up of the coordinating MCU</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<!-- markdownlint-disable-file MD024 -->
-<h3 id="unique-markings-1">Unique Markings</h3>
-<ul>
-<li>PCB: <code>V1.01</code></li>
-<li>TuYa radio: <a href="https://developer.tuya.com/en/docs/iot/cb3s?id=Kai94mec0s076" target="_blank" rel="noopener noreffer"><code>CB3S</code></a></li>
-<li>TuYa mcu: <a href="https://www.stcmicro.com/stc/stc8g1k08.html" target="_blank" rel="noopener noreffer">STC 8G1K17</a></li>
-<li>Radar sensor: <code>MicRadar R24D</code>. I can&rsquo;t find a datasheet for the specific module, but it does seem to be part of <a href="https://www.iflabel.com/product/28.html" target="_blank" rel="noopener noreffer">this product family</a>.
-<ul>
-<li>IC1: <code>MicRadar / T15BT / DAT2230</code></li>
-<li>IC2: This above picture isn&rsquo;t the best but the chip is marked with <code>S3KM11L / N46Y80D1 / 2123H</code>. The <a href="https://www.ic37.com/news/2022-3_293564/" target="_blank" rel="noopener noreffer"><em>only</em> google result</a> does not really indicate <em>who</em> makes the chip.</li>
-</ul>
-</li>
-</ul>
-<h2 id="conclusion">Conclusion</h2>
-<p>Neither are going to be quick/easy to convert or otherwise get working with the likes of ESPHome or Tasmota:</p>
-<ul>
-<li>Neither wifi module is an espressif module. At least some re-flow work would be required to replace the modules with an Espressif module.</li>
-<li>There&rsquo;s a MCU sitting between the WiFi module and the actual sensor. Reverse engineering how the TuYa radio talks to the MCU and how the MCU talks to the radar module just isn&rsquo;t worth the time!</li>
-</ul>
-<p>The sensors cost about as much as the bare radar modules themselves so - if you&rsquo;re willing to spend the time to desolder the radar modules - you get an enclosure for &ldquo;free&rdquo;.</p>
-]]></description></item></channel></rss>
+</div>]]></description></item></channel></rss>

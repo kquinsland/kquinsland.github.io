@@ -93,12 +93,10 @@
 <p>The demo gif at the top of this post illustrates a simple example, but more through (read: contrived) examples are included in the <a href="https://github.com/kquinsland/the-missing-todoist-tools/tree/master/jobs/v1" target="_blank" rel="noopener noreffer">jobs</a> directory.</p>
 <p>The short version:</p>
 <blockquote>
-<p>Scriptable tools for building jobs to manage a TooDoist account</p>
-</blockquote>
+<p>Scriptable tools for building jobs to manage a TooDoist account</p></blockquote>
 <p>Slightly longer version:</p>
 <blockquote>
-<p>Architecture inspired by Elastic Search&rsquo;s <a href="https://github.com/elastic/curator/tree/master/curator" target="_blank" rel="noopener noreffer">Curator</a>. Functionality built for ToDoist.</p>
-</blockquote>
+<p>Architecture inspired by Elastic Search&rsquo;s <a href="https://github.com/elastic/curator/tree/master/curator" target="_blank" rel="noopener noreffer">Curator</a>. Functionality built for ToDoist.</p></blockquote>
 <h3 id="demo">Demo</h3>
 <p>The full set of <a href="https://github.com/kquinsland/the-missing-todoist-tools/blob/master/jobs/demo/" target="_blank" rel="noopener noreffer">resources for the demo are here</a>, but the &lsquo;meaningful&rsquo; parts are below:</p>
 <div class="highlight"><div class="chroma">

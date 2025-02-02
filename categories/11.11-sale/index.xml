@@ -1335,13 +1335,11 @@ It&rsquo;s still a basic LCD screen behind a matrix of clear buttons.</p>
 <p>I can&rsquo;t find <em>anything</em> when googling the main IC, unfortunately.</p>
 <blockquote>
 <p>ARX29025</p>
-<p>Q2402</p>
-</blockquote>
+<p>Q2402</p></blockquote>
 <p>The silk screen is:</p>
 <blockquote>
 <p>HSV293-N3-LCD-V2P1</p>
-<p>20240620</p>
-</blockquote>
+<p>20240620</p></blockquote>
 <p><figure >
 
     
@@ -1757,8 +1755,7 @@ Conceivably, you could embed a tiny raspberry pi zero or other <em>small</em> co
 <p>HSV293-N4-LCD</p>
 <p>20240807</p>
 <p>HSV293-N4-SW</p>
-<p>202400711</p>
-</blockquote>
+<p>202400711</p></blockquote>
 <p>And the USB hub PCB in the base doesn&rsquo;t have a part number, just a date code.
 I&rsquo;d bet that they started designing this product in spring of 2024 and they finished the simplest part - the USB hub - first.</p>
 <figure >

@@ -443,7 +443,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>update_interval</span><span class=p>:</span><span class=w> </span><span class=l>never</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=p>|</span><span class=sd>
 </span></span></span><span class=line><span class=cl><span class=sd>      // This lambda function should never be called / we should never update the text sensor this way
-</span></span></span><span class=line><span class=cl><span class=sd>      return {&#34;Unknown&#34;};</span><span class=w>      
+</span></span></span><span class=line><span class=cl><span class=sd>      return {&#34;Unknown&#34;};</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=c># Expose the current success/failure counts for stats</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>sensor</span><span class=p>:</span><span class=w>
@@ -457,7 +457,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class=line><span class=cl><span class=sd>        return id(_glbl_http_poll_failures_count);
 </span></span></span><span class=line><span class=cl><span class=sd>      } else {
 </span></span></span><span class=line><span class=cl><span class=sd>        return 0.0;
-</span></span></span><span class=line><span class=cl><span class=sd>      }</span><span class=w>      
+</span></span></span><span class=line><span class=cl><span class=sd>      }</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c># Will be called to update as necessary from other components</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>update_interval</span><span class=p>:</span><span class=w> </span><span class=l>never</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
@@ -477,7 +477,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>max_value</span><span class=p>:</span><span class=w> </span><span class=m>120</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>step</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=p>|-</span><span class=sd>
-</span></span></span><span class=line><span class=cl><span class=sd>      return (int) id(glbl_http_poll_interval_ticks);</span><span class=w>      
+</span></span></span><span class=line><span class=cl><span class=sd>      return (int) id(glbl_http_poll_interval_ticks);</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>set_action</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>then</span><span class=p>:</span><span class=w>
@@ -498,7 +498,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>max_value</span><span class=p>:</span><span class=w> </span><span class=m>10</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>step</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=p>|-</span><span class=sd>
-</span></span></span><span class=line><span class=cl><span class=sd>      return (int) id(glbl_http_poll_failures_threshold);</span><span class=w>      
+</span></span></span><span class=line><span class=cl><span class=sd>      return (int) id(glbl_http_poll_failures_threshold);</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>set_action</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>then</span><span class=p>:</span><span class=w>
@@ -537,7 +537,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>restore_mode</span><span class=p>:</span><span class=w> </span><span class=l>RESTORE_DEFAULT_ON</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c># This way we don&#39;t need to create a global for the state</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=p>|-</span><span class=sd>
-</span></span></span><span class=line><span class=cl><span class=sd>      return id(_glbl_http_poll_consecutive_failure_action_enabled);</span><span class=w>      
+</span></span></span><span class=line><span class=cl><span class=sd>      return id(_glbl_http_poll_consecutive_failure_action_enabled);</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>turn_on_action</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>globals.set</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>_glbl_http_poll_consecutive_failure_action_enabled</span><span class=w>
@@ -558,7 +558,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class=line><span class=cl><span class=sd>          id(_glbl_http_poll_failures_count) = 0;
 </span></span></span><span class=line><span class=cl><span class=sd>          id(_glbl_http_poll_request_in_flight) = false;
 </span></span></span><span class=line><span class=cl><span class=sd>          id(txt_operation_mode).publish_state(&#34;Armed&#34;);
-</span></span></span><span class=line><span class=cl><span class=sd>          id(_http_poll_tick).execute();</span><span class=w>          
+</span></span></span><span class=line><span class=cl><span class=sd>          id(_http_poll_tick).execute();</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># When polling function is turned off, there&#39;s a few things to clean up</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>_on_http_poll_turned_off</span><span class=w>
@@ -570,7 +570,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class=line><span class=cl><span class=sd>          id(_glbl_http_poll_request_in_flight) = false;
 </span></span></span><span class=line><span class=cl><span class=sd>          id(txt_operation_mode).publish_state(&#34;Disarmed&#34;);
 </span></span></span><span class=line><span class=cl><span class=sd>          id(_do_poll).stop();
-</span></span></span><span class=line><span class=cl><span class=sd>          id(_http_poll_tick).stop();</span><span class=w>          
+</span></span></span><span class=line><span class=cl><span class=sd>          id(_http_poll_tick).stop();</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># What do we do when we get a 200 response?</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>_on_http_poll_ok</span><span class=w>
@@ -582,7 +582,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class=line><span class=cl><span class=sd>          ESP_LOGD(TAG, &#34;Poll OK. Resetting failure count.&#34;);
 </span></span></span><span class=line><span class=cl><span class=sd>          id(_glbl_http_poll_failures_count) = 0;
 </span></span></span><span class=line><span class=cl><span class=sd>          id(s_consecutive_poll_failure_count).update();
-</span></span></span><span class=line><span class=cl><span class=sd>          id(txt_operation_mode).publish_state(&#34;Success&#34;);</span><span class=w>          
+</span></span></span><span class=line><span class=cl><span class=sd>          id(txt_operation_mode).publish_state(&#34;Success&#34;);</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># What do we do when we get a non-200 response?</span><span class=w>
@@ -601,7 +601,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class=line><span class=cl><span class=sd>          
 </span></span></span><span class=line><span class=cl><span class=sd>          if( id(_glbl_http_poll_failures_count) &gt;= id(glbl_http_poll_failures_threshold) ) {
 </span></span></span><span class=line><span class=cl><span class=sd>            id(_on_http_poll_failure_threshold_met).execute();
-</span></span></span><span class=line><span class=cl><span class=sd>          }</span><span class=w>          
+</span></span></span><span class=line><span class=cl><span class=sd>          }</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># And when failure count reaches threshold, what do we do?</span><span class=w>
@@ -625,7 +625,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class=line><span class=cl><span class=sd>          id(_glbl_http_poll_failures_count) = 0;
 </span></span></span><span class=line><span class=cl><span class=sd>          id(s_consecutive_poll_failure_count).update();
 </span></span></span><span class=line><span class=cl><span class=sd>          // Reset the time since last failure counter to enter lockout mode
-</span></span></span><span class=line><span class=cl><span class=sd>          id(_glbl_http_poll_ticks_since_last_failure_action) = 0;</span><span class=w>          
+</span></span></span><span class=line><span class=cl><span class=sd>          id(_glbl_http_poll_ticks_since_last_failure_action) = 0;</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>_do_poll</span><span class=w>
@@ -636,7 +636,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=p>|-</span><span class=sd>
 </span></span></span><span class=line><span class=cl><span class=sd>          // Indicate we are now polling
 </span></span></span><span class=line><span class=cl><span class=sd>          id(txt_operation_mode).publish_state(&#34;Polling&#34;);
-</span></span></span><span class=line><span class=cl><span class=sd>          id(_glbl_http_poll_request_in_flight) = true;</span><span class=w>          
+</span></span></span><span class=line><span class=cl><span class=sd>          id(_glbl_http_poll_request_in_flight) = true;</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>      </span><span class=c># Fire off the http request</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>http_request.get</span><span class=p>:</span><span class=w>
@@ -717,7 +717,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class=line><span class=cl><span class=sd>          }
 </span></span></span><span class=line><span class=cl><span class=sd>
 </span></span></span><span class=line><span class=cl><span class=sd>          // re-schedule so we&#39;re called again in a second!
-</span></span></span><span class=line><span class=cl><span class=sd>          id(_http_poll_tick).execute();</span><span class=w>          
+</span></span></span><span class=line><span class=cl><span class=sd>          id(_http_poll_tick).execute();</span><span class=w>
 </span></span></span></code></pre></td></tr></table></div></div><h3 id=modemyaml><code>modem.yaml</code></h3><p>This file is the &ldquo;implementation specific&rdquo; details that can&rsquo;t be done in <code>base.yaml</code>.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
@@ -829,7 +829,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class=line><span class=cl><span class=sd>                ESP_LOGW(TAG, &#34;Response status: %d, Duration: %u ms&#34;, status_code, duration_ms);
 </span></span></span><span class=line><span class=cl><span class=sd>                id(_on_http_poll_failure).execute();
 </span></span></span><span class=line><span class=cl><span class=sd>                break;
-</span></span></span><span class=line><span class=cl><span class=sd>            }</span><span class=w>          
+</span></span></span><span class=line><span class=cl><span class=sd>            }</span><span class=w>
 </span></span></span></code></pre></td></tr></table></div></div><h3 id=all-together-now>All together now</h3><p>Hopefully it&rsquo;s clear to see that <code>modem.yaml</code> wraps/includes <code>base.yaml</code>.
 This is how <code>modem.yaml</code> is injected into the existing configuration that I have deployed on the S31 powering my modem.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
@@ -888,5 +888,5 @@ This is how <code>modem.yaml</code> is injected into the existing configuration 
 </span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>delay</span><span class=p>:</span><span class=w> </span><span class=l>15s</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>switch.turn_on</span><span class=p>:</span><span class=w> </span><span class=l>sw_relay_toggle</span><span class=w>
 </span></span></span></code></pre></td></tr></table></div></div></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>Updated on 2024-06-09</span></div><div class=post-info-license></div></div><div class=post-info-line><div class=post-info-md><span><a class=link-to-markdown href=/automatic-modem-restart-with-esphome/index.md target=_blank>Read Markdown</a></span></div><div class=post-info-share><span></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/tags/esphome/>Esphome</a>,&nbsp;<a href=/tags/home-assistant/>Home-Assistant</a>,&nbsp;<a href=/tags/home-automation/>Home-Automation</a></section><section><span><a href=javascript:void(0); onclick=window.history.back()>Back</a></span>&nbsp;|&nbsp;<span><a href=/>Home</a></span></section></div><div class=post-nav><a href=/arris-sb8200-prometheus-exporter/ class=prev rel=prev title="Arris SB8200 Prometheus Exporter"><i class="fas fa-angle-left fa-fw"></i>Arris SB8200 Prometheus Exporter</a>
-<a href=/arizer-xq2-teardown/ class=next rel=next title="Arizer XQ2 Teardown">Arizer XQ2 Teardown<i class="fas fa-angle-right fa-fw"></i></a></div></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line>¯\_(ツ)_/¯</div><div class=footer-line>Powered by <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.140.2">Hugo</a> | Theme - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a></div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2019 - 2025</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank></a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top"><i class="fas fa-arrow-up fa-fw"></i>
+<a href=/arizer-xq2-teardown/ class=next rel=next title="Arizer XQ2 Teardown">Arizer XQ2 Teardown<i class="fas fa-angle-right fa-fw"></i></a></div></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line>¯\_(ツ)_/¯</div><div class=footer-line>Powered by <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.143.0">Hugo</a> | Theme - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a></div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2019 - 2025</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank></a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top"><i class="fas fa-arrow-up fa-fw"></i>
 </a><a href=# id=view-comments class=fixed-button title="View Comments"><i class="fas fa-comment fa-fw"></i></a></div><link rel=stylesheet href=/lib/katex/katex.min.4710034e669c7ff17f823f9ba12cf8a36582d65b007f79cbc4a3c11d7db2e4ca.css integrity="sha256-RxADTmacf/F/gj+boSz4o2WC1lsAf3nLxKPBHX2y5Mo="><link rel=stylesheet href=/lib/katex/copy-tex.min.bf9ff4137fec38f6255419e142d0883c9c52090885d746f80eee12b273d9b3e0.css integrity="sha256-v5/0E3/sOPYlVBnhQtCIPJxSCQiF10b4Du4SsnPZs+A="><script type=text/javascript src=/lib/smooth-scroll/smooth-scroll.min.bcff85fb5e00d68802850b393ac7792c997f722f536f38e26638c46dca8e5eb6.js integrity="sha256-vP+F+14A1ogChQs5Osd5LJl/ci9TbzjiZjjEbcqOXrY="></script><script type=text/javascript src=/lib/autocomplete/autocomplete.min.615590a2ca2b667afa7c02ef396f5500b62e22795ddbb46448f90494605d09a5.js integrity="sha256-YVWQosorZnr6fALvOW9VALYuInld27RkSPkElGBdCaU="></script><script type=text/javascript src=/lib/lunr/lunr.min.df84a2d58ea594c04a3371b48d020b55ea10284c2ec636e4e331965d7313e29b.js integrity="sha256-34Si1Y6llMBKM3G0jQILVeoQKEwuxjbk4zGWXXMT4ps="></script><script type=text/javascript src=/lib/lazysizes/lazysizes.min.fb649fcae62177dfe63e67081ddceb830b5ce1f05a4184e9bbb7d87ac4b8f4e5.js integrity="sha256-+2SfyuYhd9/mPmcIHdzrgwtc4fBaQYTpu7fYesS49OU="></script><script type=text/javascript src=/lib/clipboard/clipboard.min.8a7739925f4c03586479852df840b7061948832a7fda30c8c812d2ea4dd4c4f2.js integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI="></script><script type=text/javascript src=/lib/katex/katex.min.17f5dd6b9f123dd7140abfb18521b3f4c036cd004f6f40121182a8865f140877.js integrity="sha256-F/Xda58SPdcUCr+xhSGz9MA2zQBPb0ASEYKohl8UCHc="></script><script type=text/javascript src=/lib/katex/auto-render.min.f74776a677f0d2be0af0264058f928e2ba455d0b19bc985304660d922a43a6b2.js integrity="sha256-90d2pnfw0r4K8CZAWPko4rpFXQsZvJhTBGYNkipDprI="></script><script type=text/javascript src=/lib/katex/copy-tex.min.2ab2237329021bc443986c8327f6e61357fb68a54e5d233d224023718c02207d.js integrity="sha256-KrIjcykCG8RDmGyDJ/bmE1f7aKVOXSM9IkAjcYwCIH0="></script><script type=text/javascript src=/lib/katex/mhchem.min.5cea356d6025c5a2f18c454c83ec5674dbb04fab1cd1d75569e77788c6b6f888.js integrity="sha256-XOo1bWAlxaLxjEVMg+xWdNuwT6sc0ddVaed3iMa2+Ig="></script><script type=text/javascript>window.config={code:{copyTitle:"Copy to clipboard",maxShownLines:10},comment:{},math:{delimiters:[{display:!0,left:"$$",right:"$$"},{display:!0,left:"\\[",right:"\\]"},{display:!1,left:"$",right:"$"},{display:!1,left:"\\(",right:"\\)"}],strict:!1},search:{highlightTag:"em",lunrIndexURL:"/index.json",maxResultLength:10,noResultsFound:"No results found",snippetLength:30,type:"lunr"}}</script><script type=text/javascript src=/js/theme.min.f51938f3065a40ee841bcb558e4330e31fd26c0ea55343fff8770b88b0319a3c.js integrity="sha256-9Rk48wZaQO6EG8tVjkMw4x/SbA6lU0P/+HcLiLAxmjw="></script><script type=text/javascript>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-3WZ55XG701",{anonymize_ip:!0})</script><script type=text/javascript src="https://www.googletagmanager.com/gtag/js?id=G-3WZ55XG701" async></script></body></html>

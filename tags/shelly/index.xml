@@ -25,8 +25,7 @@ These &rsquo;next generation&rsquo; devices appear to all use a <a href="https:/
 
 <p>As for connectivity, the <a href="https://shelly.cloud/knowledge-base/devices/shelly-pro-4pm/" target="_blank" rel="noopener noreffer">official product page</a> sums it up nicely:</p>
 <blockquote>
-<p>Professional 4 channels relay with Wi-Fi, LAN, and Bluetooth connection, suitable for home and facility automation with remote control and precise power management. DIN rail mountable inside a breaker box. Enhanced safety features and compatible with most used home automation platforms.</p>
-</blockquote>
+<p>Professional 4 channels relay with Wi-Fi, LAN, and Bluetooth connection, suitable for home and facility automation with remote control and precise power management. DIN rail mountable inside a breaker box. Enhanced safety features and compatible with most used home automation platforms.</p></blockquote>
 <h2 id="teardown">Teardown</h2>
 <p>This Shelly 4PM feels like a step backwards in terms of build quality. The prior generation of devices were very dense little pucks and this feels pretty hollow; the plastic DIN case creaks and squeaks.</p>
 <p>The internal layout isn&rsquo;t my favorite and it made both disassembly and reassembly a bit tenuous at a few points.

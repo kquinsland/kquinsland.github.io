@@ -132,8 +132,7 @@ I compared the traffic with a working manual query from <code>kdig</code> and no
 <blockquote>
 <p>The currently recommended certificate chain as presented to Let’s Encrypt ACME clients when new certificates are issued contains an intermediate certificate (ISRG Root X1) that is signed by an old DST Root CA X3 certificate that expires on 2021-09-30. In some cases the OpenSSL 1.0.2 version will regard the certificates issued by the Let’s Encrypt CA as having an expired trust chain.</p>
 <p>Most up-to-date CA cert trusted bundles, as provided by operating systems, contain this soon-to-be-expired certificate. The current CA cert bundles also contain an ISRG Root X1 self-signed certificate. This means that clients verifying certificate chains can find the alternative non-expired path to the ISRG Root X1 self-signed certificate in their trust store.</p>
-<p>Unfortunately this does not apply to OpenSSL 1.0.2 which always prefers the untrusted chain and if that chain contains a path that leads to an expired trusted root certificate (DST Root CA X3), it will be selected for the certificate verification and the expiration will be reported.</p>
-</blockquote>
+<p>Unfortunately this does not apply to OpenSSL 1.0.2 which always prefers the untrusted chain and if that chain contains a path that leads to an expired trusted root certificate (DST Root CA X3), it will be selected for the certificate verification and the expiration will be reported.</p></blockquote>
 <p><a href="https://www.openssl.org/blog/blog/2021/09/13/LetsEncryptRootCertExpire/" target="_blank" rel="noopener noreffer">Source</a>.</p>
 <p>That would certainly explain the behavior I observed when checking the skyhole certificates on the second computer.
 I don&rsquo;t know <em>exactly</em> what version of OpenSSL the BoringSSL in my phone is based off of, but, assuming that it&rsquo;s got the same bug as OpenSSL 1.0.2, that would explain everything.</p>

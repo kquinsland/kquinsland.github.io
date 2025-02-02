@@ -1,4 +1,212 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Home-Automation - Tag - karl</title><link>https://karlquinsland.com/tags/home-automation/</link><description>Home-Automation - Tag - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 02 Nov 2024 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/home-automation/" rel="self" type="application/rss+xml"/><item><title>Monitoring HVAC system with ESPHome</title><link>https://karlquinsland.com/esphome-hvac-monitor/</link><pubDate>Sat, 02 Nov 2024 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/esphome-hvac-monitor/</guid><description><![CDATA[<h1 id="using-esphome-to-monitor-hvac-system">Using ESPHome to Monitor HVAC System</h1>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Home-Automation - Tag - karl</title><link>https://karlquinsland.com/tags/home-automation/</link><description>Home-Automation - Tag - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 01 Feb 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/home-automation/" rel="self" type="application/rss+xml"/><item><title>#TwoMinuteTeardown: Home Assistant Voice - Preview Edition</title><link>https://karlquinsland.com/home-assistant-voice-pe-teardown/</link><pubDate>Sat, 01 Feb 2025 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/home-assistant-voice-pe-teardown/</guid><description><![CDATA[<h1 id="home-assistant-voice-preview-edition-teardown">Home Assistant Voice: Preview Edition teardown</h1>
+<p>This is a quick <a href="/tags/two-minute-teardown/" rel="">#TwoMinuteTeardown</a> post for the recently released <a href="https://www.home-assistant.io/voice-pe/" target="_blank" rel="noopener noreffer">Home Assistant Voice Node - Preview edition</a>.</p>
+<p>Normally, I&rsquo;d be doing a full teardown, but this is a little different; the Home Assistant team has done a <em>lot</em> of the work out in the open.
+With just a quick Google, you can find official:</p>
+<ul>
+<li>teardown instructions <a href="https://voice-pe.home-assistant.io/guides/disassemble/" target="_blank" rel="noopener noreffer">here</a>.</li>
+<li>source code <a href="https://github.com/esphome/home-assistant-voice-pe" target="_blank" rel="noopener noreffer">here</a>.</li>
+<li>3D printable case <a href="https://www.printables.com/model/1110526-home-assistant-voice-preview-edition-enclosure" target="_blank" rel="noopener noreffer">files</a>.</li>
+<li>Instructions for adding custom devices <a href="https://voice-pe.home-assistant.io/guides/grove_port/" target="_blank" rel="noopener noreffer">here</a>.</li>
+</ul>
+<p>I am grateful for such a well-documented and open project.
+Truly, by hackers for hackers!</p>
+<h2 id="teardown">Teardown</h2>
+<p>See the official instructions if you can&rsquo;t figure it out.</p>
+<p>There&rsquo;s not much to the device, really.
+The top half hosts the physical buttons and the microphones.
+The thin, metal-looking piece in the top right is the antenna.</p>
+<p>In the bottom right, there&rsquo;s a small switch that appears to mux between the main application processor (ESP32) and the audio processor.</p>
+<p>I wonder weather this is &ldquo;leftover&rdquo; from development and they haven&rsquo;t gotten around to simplifying the BOM yet or if this is intentionally populated for users to re-program the audio processor.</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>All of the &ldquo;fun&rdquo; stuff is on the bottom half.</p>
+<p>Immediately, you notice the PCB has multiple <em>populated</em> pin headers for hacking. Bonus, they&rsquo;re all labeled!</p>
+<p>The layout and BOM is about what you&rsquo;d expect for a ~$50 single-purpose device.</p>
+<p>Where possible, I&rsquo;ve <a href="#ics" rel="">identified</a> the big ICs.</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<h3 id="wishful-thinking">wishful thinking</h3>
+<p>In a word: Ethernet.</p>
+<p>Most of the ESP32 product line does not have support for ethernet via <a href="https://en.wikipedia.org/wiki/Media-independent_interface#RMII" target="_blank" rel="noopener noreffer">RMII</a> (unfortunately) but there is always SPI based ethernet.</p>
+<p>There are a few areas where the PCB is bare/empty and with a few tweaks to the layout, it would have been possible to also expose SPI headers next to the <a href="https://wiki.seeedstudio.com/Grove-I2C_Hub/" target="_blank" rel="noopener noreffer">grove connector</a>.</p>
+<p>Assuming there&rsquo;s a spare SPI peripheral to use, SPI based ethernet would have latency and throughput as good as or better than WiFi.</p>
+<p>It would have been a nice option for those of us who prefer the reliability of wired connections.</p>
+<p>Oh well.</p>
+<h2 id="ics">ICs</h2>
+<p>This is just the big ones that were going to be easy-ish to positively identify.
+I skipped a few of the super small ICs that had a few characters (at most!) of identification on them.</p>
+<p>Two flash chips, one for the ESP32 and one for the &ldquo;ai&rdquo; chip which is maybe doing detection and is almost certainly doing some other DSP stuff.
+TI parts for the audio codec and a few miscellaneous bits as well.</p>
+<h3 id="zbit-semiconductor-zb25vq128">zbit semiconductor ZB25VQ128</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">AN2414
+</span></span><span class="line"><span class="cl">25VQ128DSJG
+</span></span><span class="line"><span class="cl">P3S952
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a href="https://linux-chenxing.org/pioneer3/sv50pd/ZB25VQ128.pdf" target="_blank" rel="noopener noreffer">This</a> is a clone of a super common winbond nor flash chip with the same part number.</p>
+<h3 id="zbit-semiconductor-zb25vq32">zbit semiconductor ZB25VQ32</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">KN2444
+</span></span><span class="line"><span class="cl">25VQ32DSJG
+</span></span><span class="line"><span class="cl">EQ4537
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a href="https://semic-boutique.com/wp-content/uploads/2016/05/ZB25VQ32.pdf" target="_blank" rel="noopener noreffer">Same</a> as above, but smaller.</p>
+<h3 id="ti-tlv320aic3204">TI TLV320AIC3204</h3>
+<p><a href="https://www.ti.com/product/TLV320AIC3204" target="_blank" rel="noopener noreffer">This</a> is the audio codec.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">AIC
+</span></span><span class="line"><span class="cl">3204
+</span></span><span class="line"><span class="cl">TI 48I
+</span></span><span class="line"><span class="cl">A69Y G4
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="ti-sn74lvc125a">TI SN74LVC125A</h3>
+<p><a href="https://www.ti.com/product/SN74LVC125A" target="_blank" rel="noopener noreffer">This</a> is a pretty common buffer IC and I don&rsquo;t know for sure what it&rsquo;s being used for.
+I am 99% certain that the LEDs under the rotary encoder are neopixels and those can be driven directly from the ESP32.
+The only other thing that comes to mind is a &ldquo;switch&rdquo; to physically cut power to the microphones when the user has engaged the mute switch.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">LC125A
+</span></span><span class="line"><span class="cl">TI44K
+</span></span><span class="line"><span class="cl">C237
+</span></span><span class="line"><span class="cl">9F
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="xmos-xu316">XMOS XU316</h3>
+<p>The <a href="https://www.xmos.com/download/XU316-1024-QF60A-xcore_ai-Datasheet%2826%29.pdf" target="_blank" rel="noopener noreffer">XU316-1024-QF60A</a> is an interesting chip.
+The product name and datasheet suggest that it&rsquo;s instrumental in &ldquo;ai&rdquo; workloads 🙄 but the datasheet is a bit more concrete:</p>
+<blockquote>
+<p>The xcore.ai series is a comprehensive range of 32-bit multicore microcontrollers that brings the low latency and timing determinism of the xCORE architecture to mainstream embedded applications.
+Unlike conventional microcontrollers, xCORE multicore microcontrollers execute multiple real-time tasks simultaneously and communicate between tasks using a high speed network.
+Because xCORE multicore microcontrollers are completely deterministic when executing from internal memory, you can write software to implement functions that traditionally require dedicated hardware.</p></blockquote>
+<p>This is doing real time audio processing - presumably to cancel background noise/echo - and might also be doing wake word detection.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">XMOS
+</span></span><span class="line"><span class="cl">V16A0
+</span></span><span class="line"><span class="cl">GT2446P2
+</span></span><span class="line"><span class="cl">TMCY48.00
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="espressif-esp32-s3">Espressif ESP32-S3</h3>
+<p>This chip needs no introduction!</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">ESP32-S3
+</span></span><span class="line"><span class="cl">242024
+</span></span><span class="line"><span class="cl">R8MRK668000
+</span></span><span class="line"><span class="cl">UC00MBE423
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="the-little-guys">The little guys</h3>
+<p>All the ICs that are too small to have full/meaningful part numbers.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">FE
+</span></span><span class="line"><span class="cl">NZ
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">f9
+</span></span><span class="line"><span class="cl">GkA
+</span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">CEDTI
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Given the proximity to both the speaker connector and the <a href="#ti-tlv320aic3204" rel="">audio codec</a>, I am guessing this is an audio amplifier, probably also from TI.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">TI 45
+</span></span><span class="line"><span class="cl">AYK
+</span></span></code></pre></td></tr></table>
+</div>
+</div>]]></description></item><item><title>Monitoring HVAC system with ESPHome</title><link>https://karlquinsland.com/esphome-hvac-monitor/</link><pubDate>Sat, 02 Nov 2024 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/esphome-hvac-monitor/</guid><description><![CDATA[<h1 id="using-esphome-to-monitor-hvac-system">Using ESPHome to Monitor HVAC System</h1>
 <p>Here&rsquo;s a quick &ldquo;show-and-tell&rdquo; about a recent project I completed.</p>
 <h2 id="the-concept">The concept</h2>
 <p>I&rsquo;m not sure how I first came across the idea of measuring air pressure drop across a filter to gauge its remaining life, but I remember thinking it was a great idea.</p>
@@ -559,7 +767,7 @@ Use this as a starting point and adapt it to your needs.</div>
 </span></span></span><span class="line"><span class="cl"><span class="sd">            }
 </span></span></span><span class="line"><span class="cl"><span class="sd">          }
 </span></span></span><span class="line"><span class="cl"><span class="sd">          // Log the new values
-</span></span></span><span class="line"><span class="cl"><span class="sd">          ESP_LOGD(&#34;sense_air_pressure_delta_raw_pa.on_value&#34;, &#34;glbl_air_pressure_delta_hwm_pa: %f&#34;, id(glbl_air_pressure_delta_hwm_pa));</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="sd">          ESP_LOGD(&#34;sense_air_pressure_delta_raw_pa.on_value&#34;, &#34;glbl_air_pressure_delta_hwm_pa: %f&#34;, id(glbl_air_pressure_delta_hwm_pa));</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Air Pressure Delta (Smoothed)&#34;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
@@ -602,7 +810,7 @@ Use this as a starting point and adapt it to your needs.</div>
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">state_class</span><span class="p">:</span><span class="w"> </span><span class="l">TOTAL_INCREASING</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">update_interval</span><span class="p">:</span><span class="w"> </span><span class="l">never</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">      return id(glbl_air_pressure_delta_hwm_pa);</span><span class="w">      
+</span></span></span><span class="line"><span class="cl"><span class="sd">      return id(glbl_air_pressure_delta_hwm_pa);</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">on_value</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="l">id(sense_est_filter_life_remaining).update();</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
@@ -623,7 +831,7 @@ Use this as a starting point and adapt it to your needs.</div>
 </span></span></span><span class="line"><span class="cl"><span class="sd">      } else {
 </span></span></span><span class="line"><span class="cl"><span class="sd">        ESP_LOGD(&#34;sense_est_filter_life_remaining&#34;, &#34;[CalcCase] glbl_air_pressure_delta_hwm_pa: %f glbl_air_pressure_delta_virgin_pa: %f, glbl_air_pressure_delta_clogged_pa: %f&#34;, id(glbl_air_pressure_delta_hwm_pa), id(glbl_air_pressure_delta_virgin_pa), id(glbl_air_pressure_delta_clogged_pa));
 </span></span></span><span class="line"><span class="cl"><span class="sd">        return 100 - ((id(glbl_air_pressure_delta_hwm_pa) - id(glbl_air_pressure_delta_virgin_pa)) / (id(glbl_air_pressure_delta_clogged_pa) - id(glbl_air_pressure_delta_virgin_pa)) * 100);
-</span></span></span><span class="line"><span class="cl"><span class="sd">      }</span><span class="w">      
+</span></span></span><span class="line"><span class="cl"><span class="sd">      }</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Button to clear the high water mark</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># This button should be pressed when a new filter is installed</span><span class="w">
@@ -662,12 +870,12 @@ Use this as a starting point and adapt it to your needs.</div>
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">max_value</span><span class="p">:</span><span class="w"> </span><span class="l">${template_number_input_max_hpa}</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">step</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">      return id(glbl_air_pressure_delta_virgin_pa)/100;</span><span class="w">      
+</span></span></span><span class="line"><span class="cl"><span class="sd">      return id(glbl_air_pressure_delta_virgin_pa)/100;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">set_action</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          id(glbl_air_pressure_delta_virgin_pa) = abs(x)*100;</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(glbl_air_pressure_delta_virgin_pa) = abs(x)*100;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          id(sense_est_filter_life_remaining).update();</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(sense_est_filter_life_remaining).update();</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Clogged Filter Pressure Delta&#34;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
@@ -680,12 +888,12 @@ Use this as a starting point and adapt it to your needs.</div>
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">max_value</span><span class="p">:</span><span class="w"> </span><span class="l">${template_number_input_max_hpa}</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">step</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">      return id(glbl_air_pressure_delta_clogged_pa)/100;</span><span class="w">      
+</span></span></span><span class="line"><span class="cl"><span class="sd">      return id(glbl_air_pressure_delta_clogged_pa)/100;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">set_action</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          id(glbl_air_pressure_delta_clogged_pa) = abs(x)*100;</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(glbl_air_pressure_delta_clogged_pa) = abs(x)*100;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          id(sense_est_filter_life_remaining).update();</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(sense_est_filter_life_remaining).update();</span><span class="w">
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div>]]></description></item><item><title>Using ESPHome to Automatically restart frozen cable modem</title><link>https://karlquinsland.com/automatic-modem-restart-with-esphome/</link><pubDate>Sun, 09 Jun 2024 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/automatic-modem-restart-with-esphome/</guid><description><![CDATA[<!-- markdownlint-disable-file MD002 -->
@@ -1161,7 +1369,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">update_interval</span><span class="p">:</span><span class="w"> </span><span class="l">never</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">      // This lambda function should never be called / we should never update the text sensor this way
-</span></span></span><span class="line"><span class="cl"><span class="sd">      return {&#34;Unknown&#34;};</span><span class="w">      
+</span></span></span><span class="line"><span class="cl"><span class="sd">      return {&#34;Unknown&#34;};</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Expose the current success/failure counts for stats</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">sensor</span><span class="p">:</span><span class="w">
@@ -1175,7 +1383,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class="line"><span class="cl"><span class="sd">        return id(_glbl_http_poll_failures_count);
 </span></span></span><span class="line"><span class="cl"><span class="sd">      } else {
 </span></span></span><span class="line"><span class="cl"><span class="sd">        return 0.0;
-</span></span></span><span class="line"><span class="cl"><span class="sd">      }</span><span class="w">      
+</span></span></span><span class="line"><span class="cl"><span class="sd">      }</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Will be called to update as necessary from other components</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">update_interval</span><span class="p">:</span><span class="w"> </span><span class="l">never</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
@@ -1195,7 +1403,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">max_value</span><span class="p">:</span><span class="w"> </span><span class="m">120</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">step</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">      return (int) id(glbl_http_poll_interval_ticks);</span><span class="w">      
+</span></span></span><span class="line"><span class="cl"><span class="sd">      return (int) id(glbl_http_poll_interval_ticks);</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">set_action</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">then</span><span class="p">:</span><span class="w">
@@ -1216,7 +1424,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">max_value</span><span class="p">:</span><span class="w"> </span><span class="m">10</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">step</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">      return (int) id(glbl_http_poll_failures_threshold);</span><span class="w">      
+</span></span></span><span class="line"><span class="cl"><span class="sd">      return (int) id(glbl_http_poll_failures_threshold);</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">set_action</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">then</span><span class="p">:</span><span class="w">
@@ -1255,7 +1463,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">restore_mode</span><span class="p">:</span><span class="w"> </span><span class="l">RESTORE_DEFAULT_ON</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># This way we don&#39;t need to create a global for the state</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">      return id(_glbl_http_poll_consecutive_failure_action_enabled);</span><span class="w">      
+</span></span></span><span class="line"><span class="cl"><span class="sd">      return id(_glbl_http_poll_consecutive_failure_action_enabled);</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">turn_on_action</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">globals.set</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">_glbl_http_poll_consecutive_failure_action_enabled</span><span class="w">
@@ -1276,7 +1484,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class="line"><span class="cl"><span class="sd">          id(_glbl_http_poll_failures_count) = 0;
 </span></span></span><span class="line"><span class="cl"><span class="sd">          id(_glbl_http_poll_request_in_flight) = false;
 </span></span></span><span class="line"><span class="cl"><span class="sd">          id(txt_operation_mode).publish_state(&#34;Armed&#34;);
-</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_http_poll_tick).execute();</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_http_poll_tick).execute();</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># When polling function is turned off, there&#39;s a few things to clean up</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">_on_http_poll_turned_off</span><span class="w">
@@ -1288,7 +1496,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class="line"><span class="cl"><span class="sd">          id(_glbl_http_poll_request_in_flight) = false;
 </span></span></span><span class="line"><span class="cl"><span class="sd">          id(txt_operation_mode).publish_state(&#34;Disarmed&#34;);
 </span></span></span><span class="line"><span class="cl"><span class="sd">          id(_do_poll).stop();
-</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_http_poll_tick).stop();</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_http_poll_tick).stop();</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># What do we do when we get a 200 response?</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">_on_http_poll_ok</span><span class="w">
@@ -1300,7 +1508,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class="line"><span class="cl"><span class="sd">          ESP_LOGD(TAG, &#34;Poll OK. Resetting failure count.&#34;);
 </span></span></span><span class="line"><span class="cl"><span class="sd">          id(_glbl_http_poll_failures_count) = 0;
 </span></span></span><span class="line"><span class="cl"><span class="sd">          id(s_consecutive_poll_failure_count).update();
-</span></span></span><span class="line"><span class="cl"><span class="sd">          id(txt_operation_mode).publish_state(&#34;Success&#34;);</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(txt_operation_mode).publish_state(&#34;Success&#34;);</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># What do we do when we get a non-200 response?</span><span class="w">
@@ -1319,7 +1527,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class="line"><span class="cl"><span class="sd">          
 </span></span></span><span class="line"><span class="cl"><span class="sd">          if( id(_glbl_http_poll_failures_count) &gt;= id(glbl_http_poll_failures_threshold) ) {
 </span></span></span><span class="line"><span class="cl"><span class="sd">            id(_on_http_poll_failure_threshold_met).execute();
-</span></span></span><span class="line"><span class="cl"><span class="sd">          }</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="sd">          }</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># And when failure count reaches threshold, what do we do?</span><span class="w">
@@ -1343,7 +1551,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class="line"><span class="cl"><span class="sd">          id(_glbl_http_poll_failures_count) = 0;
 </span></span></span><span class="line"><span class="cl"><span class="sd">          id(s_consecutive_poll_failure_count).update();
 </span></span></span><span class="line"><span class="cl"><span class="sd">          // Reset the time since last failure counter to enter lockout mode
-</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_glbl_http_poll_ticks_since_last_failure_action) = 0;</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_glbl_http_poll_ticks_since_last_failure_action) = 0;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">_do_poll</span><span class="w">
@@ -1354,7 +1562,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">          // Indicate we are now polling
 </span></span></span><span class="line"><span class="cl"><span class="sd">          id(txt_operation_mode).publish_state(&#34;Polling&#34;);
-</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_glbl_http_poll_request_in_flight) = true;</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_glbl_http_poll_request_in_flight) = true;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="c"># Fire off the http request</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">http_request.get</span><span class="p">:</span><span class="w">
@@ -1435,7 +1643,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class="line"><span class="cl"><span class="sd">          }
 </span></span></span><span class="line"><span class="cl"><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">          // re-schedule so we&#39;re called again in a second!
-</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_http_poll_tick).execute();</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_http_poll_tick).execute();</span><span class="w">
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="modemyaml"><code>modem.yaml</code></h3>
@@ -1555,7 +1763,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class="line"><span class="cl"><span class="sd">                ESP_LOGW(TAG, &#34;Response status: %d, Duration: %u ms&#34;, status_code, duration_ms);
 </span></span></span><span class="line"><span class="cl"><span class="sd">                id(_on_http_poll_failure).execute();
 </span></span></span><span class="line"><span class="cl"><span class="sd">                break;
-</span></span></span><span class="line"><span class="cl"><span class="sd">            }</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="sd">            }</span><span class="w">
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="all-together-now">All together now</h3>
@@ -2078,7 +2286,7 @@ As is, you&rsquo;ll need to fill it out / add in your own versions of some of th
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">step</span><span class="p">:</span><span class="w"> </span><span class="m">2</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">      return (int) id(glbl_pre_bloom_time_sec);</span><span class="w">      
+</span></span></span><span class="line"><span class="cl"><span class="sd">      return (int) id(glbl_pre_bloom_time_sec);</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">set_action</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">then</span><span class="p">:</span><span class="w">
@@ -2102,7 +2310,7 @@ As is, you&rsquo;ll need to fill it out / add in your own versions of some of th
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">step</span><span class="p">:</span><span class="w"> </span><span class="m">2</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">      return (int) id(glbl_bloom_time_sec);</span><span class="w">      
+</span></span></span><span class="line"><span class="cl"><span class="sd">      return (int) id(glbl_bloom_time_sec);</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">set_action</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">then</span><span class="p">:</span><span class="w">
@@ -2123,7 +2331,7 @@ As is, you&rsquo;ll need to fill it out / add in your own versions of some of th
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">update_interval</span><span class="p">:</span><span class="w"> </span><span class="l">never</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">      // This lambda function should never be called / we should never update the text sensor this way
-</span></span></span><span class="line"><span class="cl"><span class="sd">      return {&#34;Unknown&#34;};</span><span class="w">      
+</span></span></span><span class="line"><span class="cl"><span class="sd">      return {&#34;Unknown&#34;};</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Not sure if useful but including it anyways.</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">switch</span><span class="p">:</span><span class="w">
@@ -2139,7 +2347,7 @@ As is, you&rsquo;ll need to fill it out / add in your own versions of some of th
 </span></span></span><span class="line"><span class="cl"><span class="sd">        return true;
 </span></span></span><span class="line"><span class="cl"><span class="sd">      } else {
 </span></span></span><span class="line"><span class="cl"><span class="sd">        return false;
-</span></span></span><span class="line"><span class="cl"><span class="sd">      }</span><span class="w">      
+</span></span></span><span class="line"><span class="cl"><span class="sd">      }</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">turn_on_action</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">globals.set</span><span class="p">:</span><span class="w">
@@ -2273,7 +2481,7 @@ As is, you&rsquo;ll need to fill it out / add in your own versions of some of th
 </span></span></span><span class="line"><span class="cl"><span class="sd">          }
 </span></span></span><span class="line"><span class="cl"><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">          //re-schedule so we&#39;re called again in a second!
-</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_brew_timer_tick).execute();</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_brew_timer_tick).execute();</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">_on_brew_turned_off</span><span class="w">
@@ -2284,7 +2492,7 @@ As is, you&rsquo;ll need to fill it out / add in your own versions of some of th
 </span></span></span><span class="line"><span class="cl"><span class="sd">        id(_glbl_brew_timer_ticks) = 0;
 </span></span></span><span class="line"><span class="cl"><span class="sd">        id(_glbl_brew_low_power_ticks) = 0;
 </span></span></span><span class="line"><span class="cl"><span class="sd">        id(txt_operation_mode).publish_state(&#34;Idle&#34;);
-</span></span></span><span class="line"><span class="cl"><span class="sd">        id(_brew_timer_tick).stop();</span><span class="w">        
+</span></span></span><span class="line"><span class="cl"><span class="sd">        id(_brew_timer_tick).stop();</span><span class="w">
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="home-assistant-automations">Home Assistant automations</h3>
@@ -2323,7 +2531,7 @@ As is, you&rsquo;ll need to fill it out / add in your own versions of some of th
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="c"># I simplified the value template here to illustrate how the adjustable timers are meant to be used.</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="p">&gt;-</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">        {% if states(&#39;sensor.kitchen_temperature&#39;)|float(-1) &lt; 25 %}35{% else
-</span></span></span><span class="line"><span class="cl"><span class="sd">        %}20{% endif %}</span><span class="w">        
+</span></span></span><span class="line"><span class="cl"><span class="sd">        %}20{% endif %}</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">target</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">entity_id</span><span class="p">:</span><span class="w"> </span><span class="l">number.pre_bloom_time</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">service</span><span class="p">:</span><span class="w"> </span><span class="l">number.set_value</span><span class="w">
@@ -2874,7 +3082,7 @@ This is trivial to do with a &lsquo;<a href="https://tasmota.github.io/docs/devi
 </span></span></span><span class="line"><span class="cl"><span class="sd">          mdi:kettle-steam
 </span></span></span><span class="line"><span class="cl"><span class="sd">        {% else %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          mdi:kettle
-</span></span></span><span class="line"><span class="cl"><span class="sd">        {% endif %}</span><span class="w">        
+</span></span></span><span class="line"><span class="cl"><span class="sd">        {% endif %}</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">value_template</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;{{states(&#39;sensor.kettle_energy_power&#39;) | float &gt; 5}}&#34;</span><span class="w">
 </span></span></span></code></pre></td></tr></table>
 </div>

@@ -304,7 +304,7 @@ So that&rsquo;s the technique to use here; a <code>template</code> sensor with t
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="p">&gt;</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">        {% set current = states(&#39;sensor.UPS_output_current&#39;) | float %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">        {% set voltage = states(&#39;sensor.UPS_output_voltage&#39;) | float %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">        {{ (current * voltage) | round (2) }}</span><span class="w">        
+</span></span></span><span class="line"><span class="cl"><span class="sd">        {{ (current * voltage) | round (2) }}</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span>- <span class="nt">sensor</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;UPS Energy&#34;</span><span class="w">

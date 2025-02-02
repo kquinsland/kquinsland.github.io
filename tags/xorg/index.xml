@@ -88,8 +88,7 @@ Animations didn&rsquo;t show at all or had all but a few frames dropped :(.</p>
 </div>
 </div><p>One of the Raspberry Pi Engineers <a href="https://forums.raspberrypi.com/viewtopic.php?t=267954#p1626774" target="_blank" rel="noopener noreffer">explains why</a>:</p>
 <blockquote>
-<p>display_rotate only does anything if the firmware is in charge of the display, which isn&rsquo;t the case when using vc4-kms-v3d.</p>
-</blockquote>
+<p>display_rotate only does anything if the firmware is in charge of the display, which isn&rsquo;t the case when using vc4-kms-v3d.</p></blockquote>
 <p>Even when the video out could be configured with <code>config.txt</code>, the firmware offers no such mechanism to rotate input events to match the orientation.
 Fortunately, the LCD manufacturer <a href="https://www.waveshare.com/wiki/13.3inch_HDMI_LCD_%28H%29#Rotation.28Working_with_Raspberry_Pi.29" target="_blank" rel="noopener noreffer">provides good documentation about how to configure the touch inputs with X11</a></p>
 <p>Unfortunately, the manufacturer <em>does <strong>not</strong></em> provide corresponding documentation about how to configure the display with X11. Not that I can blame them! Configuring X11 has always been&hellip; tedious &hellip; to use a &lsquo;polite&rsquo; term for the experience!</p>
