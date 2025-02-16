@@ -1,4 +1,126 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>karl</title><link>https://karlquinsland.com/</link><description>Karl's little corner of the internet</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 01 Feb 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/index.xml" rel="self" type="application/rss+xml"/><item><title>#TwoMinuteTeardown: Home Assistant Voice - Preview Edition</title><link>https://karlquinsland.com/home-assistant-voice-pe-teardown/</link><pubDate>Sat, 01 Feb 2025 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/home-assistant-voice-pe-teardown/</guid><description><![CDATA[<h1 id="home-assistant-voice-preview-edition-teardown">Home Assistant Voice: Preview Edition teardown</h1>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>karl</title><link>https://karlquinsland.com/</link><description>Karl's little corner of the internet</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 15 Feb 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/index.xml" rel="self" type="application/rss+xml"/><item><title>#TwoMinuteTeardown: Panel Mount Liquid Level Indicator</title><link>https://karlquinsland.com/generic-liquid-level-display/</link><pubDate>Sat, 15 Feb 2025 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/generic-liquid-level-display/</guid><description><![CDATA[<h1 id="generic-liquid-level-meter-teardown">Generic liquid level meter teardown</h1>
+<p>I ordered this part years ago for a project I eventually canceled.</p>
+<p>I can&rsquo;t use it for anything, and it&rsquo;s just taking up space, so I&rsquo;m going to open it up before I recycle it.</p>
+<p>The Ali Express listing is a 404 so I don&rsquo;t have a link to share or really any information about it.</p>
+<p>The main thing to take away is that it&rsquo;s meant to interface with a liquid level sensor.
+It will display the level of liquid in a tank and - optionally - trigger a few relays based on the level.</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>This is a generic case; not all screw terminals pictured here are actually wired up to anything on this model.</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        <p>
+            Not all the screw terminals are actually wired up to anything on this model; the case is generic.
+            
+                
+                
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>The main body slides off pretty easily.
+There are two PCBs inside: one for the display and one to handle the relays and sensor input.</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>The display PCB is pretty simple; no active electronics and a tonne of LEDs.
+The bar graph LEDs are almost certainly <a href="https://en.wikipedia.org/wiki/Charlieplexing" target="_blank" rel="noopener noreffer">charlieplexed</a> but the 7 segment might have an integrated driver.</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>The screw terminals on the rear of the case are directly soldered to the main PCB so I&rsquo;m not going to be able to take it apart any further without disordering things&hellip; defeating the spirit of the <a href="/tags/two-minute-teardown/" rel="">#TwoMinuteTeardown</a>.</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Looking at the top left, you can see the few pins for the 7-segment displays; a total of 12 pins.
+Of those 12, some don&rsquo;t have traces leading to them so they&rsquo;re probably just for mechanical support. There are far too few remaining pins for even basic charlieplexing so I&rsquo;m guessing there&rsquo;s an integrated driver of some kind. Probably a <a href="https://www.analog.com/media/en/technical-documentation/data-sheets/max7219-max7221.pdf" target="_blank" rel="noopener noreffer">max7219</a> or similar</p>
+<h2 id="the-main-ics">The main ICs</h2>
+<p>Really just the one main application processor and a few support ICs.</p>
+<ul>
+<li><a href="https://www.jotrin.com/product/parts/MA803AS2" target="_blank" rel="noopener noreffer"><code>MA803AS2</code></a> - 8051 based microcontroller that&rsquo;s running the show</li>
+<li><a href="https://www.alldatasheet.com/datasheet-pdf/pdf/1679343/NEXPERIA/HEF4051B.html" target="_blank" rel="noopener noreffer"><code>HEF4051B</code></a> - 8-channel analog multiplexer, probably for the display</li>
+<li><code>74hc164</code> - 8-bit shift register, probably for the display</li>
+</ul>
+]]></description></item><item><title>#TwoMinuteTeardown: Home Assistant Voice - Preview Edition</title><link>https://karlquinsland.com/home-assistant-voice-pe-teardown/</link><pubDate>Sat, 01 Feb 2025 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/home-assistant-voice-pe-teardown/</guid><description><![CDATA[<h1 id="home-assistant-voice-preview-edition-teardown">Home Assistant Voice: Preview Edition teardown</h1>
 <p>This is a quick <a href="/tags/two-minute-teardown/" rel="">#TwoMinuteTeardown</a> post for the recently released <a href="https://www.home-assistant.io/voice-pe/" target="_blank" rel="noopener noreffer">Home Assistant Voice Node - Preview edition</a>.</p>
 <p>Normally, I&rsquo;d be doing a full teardown, but this is a little different; the Home Assistant team has done a <em>lot</em> of the work out in the open.
 With just a quick Google, you can find official:</p>
@@ -5193,182 +5315,4 @@ I&rsquo;d love to know why the web server on the modem slows down so quickly aft
 </figure>
 
 
-]]></description></item><item><title>Quick and dirty hack to extend the MK3S print area.</title><link>https://karlquinsland.com/extending-the-mk3s-print-area/</link><pubDate>Sun, 04 Feb 2024 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/extending-the-mk3s-print-area/</guid><description><![CDATA[<!-- markdownlint-disable-file MD002 -->
-<p>This isn&rsquo;t going to be a long post. I&rsquo;m working on a larger project but hit a snag and I didn&rsquo;t find any easy/obvious solutions online so I thought I&rsquo;d share what I came up with.</p>
-<p>Details will come later when the bigger project is ready to be released so you&rsquo;ll have to forgive me for the lack of context.
-Essentially I have a large / multi-hour print that <strong>almost</strong> fits on my MK3s print bed but is too large to slice as is.</p>
-<p>Here&rsquo;s the short version:</p>
-<ul>
-<li>The MK3S has a print area of 250mm x 210mm x 210mm (X, Y, Z).</li>
-<li>The part in question is circular and has a circumference of ~215mm so I need to extend the Y axis by ~5mm.</li>
-<li>I can&rsquo;t scale it down to fit as it&rsquo;s a functional part with specific dimensions.</li>
-</ul>
-<h2 id="the-problem">The problem</h2>
-<p>PrusaSlicer refuses to slice the part and gives the following error message:</p>
-<blockquote>
-<p>&ldquo;An object outside the print area was detected. Resolve the current problem to continue slicing.</p></blockquote>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            The part JUST BARELY fits on the print bed. This whole trick only works because the dark blue portion is so small.
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>Since the part is circular, there&rsquo;s no way to &ldquo;rotate&rdquo; it to fit within the print area.</p>
-<h2 id="the-idea">The &ldquo;idea&rdquo;</h2>
-<p>In the image above, the dark blue portion of the part is &ldquo;outside&rdquo; the print area; some portion of the object is below the <code>0,0</code> origin of the print bed.</p>
-<p>But the pre-print priming line is done further &ldquo;south&rdquo; on the build plate so we know the printer can physically print in the area; it&rsquo;s only a software limitation preventing it from doing so.</p>
-<p>This can be confirmed by looking at &ldquo;stock&rdquo; <code>gcode</code>:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;...&gt;
-</span></span><span class="line"><span class="cl">; Prime line routine
-</span></span><span class="line"><span class="cl">G0 Z0.15 ; Restore nozzle position - (thanks tim.m30)
-</span></span><span class="line"><span class="cl">M900 K0; Disable Linear Advance for prime line
-</span></span><span class="line"><span class="cl">G92 E0.0 ; reset extrusion distance
-</span></span><span class="line"><span class="cl">G1 Y-3.0 F1000.0 ; go outside print area
-</span></span><span class="line"><span class="cl">&lt;...&gt;
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>The <code>G1</code> line shown above moves the print head to <code>-3.0</code> mm on the Y axis.</p>
-<p>Since I only need a few mm of extra space an the printer clearly has a few mm of extra space&hellip; 🤔.</p>
-<p>Can I &ldquo;trick&rdquo; the slicer into generating valid <code>gcode</code> and then modify the <code>gcode</code> to shift the part down by 5mm?
-Yep.</p>
-<p>It works 😅.</p>
-<h2 id="the-fix">The &ldquo;fix&rdquo;</h2>
-<p>Convince the slicer to generate valid gcode and then modify the gcode to shift the part down by 5mm.
-To do this:</p>
-<ul>
-<li>Modify the print bed dimensions in PrusaSlicer so the part will fit the print bed w/o any warnings. Don&rsquo;t make the print bed any larger than needed and do not make it any larger than the printer is physically capable of.</li>
-<li>Slice as usual, save the <code>gcode</code> to a file.</li>
-<li>Run the script below which will shift every print instruction by 5mm in the Y direction.</li>
-<li>Send the modified <code>gcode</code> to the printer and hope for the best 🤞.</li>
-</ul>
-<p>Graphically, it looks like this:</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>After saving the adjusted print bed dimensions, the part should fit and slice without any warnings.</p>
-<h2 id="the-code">The code</h2>
-<p>It&rsquo;s not pretty but it works.</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python3" data-lang="python3"><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">adjust_gcode_y_position</span><span class="p">(</span><span class="n">input_file</span><span class="p">,</span> <span class="n">output_file</span><span class="p">,</span> <span class="n">adjustment</span><span class="p">):</span>
-</span></span><span class="line"><span class="cl">    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">input_file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">infile</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_file</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">infile</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="s1">&#39;Y&#39;</span> <span class="ow">in</span> <span class="n">line</span> <span class="ow">and</span> <span class="p">(</span><span class="s1">&#39;G0&#39;</span> <span class="ow">in</span> <span class="n">line</span> <span class="ow">or</span> <span class="s1">&#39;G1&#39;</span> <span class="ow">in</span> <span class="n">line</span><span class="p">):</span>
-</span></span><span class="line"><span class="cl">                <span class="c1"># Split the line into components to find the Y component</span>
-</span></span><span class="line"><span class="cl">                <span class="n">parts</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
-</span></span><span class="line"><span class="cl">                <span class="n">new_parts</span> <span class="o">=</span> <span class="p">[]</span>
-</span></span><span class="line"><span class="cl">                <span class="k">for</span> <span class="n">part</span> <span class="ow">in</span> <span class="n">parts</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">                    <span class="k">if</span> <span class="n">part</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;Y&#39;</span><span class="p">):</span>
-</span></span><span class="line"><span class="cl">                        <span class="c1"># Extract current Y value and adjust</span>
-</span></span><span class="line"><span class="cl">                        <span class="n">y_value</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">part</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span> <span class="o">-</span> <span class="n">adjustment</span>
-</span></span><span class="line"><span class="cl">                        <span class="n">new_parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;Y</span><span class="si">{:.3f}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">y_value</span><span class="p">))</span>
-</span></span><span class="line"><span class="cl">                    <span class="k">else</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">                        <span class="n">new_parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">part</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">                <span class="c1"># Write the adjusted line</span>
-</span></span><span class="line"><span class="cl">                <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">new_parts</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">            <span class="k">else</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">                <span class="c1"># Write unmodified line</span>
-</span></span><span class="line"><span class="cl">                <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="c1"># Usage</span>
-</span></span><span class="line"><span class="cl"><span class="n">input_gcode_path</span> <span class="o">=</span> <span class="s1">&#39;your_original_gcode_file_here.gcode&#39;</span>
-</span></span><span class="line"><span class="cl"><span class="n">output_gcode_path</span> <span class="o">=</span> <span class="s1">&#39;ADJ.your_original_gcode_file_here.gcode&#39;</span>
-</span></span><span class="line"><span class="cl"><span class="n">y_adjustment</span> <span class="o">=</span> <span class="mf">5.0</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">adjust_gcode_y_position</span><span class="p">(</span><span class="n">input_gcode_path</span><span class="p">,</span> <span class="n">output_gcode_path</span><span class="p">,</span> <span class="n">y_adjustment</span><span class="p">)</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="the-result">The result</h2>
-<p>See for yourself:</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            Ignore the wrinkles just to the right of the PINDA probe; it&#39;s a separate issue.
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>Note that the edge of the circle just barely touches the edge of the print bed on the right and &ldquo;sits&rdquo; a few mm below the &ldquo;usable&rdquo; print bed area on the left.</p>
-<p>Hopefully that&rsquo;s helpful to someone else out there.
-If anybody knows why Prusa &ldquo;reserves&rdquo; this space, I&rsquo;d love to know.</p>
 ]]></description></item></channel></rss>

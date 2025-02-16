@@ -1,4 +1,126 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Two-Minute-Teardown - Tag - karl</title><link>https://karlquinsland.com/tags/two-minute-teardown/</link><description>Two-Minute-Teardown - Tag - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 01 Feb 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/two-minute-teardown/" rel="self" type="application/rss+xml"/><item><title>#TwoMinuteTeardown: Home Assistant Voice - Preview Edition</title><link>https://karlquinsland.com/home-assistant-voice-pe-teardown/</link><pubDate>Sat, 01 Feb 2025 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/home-assistant-voice-pe-teardown/</guid><description><![CDATA[<h1 id="home-assistant-voice-preview-edition-teardown">Home Assistant Voice: Preview Edition teardown</h1>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Two-Minute-Teardown - Tag - karl</title><link>https://karlquinsland.com/tags/two-minute-teardown/</link><description>Two-Minute-Teardown - Tag - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 15 Feb 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/two-minute-teardown/" rel="self" type="application/rss+xml"/><item><title>#TwoMinuteTeardown: Panel Mount Liquid Level Indicator</title><link>https://karlquinsland.com/generic-liquid-level-display/</link><pubDate>Sat, 15 Feb 2025 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/generic-liquid-level-display/</guid><description><![CDATA[<h1 id="generic-liquid-level-meter-teardown">Generic liquid level meter teardown</h1>
+<p>I ordered this part years ago for a project I eventually canceled.</p>
+<p>I can&rsquo;t use it for anything, and it&rsquo;s just taking up space, so I&rsquo;m going to open it up before I recycle it.</p>
+<p>The Ali Express listing is a 404 so I don&rsquo;t have a link to share or really any information about it.</p>
+<p>The main thing to take away is that it&rsquo;s meant to interface with a liquid level sensor.
+It will display the level of liquid in a tank and - optionally - trigger a few relays based on the level.</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>This is a generic case; not all screw terminals pictured here are actually wired up to anything on this model.</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        <p>
+            Not all the screw terminals are actually wired up to anything on this model; the case is generic.
+            
+                
+                
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>The main body slides off pretty easily.
+There are two PCBs inside: one for the display and one to handle the relays and sensor input.</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>The display PCB is pretty simple; no active electronics and a tonne of LEDs.
+The bar graph LEDs are almost certainly <a href="https://en.wikipedia.org/wiki/Charlieplexing" target="_blank" rel="noopener noreffer">charlieplexed</a> but the 7 segment might have an integrated driver.</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>The screw terminals on the rear of the case are directly soldered to the main PCB so I&rsquo;m not going to be able to take it apart any further without disordering things&hellip; defeating the spirit of the <a href="/tags/two-minute-teardown/" rel="">#TwoMinuteTeardown</a>.</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Looking at the top left, you can see the few pins for the 7-segment displays; a total of 12 pins.
+Of those 12, some don&rsquo;t have traces leading to them so they&rsquo;re probably just for mechanical support. There are far too few remaining pins for even basic charlieplexing so I&rsquo;m guessing there&rsquo;s an integrated driver of some kind. Probably a <a href="https://www.analog.com/media/en/technical-documentation/data-sheets/max7219-max7221.pdf" target="_blank" rel="noopener noreffer">max7219</a> or similar</p>
+<h2 id="the-main-ics">The main ICs</h2>
+<p>Really just the one main application processor and a few support ICs.</p>
+<ul>
+<li><a href="https://www.jotrin.com/product/parts/MA803AS2" target="_blank" rel="noopener noreffer"><code>MA803AS2</code></a> - 8051 based microcontroller that&rsquo;s running the show</li>
+<li><a href="https://www.alldatasheet.com/datasheet-pdf/pdf/1679343/NEXPERIA/HEF4051B.html" target="_blank" rel="noopener noreffer"><code>HEF4051B</code></a> - 8-channel analog multiplexer, probably for the display</li>
+<li><code>74hc164</code> - 8-bit shift register, probably for the display</li>
+</ul>
+]]></description></item><item><title>#TwoMinuteTeardown: Home Assistant Voice - Preview Edition</title><link>https://karlquinsland.com/home-assistant-voice-pe-teardown/</link><pubDate>Sat, 01 Feb 2025 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/home-assistant-voice-pe-teardown/</guid><description><![CDATA[<h1 id="home-assistant-voice-preview-edition-teardown">Home Assistant Voice: Preview Edition teardown</h1>
 <p>This is a quick <a href="/tags/two-minute-teardown/" rel="">#TwoMinuteTeardown</a> post for the recently released <a href="https://www.home-assistant.io/voice-pe/" target="_blank" rel="noopener noreffer">Home Assistant Voice Node - Preview edition</a>.</p>
 <p>Normally, I&rsquo;d be doing a full teardown, but this is a little different; the Home Assistant team has done a <em>lot</em> of the work out in the open.
 With just a quick Google, you can find official:</p>
