@@ -2030,16 +2030,19 @@ The white box attached tot the motor is the air pump.</p>
 MEIKO
 5662769-8A
 20M
-MDK332V-0W</p></blockquote>
+MDK332V-0W</p>
+</blockquote>
 <p>And on the rear:</p>
 <blockquote>
 <p>F02Z1B
-F15Z1B</p></blockquote>
+F15Z1B</p>
+</blockquote>
 <p>The main CPU is - apparently - from Toshiba and marked with:</p>
 <blockquote>
 <p>2127 HAL
 T5DE1FG
-369440</p></blockquote>
+369440</p>
+</blockquote>
 <p>I can&rsquo;t find anything specific. The only result in google is <a href="https://www.fomalhaut.co.jp/0000-List_Schedule_Master.xls" target="_blank" rel="noopener noreffer">this spreadsheet</a>. If you look closely, you&rsquo;ll find the string <code>T5DE1FG (TOSHIBA)</code> in column <code>L</code> on rows <code>1254</code> and <code>1255</code>.</p>
 <p>The pressure sensor is labeled:</p>
 <ul>
@@ -2048,7 +2051,8 @@ T5DE1FG
 <p>The small 8 pin IC adjacent to the main processor is labeled:</p>
 <blockquote>
 <p>4G64
-12953</p></blockquote>
+12953</p>
+</blockquote>
 <p>BTLE PCB is marked:</p>
 <ul>
 <li><code>MODEL: HHX-MD05T</code></li>

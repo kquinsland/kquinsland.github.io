@@ -822,12 +822,12 @@ For the above screenshots, I created two <em>identical</em> ⃰ copies of the ya
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;x&#34;: </span><span class="p">&gt;-</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrHorMargin}}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrHorMargin}}</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;y&#34;: </span><span class="p">&gt;-</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrVrtMargin = (scnHt*0.01) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrVrtMargin}}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrVrtMargin}}</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Width is 1/3 of the screen width after subtracting margins</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c">##</span><span class="w">
@@ -837,7 +837,7 @@ For the above screenshots, I created two <em>identical</em> ⃰ copies of the ya
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set usableHdrWd = scnWd-(2*hdrHorMargin) %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrLblWd = (usableHdrWd/numObj) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrLblWd}}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrLblWd}}</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Height is 10% of the screen, after margin</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c">##</span><span class="w">
@@ -846,7 +846,7 @@ For the above screenshots, I created two <em>identical</em> ⃰ copies of the ya
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrVrtMargin = (scnHt*0.01) | int %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHt = (scnHt*0.1) | int %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrLblHt = hdrHt-hdrVrtMargin %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrLblHt}}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrLblHt}}</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Header: Temp</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">obj</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;p0b2&#34;</span><span class="w">
@@ -864,12 +864,12 @@ For the above screenshots, I created two <em>identical</em> ⃰ copies of the ya
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set usableHdrWd = scnWd-(2*hdrHorMargin) %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrLblWd = (usableHdrWd/numObj) | int %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrHorMargin+hdrLblWd}}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrHorMargin+hdrLblWd}}</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;y&#34;: </span><span class="p">&gt;-</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrVrtMargin = (scnHt*0.01) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrVrtMargin}}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrVrtMargin}}</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Width is 1/3 of the screen width after subtracting margins</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c">##</span><span class="w">
@@ -879,7 +879,7 @@ For the above screenshots, I created two <em>identical</em> ⃰ copies of the ya
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set usableHdrWd = scnWd-(2*hdrHorMargin) %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrLblWd = (usableHdrWd/numObj) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrLblWd}}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrLblWd}}</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Height is 10% of the screen, after margin</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c">##</span><span class="w">
@@ -888,7 +888,7 @@ For the above screenshots, I created two <em>identical</em> ⃰ copies of the ya
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrVrtMargin = (scnHt*0.01) | int %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHt = (scnHt*0.1) | int %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrLblHt = hdrHt-hdrVrtMargin %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrLblHt}}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrLblHt}}</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Header: Humidity</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">obj</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;p0b3&#34;</span><span class="w">
@@ -906,12 +906,12 @@ For the above screenshots, I created two <em>identical</em> ⃰ copies of the ya
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set usableHdrWd = scnWd-(2*hdrHorMargin) %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrLblWd = (usableHdrWd/numObj) | int %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrHorMargin+(2*hdrLblWd)}}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrHorMargin+(2*hdrLblWd)}}</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;y&#34;: </span><span class="p">&gt;-</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrVrtMargin = (scnHt*0.01) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrVrtMargin}}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrVrtMargin}}</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Width is 1/3 of the screen width after subtracting margins</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c">##</span><span class="w">
@@ -921,7 +921,7 @@ For the above screenshots, I created two <em>identical</em> ⃰ copies of the ya
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set usableHdrWd = scnWd-(2*hdrHorMargin) %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrLblWd = (usableHdrWd/numObj) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrLblWd}}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrLblWd}}</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Height is 10% of the screen, after margin</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c">##</span><span class="w">
@@ -930,7 +930,7 @@ For the above screenshots, I created two <em>identical</em> ⃰ copies of the ya
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrVrtMargin = (scnHt*0.01) | int %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHt = (scnHt*0.1) | int %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrLblHt = hdrHt-hdrVrtMargin %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrLblHt}}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrLblHt}}</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># bottom nav: previous</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">obj</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;p0b6&#34;</span><span class="w">
@@ -941,18 +941,18 @@ For the above screenshots, I created two <em>identical</em> ⃰ copies of the ya
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;y&#34;: </span><span class="p">&gt;-</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHt = (scnHt*0.1) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{scnHt-hdrHt}}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{scnHt-hdrHt}}</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># And since we have 3 buttons, 1/3 of the width</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;w&#34;: </span><span class="p">&gt;-</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set numObj = 3 %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set ftrBtnWd = (scnWd/numObj) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{ftrBtnWd-1}}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{ftrBtnWd-1}}</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># We want the bottom nav buttons to consume the bottom 10% of the screen</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;h&#34;: </span><span class="p">&gt;-</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set ftrHt = (scnHt*0.1) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{ftrHt}}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{ftrHt}}</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># bottom nav: home</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">obj</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;p0b7&#34;</span><span class="w">
@@ -962,23 +962,23 @@ For the above screenshots, I created two <em>identical</em> ⃰ copies of the ya
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set numObj = 3 %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set ftrBtnWd = (scnWd/numObj) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{ftrBtnWd}}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{ftrBtnWd}}</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Start drawing the button from the bottom most pixel</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;y&#34;: </span><span class="p">&gt;-</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHt = (scnHt*0.1) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{scnHt-hdrHt}}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{scnHt-hdrHt}}</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># And since we have 3 buttons, 1/3 of the width</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;w&#34;: </span><span class="p">&gt;-</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set numObj = 3 %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set ftrBtnWd = (scnWd/numObj) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{ftrBtnWd-1}}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{ftrBtnWd-1}}</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># We want the bottom nav buttons to consume the bottom 10% of the screen</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;h&#34;: </span><span class="p">&gt;-</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set ftrHt = (scnHt*0.1) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{ftrHt}}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{ftrHt}}</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># bottom nav: next</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">obj</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;p0b8&#34;</span><span class="w">
@@ -988,23 +988,23 @@ For the above screenshots, I created two <em>identical</em> ⃰ copies of the ya
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set numObj = 3 %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set ftrBtnWd = (scnWd/numObj) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{ftrBtnWd*2}}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{ftrBtnWd*2}}</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Start drawing the button from the bottom most pixel</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;y&#34;: </span><span class="p">&gt;-</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHt = (scnHt*0.1) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{scnHt-hdrHt}}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{scnHt-hdrHt}}</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># And since we have 3 buttons, 1/3 of the width</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;w&#34;: </span><span class="p">&gt;-</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set numObj = 3 %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set ftrBtnWd = (scnWd/numObj) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{ftrBtnWd}}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{ftrBtnWd}}</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># We want the bottom nav buttons to consume the bottom 10% of the screen</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;h&#34;: </span><span class="p">&gt;-</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set ftrHt = (scnHt*0.1) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{ftrHt}}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{ftrHt}}</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># ###</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># # Room Specific</span><span class="w">
@@ -1015,7 +1015,7 @@ For the above screenshots, I created two <em>identical</em> ⃰ copies of the ya
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;x&#34;: </span><span class="p">&gt;-</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrHorMargin}}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrHorMargin}}</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Figure out how tall the display is, subtract out the height of the header/footer and that&#39;s the usable</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c">#   space. Within that usable space, we will want small margins.</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c">##</span><span class="w">
@@ -1023,14 +1023,14 @@ For the above screenshots, I created two <em>identical</em> ⃰ copies of the ya
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnHt = state_attr(&#39;openhasp.plate00&#39;, &#39;tftHeight&#39;) | int %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrVrtMargin = (scnHt*0.01) | int %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHt = (scnHt*0.1) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrHt+hdrVrtMargin}}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrHt+hdrVrtMargin}}</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;w&#34;: </span><span class="p">&gt;-</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set usableHdrWd = scnWd-(2*hdrHorMargin) %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyWd = usableHdrWd %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{bdyWd}}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{bdyWd}}</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># We want the bottom nav buttons to consume the bottom 10% of the screen</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;h&#34;: </span><span class="p">&gt;-</span><span class="sd">
@@ -1042,7 +1042,7 @@ For the above screenshots, I created two <em>identical</em> ⃰ copies of the ya
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyHt = (scnHt - (hdrHt+ftrHt) - (2*hdrVrtMargin)) | int %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyBtnVrtMargin = (bdyHt * 0.02) | int %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyBtnHt = ((bdyHt-((numObj-1)*bdyBtnVrtMargin))/numObj) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{bdyBtnHt}}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{bdyBtnHt}}</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># relay toggle 2</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">obj</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;p1b102&#34;</span><span class="w">
@@ -1050,7 +1050,7 @@ For the above screenshots, I created two <em>identical</em> ⃰ copies of the ya
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;x&#34;: </span><span class="p">&gt;-</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrHorMargin}}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrHorMargin}}</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Figure out how tall the display is, subtract out the height of the header/footer and that&#39;s the usable</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c">#   space. Within that usable space, we will want small margins.</span><span class="w">
@@ -1064,14 +1064,14 @@ For the above screenshots, I created two <em>identical</em> ⃰ copies of the ya
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyHt = (scnHt - (hdrHt+ftrHt) - (2*hdrVrtMargin)) | int %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyBtnVrtMargin = (bdyHt * 0.02) | int %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyBtnHt = ((bdyHt-((numObj-1)*bdyBtnVrtMargin))/numObj) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrHt+hdrVrtMargin+(1*bdyBtnHt+bdyBtnVrtMargin)}}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrHt+hdrVrtMargin+(1*bdyBtnHt+bdyBtnVrtMargin)}}</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;w&#34;: </span><span class="p">&gt;-</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set usableHdrWd = scnWd-(2*hdrHorMargin) %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyWd = usableHdrWd %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{bdyWd}}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{bdyWd}}</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># We want the bottom nav buttons to consume the bottom 10% of the screen</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;h&#34;: </span><span class="p">&gt;-</span><span class="sd">
@@ -1083,7 +1083,7 @@ For the above screenshots, I created two <em>identical</em> ⃰ copies of the ya
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyHt = (scnHt - (hdrHt+ftrHt) - (2*hdrVrtMargin)) | int %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyBtnVrtMargin = (bdyHt * 0.02) | int %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyBtnHt = ((bdyHt-((numObj-1)*bdyBtnVrtMargin))/numObj) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{bdyBtnHt}}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{bdyBtnHt}}</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># relay toggle 3</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">obj</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;p1b103&#34;</span><span class="w">
@@ -1091,7 +1091,7 @@ For the above screenshots, I created two <em>identical</em> ⃰ copies of the ya
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;x&#34;: </span><span class="p">&gt;-</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrHorMargin}}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrHorMargin}}</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># Figure out how tall the display is, subtract out the height of the header/footer and that&#39;s the usable</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c">#   space. Within that usable space, we will want small margins.</span><span class="w">
@@ -1105,14 +1105,14 @@ For the above screenshots, I created two <em>identical</em> ⃰ copies of the ya
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyHt = (scnHt - (hdrHt+ftrHt) - (2*hdrVrtMargin)) | int %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyBtnVrtMargin = (bdyHt * 0.02) | int %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyBtnHt = ((bdyHt-((numObj-1)*bdyBtnVrtMargin))/numObj) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrHt+hdrVrtMargin+(2*(bdyBtnHt+bdyBtnVrtMargin))}}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{hdrHt+hdrVrtMargin+(2*(bdyBtnHt+bdyBtnVrtMargin))}}</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;w&#34;: </span><span class="p">&gt;-</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set scnWd = state_attr(&#39;openhasp.plate00&#39;, &#39;tftWidth&#39;) | int %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set hdrHorMargin = (scnWd*0.01) | int %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set usableHdrWd = scnWd-(2*hdrHorMargin) %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyWd = usableHdrWd %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{bdyWd}}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{bdyWd}}</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># We want the bottom nav buttons to consume the bottom 10% of the screen</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">&#34;h&#34;: </span><span class="p">&gt;-</span><span class="sd">
@@ -1124,7 +1124,7 @@ For the above screenshots, I created two <em>identical</em> ⃰ copies of the ya
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyHt = (scnHt - (hdrHt+ftrHt) - (2*hdrVrtMargin)) | int %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyBtnVrtMargin = (bdyHt * 0.02) | int %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          {% set bdyBtnHt = ((bdyHt-((numObj-1)*bdyBtnVrtMargin))/numObj) | int %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">          {{bdyBtnHt}}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          {{bdyBtnHt}}</span><span class="w">          
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><div class="details admonition tip open">

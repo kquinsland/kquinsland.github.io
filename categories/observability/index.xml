@@ -383,7 +383,7 @@ So that&rsquo;s the technique to use here; a <code>template</code> sensor with t
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span><span class="p">&gt;</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">        {% set current = states(&#39;sensor.UPS_output_current&#39;) | float %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">        {% set voltage = states(&#39;sensor.UPS_output_voltage&#39;) | float %}
-</span></span></span><span class="line"><span class="cl"><span class="sd">        {{ (current * voltage) | round (2) }}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">        {{ (current * voltage) | round (2) }}</span><span class="w">        
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span>- <span class="nt">sensor</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;UPS Energy&#34;</span><span class="w">
@@ -1308,7 +1308,7 @@ I hit a few snags and below is an updated <code>Dockerfile</code> that gave me a
 </span></span></span><span class="line"><span class="cl"><span class="sd">        ws3-&gt;particles_25um,
 </span></span></span><span class="line"><span class="cl"><span class="sd">        ws3-&gt;particles_50um,
 </span></span></span><span class="line"><span class="cl"><span class="sd">        ws3-&gt;particles_100um,
-</span></span></span><span class="line"><span class="cl"><span class="sd">      };</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">      };</span><span class="w">      
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><p>With that, check the logs from your instance of ESPHome and you should see something like this:</p>

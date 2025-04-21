@@ -255,7 +255,8 @@ The product name and datasheet suggest that it&rsquo;s instrumental in &ldquo;ai
 <blockquote>
 <p>The xcore.ai series is a comprehensive range of 32-bit multicore microcontrollers that brings the low latency and timing determinism of the xCORE architecture to mainstream embedded applications.
 Unlike conventional microcontrollers, xCORE multicore microcontrollers execute multiple real-time tasks simultaneously and communicate between tasks using a high speed network.
-Because xCORE multicore microcontrollers are completely deterministic when executing from internal memory, you can write software to implement functions that traditionally require dedicated hardware.</p></blockquote>
+Because xCORE multicore microcontrollers are completely deterministic when executing from internal memory, you can write software to implement functions that traditionally require dedicated hardware.</p>
+</blockquote>
 <p>This is doing real time audio processing - presumably to cancel background noise/echo - and might also be doing wake word detection.</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -889,7 +890,7 @@ Use this as a starting point and adapt it to your needs.</div>
 </span></span></span><span class="line"><span class="cl"><span class="sd">            }
 </span></span></span><span class="line"><span class="cl"><span class="sd">          }
 </span></span></span><span class="line"><span class="cl"><span class="sd">          // Log the new values
-</span></span></span><span class="line"><span class="cl"><span class="sd">          ESP_LOGD(&#34;sense_air_pressure_delta_raw_pa.on_value&#34;, &#34;glbl_air_pressure_delta_hwm_pa: %f&#34;, id(glbl_air_pressure_delta_hwm_pa));</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          ESP_LOGD(&#34;sense_air_pressure_delta_raw_pa.on_value&#34;, &#34;glbl_air_pressure_delta_hwm_pa: %f&#34;, id(glbl_air_pressure_delta_hwm_pa));</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Air Pressure Delta (Smoothed)&#34;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
@@ -932,7 +933,7 @@ Use this as a starting point and adapt it to your needs.</div>
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">state_class</span><span class="p">:</span><span class="w"> </span><span class="l">TOTAL_INCREASING</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">update_interval</span><span class="p">:</span><span class="w"> </span><span class="l">never</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">      return id(glbl_air_pressure_delta_hwm_pa);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">      return id(glbl_air_pressure_delta_hwm_pa);</span><span class="w">      
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">on_value</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="l">id(sense_est_filter_life_remaining).update();</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
@@ -953,7 +954,7 @@ Use this as a starting point and adapt it to your needs.</div>
 </span></span></span><span class="line"><span class="cl"><span class="sd">      } else {
 </span></span></span><span class="line"><span class="cl"><span class="sd">        ESP_LOGD(&#34;sense_est_filter_life_remaining&#34;, &#34;[CalcCase] glbl_air_pressure_delta_hwm_pa: %f glbl_air_pressure_delta_virgin_pa: %f, glbl_air_pressure_delta_clogged_pa: %f&#34;, id(glbl_air_pressure_delta_hwm_pa), id(glbl_air_pressure_delta_virgin_pa), id(glbl_air_pressure_delta_clogged_pa));
 </span></span></span><span class="line"><span class="cl"><span class="sd">        return 100 - ((id(glbl_air_pressure_delta_hwm_pa) - id(glbl_air_pressure_delta_virgin_pa)) / (id(glbl_air_pressure_delta_clogged_pa) - id(glbl_air_pressure_delta_virgin_pa)) * 100);
-</span></span></span><span class="line"><span class="cl"><span class="sd">      }</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">      }</span><span class="w">      
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Button to clear the high water mark</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># This button should be pressed when a new filter is installed</span><span class="w">
@@ -992,12 +993,12 @@ Use this as a starting point and adapt it to your needs.</div>
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">max_value</span><span class="p">:</span><span class="w"> </span><span class="l">${template_number_input_max_hpa}</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">step</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">      return id(glbl_air_pressure_delta_virgin_pa)/100;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">      return id(glbl_air_pressure_delta_virgin_pa)/100;</span><span class="w">      
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">set_action</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          id(glbl_air_pressure_delta_virgin_pa) = abs(x)*100;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(glbl_air_pressure_delta_virgin_pa) = abs(x)*100;</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          id(sense_est_filter_life_remaining).update();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(sense_est_filter_life_remaining).update();</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Clogged Filter Pressure Delta&#34;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
@@ -1010,12 +1011,12 @@ Use this as a starting point and adapt it to your needs.</div>
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">max_value</span><span class="p">:</span><span class="w"> </span><span class="l">${template_number_input_max_hpa}</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">step</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">      return id(glbl_air_pressure_delta_clogged_pa)/100;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">      return id(glbl_air_pressure_delta_clogged_pa)/100;</span><span class="w">      
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">set_action</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          id(glbl_air_pressure_delta_clogged_pa) = abs(x)*100;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(glbl_air_pressure_delta_clogged_pa) = abs(x)*100;</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          id(sense_est_filter_life_remaining).update();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(sense_est_filter_life_remaining).update();</span><span class="w">          
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div>]]></description></item><item><title>Arizer XQ2 Teardown</title><link>https://karlquinsland.com/arizer-xq2-teardown/</link><pubDate>Mon, 01 Jul 2024 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/arizer-xq2-teardown/</guid><description><![CDATA[<!-- markdownlint-disable-file MD002 -->
@@ -1940,7 +1941,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">update_interval</span><span class="p">:</span><span class="w"> </span><span class="l">never</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">      // This lambda function should never be called / we should never update the text sensor this way
-</span></span></span><span class="line"><span class="cl"><span class="sd">      return {&#34;Unknown&#34;};</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">      return {&#34;Unknown&#34;};</span><span class="w">      
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Expose the current success/failure counts for stats</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">sensor</span><span class="p">:</span><span class="w">
@@ -1954,7 +1955,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class="line"><span class="cl"><span class="sd">        return id(_glbl_http_poll_failures_count);
 </span></span></span><span class="line"><span class="cl"><span class="sd">      } else {
 </span></span></span><span class="line"><span class="cl"><span class="sd">        return 0.0;
-</span></span></span><span class="line"><span class="cl"><span class="sd">      }</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">      }</span><span class="w">      
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Will be called to update as necessary from other components</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">update_interval</span><span class="p">:</span><span class="w"> </span><span class="l">never</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
@@ -1974,7 +1975,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">max_value</span><span class="p">:</span><span class="w"> </span><span class="m">120</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">step</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">      return (int) id(glbl_http_poll_interval_ticks);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">      return (int) id(glbl_http_poll_interval_ticks);</span><span class="w">      
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">set_action</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">then</span><span class="p">:</span><span class="w">
@@ -1995,7 +1996,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">max_value</span><span class="p">:</span><span class="w"> </span><span class="m">10</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">step</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">      return (int) id(glbl_http_poll_failures_threshold);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">      return (int) id(glbl_http_poll_failures_threshold);</span><span class="w">      
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">set_action</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">then</span><span class="p">:</span><span class="w">
@@ -2034,7 +2035,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">restore_mode</span><span class="p">:</span><span class="w"> </span><span class="l">RESTORE_DEFAULT_ON</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># This way we don&#39;t need to create a global for the state</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">      return id(_glbl_http_poll_consecutive_failure_action_enabled);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">      return id(_glbl_http_poll_consecutive_failure_action_enabled);</span><span class="w">      
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">turn_on_action</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">globals.set</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">_glbl_http_poll_consecutive_failure_action_enabled</span><span class="w">
@@ -2055,7 +2056,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class="line"><span class="cl"><span class="sd">          id(_glbl_http_poll_failures_count) = 0;
 </span></span></span><span class="line"><span class="cl"><span class="sd">          id(_glbl_http_poll_request_in_flight) = false;
 </span></span></span><span class="line"><span class="cl"><span class="sd">          id(txt_operation_mode).publish_state(&#34;Armed&#34;);
-</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_http_poll_tick).execute();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_http_poll_tick).execute();</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># When polling function is turned off, there&#39;s a few things to clean up</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">_on_http_poll_turned_off</span><span class="w">
@@ -2067,7 +2068,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class="line"><span class="cl"><span class="sd">          id(_glbl_http_poll_request_in_flight) = false;
 </span></span></span><span class="line"><span class="cl"><span class="sd">          id(txt_operation_mode).publish_state(&#34;Disarmed&#34;);
 </span></span></span><span class="line"><span class="cl"><span class="sd">          id(_do_poll).stop();
-</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_http_poll_tick).stop();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_http_poll_tick).stop();</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># What do we do when we get a 200 response?</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">_on_http_poll_ok</span><span class="w">
@@ -2079,7 +2080,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class="line"><span class="cl"><span class="sd">          ESP_LOGD(TAG, &#34;Poll OK. Resetting failure count.&#34;);
 </span></span></span><span class="line"><span class="cl"><span class="sd">          id(_glbl_http_poll_failures_count) = 0;
 </span></span></span><span class="line"><span class="cl"><span class="sd">          id(s_consecutive_poll_failure_count).update();
-</span></span></span><span class="line"><span class="cl"><span class="sd">          id(txt_operation_mode).publish_state(&#34;Success&#34;);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(txt_operation_mode).publish_state(&#34;Success&#34;);</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># What do we do when we get a non-200 response?</span><span class="w">
@@ -2098,7 +2099,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class="line"><span class="cl"><span class="sd">          
 </span></span></span><span class="line"><span class="cl"><span class="sd">          if( id(_glbl_http_poll_failures_count) &gt;= id(glbl_http_poll_failures_threshold) ) {
 </span></span></span><span class="line"><span class="cl"><span class="sd">            id(_on_http_poll_failure_threshold_met).execute();
-</span></span></span><span class="line"><span class="cl"><span class="sd">          }</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          }</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># And when failure count reaches threshold, what do we do?</span><span class="w">
@@ -2122,7 +2123,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class="line"><span class="cl"><span class="sd">          id(_glbl_http_poll_failures_count) = 0;
 </span></span></span><span class="line"><span class="cl"><span class="sd">          id(s_consecutive_poll_failure_count).update();
 </span></span></span><span class="line"><span class="cl"><span class="sd">          // Reset the time since last failure counter to enter lockout mode
-</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_glbl_http_poll_ticks_since_last_failure_action) = 0;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_glbl_http_poll_ticks_since_last_failure_action) = 0;</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">_do_poll</span><span class="w">
@@ -2133,7 +2134,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">          // Indicate we are now polling
 </span></span></span><span class="line"><span class="cl"><span class="sd">          id(txt_operation_mode).publish_state(&#34;Polling&#34;);
-</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_glbl_http_poll_request_in_flight) = true;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_glbl_http_poll_request_in_flight) = true;</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="c"># Fire off the http request</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">http_request.get</span><span class="p">:</span><span class="w">
@@ -2214,7 +2215,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class="line"><span class="cl"><span class="sd">          }
 </span></span></span><span class="line"><span class="cl"><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">          // re-schedule so we&#39;re called again in a second!
-</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_http_poll_tick).execute();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_http_poll_tick).execute();</span><span class="w">          
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="modemyaml"><code>modem.yaml</code></h3>
@@ -2334,7 +2335,7 @@ Once the counter reaches 5 consecutive failures, the power to the modem is brief
 </span></span></span><span class="line"><span class="cl"><span class="sd">                ESP_LOGW(TAG, &#34;Response status: %d, Duration: %u ms&#34;, status_code, duration_ms);
 </span></span></span><span class="line"><span class="cl"><span class="sd">                id(_on_http_poll_failure).execute();
 </span></span></span><span class="line"><span class="cl"><span class="sd">                break;
-</span></span></span><span class="line"><span class="cl"><span class="sd">            }</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">            }</span><span class="w">          
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="all-together-now">All together now</h3>
@@ -3215,7 +3216,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class="line"><span class="cl"><span class="sd">          } else {
 </span></span></span><span class="line"><span class="cl"><span class="sd">            id(out_3).turn_on().perform();
 </span></span></span><span class="line"><span class="cl"><span class="sd">          }
-</span></span></span><span class="line"><span class="cl"><span class="sd">        }</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">        }</span><span class="w">        
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><h4 id="packagesbaseesphomeyaml"><code>packages/base.esphome.yaml</code></h4>
@@ -4080,7 +4081,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class="line"><span class="cl"><span class="sd">        return true;
 </span></span></span><span class="line"><span class="cl"><span class="sd">      } else {
 </span></span></span><span class="line"><span class="cl"><span class="sd">        return false;
-</span></span></span><span class="line"><span class="cl"><span class="sd">      }</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">      }</span><span class="w">      
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">turn_on_action</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">then</span><span class="p">:</span><span class="w">
@@ -4097,7 +4098,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class="line"><span class="cl"><span class="sd">              ESP_LOGD(TAG, &#34;Timeout Automation ARMED with &#39;${timer_control_entity_id}&#39;&#39; NOT on... nothing to do!&#34;);
 </span></span></span><span class="line"><span class="cl"><span class="sd">            }
 </span></span></span><span class="line"><span class="cl"><span class="sd">            // Don&#39;t wait for ESPHome to schedule updating the text sensor to re-draw the HA ui
-</span></span></span><span class="line"><span class="cl"><span class="sd">            id(s_txt_timeout_remaining_${instance_uid}).update();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">            id(s_txt_timeout_remaining_${instance_uid}).update();</span><span class="w">            
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">turn_off_action</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">then</span><span class="p">:</span><span class="w">
@@ -4109,7 +4110,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class="line"><span class="cl"><span class="sd">            id(glbl_timeout_armed_${instance_uid}) = false;
 </span></span></span><span class="line"><span class="cl"><span class="sd">            id(on_timer_stop_${instance_uid}).execute();
 </span></span></span><span class="line"><span class="cl"><span class="sd">            // Don&#39;t wait for ESPHome to schedule updating the text sensor to re-draw the HA ui
-</span></span></span><span class="line"><span class="cl"><span class="sd">            id(s_txt_timeout_remaining_${instance_uid}).update();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">            id(s_txt_timeout_remaining_${instance_uid}).update();</span><span class="w">            
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Expose a control to HA so we can adjust timer length</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># See: https://esphome.io/components/number/template.html</span><span class="w">
@@ -4138,7 +4139,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">      // HA expects value in minutes, we do everything in seconds so convert
-</span></span></span><span class="line"><span class="cl"><span class="sd">      return (int) id(glbl_timeout_length_ticks_${instance_uid})/60;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">      return (int) id(glbl_timeout_length_ticks_${instance_uid})/60;</span><span class="w">      
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">set_action</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">then</span><span class="p">:</span><span class="w">
@@ -4190,7 +4191,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class="line"><span class="cl"><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">      snprintf(buff, 15, &#34;%02d:%02d:%02d&#34;, hr, min, sec);
 </span></span></span><span class="line"><span class="cl"><span class="sd">      ESP_LOGD(TAG, &#34;buff: %s&#34;, buff);
-</span></span></span><span class="line"><span class="cl"><span class="sd">      return to_string(buff);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">      return to_string(buff);</span><span class="w">      
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">script</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># End meaning the natural conclusion of the timer. Do whatever we&#39;re supposed to do when the timer fires off</span><span class="w">
@@ -4200,7 +4201,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">          auto call = id(${timer_control_entity_id});
 </span></span></span><span class="line"><span class="cl"><span class="sd">          call-&gt;${timer_control_action_exp}.perform();
-</span></span></span><span class="line"><span class="cl"><span class="sd">          ESP_LOGI(&#34;script.on_timer_end_${instance_uid}&#34;, &#34;output should be ${timer_control_action_exp}!&#34;);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          ESP_LOGI(&#34;script.on_timer_end_${instance_uid}&#34;, &#34;output should be ${timer_control_action_exp}!&#34;);</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Stop meaning the pre-mature ending of the timer</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">on_timer_stop_${instance_uid}</span><span class="w">
@@ -4215,7 +4216,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class="line"><span class="cl"><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">          id(_timer_tick_${instance_uid}).stop();
 </span></span></span><span class="line"><span class="cl"><span class="sd">          id(_glbl_timeout_ticks_${instance_uid}) = 0;
-</span></span></span><span class="line"><span class="cl"><span class="sd">          ESP_LOGD(TAG, &#34;_timer_tick_${instance_uid} now stopped and _glbl_timeout_ticks_${instance_uid} is %d&#34;, id(_glbl_timeout_ticks_${instance_uid}));</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          ESP_LOGD(TAG, &#34;_timer_tick_${instance_uid} now stopped and _glbl_timeout_ticks_${instance_uid} is %d&#34;, id(_glbl_timeout_ticks_${instance_uid}));</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">_timer_tick_${instance_uid}</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Start a new run after previous runs completes. This will happen until timer.stop() is called on us</span><span class="w">
@@ -4261,7 +4262,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class="line"><span class="cl"><span class="sd">              id(_timer_tick_${instance_uid}).execute();
 </span></span></span><span class="line"><span class="cl"><span class="sd">            }
 </span></span></span><span class="line"><span class="cl"><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          }</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          }</span><span class="w">          
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><h4 id="packageslight-automationsyaml"><code>packages/light-automations.yaml</code></h4>
@@ -4524,7 +4525,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class="line"><span class="cl"><span class="sd">          } else {
 </span></span></span><span class="line"><span class="cl"><span class="sd">            id(do_daytime_mode_active).execute();
 </span></span></span><span class="line"><span class="cl"><span class="sd">          }
-</span></span></span><span class="line"><span class="cl"><span class="sd">          id(resume_normal_regime_for_leds).execute();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(resume_normal_regime_for_leds).execute();</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Switch to control different bits of functionality</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">switch</span><span class="p">:</span><span class="w">
@@ -4543,16 +4544,16 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class="line"><span class="cl"><span class="sd">        return true;
 </span></span></span><span class="line"><span class="cl"><span class="sd">      } else {
 </span></span></span><span class="line"><span class="cl"><span class="sd">        return false;
-</span></span></span><span class="line"><span class="cl"><span class="sd">      }</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">      }</span><span class="w">      
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">turn_on_action</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">then</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">            id(glbl_automation_sun_position_triggers_light_modes) = true;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">            id(glbl_automation_sun_position_triggers_light_modes) = true;</span><span class="w">            
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">turn_off_action</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">then</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">            id(glbl_automation_sun_position_triggers_light_modes) = false;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">            id(glbl_automation_sun_position_triggers_light_modes) = false;</span><span class="w">            
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># See: https://esphome.io/components/sun.html</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">sun</span><span class="p">:</span><span class="w">
@@ -4759,15 +4760,15 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class="line"><span class="cl"><span class="sd">        return true;
 </span></span></span><span class="line"><span class="cl"><span class="sd">      } else {
 </span></span></span><span class="line"><span class="cl"><span class="sd">        return false;
-</span></span></span><span class="line"><span class="cl"><span class="sd">      }</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">      }</span><span class="w">      
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">turn_on_action</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">then</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">            id(glbl_sw_touch_enable) = true;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">            id(glbl_sw_touch_enable) = true;</span><span class="w">            
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">turn_off_action</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">then</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">            id(glbl_sw_touch_enable) = false;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">            id(glbl_sw_touch_enable) = false;</span><span class="w">            
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><h4 id="packagesvariantc3yaml"><code>packages/variant.c3.yaml</code></h4>
@@ -5181,7 +5182,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class="line"><span class="cl"><span class="sd">          ESP_LOGD(&#34;script.do_nighttime_mode_active&#34;, &#34;Setting TEMPLATE(s) =&gt; R: %f G: %f B: %f BR: %f&#34;, red, green, blue, bright);
 </span></span></span><span class="line"><span class="cl"><span class="sd">          id(template_light_1).turn_on().set_rgb( red, green, blue ).set_brightness(bright).set_transition_length(0).perform();
 </span></span></span><span class="line"><span class="cl"><span class="sd">          id(template_light_2).turn_on().set_rgb( red, green, blue ).set_brightness(bright).set_transition_length(0).perform();
-</span></span></span><span class="line"><span class="cl"><span class="sd">          id(template_light_3).turn_on().set_rgb( red, green, blue ).set_brightness(bright).set_transition_length(0).perform();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(template_light_3).turn_on().set_rgb( red, green, blue ).set_brightness(bright).set_transition_length(0).perform();</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">do_daytime_mode_active</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">then</span><span class="p">:</span><span class="w">
@@ -5196,7 +5197,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class="line"><span class="cl"><span class="sd">          ESP_LOGD(&#34;script.do_daytime_mode_active&#34;, &#34;Setting TEMPLATE(s) =&gt; R: %f G: %f B: %f BR: %f&#34;, red, green, blue, bright);
 </span></span></span><span class="line"><span class="cl"><span class="sd">          id(template_light_1).turn_on().set_rgb( red, green, blue ).set_brightness(bright).set_transition_length(0).perform();
 </span></span></span><span class="line"><span class="cl"><span class="sd">          id(template_light_2).turn_on().set_rgb( red, green, blue ).set_brightness(bright).set_transition_length(0).perform();
-</span></span></span><span class="line"><span class="cl"><span class="sd">          id(template_light_3).turn_on().set_rgb( red, green, blue ).set_brightness(bright).set_transition_length(0).perform();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(template_light_3).turn_on().set_rgb( red, green, blue ).set_brightness(bright).set_transition_length(0).perform();</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">figure_out_which_partition_to_light</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l">single</span><span class="w">
@@ -5264,7 +5265,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class="line"><span class="cl"><span class="sd">              default:
 </span></span></span><span class="line"><span class="cl"><span class="sd">                ESP_LOGE(TAG, &#34;Unknown output number: %d&#34;, output_num);
 </span></span></span><span class="line"><span class="cl"><span class="sd">                return;
-</span></span></span><span class="line"><span class="cl"><span class="sd">            }</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">            }</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># Called on boot or any time we&#39;re transitioning from mood-light to a &#34;normal&#34; mode</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">resume_normal_regime_for_leds</span><span class="w">
@@ -5360,7 +5361,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class="line"><span class="cl"><span class="sd">      auto template_light_3 = new TemplateLight();
 </span></span></span><span class="line"><span class="cl"><span class="sd">      App.register_component(template_light_3);
 </span></span></span><span class="line"><span class="cl"><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">      return {template_light_1, template_light_2, template_light_3};</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">      return {template_light_1, template_light_2, template_light_3};</span><span class="w">      
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lights</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Indicator 1&#34;</span><span class="w">
@@ -5402,7 +5403,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class="line"><span class="cl"><span class="sd">              // Pass through should happen ONLY in the on_state and on_turn_off hooks so just log here
 </span></span></span><span class="line"><span class="cl"><span class="sd">              // Since we have ZERO gamma correction, the values here should _match_ the ones set in HA
 </span></span></span><span class="line"><span class="cl"><span class="sd">              // They&#39;ll just be normalized though. So HA sends red: 255, here, we get 1.0
-</span></span></span><span class="line"><span class="cl"><span class="sd">              ESP_LOGD(&#34;template_light_1.on_turn_on&#34;, &#34;ON_TURN_ON =&gt; R: %f, G: %f, B: %f BR: %f&#34;, red, green, blue, br);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">              ESP_LOGD(&#34;template_light_1.on_turn_on&#34;, &#34;ON_TURN_ON =&gt; R: %f, G: %f, B: %f BR: %f&#34;, red, green, blue, br);</span><span class="w">              
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">on_turn_off</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
@@ -5413,7 +5414,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class="line"><span class="cl"><span class="sd">              // OFF means OFF so both partitions should be off
 </span></span></span><span class="line"><span class="cl"><span class="sd">              ESP_LOGD(&#34;template_light_1.on_turn_off&#34;, &#34;TURN OFF&#34;);
 </span></span></span><span class="line"><span class="cl"><span class="sd">              id(leds_button_1_left).turn_off().set_rgb( red, green, blue ).set_brightness(br).set_transition_length(0).perform();
-</span></span></span><span class="line"><span class="cl"><span class="sd">              id(leds_button_1_right).turn_off().set_rgb( red, green, blue ).set_brightness(br).set_transition_length(0).perform();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">              id(leds_button_1_right).turn_off().set_rgb( red, green, blue ).set_brightness(br).set_transition_length(0).perform();</span><span class="w">              
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">on_state</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
@@ -5421,7 +5422,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class="line"><span class="cl"><span class="sd">              float red, green, blue, br;
 </span></span></span><span class="line"><span class="cl"><span class="sd">              id(template_light_1).current_values_as_rgb(&amp;red, &amp;green, &amp;blue);
 </span></span></span><span class="line"><span class="cl"><span class="sd">              id(template_light_1).current_values_as_brightness(&amp;br);
-</span></span></span><span class="line"><span class="cl"><span class="sd">              ESP_LOGD(&#34;template_light_1.on_state&#34;, &#34;State =&gt; R: %f, G: %f, B: %f BR: %f&#34;, red, green, blue, br);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">              ESP_LOGD(&#34;template_light_1.on_state&#34;, &#34;State =&gt; R: %f, G: %f, B: %f BR: %f&#34;, red, green, blue, br);</span><span class="w">              
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="c"># Figure out which partition light to light up now that we have an updated state</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="nt">script.execute</span><span class="p">:</span><span class="w">
@@ -5447,7 +5448,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class="line"><span class="cl"><span class="sd">              // Pass through should happen ONLY in the on_state and on_turn_off hooks so just log here
 </span></span></span><span class="line"><span class="cl"><span class="sd">              // Since we have ZERO gamma correction, the values here should _match_ the ones set in HA
 </span></span></span><span class="line"><span class="cl"><span class="sd">              // They&#39;ll just be normalized though. So HA sends red: 255, here, we get 1.0
-</span></span></span><span class="line"><span class="cl"><span class="sd">              ESP_LOGD(&#34;template_light_2.on_turn_on&#34;, &#34;ON_TURN_ON =&gt; R: %f, G: %f, B: %f BR: %f&#34;, red, green, blue, br);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">              ESP_LOGD(&#34;template_light_2.on_turn_on&#34;, &#34;ON_TURN_ON =&gt; R: %f, G: %f, B: %f BR: %f&#34;, red, green, blue, br);</span><span class="w">              
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">on_turn_off</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
@@ -5458,7 +5459,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class="line"><span class="cl"><span class="sd">              // OFF means OFF so both partitions should be off
 </span></span></span><span class="line"><span class="cl"><span class="sd">              ESP_LOGD(&#34;template_light_2.on_turn_off&#34;, &#34;TURN OFF&#34;);
 </span></span></span><span class="line"><span class="cl"><span class="sd">              id(leds_button_2_left).turn_off().set_rgb( red, green, blue ).set_brightness(br).set_transition_length(0).perform();
-</span></span></span><span class="line"><span class="cl"><span class="sd">              id(leds_button_2_right).turn_off().set_rgb( red, green, blue ).set_brightness(br).set_transition_length(0).perform();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">              id(leds_button_2_right).turn_off().set_rgb( red, green, blue ).set_brightness(br).set_transition_length(0).perform();</span><span class="w">              
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">on_state</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
@@ -5466,7 +5467,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class="line"><span class="cl"><span class="sd">              float red, green, blue, br;
 </span></span></span><span class="line"><span class="cl"><span class="sd">              id(template_light_2).current_values_as_rgb(&amp;red, &amp;green, &amp;blue);
 </span></span></span><span class="line"><span class="cl"><span class="sd">              id(template_light_2).current_values_as_brightness(&amp;br);
-</span></span></span><span class="line"><span class="cl"><span class="sd">              ESP_LOGD(&#34;template_light_2.on_state&#34;, &#34;State =&gt; R: %f, G: %f, B: %f BR: %f&#34;, red, green, blue, br);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">              ESP_LOGD(&#34;template_light_2.on_state&#34;, &#34;State =&gt; R: %f, G: %f, B: %f BR: %f&#34;, red, green, blue, br);</span><span class="w">              
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="nt">script.execute</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">figure_out_which_partition_to_light</span><span class="w">
@@ -5491,7 +5492,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class="line"><span class="cl"><span class="sd">              // Pass through should happen ONLY in the on_state and on_turn_off hooks so just log here
 </span></span></span><span class="line"><span class="cl"><span class="sd">              // Since we have ZERO gamma correction, the values here should _match_ the ones set in HA
 </span></span></span><span class="line"><span class="cl"><span class="sd">              // They&#39;ll just be normalized though. So HA sends red: 255, here, we get 1.0
-</span></span></span><span class="line"><span class="cl"><span class="sd">              ESP_LOGD(&#34;template_light_3.on_turn_on&#34;, &#34;ON_TURN_ON =&gt; R: %f, G: %f, B: %f BR: %f&#34;, red, green, blue, br);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">              ESP_LOGD(&#34;template_light_3.on_turn_on&#34;, &#34;ON_TURN_ON =&gt; R: %f, G: %f, B: %f BR: %f&#34;, red, green, blue, br);</span><span class="w">              
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">on_turn_off</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
@@ -5502,7 +5503,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class="line"><span class="cl"><span class="sd">              // OFF means OFF so both partitions should be off
 </span></span></span><span class="line"><span class="cl"><span class="sd">              ESP_LOGD(&#34;template_light_3.on_turn_off&#34;, &#34;TURN OFF&#34;);
 </span></span></span><span class="line"><span class="cl"><span class="sd">              id(leds_button_3_left).turn_off().set_rgb( red, green, blue ).set_brightness(br).set_transition_length(0).perform();
-</span></span></span><span class="line"><span class="cl"><span class="sd">              id(leds_button_3_right).turn_off().set_rgb( red, green, blue ).set_brightness(br).set_transition_length(0).perform();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">              id(leds_button_3_right).turn_off().set_rgb( red, green, blue ).set_brightness(br).set_transition_length(0).perform();</span><span class="w">              
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">on_state</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
@@ -5510,7 +5511,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class="line"><span class="cl"><span class="sd">              float red, green, blue, br;
 </span></span></span><span class="line"><span class="cl"><span class="sd">              id(template_light_3).current_values_as_rgb(&amp;red, &amp;green, &amp;blue);
 </span></span></span><span class="line"><span class="cl"><span class="sd">              id(template_light_3).current_values_as_brightness(&amp;br);
-</span></span></span><span class="line"><span class="cl"><span class="sd">              ESP_LOGD(&#34;template_light_3.on_state&#34;, &#34;State =&gt; R: %f, G: %f, B: %f BR: %f&#34;, red, green, blue, br);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">              ESP_LOGD(&#34;template_light_3.on_state&#34;, &#34;State =&gt; R: %f, G: %f, B: %f BR: %f&#34;, red, green, blue, br);</span><span class="w">              
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">          </span>- <span class="nt">script.execute</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">figure_out_which_partition_to_light</span><span class="w">
@@ -7684,7 +7685,7 @@ As is, you&rsquo;ll need to fill it out / add in your own versions of some of th
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">step</span><span class="p">:</span><span class="w"> </span><span class="m">2</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">      return (int) id(glbl_pre_bloom_time_sec);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">      return (int) id(glbl_pre_bloom_time_sec);</span><span class="w">      
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">set_action</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">then</span><span class="p">:</span><span class="w">
@@ -7708,7 +7709,7 @@ As is, you&rsquo;ll need to fill it out / add in your own versions of some of th
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">step</span><span class="p">:</span><span class="w"> </span><span class="m">2</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">      return (int) id(glbl_bloom_time_sec);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">      return (int) id(glbl_bloom_time_sec);</span><span class="w">      
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">set_action</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">then</span><span class="p">:</span><span class="w">
@@ -7729,7 +7730,7 @@ As is, you&rsquo;ll need to fill it out / add in your own versions of some of th
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">update_interval</span><span class="p">:</span><span class="w"> </span><span class="l">never</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">      // This lambda function should never be called / we should never update the text sensor this way
-</span></span></span><span class="line"><span class="cl"><span class="sd">      return {&#34;Unknown&#34;};</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">      return {&#34;Unknown&#34;};</span><span class="w">      
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Not sure if useful but including it anyways.</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">switch</span><span class="p">:</span><span class="w">
@@ -7745,7 +7746,7 @@ As is, you&rsquo;ll need to fill it out / add in your own versions of some of th
 </span></span></span><span class="line"><span class="cl"><span class="sd">        return true;
 </span></span></span><span class="line"><span class="cl"><span class="sd">      } else {
 </span></span></span><span class="line"><span class="cl"><span class="sd">        return false;
-</span></span></span><span class="line"><span class="cl"><span class="sd">      }</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">      }</span><span class="w">      
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">turn_on_action</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">globals.set</span><span class="p">:</span><span class="w">
@@ -7879,7 +7880,7 @@ As is, you&rsquo;ll need to fill it out / add in your own versions of some of th
 </span></span></span><span class="line"><span class="cl"><span class="sd">          }
 </span></span></span><span class="line"><span class="cl"><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">          //re-schedule so we&#39;re called again in a second!
-</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_brew_timer_tick).execute();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(_brew_timer_tick).execute();</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">_on_brew_turned_off</span><span class="w">
@@ -7890,7 +7891,7 @@ As is, you&rsquo;ll need to fill it out / add in your own versions of some of th
 </span></span></span><span class="line"><span class="cl"><span class="sd">        id(_glbl_brew_timer_ticks) = 0;
 </span></span></span><span class="line"><span class="cl"><span class="sd">        id(_glbl_brew_low_power_ticks) = 0;
 </span></span></span><span class="line"><span class="cl"><span class="sd">        id(txt_operation_mode).publish_state(&#34;Idle&#34;);
-</span></span></span><span class="line"><span class="cl"><span class="sd">        id(_brew_timer_tick).stop();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">        id(_brew_timer_tick).stop();</span><span class="w">        
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="home-assistant-automations">Home Assistant automations</h3>
@@ -7929,7 +7930,7 @@ As is, you&rsquo;ll need to fill it out / add in your own versions of some of th
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="c"># I simplified the value template here to illustrate how the adjustable timers are meant to be used.</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="p">&gt;-</span><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">        {% if states(&#39;sensor.kitchen_temperature&#39;)|float(-1) &lt; 25 %}35{% else
-</span></span></span><span class="line"><span class="cl"><span class="sd">        %}20{% endif %}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">        %}20{% endif %}</span><span class="w">        
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">target</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">entity_id</span><span class="p">:</span><span class="w"> </span><span class="l">number.pre_bloom_time</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">service</span><span class="p">:</span><span class="w"> </span><span class="l">number.set_value</span><span class="w">

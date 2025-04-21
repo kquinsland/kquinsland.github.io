@@ -496,7 +496,8 @@ Essentially I have a large / multi-hour print that <strong>almost</strong> fits 
 <h2 id="the-problem">The problem</h2>
 <p>PrusaSlicer refuses to slice the part and gives the following error message:</p>
 <blockquote>
-<p>&ldquo;An object outside the print area was detected. Resolve the current problem to continue slicing.</p></blockquote>
+<p>&ldquo;An object outside the print area was detected. Resolve the current problem to continue slicing.</p>
+</blockquote>
 <figure >
 
     

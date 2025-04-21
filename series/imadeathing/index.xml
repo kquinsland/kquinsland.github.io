@@ -559,7 +559,7 @@ Use this as a starting point and adapt it to your needs.</div>
 </span></span></span><span class="line"><span class="cl"><span class="sd">            }
 </span></span></span><span class="line"><span class="cl"><span class="sd">          }
 </span></span></span><span class="line"><span class="cl"><span class="sd">          // Log the new values
-</span></span></span><span class="line"><span class="cl"><span class="sd">          ESP_LOGD(&#34;sense_air_pressure_delta_raw_pa.on_value&#34;, &#34;glbl_air_pressure_delta_hwm_pa: %f&#34;, id(glbl_air_pressure_delta_hwm_pa));</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          ESP_LOGD(&#34;sense_air_pressure_delta_raw_pa.on_value&#34;, &#34;glbl_air_pressure_delta_hwm_pa: %f&#34;, id(glbl_air_pressure_delta_hwm_pa));</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Air Pressure Delta (Smoothed)&#34;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
@@ -602,7 +602,7 @@ Use this as a starting point and adapt it to your needs.</div>
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">state_class</span><span class="p">:</span><span class="w"> </span><span class="l">TOTAL_INCREASING</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">update_interval</span><span class="p">:</span><span class="w"> </span><span class="l">never</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">      return id(glbl_air_pressure_delta_hwm_pa);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">      return id(glbl_air_pressure_delta_hwm_pa);</span><span class="w">      
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">on_value</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="l">id(sense_est_filter_life_remaining).update();</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
@@ -623,7 +623,7 @@ Use this as a starting point and adapt it to your needs.</div>
 </span></span></span><span class="line"><span class="cl"><span class="sd">      } else {
 </span></span></span><span class="line"><span class="cl"><span class="sd">        ESP_LOGD(&#34;sense_est_filter_life_remaining&#34;, &#34;[CalcCase] glbl_air_pressure_delta_hwm_pa: %f glbl_air_pressure_delta_virgin_pa: %f, glbl_air_pressure_delta_clogged_pa: %f&#34;, id(glbl_air_pressure_delta_hwm_pa), id(glbl_air_pressure_delta_virgin_pa), id(glbl_air_pressure_delta_clogged_pa));
 </span></span></span><span class="line"><span class="cl"><span class="sd">        return 100 - ((id(glbl_air_pressure_delta_hwm_pa) - id(glbl_air_pressure_delta_virgin_pa)) / (id(glbl_air_pressure_delta_clogged_pa) - id(glbl_air_pressure_delta_virgin_pa)) * 100);
-</span></span></span><span class="line"><span class="cl"><span class="sd">      }</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">      }</span><span class="w">      
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Button to clear the high water mark</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># This button should be pressed when a new filter is installed</span><span class="w">
@@ -662,12 +662,12 @@ Use this as a starting point and adapt it to your needs.</div>
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">max_value</span><span class="p">:</span><span class="w"> </span><span class="l">${template_number_input_max_hpa}</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">step</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">      return id(glbl_air_pressure_delta_virgin_pa)/100;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">      return id(glbl_air_pressure_delta_virgin_pa)/100;</span><span class="w">      
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">set_action</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          id(glbl_air_pressure_delta_virgin_pa) = abs(x)*100;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(glbl_air_pressure_delta_virgin_pa) = abs(x)*100;</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          id(sense_est_filter_life_remaining).update();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(sense_est_filter_life_remaining).update();</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Clogged Filter Pressure Delta&#34;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
@@ -680,12 +680,12 @@ Use this as a starting point and adapt it to your needs.</div>
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">max_value</span><span class="p">:</span><span class="w"> </span><span class="l">${template_number_input_max_hpa}</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">step</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">      return id(glbl_air_pressure_delta_clogged_pa)/100;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">      return id(glbl_air_pressure_delta_clogged_pa)/100;</span><span class="w">      
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">set_action</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          id(glbl_air_pressure_delta_clogged_pa) = abs(x)*100;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(glbl_air_pressure_delta_clogged_pa) = abs(x)*100;</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          id(sense_est_filter_life_remaining).update();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(sense_est_filter_life_remaining).update();</span><span class="w">          
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div>]]></description></item><item><title>Watch Band RFID fob</title><link>https://karlquinsland.com/watch-band-rfid/</link><pubDate>Sat, 14 Sep 2024 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/watch-band-rfid/</guid><description><![CDATA[<h1 id="watch-band-rfid-fob">Watch Band RFID fob</h1>
@@ -835,7 +835,8 @@ I did eventually find a suitable tag on eBay:</p>
 
 <p>eBay being what it is, there&rsquo;s no guarantee that <a href="https://www.ebay.com/itm/254607033331" target="_blank" rel="noopener noreffer">the same listing I purchased from</a> will still be active in the future so I am including a copy of the listing description that you can use for reference when searching for a suitable tag:</p>
 <blockquote>
-<p>New 2pcs T5577 125KHz E/H Rewrite Writable R/W Proximity Bio Glass Tag 2.12x12mm</p></blockquote>
+<p>New 2pcs T5577 125KHz E/H Rewrite Writable R/W Proximity Bio Glass Tag 2.12x12mm</p>
+</blockquote>
 <p>A portion of the listing text:</p>
 <blockquote>
 <p>Specifications:</p>
@@ -866,7 +867,8 @@ I did eventually find a suitable tag on eBay:</p>
 <li>
 <p>Page included: 2pcs 125KHz T5577 Writeable Glass RFID TAGS</p>
 </li>
-</ul></blockquote>
+</ul>
+</blockquote>
 <h2 id="files">Files</h2>
 <ul>
     

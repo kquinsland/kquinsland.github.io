@@ -407,7 +407,7 @@ The length of the timer can be adjusted at any time; the new value is used for t
 </span></span></span><span class="line"><span class="cl"><span class="sd">
 </span></span></span><span class="line"><span class="cl"><span class="sd">          id(_timer_tick).stop();
 </span></span></span><span class="line"><span class="cl"><span class="sd">          id(_glbl_timeout_ticks) = 0;
-</span></span></span><span class="line"><span class="cl"><span class="sd">          ESP_LOGD(TAG, &#34;_timer_tick now stopped and _glbl_timeout_ticks is %d&#34;, id(_glbl_timeout_ticks));</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          ESP_LOGD(TAG, &#34;_timer_tick now stopped and _glbl_timeout_ticks is %d&#34;, id(_glbl_timeout_ticks));</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">_timer_tick</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Start a new run after previous runs completes. This will happen until timer.stop() is called on us</span><span class="w">
@@ -447,7 +447,7 @@ The length of the timer can be adjusted at any time; the new value is used for t
 </span></span></span><span class="line"><span class="cl"><span class="sd">              id(_timer_tick).execute();
 </span></span></span><span class="line"><span class="cl"><span class="sd">            }
 </span></span></span><span class="line"><span class="cl"><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          }</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">          }</span><span class="w">          
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Create a toggle in HA that allows us to arm/disarm the button &lt;-&gt; relay glue</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># See: https://esphome.io/components/switch/template.html</span><span class="w">
@@ -464,7 +464,7 @@ The length of the timer can be adjusted at any time; the new value is used for t
 </span></span></span><span class="line"><span class="cl"><span class="sd">        return true;
 </span></span></span><span class="line"><span class="cl"><span class="sd">      } else {
 </span></span></span><span class="line"><span class="cl"><span class="sd">        return false;
-</span></span></span><span class="line"><span class="cl"><span class="sd">      }</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">      }</span><span class="w">      
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">turn_on_action</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">globals.set</span><span class="p">:</span><span class="w">
@@ -488,7 +488,7 @@ The length of the timer can be adjusted at any time; the new value is used for t
 </span></span></span><span class="line"><span class="cl"><span class="sd">        return true;
 </span></span></span><span class="line"><span class="cl"><span class="sd">      } else {
 </span></span></span><span class="line"><span class="cl"><span class="sd">        return false;
-</span></span></span><span class="line"><span class="cl"><span class="sd">      }</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">      }</span><span class="w">      
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">turn_on_action</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">then</span><span class="p">:</span><span class="w">
@@ -502,7 +502,7 @@ The length of the timer can be adjusted at any time; the new value is used for t
 </span></span></span><span class="line"><span class="cl"><span class="sd">              id(_timer_tick).execute();
 </span></span></span><span class="line"><span class="cl"><span class="sd">            } else {
 </span></span></span><span class="line"><span class="cl"><span class="sd">              ESP_LOGD(TAG, &#34;Timeout Automation ARMED, light NOT on. Nothing to do!&#34;);
-</span></span></span><span class="line"><span class="cl"><span class="sd">            }</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">            }</span><span class="w">            
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">turn_off_action</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">then</span><span class="p">:</span><span class="w">
@@ -511,7 +511,7 @@ The length of the timer can be adjusted at any time; the new value is used for t
 </span></span></span><span class="line"><span class="cl"><span class="sd">            // Set the global to OFF, it will be checked next time the _tick fires if the on_timer_stop doesn&#39;t
 </span></span></span><span class="line"><span class="cl"><span class="sd">            // kill the ticking
 </span></span></span><span class="line"><span class="cl"><span class="sd">            id(glbl_timeout_armed) = false;
-</span></span></span><span class="line"><span class="cl"><span class="sd">            id(on_timer_stop).execute();</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">            id(on_timer_stop).execute();</span><span class="w">            
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Give the user a graphical control over the timeout</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># See: https://esphome.io/components/number/template.html</span><span class="w">
@@ -528,7 +528,7 @@ The length of the timer can be adjusted at any time; the new value is used for t
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">step</span><span class="p">:</span><span class="w"> </span><span class="m">30</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">      return (int) id(glbl_timeout_length_ticks);</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">      return (int) id(glbl_timeout_length_ticks);</span><span class="w">      
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">set_action</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">then</span><span class="p">:</span><span class="w">
@@ -1170,7 +1170,7 @@ This is trivial to do with a &lsquo;<a href="https://tasmota.github.io/docs/devi
 </span></span></span><span class="line"><span class="cl"><span class="sd">          mdi:kettle-steam
 </span></span></span><span class="line"><span class="cl"><span class="sd">        {% else %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          mdi:kettle
-</span></span></span><span class="line"><span class="cl"><span class="sd">        {% endif %}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">        {% endif %}</span><span class="w">        
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">value_template</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;{{states(&#39;sensor.kettle_energy_power&#39;) | float &gt; 5}}&#34;</span><span class="w">
 </span></span></span></code></pre></td></tr></table>
 </div>

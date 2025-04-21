@@ -2547,7 +2547,7 @@ This is trivial to do with a &lsquo;<a href="https://tasmota.github.io/docs/devi
 </span></span></span><span class="line"><span class="cl"><span class="sd">          mdi:kettle-steam
 </span></span></span><span class="line"><span class="cl"><span class="sd">        {% else %}
 </span></span></span><span class="line"><span class="cl"><span class="sd">          mdi:kettle
-</span></span></span><span class="line"><span class="cl"><span class="sd">        {% endif %}</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">        {% endif %}</span><span class="w">        
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="nt">value_template</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;{{states(&#39;sensor.kettle_energy_power&#39;) | float &gt; 5}}&#34;</span><span class="w">
 </span></span></span></code></pre></td></tr></table>
 </div>

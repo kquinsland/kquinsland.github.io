@@ -495,7 +495,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class=line><span class=cl><span class=sd>          } else {
 </span></span></span><span class=line><span class=cl><span class=sd>            id(out_3).turn_on().perform();
 </span></span></span><span class=line><span class=cl><span class=sd>          }
-</span></span></span><span class=line><span class=cl><span class=sd>        }</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=sd>        }</span><span class=w>        
 </span></span></span></code></pre></td></tr></table></div></div><h4 id=packagesbaseesphomeyaml><code>packages/base.esphome.yaml</code></h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
 </span><span class=lnt> 3
@@ -1332,7 +1332,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class=line><span class=cl><span class=sd>        return true;
 </span></span></span><span class=line><span class=cl><span class=sd>      } else {
 </span></span></span><span class=line><span class=cl><span class=sd>        return false;
-</span></span></span><span class=line><span class=cl><span class=sd>      }</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=sd>      }</span><span class=w>      
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>turn_on_action</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>then</span><span class=p>:</span><span class=w>
@@ -1349,7 +1349,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class=line><span class=cl><span class=sd>              ESP_LOGD(TAG, &#34;Timeout Automation ARMED with &#39;${timer_control_entity_id}&#39;&#39; NOT on... nothing to do!&#34;);
 </span></span></span><span class=line><span class=cl><span class=sd>            }
 </span></span></span><span class=line><span class=cl><span class=sd>            // Don&#39;t wait for ESPHome to schedule updating the text sensor to re-draw the HA ui
-</span></span></span><span class=line><span class=cl><span class=sd>            id(s_txt_timeout_remaining_${instance_uid}).update();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=sd>            id(s_txt_timeout_remaining_${instance_uid}).update();</span><span class=w>            
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>turn_off_action</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>then</span><span class=p>:</span><span class=w>
@@ -1361,7 +1361,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class=line><span class=cl><span class=sd>            id(glbl_timeout_armed_${instance_uid}) = false;
 </span></span></span><span class=line><span class=cl><span class=sd>            id(on_timer_stop_${instance_uid}).execute();
 </span></span></span><span class=line><span class=cl><span class=sd>            // Don&#39;t wait for ESPHome to schedule updating the text sensor to re-draw the HA ui
-</span></span></span><span class=line><span class=cl><span class=sd>            id(s_txt_timeout_remaining_${instance_uid}).update();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=sd>            id(s_txt_timeout_remaining_${instance_uid}).update();</span><span class=w>            
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=c># Expose a control to HA so we can adjust timer length</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=c># See: https://esphome.io/components/number/template.html</span><span class=w>
@@ -1390,7 +1390,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=p>|-</span><span class=sd>
 </span></span></span><span class=line><span class=cl><span class=sd>      // HA expects value in minutes, we do everything in seconds so convert
-</span></span></span><span class=line><span class=cl><span class=sd>      return (int) id(glbl_timeout_length_ticks_${instance_uid})/60;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=sd>      return (int) id(glbl_timeout_length_ticks_${instance_uid})/60;</span><span class=w>      
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>set_action</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>then</span><span class=p>:</span><span class=w>
@@ -1442,7 +1442,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class=line><span class=cl><span class=sd>
 </span></span></span><span class=line><span class=cl><span class=sd>      snprintf(buff, 15, &#34;%02d:%02d:%02d&#34;, hr, min, sec);
 </span></span></span><span class=line><span class=cl><span class=sd>      ESP_LOGD(TAG, &#34;buff: %s&#34;, buff);
-</span></span></span><span class=line><span class=cl><span class=sd>      return to_string(buff);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=sd>      return to_string(buff);</span><span class=w>      
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>script</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># End meaning the natural conclusion of the timer. Do whatever we&#39;re supposed to do when the timer fires off</span><span class=w>
@@ -1452,7 +1452,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=p>|-</span><span class=sd>
 </span></span></span><span class=line><span class=cl><span class=sd>          auto call = id(${timer_control_entity_id});
 </span></span></span><span class=line><span class=cl><span class=sd>          call-&gt;${timer_control_action_exp}.perform();
-</span></span></span><span class=line><span class=cl><span class=sd>          ESP_LOGI(&#34;script.on_timer_end_${instance_uid}&#34;, &#34;output should be ${timer_control_action_exp}!&#34;);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=sd>          ESP_LOGI(&#34;script.on_timer_end_${instance_uid}&#34;, &#34;output should be ${timer_control_action_exp}!&#34;);</span><span class=w>          
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c># Stop meaning the pre-mature ending of the timer</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>on_timer_stop_${instance_uid}</span><span class=w>
@@ -1467,7 +1467,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class=line><span class=cl><span class=sd>
 </span></span></span><span class=line><span class=cl><span class=sd>          id(_timer_tick_${instance_uid}).stop();
 </span></span></span><span class=line><span class=cl><span class=sd>          id(_glbl_timeout_ticks_${instance_uid}) = 0;
-</span></span></span><span class=line><span class=cl><span class=sd>          ESP_LOGD(TAG, &#34;_timer_tick_${instance_uid} now stopped and _glbl_timeout_ticks_${instance_uid} is %d&#34;, id(_glbl_timeout_ticks_${instance_uid}));</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=sd>          ESP_LOGD(TAG, &#34;_timer_tick_${instance_uid} now stopped and _glbl_timeout_ticks_${instance_uid} is %d&#34;, id(_glbl_timeout_ticks_${instance_uid}));</span><span class=w>          
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>_timer_tick_${instance_uid}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c># Start a new run after previous runs completes. This will happen until timer.stop() is called on us</span><span class=w>
@@ -1513,7 +1513,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class=line><span class=cl><span class=sd>              id(_timer_tick_${instance_uid}).execute();
 </span></span></span><span class=line><span class=cl><span class=sd>            }
 </span></span></span><span class=line><span class=cl><span class=sd>
-</span></span></span><span class=line><span class=cl><span class=sd>          }</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=sd>          }</span><span class=w>          
 </span></span></span></code></pre></td></tr></table></div></div><h4 id=packageslight-automationsyaml><code>packages/light-automations.yaml</code></h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>  1
 </span><span class=lnt>  2
 </span><span class=lnt>  3
@@ -1769,7 +1769,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class=line><span class=cl><span class=sd>          } else {
 </span></span></span><span class=line><span class=cl><span class=sd>            id(do_daytime_mode_active).execute();
 </span></span></span><span class=line><span class=cl><span class=sd>          }
-</span></span></span><span class=line><span class=cl><span class=sd>          id(resume_normal_regime_for_leds).execute();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=sd>          id(resume_normal_regime_for_leds).execute();</span><span class=w>          
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=c># Switch to control different bits of functionality</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>switch</span><span class=p>:</span><span class=w>
@@ -1788,16 +1788,16 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class=line><span class=cl><span class=sd>        return true;
 </span></span></span><span class=line><span class=cl><span class=sd>      } else {
 </span></span></span><span class=line><span class=cl><span class=sd>        return false;
-</span></span></span><span class=line><span class=cl><span class=sd>      }</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=sd>      }</span><span class=w>      
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>turn_on_action</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>then</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>        </span>- <span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=p>|-</span><span class=sd>
-</span></span></span><span class=line><span class=cl><span class=sd>            id(glbl_automation_sun_position_triggers_light_modes) = true;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=sd>            id(glbl_automation_sun_position_triggers_light_modes) = true;</span><span class=w>            
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>turn_off_action</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>then</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>        </span>- <span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=p>|-</span><span class=sd>
-</span></span></span><span class=line><span class=cl><span class=sd>            id(glbl_automation_sun_position_triggers_light_modes) = false;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=sd>            id(glbl_automation_sun_position_triggers_light_modes) = false;</span><span class=w>            
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=c># See: https://esphome.io/components/sun.html</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>sun</span><span class=p>:</span><span class=w>
@@ -1983,15 +1983,15 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class=line><span class=cl><span class=sd>        return true;
 </span></span></span><span class=line><span class=cl><span class=sd>      } else {
 </span></span></span><span class=line><span class=cl><span class=sd>        return false;
-</span></span></span><span class=line><span class=cl><span class=sd>      }</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=sd>      }</span><span class=w>      
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>turn_on_action</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>then</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>        </span>- <span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=p>|-</span><span class=sd>
-</span></span></span><span class=line><span class=cl><span class=sd>            id(glbl_sw_touch_enable) = true;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=sd>            id(glbl_sw_touch_enable) = true;</span><span class=w>            
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>turn_off_action</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>then</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>        </span>- <span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=p>|-</span><span class=sd>
-</span></span></span><span class=line><span class=cl><span class=sd>            id(glbl_sw_touch_enable) = false;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=sd>            id(glbl_sw_touch_enable) = false;</span><span class=w>            
 </span></span></span></code></pre></td></tr></table></div></div><h4 id=packagesvariantc3yaml><code>packages/variant.c3.yaml</code></h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>  1
 </span><span class=lnt>  2
 </span><span class=lnt>  3
@@ -2398,7 +2398,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class=line><span class=cl><span class=sd>          ESP_LOGD(&#34;script.do_nighttime_mode_active&#34;, &#34;Setting TEMPLATE(s) =&gt; R: %f G: %f B: %f BR: %f&#34;, red, green, blue, bright);
 </span></span></span><span class=line><span class=cl><span class=sd>          id(template_light_1).turn_on().set_rgb( red, green, blue ).set_brightness(bright).set_transition_length(0).perform();
 </span></span></span><span class=line><span class=cl><span class=sd>          id(template_light_2).turn_on().set_rgb( red, green, blue ).set_brightness(bright).set_transition_length(0).perform();
-</span></span></span><span class=line><span class=cl><span class=sd>          id(template_light_3).turn_on().set_rgb( red, green, blue ).set_brightness(bright).set_transition_length(0).perform();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=sd>          id(template_light_3).turn_on().set_rgb( red, green, blue ).set_brightness(bright).set_transition_length(0).perform();</span><span class=w>          
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>do_daytime_mode_active</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>then</span><span class=p>:</span><span class=w>
@@ -2413,7 +2413,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class=line><span class=cl><span class=sd>          ESP_LOGD(&#34;script.do_daytime_mode_active&#34;, &#34;Setting TEMPLATE(s) =&gt; R: %f G: %f B: %f BR: %f&#34;, red, green, blue, bright);
 </span></span></span><span class=line><span class=cl><span class=sd>          id(template_light_1).turn_on().set_rgb( red, green, blue ).set_brightness(bright).set_transition_length(0).perform();
 </span></span></span><span class=line><span class=cl><span class=sd>          id(template_light_2).turn_on().set_rgb( red, green, blue ).set_brightness(bright).set_transition_length(0).perform();
-</span></span></span><span class=line><span class=cl><span class=sd>          id(template_light_3).turn_on().set_rgb( red, green, blue ).set_brightness(bright).set_transition_length(0).perform();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=sd>          id(template_light_3).turn_on().set_rgb( red, green, blue ).set_brightness(bright).set_transition_length(0).perform();</span><span class=w>          
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>figure_out_which_partition_to_light</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>mode</span><span class=p>:</span><span class=w> </span><span class=l>single</span><span class=w>
@@ -2481,7 +2481,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class=line><span class=cl><span class=sd>              default:
 </span></span></span><span class=line><span class=cl><span class=sd>                ESP_LOGE(TAG, &#34;Unknown output number: %d&#34;, output_num);
 </span></span></span><span class=line><span class=cl><span class=sd>                return;
-</span></span></span><span class=line><span class=cl><span class=sd>            }</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=sd>            }</span><span class=w>          
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># Called on boot or any time we&#39;re transitioning from mood-light to a &#34;normal&#34; mode</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>resume_normal_regime_for_leds</span><span class=w>
@@ -2577,7 +2577,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class=line><span class=cl><span class=sd>      auto template_light_3 = new TemplateLight();
 </span></span></span><span class=line><span class=cl><span class=sd>      App.register_component(template_light_3);
 </span></span></span><span class=line><span class=cl><span class=sd>
-</span></span></span><span class=line><span class=cl><span class=sd>      return {template_light_1, template_light_2, template_light_3};</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=sd>      return {template_light_1, template_light_2, template_light_3};</span><span class=w>      
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>lights</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;Indicator 1&#34;</span><span class=w>
@@ -2619,7 +2619,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class=line><span class=cl><span class=sd>              // Pass through should happen ONLY in the on_state and on_turn_off hooks so just log here
 </span></span></span><span class=line><span class=cl><span class=sd>              // Since we have ZERO gamma correction, the values here should _match_ the ones set in HA
 </span></span></span><span class=line><span class=cl><span class=sd>              // They&#39;ll just be normalized though. So HA sends red: 255, here, we get 1.0
-</span></span></span><span class=line><span class=cl><span class=sd>              ESP_LOGD(&#34;template_light_1.on_turn_on&#34;, &#34;ON_TURN_ON =&gt; R: %f, G: %f, B: %f BR: %f&#34;, red, green, blue, br);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=sd>              ESP_LOGD(&#34;template_light_1.on_turn_on&#34;, &#34;ON_TURN_ON =&gt; R: %f, G: %f, B: %f BR: %f&#34;, red, green, blue, br);</span><span class=w>              
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>on_turn_off</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>          </span>- <span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=p>|-</span><span class=sd>
@@ -2630,7 +2630,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class=line><span class=cl><span class=sd>              // OFF means OFF so both partitions should be off
 </span></span></span><span class=line><span class=cl><span class=sd>              ESP_LOGD(&#34;template_light_1.on_turn_off&#34;, &#34;TURN OFF&#34;);
 </span></span></span><span class=line><span class=cl><span class=sd>              id(leds_button_1_left).turn_off().set_rgb( red, green, blue ).set_brightness(br).set_transition_length(0).perform();
-</span></span></span><span class=line><span class=cl><span class=sd>              id(leds_button_1_right).turn_off().set_rgb( red, green, blue ).set_brightness(br).set_transition_length(0).perform();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=sd>              id(leds_button_1_right).turn_off().set_rgb( red, green, blue ).set_brightness(br).set_transition_length(0).perform();</span><span class=w>              
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>on_state</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>          </span>- <span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=p>|-</span><span class=sd>
@@ -2638,7 +2638,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class=line><span class=cl><span class=sd>              float red, green, blue, br;
 </span></span></span><span class=line><span class=cl><span class=sd>              id(template_light_1).current_values_as_rgb(&amp;red, &amp;green, &amp;blue);
 </span></span></span><span class=line><span class=cl><span class=sd>              id(template_light_1).current_values_as_brightness(&amp;br);
-</span></span></span><span class=line><span class=cl><span class=sd>              ESP_LOGD(&#34;template_light_1.on_state&#34;, &#34;State =&gt; R: %f, G: %f, B: %f BR: %f&#34;, red, green, blue, br);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=sd>              ESP_LOGD(&#34;template_light_1.on_state&#34;, &#34;State =&gt; R: %f, G: %f, B: %f BR: %f&#34;, red, green, blue, br);</span><span class=w>              
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>          </span><span class=c># Figure out which partition light to light up now that we have an updated state</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>          </span>- <span class=nt>script.execute</span><span class=p>:</span><span class=w>
@@ -2664,7 +2664,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class=line><span class=cl><span class=sd>              // Pass through should happen ONLY in the on_state and on_turn_off hooks so just log here
 </span></span></span><span class=line><span class=cl><span class=sd>              // Since we have ZERO gamma correction, the values here should _match_ the ones set in HA
 </span></span></span><span class=line><span class=cl><span class=sd>              // They&#39;ll just be normalized though. So HA sends red: 255, here, we get 1.0
-</span></span></span><span class=line><span class=cl><span class=sd>              ESP_LOGD(&#34;template_light_2.on_turn_on&#34;, &#34;ON_TURN_ON =&gt; R: %f, G: %f, B: %f BR: %f&#34;, red, green, blue, br);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=sd>              ESP_LOGD(&#34;template_light_2.on_turn_on&#34;, &#34;ON_TURN_ON =&gt; R: %f, G: %f, B: %f BR: %f&#34;, red, green, blue, br);</span><span class=w>              
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>on_turn_off</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>          </span>- <span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=p>|-</span><span class=sd>
@@ -2675,7 +2675,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class=line><span class=cl><span class=sd>              // OFF means OFF so both partitions should be off
 </span></span></span><span class=line><span class=cl><span class=sd>              ESP_LOGD(&#34;template_light_2.on_turn_off&#34;, &#34;TURN OFF&#34;);
 </span></span></span><span class=line><span class=cl><span class=sd>              id(leds_button_2_left).turn_off().set_rgb( red, green, blue ).set_brightness(br).set_transition_length(0).perform();
-</span></span></span><span class=line><span class=cl><span class=sd>              id(leds_button_2_right).turn_off().set_rgb( red, green, blue ).set_brightness(br).set_transition_length(0).perform();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=sd>              id(leds_button_2_right).turn_off().set_rgb( red, green, blue ).set_brightness(br).set_transition_length(0).perform();</span><span class=w>              
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>on_state</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>          </span>- <span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=p>|-</span><span class=sd>
@@ -2683,7 +2683,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class=line><span class=cl><span class=sd>              float red, green, blue, br;
 </span></span></span><span class=line><span class=cl><span class=sd>              id(template_light_2).current_values_as_rgb(&amp;red, &amp;green, &amp;blue);
 </span></span></span><span class=line><span class=cl><span class=sd>              id(template_light_2).current_values_as_brightness(&amp;br);
-</span></span></span><span class=line><span class=cl><span class=sd>              ESP_LOGD(&#34;template_light_2.on_state&#34;, &#34;State =&gt; R: %f, G: %f, B: %f BR: %f&#34;, red, green, blue, br);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=sd>              ESP_LOGD(&#34;template_light_2.on_state&#34;, &#34;State =&gt; R: %f, G: %f, B: %f BR: %f&#34;, red, green, blue, br);</span><span class=w>              
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>          </span>- <span class=nt>script.execute</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>              </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>figure_out_which_partition_to_light</span><span class=w>
@@ -2708,7 +2708,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class=line><span class=cl><span class=sd>              // Pass through should happen ONLY in the on_state and on_turn_off hooks so just log here
 </span></span></span><span class=line><span class=cl><span class=sd>              // Since we have ZERO gamma correction, the values here should _match_ the ones set in HA
 </span></span></span><span class=line><span class=cl><span class=sd>              // They&#39;ll just be normalized though. So HA sends red: 255, here, we get 1.0
-</span></span></span><span class=line><span class=cl><span class=sd>              ESP_LOGD(&#34;template_light_3.on_turn_on&#34;, &#34;ON_TURN_ON =&gt; R: %f, G: %f, B: %f BR: %f&#34;, red, green, blue, br);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=sd>              ESP_LOGD(&#34;template_light_3.on_turn_on&#34;, &#34;ON_TURN_ON =&gt; R: %f, G: %f, B: %f BR: %f&#34;, red, green, blue, br);</span><span class=w>              
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>on_turn_off</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>          </span>- <span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=p>|-</span><span class=sd>
@@ -2719,7 +2719,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class=line><span class=cl><span class=sd>              // OFF means OFF so both partitions should be off
 </span></span></span><span class=line><span class=cl><span class=sd>              ESP_LOGD(&#34;template_light_3.on_turn_off&#34;, &#34;TURN OFF&#34;);
 </span></span></span><span class=line><span class=cl><span class=sd>              id(leds_button_3_left).turn_off().set_rgb( red, green, blue ).set_brightness(br).set_transition_length(0).perform();
-</span></span></span><span class=line><span class=cl><span class=sd>              id(leds_button_3_right).turn_off().set_rgb( red, green, blue ).set_brightness(br).set_transition_length(0).perform();</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=sd>              id(leds_button_3_right).turn_off().set_rgb( red, green, blue ).set_brightness(br).set_transition_length(0).perform();</span><span class=w>              
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>on_state</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>          </span>- <span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=p>|-</span><span class=sd>
@@ -2727,7 +2727,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class=line><span class=cl><span class=sd>              float red, green, blue, br;
 </span></span></span><span class=line><span class=cl><span class=sd>              id(template_light_3).current_values_as_rgb(&amp;red, &amp;green, &amp;blue);
 </span></span></span><span class=line><span class=cl><span class=sd>              id(template_light_3).current_values_as_brightness(&amp;br);
-</span></span></span><span class=line><span class=cl><span class=sd>              ESP_LOGD(&#34;template_light_3.on_state&#34;, &#34;State =&gt; R: %f, G: %f, B: %f BR: %f&#34;, red, green, blue, br);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=sd>              ESP_LOGD(&#34;template_light_3.on_state&#34;, &#34;State =&gt; R: %f, G: %f, B: %f BR: %f&#34;, red, green, blue, br);</span><span class=w>              
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>          </span>- <span class=nt>script.execute</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>              </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>figure_out_which_partition_to_light</span><span class=w>
@@ -2747,5 +2747,5 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>gpio</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>pin</span><span class=p>:</span><span class=w> </span><span class=l>GPIO27</span><span class=w>
 </span></span></span></code></pre></td></tr></table></div></div></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>Updated on 2023-11-11</span></div><div class=post-info-license></div></div><div class=post-info-line><div class=post-info-md><span><a class=link-to-markdown href=/sonoff-t5-esphome/index.md target=_blank>Read Markdown</a></span></div><div class=post-info-share><span></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw"></i>&nbsp;<a href=/tags/esphome/>Esphome</a>,&nbsp;<a href=/tags/home-assistant/>Home-Assistant</a></section><section><span><a href=javascript:void(0); onclick=window.history.back()>Back</a></span>&nbsp;|&nbsp;<span><a href=/>Home</a></span></section></div><div class=post-nav><a href=/yeelight-monitor-lamp-teardown-esphome/ class=prev rel=prev title="ESPHome on the Yeelight Monitor Light Bar Pro"><i class="fas fa-angle-left fa-fw"></i>ESPHome on the Yeelight Monitor Light Bar Pro</a>
-<a href=/pulse-eight-hdmi-cec-injector-teardown/ class=next rel=next title="Inside of the Pulse-Eight HDMI CEC Injector.">Inside of the Pulse-Eight HDMI CEC Injector.<i class="fas fa-angle-right fa-fw"></i></a></div></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line>¯\_(ツ)_/¯</div><div class=footer-line>Powered by <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.143.1">Hugo</a> | Theme - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a></div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2019 - 2025</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank></a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top"><i class="fas fa-arrow-up fa-fw"></i>
+<a href=/pulse-eight-hdmi-cec-injector-teardown/ class=next rel=next title="Inside of the Pulse-Eight HDMI CEC Injector.">Inside of the Pulse-Eight HDMI CEC Injector.<i class="fas fa-angle-right fa-fw"></i></a></div></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line>¯\_(ツ)_/¯</div><div class=footer-line>Powered by <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.140.0">Hugo</a> | Theme - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.2.10"><i class="far fa-kiss-wink-heart fa-fw"></i> LoveIt</a></div><div class=footer-line><i class="far fa-copyright fa-fw"></i><span itemprop=copyrightYear>2019 - 2025</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank></a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top"><i class="fas fa-arrow-up fa-fw"></i>
 </a><a href=# id=view-comments class=fixed-button title="View Comments"><i class="fas fa-comment fa-fw"></i></a></div><link rel=stylesheet href=/lib/katex/katex.min.4710034e669c7ff17f823f9ba12cf8a36582d65b007f79cbc4a3c11d7db2e4ca.css integrity="sha256-RxADTmacf/F/gj+boSz4o2WC1lsAf3nLxKPBHX2y5Mo="><link rel=stylesheet href=/lib/katex/copy-tex.min.bf9ff4137fec38f6255419e142d0883c9c52090885d746f80eee12b273d9b3e0.css integrity="sha256-v5/0E3/sOPYlVBnhQtCIPJxSCQiF10b4Du4SsnPZs+A="><script type=text/javascript src=/lib/smooth-scroll/smooth-scroll.min.bcff85fb5e00d68802850b393ac7792c997f722f536f38e26638c46dca8e5eb6.js integrity="sha256-vP+F+14A1ogChQs5Osd5LJl/ci9TbzjiZjjEbcqOXrY="></script><script type=text/javascript src=/lib/autocomplete/autocomplete.min.615590a2ca2b667afa7c02ef396f5500b62e22795ddbb46448f90494605d09a5.js integrity="sha256-YVWQosorZnr6fALvOW9VALYuInld27RkSPkElGBdCaU="></script><script type=text/javascript src=/lib/lunr/lunr.min.df84a2d58ea594c04a3371b48d020b55ea10284c2ec636e4e331965d7313e29b.js integrity="sha256-34Si1Y6llMBKM3G0jQILVeoQKEwuxjbk4zGWXXMT4ps="></script><script type=text/javascript src=/lib/lazysizes/lazysizes.min.fb649fcae62177dfe63e67081ddceb830b5ce1f05a4184e9bbb7d87ac4b8f4e5.js integrity="sha256-+2SfyuYhd9/mPmcIHdzrgwtc4fBaQYTpu7fYesS49OU="></script><script type=text/javascript src=/lib/clipboard/clipboard.min.8a7739925f4c03586479852df840b7061948832a7fda30c8c812d2ea4dd4c4f2.js integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI="></script><script type=text/javascript src=/lib/katex/katex.min.17f5dd6b9f123dd7140abfb18521b3f4c036cd004f6f40121182a8865f140877.js integrity="sha256-F/Xda58SPdcUCr+xhSGz9MA2zQBPb0ASEYKohl8UCHc="></script><script type=text/javascript src=/lib/katex/auto-render.min.f74776a677f0d2be0af0264058f928e2ba455d0b19bc985304660d922a43a6b2.js integrity="sha256-90d2pnfw0r4K8CZAWPko4rpFXQsZvJhTBGYNkipDprI="></script><script type=text/javascript src=/lib/katex/copy-tex.min.2ab2237329021bc443986c8327f6e61357fb68a54e5d233d224023718c02207d.js integrity="sha256-KrIjcykCG8RDmGyDJ/bmE1f7aKVOXSM9IkAjcYwCIH0="></script><script type=text/javascript src=/lib/katex/mhchem.min.5cea356d6025c5a2f18c454c83ec5674dbb04fab1cd1d75569e77788c6b6f888.js integrity="sha256-XOo1bWAlxaLxjEVMg+xWdNuwT6sc0ddVaed3iMa2+Ig="></script><script type=text/javascript>window.config={code:{copyTitle:"Copy to clipboard",maxShownLines:10},comment:{},math:{delimiters:[{display:!0,left:"$$",right:"$$"},{display:!0,left:"\\[",right:"\\]"},{display:!1,left:"$",right:"$"},{display:!1,left:"\\(",right:"\\)"}],strict:!1},search:{highlightTag:"em",lunrIndexURL:"/index.json",maxResultLength:10,noResultsFound:"No results found",snippetLength:30,type:"lunr"}}</script><script type=text/javascript src=/js/theme.min.f51938f3065a40ee841bcb558e4330e31fd26c0ea55343fff8770b88b0319a3c.js integrity="sha256-9Rk48wZaQO6EG8tVjkMw4x/SbA6lU0P/+HcLiLAxmjw="></script><script type=text/javascript>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-3WZ55XG701",{anonymize_ip:!0})</script><script type=text/javascript src="https://www.googletagmanager.com/gtag/js?id=G-3WZ55XG701" async></script></body></html>

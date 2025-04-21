@@ -674,7 +674,8 @@ Once the screw is fully inserted, allow it to fully cool (~5min) so the softened
 <p>First, a brief word about indemnification:</p>
 <blockquote>
 <p>All instructions and information on this page is purely for informational purposes.</p>
-<p>The original HASP and my modifications come with neither an expressed or implied warranty. By constructing your own, you assume all risk.</p></blockquote>
+<p>The original HASP and my modifications come with neither an expressed or implied warranty. By constructing your own, you assume all risk.</p>
+</blockquote>
 <h3 id="software">Software</h3>
 <p>The few software modifications I&rsquo;ve made to the HASP project are relatively small and don&rsquo;t implement anything significant or new; they are &lsquo;quality of life&rsquo; improvements that target small portions of the code.</p>
 <p>I strongly believe that the hardest part of using a given piece automation technology should be taking it out of the box. To wit, Home Assistant has robust - <a href="https://community.home-assistant.io/t/ability-to-set-entity-icon-through-mqtt-discovery/224538" target="_blank" rel="noopener noreffer">but not perfect</a> - support for <a href="Https://www.home-assistant.io/docs/mqtt/discovery/" target="_blank" rel="noopener noreffer">automatic device discovery and configuration via MQTT</a>. Once a device has connected to the MQTT broker, it simply publishes a document detailing how HA should interface with the device. It&rsquo;s a wonderful experience to see a new device connect to the network for the first time and just a few seconds later the new device is registered in HA, waiting for you to start integrating it into automations 🤩🤤.</p>
@@ -2422,7 +2423,7 @@ The <code>.stl</code> and <code>.3mf</code> files are available for easy printin
 </span></span></span><span class="line"><span class="cl"><span class="sd">        ws3-&gt;particles_25um,
 </span></span></span><span class="line"><span class="cl"><span class="sd">        ws3-&gt;particles_50um,
 </span></span></span><span class="line"><span class="cl"><span class="sd">        ws3-&gt;particles_100um,
-</span></span></span><span class="line"><span class="cl"><span class="sd">      };</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="sd">      };</span><span class="w">      
 </span></span></span></code></pre></td></tr></table>
 </div>
 </div><p>With that, check the logs from your instance of ESPHome and you should see something like this:</p>
