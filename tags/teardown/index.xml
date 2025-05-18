@@ -1,4 +1,244 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Teardown - Tag - karl</title><link>https://karlquinsland.com/tags/teardown/</link><description>Teardown - Tag - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 20 Jul 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/teardown/" rel="self" type="application/rss+xml"/><item><title>Solum 2.2 inch Electronic Shelf Label Teardown</title><link>https://karlquinsland.com/solum-el022hwra-teardown/</link><pubDate>Thu, 20 Jul 2023 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/solum-el022hwra-teardown/</guid><description><![CDATA[<h1 id="quick-peek-inside-the-el029f3wra">Quick peek inside the EL029F3WRA</h1>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>Teardown - Tag - karl</title><link>https://karlquinsland.com/tags/teardown/</link><description>Teardown - Tag - karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 17 May 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/teardown/" rel="self" type="application/rss+xml"/><item><title>TESmart HKS801-P23-USBK KVM Teardown</title><link>https://karlquinsland.com/tesmart-hks801-p23-usbk-kvm-teardown/</link><pubDate>Sat, 17 May 2025 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/tesmart-hks801-p23-usbk-kvm-teardown/</guid><description><![CDATA[<h1 id="tesmart-hks801-p23-usbk-kvm-teardown">TESmart HKS801-P23-USBK KVM Teardown</h1>
+<p>Recently, one of the USB ports on <a href="/hdmi-kvm-teardown-and-esphome/" rel="">my previous KVM switch</a> failed. Since it&rsquo;s a critical piece of equipment, I needed a replacement the same day. The original AliExpress product page was no longer available; the seller seems to have closed up shop entirely.</p>
+<p>Fortunately, the OEM—<code>XUFUNG</code>—has released an updated version, now sold in the US as the <a href="https://www.tesmart.com/products/hks801-p23" target="_blank" rel="noopener noreffer">TESmart HKS801-P23-USBK</a>. It looks visually identical to the previous KVM switch, but the USB ports now feature the characteristic blue color indicating USB 3.0 support.</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        <p>
+            OEM &#39;what&#39;s in the box&#39; image.
+            
+                
+                
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        <p>
+            OEM feature overview image.
+            
+                
+                
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        <p>
+            OEM &#34;what&#39;s new&#34; image; the big upgrade here is 5 Gbps USB support.
+            
+                
+                
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<div class="details admonition note open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-pencil-alt fa-fw"></i>Note<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">Despite every PCB featuring a clear <code>XUFUNG</code> label, that specific string doesn&rsquo;t appear in many places online! A quick Google search only returns my prior post and <a href="https://dancharblog.wordpress.com/2025/05/02/tesmart-hdc202-x24-thunderbolt-4-kvm-teardown-and-review/" target="_blank" rel="noopener noreffer">this teardown of another TESmart KVM</a>. You should check out the internals of that one too! Because it uses Thunderbolt, the internals are quite a bit more complicated.</div>
+        </div>
+    </div>
+<h2 id="whats-inside">What&rsquo;s inside?</h2>
+<div class="details admonition tip open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-lightbulb fa-fw"></i>TL;DR<i class="details-icon fas fa-angle-right fa-fw"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">It&rsquo;s the same architecture as before, but with some minor component changes and corresponding PCB layout updates.</div>
+        </div>
+    </div>
+<p>As before, two main PCBs are stacked: the top houses the main microcontroller and HDMI ports, while the bottom contains the USB ports and power supply.</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        <p>
+            Photo taken just after top cover removed.
+            
+                
+                
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p><figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        <p>
+            Close up of the &#34;output&#34; portion of the HDMI PCB.
+            
+                
+                
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        <p>
+            Closeup of the network interface PCB.
+            
+                
+                
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        <p>
+            Angled shot of the dupont connector between the top (HDMI) and bottom (USB) PCBs.
+            
+                
+                
+        </p> 
+    </figcaption>
+    
+</figure>
+
+</p>
+<p>It&rsquo;s interesting to see that the power rails differ: 5V for the 4K version, and apparently there&rsquo;s an 8K version that uses 12V. It&rsquo;s also nice that the RX/TX lines are explicitly labeled; it makes things a bit easier to hack on.</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        <p>
+            Close up of the RTS5411S USB hub controller and the mysterious F68B chips.
+            
+                
+                
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<h2 id="chips">Chips</h2>
+<p>In no particular order, here are the main ICs I identified on the PCB:</p>
+<ul>
+<li>
+<p><a href="https://lcsc.com/product-detail/USB-Converters_Realtek-Semicon-RTS5411S-GR_C5356838.html" target="_blank" rel="noopener noreffer">RTS5411s</a> - USB 3.1 Super-Speed HUB Controller
+cx32l003f8</p>
+</li>
+<li>
+<p>F68B / A1V8 - Not sure, can&rsquo;t find any positive ID. There&rsquo;s one for every RTS5411S port, though, and some traces do daisy chain between the individual F68B chips so i&rsquo;m guessing they&rsquo;re related to USB and possibly a buffer/signal conditioner?</p>
+<ul>
+<li>Interestingly enough, I don&rsquo;t see any traces from this chip to the &ldquo;slow&rdquo; USB ports that are meant to handle the keyboard/mouse. Those are monitored by the CH545L which is probably looking for the keyboard/mouse signals to trigger switching between banks.</li>
+</ul>
+</li>
+<li>
+<p><a href="https://lcsc.com/product-detail/Microcontrollers-MCU-MPU-SOC_WCH-Jiangsu-Qin-Heng-CH545L_C19183926.html?s_z=n_C19183926" target="_blank" rel="noopener noreffer">WCH CH545L</a> - USB multi-host multi-device enhanced E8051 MCU</p>
+</li>
+<li>
+<p><a href="https://www.zbitsemi.com/upload/file/20200903/20200903105452_99571.pdf" target="_blank" rel="noopener noreffer">CX32L003F8</a> - ARM® Cortex®-M0+ 32-bit</p>
+<ul>
+<li>Used in a few different locations: front panel to scan buttons, update the display, monitor IR signals.</li>
+</ul>
+</li>
+<li>
+<p><a href="https://www.wch-ic.com/products/CH578_7.html" target="_blank" rel="noopener noreffer">WCH CH578M</a> - ARM® Cortex®-M0 Core Bluetooth Low Energy MCU</p>
+<ul>
+<li>This is the micro on the LAN port; makes sense as it has a built in 10M Ethernet PHY</li>
+<li>Assuming there&rsquo;s no restriction that prevents the ethernet PHY and BT PHY from being used at the same time, this KVM could have ditched the IR remote and used a phone app instead&hellip;</li>
+<li>Previously, this was handled with a <a href="https://www.st.com/en/microcontrollers-microprocessors/stm8s003f3.html" target="_blank" rel="noopener noreffer">ST 8S003f3p6</a> and a <a href="https://jlcpcb.com/partdetail/WCH_Jiangsu_Qin_Heng-CH395Q/C87390" target="_blank" rel="noopener noreffer">WCH CH395Q</a> so the LAN controller has definitely had a BOM consolidation!</li>
+</ul>
+</li>
+<li>
+<p><a href="https://en.chipsea.com/product/details/?choice_id=1079" target="_blank" rel="noopener noreffer">Chipsea CS32F031C8T6</a> - ARM® Cortex®-M0 MCU</p>
+<ul>
+<li>Happens to be the exact same micro as the previous KVM and seems to be featured in Dan&rsquo;s KVM, too</li>
+</ul>
+</li>
+<li>
+<p><a href="https://jlcpcb.com/partdetail/GEC-WS3232ECN/C2973151" target="_blank" rel="noopener noreffer">WS3232ECN</a> - Generic RS232 transceiver</p>
+<ul>
+<li>Previously this was done with a <code>SIPEX SP3223EEX</code> which is not the same footprint as the WS3232ECN.. so that&rsquo;s a minor layout change</li>
+</ul>
+</li>
+<li>
+<p><a href="https://web.archive.org/web/20240523025020/https://www.ite.com.tw/en/product/view?mid=99" target="_blank" rel="noopener noreffer">IT66341TE</a> - 4 IN to 1 OUT HDMI2.0 18Gb/s Switch.</p>
+<ul>
+<li>Still can&rsquo;t find any formal technical info on this chip, probably due to <a href="https://en.wikipedia.org/wiki/High-bandwidth_Digital_Content_Protection" target="_blank" rel="noopener noreffer">HDCP</a> restrictions.</li>
+<li>Same as the previous KVM, but that one also used an IT66321E, which is not present on this PCB.</li>
+</ul>
+</li>
+</ul>
+]]></description></item><item><title>Solum 2.2 inch Electronic Shelf Label Teardown</title><link>https://karlquinsland.com/solum-el022hwra-teardown/</link><pubDate>Thu, 20 Jul 2023 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/solum-el022hwra-teardown/</guid><description><![CDATA[<h1 id="quick-peek-inside-the-el029f3wra">Quick peek inside the EL029F3WRA</h1>
 <p>In light of the recent news that the <a href="https://github.com/jjwbruijn/OpenEPaperLink" target="_blank" rel="noopener noreffer">OpenEPaperLink</a> firmware has been <a href="https://www.youtube.com/watch?v=Ph5BXFcugC4" target="_blank" rel="noopener noreffer">ported to the <code>nRF52811</code></a> series of chips, I decided to take a look inside the Solum EL029F3WRA to see if it was a viable candidate for a project.</p>
 <p>As it turns out, it is very similar to the <a href="https://github.com/jjwbruijn/OpenEPaperLink/wiki/2.9%22-EL029H3WRA" target="_blank" rel="noopener noreffer">2.9 inch</a> tags.
 I hope to soon have a simple CAD model of the ESL which I&rsquo;ll use to model a basic pogo-pin programming jig for this particular ESL.</p>
