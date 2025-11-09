@@ -1,19 +1,14 @@
 # Enhanced Home Assistant Switch Plate (HASP)
 
-
-
 The [HASwitchPlate](https://github.com/aderusha/HASwitchPlate/) project by `aderusha` is brilliant. He's managed to arrange some relatively cheap commodity hardware into a package that conveniently fits into a prime location for interacting with Home Automation - the light switch. The entire package sips power off of the already present mains wiring and connects to any MQTT broker via the esp8266 chip. As the HASP was designed to be used with Home Assistant, the humble 2.4 inch LCD transforms into an accessible control surface for an incredibly powerful home automation platform!
-
-
 
 ## Modifications
 
 First, a brief word about indemnification:
 
 > All instructions and information on this page is purely for informational purposes.
-> 
+>
 > The original HASP and my modifications come with neither an expressed or implied warranty. By constructing your own, you assume all risk.
-
 
 ### Software
 
@@ -27,7 +22,6 @@ All of the hardware modifications detailed below automatically configure themsel
 
 The original HASP code base uses allocates too little memory for storing MQTT credentials. Any username or password longer than 31 bytes/characters would be **silently** truncated on save. Despite the 'credentials saved, rebooting' message, the next screen was always a 'failure to connect' message. Frustrating! The pull request to address this is [here](https://github.com/aderusha/HASwitchPlate/pull/117).
 
-
 ### Hardware
 
 The HASP does support dimming the LCD, but it has no awareness of ambient light levels. This makes it rather difficult to deploy a HASP in any 'light sensitive' location like a bedroom or media room without another device to cue Home Assistant and lower the LCD brightness. Workable, but too high friction to be ideal.
@@ -35,32 +29,26 @@ The HASP does support dimming the LCD, but it has no awareness of ambient light 
 Light Dependent Resistors - [LDR](https://en.wikipedia.org/wiki/Photoresistor) for short - are a very cheap and compact way to get an approximate light level. Fortunately, the analogue pin is broken out on the [PCB](https://github.com/aderusha/HASwitchPlate/tree/master/PCB) so a simple [resistive divider](https://en.wikipedia.org/wiki/Voltage_divider#Resistive_divider) and a few lines of code are all that's needed to get a a number that linearly correlates to the level of light hitting the face plate.
 
 It just so happens that there is _just enough_ room to fit a LDR beneath the surface of the decor plate and out of the way of the LCD. As (not) shown in the picture above, there is no way to tell that the LDR is embedded beneath the surface.
- 
+
 The range of values from the LDR isn't great, but they are adequate enough to reliably detect if the HASP is in a darkened room.
 
 {{< figure name="ldr-graph" >}}
 
-
-While researching potential ways to measure the ambient brightness, I stumbled across the [HomeSeer HS-WD200+](https://shop.homeseer.com/products/z-wave-dimmer-switch) which features a rather novel way to convey additional information to a user; seven RGB leds 😍. It's a brilliant use of such a simple and ubiquitous technology that I'm not really sure why every smart switch doesn't do this! 
+While researching potential ways to measure the ambient brightness, I stumbled across the [HomeSeer HS-WD200+](https://shop.homeseer.com/products/z-wave-dimmer-switch) which features a rather novel way to convey additional information to a user; seven RGB leds 😍. It's a brilliant use of such a simple and ubiquitous technology that I'm not really sure why every smart switch doesn't do this!
 
 {{< figure name="wd200_inspiration" >}}
 
-With _zero_ room to spare, four LEDs can fit into a small cavity between the LCD and decor plate surface. Like with the LDR, there is no visual 'tell' that there are LEDs beneath the surface... unless they're on, of course. 
-
+With _zero_ room to spare, four LEDs can fit into a small cavity between the LCD and decor plate surface. Like with the LDR, there is no visual 'tell' that there are LEDs beneath the surface... unless they're on, of course.
 
 {{< figure  name="prototype-leds" >}}
 
-
 #### The enclosure
-
 
 Without consuming more than 1 [gang](https://diy.stackexchange.com/questions/11654/what-does-1-gang-2-gang-and-so-forth-mean-when-talking-about-electrical-bo), the only realistic way to get the wires for the new components to the HASP PCB is to go around the edge of the LCD's PCB. This is accomplished with two small 'channels' that slightly protrude in the vertical directions from the lip around the LCD and into the box that encloses the electronics.
 
 {{< figure name="CAD-channel-profile" >}}
 
-
 Additionally, I found that the original printed parts do not properly fit in the [two gang electrical box](https://www.amazon.com/Thomas-Betts-B232A-UPC-Carlon-Bulk/dp/B000GAWYZ8/) where I intended to deploy the HASP.
-
 
 {{< figure name="CAD-electric-box-clearance" >}}
 
@@ -71,19 +59,17 @@ The `.stl` and `.3mf` files are available for easy printing.
 
 All files available [below]({{< ref "#files" >}}) and on [github](https://github.com/kquinsland/HASwitchPlate/tree/master/3D_Printable_Models/enhanced-HASP).
 
-
 ## Assembly
 
 The steps below are meant to be followed between the original steps [`03_Electronics_Assembly`](https://github.com/aderusha/HASwitchPlate/blob/master/Documentation/03_Electronics_Assembly.md) and [`04_Project_Enclosure`](https://github.com/aderusha/HASwitchPlate/blob/master/Documentation/04_Project_Enclosure.md).
 
 In short, you'll want to assemble and test the HASP PCB as in the original instructions, but use the steps below as a substitute for the enclosure assembly process.
 
-
 ### Additional Materials
 
 In addition to everything in the original BOM, you'll need:
 
-- A LDR. Be aware that LDRs come in many different shapes and sizes and have different resistance values. Space is rather tight, so the form factor matters a lot more than the resistance values or band of light that the LDR responds to. If you use a different LDR, you may need to adjust the resistor value to better match your LDR. You can get 50 of the exact model GL5516 that I used for less than $2 [here](https://s.click.aliexpress.com/e/_dUjV8Rn). 
+- A LDR. Be aware that LDRs come in many different shapes and sizes and have different resistance values. Space is rather tight, so the form factor matters a lot more than the resistance values or band of light that the LDR responds to. If you use a different LDR, you may need to adjust the resistor value to better match your LDR. You can get 50 of the exact model GL5516 that I used for less than $2 [here](https://s.click.aliexpress.com/e/_dUjV8Rn).
 
 - A 10KΩ resistor to form a simple resistive divider with the LDR. This will better map the the full range of the LDR to the 0-1 volt range that the ESP8266 ADC uses. Space is rather limited so the smaller the resistor, the better; no need for anything larger than 1/4 Watt. You can get a 10-pack of 10KΩ resistors [here](https://rover.ebay.com/rover/1/711-53200-19255-0/1?mpre=https%3A%2F%2Fwww.ebay.com%2Fitm%2F10-Pcs-1-8-Watt-1-Metal-Film-Resistor-Choose-you-own-values-USA-SELLER%2F302971259661&campid=5338745533&toolid=10001&customid=
 )
@@ -95,7 +81,6 @@ In addition to everything in the original BOM, you'll need:
 - HeatShrink Tubing (HST). The exact diameter needed will depend on how compact your soldering is and the size of resistor used. Multiple colors will help keep things organized, but that's not required. I suggest a kit so you can get the  perfect diameter  and length. You can get a kit [here](https://rover.ebay.com/rover/1/711-53200-19255-0/1?mpre=https%3A%2F%2Fwww.ebay.com%2Fitm%2F360pcs-2-1-Heat-Shrink-Tube-Tubing-Sleeving-Wrap-Wire-cable-Insulated-Assorted%2F224122863249%3Fhash%3Ditem342ec37e91%3Ag%3AMbcAAOSwXGhfPCNK&campid=5338745533&toolid=10001).
 
 - Standard 2.54mm pin headers. You can get a set of male and female headers [here](https://rover.ebay.com/rover/1/711-53200-19255-0/1?mpre=https%3A%2F%2Fwww.ebay.com%2Fitm%2F10pcs-Male-Header-1x40-2-54mm-40-Pin-PCB-Through-Hole-Arduino-and-Pi%2F223105297271%3Fepid%3D28022683725%26hash%3Ditem33f21cab77%3Ag%3A~X8AAOSwvFpbdZWA&campid=5338745533&toolid=10001).
-
 
 {{< figure name="assemble-00-prep-electronics">}}
 
@@ -113,11 +98,9 @@ As the inserts cool, you'll have a few seconds to make adjustments to their orie
 
 {{< figure name="assemble-02-inserts-cooling" >}}
 
-
-### Wire Harness 
+### Wire Harness
 
 There are only six wires for the two components and the LED tape is the only component where polarity matters. A table mapping each pin on the HASP PCB to each component lead is below.
-
 
 | HASP PCB Pin | Component                    |
 | ------------ | ---------------------------- |
@@ -130,12 +113,11 @@ There are only six wires for the two components and the LED tape is the only com
 | D2           | N/A                          |
 | DBG          | N/A                          |
 
-
 You are **strongly** encouraged to test / check your work after each step with a simple multimeter. Complete assembly involves irreversible steps, like shrinking HST. If you make a mistake, it's best to catch it before 'finalizing' things as you're almost certainly going to have to destroy the component and or wiring harness to repair it.
 
 Additionally, you can flash my [modified HASP firmware](https://github.com/kquinsland/HASwitchPlate) to a fully assembled HASP device and use that as a testing device. On boot up, the modified firmware briefly flashes each LED in sequence. About every 10 seconds after boot, the LDR value will be read and published to MQTT. Cover the LDR with your hand and check your MQTT broker or HA to confirm that the value changes significantly between exposed and covered states.
 
-##### LDR
+#### LDR
 
 Fit the LDR into the face plate and position the leads in the channel under and to the top of the LCD PCB. Then trim the excess length off of the LDR leads so that they extend 'beyond' the LCD by about 8mm or so.
 
@@ -163,11 +145,11 @@ After the solder joint cools, cover the entire LDR/Resistor assembly in HST so t
 
 Set the LDR component aside for now and move on to the LED tape.
 
-##### LEDs
+#### LEDs
 
 If you've not already trimmed the LED tape to fit in the face plate, do so now. Leave yourself as much room as needed to solder on the one side where you'll need to feed power and data in.
 
-The LED tape has incredibly small pads so take your time on this. You have about 5 cubic millimeters *total* for the three solder joints on the LED tape. Solder just enough for electrical contact, there will be no significant mechanical stress. **Note:** The arrows printed on the strip point in the direction of data flow; combined with the off-center placement of the LED packages, there is only one way to properly install the LED tape in  the decor plate.
+The LED tape has incredibly small pads so take your time on this. You have about 5 cubic millimeters _total_ for the three solder joints on the LED tape. Solder just enough for electrical contact, there will be no significant mechanical stress. **Note:** The arrows printed on the strip point in the direction of data flow; combined with the off-center placement of the LED packages, there is only one way to properly install the LED tape in  the decor plate.
 
 {{< figure name="assemble-09-led-tape-alignment" >}}
 
@@ -175,8 +157,7 @@ After soldering the power, signal and ground wires, flatten them and gently shap
 
 {{< figure name="assemble-10-led-wire-braid" >}}
 
-
-##### Pin Header
+#### Pin Header
 
 After soldering wires onto the two components, all that's left is soldering the wires to the correct pins on the pin header.
 
@@ -184,7 +165,7 @@ One at a time, carefully take the pins out of the plastic 'frame'. This is to pr
 
 {{< figure name="assemble-11-process" >}}
 
-Make sure that HST is on the wire(s) *before* soldering! After the solder joint cools, slip the HST over the solder joint and apply heat until the joint is covered. Repeat this process for the remaining pins. There will be three 'unused' pins that you can just ignore.
+Make sure that HST is on the wire(s) _before_ soldering! After the solder joint cools, slip the HST over the solder joint and apply heat until the joint is covered. Repeat this process for the remaining pins. There will be three 'unused' pins that you can just ignore.
 
 {{< figure name="assemble-12-unused-pins" >}}
 
@@ -192,15 +173,13 @@ When all the wires have been soldered and covered,  you'll have something that l
 
 {{< figure name="assemble-13-harness-finished" >}}
 
-
 Double check electrical connections and then combine the PCB, enclosure, plate and harness. Carefully align the 'channels' for LDR and LED wires:
 
 {{< figure name="assemble-14-finished" >}}
 
-
 ### Printing
 
-In the electrical boxes there's absolutely no room to spare, so all parts are designed to fit together with __very__ tight clearances. Print as slow as you need to in order too achieve very good dimensional accuracy. Like with the brass inserts, the various screw holes are intentionally undersized for better thread engagement.
+In the electrical boxes there's absolutely no room to spare, so all parts are designed to fit together with **very** tight clearances. Print as slow as you need to in order too achieve very good dimensional accuracy. Like with the brass inserts, the various screw holes are intentionally undersized for better thread engagement.
 
 {{< figure name ="suggested-print-orientation">}}
 
@@ -215,7 +194,6 @@ In testing, the parts of the HASP ran ~20º above ambient. Most of that heat com
 {{< figure name ="thermals-03-removed-rear-side">}}
 {{< figure name ="thermals-04-front-leds-on">}}
 
-
 The tiny PNP transistor that toggles the LCD power is the hottest component, by far. Everything else has a relatively consistent temperature:
 
 {{< figure name ="thermals-05-internals">}}
@@ -226,14 +204,14 @@ When installed in wall, the HASP is radiating heat into the electrical box and t
 
 ## Future work
 
-I did accomplish my two main goals: 
+I did accomplish my two main goals:
 
 1. Ambient light sensor for more responsive backlight control
 2. HomeSeer-like LEDs for additional information display
 
 However, there's a few aspects of the HASP that i'd like to further improve:
 
-- Increased automatic configuration w/ the HASP. There's still a non-trivial amount of work required to set up a HASP with Home Assistant. The HASP device has many different attributes that could be exposed to Home Assistant automatically. E.G.: The HASP will periodically check for a firmware update; the HASP should configure Home Assistant with a [`binary_sensor`](https://www.home-assistant.io/integrations/binary_sensor.mqtt/#configuration) that indicates if there's a firmware update available. 
+- Increased automatic configuration w/ the HASP. There's still a non-trivial amount of work required to set up a HASP with Home Assistant. The HASP device has many different attributes that could be exposed to Home Assistant automatically. E.G.: The HASP will periodically check for a firmware update; the HASP should configure Home Assistant with a [`binary_sensor`](https://www.home-assistant.io/integrations/binary_sensor.mqtt/#configuration) that indicates if there's a firmware update available.
 
 - Some of the automations that live in Home Assistant to manage button presses / update screen content could  probably be re-factored down to a few generic scripts and services.
 

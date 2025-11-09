@@ -121,7 +121,7 @@ Restart Home Assistant and you should now be able to add `sensor.ups_energy` to 
 
 After sorting through the _massive_ MIB file that APC publishes; I only found ways to measure the voltage and current via SNMP. I assumed that APC meant for you to calculate the power use on your own from the voltage and current.
 
-As it turns out, APC has a `upsHighPrecOutputEnergyUsage` field which reports: `The output energy usage of the UPS in hundredths of kWh.` If your APC device publishes a value on the OID `.1.3.6.1.4.1.318.1.1.1.4.3.6.0` then you can skip the configuration below; use the more concise configuration [above]({{<relref "#a-single-oid-for-power-consumption">}}). If your devices ***does not*** publish the cumulative energy consumption, it can still be calculated manually.
+As it turns out, APC has a `upsHighPrecOutputEnergyUsage` field which reports: `The output energy usage of the UPS in hundredths of kWh.` If your APC device publishes a value on the OID `.1.3.6.1.4.1.318.1.1.1.4.3.6.0` then you can skip the configuration below; use the more concise configuration [above]({{<relref "#a-single-oid-for-power-consumption">}}). If your devices _**does not**_ publish the cumulative energy consumption, it can still be calculated manually.
 
 The manual approach below is a lot like the concise approach above; uses two `snmp` sensors to collect the voltage and current from the UPS and then wrap everything in a LTS-compatible `template` sensor to get the data to show up on the energy dashboard.
 

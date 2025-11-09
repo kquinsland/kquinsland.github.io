@@ -1,6 +1,5 @@
 # Solum 2.2 inch Electronic Shelf Label Teardown
 
-
 # Quick peek inside the EL029F3WRA
 
 In light of the recent news that the [OpenEPaperLink](https://github.com/jjwbruijn/OpenEPaperLink) firmware has been [ported to the `nRF52811`](https://www.youtube.com/watch?v=Ph5BXFcugC4) series of chips, I decided to take a look inside the Solum EL029F3WRA to see if it was a viable candidate for a project.

@@ -1,6 +1,5 @@
 # ESPHome on the Yeelight Monitor Light Bar Pro
 
-
 # Yeelight Light Bar Pro (YLTD003) Teardown
 
 Monitor-top light bars are wonderful for reducing eye strain and fatigue and the effect is even better with a bias light behind the monitor.

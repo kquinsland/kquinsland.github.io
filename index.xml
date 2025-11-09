@@ -1,6 +1,6 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>karl</title><link>https://karlquinsland.com/</link><description>Karl's little corner of the internet</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 17 May 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/index.xml" rel="self" type="application/rss+xml"/><item><title>TESmart HKS801-P23-USBK KVM Teardown</title><link>https://karlquinsland.com/tesmart-hks801-p23-usbk-kvm-teardown/</link><pubDate>Sat, 17 May 2025 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/tesmart-hks801-p23-usbk-kvm-teardown/</guid><description><![CDATA[<h1 id="tesmart-hks801-p23-usbk-kvm-teardown">TESmart HKS801-P23-USBK KVM Teardown</h1>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>karl</title><link>https://karlquinsland.com/</link><description>Karl's little corner of the internet</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 17 May 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/index.xml" rel="self" type="application/rss+xml"/><item><title>TESmart HKS801-P23-USBK KVM Teardown</title><link>https://karlquinsland.com/tesmart-hks801-p23-usbk-kvm-teardown/</link><pubDate>Sat, 17 May 2025 00:00:00 +0000</pubDate><author>karl</author><guid>https://karlquinsland.com/tesmart-hks801-p23-usbk-kvm-teardown/</guid><description><![CDATA[<h1 id="tesmart-hks801-p23-usbk-kvm-teardown">TESmart HKS801-P23-USBK KVM Teardown</h1>
 <p>Recently, one of the USB ports on <a href="/hdmi-kvm-teardown-and-esphome/" rel="">my previous KVM switch</a> failed. Since it&rsquo;s a critical piece of equipment, I needed a replacement the same day. The original AliExpress product page was no longer available; the seller seems to have closed up shop entirely.</p>
-<p>Fortunately, the OEM—<code>XUFUNG</code>—has released an updated version, now sold in the US as the <a href="https://www.tesmart.com/products/hks801-p23" target="_blank" rel="noopener noreffer">TESmart HKS801-P23-USBK</a>. It looks visually identical to the previous KVM switch, but the USB ports now feature the characteristic blue color indicating USB 3.0 support.</p>
+<p>Fortunately, the OEM—<code>XUFUNG</code>—has released an updated version, now sold in the US as the <a href="https://www.tesmart.com/products/hks801-p23" target="_blank" rel="noopener noreffer ">TESmart HKS801-P23-USBK</a>. It looks visually identical to the previous KVM switch, but the USB ports now feature the characteristic blue color indicating USB 3.0 support.</p>
 <figure >
 
     
@@ -66,16 +66,16 @@
 
 <div class="details admonition note open">
         <div class="details-summary admonition-title">
-            <i class="icon fas fa-pencil-alt fa-fw"></i>Note<i class="details-icon fas fa-angle-right fa-fw"></i>
+            <i class="icon fas fa-pencil-alt fa-fw" aria-hidden="true"></i>Note<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
         </div>
         <div class="details-content">
-            <div class="admonition-content">Despite every PCB featuring a clear <code>XUFUNG</code> label, that specific string doesn&rsquo;t appear in many places online! A quick Google search only returns my prior post and <a href="https://dancharblog.wordpress.com/2025/05/02/tesmart-hdc202-x24-thunderbolt-4-kvm-teardown-and-review/" target="_blank" rel="noopener noreffer">this teardown of another TESmart KVM</a>. You should check out the internals of that one too! Because it uses Thunderbolt, the internals are quite a bit more complicated.</div>
+            <div class="admonition-content">Despite every PCB featuring a clear <code>XUFUNG</code> label, that specific string doesn&rsquo;t appear in many places online! A quick Google search only returns my prior post and <a href="https://dancharblog.wordpress.com/2025/05/02/tesmart-hdc202-x24-thunderbolt-4-kvm-teardown-and-review/" target="_blank" rel="noopener noreffer ">this teardown of another TESmart KVM</a>. You should check out the internals of that one too! Because it uses Thunderbolt, the internals are quite a bit more complicated.</div>
         </div>
     </div>
 <h2 id="whats-inside">What&rsquo;s inside?</h2>
 <div class="details admonition tip open">
         <div class="details-summary admonition-title">
-            <i class="icon fas fa-lightbulb fa-fw"></i>TL;DR<i class="details-icon fas fa-angle-right fa-fw"></i>
+            <i class="icon fas fa-lightbulb fa-fw" aria-hidden="true"></i>TL;DR<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
         </div>
         <div class="details-content">
             <div class="admonition-content">It&rsquo;s the same architecture as before, but with some minor component changes and corresponding PCB layout updates.</div>
@@ -192,7 +192,7 @@
 <p>In no particular order, here are the main ICs I identified on the PCB:</p>
 <ul>
 <li>
-<p><a href="https://lcsc.com/product-detail/USB-Converters_Realtek-Semicon-RTS5411S-GR_C5356838.html" target="_blank" rel="noopener noreffer">RTS5411s</a> - USB 3.1 Super-Speed HUB Controller
+<p><a href="https://lcsc.com/product-detail/USB-Converters_Realtek-Semicon-RTS5411S-GR_C5356838.html" target="_blank" rel="noopener noreffer ">RTS5411s</a> - USB 3.1 Super-Speed HUB Controller
 cx32l003f8</p>
 </li>
 <li>
@@ -202,43 +202,43 @@ cx32l003f8</p>
 </ul>
 </li>
 <li>
-<p><a href="https://lcsc.com/product-detail/Microcontrollers-MCU-MPU-SOC_WCH-Jiangsu-Qin-Heng-CH545L_C19183926.html?s_z=n_C19183926" target="_blank" rel="noopener noreffer">WCH CH545L</a> - USB multi-host multi-device enhanced E8051 MCU</p>
+<p><a href="https://lcsc.com/product-detail/Microcontrollers-MCU-MPU-SOC_WCH-Jiangsu-Qin-Heng-CH545L_C19183926.html?s_z=n_C19183926" target="_blank" rel="noopener noreffer ">WCH CH545L</a> - USB multi-host multi-device enhanced E8051 MCU</p>
 </li>
 <li>
-<p><a href="https://www.zbitsemi.com/upload/file/20200903/20200903105452_99571.pdf" target="_blank" rel="noopener noreffer">CX32L003F8</a> - ARM® Cortex®-M0+ 32-bit</p>
+<p><a href="https://www.zbitsemi.com/upload/file/20200903/20200903105452_99571.pdf" target="_blank" rel="noopener noreffer ">CX32L003F8</a> - ARM® Cortex®-M0+ 32-bit</p>
 <ul>
 <li>Used in a few different locations: front panel to scan buttons, update the display, monitor IR signals.</li>
 </ul>
 </li>
 <li>
-<p><a href="https://www.wch-ic.com/products/CH578_7.html" target="_blank" rel="noopener noreffer">WCH CH578M</a> - ARM® Cortex®-M0 Core Bluetooth Low Energy MCU</p>
+<p><a href="https://www.wch-ic.com/products/CH578_7.html" target="_blank" rel="noopener noreffer ">WCH CH578M</a> - ARM® Cortex®-M0 Core Bluetooth Low Energy MCU</p>
 <ul>
 <li>This is the micro on the LAN port; makes sense as it has a built in 10M Ethernet PHY</li>
 <li>Assuming there&rsquo;s no restriction that prevents the ethernet PHY and BT PHY from being used at the same time, this KVM could have ditched the IR remote and used a phone app instead&hellip;</li>
-<li>Previously, this was handled with a <a href="https://www.st.com/en/microcontrollers-microprocessors/stm8s003f3.html" target="_blank" rel="noopener noreffer">ST 8S003f3p6</a> and a <a href="https://jlcpcb.com/partdetail/WCH_Jiangsu_Qin_Heng-CH395Q/C87390" target="_blank" rel="noopener noreffer">WCH CH395Q</a> so the LAN controller has definitely had a BOM consolidation!</li>
+<li>Previously, this was handled with a <a href="https://www.st.com/en/microcontrollers-microprocessors/stm8s003f3.html" target="_blank" rel="noopener noreffer ">ST 8S003f3p6</a> and a <a href="https://jlcpcb.com/partdetail/WCH_Jiangsu_Qin_Heng-CH395Q/C87390" target="_blank" rel="noopener noreffer ">WCH CH395Q</a> so the LAN controller has definitely had a BOM consolidation!</li>
 </ul>
 </li>
 <li>
-<p><a href="https://en.chipsea.com/product/details/?choice_id=1079" target="_blank" rel="noopener noreffer">Chipsea CS32F031C8T6</a> - ARM® Cortex®-M0 MCU</p>
+<p><a href="https://en.chipsea.com/product/details/?choice_id=1079" target="_blank" rel="noopener noreffer ">Chipsea CS32F031C8T6</a> - ARM® Cortex®-M0 MCU</p>
 <ul>
 <li>Happens to be the exact same micro as the previous KVM and seems to be featured in Dan&rsquo;s KVM, too</li>
 </ul>
 </li>
 <li>
-<p><a href="https://jlcpcb.com/partdetail/GEC-WS3232ECN/C2973151" target="_blank" rel="noopener noreffer">WS3232ECN</a> - Generic RS232 transceiver</p>
+<p><a href="https://jlcpcb.com/partdetail/GEC-WS3232ECN/C2973151" target="_blank" rel="noopener noreffer ">WS3232ECN</a> - Generic RS232 transceiver</p>
 <ul>
 <li>Previously this was done with a <code>SIPEX SP3223EEX</code> which is not the same footprint as the WS3232ECN.. so that&rsquo;s a minor layout change</li>
 </ul>
 </li>
 <li>
-<p><a href="https://web.archive.org/web/20240523025020/https://www.ite.com.tw/en/product/view?mid=99" target="_blank" rel="noopener noreffer">IT66341TE</a> - 4 IN to 1 OUT HDMI2.0 18Gb/s Switch.</p>
+<p><a href="https://web.archive.org/web/20240523025020/https://www.ite.com.tw/en/product/view?mid=99" target="_blank" rel="noopener noreffer ">IT66341TE</a> - 4 IN to 1 OUT HDMI2.0 18Gb/s Switch.</p>
 <ul>
-<li>Still can&rsquo;t find any formal technical info on this chip, probably due to <a href="https://en.wikipedia.org/wiki/High-bandwidth_Digital_Content_Protection" target="_blank" rel="noopener noreffer">HDCP</a> restrictions.</li>
+<li>Still can&rsquo;t find any formal technical info on this chip, probably due to <a href="https://en.wikipedia.org/wiki/High-bandwidth_Digital_Content_Protection" target="_blank" rel="noopener noreffer ">HDCP</a> restrictions.</li>
 <li>Same as the previous KVM, but that one also used an IT66321E, which is not present on this PCB.</li>
 </ul>
 </li>
 </ul>
-]]></description></item><item><title>#TwoMinuteTeardown: Petkit Eversweet Solo 2</title><link>https://karlquinsland.com/petkit-eversweet-solo2-teardown/</link><pubDate>Sun, 20 Apr 2025 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/petkit-eversweet-solo2-teardown/</guid><description><![CDATA[<h1 id="two-minute-teardown-petkit-eversweet-solo-2">Two Minute Teardown: Petkit Eversweet Solo 2</h1>
+]]></description></item><item><title>#TwoMinuteTeardown: Petkit Eversweet Solo 2</title><link>https://karlquinsland.com/petkit-eversweet-solo2-teardown/</link><pubDate>Sun, 20 Apr 2025 00:00:00 +0000</pubDate><author>karl</author><guid>https://karlquinsland.com/petkit-eversweet-solo2-teardown/</guid><description><![CDATA[<h1 id="two-minute-teardown-petkit-eversweet-solo-2">Two Minute Teardown: Petkit Eversweet Solo 2</h1>
 <figure >
 
     
@@ -256,7 +256,7 @@ cx32l003f8</p>
 
 
 <p>I am doing research for an upcoming project and was curious about how other people have solved a similar problem.
-<a href="https://www.amazon.com/dp/B0B3RWF653" target="_blank" rel="noopener noreffer">This</a> happens to be the cheapest option that was available at the time.</p>
+<a href="https://www.amazon.com/dp/B0B3RWF653" target="_blank" rel="noopener noreffer ">This</a> happens to be the cheapest option that was available at the time.</p>
 <p>I am primarily interested in the pump; the integrated &ldquo;low water&rdquo; sensor and the UV-C sterilization are very nice features that would check off a lot of boxes for me&hellip; Unfortunately this pump it lacks both the flow rate and the head that I need for my project.</p>
 <p>Oh well.</p>
 <p>The pump is sealed with a potting compound so I was not able to do a full teardown.</p>
@@ -315,7 +315,7 @@ cx32l003f8</p>
 </p>
 <p>The base isn&rsquo;t that spectacular; a cheap micro with BTLE controlling power to a basic wireless power transmission module.
 The wireless power module is covered in conformal coating so the IC number was a pain to read but it is a XKT-511.
-I can find <a href="https://leap.tardate.com/electronics101/power/wirelessledmodule/" target="_blank" rel="noopener noreffer"><em>very</em> little information</a> about this IC.
+I can find <a href="https://leap.tardate.com/electronics101/power/wirelessledmodule/" target="_blank" rel="noopener noreffer "><em>very</em> little information</a> about this IC.
 As far as I can tell, it is similar to Qi wireless power but without any signaling or modulation of the carrier signal.
 Various qi receiver devices will briefly &ldquo;wake up&rdquo; when placed on the base but they do not stay powered on or charge.
 My <a href="/wozniak-wpx-0001a-qi-tester-teardown/" rel="">qi tester</a> does power up and measures about .2W but it can&rsquo;t recognize the protocol.</p>
@@ -399,10 +399,10 @@ My <a href="/wozniak-wpx-0001a-qi-tester-teardown/" rel="">qi tester</a> does po
 </figure>
 
 </p>
-]]></description></item><item><title>#TwoMinuteTeardown: Wozniak WPX-0001 Qi Tester</title><link>https://karlquinsland.com/wozniak-wpx-0001a-qi-tester-teardown/</link><pubDate>Sun, 20 Apr 2025 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/wozniak-wpx-0001a-qi-tester-teardown/</guid><description><![CDATA[<h1 id="qi-wireless-power-tester">Qi wireless power tester</h1>
-<p>The <a href="https://en.wikipedia.org/wiki/Qi_%28standard%29" target="_blank" rel="noopener noreffer">Qi standard</a> for transmitting power is ~ 15 years old and has been ubiquitous for at least a decade now.
+]]></description></item><item><title>#TwoMinuteTeardown: Wozniak WPX-0001 Qi Tester</title><link>https://karlquinsland.com/wozniak-wpx-0001a-qi-tester-teardown/</link><pubDate>Sun, 20 Apr 2025 00:00:00 +0000</pubDate><author>karl</author><guid>https://karlquinsland.com/wozniak-wpx-0001a-qi-tester-teardown/</guid><description><![CDATA[<h1 id="qi-wireless-power-tester">Qi wireless power tester</h1>
+<p>The <a href="https://en.wikipedia.org/wiki/Qi_%28standard%29" target="_blank" rel="noopener noreffer ">Qi standard</a> for transmitting power is ~ 15 years old and has been ubiquitous for at least a decade now.
 And yet, I have only <em>recently</em> seen any testing equipment for it.</p>
-<p>The <a href="https://www.aliexpress.us/item/3256808097182455.html" target="_blank" rel="noopener noreffer">Wozniak WPX-0001A</a> is a simple tester that can measure the output level and protocol of Qi chargers.</p>
+<p>The <a href="https://www.aliexpress.us/item/3256808097182455.html" target="_blank" rel="noopener noreffer ">Wozniak WPX-0001A</a> is a simple tester that can measure the output level and protocol of Qi chargers.</p>
 <figure >
 
     
@@ -446,7 +446,7 @@ And yet, I have only <em>recently</em> seen any testing equipment for it.</p>
 
 
 <p>In the box you get a basic NTC probe, a USB-C cable and the tester itself.
-The printed paper &ldquo;manual&rdquo; is just a QR code that points to <a href="https://user.ee-lab.cn" target="_blank" rel="noopener noreffer"><code>user.ee-lab.cn</code></a>.</p>
+The printed paper &ldquo;manual&rdquo; is just a QR code that points to <a href="https://user.ee-lab.cn" target="_blank" rel="noopener noreffer "><code>user.ee-lab.cn</code></a>.</p>
 <figure >
 
     
@@ -566,7 +566,7 @@ It&rsquo;s two coils of magnet wire and some magnets. Nothing special here.</p>
 </figure>
 
 
-]]></description></item><item><title>#TwoMinuteTeardown: Panel Mount Liquid Level Indicator</title><link>https://karlquinsland.com/generic-liquid-level-display/</link><pubDate>Sat, 15 Feb 2025 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/generic-liquid-level-display/</guid><description><![CDATA[<h1 id="generic-liquid-level-meter-teardown">Generic liquid level meter teardown</h1>
+]]></description></item><item><title>#TwoMinuteTeardown: Panel Mount Liquid Level Indicator</title><link>https://karlquinsland.com/generic-liquid-level-display/</link><pubDate>Sat, 15 Feb 2025 00:00:00 +0000</pubDate><author>karl</author><guid>https://karlquinsland.com/generic-liquid-level-display/</guid><description><![CDATA[<h1 id="generic-liquid-level-meter-teardown">Generic liquid level meter teardown</h1>
 <p>I ordered this part years ago for a project I eventually canceled.</p>
 <p>I can&rsquo;t use it for anything, and it&rsquo;s just taking up space, so I&rsquo;m going to open it up before I recycle it.</p>
 <p>The Ali Express listing is a 404 so I don&rsquo;t have a link to share or really any information about it.</p>
@@ -645,7 +645,7 @@ There are two PCBs inside: one for the display and one to handle the relays and 
 
 
 <p>The display PCB is pretty simple; no active electronics and a tonne of LEDs.
-The bar graph LEDs are almost certainly <a href="https://en.wikipedia.org/wiki/Charlieplexing" target="_blank" rel="noopener noreffer">charlieplexed</a> but the 7 segment might have an integrated driver.</p>
+The bar graph LEDs are almost certainly <a href="https://en.wikipedia.org/wiki/Charlieplexing" target="_blank" rel="noopener noreffer ">charlieplexed</a> but the 7 segment might have an integrated driver.</p>
 <figure >
 
     
@@ -680,23 +680,23 @@ The bar graph LEDs are almost certainly <a href="https://en.wikipedia.org/wiki/C
 
 
 <p>Looking at the top left, you can see the few pins for the 7-segment displays; a total of 12 pins.
-Of those 12, some don&rsquo;t have traces leading to them so they&rsquo;re probably just for mechanical support. There are far too few remaining pins for even basic charlieplexing so I&rsquo;m guessing there&rsquo;s an integrated driver of some kind. Probably a <a href="https://www.analog.com/media/en/technical-documentation/data-sheets/max7219-max7221.pdf" target="_blank" rel="noopener noreffer">max7219</a> or similar</p>
+Of those 12, some don&rsquo;t have traces leading to them so they&rsquo;re probably just for mechanical support. There are far too few remaining pins for even basic charlieplexing so I&rsquo;m guessing there&rsquo;s an integrated driver of some kind. Probably a <a href="https://www.analog.com/media/en/technical-documentation/data-sheets/max7219-max7221.pdf" target="_blank" rel="noopener noreffer ">max7219</a> or similar</p>
 <h2 id="the-main-ics">The main ICs</h2>
 <p>Really just the one main application processor and a few support ICs.</p>
 <ul>
-<li><a href="https://www.jotrin.com/product/parts/MA803AS2" target="_blank" rel="noopener noreffer"><code>MA803AS2</code></a> - 8051 based microcontroller that&rsquo;s running the show</li>
-<li><a href="https://www.alldatasheet.com/datasheet-pdf/pdf/1679343/NEXPERIA/HEF4051B.html" target="_blank" rel="noopener noreffer"><code>HEF4051B</code></a> - 8-channel analog multiplexer, probably for the display</li>
+<li><a href="https://www.jotrin.com/product/parts/MA803AS2" target="_blank" rel="noopener noreffer "><code>MA803AS2</code></a> - 8051 based microcontroller that&rsquo;s running the show</li>
+<li><a href="https://www.alldatasheet.com/datasheet-pdf/pdf/1679343/NEXPERIA/HEF4051B.html" target="_blank" rel="noopener noreffer "><code>HEF4051B</code></a> - 8-channel analog multiplexer, probably for the display</li>
 <li><code>74hc164</code> - 8-bit shift register, probably for the display</li>
 </ul>
-]]></description></item><item><title>#TwoMinuteTeardown: Home Assistant Voice - Preview Edition</title><link>https://karlquinsland.com/home-assistant-voice-pe-teardown/</link><pubDate>Sat, 01 Feb 2025 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/home-assistant-voice-pe-teardown/</guid><description><![CDATA[<h1 id="home-assistant-voice-preview-edition-teardown">Home Assistant Voice: Preview Edition teardown</h1>
-<p>This is a quick <a href="/tags/two-minute-teardown/" rel="">#TwoMinuteTeardown</a> post for the recently released <a href="https://www.home-assistant.io/voice-pe/" target="_blank" rel="noopener noreffer">Home Assistant Voice Node - Preview edition</a>.</p>
+]]></description></item><item><title>#TwoMinuteTeardown: Home Assistant Voice - Preview Edition</title><link>https://karlquinsland.com/home-assistant-voice-pe-teardown/</link><pubDate>Sat, 01 Feb 2025 00:00:00 +0000</pubDate><author>karl</author><guid>https://karlquinsland.com/home-assistant-voice-pe-teardown/</guid><description><![CDATA[<h1 id="home-assistant-voice-preview-edition-teardown">Home Assistant Voice: Preview Edition teardown</h1>
+<p>This is a quick <a href="/tags/two-minute-teardown/" rel="">#TwoMinuteTeardown</a> post for the recently released <a href="https://www.home-assistant.io/voice-pe/" target="_blank" rel="noopener noreffer ">Home Assistant Voice Node - Preview edition</a>.</p>
 <p>Normally, I&rsquo;d be doing a full teardown, but this is a little different; the Home Assistant team has done a <em>lot</em> of the work out in the open.
 With just a quick Google, you can find official:</p>
 <ul>
-<li>teardown instructions <a href="https://voice-pe.home-assistant.io/guides/disassemble/" target="_blank" rel="noopener noreffer">here</a>.</li>
-<li>source code <a href="https://github.com/esphome/home-assistant-voice-pe" target="_blank" rel="noopener noreffer">here</a>.</li>
-<li>3D printable case <a href="https://www.printables.com/model/1110526-home-assistant-voice-preview-edition-enclosure" target="_blank" rel="noopener noreffer">files</a>.</li>
-<li>Instructions for adding custom devices <a href="https://voice-pe.home-assistant.io/guides/grove_port/" target="_blank" rel="noopener noreffer">here</a>.</li>
+<li>teardown instructions <a href="https://voice-pe.home-assistant.io/guides/disassemble/" target="_blank" rel="noopener noreffer ">here</a>.</li>
+<li>source code <a href="https://github.com/esphome/home-assistant-voice-pe" target="_blank" rel="noopener noreffer ">here</a>.</li>
+<li>3D printable case <a href="https://www.printables.com/model/1110526-home-assistant-voice-preview-edition-enclosure" target="_blank" rel="noopener noreffer ">files</a>.</li>
+<li>Instructions for adding custom devices <a href="https://voice-pe.home-assistant.io/guides/grove_port/" target="_blank" rel="noopener noreffer ">here</a>.</li>
 </ul>
 <p>I am grateful for such a well-documented and open project.
 Truly, by hackers for hackers!</p>
@@ -745,8 +745,8 @@ The thin, metal-looking piece in the top right is the antenna.</p>
 
 <h3 id="wishful-thinking">wishful thinking</h3>
 <p>In a word: Ethernet.</p>
-<p>Most of the ESP32 product line does not have support for ethernet via <a href="https://en.wikipedia.org/wiki/Media-independent_interface#RMII" target="_blank" rel="noopener noreffer">RMII</a> (unfortunately) but there is always SPI based ethernet.</p>
-<p>There are a few areas where the PCB is bare/empty and with a few tweaks to the layout, it would have been possible to also expose SPI headers next to the <a href="https://wiki.seeedstudio.com/Grove-I2C_Hub/" target="_blank" rel="noopener noreffer">grove connector</a>.</p>
+<p>Most of the ESP32 product line does not have support for ethernet via <a href="https://en.wikipedia.org/wiki/Media-independent_interface#RMII" target="_blank" rel="noopener noreffer ">RMII</a> (unfortunately) but there is always SPI based ethernet.</p>
+<p>There are a few areas where the PCB is bare/empty and with a few tweaks to the layout, it would have been possible to also expose SPI headers next to the <a href="https://wiki.seeedstudio.com/Grove-I2C_Hub/" target="_blank" rel="noopener noreffer ">grove connector</a>.</p>
 <p>Assuming there&rsquo;s a spare SPI peripheral to use, SPI based ethernet would have latency and throughput as good as or better than WiFi.</p>
 <p>It would have been a nice option for those of us who prefer the reliability of wired connections.</p>
 <p>Oh well.</p>
@@ -768,7 +768,7 @@ TI parts for the audio codec and a few miscellaneous bits as well.</p>
 </span></span><span class="line"><span class="cl">P3S952
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p><a href="https://linux-chenxing.org/pioneer3/sv50pd/ZB25VQ128.pdf" target="_blank" rel="noopener noreffer">This</a> is a clone of a super common winbond nor flash chip with the same part number.</p>
+</div><p><a href="https://linux-chenxing.org/pioneer3/sv50pd/ZB25VQ128.pdf" target="_blank" rel="noopener noreffer ">This</a> is a clone of a super common winbond nor flash chip with the same part number.</p>
 <h3 id="zbit-semiconductor-zb25vq32">zbit semiconductor ZB25VQ32</h3>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
@@ -782,9 +782,9 @@ TI parts for the audio codec and a few miscellaneous bits as well.</p>
 </span></span><span class="line"><span class="cl">EQ4537
 </span></span></code></pre></td></tr></table>
 </div>
-</div><p><a href="https://semic-boutique.com/wp-content/uploads/2016/05/ZB25VQ32.pdf" target="_blank" rel="noopener noreffer">Same</a> as above, but smaller.</p>
+</div><p><a href="https://semic-boutique.com/wp-content/uploads/2016/05/ZB25VQ32.pdf" target="_blank" rel="noopener noreffer ">Same</a> as above, but smaller.</p>
 <h3 id="ti-tlv320aic3204">TI TLV320AIC3204</h3>
-<p><a href="https://www.ti.com/product/TLV320AIC3204" target="_blank" rel="noopener noreffer">This</a> is the audio codec.</p>
+<p><a href="https://www.ti.com/product/TLV320AIC3204" target="_blank" rel="noopener noreffer ">This</a> is the audio codec.</p>
 <div class="highlight"><div class="chroma">
 <table class="lntable"><tr><td class="lntd">
 <pre tabindex="0" class="chroma"><code><span class="lnt">1
@@ -800,7 +800,7 @@ TI parts for the audio codec and a few miscellaneous bits as well.</p>
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="ti-sn74lvc125a">TI SN74LVC125A</h3>
-<p><a href="https://www.ti.com/product/SN74LVC125A" target="_blank" rel="noopener noreffer">This</a> is a pretty common buffer IC and I don&rsquo;t know for sure what it&rsquo;s being used for.
+<p><a href="https://www.ti.com/product/SN74LVC125A" target="_blank" rel="noopener noreffer ">This</a> is a pretty common buffer IC and I don&rsquo;t know for sure what it&rsquo;s being used for.
 I am 99% certain that the LEDs under the rotary encoder are neopixels and those can be driven directly from the ESP32.
 The only other thing that comes to mind is a &ldquo;switch&rdquo; to physically cut power to the microphones when the user has engaged the mute switch.</p>
 <div class="highlight"><div class="chroma">
@@ -818,7 +818,7 @@ The only other thing that comes to mind is a &ldquo;switch&rdquo; to physically 
 </span></span></code></pre></td></tr></table>
 </div>
 </div><h3 id="xmos-xu316">XMOS XU316</h3>
-<p>The <a href="https://www.xmos.com/download/XU316-1024-QF60A-xcore_ai-Datasheet%2826%29.pdf" target="_blank" rel="noopener noreffer">XU316-1024-QF60A</a> is an interesting chip.
+<p>The <a href="https://www.xmos.com/download/XU316-1024-QF60A-xcore_ai-Datasheet%2826%29.pdf" target="_blank" rel="noopener noreffer ">XU316-1024-QF60A</a> is an interesting chip.
 The product name and datasheet suggest that it&rsquo;s instrumental in &ldquo;ai&rdquo; workloads 🙄 but the datasheet is a bit more concrete:</p>
 <blockquote>
 <p>The xcore.ai series is a comprehensive range of 32-bit multicore microcontrollers that brings the low latency and timing determinism of the xCORE architecture to mainstream embedded applications.
@@ -897,7 +897,7 @@ Because xCORE multicore microcontrollers are completely deterministic when execu
 </span></span><span class="line"><span class="cl">AYK
 </span></span></code></pre></td></tr></table>
 </div>
-</div>]]></description></item><item><title>Multi-Material Printing Hack for Prusa XL</title><link>https://karlquinsland.com/multi-material-printing-hack/</link><pubDate>Wed, 25 Dec 2024 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/multi-material-printing-hack/</guid><description><![CDATA[<!-- markdownlint-disable-file MD002 -->
+</div>]]></description></item><item><title>Multi-Material Printing Hack for Prusa XL</title><link>https://karlquinsland.com/multi-material-printing-hack/</link><pubDate>Wed, 25 Dec 2024 00:00:00 +0000</pubDate><author>karl</author><guid>https://karlquinsland.com/multi-material-printing-hack/</guid><description><![CDATA[<!-- markdownlint-disable-file MD002 -->
 <p>In the same spirit as <a href="/extending-the-mk3s-print-area/" rel="">an earlier post</a>, here is a quick hack I used to get my <strong>dual</strong>-headed Prusa XL printer to print with <strong>three</strong> materials at once.</p>
 <p>While the technique worked, it may not be the best method, so proceed with caution.</p>
 <h2 id="the-problem">The problem</h2>
@@ -946,10 +946,10 @@ Because xCORE multicore microcontrollers are completely deterministic when execu
 
 
 <p>To make matters slightly more complicated, TPU is one of those filaments that likes to stick to pretty much everything; I have few good options for support material.
-The <a href="https://www.youtube.com/watch?v=5VV2fbJ0apg" target="_blank" rel="noopener noreffer"><em>least</em> sticky material</a> is PLA.</p>
+The <a href="https://www.youtube.com/watch?v=5VV2fbJ0apg" target="_blank" rel="noopener noreffer "><em>least</em> sticky material</a> is PLA.</p>
 <p>So now I have a single job that requires three materials: ABS, TPU, and PLA&hellip;. but still only two print heads to work with.</p>
 <p>What to do?</p>
-<p>Usually when faced with the &ldquo;more materials than heads&rdquo; problem, the solution is to use the <a href="https://marlinfw.org/docs/gcode/M600.html" target="_blank" rel="noopener noreffer"><code>M600</code></a> gCode command to have the printer pause, eject the current material and wait for the user to load the new material.</p>
+<p>Usually when faced with the &ldquo;more materials than heads&rdquo; problem, the solution is to use the <a href="https://marlinfw.org/docs/gcode/M600.html" target="_blank" rel="noopener noreffer "><code>M600</code></a> gCode command to have the printer pause, eject the current material and wait for the user to load the new material.</p>
 <p>This technique is not new; it&rsquo;s widely supported and works perfectly <strong>if</strong> the materials are similar enough that the extrusion settings can be shared between them.</p>
 <p>For my part, the tool head will have to transition from <code>PLA</code> to <code>ABS</code> which means virtually every instruction in the gCode will have to change as well.</p>
 <h2 id="the-loophole">The loophole</h2>
@@ -981,7 +981,7 @@ What a coincidence that I have a printer with two heads!</p>
 <h2 id="the-solution-hack">The <del>solution</del> hack</h2>
 <div class="details admonition warning open">
         <div class="details-summary admonition-title">
-            <i class="icon fas fa-exclamation-triangle fa-fw"></i>Warning<i class="details-icon fas fa-angle-right fa-fw"></i>
+            <i class="icon fas fa-exclamation-triangle fa-fw" aria-hidden="true"></i>Warning<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
         </div>
         <div class="details-content">
             <div class="admonition-content"><p>This is a hack and may not work for all printers or all slicers.
@@ -1258,9 +1258,9 @@ At the tail end of the unmodified gCode there are some &ldquo;shutdown&rdquo; co
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;... many many lines omitted ...&gt;
 </span></span><span class="line"><span class="cl">; turn off extruder heaters
-</span></span><span class="line"><span class="cl"> M104 T0 S0 
-</span></span><span class="line"><span class="cl"> M104 T1 S0 
-</span></span><span class="line"><span class="cl"> M104 T2 S0 
+</span></span><span class="line"><span class="cl"> M104 T0 S0
+</span></span><span class="line"><span class="cl"> M104 T1 S0
+</span></span><span class="line"><span class="cl"> M104 T2 S0
 </span></span><span class="line"><span class="cl">
 </span></span><span class="line"><span class="cl">&lt;...&gt;
 </span></span><span class="line"><span class="cl">
@@ -1303,9 +1303,9 @@ All of the values are for the slicer UI and - in some cases - for the printer fi
 <p>If you have a need to print with more materials than you have tool heads, you <strong>might</strong> be able to trick the slicer/printer into re-configuring a print head mid-print.</p>
 <p>To do this, get the slicer to generate valid and correct gCode for each material/tool head combination as if you had an appropriately configured printer.
 After the gCode has been generated, map every &ldquo;virtual&rdquo; too head to a real tool head and remove any additional references to the virtual tool heads.</p>
-]]></description></item><item><title>AliExpress 11.11 Sale Teardowns (2024 edition)</title><link>https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/</link><pubDate>Sun, 01 Dec 2024 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/</guid><description><![CDATA[<!-- markdownlint-disable-file MD024 -->
+]]></description></item><item><title>AliExpress 11.11 Sale Teardowns (2024 edition)</title><link>https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/</link><pubDate>Sun, 01 Dec 2024 00:00:00 +0000</pubDate><author>karl</author><guid>https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/</guid><description><![CDATA[<!-- markdownlint-disable-file MD024 -->
 <h1 id="11-11-day-teardowns-2024-edition">11-11 day teardowns (2024 edition)</h1>
-<p>I guess this is becoming a <a href="http://localhost:1313/categories/11.11-sale/" target="_blank" rel="noopener noreffer">tradition</a> now?</p>
+<p>I guess this is becoming a <a href="http://localhost:1313/categories/11.11-sale/" target="_blank" rel="noopener noreffer ">tradition</a> now?</p>
 <p>During China&rsquo;s Single&rsquo;s Day sale on AliExpress, I bought various gadgets - both for projects and out of curiosity.
 Rather than write separate posts, here&rsquo;s a collection of mini teardowns showing what&rsquo;s inside each item.</p>
 <p>Previous years:</p>
@@ -1329,11 +1329,11 @@ Rather than write separate posts, here&rsquo;s a collection of mini teardowns sh
 </figure>
 
 
-<p><a href="https://www.aliexpress.us/item/3256807444250563.html?gatewayAdapt=glo2usa" target="_blank" rel="noopener noreffer">non-affiliate link</a></p>
+<p><a href="https://www.aliexpress.us/item/3256807444250563.html?gatewayAdapt=glo2usa" target="_blank" rel="noopener noreffer ">non-affiliate link</a></p>
 <p>I&rsquo;m always looking for a better scene controller/switch/Home Assistant interface.
 I was curious about which chip they used for the full graphics display and was hoping for an easily hackable Android device.
 Unfortunately, no such luck with this.</p>
-<p>The main application processor is <a href="https://linux-sunxi.org/F1C100s" target="_blank" rel="noopener noreffer"><code>F1C100s</code></a> which is a low-cost, low-power, ARM9-based SoC.
+<p>The main application processor is <a href="https://linux-sunxi.org/F1C100s" target="_blank" rel="noopener noreffer "><code>F1C100s</code></a> which is a low-cost, low-power, ARM9-based SoC.
 It might be able to run a custom Linux build that could draw a custom UI, but it&rsquo;s not going to be as easy as rooting an Android device.</p>
 <p>There’s not much in the box, just the switch and a manual.
 <figure >
@@ -1466,7 +1466,7 @@ I don&rsquo;t know how well isolated that transformer is, but it&rsquo;s probabl
 </figure>
 
 
-<p><a href="https://www.aliexpress.us/item/3256807203418058.html?gatewayAdapt=glo2usa" target="_blank" rel="noopener noreffer">non-affiliate link</a></p>
+<p><a href="https://www.aliexpress.us/item/3256807203418058.html?gatewayAdapt=glo2usa" target="_blank" rel="noopener noreffer ">non-affiliate link</a></p>
 <p>As the USB-C PD standard matures and GaN technology makes high-power chargers cheaper, it&rsquo;s fun to see the internals get more complex but also more integrated.
 This was less than $15 shipped which is <em>insane</em> for a 100W+ charger unless they cut corners somewhere&hellip;</p>
 <figure >
@@ -1597,9 +1597,9 @@ Consider this a warning: you will be doing a destructive teardown if you open th
 
 </p>
 <h3 id="notable-ics">Notable ICs</h3>
-<p><a href="https://ismartware.com/article-1-2.html" target="_blank" rel="noopener noreffer">SW3516</a></p>
-<p><a href="https://www.lcsc.com/product-detail/USB-Converters_Shenzhen-Fuman-Elec-XPD977D30A_C2892062.html" target="_blank" rel="noopener noreffer">Shenzhen Fuman Elec XPD977D30A</a></p>
-<p><a href="https://www.lcsc.com/product-detail/Microcontroller-Units-MCUs-MPUs-SOCs_CHIPSEA-CSU32P10-SOP8_C914988.html" target="_blank" rel="noopener noreffer">CHIPSEA CSU32P10</a></p>
+<p><a href="https://ismartware.com/article-1-2.html" target="_blank" rel="noopener noreffer ">SW3516</a></p>
+<p><a href="https://www.lcsc.com/product-detail/USB-Converters_Shenzhen-Fuman-Elec-XPD977D30A_C2892062.html" target="_blank" rel="noopener noreffer ">Shenzhen Fuman Elec XPD977D30A</a></p>
+<p><a href="https://www.lcsc.com/product-detail/Microcontroller-Units-MCUs-MPUs-SOCs_CHIPSEA-CSU32P10-SOP8_C914988.html" target="_blank" rel="noopener noreffer ">CHIPSEA CSU32P10</a></p>
 <h2 id="generic-ozone-generator-xd001">Generic Ozone generator (XD001)</h2>
 <figure >
 
@@ -1617,7 +1617,7 @@ Consider this a warning: you will be doing a destructive teardown if you open th
 </figure>
 
 
-<p><a href="https://www.aliexpress.us/item/3256805759188983.html?gatewayAdapt=glo2usa" target="_blank" rel="noopener noreffer">non-affiliate link</a></p>
+<p><a href="https://www.aliexpress.us/item/3256805759188983.html?gatewayAdapt=glo2usa" target="_blank" rel="noopener noreffer ">non-affiliate link</a></p>
 <p>There’s not much in the box other than the generator and a manual.</p>
 <figure >
 
@@ -1716,7 +1716,7 @@ Consider this a warning: you will be doing a destructive teardown if you open th
 This is <em>inexcusable</em> in 2024.
 The silk screen on the PCB indicates that the design is from late 2020, which would be slightly more acceptable if USB-C wasn’t already the standard by then.
 Furthermore, this device doesn’t need any complicated USB-C PD features, so it’s not like they’d have to worry about the extra cost or complexity of a USB-C controller.
-Really, all they needed was <em>two</em> (very important, <a href="https://hackaday.com/2019/07/16/exploring-the-raspberry-pi-4-usb-c-issue-in-depth/" target="_blank" rel="noopener noreffer"><strong>NOT</strong> ONE</a>) 5.1k resistors and a USB-C port and they could have been future proofed!</p>
+Really, all they needed was <em>two</em> (very important, <a href="https://hackaday.com/2019/07/16/exploring-the-raspberry-pi-4-usb-c-issue-in-depth/" target="_blank" rel="noopener noreffer "><strong>NOT</strong> ONE</a>) 5.1k resistors and a USB-C port and they could have been future proofed!</p>
 <figure >
 
     
@@ -1785,8 +1785,8 @@ I&rsquo;m not sure what for, but the silk screen clearly shows a spot for it.</p
 </figure>
 
 
-<p><a href="https://www.aliexpress.us/item/3256806286614116.html?gatewayAdapt=glo2usa" target="_blank" rel="noopener noreffer">non-affiliate link</a></p>
-<p>This is the first of a few LED controllers I bought to see if they are compatible with <a href="https://kno.wled.ge/" target="_blank" rel="noopener noreffer">WLED</a> or ESPHome.
+<p><a href="https://www.aliexpress.us/item/3256806286614116.html?gatewayAdapt=glo2usa" target="_blank" rel="noopener noreffer ">non-affiliate link</a></p>
+<p>This is the first of a few LED controllers I bought to see if they are compatible with <a href="https://kno.wled.ge/" target="_blank" rel="noopener noreffer ">WLED</a> or ESPHome.
 I have some <a href="#side-note-the-ossha-community-is-being-heard" rel="">thoughts</a> on the state of the LED controller market, but to summarize: it&rsquo;s <em>getting better</em>!</p>
 <p>The packaging is very nondescript, containing just the controller and a manual.</p>
 <p><figure >
@@ -1895,8 +1895,8 @@ It also includes a small condenser microphone for the music reactive mode.</p>
 
 
 <h3 id="notable-ics-1">Notable ICs</h3>
-<p><a href="https://www.lcsc.com/product-detail/Microcontrollers-MCU-MPU-SOC_Espressif-Systems-ESP32-C3FN4_C2848860.html" target="_blank" rel="noopener noreffer">ESP32-C3</a></p>
-<p><a href="https://www.lcsc.com/product-detail/74-Series_TM-Shenzhen-Titan-Micro-Elec-TM74HC245_C84121.html" target="_blank" rel="noopener noreffer">TM(Shenzhen Titan Micro Elec) TM74HC245</a></p>
+<p><a href="https://www.lcsc.com/product-detail/Microcontrollers-MCU-MPU-SOC_Espressif-Systems-ESP32-C3FN4_C2848860.html" target="_blank" rel="noopener noreffer ">ESP32-C3</a></p>
+<p><a href="https://www.lcsc.com/product-detail/74-Series_TM-Shenzhen-Titan-Micro-Elec-TM74HC245_C84121.html" target="_blank" rel="noopener noreffer ">TM(Shenzhen Titan Micro Elec) TM74HC245</a></p>
 <h2 id="gledepto-gl-c-015wl-d-led-controller">Gledepto GL-C-015WL-D LED Controller</h2>
 <figure >
 
@@ -1914,7 +1914,7 @@ It also includes a small condenser microphone for the music reactive mode.</p>
 </figure>
 
 
-<p><a href="https://www.aliexpress.us/item/3256807239400011.html?gatewayAdapt=glo2usa" target="_blank" rel="noopener noreffer">non-affiliate link</a></p>
+<p><a href="https://www.aliexpress.us/item/3256807239400011.html?gatewayAdapt=glo2usa" target="_blank" rel="noopener noreffer ">non-affiliate link</a></p>
 <p>As with the other device, this controller also has bare-bones packaging.</p>
 <p>No screwdriver needed because all the terminals have their own locking lever!</p>
 <figure >
@@ -2042,7 +2042,7 @@ The GPIO from the ESP goes more or less directly to the output pins.</p>
 </figure>
 
 
-<p><a href="https://www.aliexpress.us/item/3256805957696665.html?gatewayAdapt=glo2usa" target="_blank" rel="noopener noreffer">non-affiliate link</a></p>
+<p><a href="https://www.aliexpress.us/item/3256805957696665.html?gatewayAdapt=glo2usa" target="_blank" rel="noopener noreffer ">non-affiliate link</a></p>
 <p>I saved the <em>best</em> for last!
 This LED controller <em>really</em> did surprise me with how open it is!</p>
 <p>They&rsquo;re not putting a generic &ldquo;ESP32 powered&rdquo; message on the label leaving the reader to read between the lines / infer that the device can be flashed with alternate firmware.</p>
@@ -2152,7 +2152,7 @@ This was UNHEARD OF just a few years ago and I&rsquo;m <em>so</em> happy to see 
 </figure>
 
 
-<p><a href="https://www.aliexpress.us/item/3256806193753913.html?gatewayAdapt=glo2usa" target="_blank" rel="noopener noreffer">non-affiliate link</a></p>
+<p><a href="https://www.aliexpress.us/item/3256806193753913.html?gatewayAdapt=glo2usa" target="_blank" rel="noopener noreffer ">non-affiliate link</a></p>
 <p>And the winner of the &ldquo;feels most like a hand-built prototype&rdquo; award goes to&hellip; this thing!</p>
 <p>Normally I don&rsquo;t like it when screws are hidden under labels / stickers&hellip; but in this case, the &ldquo;sticker&rdquo; is a rubber foot that doesn&rsquo;t even &ldquo;hide&rdquo; the screws.</p>
 <figure >
@@ -2194,7 +2194,7 @@ This was UNHEARD OF just a few years ago and I&rsquo;m <em>so</em> happy to see 
 
 
 <p>USB-C for power is <em>always</em> a good sign.
-Other than that, a basic <a href="https://www.mcu.com.cn/en/" target="_blank" rel="noopener noreffer">CMSemicon</a> IC runs the show.</p>
+Other than that, a basic <a href="https://www.mcu.com.cn/en/" target="_blank" rel="noopener noreffer ">CMSemicon</a> IC runs the show.</p>
 <p>The OLED screen module is for sure one of those prototype modules meant for hobbyists!</p>
 <figure >
 
@@ -2259,10 +2259,10 @@ https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/files/07_hotplate
 </figure>
 
 
-<p><a href="https://www.aliexpress.us/item/3256806850754746.html?gatewayAdapt=glo2usa" target="_blank" rel="noopener noreffer">non-affiliate link</a></p>
+<p><a href="https://www.aliexpress.us/item/3256806850754746.html?gatewayAdapt=glo2usa" target="_blank" rel="noopener noreffer ">non-affiliate link</a></p>
 <p>USB-C &ldquo;expansion&rdquo; docs are a dime a dozen now.
 This caught my attention because of the LCD display on the side.
-What are the odds that it presents as a second display using <a href="https://www.displayport.org/displayport-over-usb-c/" target="_blank" rel="noopener noreffer">display port tunneling</a> via usb-alt mode?</p>
+What are the odds that it presents as a second display using <a href="https://www.displayport.org/displayport-over-usb-c/" target="_blank" rel="noopener noreffer ">display port tunneling</a> via usb-alt mode?</p>
 <p>There are no screws, just clips.</p>
 <p><figure >
 
@@ -2446,13 +2446,13 @@ The display module is almost certainly the HID device.</p>
 </span></span><span class="line"><span class="cl">❯ diff pre-dock post-dock
 </span></span><span class="line"><span class="cl">3a4,15
 </span></span><span class="line"><span class="cl">&gt;     <span class="p">|</span>__ Port 003: Dev 006, If 0, <span class="nv">Class</span><span class="o">=</span>Hub, <span class="nv">Driver</span><span class="o">=</span>hub/4p, 480M
-</span></span><span class="line"><span class="cl">&gt;         ID 1a40:0801 Terminus Technology Inc. 
+</span></span><span class="line"><span class="cl">&gt;         ID 1a40:0801 Terminus Technology Inc.
 </span></span><span class="line"><span class="cl">&gt;         /sys/bus/usb/devices/1-3  /dev/bus/usb/001/006
 </span></span><span class="line"><span class="cl">&gt;         <span class="p">|</span>__ Port 003: Dev 007, If 0, <span class="nv">Class</span><span class="o">=</span>Hub, <span class="nv">Driver</span><span class="o">=</span>hub/4p, 480M
-</span></span><span class="line"><span class="cl">&gt;             ID 1a40:0801 Terminus Technology Inc. 
+</span></span><span class="line"><span class="cl">&gt;             ID 1a40:0801 Terminus Technology Inc.
 </span></span><span class="line"><span class="cl">&gt;             /sys/bus/usb/devices/1-3.3  /dev/bus/usb/001/007
 </span></span><span class="line"><span class="cl">&gt;             <span class="p">|</span>__ Port 002: Dev 009, If 0, <span class="nv">Class</span><span class="o">=</span>Human Interface Device, <span class="nv">Driver</span><span class="o">=</span>usbhid, 480M
-</span></span><span class="line"><span class="cl">&gt;                 ID 5548:6667  
+</span></span><span class="line"><span class="cl">&gt;                 ID 5548:6667
 </span></span><span class="line"><span class="cl">&gt;                 /sys/bus/usb/devices/1-3.3.2  /dev/bus/usb/001/009
 </span></span><span class="line"><span class="cl">&gt;         <span class="p">|</span>__ Port 004: Dev 008, If 0, <span class="nv">Class</span><span class="o">=</span>Vendor Specific Class, <span class="nv">Driver</span><span class="o">=</span>r8152, 480M
 </span></span><span class="line"><span class="cl">&gt;             ID 0bda:8152 Realtek Semiconductor Corp. RTL8152 Fast Ethernet Adapter
@@ -2564,7 +2564,7 @@ The display module is almost certainly the HID device.</p>
 </figure>
 
 
-<p><a href="https://www.aliexpress.us/item/3256807320371570.html?gatewayAdapt=glo2usa" target="_blank" rel="noopener noreffer">non-affiliate link</a></p>
+<p><a href="https://www.aliexpress.us/item/3256807320371570.html?gatewayAdapt=glo2usa" target="_blank" rel="noopener noreffer ">non-affiliate link</a></p>
 <p>This is a clone/knockoff of the Elgato Stream Deck products.
 I was curious to see if they did anything differently than the original for the internal hardware.
 Turns out, no.
@@ -2680,11 +2680,11 @@ It&rsquo;s still a basic LCD screen behind a matrix of clear buttons.</p>
 
 </p>
 <p>The software is <em>super</em> sketchy; just trying to find a build that actually worked on macOS was a pain!</p>
-<p>The <a href="https://www.a-jazz.com/en/search.jsp?id=422&amp;q=03" target="_blank" rel="noopener noreffer">official site</a> looks and functions like it was made with a 2000s-era website builder 🤮.</p>
-<p>With some google-fu, I found links to a <a href="https://bbs.key123.vip/" target="_blank" rel="noopener noreffer">web forum</a> that may not be officially related to the product, but <a href="https://bbs.key123.vip/forum.php?mod=viewthread&amp;tid=1167&amp;highlight=AKP03" target="_blank" rel="noopener noreffer">has some download links</a> to software that is supposed to work with the device, on macOS in English.</p>
+<p>The <a href="https://www.a-jazz.com/en/search.jsp?id=422&amp;q=03" target="_blank" rel="noopener noreffer ">official site</a> looks and functions like it was made with a 2000s-era website builder 🤮.</p>
+<p>With some google-fu, I found links to a <a href="https://bbs.key123.vip/" target="_blank" rel="noopener noreffer ">web forum</a> that may not be officially related to the product, but <a href="https://bbs.key123.vip/forum.php?mod=viewthread&amp;tid=1167&amp;highlight=AKP03" target="_blank" rel="noopener noreffer ">has some download links</a> to software that is supposed to work with the device, on macOS in English.</p>
 <p>I never got a working build of the software, but the few builds that I did try all have the same architecture; a <code>Qt</code> app that hosts plugins and does all of the thinking for the device.</p>
-<p>With a bit more digging, I think that this &ldquo;Mirabox&rdquo; company is the underlying OEM and the ajazz is just a white-labeled version of this product: <a href="https://miraboxbuy.com/collections/stream-dock/products/streamdock-mbox-n3" target="_blank" rel="noopener noreffer">Stream Dock MBox 293N3</a>.</p>
-<p>Mirabox also appears to have a <a href="https://sdk.key123.vip/en/guide/overview.html#stream-dock-mbox-293n4" target="_blank" rel="noopener noreffer">fledgling SDK</a> for plugins <em>and</em> a <a href="https://github.com/MiraboxSpace/Linux-StreamDock-PythonSDK" target="_blank" rel="noopener noreffer">Python SDK</a> for Linux users!</p>
+<p>With a bit more digging, I think that this &ldquo;Mirabox&rdquo; company is the underlying OEM and the ajazz is just a white-labeled version of this product: <a href="https://miraboxbuy.com/collections/stream-dock/products/streamdock-mbox-n3" target="_blank" rel="noopener noreffer ">Stream Dock MBox 293N3</a>.</p>
+<p>Mirabox also appears to have a <a href="https://sdk.key123.vip/en/guide/overview.html#stream-dock-mbox-293n4" target="_blank" rel="noopener noreffer ">fledgling SDK</a> for plugins <em>and</em> a <a href="https://github.com/MiraboxSpace/Linux-StreamDock-PythonSDK" target="_blank" rel="noopener noreffer ">Python SDK</a> for Linux users!</p>
 <h3 id="usb-details-1">USB details</h3>
 <p>Similar architecture; USB hub with two HID devices hanging off it; probably one HID for reading the buttons and another for writing to the screen.</p>
 <div class="highlight"><div class="chroma">
@@ -2706,10 +2706,10 @@ It&rsquo;s still a basic LCD screen behind a matrix of clear buttons.</p>
 </span></span><span class="line"><span class="cl">❯ diff pre-deck post-deck
 </span></span><span class="line"><span class="cl">3a4,9
 </span></span><span class="line"><span class="cl">&gt;     <span class="p">|</span>__ Port 003: Dev 019, If 0, <span class="nv">Class</span><span class="o">=</span>Human Interface Device, <span class="nv">Driver</span><span class="o">=</span>usbhid, 480M
-</span></span><span class="line"><span class="cl">&gt;         ID 0300:3002  
+</span></span><span class="line"><span class="cl">&gt;         ID 0300:3002
 </span></span><span class="line"><span class="cl">&gt;         /sys/bus/usb/devices/1-3  /dev/bus/usb/001/019
 </span></span><span class="line"><span class="cl">&gt;     <span class="p">|</span>__ Port 003: Dev 019, If 1, <span class="nv">Class</span><span class="o">=</span>Human Interface Device, <span class="nv">Driver</span><span class="o">=</span>usbhid, 480M
-</span></span><span class="line"><span class="cl">&gt;         ID 0300:3002  
+</span></span><span class="line"><span class="cl">&gt;         ID 0300:3002
 </span></span><span class="line"><span class="cl">&gt;         /sys/bus/usb/devices/1-3  /dev/bus/usb/001/019
 </span></span></code></pre></td></tr></table>
 </div>
@@ -2755,8 +2755,8 @@ It&rsquo;s still a basic LCD screen behind a matrix of clear buttons.</p>
 </figure>
 
 
-<p><a href="https://www.aliexpress.us/item/3256807326722207.html?gatewayAdapt=glo2usa" target="_blank" rel="noopener noreffer">non-affiliate link</a></p>
-<p>I&rsquo;ve been looking for a &ldquo;Works with Home Assistant&rdquo; version of the <a href="https://www.amazon.com/Introducing-Echo-Wall-Clock---An-Echo-companion-to-see-timers-at-a-glance./dp/B07FQDMKFT" target="_blank" rel="noopener noreffer">Echo Wall Clock</a> ever since Amazon discontinued it.</p>
+<p><a href="https://www.aliexpress.us/item/3256807326722207.html?gatewayAdapt=glo2usa" target="_blank" rel="noopener noreffer ">non-affiliate link</a></p>
+<p>I&rsquo;ve been looking for a &ldquo;Works with Home Assistant&rdquo; version of the <a href="https://www.amazon.com/Introducing-Echo-Wall-Clock---An-Echo-companion-to-see-timers-at-a-glance./dp/B07FQDMKFT" target="_blank" rel="noopener noreffer ">Echo Wall Clock</a> ever since Amazon discontinued it.</p>
 <p>I was hoping this would be a simple ESP8266 or ESP32 module linked directly to the LEDs&hellip; but there&rsquo;s an anonymous intermediate microcontroller in there.</p>
 <p>Assuming that the microcontroller can be removed easily and the various segments of addressable LEDs can be driven directly from an ESP8266 or ESP32, this could still be a viable base for a custom LED wall clock.</p>
 <p><figure >
@@ -2920,7 +2920,7 @@ It&rsquo;s still a basic LCD screen behind a matrix of clear buttons.</p>
 </figure>
 
 
-<p><a href="https://www.aliexpress.us/item/3256807963651419.html" target="_blank" rel="noopener noreffer">non-affiliate link</a></p>
+<p><a href="https://www.aliexpress.us/item/3256807963651419.html" target="_blank" rel="noopener noreffer ">non-affiliate link</a></p>
 <p>The packaging is nondescript and minimal; the unit and a nice USB A -&gt; C cable is essentially all that&rsquo;s in the box.</p>
 <figure >
 
@@ -3130,7 +3130,7 @@ I&rsquo;d bet that they started designing this product in spring of 2024 and the
 </figure>
 
 
-]]></description></item><item><title>Monitoring HVAC system with ESPHome</title><link>https://karlquinsland.com/esphome-hvac-monitor/</link><pubDate>Sat, 02 Nov 2024 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/esphome-hvac-monitor/</guid><description><![CDATA[<h1 id="using-esphome-to-monitor-hvac-system">Using ESPHome to Monitor HVAC System</h1>
+]]></description></item><item><title>Monitoring HVAC system with ESPHome</title><link>https://karlquinsland.com/esphome-hvac-monitor/</link><pubDate>Sat, 02 Nov 2024 00:00:00 +0000</pubDate><author>karl</author><guid>https://karlquinsland.com/esphome-hvac-monitor/</guid><description><![CDATA[<h1 id="using-esphome-to-monitor-hvac-system">Using ESPHome to Monitor HVAC System</h1>
 <p>Here&rsquo;s a quick &ldquo;show-and-tell&rdquo; about a recent project I completed.</p>
 <h2 id="the-concept">The concept</h2>
 <p>I&rsquo;m not sure how I first came across the idea of measuring air pressure drop across a filter to gauge its remaining life, but I remember thinking it was a great idea.</p>
@@ -3156,15 +3156,15 @@ I&rsquo;d bet that they started designing this product in spring of 2024 and the
 
 
 <p>The idea has been lurking in the back of my mind for a while, but I never got around to implementing it&hellip; until now.</p>
-<p>Years ago, I added a <a href="https://www.winsen-sensor.com/sensors/co2-sensor/mh-z16.html" target="_blank" rel="noopener noreffer">CO₂ sensor</a> to my HVAC return duct to monitor indoor air quality.
+<p>Years ago, I added a <a href="https://www.winsen-sensor.com/sensors/co2-sensor/mh-z16.html" target="_blank" rel="noopener noreffer ">CO₂ sensor</a> to my HVAC return duct to monitor indoor air quality.
 While the sensor provided useful data, I was never really satisfied with how quickly it was installed (read: hacked together messy prototype), and I always wanted to improve it.</p>
-<p>While browsing AliExpress for an unrelated project, I stumbled upon some differential air pressure probes and decided to buy one of these <a href="https://www.aliexpress.us/item/3256807382388280.html" target="_blank" rel="noopener noreffer">sensors</a>.</p>
-<p>After an afternoon of work, I had the sensor up and running and could <a href="https://github.com/kquinsland/qdx50d-air-pressure-sensor-poc" target="_blank" rel="noopener noreffer">communicate with it using some simple Python</a>.</p>
+<p>While browsing AliExpress for an unrelated project, I stumbled upon some differential air pressure probes and decided to buy one of these <a href="https://www.aliexpress.us/item/3256807382388280.html" target="_blank" rel="noopener noreffer ">sensors</a>.</p>
+<p>After an afternoon of work, I had the sensor up and running and could <a href="https://github.com/kquinsland/qdx50d-air-pressure-sensor-poc" target="_blank" rel="noopener noreffer ">communicate with it using some simple Python</a>.</p>
 <p>I then designed a PCB to integrate the sensors and electronics and 3D-printed a case to house the whole setup.</p>
 <h2 id="the-hardware">The Hardware</h2>
 <div class="details admonition note open">
         <div class="details-summary admonition-title">
-            <i class="icon fas fa-pencil-alt fa-fw"></i>Note<i class="details-icon fas fa-angle-right fa-fw"></i>
+            <i class="icon fas fa-pencil-alt fa-fw" aria-hidden="true"></i>Note<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
         </div>
         <div class="details-content">
             <div class="admonition-content">I&rsquo;m not sharing the PCB or other mechanical files because they&rsquo;re specific to my setup.
@@ -3542,7 +3542,7 @@ Use this as a starting point and adapt it to your needs.</div>
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># The air pressure probe seems to sample continuously; the display is updated a few times per second.</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># This is a bit overkill for this application as I really only need to check occasionally while the HVAC fan is running.</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># I say occasionally because the filter is not going to clog up in a matter of seconds; it will take many weeks.</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># There&#39;s little value in knowing that the filter is dropping 2 more Pascals this second compared to what it was </span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># There&#39;s little value in knowing that the filter is dropping 2 more Pascals this second compared to what it was</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#   at 10 seconds ago. The value is in knowing that the filter is dropping 2000 more Pascals now than it was four</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#   months ago!</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#</span><span class="w">
@@ -3691,7 +3691,7 @@ Use this as a starting point and adapt it to your needs.</div>
 </span></span></span><span class="line"><span class="cl"><span class="sd">            }
 </span></span></span><span class="line"><span class="cl"><span class="sd">          }
 </span></span></span><span class="line"><span class="cl"><span class="sd">          // Log the new values
-</span></span></span><span class="line"><span class="cl"><span class="sd">          ESP_LOGD(&#34;sense_air_pressure_delta_raw_pa.on_value&#34;, &#34;glbl_air_pressure_delta_hwm_pa: %f&#34;, id(glbl_air_pressure_delta_hwm_pa));</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="sd">          ESP_LOGD(&#34;sense_air_pressure_delta_raw_pa.on_value&#34;, &#34;glbl_air_pressure_delta_hwm_pa: %f&#34;, id(glbl_air_pressure_delta_hwm_pa));</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Air Pressure Delta (Smoothed)&#34;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
@@ -3714,7 +3714,7 @@ Use this as a starting point and adapt it to your needs.</div>
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#   2. Does not permit arbitrary `update_interval` settings. Only choice is 3s or every 300s!</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># It appears that the only real difference between the two platforms is that the proprietary one</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#   has a calculated VOC and CO2 sensor. </span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#   has a calculated VOC and CO2 sensor.</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># This build already has a real CO2 sensor and - while better than nothing - I&#39;d rather have a real VOC sensor as well.</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">##</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">bme680</span><span class="w">
@@ -3734,7 +3734,7 @@ Use this as a starting point and adapt it to your needs.</div>
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">state_class</span><span class="p">:</span><span class="w"> </span><span class="l">TOTAL_INCREASING</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">update_interval</span><span class="p">:</span><span class="w"> </span><span class="l">never</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">      return id(glbl_air_pressure_delta_hwm_pa);</span><span class="w">      
+</span></span></span><span class="line"><span class="cl"><span class="sd">      return id(glbl_air_pressure_delta_hwm_pa);</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">on_value</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="l">id(sense_est_filter_life_remaining).update();</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
@@ -3755,7 +3755,7 @@ Use this as a starting point and adapt it to your needs.</div>
 </span></span></span><span class="line"><span class="cl"><span class="sd">      } else {
 </span></span></span><span class="line"><span class="cl"><span class="sd">        ESP_LOGD(&#34;sense_est_filter_life_remaining&#34;, &#34;[CalcCase] glbl_air_pressure_delta_hwm_pa: %f glbl_air_pressure_delta_virgin_pa: %f, glbl_air_pressure_delta_clogged_pa: %f&#34;, id(glbl_air_pressure_delta_hwm_pa), id(glbl_air_pressure_delta_virgin_pa), id(glbl_air_pressure_delta_clogged_pa));
 </span></span></span><span class="line"><span class="cl"><span class="sd">        return 100 - ((id(glbl_air_pressure_delta_hwm_pa) - id(glbl_air_pressure_delta_virgin_pa)) / (id(glbl_air_pressure_delta_clogged_pa) - id(glbl_air_pressure_delta_virgin_pa)) * 100);
-</span></span></span><span class="line"><span class="cl"><span class="sd">      }</span><span class="w">      
+</span></span></span><span class="line"><span class="cl"><span class="sd">      }</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Button to clear the high water mark</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># This button should be pressed when a new filter is installed</span><span class="w">
@@ -3794,12 +3794,12 @@ Use this as a starting point and adapt it to your needs.</div>
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">max_value</span><span class="p">:</span><span class="w"> </span><span class="l">${template_number_input_max_hpa}</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">step</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">      return id(glbl_air_pressure_delta_virgin_pa)/100;</span><span class="w">      
+</span></span></span><span class="line"><span class="cl"><span class="sd">      return id(glbl_air_pressure_delta_virgin_pa)/100;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">set_action</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          id(glbl_air_pressure_delta_virgin_pa) = abs(x)*100;</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(glbl_air_pressure_delta_virgin_pa) = abs(x)*100;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          id(sense_est_filter_life_remaining).update();</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(sense_est_filter_life_remaining).update();</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Clogged Filter Pressure Delta&#34;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
@@ -3812,18 +3812,18 @@ Use this as a starting point and adapt it to your needs.</div>
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">max_value</span><span class="p">:</span><span class="w"> </span><span class="l">${template_number_input_max_hpa}</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">step</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">      return id(glbl_air_pressure_delta_clogged_pa)/100;</span><span class="w">      
+</span></span></span><span class="line"><span class="cl"><span class="sd">      return id(glbl_air_pressure_delta_clogged_pa)/100;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">set_action</span><span class="p">:</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          id(glbl_air_pressure_delta_clogged_pa) = abs(x)*100;</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(glbl_air_pressure_delta_clogged_pa) = abs(x)*100;</span><span class="w">
 </span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          id(sense_est_filter_life_remaining).update();</span><span class="w">          
+</span></span></span><span class="line"><span class="cl"><span class="sd">          id(sense_est_filter_life_remaining).update();</span><span class="w">
 </span></span></span></code></pre></td></tr></table>
 </div>
-</div>]]></description></item><item><title>Watch Band RFID fob</title><link>https://karlquinsland.com/watch-band-rfid/</link><pubDate>Sat, 14 Sep 2024 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/watch-band-rfid/</guid><description><![CDATA[<h1 id="watch-band-rfid-fob">Watch Band RFID fob</h1>
+</div>]]></description></item><item><title>Watch Band RFID fob</title><link>https://karlquinsland.com/watch-band-rfid/</link><pubDate>Sat, 14 Sep 2024 00:00:00 +0000</pubDate><author>karl</author><guid>https://karlquinsland.com/watch-band-rfid/</guid><description><![CDATA[<h1 id="watch-band-rfid-fob">Watch Band RFID fob</h1>
 <p>This is a quick project to create a wearable RFID fob that can be easily attached to a watch band.
 The idea is to have a small RFID tag that can be used for various purposes, such as access control or identification that is - more or less - as convenient as a surgically implanted tag, but without the need for embedding anything in your body.</p>
-<p>I was inspired by both the <a href="https://en.wikipedia.org/wiki/Microchip_implant_%28human%29" target="_blank" rel="noopener noreffer">bio-hacking community</a> and the medical-alert &lsquo;accessory bands&rsquo; for Android Wear devices.</p>
+<p>I was inspired by both the <a href="https://en.wikipedia.org/wiki/Microchip_implant_%28human%29" target="_blank" rel="noopener noreffer ">bio-hacking community</a> and the medical-alert &lsquo;accessory bands&rsquo; for Android Wear devices.</p>
 <figure >
 
     
@@ -3942,7 +3942,7 @@ A kit is advisable if you need to prototype multiple designs / play with differe
 <h2 id="sourcing-the-rfid-tag">Sourcing the RFID tag</h2>
 <p>This application is severely space constrained, so you need the smallest possible tag that is also reprogrammable.
 If you search for tags meant to be embedded under the skin of animals, you will find many options&hellip; but they are not reprogrammable.</p>
-<p>There are also tags meant for <a href="https://dangerousthings.com/category/implants/x-series/" target="_blank" rel="noopener noreffer">humans</a> but they&rsquo;re not cheap!
+<p>There are also tags meant for <a href="https://dangerousthings.com/category/implants/x-series/" target="_blank" rel="noopener noreffer ">humans</a> but they&rsquo;re not cheap!
 I did eventually find a suitable tag on eBay:</p>
 <figure >
 
@@ -3965,7 +3965,7 @@ I did eventually find a suitable tag on eBay:</p>
 </figure>
 
 
-<p>eBay being what it is, there&rsquo;s no guarantee that <a href="https://www.ebay.com/itm/254607033331" target="_blank" rel="noopener noreffer">the same listing I purchased from</a> will still be active in the future so I am including a copy of the listing description that you can use for reference when searching for a suitable tag:</p>
+<p>eBay being what it is, there&rsquo;s no guarantee that <a href="https://www.ebay.com/itm/254607033331" target="_blank" rel="noopener noreffer ">the same listing I purchased from</a> will still be active in the future so I am including a copy of the listing description that you can use for reference when searching for a suitable tag:</p>
 <blockquote>
 <p>New 2pcs T5577 125KHz E/H Rewrite Writable R/W Proximity Bio Glass Tag 2.12x12mm</p>
 </blockquote>
@@ -4011,7 +4011,7 @@ I did eventually find a suitable tag on eBay:</p>
         
 
         <figure>
-            <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/eBay-listing.png">
+            <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/eBay-listing.webp">
                 
             </a>
             
@@ -4073,7 +4073,7 @@ I did eventually find a suitable tag on eBay:</p>
         
 
         <figure>
-            <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/suggested-print-orientation.png">
+            <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/suggested-print-orientation.webp">
                 
             </a>
             
@@ -4093,7 +4093,7 @@ I did eventually find a suitable tag on eBay:</p>
         
 
         <figure>
-            <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/prototype01.jpg">
+            <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/prototype01.webp">
                 
             </a>
             
@@ -4113,7 +4113,7 @@ I did eventually find a suitable tag on eBay:</p>
         
 
         <figure>
-            <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/prototype02.jpg">
+            <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/prototype02.webp">
                 
             </a>
             
@@ -4133,7 +4133,7 @@ I did eventually find a suitable tag on eBay:</p>
         
 
         <figure>
-            <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/prototype03.jpg">
+            <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/prototype03.webp">
                 
             </a>
             
@@ -4148,7 +4148,7 @@ I did eventually find a suitable tag on eBay:</p>
     
 </ul>
 
-]]></description></item><item><title>AKASO DL12 Dashcam Teardown</title><link>https://karlquinsland.com/akaso-dl12-teardown/</link><pubDate>Thu, 01 Aug 2024 00:00:00 +0000</pubDate><author>Author</author><guid>https://karlquinsland.com/akaso-dl12-teardown/</guid><description><![CDATA[<!-- markdownlint-disable-file MD002 -->
+]]></description></item><item><title>AKASO DL12 Dashcam Teardown</title><link>https://karlquinsland.com/akaso-dl12-teardown/</link><pubDate>Thu, 01 Aug 2024 00:00:00 +0000</pubDate><author>karl</author><guid>https://karlquinsland.com/akaso-dl12-teardown/</guid><description><![CDATA[<!-- markdownlint-disable-file MD002 -->
 <h1 id="akaso-dl12-dashcam-teardown">AKASO DL12 Dashcam Teardown</h1>
 <figure >
 
@@ -4273,7 +4273,7 @@ The two push buttons in the top left are not accessible from the outside of the 
 
 <p>Removing it reveals a HiSilicon Hi3556 SoC, EEPROM and what is probably the image processor for the rear camera.
 The large unpopulated footprint in the top right looks like it&rsquo;s meant for a radio module.
-Not sure if it&rsquo;s for a wireless link to the rear camera or for something like a <a href="https://en.wikipedia.org/wiki/Tire-pressure_monitoring_system" target="_blank" rel="noopener noreffer">TPMS sensor</a> or possibly WiFi for a phone app.</p>
+Not sure if it&rsquo;s for a wireless link to the rear camera or for something like a <a href="https://en.wikipedia.org/wiki/Tire-pressure_monitoring_system" target="_blank" rel="noopener noreffer ">TPMS sensor</a> or possibly WiFi for a phone app.</p>
 <figure >
 
     
@@ -4330,7 +4330,7 @@ Not sure if it&rsquo;s for a wireless link to the rear camera or for something l
 <p>F02Z1B
 F15Z1B</p>
 </blockquote>
-<p>The main CPU is <a href="https://silicondevice.com/file.upload/images/Gid1551Pdf_Hi3556%20V100%20HD%20Mobile%20Camera%20SoC%20Brief%20Data%20Sheet.pdf" target="_blank" rel="noopener noreffer">meant for consumer cameras</a> and is marked:</p>
+<p>The main CPU is <a href="https://silicondevice.com/file.upload/images/Gid1551Pdf_Hi3556%20V100%20HD%20Mobile%20Camera%20SoC%20Brief%20Data%20Sheet.pdf" target="_blank" rel="noopener noreffer ">meant for consumer cameras</a> and is marked:</p>
 <blockquote>
 <p>Hi 3556</p>
 <p>RBCV200</p>
@@ -4361,7 +4361,7 @@ F15Z1B</p>
 <td class="lntd">
 <pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">❯ flashrom --force -c <span class="s2">&#34;GD25B128B/GD25Q128B&#34;</span> --verbose --programmer ch341a_spi --read oem.bin
 </span></span><span class="line"><span class="cl">&lt;...&gt;
-</span></span><span class="line"><span class="cl">Reading flash... 
+</span></span><span class="line"><span class="cl">Reading flash...
 </span></span><span class="line"><span class="cl">&lt;...&gt;
 </span></span></code></pre></td></tr></table>
 </div>

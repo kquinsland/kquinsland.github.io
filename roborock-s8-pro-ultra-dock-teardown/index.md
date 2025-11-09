@@ -1,6 +1,5 @@
 # Roborock S8 Pro Ultra Teardown
 
-
 # Roborock S8 teardown
 
 I recently acquired the new S8 from Roborock to replace my rapidly failing roomba.
@@ -78,7 +77,6 @@ And here's a shot of the LIDAR pcb.
 
 {{<figure name="vac06_dis06" >}}
 
-
 As for getting into the rest of the robot, it's not that difficult.
 Standard "keep track of all the screws and take photos at each step" advice applies here.
 
@@ -97,7 +95,6 @@ There's a few interesting things to note here:
 {{<figure name ="vac08_pcb_front">}}
 
 {{<figure name ="vac08_pcb_rear">}}
-
 
 The conformal coating is annoying but here's the big players:
 

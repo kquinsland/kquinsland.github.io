@@ -97,7 +97,7 @@ Just for giggles, I dumped the firmware from the SPI flash to get an idea of wha
 ```shell
 ❯ flashrom --force -c "GD25B128B/GD25Q128B" --verbose --programmer ch341a_spi --read oem.bin
 <...>
-Reading flash... 
+Reading flash...
 <...>
 ```
 

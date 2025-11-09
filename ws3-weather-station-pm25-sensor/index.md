@@ -1,7 +1,6 @@
 # Adding an airborne particulate mater sensor to WS3 Weather Station
 
-
-A while back, I [posted a small bit of code](https://github.com/kquinsland/ws3-to-esphome-bridge/) that could decode the data from the ubiquitous WS3 Weather Station and make it accessible to the amazing [HomeAssistant](https://www.home-assistant.io/) via the wonderful [ESPHome](https://esphome.io/) project. Since then, my weather station has been dutifully collecting data that's been invaluable for augmenting automation that deals with indoor climate. 
+A while back, I [posted a small bit of code](https://github.com/kquinsland/ws3-to-esphome-bridge/) that could decode the data from the ubiquitous WS3 Weather Station and make it accessible to the amazing [HomeAssistant](https://www.home-assistant.io/) via the wonderful [ESPHome](https://esphome.io/) project. Since then, my weather station has been dutifully collecting data that's been invaluable for augmenting automation that deals with indoor climate.
 
 As the numerous wild fires in California rage on, [the air quality has gone from bad to dangerous](https://www.forbes.com/sites/ericmack/2020/08/21/wildfire-smoke-blankets-the-west-as-california-records-worlds-worst-air-quality/). Knowing that outside was warmer, but less humid, was no longer enough to make a smart decision about weather or not to open the windows for some cost-effective cooling. I now need HomeAssistant to be aware of how clean the outside air was before making the decision to pipe in outdoor air.
 
@@ -21,7 +20,6 @@ And results in graphs that look like this:
 {{< figure name="example_dashboard" >}}
 
 A simplified copy of this post appears on [thingiverse](https://www.thingiverse.com/thing:4581351) and [prusaprinters](https://www.prusaprinters.org/prints/39560-outdoor-enclosure-for-pms5003-particulate-matter-s).
-
 
 ## The enclosure
 
@@ -51,13 +49,12 @@ The shroud and the base are not optional, the triangle shaped block is intended 
 
 {{< figure name="print_orientation" >}}
 
-
 ## Assemble
 
 Briefly:
 
 - collect materials
-- press-fit the PM2.5 sensor into the enclosure 
+- press-fit the PM2.5 sensor into the enclosure
 - make a wire that can interface the PM2.5 sensor to the WS3 board via RJ11
 - seal everything up
 - glue on mesh screens and angled roof
@@ -84,13 +81,12 @@ Components:
 
 **Note**: Where possible, I've used referral links. The links don't raise the price of any item, they simply let the retailer know that I sent you and, in return, I get a small cut of your purchase. If you're not comfortable with that, you can use a URL unwinding service to get the 'raw' product link and drop the attribution/commission part.
 
-
 General bits:
 
 - Superglue
 - Waterproofing caulk/sealant
 - Drill/Screwdriver
-- Driver bit for the screws 
+- Driver bit for the screws
 
 The stepped drill bit in the above picture is not a requirement if you assemble things in the correct oder. The cable egress hole is sized for a 'typical' 3 pair [RJ11 cable](https://en.wikipedia.org/wiki/Registered_jack#RJ11,_RJ14,_RJ25_wiring) plus a tiny bit of wiggle room. I needed a working cable to test the code while the parts were printing so the hole in the printed base needed to be enlarged slightly to fit the head of the cable.
 
@@ -117,7 +113,7 @@ For reference, Pin 1 on both the WS3 and PM2.5 Sensor:
 
 {{< figure name="pinout_pm25" >}}
 
-With the wiring done, the sensor just needs to be stuffed into the enclosure. Don't forget to thread the RJ11 cable through the hole in the base plate *BEFORE* soldering it to the cable for the PM2.5 sensor... otherwise you'll need that stepped drill bit! 🙃
+With the wiring done, the sensor just needs to be stuffed into the enclosure. Don't forget to thread the RJ11 cable through the hole in the base plate _BEFORE_ soldering it to the cable for the PM2.5 sensor... otherwise you'll need that stepped drill bit! 🙃
 
 {{< figure name="assembly" >}}
 
@@ -125,10 +121,9 @@ To finish, secure the base with screws and a bit of water-proofing caulk for goo
 
 {{< figure name="curing_glue" >}}
 
-
 ## The code
 
-Setting up and using ESPHome is outside the scope of this post but there are several [good guides](https://esphome.io/guides/getting_started_hassio.html) out there. Once you have that set up, [include](https://esphome.io/custom/custom_component.html) the `ws3.h` file and set up your custom sensor as shown below. A working example and more detail is over on the 
+Setting up and using ESPHome is outside the scope of this post but there are several [good guides](https://esphome.io/guides/getting_started_hassio.html) out there. Once you have that set up, [include](https://esphome.io/custom/custom_component.html) the `ws3.h` file and set up your custom sensor as shown below. A working example and more detail is over on the
 [github repo](https://github.com/kquinsland/ws3-to-esphome-bridge/).
 
 It'll look like this:
@@ -147,13 +142,13 @@ sensor:
       auto ws3 = new WS3(id(uart_bus));
       App.register_component(ws3);
       return {
-        ws3->temperature_sensor, 
-        ws3->pressure_sensor, 
-        ws3->humidity_sensor, 
+        ws3->temperature_sensor,
+        ws3->pressure_sensor,
+        ws3->humidity_sensor,
         ws3->wind_speed_current_sensor,
         ws3->wind_speed_peak_5m_sensor,
         ws3->wind_direction_sensor,
-        ws3->rain_fall_1h_sensor, 
+        ws3->rain_fall_1h_sensor,
         ws3->rain_fall_24h_sensor,
 
         ws3->particles_03um,
@@ -165,10 +160,9 @@ sensor:
       };
 ```
 
-
 With that, check the logs from your instance of ESPHome and you should see something like this:
 
-```
+```text
 [D][ws3:157]: pkt_read_ok!
 [D][WS3:410]: VALID! Packet: [c000s000g000t093r000p000h35b09880,050,080,088,502,056,065,*18
 ], Checksum: [18] chksum: [18]

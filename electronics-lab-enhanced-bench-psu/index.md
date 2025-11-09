@@ -1,10 +1,8 @@
 # electronics lab: enhanced psu
 
-
 While doing the PoE related testing for [this]({{< ref "/posts/2020/07/POE-at-a-distance-ruined-my-cat5-speeds.md" >}}) incident, it occurred to me that I never got around to sharing the files for a small modification to the popular RD6006 PSU.
 
 While drafting this post, I discovered that there appears to be a newer version of the RD6006: the 6012. As far as I can tell, they're in the same 'family' and have the same dimensions so the CAD and related model files below _should_ work w/ the RD6012 just as they do w/ the 6006, but i can only 'guarantee' that the CAD and related model files below will work with the [RD6006](https://hackaday.com/tag/riden-rd6006/).
-
 
 A version of this post appears on [prusaprinters](https://www.prusaprinters.org/prints/36338-poe-and-qc30-adapter-for-rd6006-psu) and [thingiverse](https://www.thingiverse.com/thing:4536551)
 
@@ -16,13 +14,11 @@ Assembled, it looks like this:
 
 {{< figure name="rd6012" >}}
 
-
 The RD6006 is incredibly versatile, but can only supply power for about 85% of the devices that make their way onto my 'healing' bench. I wasn't keen on taking up more valuable space with a device dedicated to PoE injection so finding a way to mod one into the PSU seemed like a good idea. Similarly, adding a versatile USB port seemed like a no-brainer as my [favorite soldering iron](http://www.miniware.com.cn/product/ts80-soldering-iron-more/) is powered via QuickCharge 3.
 
 Three useful bench tools, one footprint, one consumed power outlet. What's not to love?
 
-
-## Printing:
+## Printing
 
 There are two components for this build:
 
@@ -30,8 +26,6 @@ There are two components for this build:
 - the 'lid' is the (mostly) transparent yellow component which holds the auxiliary power supplies (pink components) in place and keeps all voltages away from people.
 
 {{< figure name="cad components" show_title="true" >}}
-
-
 
 I used black PETG, but any material and at least 10% infill should be fine. Tune the layer height to taste.
 
@@ -48,8 +42,6 @@ In addition to the miscellaneous wire and crimp connectors, there are two compon
 - [PoE injector](https://www.aliexpress.com/item/33019891423.html)
 - [QC 3.0 Charger](https://www.amazon.com/gp/product/B07Y9HP4KM/)
 
-
-
 ## Assembly
 
 I don't have any pictures from the assembly :disappointed:, but it's not particularly difficult to figure out from the attached pictures. In general, the steps to take are:
@@ -59,7 +51,7 @@ I don't have any pictures from the assembly :disappointed:, but it's not particu
 2. desolder the existing mains connections from both modules and solder on new ones. The new ones don't need to be long, just a bit longer than the leads that came on the module PCBs!
 3. disconnect power from the assembled PSU and remove the case cover
 4. place the 'plate' onto the top of the PSU and use a pencil to mark all 5 holes on the cover
-5. remove the plate, drill out all 5 holes and use a file to smooth down any sharp edges on the big hole as that's where the mains wires will go. A burr poking through insulation means the case may become energized @ mains voltages! :boom: :skull: 
+5. remove the plate, drill out all 5 holes and use a file to smooth down any sharp edges on the big hole as that's where the mains wires will go. A burr poking through insulation means the case may become energized @ mains voltages! :boom: :skull:
 6. crimp connectors onto wires and attach to the mains supply **after** the switch and fuse!
 7. place the 'plate' back onto the PSU cover
 8. run the wires through the new hole in the top of the PSU case and through the hole in the 'plate'
@@ -69,16 +61,13 @@ I don't have any pictures from the assembly :disappointed:, but it's not particu
 12. re-connect the IEC power connector and power on
 13. monitor for sounds and smells that indicate you screwed up. begin testing PoE and USB port for proper power.
 
-
 Just prior to seating the 'lid' you should have something like this:
 
 {{< figure name="pre-lid" >}}
 
-
 When all said and done, you'll get this:
 
 {{< figure name="assembled-feature" >}}
-
 
 ## Files
 

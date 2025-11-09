@@ -1,6 +1,5 @@
 # Fixing Home Assistant discovery with Tasmota on the Treatlife DS03
 
-
 {{< admonition warning "Update" >}}
 This post is now deprecated. It has been superseded by  [`Using ESPHome with the Treatlife DS03`]({{<relref "posts/2022/06/treatlife-ds03-esphome" >}}) from 2022-06.
 {{< /admonition >}}
@@ -26,7 +25,6 @@ The [existing](https://templates.blakadder.com/treatlife_DS03.html) guides on [h
 I'm not a huge fan of doing things manually, especially when there's a well documented and robust protocol designed to make manual configuration unnecessary! Why ignore the almost completely working auto-configuration in favor of manual configuration? Why not just fix the auto-config payload so Home Assistant exposes the full functionality of the device?
 
 Both of the above guides were written long before [Home Assistant gained support](https://www.home-assistant.io/blog/2021/03/03/release-20213/#fan-speeds-100) for fans with more than 3 speeds so even if I were to configure Home Assistant with a copy their example YAML, I'd _still_ be missing the ability to control the 4th speed!
-
 
 ## How
 
@@ -86,7 +84,6 @@ For readability, here's the unminified JSON:
 
 **Note:** The `dev` portion of the payload is the [magic that convinces Home Assistant to combine the multiple entities under once device](https://www.home-assistant.io/integrations/fan.mqtt/#device). Without that portion of the document, you will still have a properly configured DS03, but it will exist as an 'orphaned' entity that belongs to no device!
 
-
 All that's left is to enable `rule2` and then trigger it:
 
 ```text
@@ -116,13 +113,11 @@ Altogether, It'll look something like this:
 
 If everything worked correctly, Home Assistant should now show a single device in the [device registry](https://developers.home-assistant.io/docs/device_registry_index/) with a dimmable light entity and a variable-speed fan entity!
 
-
 {{<figure name="ha_mqtt_fan">}}
-
 
 **Note:** Depending on weather or not Home Assistant has previously 'seen' your DS03 via the native native [Tasmota](https://www.home-assistant.io/integrations/tasmota/) integration, you may see _three_ entities on the device page; the light/dimmer, the switch/fan and the variable speed fan. Just disable the 'basic' fan switch entity that Tasmota publishes as discussed below.
 
-
+<!-- markdownlint-disable MD001 -->
 #### Updating a DS03 that's already integrated with Home Assistant
 
 If you've already got a DS03 that's integrated with Home Assistant, you can still get the device to properly auto-configure. Just remove the YAML configuration for both the light and fan entities.
@@ -135,9 +130,7 @@ If your DS03 was already configured with Home Assistant via the Tasmota integrat
 
 {{<figure name="ha_disable_default_entity">}}
 
-
 After disabling the switch/fan entity, trigger `rule2` again and refresh the device entity page in Home Assistant to confirm that the device now has a `MQTT Fan` entity if it wasn't there already.
-
 
 Enjoy :)
 
@@ -148,7 +141,6 @@ I run my MQTT broker on Kubernetes and do not have any persistance configured fo
 I'm not the [only one](https://community.home-assistant.io/t/tasmota-going-offline-at-random-times/116299) with [this issue](https://community.home-assistant.io/t/sonoff-tasmota-started-regularly-showing-unavailable-on-home-assistant/90157/83), even if the cause is different.
 
 To get around this, I have a small automation that pokes the Tasmota devices every hour and when Home Assistant starts up. Since the Home Assistant pod takes longer than the MQTT pod to initialize, having HA poke the devices on startup minimizes the time a given entity is `Unavailable` in HA.
-
 
 ```yaml
 alias: Tasmotas Announce
@@ -176,22 +168,19 @@ mode: single
 
 You could probably work around this whole thing by changing the trigger for `rule2` to something like `on Mqtt#Connected publish2`. Or storing the configuration payload as a [variable](https://tasmota.github.io/docs/Rules/#rule-variables) so you could write multiple triggers for the same `publish2 %mem1%` action 🤔.
 
-
-
-### Side note: Rules Crash!
+### Side note: Rules Crash
 
 While developing the configuration payload, I was able to reliably crash the ESP8266 module causing Tasmota to reboot. The crash / reboot symptoms are pretty similar to those outlined [here](https://tasmota.github.io/docs/Troubleshooting/#running-out-of-ram) so I assume that even though the rules "fit", something about how the rule was parsed or the actions the rule drove caused the ESP to run out of RAM.
 
 When I say "fit" I mean that I'd see lines like this in the console after configuring a test payload for `rule2`:
 
-```
+```text
 MQT: stat/living_room_ceiling_fan/RESULT = {"Rule2":{"State":"ON",..."Free":9,"Rules":"on ... endon"}}
 ```
 
 I could technically make the rule `9` characters longer and it'd still fit... right?
 
 Not quite. Looking at the result from issuing the `Rule1` command, it was clear that while `rule2` would have an absolute maximum length of 511 characters (`"Length":344,"Free":167`; 344+167=511) there was also a less well defined soft limit on rule length.
-
 
 For some versions of my `rule2` payload, I was able to solve the crashing just by switching to the 'lite' version of Tasmota. While the 'lite' version of Tasmota does work with Tuya MCU (`USE_TUYA_MCU`), it [does _not_ support](https://github.com/arendst/Tasmota/blob/v9.4.0/BUILDS.md) Home Assistant configuration (`USE_HOME_ASSISTANT`)!
 

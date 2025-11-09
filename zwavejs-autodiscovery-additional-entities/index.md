@@ -1,6 +1,5 @@
 # Configuring additional ZwaveJS entities in Home Assistant over MQTT
 
-
 This is a super quick "because the official docs didn't make it super clear so here's what ended up working for me" post.
 
 -----
@@ -154,27 +153,27 @@ I am not super familiar with the ZwaveJS2MQTT code base, but it looks like there
 ```shell
 │ ERROR (MainThread) [homeassistant.util.logging] Exception in discovery_callback when dispatching 'mqtt_discovery_updated_('select', 'YourThermostat NameHere idle_brightness │
 │ Traceback (most recent call last):
-│   File "/usr/src/homeassistant/homeassistant/components/mqtt/mixins.py", line 724, in discovery_callback      
-│     await self._discovery_update(payload)    
-│   File "/usr/src/homeassistant/homeassistant/components/mqtt/mixins.py", line 886, in discovery_update        
-│     config = self.config_schema()(discovery_payload)                                                          
-│   File "/usr/local/lib/python3.9/site-packages/voluptuous/validators.py", line 232, in __call__               
-│     return self._exec((Schema(val) for val in self.validators), v)                                            
-│   File "/usr/local/lib/python3.9/site-packages/voluptuous/validators.py", line 355, in _exec                  
-│     raise e if self.msg is None else AllInvalid(self.msg, path=path)                                          
-│   File "/usr/local/lib/python3.9/site-packages/voluptuous/validators.py", line 351, in _exec                  
-│     v = func(v)                              
-│   File "/usr/local/lib/python3.9/site-packages/voluptuous/schema_builder.py", line 272, in __call__           
-│     return self._compiled([], data)          
-│   File "/usr/local/lib/python3.9/site-packages/voluptuous/schema_builder.py", line 818, in validate_callable  
-│     return schema(data)                      
-│   File "/usr/local/lib/python3.9/site-packages/voluptuous/schema_builder.py", line 272, in __call__           
-│     return self._compiled([], data)          
-│   File "/usr/local/lib/python3.9/site-packages/voluptuous/schema_builder.py", line 595, in validate_dict      
-│     return base_validate(path, iteritems(data), out)                                                          
-│   File "/usr/local/lib/python3.9/site-packages/voluptuous/schema_builder.py", line 433, in validate_mapping   
-│     raise er.MultipleInvalid(errors)         
-│ voluptuous.error.MultipleInvalid: required key not provided @ data['options']   
+│   File "/usr/src/homeassistant/homeassistant/components/mqtt/mixins.py", line 724, in discovery_callback
+│     await self._discovery_update(payload)
+│   File "/usr/src/homeassistant/homeassistant/components/mqtt/mixins.py", line 886, in discovery_update
+│     config = self.config_schema()(discovery_payload)
+│   File "/usr/local/lib/python3.9/site-packages/voluptuous/validators.py", line 232, in __call__
+│     return self._exec((Schema(val) for val in self.validators), v)
+│   File "/usr/local/lib/python3.9/site-packages/voluptuous/validators.py", line 355, in _exec
+│     raise e if self.msg is None else AllInvalid(self.msg, path=path)
+│   File "/usr/local/lib/python3.9/site-packages/voluptuous/validators.py", line 351, in _exec
+│     v = func(v)
+│   File "/usr/local/lib/python3.9/site-packages/voluptuous/schema_builder.py", line 272, in __call__
+│     return self._compiled([], data)
+│   File "/usr/local/lib/python3.9/site-packages/voluptuous/schema_builder.py", line 818, in validate_callable
+│     return schema(data)
+│   File "/usr/local/lib/python3.9/site-packages/voluptuous/schema_builder.py", line 272, in __call__
+│     return self._compiled([], data)
+│   File "/usr/local/lib/python3.9/site-packages/voluptuous/schema_builder.py", line 595, in validate_dict
+│     return base_validate(path, iteritems(data), out)
+│   File "/usr/local/lib/python3.9/site-packages/voluptuous/schema_builder.py", line 433, in validate_mapping
+│     raise er.MultipleInvalid(errors)
+│ voluptuous.error.MultipleInvalid: required key not provided @ data['options']
 ```
 
 While it would be nice if ZwaveJS2MQTT would support more device types, we have a pretty simple fix: use another device to publish a valid configuration payload.

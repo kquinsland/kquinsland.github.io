@@ -311,13 +311,13 @@ The display module is almost certainly the HID device.
 ❯ diff pre-dock post-dock
 3a4,15
 >     |__ Port 003: Dev 006, If 0, Class=Hub, Driver=hub/4p, 480M
->         ID 1a40:0801 Terminus Technology Inc. 
+>         ID 1a40:0801 Terminus Technology Inc.
 >         /sys/bus/usb/devices/1-3  /dev/bus/usb/001/006
 >         |__ Port 003: Dev 007, If 0, Class=Hub, Driver=hub/4p, 480M
->             ID 1a40:0801 Terminus Technology Inc. 
+>             ID 1a40:0801 Terminus Technology Inc.
 >             /sys/bus/usb/devices/1-3.3  /dev/bus/usb/001/007
 >             |__ Port 002: Dev 009, If 0, Class=Human Interface Device, Driver=usbhid, 480M
->                 ID 5548:6667  
+>                 ID 5548:6667
 >                 /sys/bus/usb/devices/1-3.3.2  /dev/bus/usb/001/009
 >         |__ Port 004: Dev 008, If 0, Class=Vendor Specific Class, Driver=r8152, 480M
 >             ID 0bda:8152 Realtek Semiconductor Corp. RTL8152 Fast Ethernet Adapter
@@ -397,7 +397,7 @@ The board with the physical knobs/buttons is just a "pass through" PCB; everythi
 
 {{<figure name="09_AKP03E_td04">}}
 
-I can't find _anything_ when googling the main IC, unfortunately. 
+I can't find _anything_ when googling the main IC, unfortunately.
 
 > ARX29025
 >
@@ -434,10 +434,10 @@ Similar architecture; USB hub with two HID devices hanging off it; probably one 
 ❯ diff pre-deck post-deck
 3a4,9
 >     |__ Port 003: Dev 019, If 0, Class=Human Interface Device, Driver=usbhid, 480M
->         ID 0300:3002  
+>         ID 0300:3002
 >         /sys/bus/usb/devices/1-3  /dev/bus/usb/001/019
 >     |__ Port 003: Dev 019, If 1, Class=Human Interface Device, Driver=usbhid, 480M
->         ID 0300:3002  
+>         ID 0300:3002
 >         /sys/bus/usb/devices/1-3  /dev/bus/usb/001/019
 ```
 

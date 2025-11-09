@@ -190,9 +190,9 @@ At the tail end of the unmodified gCode there are some "shutdown" commands and t
 ```gcode
 <... many many lines omitted ...>
 ; turn off extruder heaters
- M104 T0 S0 
- M104 T1 S0 
- M104 T2 S0 
+ M104 T0 S0
+ M104 T1 S0
+ M104 T2 S0
 
 <...>
 

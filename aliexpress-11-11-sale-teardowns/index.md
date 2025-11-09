@@ -102,12 +102,16 @@ The main PCB has a few unpopulated connections so this module either works with 
 
 PCB is marked with:
 
+```text
     PV28_TFT_v3
     2022/10/25
+```
 
 Screen is marked with:
 
+```text
     LY028S24256
+```
 
 ## WaveShare PoE RS232/485/422 adapter
 

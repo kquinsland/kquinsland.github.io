@@ -1,6 +1,5 @@
 # Using Home Assistant to dynamically layout openHasp widgets
 
-
 # Background
 
 This is one of those posts that sat in the `Drafts` folder for _way_ too long.
@@ -9,7 +8,7 @@ After several delays, false starts and re-writes, I finally have something that 
 
 Like with the past few [teardown]({{< ref "/categories/teardown/" >}}) posts, this one also started off as a 'cart-stuffer' item so I could unlock a more generous discount on the total purchase. The listing that caught my eye had the generic title:
 
-    EU US Wifi LCD Smart Wall Light Touch Switch Tuya Smart Life App Remote Control ON OFF Timer Voice Control For Google Home Alexa
+> EU US Wifi LCD Smart Wall Light Touch Switch Tuya Smart Life App Remote Control ON OFF Timer Voice Control For Google Home Alexa
 
 {{< figure name="ali_exp_listing" >}}
 

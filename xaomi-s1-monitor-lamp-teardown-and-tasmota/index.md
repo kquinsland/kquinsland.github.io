@@ -1,7 +1,5 @@
 # Installing Tasmota on the Xiaomi Desk Lamp
 
-
-
 {{< admonition note "MJGJD02YL vs MUGJD01YL" >}}
 
 There are _at least two_ versions of this lamp. Thanks to `@htvekov` for confirming that the `MUGJD01YL` variant **does _not_ contain an ESP32**. It contains a `TLSR8368`.
@@ -153,7 +151,6 @@ Locate the small rectangle shaped protrusion from the lamp tube that mates with 
 You can see the protrusion in the middle of the tube facing the coiled USB power cable:
 
 {{< figure name="td00" >}}
-
 
 With the protrusion facing you, locate the plastic cap closest to the product information.
 This should be plastic cap on the _left_ side of the tube.

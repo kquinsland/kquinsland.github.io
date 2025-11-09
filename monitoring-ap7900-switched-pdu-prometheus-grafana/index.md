@@ -1,7 +1,5 @@
 # Monitoring APC AP7900 switched PDU with Prometheus and Grafana
 
-
-
 The APC AP7900 is a 1U single phase PDU with 8 switchable outlets and a network interface. It's been EoL'd and can be had for less than 20% of it's original price on [eBay](https://www.ebay.com/sch/i.html?_nkw=AP7900). The network interface is so underpowered tha it can't [support any modern cryptographic ciphers](http://origin-faq.pro-face.com/resources/sites/PROFACE/content/live/FAQS/300000/FA300635/en_US/APC%20AP7000%20Series%20End%20of%20Life%20Notice.pdf).
 
 So with that, here's a revised copy of my notes from the process of getting the device reset, updated and monitored.
@@ -38,7 +36,7 @@ FROM golang:latest
 ##
 # The `mibs` target in the Makefile does not run to completion on OSX.
 # Somewhere, a `sed` command is run against some vendor's MIB file that's for hardware that I don't want to target.
-# I don't have the patience to resolve those issues and i'd prefer that the _entire_ MIB parse and generate 
+# I don't have the patience to resolve those issues and i'd prefer that the _entire_ MIB parse and generate
 #   process be 100% contained in the container image anyways.
 #
 # There are a _variety_ of errors that cropped up when running `generator parse_errors`:
@@ -55,7 +53,7 @@ FROM golang:latest
 #
 #
 # After some searching, it appears that MIBs can refer to other MIBs and some set of 'base' files is not present.
-# Due to licensing, the Debian docker image that the generator is based on does NOT ship w/ them or the 
+# Due to licensing, the Debian docker image that the generator is based on does NOT ship w/ them or the
 #   `snmp-mibs-downloader` tool which is used to fetch the base MIB files. This is easy enough to fix...
 ##
 # First, update the repos we'll pull packaged from
@@ -141,7 +139,7 @@ modules:
   ##
   apcups:
     # Not 100% sure why, but APC firmware does not appear to properly authenticate with the
-    #   credentials that i've set through the web UI. I've disabled write/set via SNMP so 
+    #   credentials that i've set through the web UI. I've disabled write/set via SNMP so
     #   sticking w/ v2 (no auth) is fine.
     version: 2
 

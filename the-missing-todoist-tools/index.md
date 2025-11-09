@@ -1,6 +1,5 @@
 # Announcing The Missing ToDoist Tools
 
-
 # TMTDT: The Missing ToDoist Tools 🎉
 
 As the name implies, TMTDT started as a small collection of scripts that I used to augment ToDoist with features they can't/won't implement. It's grown quite a bit since then.
@@ -18,11 +17,12 @@ One significant chunk of my newly-freed time and a lengthy re-write later, I had
 Why not?
 
 I had several scripts that I would run on a regular basis to do things like:
-  - set up projects with multiple different types of templates based on things like the date
-  - fix typos i routinely made while [quick adding](https://get.todoist.help/hc/en-us/articles/115001745265-Task-Quick-Add) tasks.
-  - re-schedule certain daily tasks if they had been missed
 
-No joke, I'd spend a *lot* of time fixing typos, expanding ideas for a project into proper sub-tasks and sections and other routine administrative work:
+- set up projects with multiple different types of templates based on things like the date
+- fix typos i routinely made while [quick adding](https://get.todoist.help/hc/en-us/articles/115001745265-Task-Quick-Add) tasks.
+- re-schedule certain daily tasks if they had been missed
+
+No joke, I'd spend a _lot_ of time fixing typos, expanding ideas for a project into proper sub-tasks and sections and other routine administrative work:
 
 {{< figure name="admin_time_report" >}}
 
@@ -60,7 +60,6 @@ The short version:
 Slightly longer version:
 
 > Architecture inspired by Elastic Search's [Curator](https://github.com/elastic/curator/tree/master/curator). Functionality built for ToDoist.
-
 
 ### Demo
 
@@ -108,7 +107,7 @@ and
         # ... populated with template tasks/sections
         template:
           file: ./templates/garage-sale.csv
-        
+
         # where the name of the projects to create comes from ...
         from:
           filters:

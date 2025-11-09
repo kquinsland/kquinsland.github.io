@@ -1,6 +1,5 @@
 # Inside of the Pulse-Eight HDMI CEC Injector.
 
-
 # Inside the Pulse-Eight HDMI CEC Injector
 
 To make a long store short, Google recently pushed a few updates to my TV that made it slow as all hell and frustratingly unusable.

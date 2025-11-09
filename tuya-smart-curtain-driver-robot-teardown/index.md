@@ -1,6 +1,5 @@
 # Tuya Smart Curtain Driver Robot Teardown
 
-
 I am trying something new out with this post; some mix of hardware teardown and a brief product review.
 
 -----
@@ -20,9 +19,8 @@ Since they all more or less use the same design, I figured that most of the diff
 I selected the `Tuya Smart Curtain Driver Robot` because:
 
 1. Cheap
-2. Appeared to use USB-C for charging 
+2. Appeared to use USB-C for charging
 3. I was vaguely aware that [TuYa was pumping out a _ton_ of ESP8266 based hardware](https://github.com/ct-Open-Source/tuya-convert) and hoped that I'd find the familiar microcontroller inside.
-
 
 Below is a collection of photos and some thoughts that are - roughly - what I wish I had been able to find when doing the product research.
 If I had found the equivalent of this post while doing my research, I would have been able to save myself a purchase!
@@ -33,7 +31,6 @@ Searching for rod-based curtain actuators will turn up a _ton_ of results. A fai
 
 {{<figure name="product01">}}
 
-
 How well the robot performs will depend on how well the little white wheel is held against the bottom of the curtain rod.
 The arms that the upper sled attaches to are spring loaded for additional clamping force.
 
@@ -41,14 +38,11 @@ The case seems to be fairly generic and used across multiple brands so it's safe
 
 {{<figure name="product02">}}
 
-
 The light sensor is a nice touch. I will absolutely be borrowing that idea when designing my own solution 💡🤔!
-
 
 ## Teardown
 
 I'm not a huge fan of unboxing videos. The box is rather unremarkable; it sustained some damage in transit, but that's what it's supposed to do.
-
 
 {{<figure name="td01_unboxing">}}
 
@@ -56,15 +50,11 @@ The upper sled is coupled to the main body through two spring-loaded arms with a
 
 {{<figure name="td02_splay">}}
 
-
-Since the entire weight of the robot will be hanging from the upper sled, the springs are the only thing that will pull the actuator wheel into the curtain rod. I don't know how the springs will last over time, but I absolutely can forsee needing to re-tension things as the springs inevitably stretch out.
-
+Since the entire weight of the robot will be hanging from the upper sled, the springs are the only thing that will pull the actuator wheel into the curtain rod. I don't know how the springs will last over time, but I absolutely can foresee needing to re-tension things as the springs inevitably stretch out.
 
 {{<figure name="td03_splay_side">}}
 
-
 {{<figure name="td04_splay">}}
-
 
 Use a Philips style `J00` or `J000` screwdriver to remove the four screws holding the thing together. Use any flat pry tool to crack the two halves apart.
 
@@ -79,7 +69,7 @@ I _absolutely_ did not expect the PCB to have provisions for ... **two** radio m
 A few other quick observations:
 
 - The unpopulated radio module footprint does not match any ESP-8266 modules that I am familiar with.
-- The populated radio module _does_ look like a common ESP-12E module footprint... but the module is *clearly* not an ESP.
+- The populated radio module _does_ look like a common ESP-12E module footprint... but the module is _clearly_ not an ESP.
 - The markings have been erased from all the interesting ICs 🤬.
 - The 20 pin chip closest to the unpopulated module footprint could be anything but is likely the 'housekeeping' CPU. The populated radio module likely communicates with this chip to command the motor and check the sensors
 - The product marketing photos indicated that there would be a light sensor. The PCB appears to have a foot print for an LDR... but it's not populated...
@@ -96,7 +86,6 @@ Lifting up the PCB reveals the battery pack. I did not slice the pack open to se
 
 {{<figure name="td08_battery_close">}}
 
-
 I was still looking for that elusive light sensor so I opened up the second unit... and found it!
 
 Other than the populated second radio module, `R20` and the LDR, the PCBs appear identical.
@@ -109,14 +98,11 @@ Giving that a quick google returns almost nothing.
 I did find [this](https://old.reddit.com/r/esp32/comments/q3omwh/can_somebody_tell_me_what_were_looking_at_here/hft52t1/
 ) post from [/u/coned_miro](https://old.reddit.com/user/coned_miro) asking about a very similar PCB revision:
 
-
-        ...The main board says 'ZNCL_TY_V1.3' on the back
+> ...The main board says 'ZNCL_TY_V1.3' on the back
 
 Nothing new to be learned about the tuya device from that thread, sadly.
 
 {{<figure name="td010_pcb_rear">}}
-
-
 
 ## The App
 
@@ -132,9 +118,7 @@ The _two_ firmware version strings strongly hints at a "two processors for two d
 
 {{<figure name="app02_fw-versions">}}
 
-
 {{<figure name="app03_uuids">}}
-
 
 # Verdict
 
@@ -143,8 +127,7 @@ I can't use this product as is for my intended application; the motor is just to
 
 {{<figure name="td011_BT7L_closeup">}}
 
-
-My curtains are rather thick and heavy. A tiny motor can't *possibly* have enough power to do this on it's own... especially with a sub-optimal coupling mechanism!
+My curtains are rather thick and heavy. A tiny motor can't _possibly_ have enough power to do this on it's own... especially with a sub-optimal coupling mechanism!
 
 To give the motor a fighting chance, the engineers went with a TON of reduction-gearing.
 The gearbox allows a wimpy but fast motor to become a more grunty motor at the expense of speed.
@@ -157,26 +140,21 @@ The robot struggled to push the curtains together towards the end of an opening 
 
 Likewise, asking the robot to pull the bucked up curtains closed was out of the question without some sort of an assist.
 
-Because the robot has no fixed position sensor, it can't really measure where on the curtain rod it is. 
+Because the robot has no fixed position sensor, it can't really measure where on the curtain rod it is.
 Every time the drive wheel skips, the difference between where the robot thinks it is and where it _actually_ is will grow.
 
 If you can stand the whiny/slow movement, expect frequent re-calibrations 👎.
-
 
 <br>
 
 **TL;DR**: Looks like there's a reason why the hobbyist/DIY community has produced such a _wide variety_ of bespoke curtain/drape actuators... most of the commercial ones have sacrificed too much in order to be widely usable.
 The solution that I end up implementing will be designed with my heavy drapes in mind and will use an appropriately sized and quiet motor!
 
-
 {{<figure name="td012_drive_motor">}}
-
-
 
 # Technical Details
 
-A highly condensed version of my initial notes from setup/teardown: 
-
+A highly condensed version of my initial notes from setup/teardown:
 
 - Was not expecting multiple radio units. The blue radio-module that both PCBs have in common appears to be a `JDY-25M`.
 - There is a SDK for the `JDY-25M` available [here](https://github.com/Edragon/JDY-MESH/tree/main/JDY-25M/SDK
@@ -184,9 +162,7 @@ A highly condensed version of my initial notes from setup/teardown:
 - The `JDY-25M` SDK does not appear to contain any information about how to program the chip or build a custom firmware. You are meant to interface with the 'stock' firmware via `AT+` commands. The firmware appears to support multiple modes... including a bi-directional communication link. I suspect that the unique radio module is the connection to the outside world and the the two identical radio modules are used to coordinate movement between the two pods
 - I was never able to get the 'follower' unit to pair or otherwise command the second unit.
 
-- The unique radio module is a module made specifically by/for TuYa: https://developer.tuya.com/en/docs/iot/bt7l?id=K96gqp1dp6iiw
-
-
+- The unique radio module is a module made specifically by/for TuYa: <https://developer.tuya.com/en/docs/iot/bt7l?id=K96gqp1dp6iiw>
 
 ## PCB Markings
 

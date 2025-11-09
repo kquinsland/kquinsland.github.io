@@ -1,6 +1,5 @@
 # home lab: mini 'universal' patch panel
 
-
 This is another brief "i made a thing!" posts.
 
 ## Version 2
@@ -10,7 +9,6 @@ This is another brief "i made a thing!" posts.
 {{< figure name="v2_front" >}}
 
 {{< figure name="v2_rear_featured" >}}
-
 
 ## What
 
@@ -26,17 +24,15 @@ As is, the model has:
 - `178.5mm` from 'edge' to 'edge' between the two screw holes
 - `6.5mm` diameter for the holes as my rack uses M6 screws.
 
-
 Note: After printing the model you see in the pictures below, I added a small cutout which should make it easier to depress the clip on the 'male' end of a keystone device from the 'user facing' side as you'd typically find on a proper patch panel
 
 All in all, I'm quite happy with how it turned out: 8 jacks is more than enough for current and (projected!) future use. The only obvious improvement would be moving the numbers from the bottom to the top where there's more room. As it is now, the perimeters around the numbers look a bit weird as they merge w/ the bottom edge that are flush w/ the rack and the top edges that are flush w/ the jacks.
 
 Many thanks to [`belfers`](https://www.thingiverse.com/belfers/about) for the [Keystone model](https://www.thingiverse.com/thing:3150524).
 
+The details are on the [thingiverse](https://www.thingiverse.com/thing:4536257) and [prusaprinters](https://www.prusaprinters.org/prints/36325-8-port-keystone-patch-panel) page.
 
-The details are on the [thingiverse](https://www.thingiverse.com/thing:4536257) and [prusaprinters](https://www.prusaprinters.org/prints/36325-8-port-keystone-patch-panel) page. 
-
-## Printing:
+## Printing
 
 Any material and at least 10% infill should be fine.
 No supports if you use the suggested print orientation shown in picture below.

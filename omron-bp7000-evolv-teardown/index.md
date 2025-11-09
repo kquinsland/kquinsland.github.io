@@ -1,6 +1,5 @@
 # Quick look inside the OMRON Evolv BP7000 Blood Pressure cuff
 
-
 A friend recently asked for my help with some reverse engineering.
 They wanted to know how difficult it would be to re-use some components from a lot of refurbished blood pressure cuffs they had recently acquired.
 

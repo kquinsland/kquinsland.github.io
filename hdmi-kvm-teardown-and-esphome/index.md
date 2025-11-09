@@ -1,6 +1,5 @@
 # Inside a generic/white-label HDMI KVM Switch
 
-
 If you're here just for "how do I get it working with ESPHome" bit, skip to the [ESPHome Component](#esphome-component) section below.
 
 -----
@@ -29,7 +28,7 @@ After a bit of searching, I found the [`PX-UHDKVM801-2.0`](https://www.aliexpres
 {{<figure name="ali_exp_listing">}}
 
 A single video channel isn't a deal breaker; ultra wide screens can render more pixels off of one HDMI port than 2 screens from a few years ago could. Assuming this continues, by the time my current monitor dies dual video might not matter at all.
-Likewise, speedy USB is a "nice to have". My keyboard, mouse and web cam **must** work with the KVM. If the webcam streams in SD over USB2 but full HD over a USB3 link that's a _nice_ benefit but not a deal breaker. For the occasional times where I need to transfer a file and can't do it over the network, I can either plug directly into the host computers' USB3.2 port or settle for slow USB2 file transfer speeds. Not the end of the world! 
+Likewise, speedy USB is a "nice to have". My keyboard, mouse and web cam **must** work with the KVM. If the webcam streams in SD over USB2 but full HD over a USB3 link that's a _nice_ benefit but not a deal breaker. For the occasional times where I need to transfer a file and can't do it over the network, I can either plug directly into the host computers' USB3.2 port or settle for slow USB2 file transfer speeds. Not the end of the world!
 
 Of all the KVMs that I considered, this one came with the least compromises and came with explicit documentation about how to integrate/control the switch via TCP or RS232. Buoyed by the thought of not having to reverse engineer any IR remote codes or otherwise resort to some hackery, I pulled the trigger.
 

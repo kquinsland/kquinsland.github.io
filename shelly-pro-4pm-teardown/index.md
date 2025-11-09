@@ -1,6 +1,5 @@
 # Shelly Pro 4PM teardown
 
-
 Yet another teardown post!
 
 Curiosity got the better of me while putting together a BOM for a project and I decided to add one of the new Shelly devices to my order to bump the total over the threshold for a nice discount.
@@ -14,19 +13,15 @@ So here is _my_ teardown. No login required!
 
 ----
 
-
 # What
 
 The Shelly Pro 4 PM is a rather compact DIN mounted relay/power monitoring module with some connectivity. The `4` is for the number of channels that can be independently switches and monitored.
-
 
 {{<figure name="official_product">}}
 
 As for connectivity, the [official product page](https://shelly.cloud/knowledge-base/devices/shelly-pro-4pm/) sums it up nicely:
 
 > Professional 4 channels relay with Wi-Fi, LAN, and Bluetooth connection, suitable for home and facility automation with remote control and precise power management. DIN rail mountable inside a breaker box. Enhanced safety features and compatible with most used home automation platforms.
-
-
 
 ## Teardown
 
@@ -42,18 +37,15 @@ As is common with these types of devices, the ESP runs the show... but it has a 
 
 And with that, let's get into it:
 
-
 The main body of the shelly is clipped to the rear 'plate' which houses the DIN rail attachment mechanism. You can see the clips on the very top and bottom along the left edge:
 
 {{<figure name="td_side">}}
-
 
 Viewed from the rear, the clips are easier to see in the four corners:
 
 {{<figure name="td_btm">}}
 
-
-The rear plate lifts off to reveal the largest PCB. There are 4 copies of the same circuit. Very nice to see big traces with extra solder and some beefy current shunts! 
+The rear plate lifts off to reveal the largest PCB. There are 4 copies of the same circuit. Very nice to see big traces with extra solder and some beefy current shunts!
 
 {{<figure name="feature-td_btm_int">}}
 
@@ -72,7 +64,6 @@ On the main PCB, behind the 'smarts' PCB is a set of two ICs marked with `ADE795
 Why two crystals, though?
 
 The IC marked `MCP23S17` is a simple SPI based IO expander... almost certainly used to drive the relays and possibly command the power management ICs.
-
 
 {{<figure name="td05_main_pcb_ics">}}
 
@@ -93,7 +84,6 @@ From this angle, still in the top right corner, you can see the button daughter 
 
 {{<figure name="td07_smarts_pcb_rear">}}
 
-
 Electrically, nothing unusual or bizarre. Layout was a bit 'inventive' but the unusual but standard shape of the case probably drove at least some of the decision to have 4 different PCBs that all have to be tediously connected by hand during manufacture!
 
 Thats all for this one!
@@ -101,7 +91,6 @@ Thats all for this one!
 ## PCB/IC Markings
 
 AKA SEO optimization 😉
-
 
 - `ADE7953ACPZ`: Power monitoring
 - `MCP23S17`: IO expansion

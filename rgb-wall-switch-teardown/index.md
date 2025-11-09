@@ -1,18 +1,14 @@
 # Generic RGB Wall Switch teardown
 
-
 Yep! Another teardown post! This one was also a cheap "because i'm curious" post.
 
 ----
-
 
 # What
 
 It's a 'decora' style wall switch with WiFI and an RGB color changing paddle.
 
-
 {{<figure name="official_render">}}
-
 
 The product listing was very non specific:
 
@@ -20,15 +16,11 @@ The product listing was very non specific:
 
 I saw `TuYa` in the item description and hoped that it would be based on an ESP8266 module or at least use a pin-compatible module. After all, there are a few such devices on the [Wall Switches and Dimmers section](https://templates.blakadder.com/switch.html) of the tasmota templates repository.
 
-
-
-
 ## Teardown
 
 Almost immediately after opening it became clear: the item is a variant of the [`SSMS118-01AI`](https://templates.blakadder.com/moko_SSMS118-01AI.html) switch.
 
 Other than that, the internals are pretty predictable / standard.
-
 
 From the side you can see plastic clips holding the paddle to the Aluminum substrate.
 
@@ -41,7 +33,6 @@ No screws on the back, so we probably open it from the front.
 If the paddle was removed, the philips screws would be unobstructed.
 
 {{<figure name="td03_front">}}
-
 
 {{<figure name="td04_top">}}
 
@@ -67,7 +58,6 @@ Mains PCB is marked `HYS-00-004-MAIN_V1.1` with a datecode of `2019-5-7`.
 
 Equally sparse controller PCB. Aside from the _massive_ mechanical switch and the three transistors for the RGB leds, everything lives on the ESP module.
 At first glance, the module looks like a standard ESP-12... but it isn't! There are 6 pins on each of the three edges, not the 8 that would be present on an ESP-12 module.
-
 
 {{<figure name="td09_lv-pcb-cover">}}
 

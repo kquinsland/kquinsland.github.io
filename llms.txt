@@ -62,6 +62,6 @@ Discover posts by [Tags](https://karlquinsland.com/tags/) to find content on:
 
 ---
 
-This `/llms.txt` file is curated to help LLMs access relevant resources efficiently.  
-Dive deeper into the linked sections for comprehensive details.  
+This `/llms.txt` file is curated to help LLMs access relevant resources efficiently.
+Dive deeper into the linked sections for comprehensive details.
 Details on the file specification can be found here: [llms.txt Specification](https://llmstxt.org)

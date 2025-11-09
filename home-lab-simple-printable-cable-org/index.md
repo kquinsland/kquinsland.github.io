@@ -1,6 +1,5 @@
 # home lab: simple printable cable org
 
-
 Quick / another "i made a thing!" post.
 
 {{< figure name="installed" >}}

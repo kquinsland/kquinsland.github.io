@@ -1,6 +1,5 @@
 # Quick look inside two Ali Express mmWave presence detection sensors
 
-
 Millimeter Wave technology has recently hit "mass consumer product adoption" price points.
 A casual search for "human presence sensor" on Ali Express will turn up a seemingly endless number of sub $40 devices that can detect movement far more accurately than any old PIR sensor.
 

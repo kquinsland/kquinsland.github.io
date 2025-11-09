@@ -347,5 +347,5 @@ In building the various parts in the `amp-enclosure` directory, I relied on the 
 
 - [Tang Band W3-1876S 3" Subwoofer](https://grabcad.com/library/tang-band-w3-1876s-3-subwoofer-1) by [George Todd](https://grabcad.com/george.todd-1)
 
-- [Fonte Chaveada Bivolt 24Vcc 4A 100W](https://grabcad.com/library/fonte-chaveada-bivolt-24vcc-4a-100w-1) by [Eliandro Baseggio ](https://grabcad.com/eliandro.baseggio--1)
+- [Fonte Chaveada Bivolt 24Vcc 4A 100W](https://grabcad.com/library/fonte-chaveada-bivolt-24vcc-4a-100w-1) by [Eliandro Baseggio](https://grabcad.com/eliandro.baseggio--1)
 

@@ -3,7 +3,6 @@
 
 This is a quick post for made in the hopes that some poor soul in the future will find it and save themselves some time.
 
-
 ## Background
 
 I've been experimenting with a few different ways to surface various home automation controls in the appropriate place and at a good time. One prototype host is deployed behind a small LCD under some cabinets in a high traffic area. This host is a raspberry pi 4 with a [PoE hat](https://www.raspberrypi.org/products/poe-hat/). It boots a very stripped down version of [Raspberry Pi OS](https://www.raspberrypi.org/downloads/raspberry-pi-os/) into a web browser running in Kiosk mode.
@@ -11,7 +10,6 @@ I've been experimenting with a few different ways to surface various home automa
 It's pretty simple and does many things well. There's a few small issues that need to be addressed in the CAD files as well as some additional electronic improvements that should be made before I can publish the design / files.
 
 In any event, this host has been trouble-free until recently. Simple `apt update` transfers would take **DAYS** to complete, simple `scp` operations to other hosts on the LAN would trickle by at tens of kB/s. The web app that the host is primarily responsible for displaying would time out or fail to completely load resulting in some "a-for-effort" [graceful degradation](https://www.mavenecommerce.com/2017/10/31/progressive-enhancement-vs-graceful-degradation/).
-
 
 ## The Facts
 
@@ -33,18 +31,15 @@ Next, I disabled the PoE injector all together and use the USBC port on the rPi 
 
 I was very confident that the PoE injector was not the problem, but in order to be certain, I used a second cheap PoE injector that lives on my bench power supply. Turns out, the same slow speeds manifested with the second injector, too.
 
-
 **Conclusion**: The problem is not in the network, nor is it in the cables, nor is it in the injectors.
 
-
-This only leaves one candidate: the host. Unfortunately, there's nothing about the host that screams "i'm the problem!". The microSD card is new and very fast. There's nothing in the logs indicating a hardware failure. On-device performance (via non-networking benchmarks) is inline with what i'd expect. 
-
+This only leaves one candidate: the host. Unfortunately, there's nothing about the host that screams "i'm the problem!". The microSD card is new and very fast. There's nothing in the logs indicating a hardware failure. On-device performance (via non-networking benchmarks) is inline with what i'd expect.
 
 Here's two additional facts from some brief testing I did a few weeks ago. I had more or less forgotten about them and only really remembered that:
 
-- When I tried a fresh install of Ubuntu on a fresh microSD card... same slow speeds. 
+- When I tried a fresh install of Ubuntu on a fresh microSD card... same slow speeds.
 
-- The host performs _perfectly_ when plugged into other networks.
+- The host performs *perfectly* when plugged into other networks.
 
 I was *confident* then, that the rPi was not the issue and that something about the network was. But I just spent 3 hours systematically testing out every component of the network and concluding that the network is fine!
 
@@ -54,19 +49,15 @@ The "ah ha!" moment didn't come until i decided to try my second PoE injector *a
 
 After a bit more testing, I determined that the PoE HAT on the rPi is 'fine' when the PoE source is CLOSE... which probably explains the 'works fine on other networks' fact above.
 
-That leaves just the 'problem is OS independent' fact which - after thoroughly vetting every part of the network and PoE system - makes it pretty obvious that the problem must be between the rPi and the cat5 cable coming from the wall. There's _only_ the PoE HAT between the rPi and the cat5 cable coming from the wall. I borrowed a PoE HAT from another host elsewhere on the network and the problematic rPi started behaving again. Network transfer speeds were appropriate and the web app / dashboard was performant again!
+That leaves just the 'problem is OS independent' fact which - after thoroughly vetting every part of the network and PoE system - makes it pretty obvious that the problem must be between the rPi and the cat5 cable coming from the wall. There's *only* the PoE HAT between the rPi and the cat5 cable coming from the wall. I borrowed a PoE HAT from another host elsewhere on the network and the problematic rPi started behaving again. Network transfer speeds were appropriate and the web app / dashboard was performant again!
 
 **Conclusion**: the PoE HAT powering a home automation dashboard has failed in such a way that makes the `eth0` interface all but useless. replacing the HAT solved the problem.
 
+## TL;DR
 
+Several months ago, the home automation dashboard displayed on a PoE powered rPi 4 started to act up. Further investigation showed absolute crap network performance from the host to any other point on the LAN or WAN. After testing each component in isolation, the PoE HAT was the only reaming suspect. After further investigation, the failure mode is *not present* when the PoE source is *close* to the client, only when the source is far from the client.
 
-## TL;DR:
+So if you have a PoE powered rPi project out there w/ abysmal `eth0` performance, try replacing the PoE hat...
 
-Several months ago, the home automation dashboard displayed on a PoE powered rPi 4 started to act up. Further investigation showed absolute crap network performance from the host to any other point on the LAN or WAN. After testing each component in isolation, the PoE HAT was the only reaming suspect. After further investigation, the failure mode is _not present_ when the PoE source is _close_ to the client, only when the source is far from the client.
-
-So if you have a PoE powered rPi project out there w/ abysmal `eth0` performance, try replacing the PoE hat... 
-
-
-
-Also, if anybody knows _why_ this happened, I'd love to know.
+Also, if anybody knows *why* this happened, I'd love to know.
 

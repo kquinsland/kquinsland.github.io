@@ -1,6 +1,5 @@
 # Altinex TE460-137 Teardown
 
-
 # Altinex TE460-137 Teardown
 
 It is surprisingly hard to find a device that can dump details about the various protocols and negotiated standards for a HDMI connection.

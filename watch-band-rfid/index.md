@@ -1,6 +1,5 @@
 # Watch Band RFID fob
 
-
 # Watch Band RFID fob
 
 This is a quick project to create a wearable RFID fob that can be easily attached to a watch band.

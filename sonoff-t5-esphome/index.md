@@ -1,6 +1,5 @@
 # ESPHome for Sonoff T5 family of Switches
 
-
 # ESPHome for Sonoff T5 family of Switches
 
 It's hard to beat Sonoff switches when it comes to well-made, affordable, Home Assistant compatible switches.

@@ -1,6 +1,5 @@
 # Hardware accelerated graphics on the raspberry pi4 for a speedier KDS
 
-
 Surfacing the right information at the right time in the right place is a difficult but essential task for any credible automation system.
 
 I have been experimenting with the concept of a Home Assistant powered [KDS](https://www.qsrautomations.com/blog/kitchen-automation/what-is-a-kds/) for a few years now and have found that the refrigerator happens to be an especially good place to surface some information and device controls.
@@ -25,10 +24,9 @@ As soon as I swapped in a raspberry pi 4 with 4 GB ram, things got .... marginal
 Sure, it booted much faster and the JS heavy graphs didn't cause the box to wedge anymore, but manipulating things on screen still was still a choppy experience.
 Animations didn't show at all or had all but a few frames dropped :(.
 
-I know that the [raspberry pi 4 is more than capable](https://medium.com/@ghalfacree/benchmarking-the-raspberry-pi-4-73e5afbcd54b) of running a single web page in a headless browser so _something_ is wrong.
+I know that the [raspberry pi 4 is more than capable](https://medium.com/@ghalfacree/benchmarking-the-raspberry-pi-4-73e5afbcd54b) of running a single web page in a headless browser so *something* is wrong.
 
 After a bit of digging, it turns out that chromium does NOT use hardware acceleration by default on the raspberry pi.
-
 
 Ok, that's an easy fix. Just enable the gpu and reboot:
 
@@ -69,26 +67,25 @@ One of the Raspberry Pi Engineers [explains why](https://forums.raspberrypi.com/
 Even when the video out could be configured with `config.txt`, the firmware offers no such mechanism to rotate input events to match the orientation.
 Fortunately, the LCD manufacturer [provides good documentation about how to configure the touch inputs with X11](https://www.waveshare.com/wiki/13.3inch_HDMI_LCD_(H)#Rotation.28Working_with_Raspberry_Pi.29)
 
-Unfortunately, the manufacturer _does **not**_ provide corresponding documentation about how to configure the display with X11. Not that I can blame them! Configuring X11 has always been... tedious ... to use a 'polite' term for the experience!
+Unfortunately, the manufacturer *does **not*** provide corresponding documentation about how to configure the display with X11. Not that I can blame them! Configuring X11 has always been... tedious ... to use a 'polite' term for the experience!
 
 ## Xorg and SSH
 
 I'll spare you the bulk of the rant and summarize with this:
 
-```
+```text
 Can't open display :0.0
 ```
 
-For reasons that don't make a ton of sense to me, _all_ of the command line tools for probing display hardware and creating X11 configurations really don't like working over SSH 🤔. Yes, I of course tried the `export DISPLAY=:0.0` [trick](https://www.linuxquestions.org/questions/linux-general-1/xrandr-from-remote-through-ssh-869084/page2.html).
+For reasons that don't make a ton of sense to me, *all* of the command line tools for probing display hardware and creating X11 configurations really don't like working over SSH 🤔. Yes, I of course tried the `export DISPLAY=:0.0` [trick](https://www.linuxquestions.org/questions/linux-general-1/xrandr-from-remote-through-ssh-869084/page2.html).
 
-
-`xrandr` and friends are fine when running in a _local_ shell, but just don't play nice when a local user connects via SSH.
+`xrandr` and friends are fine when running in a *local* shell, but just don't play nice when a local user connects via SSH.
 This makes things a lot harder than they needed to be as the location of the KDS does not lend its self to easily hooking up a keyboard and mouse.
 
-Furthermore, the _intended_ purpose of this install is to display a web page. **Thats it.**
+Furthermore, the *intended* purpose of this install is to display a web page. **Thats it.**
 There is next to no desktop environment installed because one is not needed for a full screen headless chrome instance.
 
-Installing a virtual console application was going to involve a lot of bloat and other unnecessary packages which is _overkill_ for a few CLI utilities that **should just work over any console weather that be local PTY or ssh!**
+Installing a virtual console application was going to involve a lot of bloat and other unnecessary packages which is *overkill* for a few CLI utilities that **should just work over any console weather that be local PTY or ssh!**
 
 After a few hours of anguish and trial/error later, I had everything working as expected! But before we get there and while i'm still ranting, [why is there no `xorg -checkconf ...` command](https://unix.stackexchange.com/questions/435702/check-syntax-of-conf-file-in-etc-x11-xorg-conf-d)?!
 
@@ -96,9 +93,7 @@ Ok. Now it's all out of my system.
 
 `</rant>`
 
-
 ## Solution
-
 
 Every tap registers instantly and there's no jank or stutter in any animation. Likewise, graphs animate as quickly as they load... Perfect!
 
@@ -136,7 +131,6 @@ pi@kds:~ $ sudo reboot
 ```
 
 Chrome did not automatically switch over to the GPU backed rendering pipe but it's easy enough to [configure chrome to use the GPU](https://lemariva.com/blog/2020/08/raspberry-pi-4-video-acceleration-decode-chromium) manually.
-
 
 And with all that in place, a quick `sudo systemctl restart lightdm` and a brief screen flicker later, chromium launched in full screen mode with the correct orientation. After the dashboard finished loading, the scroll/tap/animation performance was as good as it would be on any competent computer!
 

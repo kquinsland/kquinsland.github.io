@@ -65,7 +65,7 @@ I've included numerous in-line comments to clarify each section. To briefly reca
 # The air pressure probe seems to sample continuously; the display is updated a few times per second.
 # This is a bit overkill for this application as I really only need to check occasionally while the HVAC fan is running.
 # I say occasionally because the filter is not going to clog up in a matter of seconds; it will take many weeks.
-# There's little value in knowing that the filter is dropping 2 more Pascals this second compared to what it was 
+# There's little value in knowing that the filter is dropping 2 more Pascals this second compared to what it was
 #   at 10 seconds ago. The value is in knowing that the filter is dropping 2000 more Pascals now than it was four
 #   months ago!
 #
@@ -237,7 +237,7 @@ sensor:
   #   2. Does not permit arbitrary `update_interval` settings. Only choice is 3s or every 300s!
   #
   # It appears that the only real difference between the two platforms is that the proprietary one
-  #   has a calculated VOC and CO2 sensor. 
+  #   has a calculated VOC and CO2 sensor.
   # This build already has a real CO2 sensor and - while better than nothing - I'd rather have a real VOC sensor as well.
   ##
   - platform: bme680

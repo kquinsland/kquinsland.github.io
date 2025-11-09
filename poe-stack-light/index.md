@@ -1,9 +1,6 @@
 # PoE powered Stack Light
 
-
-
 {{<figure name="feature">}}
-
 
 [Stack/signal lights](https://en.wikipedia.org/wiki/Stack_light) are _everywhere_ in industrial applications for good reason: they're a compact and relatively information-dense indicator system. They always seemed like the kind of indicator that only people with expensive machines needed. Until I found that they can be had for just under $6/light from Ali Express, that is.
 
@@ -15,16 +12,12 @@ I don't have any giant industrial machines to attach one to, but I do have a non
 - 🔵 => A new `INFO` level message available in Home Assistant
 - ⚪ => Not sure; either a "A HIGH priority task is past due" or a 'modifier' for above status
 
-
 While waiting for the light to arrive from China, I started to design something to drive it.
 It was immediately obvious that an ESP32 module would be **ideal** to run the show, and just for the fun of it, I decided to make the entire thing (optionally) controlled and powered over Ethernet.
 
-
 ## Home Assistant
 
-
 It wouldn't be an ESP32 powered project w/o the the _fantastic_ [ESPHome](https://esphome.io/) framework! With ESPHome comes trivial Home Assistant integration; each individual light / channel on the stack light is automatically configured via MQTT a a light:
-
 
 {{<figure name="ha_integration">}}
 
@@ -47,11 +40,11 @@ Oh well 😔.
 
 I'll cover the individual 3D printed and electronic components below. Beyond them, you'll need some additional hardware:
 
-  - 4x [m3x8mm](https://www.mcmaster.com/catalog/91290A113) screws
-  - 4x [m4x8mm](https://www.mcmaster.com/catalog/91274A115) screws
-  - 4x [m4x10mm](https://www.mcmaster.com/catalog/91274A117) screws
-  - 6x [Neodymium magnets](https://www.kjmagnetics.com/proddetail.asp?prod=BC41) sized 20mm x 6mm x 2mm. These are optional and are leftover magnets from this [build](https://www.google.com/search?client=firefox-b-1-d&q=prusa+mk3+enclosure+2)
-  - 10mm diameter [anti-slip pads](https://www.amazon.com/s?k=10mm+cabinet+door+pad). Thees are optional but will keep the base from sliding around.
+- 4x [m3x8mm](https://www.mcmaster.com/catalog/91290A113) screws
+- 4x [m4x8mm](https://www.mcmaster.com/catalog/91274A115) screws
+- 4x [m4x10mm](https://www.mcmaster.com/catalog/91274A117) screws
+- 6x [Neodymium magnets](https://www.kjmagnetics.com/proddetail.asp?prod=BC41) sized 20mm x 6mm x 2mm. These are optional and are leftover magnets from this [build](https://www.google.com/search?client=firefox-b-1-d&q=prusa+mk3+enclosure+2)
+- 10mm diameter [anti-slip pads](https://www.amazon.com/s?k=10mm+cabinet+door+pad). Thees are optional but will keep the base from sliding around.
 
 I've linked to the screws that I used, but any similar ones should work. Strong glue could also work, but is not recommended.
 
@@ -60,8 +53,7 @@ The shorter m4 screws are for attaching the base (yellow) to the lid (dark blue)
 
 {{<figure name="prep">}}
 
-
-#### Stack light
+### Stack light
 
 Looking quickly through Ali Express, it seems that the lights come in a few different styles, but all appear to be modular in construction.
 Regardless of lamp style, they all appear to come in 2-5 lamp variants and some have configuration switches that allow for customizing the behavior per lamp.
@@ -72,7 +64,7 @@ No matter which style and colors you select, make sure you get one with a **posi
 
 The exact lamp that I used is [here](https://www.aliexpress.com/item/1005001391165850.html).
 
-#### ESP32 Module
+### ESP32 Module
 
 I chose to use the [WirelessTag WT32-eth01](https://www.aliexpress.com/item/1005001739834076.html) module for the onboard Ethernet circuitry at a relatively cheap price: about $10/module. Bonus: it's got a breadboard friendly footprint _and_ castellated pads!
 
@@ -80,7 +72,7 @@ You do not need to use Ethernet for control _or_ power; the ESPHome configuratio
 
 In any case, you will need a dedicated UART programmer for the module as there is no built-in USB port on the WT32-eth01.
 
-#### PCB
+### PCB
 
 Nothing much to see here; just a simple board to consolidate connections for what would otherwise be a mess of wires.
 
@@ -92,8 +84,7 @@ It wouldn't be difficult to modify the enclosure to accommodate a [USB-C Power D
 
 Like the PoE module, I use an off the shelf DC to DC converter [module](https://www.aliexpress.com/item/32833398811.html) to step the 12V down from the PoE dongle to 5V which the ESP32 module requires. That link is to a whole-sale lot of 10 converters. You can order the same module in quantities of one from similar listings. I buy them in bulk because it's more expensive to design and solder my own on each board that I build...
 
-My testing isn't super through, but I see the total power draw (measured from the PoE supplying equipment) reaching about 4.5W when all lights are on and about 2W at at idle. 
-
+My testing isn't super through, but I see the total power draw (measured from the PoE supplying equipment) reaching about 4.5W when all lights are on and about 2W at at idle.
 
 The ESP32 just drives some [N-Channel MOSFETS](https://lcsc.com/product-detail/MOSFET_Diodes-Incorporated-DMN1019USN-7_C145103.html) to switch the individual lights on/off.
 They're the only surface mount (SOT-23-4) component; everything else can be done with through hole components. The board is designed for up to 6 colors/lights, but populate only as many MOSFETS as you need.
@@ -102,30 +93,26 @@ All of the screw terminals are optional; I had several spares left over from a d
 
 The 6 pin screw terminal is LCSC part [`C409139`](https://lcsc.com/product-detail/Screw-terminal_JILN-JL301-50007U02_C409139.html)
 
-
 The 2 pin screw terminal is LCSC part [`C8463`](https://lcsc.com/product-detail/Screw-terminal_Ningbo-Kangnex-Elec-WJ129V-5-0-2P_C8463.html)
-
 
 The source and gerber files from EasyEDA are below. Upload them to your favorite PCB prototyping service or try your hand at making your own.
 
-
-#### Printed parts
+### Printed parts
 
 There are two parts: a `lid` and a `plate`. The electronics are attached to the plate and the stack light is attached to the lid. In the photos associated with this post, the `lid` is dark blue and the `plate` is yellow.
 
 The plate has features for several attachment methods:
 
-  - magnets; meant for horizontal surfaces
-  - 3M command strip; probably wont be enough to do wall/ceilings, but should work in lieu of magnets on horizontal surfaces
-  - 4 circular indents (`10mm` diameter) included for anti-slip pads
-  - drywall screw/slot mounting for walls/ceilings
+- magnets; meant for horizontal surfaces
+- 3M command strip; probably wont be enough to do wall/ceilings, but should work in lieu of magnets on horizontal surfaces
+- 4 circular indents (`10mm` diameter) included for anti-slip pads
+- drywall screw/slot mounting for walls/ceilings
 
 {{<figure name="base_mounting_options">}}
 
 Pause the print job at the correct layer if you intend to embed magnets:
 
 {{<figure name="print_orientation">}}
-
 
 Both the `lid` and `base` are easy to print; material and color are up to you, as is layer height and quality settings. The `stl` and `step` files for both are at the end of this post.
 Should you want to make your own enclosure from scratch, I have also included the `step` files for the PoE dongle and PCB below.
@@ -134,7 +121,7 @@ Should you want to make your own enclosure from scratch, I have also included th
 
 Assembly is relatively straightforward; its mostly integrating a few components into a simple 3d printed enclosure.
 
-
+<!-- markdownlint-disable MD024 -->
 ### PCB
 
 Solder the electronic components to the PCB. If omitting screw terminals for the stack light wires, do not solder them to the PCB yet!
@@ -165,9 +152,7 @@ The less 'slack' cable in the enclosure, the easier it will be to finish assembl
 
 {{<figure name="wire">}}
 
-
 After the screws have cooled, ensure that the PCB sits flush against the mounts.
-
 
 {{<figure name="pcb_attached">}}
 
@@ -183,19 +168,16 @@ When the base blate is completely installed into the body, the RJ45 jack should 
 
 {{<figure name="plugged_in">}}
 
-
 Attach the base plate to the enclosure body with the 4 screws, attach silicon feet or a 3M command strip and then you're done!
 
-
 {{<figure name="all_off">}}
-
 
 ## Files
 
 All files below are licensed under the [Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)](https://creativecommons.org/licenses/by-nc-sa/4.0/) license unless otherwise explicitly noted.
 
+<!-- markdownlint-disable MD036 -->
 **None of the files below may be used for commercial purposes**
-
 
 {{< bundle-files >}}
 

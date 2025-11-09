@@ -1,7 +1,5 @@
 # I made a thing: GPS/PPS clock source for ntpd
 
-
-
 {{< admonition tip >}}
 This is just a 'pointer' post.
 

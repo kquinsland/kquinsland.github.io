@@ -1,7 +1,5 @@
 # Quick look inside Venstar T7850 - One of the only 'no-cloud' WiFi Thermostats that plays nice with Home Assistant
 
-
-
 {{< admonition info >}}
 As of 2022-05-11, there is an update on my experience with the thermostat [below](#an-update-on-wifi-connectivity)!
 {{< /admonition >}}
@@ -24,7 +22,6 @@ My criteria:
 - Cost no more than the Nest thermostat.
 - Use TCP/IP over WiFi instead of Zigbee or Zwave.
 
-
 As it turns out, I am not the only one on a similar hunt:
 
 - [Which of these thermostats have the best experience with HA?](https://community.home-assistant.io/t/which-of-these-thermostats-have-the-best-experience-with-ha/207520)
@@ -35,7 +32,6 @@ As it turns out, I am not the only one on a similar hunt:
 
 - [What is the best thermostats to use with Home Automation](https://www.reddit.com/r/homeassistant/comments/kzavi9/what_is_the_best_thermostats_to_use_with_home/)
 
-
 The "TL;DR:" of most of those threads is: _"Any thermostat with zwave of zigbee will work"_.
 
 As most people don't particularly care about the network protocol(s) used to link Home Assistant to the thermostat, that's fine advice.
@@ -44,13 +40,12 @@ For whatever reason, you have to dig much deeper to find people discussing **WiF
 
 {{<figure name="oem_render">}}
 
-# Initial Impressions:
+# Initial Impressions
 
 Below is a super concise review that is based mostly on my initial impressions / install experience.
 I have only recently acquired and installed the T7850 so I can't comment on any of the finer points or drawbacks that could only be known after several months experience with the thermostat.
 
 TL;DR: I wish I had more insight into Google's disappointing decision to not implement a local API for the Nest; I'll uninstall the Venstar and put it up on eBay the nanosecond the Nest gets a local API!
-
 
 ## An Update on WiFi connectivity
 
@@ -72,11 +67,9 @@ After a few factory resets and additional troubleshooting, I started to look aro
 
 Here are two 'relatively new' reddit threads that mention similar connection issues with similar models in the same product family:
 
-
 {{<figure name="wifi_issue_01">}}
 
 {{<figure name="wifi_issue_02">}}
-
 
 And an Amazon question from years ago indicating that this might not be a 'new' issue:
 
@@ -150,7 +143,6 @@ Things you can do via the screen but not via the (documented) API:
 - Adjust setpoint limits (e.g.: don't let the user try to cool below 25°C or heat above 35°C)
 - Set/Disable Screen lock (requires a PIN code to access controls)
 - Set 'screensaver' functionality. You can't toggle this via the API nor can you set the "idle timeout" setting or upload custom photos. You have to resort to a desktop / electron app to do so!
-
 
 I have not bothered with the "skyport" remote control functionality that Venstar offers but their marketing literature implies that some of the above points _can_ be manipulated via their remote service. This leads me to believe that there is more to the API that what is documented publicly.
 
@@ -309,7 +301,7 @@ Dynamic Host Configuration Protocol (Discover)
     Padding: 0000000000000000000000000000000000000000
 ```
 
-**Note:** `de:ad:bf ` is replacing the _actual_ octets of my thermostat MAC :).
+**Note:** `de:ad:bf` is replacing the _actual_ octets of my thermostat MAC :).
 
 Interesting! The DHCP server _explicitly asks for a NTP server_ and then the thermostat ... does not use it!
 
@@ -523,7 +515,9 @@ The larger of the two metal shields on the PCB can be removed giving a look at t
 
 The LCD is marked with (partially visible):
 
+```text
     AT043HS40D07R2
     30671T051KD
     190805527 (0000000) L101661
+```
 

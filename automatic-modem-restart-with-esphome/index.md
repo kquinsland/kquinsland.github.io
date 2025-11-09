@@ -267,10 +267,10 @@ script:
           // Count and publish
           id(_glbl_http_poll_failures_count)++;
           id(s_consecutive_poll_failure_count).update();
-          
+
           id(txt_operation_mode).publish_state("Failure");
           ESP_LOGW(TAG, "Failures: %i, Threshold: %i", id(_glbl_http_poll_failures_count), id(glbl_http_poll_failures_threshold));
-          
+
           if( id(_glbl_http_poll_failures_count) >= id(glbl_http_poll_failures_threshold) ) {
             id(_on_http_poll_failure_threshold_met).execute();
           }
@@ -326,7 +326,7 @@ script:
             then:
               - script.execute:
                   id: handle_on_response
-                  status_code: !lambda |- 
+                  status_code: !lambda |-
                     return status_code;
                   duration_ms: !lambda |-
                     return duration_ms;
@@ -371,7 +371,7 @@ script:
           // We should be running and there is currently no request in flight... Are we in lockout?
           if( id(_glbl_http_poll_ticks_since_last_failure_action) < id(_glbl_http_poll_lockout_ticks) ) {
             ESP_LOGD(TAG, "In lockout! ticks_since_last_failure_action: %i, lockout_ticks: %i", id(_glbl_http_poll_ticks_since_last_failure_action), id(_glbl_http_poll_lockout_ticks));
-            
+
             // TODO: add the lockout time remaining to the text sensor?
             id(txt_operation_mode).publish_state("Locked Out");
 
@@ -405,7 +405,7 @@ packages:
       http_url: "http://192.168.100.1"
       # When enough consecutive failures have been detected, this is what is "injected" into the
       # `_on_http_poll_failure_threshold_met` script. It must be _valid_ c++ code or compilation will fail.
-      # Elsewhere in my main ESPHome configuration, I have button that triggers an automation to 
+      # Elsewhere in my main ESPHome configuration, I have button that triggers an automation to
       # briefly cut and then restore power to effectively power cycle the modem.
       # This code is the same as the user manually pressing that button.
       failure_threshold_met_action: "id(btn_modem_restart).press();"
@@ -463,7 +463,7 @@ This is how `modem.yaml` is injected into the existing configuration that I have
 ```yaml
 # See: https://esphome.io/guides/configuration-types.html#packages
 packages:
-  # Omitted: common packages for Network info, NTP, OTA, MQTT, 
+  # Omitted: common packages for Network info, NTP, OTA, MQTT,
   #   relay/gpio and other device specific things... etc
 
   # Add http polling configured for this specific application

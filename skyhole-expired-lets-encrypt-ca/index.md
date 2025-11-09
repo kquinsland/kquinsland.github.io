@@ -1,22 +1,16 @@
 # Using new Lets Encrypt intermediate chain with SkyHole
 
-
-
 If you somehow missed it, one of the certificates used by Lets Encrypt chain of trust [expired](https://letsencrypt.org/docs/dst-root-ca-x3-expiration-september-2021/) this week.
 As expected, things broke.... including my private, filtered DNS over TLS server - [SkyHole](https://github.com/kquinsland/skyhole/). Below is a condensed form of my notes to create the exact document that I wish I had while trying to triage broken DNS on my phone.
 
 **TL;DR:** Implement solution 3 from [this](https://www.openssl.org/blog/blog/2021/09/13/LetsEncryptRootCertExpire/) post.
 
-
 ---
 
-
 **Note:** After releasing the initial version of SkyHole, I re-factored most of the code to eliminate the dependency on Docker. This was to make the project easier to deploy on resource constrained hardware.
-At the time, I was working with [SaltStack](https://saltproject.io/) a lot and took the opportunity to re-do the entire thing as a salt state for a bit of practice. The _exact_ steps and commands shown below are unique to my particular instance. Use them as *guidance* for fixing an issue with the publicly released version of SkyHole.
-
+At the time, I was working with [SaltStack](https://saltproject.io/) a lot and took the opportunity to re-do the entire thing as a salt state for a bit of practice. The _exact_ steps and commands shown below are unique to my particular instance. Use them as _guidance_ for fixing an issue with the publicly released version of SkyHole.
 
 # Symptoms
-
 
 My current daily driver runs Android 11. When configured to use a [private DNS server](https://android-developers.googleblog.com/2018/04/dns-over-tls-support-in-android-p.html), Android essentially behaves as if you've turned WiFi/Cell data off if there is any issue when talking to the DoT server.
 While this 'fail private' approach is commendable, the lack of debug info in the UI is not; no details are given about the failure other than a generic 'the private dns server could not be reached' message.
@@ -41,8 +35,8 @@ subject=C = US, O = Internet Security Research Group, CN = ISRG Root X1
 notBefore=Jan 20 19:14:03 2021 GMT
 notAfter=Sep 30 18:14:03 2024 GMT
 ```
-Borrowed that command from [this](https://serverfault.com/questions/541262/checking-the-issued-and-expiry-dates-for-the-certificates-involved-a-certificate) post.
 
+Borrowed that command from [this](https://serverfault.com/questions/541262/checking-the-issued-and-expiry-dates-for-the-certificates-involved-a-certificate) post.
 
 Looking for more information, `adb` yielded something:
 
@@ -80,7 +74,7 @@ I compared the traffic with a working manual query from `kdig` and noticed that 
 
 So the problem was happening during the TLS setup. Whatever Android was choking on was happening before any DNS queries were sent.
 
-I quickly configured the phone to use a known good / working DNS over TLS server and it was immediately accepted. The triumphant `logcat` output confirmed that everything on the TLS layer has happy: ` W resolv  : Validation success`.
+I quickly configured the phone to use a known good / working DNS over TLS server and it was immediately accepted. The triumphant `logcat` output confirmed that everything on the TLS layer has happy: `W resolv  : Validation success`.
 
 Android worked instantly when configured to use a different server but immediately failed when used with the skyhole instance. This points to a problem on the server.
 
@@ -116,13 +110,11 @@ Huh. That sure looks like a problem!
 
 After a [bit](https://www.mail-archive.com/openssl-users@openssl.org/msg90068.html) of google, I found that the different versions of openSSL (and their forks...) behave differently when validating certificate chains:
 
-
 > The currently recommended certificate chain as presented to Let’s Encrypt ACME clients when new certificates are issued contains an intermediate certificate (ISRG Root X1) that is signed by an old DST Root CA X3 certificate that expires on 2021-09-30. In some cases the OpenSSL 1.0.2 version will regard the certificates issued by the Let’s Encrypt CA as having an expired trust chain.
 >
 > Most up-to-date CA cert trusted bundles, as provided by operating systems, contain this soon-to-be-expired certificate. The current CA cert bundles also contain an ISRG Root X1 self-signed certificate. This means that clients verifying certificate chains can find the alternative non-expired path to the ISRG Root X1 self-signed certificate in their trust store.
 >
 > Unfortunately this does not apply to OpenSSL 1.0.2 which always prefers the untrusted chain and if that chain contains a path that leads to an expired trusted root certificate (DST Root CA X3), it will be selected for the certificate verification and the expiration will be reported.
-
 
 [Source](https://www.openssl.org/blog/blog/2021/09/13/LetsEncryptRootCertExpire/).
 
@@ -142,16 +134,14 @@ The two valid chains of trust for Lets Encrypt certificates look like this:
 
 {{< figure name="le-compat" >}}
 
-
-With the help of [this](https://github.com/certbot/certbot/issues/8577) GitHub issue, the revised CertBot `cli.ini` file becomes: 
+With the help of [this](https://github.com/certbot/certbot/issues/8577) GitHub issue, the revised CertBot `cli.ini` file becomes:
 
 ```shell
 me@dot-host:~# cat /etc/letsencrypt/cli.ini | grep chain
 preferred-chain='ISRG Root X1'
 ```
 
-After running certbot with the new config, `logcat` shows success: 
-
+After running certbot with the new config, `logcat` shows success:
 
 ```shell
 ❯ adb logcat | grep resolv
@@ -160,7 +150,7 @@ After running certbot with the new config, `logcat` shows success:
 10-01 09:41:01.734   962  7711 W resolv  : Validation success
 ```
 
-Android no longer shows an unhelpful "can't connect" message and I can see DNS queries being filtered! 
+Android no longer shows an unhelpful "can't connect" message and I can see DNS queries being filtered!
 
 🎊
 
