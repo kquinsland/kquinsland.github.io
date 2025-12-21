@@ -1,4 +1,595 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>All Posts - karl</title><link>https://karlquinsland.com/posts/</link><description>All Posts | karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Fri, 12 Dec 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/posts/" rel="self" type="application/rss+xml"/><item><title>#TwoMinuteTeardown: Duogalia AM70 Optical Fiber Multi-Meter</title><link>https://karlquinsland.com/duogalia-am70-optical-fiber-multi-meter/</link><pubDate>Fri, 12 Dec 2025 00:00:00 +0000</pubDate><author>karl</author><guid>https://karlquinsland.com/duogalia-am70-optical-fiber-multi-meter/</guid><description><![CDATA[<h1 id="two-minute-teardown-duogalia-a-m70-optical-fiber-multi-meter">Two Minute Teardown: Duogalia A-M70 Optical Fiber Multi-Meter</h1>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>All Posts - karl</title><link>https://karlquinsland.com/posts/</link><description>All Posts | karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 18 Dec 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/posts/" rel="self" type="application/rss+xml"/><item><title>#TwoMinuteTeardown: Ubiquiti SFP Wizard</title><link>https://karlquinsland.com/ubiquiti-uacc-sfp-wizard/</link><pubDate>Thu, 18 Dec 2025 00:00:00 +0000</pubDate><author>karl</author><guid>https://karlquinsland.com/ubiquiti-uacc-sfp-wizard/</guid><description><![CDATA[<h1 id="two-minute-teardown-ubiquiti-sfp-wizard">Two Minute Teardown: Ubiquiti SFP Wizard</h1>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>SFP modules interface to their host over what is essentially a low speed i2c interface and a few high-speed differential pairs.</p>
+<p>Devices that can interrogate and re-program the SFP modules have been around for a while but they are either niche, esoteric, expensive, or all of the above.</p>
+<p>People have been <a href="https://forums.servethehome.com/index.php?threads/transceiver-password-collection.39458/" target="_blank" rel="noopener noreffer ">hacking on these things</a> for a while:</p>
+<ul>
+<li><a href="https://forum.reveltronics.com/viewtopic.php?t=527" target="_blank" rel="noopener noreffer ">Writing protected SFP / QSFP / XFP and searching password (brute force method) - REVELTRONICS</a></li>
+<li><a href="https://github.com/hfuller/transceiver-notes" target="_blank" rel="noopener noreffer ">GitHub - hfuller/transceiver-notes: Notes about hacking, programming, and otherwise dinking with SFPs and other optical transceivers.</a></li>
+<li><a href="https://github.com/SloMusti/sfpddm" target="_blank" rel="noopener noreffer ">GitHub - SloMusti/sfpddm: Arduino library for interfacing SFP modules and reading DDM information as per SFF-8472</a></li>
+<li><a href="https://www.hitoha.moe/read-sfp-i2c-via-ch341a-programmer" target="_blank" rel="noopener noreffer ">Read SFP I2C via CH341a Programmer – HITOHA.もえ</a></li>
+<li><a href="https://osmocom.org/projects/misc-hardware/wiki/Sfp-experimenter" target="_blank" rel="noopener noreffer ">sfp-experimenter</a></li>
+</ul>
+<p>The <a href="https://store.ui.com/us/en/category/accessories-modules-fiber/collections/accessories-pro-direct-attach-cables/products/uacc-sfp-wizard" target="_blank" rel="noopener noreffer ">Ubiquiti SFP Wizard</a> is a new entrant to the market.</p>
+<p>This is not a review.
+The packaging is plain recycled (?) cardboard with white ink; it doesn&rsquo;t photograph well so this is also not an unboxing.</p>
+<h2 id="teardown">Teardown</h2>
+<p>This thing is a massive pain in the ass to open.
+I swear, somebody on the design team must be an investor in a glue factory.</p>
+<p>The device is made up of an inner frame which holds the electronics.
+Two &ldquo;structural&rdquo; caps are attached to the midframe with glue ans screws.
+The outer case / panels snap to this midframe and there are two decorative &ldquo;trim&rdquo; caps that complete the exterior.</p>
+<p>Virtually everything has at least <em>some</em> glue on it.</p>
+<p>Anyways, start with the trim cap on the SFP module side.
+You will then want to begin gently trying to pry the back half of the case away from the front half.
+Once the clips along the side are undone, there&rsquo;s one more clip that holds the back panel to the midframe.</p>
+<p>You&rsquo;ll need a bright light and a long-neck screwdriver to hit it, but if you look through the gap between the two sfp module bays you should be able to see the tab.</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Instead of weights to make the thing feel more premium in the hand, how about a bigger battery that&rsquo;s also user-replaceable!?</p>
+<p>The LCD is heat-staked into the front panel.</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Yep, it&rsquo;s an ESP32. Not expected &hellip; but welcome!</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        <p>
+            Yep, ESP32 inside. I did not have that on my bingo card!
+            
+                
+                
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>There&rsquo;s a few more interesting things on the underside of the board&hellip; including a few headers that are almost certainly for programming/debugging.</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        <p>
+            That USB-C Port is not going anywhere!
+            
+                
+                
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>That&rsquo;s about it! Once you manage to get in, it&rsquo;s a pretty simple device.</p>
+<h2 id="misc">misc</h2>
+<p>As soon as I saw the ESP32, I had to see if the USB-C port was connected to it (or just for power).
+Yep, it&rsquo;s wired up as a USB device:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="o">[</span>123456.747577<span class="o">]</span> usb 5-4.1.4: new full-speed USB device number <span class="m">61</span> using xhci_hcd
+</span></span><span class="line"><span class="cl"><span class="o">[</span>123456.854812<span class="o">]</span> usb 5-4.1.4: New USB device found, <span class="nv">idVendor</span><span class="o">=</span>303a, <span class="nv">idProduct</span><span class="o">=</span>1001, <span class="nv">bcdDevice</span><span class="o">=</span> 1.01
+</span></span><span class="line"><span class="cl"><span class="o">[</span>123456.854818<span class="o">]</span> usb 5-4.1.4: New USB device strings: <span class="nv">Mfr</span><span class="o">=</span>1, <span class="nv">Product</span><span class="o">=</span>2, <span class="nv">SerialNumber</span><span class="o">=</span><span class="m">3</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>123456.854820<span class="o">]</span> usb 5-4.1.4: Product: USB JTAG/serial debug unit
+</span></span><span class="line"><span class="cl"><span class="o">[</span>123456.854822<span class="o">]</span> usb 5-4.1.4: Manufacturer: Espressif
+</span></span><span class="line"><span class="cl"><span class="o">[</span>123456.854824<span class="o">]</span> usb 5-4.1.4: SerialNumber: DE:AD:BE:EF:AA:BB
+</span></span><span class="line"><span class="cl"><span class="o">[</span>123456.902886<span class="o">]</span> cdc_acm 5-4.1.4:1.0: ttyACM0: USB ACM device
+</span></span><span class="line"><span class="cl"><span class="o">[</span>123456.902918<span class="o">]</span> usbcore: registered new interface driver cdc_acm
+</span></span><span class="line"><span class="cl"><span class="o">[</span>123456.902920<span class="o">]</span> cdc_acm: USB Abstract Control Model driver <span class="k">for</span> USB modems and ISDN adapters
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>I wasn&rsquo;t able to use <em>just</em> <code>esptool</code> to reboot into bootloader mode and I didn&rsquo;t look for <code>boot0</code> pins so no attempt to dump the firmware was made.
+If they didn&rsquo;t trigger any of the eFuse features, this thing could end up being a nice little SFP programmer for hobbyists that want to hack on SFPs beyond what the Ubiquiti stock firmware allows.</p>
+<div class="details admonition warning open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-exclamation-triangle fa-fw" aria-hidden="true"></i>Warning<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>Do not update firmware above 1.1.0. Apparently the device can <a href="https://community.ui.com/releases/SFP-Wizard-1-1-1/3249a171-c563-4fe1-91de-6b670057b541" target="_blank" rel="noopener noreffer ">no-longer flash <em>arbitrary</em>_ modules after updating</a>.</p>
+<p>It&rsquo;s not clear if that&rsquo;s a mistake or they caved to some pressure from the SFP module manufacturers.</p>
+</div>
+        </div>
+    </div>
+<h3 id="other-ics">Other ICs</h3>
+<ul>
+<li>
+<p><a href="https://www.winbond.com/hq/product/code-storage-flash-memory/serial-nor-flash/?__locale=en&amp;partNo=W25Q256JV" target="_blank" rel="noopener noreffer ">Winbond 25Q256JVFQ</a>. This is almost certainly for storing all the SFP module &ldquo;profiles&rdquo; that the device supports.</p>
+</li>
+<li>
+<p>There&rsquo;s a TI part labeled <code>PD534 2CKG4 A49D</code> which is likely a <a href="https://www.ti.com/lit/ds/symlink/pca9534.pdf" target="_blank" rel="noopener noreffer ">PCA9534A</a> which is an IO expander. I have absolutely no idea what it&rsquo;s being used for in this design&hellip; the ESP32 has plenty of GPIOs available.</p>
+</li>
+</ul>
+]]></description></item><item><title>#TwoMinuteTeardown: Hamgeek YK-1000H NTP</title><link>https://karlquinsland.com/hamgeek-yk-1000h-gps-ntp-server/</link><pubDate>Fri, 12 Dec 2025 00:00:00 +0000</pubDate><author>karl</author><guid>https://karlquinsland.com/hamgeek-yk-1000h-gps-ntp-server/</guid><description><![CDATA[<h1 id="two-minute-teardown-hamgeek-yk-1000h-ntp">Two Minute Teardown: Hamgeek YK-1000H NTP</h1>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Curiosity got the better of me when browsing AliExpress and I spotted <a href="https://www.aliexpress.us/item/3256808325833761.html?gatewayAdapt=glo2usa" target="_blank" rel="noopener noreffer ">this</a> GPS NTP server for under $100 USD.</p>
+<p>I needed a cart-stuffer anyways so I ordered one as a backup for my <a href="/yet-another-gps-pps-opnsense/" rel="">existing</a> GPS/NTP server.</p>
+<p>While waiting, I took a look around to see if there was any additional information about who makes this / if there was a custom firmware or similar.
+Nope, there there is <a href="https://www.dzombak.com/blog/2024/12/yk-1000h-ntp-server/" target="_blank" rel="noopener noreffer "><em>not</em> a ton of information</a> about the <code>YK-1000H</code> online.</p>
+<p>Shortly after it arrived, I plugged it in and &hellip; waited for it to get a GPS fix in an area where I know GPS works well.
+After about 24 hours, still no fix!</p>
+<p>That&rsquo;s when I noticed the warning that the seller had added to their product listing:</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        <p>
+            You&#39;ll never guess what I didn&#39;t see until after it arrived...
+            
+                
+                
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>I do not really understand why there&rsquo;s a $3 surcharge for the international version; I <em>assumed</em> that all of the major GPS constellations use the same CDMA modulation in the same ~1.5GHz band so as long as you don&rsquo;t need the encrypted military signals, the radio hardware should be the same everywhere and just work everywhere.</p>
+<p>Apparently not!
+Oh well, the unofficial motto of AliExpress is <em>一分钱一分货</em> (&ldquo;Buyer Beware&rdquo;).</p>
+<h2 id="teardown">Teardown</h2>
+<p>Start from the rear, remove the screws and the nut/grommet around the SMA connector.</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>You will not be able to slide the main PCB out because it&rsquo;s still connected to the front panel via a ribbon cable.</p>
+<p>Then remove the front screws and then the main PCB can be slid out.</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>There&rsquo;s nothing of interest on the reverse side of the main PCB or the LCD board.</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>The cans on the GPS module are soldered on &hellip; but not well.
+With just a little bit of prying, they came right off&hellip; to reveal a very dusty interior.</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        <p>
+            I do not know what that dust is...
+            
+                
+                
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>I can&rsquo;t get an ID on the RF front-end chip, the <a href="https://www.digikey.com/en/products/detail/macronix/MX29LV320EBTI-70G/2744812" target="_blank" rel="noopener noreffer "><code>MX-70G</code></a> next to the <code>UBX-G5000-BT</code> is almost certainly flash memory for the GPS module.
+Almost none of the pads go anywhere; the two pads near that SMA connector are likely power and the other two pads that go anywhere (top left) are likely the serial TX/RX lines for configuration/debug.
+It appears that the UART is broken out to that 3-pin header near the GPS module.</p>
+<h2 id="ics-and-markings">ICs and Markings</h2>
+<ul>
+<li><a href="https://www.ixbt.com/monitor/images/aver-pilot/ubx-g5010.pdf" target="_blank" rel="noopener noreffer "><code>UBX-G5000-BT</code></a>: u-blox multi-constellation GPS receiver that absolutely should have worked anywhere in the world. Not sure why the seller insisted on the &ldquo;international&rdquo; version.</li>
+<li><a href="https://www.lcsc.com/datasheet/C717616.pdf" target="_blank" rel="noopener noreffer "><code>WCH CH9126</code></a>: A dedicated SNTP client/server chip with built in ethernet MAC/PHY. Feels like a W5500 but instead of just TCP/UDP it has SNTP support built in.</li>
+<li><code>74HC245KA</code>: A standard octal bus transceiver to help with data lines / level shifting.</li>
+<li><a href="https://www.lcsc.com/datasheet/C91356.pdf" target="_blank" rel="noopener noreffer "><code>STC Micro STC15W4K56S4</code></a>: an 8051 based microcontroller to handle GPS parsing and general control of the device / driving the display.</li>
+</ul>
+<p>The main PCB has some text and a QR code in the front/left corner:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">YK-1000P 卫星同步时钟主板
+</span></span><span class="line"><span class="cl">2024.11.25 Ver4.0
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>The QR code decodes to <code>YKDZ_250505_0255</code></p>
+<p>The &ldquo;carrier&rdquo; board with the CH9126 has:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">590679W_Y40_250925
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>The LCD/Display board has a QR code that decodes to <code>YKDZ_TFT_241220_0068</code></p>
+<p>Those are almost certainly production batch/date codes.
+The pattern feels similar to what JLCPCB uses for their PCBs but that&rsquo;s just a guess / not uniquely identifying.</p>
+<h2 id="miscellaneous">Miscellaneous</h2>
+<p>I asked the seller for the software and they sent me a copy.
+I do not know why they couldn&rsquo;t just have linked to it in the product listing &hellip; but oh well.
+Now you can download it w/o having to bother w/ the language barrier :).</p>
+<ul>
+<li><a href="
+
+
+https://karlquinsland.com/hamgeek-yk-1000h-gps-ntp-server/files/manual-scan.pdf
+
+
+" rel="">Scanned Manual</a> (chinese and english)</li>
+<li><a href="
+
+
+https://karlquinsland.com/hamgeek-yk-1000h-gps-ntp-server/files/YK-1000H%E5%8D%AB%E6%98%9F%E5%90%8C%E6%AD%A5%E6%97%B6%E9%92%9F%E4%BA%A7%E5%93%81%E8%AF%B4%E6%98%8E%E4%B9%A6.pdf
+
+
+" rel="">OEM Manual (<code>YK-1000H卫星同步时钟产品说明书.pdf</code>)</a> (chinese, only)</li>
+<li><a href="
+
+
+https://karlquinsland.com/hamgeek-yk-1000h-gps-ntp-server/files/90467%2090479%20YK-1000H%20%E8%8B%B1%E6%96%87%E8%BD%AF%E4%BB%B6.exe
+
+
+" rel="">OEM Software (<code>90467 90479 YK-1000H 英文软件.exe</code>)</a></li>
+</ul>
+<h3 id="software">Software</h3>
+<p>Partly because I didn&rsquo;t get the &ldquo;international&rdquo; version and partly because I don&rsquo;t have a proper Windows based RE environment set up, I wasn&rsquo;t able to dig into the software much.</p>
+<p>Googling the very unique <code>CH9126_MODULE_V1.03</code> string turns up &hellip; <em>one</em> <a href="https://www.cnblogs.com/Lqqq123/p/18058274" target="_blank" rel="noopener noreffer ">reference</a> post with some C code that probably matches what the OEM software is doing to configure the module.</p>
+<p>I have archived the reference post <a href="https://web.archive.org/save/https://www.cnblogs.com/Lqqq123/p/18058274" target="_blank" rel="noopener noreffer ">here</a> and <a href="
+
+
+https://karlquinsland.com/hamgeek-yk-1000h-gps-ntp-server/files/random-reference-code.pdf
+
+
+" rel="">here</a>.
+That reference post has a link to a <a href="
+
+
+https://karlquinsland.com/hamgeek-yk-1000h-gps-ntp-server/files/CH9126ConfigTool.zip
+
+
+" rel=""><code>CH9126ConfigTool.zip</code></a> which appears to be a reference implementation/SDK with a compiled <code>.exe</code> as well.
+The <code>.exe</code> isn&rsquo;t the same one as what the seller sent me &hellip; but the icon is identical so they&rsquo;re probably from the same source.</p>
+<p>The <code>strings</code> output did raise an eyebrow:</p>
+<ul>
+<li>The common UART baud rate strings is interesting, probably for configuring the comms to the main microcontroller.</li>
+<li>No obvious certificates or cryptographic strings; firmware might not be signed?</li>
+<li>There is some mechanism for saving configuration. Presumably that&rsquo;s a cheap way to load arbitrary bytes into the device&hellip; :)</li>
+</ul>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span><span class="lnt">42
+</span><span class="lnt">43
+</span><span class="lnt">44
+</span><span class="lnt">45
+</span><span class="lnt">46
+</span><span class="lnt">47
+</span><span class="lnt">48
+</span><span class="lnt">49
+</span><span class="lnt">50
+</span><span class="lnt">51
+</span><span class="lnt">52
+</span><span class="lnt">53
+</span><span class="lnt">54
+</span><span class="lnt">55
+</span><span class="lnt">56
+</span><span class="lnt">57
+</span><span class="lnt">58
+</span><span class="lnt">59
+</span><span class="lnt">60
+</span><span class="lnt">61
+</span><span class="lnt">62
+</span><span class="lnt">63
+</span><span class="lnt">64
+</span><span class="lnt">65
+</span><span class="lnt">66
+</span><span class="lnt">67
+</span><span class="lnt">68
+</span><span class="lnt">69
+</span><span class="lnt">70
+</span><span class="lnt">71
+</span><span class="lnt">72
+</span><span class="lnt">73
+</span><span class="lnt">74
+</span><span class="lnt">75
+</span><span class="lnt">76
+</span><span class="lnt">77
+</span><span class="lnt">78
+</span><span class="lnt">79
+</span><span class="lnt">80
+</span><span class="lnt">81
+</span><span class="lnt">82
+</span><span class="lnt">83
+</span><span class="lnt">84
+</span><span class="lnt">85
+</span><span class="lnt">86
+</span><span class="lnt">87
+</span><span class="lnt">88
+</span><span class="lnt">89
+</span><span class="lnt">90
+</span><span class="lnt">91
+</span><span class="lnt">92
+</span><span class="lnt">93
+</span><span class="lnt">94
+</span><span class="lnt">95
+</span><span class="lnt">96
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">❯ strings 90467<span class="se">\ </span>90479<span class="se">\ </span>YK-1000H<span class="se">\ </span>英文软件.exe
+</span></span><span class="line"><span class="cl">SNTP CHANNEL
+</span></span><span class="line"><span class="cl">SNTP
+</span></span><span class="line"><span class="cl">Space
+</span></span><span class="line"><span class="cl">Mark
+</span></span><span class="line"><span class="cl">Even
+</span></span><span class="line"><span class="cl">None
+</span></span><span class="line"><span class="cl">Operation Status:
+</span></span><span class="line"><span class="cl"><span class="o">(</span>&lt;<span class="o">=</span>1024<span class="o">)</span>
+</span></span><span class="line"><span class="cl">Data Format:
+</span></span><span class="line"><span class="cl">Rx Pack TimeOut:
+</span></span><span class="line"><span class="cl">Rx Pack Len:
+</span></span><span class="line"><span class="cl">Parity:
+</span></span><span class="line"><span class="cl">Stop Bit:
+</span></span><span class="line"><span class="cl">Data Bit:
+</span></span><span class="line"><span class="cl">Baud:
+</span></span><span class="line"><span class="cl">PORT CONFIG
+</span></span><span class="line"><span class="cl">GateWay:
+</span></span><span class="line"><span class="cl">Mask:
+</span></span><span class="line"><span class="cl">Name:
+</span></span><span class="line"><span class="cl">NET CONFIG
+</span></span><span class="line"><span class="cl">SAVE CONFIG
+</span></span><span class="line"><span class="cl">LOAD CONFIG
+</span></span><span class="line"><span class="cl">CONFIG
+</span></span><span class="line"><span class="cl">RESET
+</span></span><span class="line"><span class="cl">SEARCH
+</span></span><span class="line"><span class="cl">Module List<span class="o">(</span>Double Click to get configuration<span class="o">)</span>
+</span></span><span class="line"><span class="cl">REFRESH
+</span></span><span class="line"><span class="cl">Adapter:
+</span></span><span class="line"><span class="cl">Name
+</span></span><span class="line"><span class="cl">Operation Status:
+</span></span><span class="line"><span class="cl">%d.%s
+</span></span><span class="line"><span class="cl"><span class="nb">bind</span> error : %d
+</span></span><span class="line"><span class="cl">ip:%s  mac: %02X:%02X:%02X:%02X:%02X:%02X
+</span></span><span class="line"><span class="cl">socket error : %d
+</span></span><span class="line"><span class="cl">Config Successful!
+</span></span><span class="line"><span class="cl">Reset Successful!
+</span></span><span class="line"><span class="cl">Successfully Get Configuration On Line %d
+</span></span><span class="line"><span class="cl">Search Device Successful!
+</span></span><span class="line"><span class="cl">CH9126_MODULE_V1.03
+</span></span><span class="line"><span class="cl">recvfrom error : %d
+</span></span><span class="line"><span class="cl">Receive Failed...
+</span></span><span class="line"><span class="cl">sendto error : %d
+</span></span><span class="line"><span class="cl">&lt;...&gt;
+</span></span><span class="line"><span class="cl">Searching Devices...
+</span></span><span class="line"><span class="cl">Create Socket Failed, Please Retry...
+</span></span><span class="line"><span class="cl">Please Choose One Module From Module List,If There Is None,Please Search First
+</span></span><span class="line"><span class="cl">No Valid Rows Selected...
+</span></span><span class="line"><span class="cl">Getting Device Configuration...
+</span></span><span class="line"><span class="cl">The Length Of The Module Name Is Illegal,Please Retry...
+</span></span><span class="line"><span class="cl">Rx Pack Len is between <span class="m">0</span> and 1024!Please Re-enter...
+</span></span><span class="line"><span class="cl"><span class="m">1024</span>
+</span></span><span class="line"><span class="cl">Configuring...
+</span></span><span class="line"><span class="cl">Save Configuration Successful!
+</span></span><span class="line"><span class="cl">%s.cfg
+</span></span><span class="line"><span class="cl">saved
+</span></span><span class="line"><span class="cl">CFG Files <span class="o">(</span>*.cfg<span class="o">)</span><span class="p">|</span>*.cfg<span class="o">||</span>
+</span></span><span class="line"><span class="cl">Load Successful!
+</span></span><span class="line"><span class="cl">saved.cfg
+</span></span><span class="line"><span class="cl">CFG Files <span class="o">(</span>*.cfg<span class="o">)</span><span class="p">|</span>*.cfg<span class="p">|</span>
+</span></span><span class="line"><span class="cl">open
+</span></span><span class="line"><span class="cl">.<span class="se">\H</span>elp.txt
+</span></span><span class="line"><span class="cl">Pulse Output:
+</span></span><span class="line"><span class="cl">Polling Interval:
+</span></span><span class="line"><span class="cl">Dest IP:
+</span></span><span class="line"><span class="cl">Mode:
+</span></span><span class="line"><span class="cl">Random
+</span></span><span class="line"><span class="cl">Local Port:
+</span></span><span class="line"><span class="cl">Dest Prot:
+</span></span><span class="line"><span class="cl">&lt;...&gt;
+</span></span><span class="line"><span class="cl"><span class="m">1200</span>
+</span></span><span class="line"><span class="cl"><span class="m">2400</span>
+</span></span><span class="line"><span class="cl"><span class="m">4800</span>
+</span></span><span class="line"><span class="cl"><span class="m">9600</span>
+</span></span><span class="line"><span class="cl"><span class="m">14400</span>
+</span></span><span class="line"><span class="cl"><span class="m">19200</span>
+</span></span><span class="line"><span class="cl"><span class="m">38400</span>
+</span></span><span class="line"><span class="cl"><span class="m">57600</span>
+</span></span><span class="line"><span class="cl"><span class="m">115200</span>
+</span></span><span class="line"><span class="cl"><span class="m">230400</span>
+</span></span><span class="line"><span class="cl"><span class="m">460800</span>
+</span></span><span class="line"><span class="cl"><span class="m">921600</span>
+</span></span><span class="line"><span class="cl">Mark
+</span></span><span class="line"><span class="cl">Space
+</span></span><span class="line"><span class="cl">ASCII
+</span></span><span class="line"><span class="cl">TCP_Sever
+</span></span><span class="line"><span class="cl">TCP_Client
+</span></span><span class="line"><span class="cl">UDP_Server
+</span></span><span class="line"><span class="cl">UDP_Client
+</span></span><span class="line"><span class="cl">KeepSocket
+</span></span><span class="line"><span class="cl">DiscardSocket
+</span></span><span class="line"><span class="cl">StoreAllData
+</span></span><span class="line"><span class="cl">StoreLastData
+</span></span><span class="line"><span class="cl">StoreNoData
+</span></span><span class="line"><span class="cl">SNTP_Server
+</span></span><span class="line"><span class="cl">SNTP_Client
+</span></span></code></pre></td></tr></table>
+</div>
+</div>]]></description></item><item><title>#TwoMinuteTeardown: Duogalia AM70 Optical Fiber Multi-Meter</title><link>https://karlquinsland.com/duogalia-am70-optical-fiber-multi-meter/</link><pubDate>Wed, 10 Dec 2025 00:00:00 +0000</pubDate><author>karl</author><guid>https://karlquinsland.com/duogalia-am70-optical-fiber-multi-meter/</guid><description><![CDATA[<h1 id="two-minute-teardown-duogalia-a-m70-optical-fiber-multi-meter">Two Minute Teardown: Duogalia A-M70 Optical Fiber Multi-Meter</h1>
 <figure >
 
     
@@ -3253,1023 +3844,5 @@ I&rsquo;d bet that they started designing this product in spring of 2024 and the
     
 </figure>
 
-
-]]></description></item><item><title>Monitoring HVAC system with ESPHome</title><link>https://karlquinsland.com/esphome-hvac-monitor/</link><pubDate>Sat, 02 Nov 2024 00:00:00 +0000</pubDate><author>karl</author><guid>https://karlquinsland.com/esphome-hvac-monitor/</guid><description><![CDATA[<h1 id="using-esphome-to-monitor-hvac-system">Using ESPHome to Monitor HVAC System</h1>
-<p>Here&rsquo;s a quick &ldquo;show-and-tell&rdquo; about a recent project I completed.</p>
-<h2 id="the-concept">The concept</h2>
-<p>I&rsquo;m not sure how I first came across the idea of measuring air pressure drop across a filter to gauge its remaining life, but I remember thinking it was a great idea.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            Conceptual diagram for the project.
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>The idea has been lurking in the back of my mind for a while, but I never got around to implementing it&hellip; until now.</p>
-<p>Years ago, I added a <a href="https://www.winsen-sensor.com/sensors/co2-sensor/mh-z16.html" target="_blank" rel="noopener noreffer ">CO₂ sensor</a> to my HVAC return duct to monitor indoor air quality.
-While the sensor provided useful data, I was never really satisfied with how quickly it was installed (read: hacked together messy prototype), and I always wanted to improve it.</p>
-<p>While browsing AliExpress for an unrelated project, I stumbled upon some differential air pressure probes and decided to buy one of these <a href="https://www.aliexpress.us/item/3256807382388280.html" target="_blank" rel="noopener noreffer ">sensors</a>.</p>
-<p>After an afternoon of work, I had the sensor up and running and could <a href="https://github.com/kquinsland/qdx50d-air-pressure-sensor-poc" target="_blank" rel="noopener noreffer ">communicate with it using some simple Python</a>.</p>
-<p>I then designed a PCB to integrate the sensors and electronics and 3D-printed a case to house the whole setup.</p>
-<h2 id="the-hardware">The Hardware</h2>
-<div class="details admonition note open">
-        <div class="details-summary admonition-title">
-            <i class="icon fas fa-pencil-alt fa-fw" aria-hidden="true"></i>Note<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
-        </div>
-        <div class="details-content">
-            <div class="admonition-content">I&rsquo;m not sharing the PCB or other mechanical files because they&rsquo;re specific to my setup.
-Unless you have the same HVAC system configuration, layout, and dimensional constraints, these files likely won&rsquo;t be useful.
-This post aims to share the concept and hopefully inspire others.
-Use this as a starting point and adapt it to your needs.</div>
-        </div>
-    </div>
-<p>At a high level, the BOM for the project includes:</p>
-<ul>
-<li>ESP32-C3 mini module</li>
-<li>Bosch BME680 sensor / Co2 sensor</li>
-<li>QDX50D air pressure sensor</li>
-<li>AC to DC power supply for interfacing with existing 24VAC HVAC power</li>
-<li>Custom PCB</li>
-</ul>
-<p>The assembled setup looks like this:</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            Fully assembled PCB just before final assembly.
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>Installed in the HVAC system, it appears like this:</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            A picture of the probe installed and operating. The air filter has been removed and you can see the AC evaporator.
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<h2 id="esphome-config">ESPHome Config</h2>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            How the sensor shows up in HomeAssistant.
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>Below is a snippet of the ESPHome configuration file for this project. It’s similar to my configuration, but I&rsquo;ve removed boilerplate sections (e.g., <code>mqtt</code>, <code>wifi</code>, etc.) for brevity.</p>
-<p>I&rsquo;ve included numerous in-line comments to clarify each section. To briefly recap:</p>
-<ul>
-<li>Press the &ldquo;Clear High Water Mark&rdquo; button whenever you change the filter to reset the high water mark.</li>
-<li>Ensure that <code>glbl_air_pressure_delta_clogged_pa</code> and <code>glbl_air_pressure_delta_virgin_pa</code> fields contain values tailored to your system.</li>
-<li>To calibrate these values, install a new filter and note the value reported by <code>sense_air_pressure_delta_raw_pa</code>. As the filter clogs over time, this value will rise. When the filter blocks most light when held up to a bright light, it’s time for a replacement. Record the value of <code>sense_air_pressure_delta_raw_pa</code> at this point and use it as the &ldquo;clogged&rdquo; threshold.</li>
-</ul>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">  1
-</span><span class="lnt">  2
-</span><span class="lnt">  3
-</span><span class="lnt">  4
-</span><span class="lnt">  5
-</span><span class="lnt">  6
-</span><span class="lnt">  7
-</span><span class="lnt">  8
-</span><span class="lnt">  9
-</span><span class="lnt"> 10
-</span><span class="lnt"> 11
-</span><span class="lnt"> 12
-</span><span class="lnt"> 13
-</span><span class="lnt"> 14
-</span><span class="lnt"> 15
-</span><span class="lnt"> 16
-</span><span class="lnt"> 17
-</span><span class="lnt"> 18
-</span><span class="lnt"> 19
-</span><span class="lnt"> 20
-</span><span class="lnt"> 21
-</span><span class="lnt"> 22
-</span><span class="lnt"> 23
-</span><span class="lnt"> 24
-</span><span class="lnt"> 25
-</span><span class="lnt"> 26
-</span><span class="lnt"> 27
-</span><span class="lnt"> 28
-</span><span class="lnt"> 29
-</span><span class="lnt"> 30
-</span><span class="lnt"> 31
-</span><span class="lnt"> 32
-</span><span class="lnt"> 33
-</span><span class="lnt"> 34
-</span><span class="lnt"> 35
-</span><span class="lnt"> 36
-</span><span class="lnt"> 37
-</span><span class="lnt"> 38
-</span><span class="lnt"> 39
-</span><span class="lnt"> 40
-</span><span class="lnt"> 41
-</span><span class="lnt"> 42
-</span><span class="lnt"> 43
-</span><span class="lnt"> 44
-</span><span class="lnt"> 45
-</span><span class="lnt"> 46
-</span><span class="lnt"> 47
-</span><span class="lnt"> 48
-</span><span class="lnt"> 49
-</span><span class="lnt"> 50
-</span><span class="lnt"> 51
-</span><span class="lnt"> 52
-</span><span class="lnt"> 53
-</span><span class="lnt"> 54
-</span><span class="lnt"> 55
-</span><span class="lnt"> 56
-</span><span class="lnt"> 57
-</span><span class="lnt"> 58
-</span><span class="lnt"> 59
-</span><span class="lnt"> 60
-</span><span class="lnt"> 61
-</span><span class="lnt"> 62
-</span><span class="lnt"> 63
-</span><span class="lnt"> 64
-</span><span class="lnt"> 65
-</span><span class="lnt"> 66
-</span><span class="lnt"> 67
-</span><span class="lnt"> 68
-</span><span class="lnt"> 69
-</span><span class="lnt"> 70
-</span><span class="lnt"> 71
-</span><span class="lnt"> 72
-</span><span class="lnt"> 73
-</span><span class="lnt"> 74
-</span><span class="lnt"> 75
-</span><span class="lnt"> 76
-</span><span class="lnt"> 77
-</span><span class="lnt"> 78
-</span><span class="lnt"> 79
-</span><span class="lnt"> 80
-</span><span class="lnt"> 81
-</span><span class="lnt"> 82
-</span><span class="lnt"> 83
-</span><span class="lnt"> 84
-</span><span class="lnt"> 85
-</span><span class="lnt"> 86
-</span><span class="lnt"> 87
-</span><span class="lnt"> 88
-</span><span class="lnt"> 89
-</span><span class="lnt"> 90
-</span><span class="lnt"> 91
-</span><span class="lnt"> 92
-</span><span class="lnt"> 93
-</span><span class="lnt"> 94
-</span><span class="lnt"> 95
-</span><span class="lnt"> 96
-</span><span class="lnt"> 97
-</span><span class="lnt"> 98
-</span><span class="lnt"> 99
-</span><span class="lnt">100
-</span><span class="lnt">101
-</span><span class="lnt">102
-</span><span class="lnt">103
-</span><span class="lnt">104
-</span><span class="lnt">105
-</span><span class="lnt">106
-</span><span class="lnt">107
-</span><span class="lnt">108
-</span><span class="lnt">109
-</span><span class="lnt">110
-</span><span class="lnt">111
-</span><span class="lnt">112
-</span><span class="lnt">113
-</span><span class="lnt">114
-</span><span class="lnt">115
-</span><span class="lnt">116
-</span><span class="lnt">117
-</span><span class="lnt">118
-</span><span class="lnt">119
-</span><span class="lnt">120
-</span><span class="lnt">121
-</span><span class="lnt">122
-</span><span class="lnt">123
-</span><span class="lnt">124
-</span><span class="lnt">125
-</span><span class="lnt">126
-</span><span class="lnt">127
-</span><span class="lnt">128
-</span><span class="lnt">129
-</span><span class="lnt">130
-</span><span class="lnt">131
-</span><span class="lnt">132
-</span><span class="lnt">133
-</span><span class="lnt">134
-</span><span class="lnt">135
-</span><span class="lnt">136
-</span><span class="lnt">137
-</span><span class="lnt">138
-</span><span class="lnt">139
-</span><span class="lnt">140
-</span><span class="lnt">141
-</span><span class="lnt">142
-</span><span class="lnt">143
-</span><span class="lnt">144
-</span><span class="lnt">145
-</span><span class="lnt">146
-</span><span class="lnt">147
-</span><span class="lnt">148
-</span><span class="lnt">149
-</span><span class="lnt">150
-</span><span class="lnt">151
-</span><span class="lnt">152
-</span><span class="lnt">153
-</span><span class="lnt">154
-</span><span class="lnt">155
-</span><span class="lnt">156
-</span><span class="lnt">157
-</span><span class="lnt">158
-</span><span class="lnt">159
-</span><span class="lnt">160
-</span><span class="lnt">161
-</span><span class="lnt">162
-</span><span class="lnt">163
-</span><span class="lnt">164
-</span><span class="lnt">165
-</span><span class="lnt">166
-</span><span class="lnt">167
-</span><span class="lnt">168
-</span><span class="lnt">169
-</span><span class="lnt">170
-</span><span class="lnt">171
-</span><span class="lnt">172
-</span><span class="lnt">173
-</span><span class="lnt">174
-</span><span class="lnt">175
-</span><span class="lnt">176
-</span><span class="lnt">177
-</span><span class="lnt">178
-</span><span class="lnt">179
-</span><span class="lnt">180
-</span><span class="lnt">181
-</span><span class="lnt">182
-</span><span class="lnt">183
-</span><span class="lnt">184
-</span><span class="lnt">185
-</span><span class="lnt">186
-</span><span class="lnt">187
-</span><span class="lnt">188
-</span><span class="lnt">189
-</span><span class="lnt">190
-</span><span class="lnt">191
-</span><span class="lnt">192
-</span><span class="lnt">193
-</span><span class="lnt">194
-</span><span class="lnt">195
-</span><span class="lnt">196
-</span><span class="lnt">197
-</span><span class="lnt">198
-</span><span class="lnt">199
-</span><span class="lnt">200
-</span><span class="lnt">201
-</span><span class="lnt">202
-</span><span class="lnt">203
-</span><span class="lnt">204
-</span><span class="lnt">205
-</span><span class="lnt">206
-</span><span class="lnt">207
-</span><span class="lnt">208
-</span><span class="lnt">209
-</span><span class="lnt">210
-</span><span class="lnt">211
-</span><span class="lnt">212
-</span><span class="lnt">213
-</span><span class="lnt">214
-</span><span class="lnt">215
-</span><span class="lnt">216
-</span><span class="lnt">217
-</span><span class="lnt">218
-</span><span class="lnt">219
-</span><span class="lnt">220
-</span><span class="lnt">221
-</span><span class="lnt">222
-</span><span class="lnt">223
-</span><span class="lnt">224
-</span><span class="lnt">225
-</span><span class="lnt">226
-</span><span class="lnt">227
-</span><span class="lnt">228
-</span><span class="lnt">229
-</span><span class="lnt">230
-</span><span class="lnt">231
-</span><span class="lnt">232
-</span><span class="lnt">233
-</span><span class="lnt">234
-</span><span class="lnt">235
-</span><span class="lnt">236
-</span><span class="lnt">237
-</span><span class="lnt">238
-</span><span class="lnt">239
-</span><span class="lnt">240
-</span><span class="lnt">241
-</span><span class="lnt">242
-</span><span class="lnt">243
-</span><span class="lnt">244
-</span><span class="lnt">245
-</span><span class="lnt">246
-</span><span class="lnt">247
-</span><span class="lnt">248
-</span><span class="lnt">249
-</span><span class="lnt">250
-</span><span class="lnt">251
-</span><span class="lnt">252
-</span><span class="lnt">253
-</span><span class="lnt">254
-</span><span class="lnt">255
-</span><span class="lnt">256
-</span><span class="lnt">257
-</span><span class="lnt">258
-</span><span class="lnt">259
-</span><span class="lnt">260
-</span><span class="lnt">261
-</span><span class="lnt">262
-</span><span class="lnt">263
-</span><span class="lnt">264
-</span><span class="lnt">265
-</span><span class="lnt">266
-</span><span class="lnt">267
-</span><span class="lnt">268
-</span><span class="lnt">269
-</span><span class="lnt">270
-</span><span class="lnt">271
-</span><span class="lnt">272
-</span><span class="lnt">273
-</span><span class="lnt">274
-</span><span class="lnt">275
-</span><span class="lnt">276
-</span><span class="lnt">277
-</span><span class="lnt">278
-</span><span class="lnt">279
-</span><span class="lnt">280
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="c">##</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># The air pressure probe seems to sample continuously; the display is updated a few times per second.</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># This is a bit overkill for this application as I really only need to check occasionally while the HVAC fan is running.</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># I say occasionally because the filter is not going to clog up in a matter of seconds; it will take many weeks.</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># There&#39;s little value in knowing that the filter is dropping 2 more Pascals this second compared to what it was</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#   at 10 seconds ago. The value is in knowing that the filter is dropping 2000 more Pascals now than it was four</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#   months ago!</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Additionally, when measuring using individual Pascals, the readings can be quite noisy!</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Just being near the probe can warm up the ambient ari enough to register a few pascals of pressure change.</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Breathing / talking / just walking past the probe can also cause the readings to jump around a bit!</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># The point that I&#39;m trying to make here is that we are concerned with the overall trend of the pressure readings, not</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#   instantaneous values.</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># This isn&#39;t quite so straightforward, however since we don&#39;t know when the fan is running!</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># It may not run for months at a time if the weather is pleasant... or it might be running for days at a time if it&#39;s not.</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># While it would certainly be the most reliable indicator, electrically interfacing with the 240v blower motor is way, way</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#   out of scope for this project!</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Fortunately, we have a pretty reliable backup method that allows us to infer when the fan is running with a high degree of</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#   confidence: the air pressure probe!</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># When the fan is off, the measured air pressure difference will be pretty small since there is (virtually) no flow through the filter.</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Sure, it will bounce around a bit due to environmental factors but the overall measured delta will not be very large.</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># When the fan is running, the pressure drop across the filter will be much larger than the idle/ambient value.</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># If we know what the air pressure drop is across a brand new / virgin filter, we can use that as a threshold; if the measured</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#   pressure delta is lower than this threshold, the fan is (probably) not running. If above, the fan is almost certainly running.</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Ok, we can infer if the fan is running or not given a measurement, but how do we know when to sample the pressure delta?</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Because the blower motor is going to run for AT LEAST a few hundred seconds at a time, we don&#39;t need to sample the</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#   pressure delta very often. 2x per minute should be more than enough opportunity to catch the fan running.</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Knowing that the pressure delta will only increase as the filter gets clogged, we can compare the current air pressure delta</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#   to the absolute maximum value to estimate the remaining life of the filter.</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># To prevent the estimated filter life percentages from going all over the place, we use a high-water-marker approach.</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># This isn&#39;t _perfect_ since we&#39;d ideally be keeping track of the average pressure delta but setting that up in ESPHome</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#    isn&#39;t trivial and the high-water-mark approach is good enough for this application.</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">##</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># So, this means that we need to supply two calibration values for most of the code below to work properly:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#   - The pressure drop across a virgin / brand new filter. This value should be adjusted if the type of filter</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#       is changed (e.g. MERV 8 to MERV 13). This value can be obtained &#34;automatically&#34; by just installing a new filter and</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#       clicking the &#34;reset high-water mark&#34; button. The next time that the fan runs, the probe will record the highest value</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#       and this is a good estimate of the virgin value. Maybe round down just a bit to be safe.</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#   - The pressure drop across an end-of-life/clogged filter. The best way to get this value is to use a filter that&#39;s</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#       about to be replaced. In testing, the difference between a new filter and a clogged filter was about 20-30 hPa</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#       so it is possible to estimate this value if you only have the virgin value. If using the estimation approach, check the</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#       filter from time to time to see how dirty it is and adjust the clogged value as needed. Once the filter is so dirty that</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#       you can&#39;t see sunlight through it, it&#39;s probably time to replace it. Record the high water marker value at this time</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#       and use that as the clogged value. Maybe round down just a bit to be safe.</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">##</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">substitutions</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># Remember, the sensor is configured to report in Pascals but the user is more likely to think in hPa</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># hPa = 100 Pascals</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">template_number_input_min_hpa</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;10&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">template_number_input_max_hpa</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;150&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># We do need all of these values to persist across reboots; for this reason, do not use an ESP8266!</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Internally, this config uses Pascals but the user is more likely to think in hPa so we scale by 100 in each direction</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">globals</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># High water marker</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">glbl_air_pressure_delta_hwm_pa</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">float</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">restore_value</span><span class="p">:</span><span class="w"> </span><span class="kc">yes</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">initial_value</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;0.0&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># The air pressure delta we&#39;d expect to see for a fresh filter</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">glbl_air_pressure_delta_virgin_pa</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">int</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">restore_value</span><span class="p">:</span><span class="w"> </span><span class="kc">yes</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Probe is in Pascals and a new filter is about 70 hPa</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">initial_value</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;70000&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># And for a clogged filter</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">glbl_air_pressure_delta_clogged_pa</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l">int</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">restore_value</span><span class="p">:</span><span class="w"> </span><span class="kc">yes</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># In testing, a very dirty filter has a roughly 30 hPa delta</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">initial_value</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;95000&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">uart</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">uart_co2</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># &lt; ... Omitted ...&gt;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">uart_modbus</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># &lt; ... Omitted ...&gt;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">modbus</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">bus_mod_1</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">uart_id</span><span class="p">:</span><span class="w"> </span><span class="l">uart_modbus</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">modbus_controller</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">modbus_device</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">modbus_id</span><span class="p">:</span><span class="w"> </span><span class="l">bus_mod_1</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Datasheet defaults to addr 01</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">address</span><span class="p">:</span><span class="w"> </span><span class="m">0x01</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># See note above about sampling rate; 2x/min should be fine as long as the fan runs for at least 5 min at a time</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">update_interval</span><span class="p">:</span><span class="w"> </span><span class="l">30s</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">setup_priority</span><span class="p">:</span><span class="w"> </span>-<span class="m">10</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Note: The air pressure sensor requires a bit of configuration and setup before it can be used with this ESPHome configuration.</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># This ESPHome configuration assumes that the sensor has already been configured to 9600 baud, address 0x01</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#   and that the reading is in Pascals and has been set to the appropriate level of precision (xx.yy Pascals)</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># It might be possible to write a custom script / component / ESPHome automation to write out the necessary configuration from</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#   within ESPHome but I didn&#39;t see a need to port the python script to ESPHome.</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># https://github.com/kquinsland/qdx50d-air-pressure-sensor-poc/</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">##</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">sensor</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># This sensor is the instantaneous air pressure value. This sensor will be updated at the rate outlined by the</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># modbus_controller.update_interval value</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># It is expected that teh measured value will be noisy at idle but will stabilize when the HVAC fan is running.</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># Despite the value from this entity being used in other sensors, we do NOT mark this as internal since we want the raw value</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#   to be available in HA for advanced diagnostic / tuning purposes.</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Air Pressure Delta (Raw)&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">modbus_controller</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">sense_air_pressure_delta_raw_pa</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">modbus_controller_id</span><span class="p">:</span><span class="w"> </span><span class="l">modbus_device</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">register_type</span><span class="p">:</span><span class="w"> </span><span class="l">holding</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">address</span><span class="p">:</span><span class="w"> </span><span class="m">0x04</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">device_class</span><span class="p">:</span><span class="w"> </span><span class="l">atmospheric_pressure</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">unit_of_measurement</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Pa&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">state_class</span><span class="p">:</span><span class="w"> </span><span class="l">measurement</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">icon</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;mdi:gauge&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">value_type</span><span class="p">:</span><span class="w"> </span><span class="l">S_WORD</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># When we get a new reading update the various presentation layers that depend on us</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">on_value</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="c"># Pass value to the smoothed sensor</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="l">id(sense_air_pressure_delta_smoothed_pa).publish_state(id(sense_air_pressure_delta_raw_pa).state);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="c"># Update the global high water mark, but only if the incoming value is at least as high as the virgin value</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="c"># Until we see a value equal to / higher than virgin, we can assume that the fan is not running.</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          // Use absolute value so we don&#39;t care if the probe is installed backwards or not; we&#39;re only interested in the magnitude
-</span></span></span><span class="line"><span class="cl"><span class="sd">          float abs_x = fabs(x);
-</span></span></span><span class="line"><span class="cl"><span class="sd">          ESP_LOGD(&#34;sense_air_pressure_delta_raw_pa.on_value&#34;, &#34;[RAW] abs_x: %f&#34;, abs_x);
-</span></span></span><span class="line"><span class="cl"><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          // If the blower motor is off, the values will be quite small and noisy.
-</span></span></span><span class="line"><span class="cl"><span class="sd">          // We don&#39;t bother with any value that&#39;s less than the virgin value
-</span></span></span><span class="line"><span class="cl"><span class="sd">          if (abs_x &lt; id(glbl_air_pressure_delta_virgin_pa) ) {
-</span></span></span><span class="line"><span class="cl"><span class="sd">            ESP_LOGD(&#34;sense_air_pressure_delta_raw_pa.on_value&#34;, &#34;abs_x: %f IS BELOW VIRGIN: %d&#34;, abs_x, id(glbl_air_pressure_delta_virgin_pa));
-</span></span></span><span class="line"><span class="cl"><span class="sd">          } else {
-</span></span></span><span class="line"><span class="cl"><span class="sd">            // We are at or above the virgin value so the blower motor is almost certainly running
-</span></span></span><span class="line"><span class="cl"><span class="sd">            ESP_LOGD(&#34;sense_air_pressure_delta_raw_pa.on_value&#34;, &#34;abs_x: %f IS ABOVE VIRGIN: %d&#34;, abs_x, id(glbl_air_pressure_delta_virgin_pa));
-</span></span></span><span class="line"><span class="cl"><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">            if (abs_x &gt; id(glbl_air_pressure_delta_hwm_pa) ) {
-</span></span></span><span class="line"><span class="cl"><span class="sd">              id(glbl_air_pressure_delta_hwm_pa) = abs_x;
-</span></span></span><span class="line"><span class="cl"><span class="sd">              // Update the hwm sensor (which kicks off other updates)
-</span></span></span><span class="line"><span class="cl"><span class="sd">              id(sense_air_pressure_delta_hwm_pa).update();
-</span></span></span><span class="line"><span class="cl"><span class="sd">            }
-</span></span></span><span class="line"><span class="cl"><span class="sd">          }
-</span></span></span><span class="line"><span class="cl"><span class="sd">          // Log the new values
-</span></span></span><span class="line"><span class="cl"><span class="sd">          ESP_LOGD(&#34;sense_air_pressure_delta_raw_pa.on_value&#34;, &#34;glbl_air_pressure_delta_hwm_pa: %f&#34;, id(glbl_air_pressure_delta_hwm_pa));</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Air Pressure Delta (Smoothed)&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">sense_air_pressure_delta_smoothed_pa</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">device_class</span><span class="p">:</span><span class="w"> </span><span class="l">atmospheric_pressure</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">unit_of_measurement</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Pa&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">state_class</span><span class="p">:</span><span class="w"> </span><span class="l">measurement</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">icon</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;mdi:gauge&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># We are template, driven by the raw sensor</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">update_interval</span><span class="p">:</span><span class="w"> </span><span class="l">never</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">expire_after</span><span class="p">:</span><span class="w"> </span><span class="l">120s</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">filters</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">exponential_moving_average</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">alpha</span><span class="p">:</span><span class="w"> </span><span class="l">.2</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">send_every</span><span class="p">:</span><span class="w"> </span><span class="m">15</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># ESPHome has a few different ways of interfacing with the BME680</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># The `bme68x_bsec2` platform requires arduino base for ESPHome and has two large drawbacks:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#   1. License prevents distributing binary; not a problem here, but annoying for some / in principle</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#   2. Does not permit arbitrary `update_interval` settings. Only choice is 3s or every 300s!</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># It appears that the only real difference between the two platforms is that the proprietary one</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">#   has a calculated VOC and CO2 sensor.</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># This build already has a real CO2 sensor and - while better than nothing - I&#39;d rather have a real VOC sensor as well.</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c">##</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">bme680</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># &lt; ... Omitted ...&gt;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">mhz19</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">uart_id</span><span class="p">:</span><span class="w"> </span><span class="l">uart_co2</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># &lt; ... Omitted ...&gt;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># For debugging purposes, show the current value of glbl_air_pressure_delta_hwm_pa</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Air Pressure Delta High Water Mark&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">sense_air_pressure_delta_hwm_pa</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">entity_category</span><span class="p">:</span><span class="w"> </span><span class="l">diagnostic</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">device_class</span><span class="p">:</span><span class="w"> </span><span class="l">atmospheric_pressure</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">unit_of_measurement</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Pa&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">state_class</span><span class="p">:</span><span class="w"> </span><span class="l">TOTAL_INCREASING</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">update_interval</span><span class="p">:</span><span class="w"> </span><span class="l">never</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">      return id(glbl_air_pressure_delta_hwm_pa);</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">on_value</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="l">id(sense_est_filter_life_remaining).update();</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Estimated Filter Life Remaining&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">sense_est_filter_life_remaining</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">entity_category</span><span class="p">:</span><span class="w"> </span><span class="l">diagnostic</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">unit_of_measurement</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;%&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Technically, this is true but the value could change in a negative direction if the user changes the virgin/clogged values</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Home Assistant does NOT like it when this class of measurement goes down unless it goes back to zero</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># state_class: TOTAL_INCREASING</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># When the HWM is updated, we&#39;ll be called to update</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">update_interval</span><span class="p">:</span><span class="w"> </span><span class="l">never</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">      if (id(glbl_air_pressure_delta_hwm_pa) &lt; id(glbl_air_pressure_delta_virgin_pa)) {
-</span></span></span><span class="line"><span class="cl"><span class="sd">        ESP_LOGW(&#34;sense_est_filter_life_remaining&#34;, &#34;[NaN CASE] glbl_air_pressure_delta_hwm_pa: %f glbl_air_pressure_delta_virgin_pa: %f&#34;, id(glbl_air_pressure_delta_hwm_pa), id(glbl_air_pressure_delta_virgin_pa));
-</span></span></span><span class="line"><span class="cl"><span class="sd">        return NAN;
-</span></span></span><span class="line"><span class="cl"><span class="sd">      } else {
-</span></span></span><span class="line"><span class="cl"><span class="sd">        ESP_LOGD(&#34;sense_est_filter_life_remaining&#34;, &#34;[CalcCase] glbl_air_pressure_delta_hwm_pa: %f glbl_air_pressure_delta_virgin_pa: %f, glbl_air_pressure_delta_clogged_pa: %f&#34;, id(glbl_air_pressure_delta_hwm_pa), id(glbl_air_pressure_delta_virgin_pa), id(glbl_air_pressure_delta_clogged_pa));
-</span></span></span><span class="line"><span class="cl"><span class="sd">        return 100 - ((id(glbl_air_pressure_delta_hwm_pa) - id(glbl_air_pressure_delta_virgin_pa)) / (id(glbl_air_pressure_delta_clogged_pa) - id(glbl_air_pressure_delta_virgin_pa)) * 100);
-</span></span></span><span class="line"><span class="cl"><span class="sd">      }</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Button to clear the high water mark</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># This button should be pressed when a new filter is installed</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">button</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Clear High Water Mark&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">btn_clear_hwm</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">entity_category</span><span class="p">:</span><span class="w"> </span><span class="l">config</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">icon</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;mdi:refresh&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">on_press</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">globals.set</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">glbl_air_pressure_delta_hwm_pa</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">value</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;0.0&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">sensor.template.publish</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">sense_air_pressure_delta_hwm_pa</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span>!<span class="l">lambda &#34;return id(glbl_air_pressure_delta_hwm_pa);&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">sensor.template.publish</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">sense_est_filter_life_remaining</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">state</span><span class="p">:</span><span class="w"> </span>!<span class="l">lambda &#34;return NAN;&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># And allow the user to set what a virgin/clogged filter looks like w/o recompiling</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Store the values in Pascals but present them in hPa, use abs() since we only care</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c">#   about the magnitude; not direction.</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># Any time we are set, we need to re-calculate the estimated filter life</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">number</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Virgin Filter Pressure Delta&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">num_virgin_filter_pressure_delta</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">entity_category</span><span class="p">:</span><span class="w"> </span><span class="l">config</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">icon</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;mdi:gauge&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Internally, we use Pascals but the user is more likely to think in hPa so we</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># scale by 100 in each direction</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">unit_of_measurement</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;hPa&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">device_class</span><span class="p">:</span><span class="w"> </span><span class="l">atmospheric_pressure</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">min_value</span><span class="p">:</span><span class="w"> </span><span class="l">${template_number_input_min_hpa}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">max_value</span><span class="p">:</span><span class="w"> </span><span class="l">${template_number_input_max_hpa}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">step</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">      return id(glbl_air_pressure_delta_virgin_pa)/100;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">set_action</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          id(glbl_air_pressure_delta_virgin_pa) = abs(x)*100;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          id(sense_est_filter_life_remaining).update();</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">  </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;Clogged Filter Pressure Delta&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">platform</span><span class="p">:</span><span class="w"> </span><span class="l">template</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">id</span><span class="p">:</span><span class="w"> </span><span class="l">num_virgin_filter_pressure_clogged</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">entity_category</span><span class="p">:</span><span class="w"> </span><span class="l">config</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">icon</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;mdi:gauge&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">unit_of_measurement</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;hPa&#34;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">device_class</span><span class="p">:</span><span class="w"> </span><span class="l">atmospheric_pressure</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">min_value</span><span class="p">:</span><span class="w"> </span><span class="l">${template_number_input_min_hpa}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">max_value</span><span class="p">:</span><span class="w"> </span><span class="l">${template_number_input_max_hpa}</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">step</span><span class="p">:</span><span class="w"> </span><span class="m">1</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">      return id(glbl_air_pressure_delta_clogged_pa)/100;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">set_action</span><span class="p">:</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          id(glbl_air_pressure_delta_clogged_pa) = abs(x)*100;</span><span class="w">
-</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="nt">lambda</span><span class="p">:</span><span class="w"> </span><span class="p">|-</span><span class="sd">
-</span></span></span><span class="line"><span class="cl"><span class="sd">          id(sense_est_filter_life_remaining).update();</span><span class="w">
-</span></span></span></code></pre></td></tr></table>
-</div>
-</div>]]></description></item><item><title>Watch Band RFID fob</title><link>https://karlquinsland.com/watch-band-rfid/</link><pubDate>Sat, 14 Sep 2024 00:00:00 +0000</pubDate><author>karl</author><guid>https://karlquinsland.com/watch-band-rfid/</guid><description><![CDATA[<h1 id="watch-band-rfid-fob">Watch Band RFID fob</h1>
-<p>This is a quick project to create a wearable RFID fob that can be easily attached to a watch band.
-The idea is to have a small RFID tag that can be used for various purposes, such as access control or identification that is - more or less - as convenient as a surgically implanted tag, but without the need for embedding anything in your body.</p>
-<p>I was inspired by both the <a href="https://en.wikipedia.org/wiki/Microchip_implant_%28human%29" target="_blank" rel="noopener noreffer ">bio-hacking community</a> and the medical-alert &lsquo;accessory bands&rsquo; for Android Wear devices.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            The inspiration for this project
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>Don&rsquo;t mind the few small print imperfections; <em>this was a prototype</em> printed with a .6mm nozzle.
-A final version of this would be printed with a smaller nozzle, a finer layer height and probably a different color/material.</p>
-<p>The point is to have a small, unobtrusive design that can be easily attached to a watch band.
-Because of the wide variety of watch bands available, I have <a href="#files" rel="">included</a> the raw Fusion360 file for you to modify as needed.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            Installed on a watch band.
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            A single watch band pin is used to secure the plastic part to the band.
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            Hopefully this gives you an idea of how the parts come together.
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<h2 id="bill-of-materials">Bill of Materials</h2>
-<p>The core component of this project is the <a href="#sourcing-the-rfid-tag" rel="">RFID tag</a> which needs to be small and reprogrammable.</p>
-<p>Other than that, you will need to design or print your own enclosure and secure it to the watch band with a standard pin.
-Sourcing these is quite easy; a local watch shop or jeweler should have them available or you can buy a watch-band kit online.
-A kit is advisable if you need to prototype multiple designs / play with different pin diameters/lengths.</p>
-<p>Printing the tag enclosure is straightforward but due to it&rsquo;s small size, the more precise your printer is, the better the results will be.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            Suggested print orientation for best results
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<h2 id="sourcing-the-rfid-tag">Sourcing the RFID tag</h2>
-<p>This application is severely space constrained, so you need the smallest possible tag that is also reprogrammable.
-If you search for tags meant to be embedded under the skin of animals, you will find many options&hellip; but they are not reprogrammable.</p>
-<p>There are also tags meant for <a href="https://dangerousthings.com/category/implants/x-series/" target="_blank" rel="noopener noreffer ">humans</a> but they&rsquo;re not cheap!
-I did eventually find a suitable tag on eBay:</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            eBay listing for the RFID tag
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>eBay being what it is, there&rsquo;s no guarantee that <a href="https://www.ebay.com/itm/254607033331" target="_blank" rel="noopener noreffer ">the same listing I purchased from</a> will still be active in the future so I am including a copy of the listing description that you can use for reference when searching for a suitable tag:</p>
-<blockquote>
-<p>New 2pcs T5577 125KHz E/H Rewrite Writable R/W Proximity Bio Glass Tag 2.12x12mm</p>
-</blockquote>
-<p>A portion of the listing text:</p>
-<blockquote>
-<p>Specifications:</p>
-<p>This is the 125KHZ T5577 Glass RFID Writeable tags Proximity Induction For animal identification or other 125KHz RFID Access controller.</p>
-<p>FEATURES:</p>
-<ul>
-<li>
-<p>This tag very small so difficult to read or write,please use the better device or sensor strong device.</p>
-</li>
-<li>
-<p>Operation frequency: 125Khz</p>
-</li>
-<li>
-<p>Chip:T5577,Rewrite Writable EM4100 &amp; HID Chip(This Chip better and factory cost high than EM4305)</p>
-</li>
-<li>
-<p>Compatible with 125KHz EM4100 or 125KHz HID reader to gain access controller and the animal identification.</p>
-</li>
-<li>
-<p>Detecting distance: 0-5cm(if the Reader sensor Different so the Read Distance will Different ).</p>
-</li>
-<li>
-<p>Glass Housing Material:Bio-glass.</p>
-</li>
-<li>
-<p>Size:2.12 x12mm</p>
-</li>
-<li>
-<p>Page included: 2pcs 125KHz T5577 Writeable Glass RFID TAGS</p>
-</li>
-</ul>
-</blockquote>
-<h2 id="files">Files</h2>
-<ul>
-    
-    <li>
-        
-
-        
-        
-
-        <figure>
-            <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/eBay-listing.webp">
-                
-            </a>
-            
-            <figcaption>
-                <small>eBay listing for the RFID tag</small>
-            </figcaption>
-            
-        </figure>
-
-        
-    </li>
-    
-    <li>
-        
-        <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/files/fusion-export.step">
-            <i class="far fa-file-"></i>
-            files/fusion-export.step:
-            
-            
-        </a>
-        
-    </li>
-    
-    <li>
-        
-        <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/files/main.f3z">
-            <i class="far fa-file-"></i>
-            files/main.f3z:
-            
-            
-        </a>
-        
-    </li>
-    
-    <li>
-        
-
-        
-        
-
-        <figure>
-            <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/official-medical-band-render.webp">
-                
-            </a>
-            
-            <figcaption>
-                <small>The inspiration for this project</small>
-            </figcaption>
-            
-        </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-        
-        
-
-        <figure>
-            <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/suggested-print-orientation.webp">
-                
-            </a>
-            
-            <figcaption>
-                <small>Suggested print orientation for best results</small>
-            </figcaption>
-            
-        </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-        
-        
-
-        <figure>
-            <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/prototype01.webp">
-                
-            </a>
-            
-            <figcaption>
-                <small>Hopefully this gives you an idea of how the parts come together.</small>
-            </figcaption>
-            
-        </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-        
-        
-
-        <figure>
-            <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/prototype02.webp">
-                
-            </a>
-            
-            <figcaption>
-                <small>A single watch band pin is used to secure the plastic part to the band.</small>
-            </figcaption>
-            
-        </figure>
-
-        
-    </li>
-    
-    <li>
-        
-
-        
-        
-
-        <figure>
-            <a target="_blank" href="https://karlquinsland.com/watch-band-rfid/images/prototype03.webp">
-                
-            </a>
-            
-            <figcaption>
-                <small>Installed on a watch band.</small>
-            </figcaption>
-            
-        </figure>
-
-        
-    </li>
-    
-</ul>
 
 ]]></description></item></channel></rss>

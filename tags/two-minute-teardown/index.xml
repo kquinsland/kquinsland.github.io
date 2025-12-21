@@ -1,4 +1,51 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Two-Minute-Teardown on karl</title><link>https://karlquinsland.com/tags/two-minute-teardown/</link><description>Recent content in Two-Minute-Teardown on karl</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Fri, 12 Dec 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/two-minute-teardown/index.xml" rel="self" type="application/rss+xml"/><item><title>#TwoMinuteTeardown: Duogalia AM70 Optical Fiber Multi-Meter</title><link>https://karlquinsland.com/duogalia-am70-optical-fiber-multi-meter/</link><pubDate>Fri, 12 Dec 2025 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/duogalia-am70-optical-fiber-multi-meter/</guid><description>&lt;h1 id="two-minute-teardown-duogalia-a-m70-optical-fiber-multi-meter"&gt;Two Minute Teardown: Duogalia A-M70 Optical Fiber Multi-Meter&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Two-Minute-Teardown on karl</title><link>https://karlquinsland.com/tags/two-minute-teardown/</link><description>Recent content in Two-Minute-Teardown on karl</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Thu, 18 Dec 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/two-minute-teardown/index.xml" rel="self" type="application/rss+xml"/><item><title>#TwoMinuteTeardown: Ubiquiti SFP Wizard</title><link>https://karlquinsland.com/ubiquiti-uacc-sfp-wizard/</link><pubDate>Thu, 18 Dec 2025 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/ubiquiti-uacc-sfp-wizard/</guid><description>&lt;h1 id="two-minute-teardown-ubiquiti-sfp-wizard"&gt;Two Minute Teardown: Ubiquiti SFP Wizard&lt;/h1&gt;
+&lt;figure &gt;
+
+ 
+ &lt;img src="https://karlquinsland.com/ubiquiti-uacc-sfp-wizard/images/render.webp" /&gt;
+ 
+
+ 
+
+ &lt;figcaption&gt;
+ 
+ 
+ &lt;/figcaption&gt;
+ 
+&lt;/figure&gt;
+
+
+&lt;p&gt;SFP modules interface to their host over what is essentially a low speed i2c interface and a few high-speed differential pairs.&lt;/p&gt;
+&lt;p&gt;Devices that can interrogate and re-program the SFP modules have been around for a while but they are either niche, esoteric, expensive, or all of the above.&lt;/p&gt;
+&lt;p&gt;People have been &lt;a href="https://forums.servethehome.com/index.php?threads/transceiver-password-collection.39458/" target="_blank" rel="noopener noreffer "&gt;hacking on these things&lt;/a&gt; for a while:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://forum.reveltronics.com/viewtopic.php?t=527" target="_blank" rel="noopener noreffer "&gt;Writing protected SFP / QSFP / XFP and searching password (brute force method) - REVELTRONICS&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/hfuller/transceiver-notes" target="_blank" rel="noopener noreffer "&gt;GitHub - hfuller/transceiver-notes: Notes about hacking, programming, and otherwise dinking with SFPs and other optical transceivers.&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://github.com/SloMusti/sfpddm" target="_blank" rel="noopener noreffer "&gt;GitHub - SloMusti/sfpddm: Arduino library for interfacing SFP modules and reading DDM information as per SFF-8472&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.hitoha.moe/read-sfp-i2c-via-ch341a-programmer" target="_blank" rel="noopener noreffer "&gt;Read SFP I2C via CH341a Programmer – HITOHA.もえ&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://osmocom.org/projects/misc-hardware/wiki/Sfp-experimenter" target="_blank" rel="noopener noreffer "&gt;sfp-experimenter&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;The &lt;a href="https://store.ui.com/us/en/category/accessories-modules-fiber/collections/accessories-pro-direct-attach-cables/products/uacc-sfp-wizard" target="_blank" rel="noopener noreffer "&gt;Ubiquiti SFP Wizard&lt;/a&gt; is a new entrant to the market.&lt;/p&gt;</description></item><item><title>#TwoMinuteTeardown: Hamgeek YK-1000H NTP</title><link>https://karlquinsland.com/hamgeek-yk-1000h-gps-ntp-server/</link><pubDate>Fri, 12 Dec 2025 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/hamgeek-yk-1000h-gps-ntp-server/</guid><description>&lt;h1 id="two-minute-teardown-hamgeek-yk-1000h-ntp"&gt;Two Minute Teardown: Hamgeek YK-1000H NTP&lt;/h1&gt;
+&lt;figure &gt;
+
+ 
+ &lt;img src="https://karlquinsland.com/hamgeek-yk-1000h-gps-ntp-server/images/render.webp" /&gt;
+ 
+
+ 
+
+ &lt;figcaption&gt;
+ 
+ 
+ &lt;/figcaption&gt;
+ 
+&lt;/figure&gt;
+
+
+&lt;p&gt;Curiosity got the better of me when browsing AliExpress and I spotted &lt;a href="https://www.aliexpress.us/item/3256808325833761.html?gatewayAdapt=glo2usa" target="_blank" rel="noopener noreffer "&gt;this&lt;/a&gt; GPS NTP server for under $100 USD.&lt;/p&gt;
+&lt;p&gt;I needed a cart-stuffer anyways so I ordered one as a backup for my &lt;a href="https://karlquinsland.com/yet-another-gps-pps-opnsense/" rel=""&gt;existing&lt;/a&gt; GPS/NTP server.&lt;/p&gt;
+&lt;p&gt;While waiting, I took a look around to see if there was any additional information about who makes this / if there was a custom firmware or similar.
+Nope, there there is &lt;a href="https://www.dzombak.com/blog/2024/12/yk-1000h-ntp-server/" target="_blank" rel="noopener noreffer "&gt;&lt;em&gt;not&lt;/em&gt; a ton of information&lt;/a&gt; about the &lt;code&gt;YK-1000H&lt;/code&gt; online.&lt;/p&gt;</description></item><item><title>#TwoMinuteTeardown: Duogalia AM70 Optical Fiber Multi-Meter</title><link>https://karlquinsland.com/duogalia-am70-optical-fiber-multi-meter/</link><pubDate>Wed, 10 Dec 2025 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/duogalia-am70-optical-fiber-multi-meter/</guid><description>&lt;h1 id="two-minute-teardown-duogalia-a-m70-optical-fiber-multi-meter"&gt;Two Minute Teardown: Duogalia A-M70 Optical Fiber Multi-Meter&lt;/h1&gt;
 &lt;figure &gt;
 
  
