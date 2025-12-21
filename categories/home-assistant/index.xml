@@ -16,4 +16,6 @@
  
  
  
- &lt;/p&gt;</description></item></channel></rss>
+ &lt;/p&gt;</description></item><item><title>Two quick tricks for better HomeAssistant automations</title><link>https://karlquinsland.com/two-tricks-for-better-homeassistant-automations/</link><pubDate>Wed, 23 Sep 2020 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/two-tricks-for-better-homeassistant-automations/</guid><description>&lt;!-- markdownlint-disable-file MD002 MD001--&gt;
+&lt;p&gt;It&amp;rsquo;s hard to believe, but the venerable Home Assistant project has just celebrated it&amp;rsquo;s &lt;a href="https://www.home-assistant.io/blog/2020/09/17/release-115/" target="_blank" rel="noopener noreffer "&gt;&lt;strong&gt;7th&lt;/strong&gt; birthday with release &lt;code&gt;.115&lt;/code&gt;&lt;/a&gt;! While HA does get better with each new release, it is by no means perfect :D. This post came about because of a new feature in release &lt;code&gt;.115&lt;/code&gt; and the subsequent limitations of that feature!&lt;/p&gt;
+&lt;p&gt;In the course of trying to integrate Home Assistant with all the things, everybody eventually hits some major limitation or bug and is forced to find some sort of workaround. Below are a few techniques that I&amp;rsquo;ve collected over the years to simplify some of my Home Assistant configuration and work around some of the platforms various limitations.&lt;/p&gt;</description></item></channel></rss>

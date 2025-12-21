@@ -1,5 +1,6 @@
 # Amcrest IP Cameras: security isn't a feature, it's a punchline
 
+<!-- markdownlint-disable-file MD001-->
 This is part rant, part "reference" for anybody else that's struggling to get their Amcrest IP Camera to work with [Home Assistant](https://www.home-assistant.io/integrations/onvif/) via ONVIF. Skip to [TL;DR]({{< relref "#tldr">}}) for a working Home Assistant config.
 
 Briefly, [ONVIF](https://www.onvif.org/profiles/) is an industry group that maintains a set of standards to allow for interoperability between IP Cameras and related devices from multiple vendors. One set of protocols so your cameras from `$vendorA` will work with with the recording/analytics software from `$vendorB` which can then pipe events into software from `$vendorC`.

@@ -1,4 +1,24 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Two-Minute-Teardown on karl</title><link>https://karlquinsland.com/tags/two-minute-teardown/</link><description>Recent content in Two-Minute-Teardown on karl</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Sun, 20 Apr 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/two-minute-teardown/index.xml" rel="self" type="application/rss+xml"/><item><title>#TwoMinuteTeardown: Petkit Eversweet Solo 2</title><link>https://karlquinsland.com/petkit-eversweet-solo2-teardown/</link><pubDate>Sun, 20 Apr 2025 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/petkit-eversweet-solo2-teardown/</guid><description>&lt;h1 id="two-minute-teardown-petkit-eversweet-solo-2"&gt;Two Minute Teardown: Petkit Eversweet Solo 2&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Two-Minute-Teardown on karl</title><link>https://karlquinsland.com/tags/two-minute-teardown/</link><description>Recent content in Two-Minute-Teardown on karl</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Fri, 12 Dec 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/two-minute-teardown/index.xml" rel="self" type="application/rss+xml"/><item><title>#TwoMinuteTeardown: Duogalia AM70 Optical Fiber Multi-Meter</title><link>https://karlquinsland.com/duogalia-am70-optical-fiber-multi-meter/</link><pubDate>Fri, 12 Dec 2025 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/duogalia-am70-optical-fiber-multi-meter/</guid><description>&lt;h1 id="two-minute-teardown-duogalia-a-m70-optical-fiber-multi-meter"&gt;Two Minute Teardown: Duogalia A-M70 Optical Fiber Multi-Meter&lt;/h1&gt;
+&lt;figure &gt;
+
+ 
+ &lt;img src="https://karlquinsland.com/duogalia-am70-optical-fiber-multi-meter/images/render.webp" /&gt;
+ 
+
+ 
+
+ &lt;figcaption&gt;
+ 
+ 
+ &lt;/figcaption&gt;
+ 
+&lt;/figure&gt;
+
+
+&lt;p&gt;While diagnosing a flakey fiber link, i ran into a situation where a basic &amp;ldquo;flashing red&amp;rdquo; visual fault finder was not sufficient.
+I needed to actually measure the optical power levels on both ends of the link to ensure that the fiber was not damaged and that the SFPs were operating within spec.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://www.amazon.com/dp/B0B6TY7X6K" target="_blank" rel="noopener noreffer "&gt;This&lt;/a&gt; was the cheapest tool that could be delivered quickly.
+The issue was found and fixed so now let&amp;rsquo;s have a look inside.&lt;/p&gt;</description></item><item><title>#TwoMinuteTeardown: Petkit Eversweet Solo 2</title><link>https://karlquinsland.com/petkit-eversweet-solo2-teardown/</link><pubDate>Sun, 20 Apr 2025 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/petkit-eversweet-solo2-teardown/</guid><description>&lt;h1 id="two-minute-teardown-petkit-eversweet-solo-2"&gt;Two Minute Teardown: Petkit Eversweet Solo 2&lt;/h1&gt;
 &lt;figure &gt;
 
  

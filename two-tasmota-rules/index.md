@@ -1,6 +1,6 @@
 # Two Tasmota rules
 
-<!-- markdownlint-disable-file MD002 -->
+<!-- markdownlint-disable-file MD002 MD001-->
 
 [Tasmota](https://tasmota.github.io/) is an incredibly powerful alternative/open source firmware for the ever popular Espressif family of WiFi equipped microcontrollers.
 This does not need to be another post espousing it's many awesome qualities, so just trust me on this; Tasmota is AWESOME.
