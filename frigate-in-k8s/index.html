@@ -1,0 +1,262 @@
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><title>Frigate in Kubernetes - karl</title><meta name=Description content="Karl's little corner of the internet"><meta property="og:url" content="https://karlquinsland.com/frigate-in-k8s/"><meta property="og:site_name" content="karl"><meta property="og:title" content="Frigate in Kubernetes"><meta property="og:description" content="Frigate: Kubernetes edition This is a follow up to my ‘Frigate From Scratch’ post. Most of that post is still relevant today but I have since moved almost all of my workloads into Kubernetes.
+This post is intended to document some of the issues I hit while trying to get Frigate running in my k8s cluster. This is not every issue I hit, just the ones that are not directly related to my specific environment/setup/workflows."><meta property="og:locale" content="en_us"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2026-01-01T00:00:00+00:00"><meta property="article:modified_time" content="2026-01-01T00:00:00+00:00"><meta property="article:tag" content="Frigate"><meta property="article:tag" content="Home-Assistant"><meta property="article:tag" content="Kubernetes"><meta property="og:image" content="https://karlquinsland.com/frigate-in-k8s/images/logo.svg"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://karlquinsland.com/frigate-in-k8s/images/logo.svg"><meta name=twitter:title content="Frigate in Kubernetes"><meta name=twitter:description content="Frigate: Kubernetes edition This is a follow up to my ‘Frigate From Scratch’ post. Most of that post is still relevant today but I have since moved almost all of my workloads into Kubernetes.
+This post is intended to document some of the issues I hit while trying to get Frigate running in my k8s cluster. This is not every issue I hit, just the ones that are not directly related to my specific environment/setup/workflows."><meta name=application-name content="My cool site"><meta name=apple-mobile-web-app-title content="My cool site"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://karlquinsland.com/frigate-in-k8s/><link rel=prev href=https://karlquinsland.com/led-controllers/><link rel=stylesheet href=/css/style.min.658eb25b73ad29ab864a36ed014516c5047802d1ff98d0080132d1abe1332f5b.css integrity="sha256-ZY6yW3OtKauGSjbtAUUWxQR4AtH/mNAIATLRq+EzL1s="><link rel=preload href=/lib/fontawesome-free/all.min.0df5a33710e433de1f5415b1d47e4130ca7466aee5b81955f1045c4844bbb3ed.css integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" as=style onload='this.onload=null,this.rel="stylesheet"'><noscript><link rel=stylesheet href=/lib/fontawesome-free/all.min.0df5a33710e433de1f5415b1d47e4130ca7466aee5b81955f1045c4844bbb3ed.css integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0="></noscript><link rel=preload href=/lib/animate/animate.min.5fbaeb9f8e25d7e0143bae61d4b1802c16ce7390b96ceb2d498b0d96ff4c853f.css integrity="sha256-X7rrn44l1+AUO65h1LGALBbOc5C5bOstSYsNlv9MhT8=" as=style onload='this.onload=null,this.rel="stylesheet"'><noscript><link rel=stylesheet href=/lib/animate/animate.min.5fbaeb9f8e25d7e0143bae61d4b1802c16ce7390b96ceb2d498b0d96ff4c853f.css integrity="sha256-X7rrn44l1+AUO65h1LGALBbOc5C5bOstSYsNlv9MhT8="></noscript><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Frigate in Kubernetes","inLanguage":"en-us","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/karlquinsland.com\/frigate-in-k8s\/"},"genre":"posts","keywords":"frigate, home-assistant, kubernetes","wordcount":1551,"url":"https:\/\/karlquinsland.com\/frigate-in-k8s\/","datePublished":"2026-01-01T00:00:00+00:00","dateModified":"2026-01-01T00:00:00+00:00","publisher":{"@type":"Organization","name":""},"author":{"@type":"Person","name":"karl"},"description":""}</script></head><body data-header-desktop=fixed data-header-mobile=auto><script type=text/javascript>(window.localStorage&&localStorage.getItem("theme")?localStorage.getItem("theme")==="dark":"auto"==="auto"?window.matchMedia("(prefers-color-scheme: dark)").matches:"auto"==="dark")&&document.body.setAttribute("theme","dark")</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=/ title=karl>Karl</a></div><div class=menu><div class=menu-inner><a class=menu-item href=/posts/><i class="fas fa-blog"></i> Posts </a><a class=menu-item href=/resume/ title="Hire Me!"><i class="fas fa-briefcase"></i> Résumé </a><a class=menu-item href=/tags/ title="Can you tell that I don't have a super consistent or clear taxonomy?"><i class="fas fa-tags"></i> Tags </a><a class=menu-item href=/contact/><i class="fas fa-address-book"></i> Contact </a><span class="menu-item delimiter"></span><span class="menu-item search" id=search-desktop>
+<input type=text placeholder="Search titles or contents..." id=search-input-desktop>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=Search><i class="fas fa-search fa-fw" aria-hidden=true></i>
+</a><a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=Clear><i class="fas fa-times-circle fa-fw" aria-hidden=true></i>
+</a><span class="search-button search-loading" id=search-loading-desktop><i class="fas fa-spinner fa-fw fa-spin" aria-hidden=true></i>
+</span></span><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme"><i class="fas fa-adjust fa-fw" aria-hidden=true></i></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=/ title=karl>Karl</a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><div class=search-wrapper><div class="search mobile" id=search-mobile><input type=text placeholder="Search titles or contents..." id=search-input-mobile>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=Search><i class="fas fa-search fa-fw" aria-hidden=true></i>
+</a><a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=Clear><i class="fas fa-times-circle fa-fw" aria-hidden=true></i>
+</a><span class="search-button search-loading" id=search-loading-mobile><i class="fas fa-spinner fa-fw fa-spin" aria-hidden=true></i></span></div><a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>Cancel</a></div><a class=menu-item href=/posts/ title><i class="fas fa-blog"></i>Posts</a><a class=menu-item href=/resume/ title="Hire Me!"><i class="fas fa-briefcase"></i>Résumé</a><a class=menu-item href=/tags/ title="Can you tell that I don't have a super consistent or clear taxonomy?"><i class="fas fa-tags"></i>Tags</a><a class=menu-item href=/contact/ title><i class="fas fa-address-book"></i>Contact</a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust fa-fw" aria-hidden=true></i></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>Contents</h2><div class=toc-content id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Frigate in Kubernetes</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=/ title=Author rel=author class=author><i class="fas fa-user-circle fa-fw" aria-hidden=true></i>karl</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt fa-fw" aria-hidden=true></i>&nbsp;<time datetime=2026-01-01>2026-01-01</time>&nbsp;<i class="fas fa-pencil-alt fa-fw" aria-hidden=true></i>&nbsp;1551 words&nbsp;
+<i class="far fa-clock fa-fw" aria-hidden=true></i>&nbsp;8 minutes&nbsp;</div></div><div class="details toc" id=toc-static data-kept=true><div class="details-summary toc-title"><span>Contents</span>
+<span><i class="details-icon fas fa-angle-right" aria-hidden=true></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><a href=#frigate-kubernetes-edition>Frigate: Kubernetes edition</a><ul><li><a href=#overview>Overview</a></li><li><a href=#pain-points>Pain Points</a><ul><li><a href=#coral-pass-through>Coral pass through</a><ul><li><a href=#nfd>NFD</a></li></ul></li><li><a href=#ipv6>IPv6</a></li></ul></li><li><a href=#conclusion>Conclusion</a></li></ul></li></ul></nav></div></div><div class=content id=content><h1 id=frigate-kubernetes-edition>Frigate: Kubernetes edition</h1><p>This is a follow up to my <a href=/frigate-install/ rel>&lsquo;Frigate From Scratch&rsquo; post</a>.
+Most of that post is still relevant today but I have since moved almost all of my workloads into Kubernetes.</p><p>This post is intended to document some of the issues I hit while trying to get Frigate running in my k8s cluster.
+This is not every issue I hit, just the ones that are not directly related to my specific environment/setup/workflows.</p><p>I have essentially taken the relevant parts of my notes and lightly edited them into a more organized and structured format.</p><figure><img src=/frigate-in-k8s/images/logo.svg><figcaption></figcaption></figure><h2 id=overview>Overview</h2><p>There is a <a href=https://github.com/blakeblackshear/blakeshome-charts target=_blank rel="noopener noreffer">helm chart</a> but Frigate - at least <em>outside</em> of the container - is not a particularly complex deployment so there&rsquo;s no upside to using helm and just a <strong>ton</strong> of downside:</p><ul><li><a href="https://news.ycombinator.com/item?id=45902604" target=_blank rel="noopener noreffer">Helm 4.0 | Hacker News</a></li><li><a href="https://news.ycombinator.com/item?id=24499272" target=_blank rel="noopener noreffer">`helm` is an absolute garbage. I&rsquo;ll reserve judgment about `kustomize` until I h...</a></li><li><a href="https://news.ycombinator.com/item?id=44506696" target=_blank rel="noopener noreffer">Helm local code execution via a malicious chart</a></li><li><a href="https://news.ycombinator.com/item?id=19580025" target=_blank rel="noopener noreffer">We use Helm, but we really only use it for two things: Templating and atomic dep...</a></li><li><a href=https://glasskube.eu/en/r/knowledge/5-helm-shortcomings/ target=_blank rel="noopener noreffer">5 shortcomings of Helm | Glasskube</a></li><li><a href="https://news.ycombinator.com/item?id=21526894" target=_blank rel="noopener noreffer">Helm is problematic in my view. To new Kubernetes users, Helm appears to be the ...</a></li><li><a href="https://news.ycombinator.com/item?id=11100312" target=_blank rel="noopener noreffer">Helm may be the most flagrant example of a terrible package that remains inexpli...</a></li><li><a href="https://blog.devops.dev/why-helms-design-is-flawed-a66c07c2e9a1?gi=6078bb173b62" target=_blank rel="noopener noreffer">Why Helm’s design is flawed</a></li></ul><p><code>&lt;/rant></code></p><p>You can still use the <code>helm</code> chart as a reference for the various ports and volume mounts that need to be configured:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span><span class=lnt>4
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>❯ helm repo add blakeshome https://blakeblackshear.github.io/blakeshome-charts/
+</span></span><span class=line><span class=cl><span class=s2>&#34;blakeshome&#34;</span> has been added to your repositories
+</span></span><span class=line><span class=cl><span class=c1># use --set to enable things like startup probes and coral support to get a better reference manifest</span>
+</span></span><span class=line><span class=cl>❯ helm template blakeshome blakeshome/frigate --set probes.startup.enabled<span class=o>=</span><span class=nb>true</span> --set coral.enabled<span class=o>=</span><span class=nb>true</span> --set coral.hostPath<span class=o>=</span>/dev/apex_0 &gt; reference.yaml
+</span></span></code></pre></td></tr></table></div></div><h2 id=pain-points>Pain Points</h2><p>Below are two pain points I hit while getting Frigate running in k8s that are also likely to be relevant to others.
+Hopefully the notes here will save you some time!</p><h3 id=coral-pass-through>Coral pass through</h3><p>Frigate now supports <em>several</em> different <a href=https://docs.frigate.video/frigate/hardware/#detectors target=_blank rel="noopener noreffer">hardware acceleration</a> options for object detection.
+I am still using the PCIe Coral EdgeTPU as the performance is excellent although that will likely change in the future as other options become available.</p><p>To prepare for a future where I might have multiple viable hardware acceleration options available in my k8s cluster, I have elected to use <a href=#nfd rel>NFD (Node Feature Discovery)</a> to label nodes that have Coral TPUs installed.
+This is not particularly difficult to do <em>but it is also <strong>unnecessary</strong> if you only have a single node that will run Frigate</em>; regular taint/toleration or nodeSelector approaches will work just fine.</p><p>Regardless, the Coral drivers need to be installed on the node(s) that will host the Coral device(s).</p><p>The good news is that the process of manually patching and compiling the drivers has been made less tedious by the community!
+So long as you are on a modern-ish Debian based system, the <a href=https://github.com/jnicolson/gasket-builder target=_blank rel="noopener noreffer">jnicolson/gasket-builder repo</a> has automated the process of installing the <a href=https://en.wikipedia.org/wiki/Dynamic_Kernel_Module_Support target=_blank rel="noopener noreffer"><code>DKMS</code> drivers</a> for the Coral TPU.</p><p>You don&rsquo;t have to:</p><ul><li>track down a few unmerged patches and apply them</li><li>figure out how to build the drivers against your current kernel</li><li>manually load the modules</li><li>create and load udev rules</li><li>&mldr; etc</li></ul><p>You will still need kernel headers and basic build tools installed on the host but beyond that it&rsquo;s really just a matter of <code>wget ...; dpkg -i ...</code> and a <code>reboot now</code> for good measure.</p><p>Once the drivers are installed, you should see the devices show up under <code>/dev/apex_*</code>:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span><span class=lnt>3
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>root@panopticon01:/mnt/frigate# ls -lah /dev/apex_*
+</span></span><span class=line><span class=cl>crw-rw---- <span class=m>1</span> root apex 120, <span class=m>0</span> Dec <span class=m>30</span> 10:01 /dev/apex_0
+</span></span><span class=line><span class=cl>crw-rw---- <span class=m>1</span> root apex 120, <span class=m>1</span> Dec <span class=m>30</span> 10:01 /dev/apex_1
+</span></span></code></pre></td></tr></table></div></div><p>Assuming the devices are detected, you can then pass them through to the container as regular <code>hostPath</code> volumes.
+Unfortunately, there is no k8s equivalent of the <a href=https://docs.docker.com/reference/cli/docker/container/run/#device target=_blank rel="noopener noreffer"><code>--device</code> flag</a> and my attempts to use a tailored <code>securityContext</code> to grant the necessary permissions to access the devices failed:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>securityContext</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>privileged</span><span class=p>:</span><span class=w> </span><span class=kc>false</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>capabilities</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>add</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=c># DMA access</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=l>IPC_LOCK</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=c># Required for PCIe memory access</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=l>SYS_RAWIO</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=c># Permit more things if needed</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=l>CAP_SYS_ADMIN</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># Allow anything that wants to escalate privileges to do so...</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>allowPrivilegeEscalation</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>Kubernetes seems to prefer that hardware vendors create/ship a <a href=https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/ target=_blank rel="noopener noreffer">Device Plugin</a> to safely/cleanly facilitate accessing devices from inside pods but there is only a <a href=https://gitlab.com/mike-ensor/k8s-edge-tpu-device-plugin target=_blank rel="noopener noreffer">very experimental one</a> for the Coral TPU at this time.</p><p>All of that is to say: <em>you <strong>will</strong> need to run the container in <code>privileged</code> mode for the device access to work correctly</em>.</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span><span class=lnt>40
+</span><span class=lnt>41
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>apiVersion</span><span class=p>:</span><span class=w> </span><span class=l>apps/v1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>Deployment</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># &lt;...&gt;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>spec</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>template</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>spec</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>containers</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                  </span><span class=nt>image</span><span class=p>:</span><span class=w> </span><span class=l>ghcr.io/blakeblackshear/frigate:0.16.3</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>frigate</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                  </span><span class=nt>securityContext</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                      </span><span class=c># Needed for the Frigate UI to show CPU/TPU metrics (usage/temp...etc)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                      </span><span class=nt>capabilities</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                          </span><span class=nt>add</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                              </span>- <span class=l>CAP_PERFMON</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                      </span><span class=c># See note above</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                      </span><span class=nt>privileged</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                  </span><span class=nt>volumeMounts</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                      </span><span class=c># Covered in the IPv6 section below</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                      </span>- <span class=nt>mountPath</span><span class=p>:</span><span class=w> </span><span class=l>/usr/local/nginx/templates/listen.gotmpl</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                        </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>nginx-templates</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                        </span><span class=nt>readOnly</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                        </span><span class=nt>subPath</span><span class=p>:</span><span class=w> </span><span class=l>listen.gotmpl</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                      </span>- <span class=nt>mountPath</span><span class=p>:</span><span class=w> </span><span class=l>/dev/apex_0</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                        </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>coral-apex-0</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                      </span>- <span class=nt>mountPath</span><span class=p>:</span><span class=w> </span><span class=l>/dev/apex_1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                        </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>coral-apex-1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=c># &lt;...&gt;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=c># Covered in the NFD section below</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>nodeSelector</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=nt>feature.node.kubernetes.io/has-pcie-tpu</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;true&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=nt>volumes</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span>- <span class=nt>configMap</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                      </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>frigate-nginx-templates</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>nginx-templates</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span>- <span class=nt>hostPath</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                      </span><span class=nt>path</span><span class=p>:</span><span class=w> </span><span class=l>/dev/apex_0</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>coral-apex-0</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span>- <span class=nt>hostPath</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                      </span><span class=nt>path</span><span class=p>:</span><span class=w> </span><span class=l>/dev/apex_1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                  </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>coral-apex-1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=c># &lt;...&gt;</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><h4 id=nfd>NFD</h4><p><a href=https://github.com/kubernetes-sigs/node-feature-discovery target=_blank rel="noopener noreffer">Node Feature Discovery</a> is a straight-forward project that puts a daemonset on each node in your cluster and scans the hardware for features.
+Depending on what hardware it finds, it will label the node with appropriate labels that can then be used for scheduling.</p><div class="details admonition warning open"><div class="details-summary admonition-title"><i class="icon fas fa-exclamation-triangle fa-fw" aria-hidden=true></i>Over Engineered<i class="details-icon fas fa-angle-right fa-fw" aria-hidden=true></i></div><div class=details-content><div class=admonition-content>As noted <a href=#coral-pass-through rel>above</a>, NFD is not strictly necessary if you only have a single node that will run Frigate, just use a regular <code>nodeSelector</code> or taint/toleration approach instead.</div></div></div><p>I have some other workloads that can benefit from NFD so I went ahead and set it up cluster-wide.
+Here is the relevant snippet from my NFD configuration that detects Coral TPUs and applies a label accordingly:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span><span class=lnt>18
+</span><span class=lnt>19
+</span><span class=lnt>20
+</span><span class=lnt>21
+</span><span class=lnt>22
+</span><span class=lnt>23
+</span><span class=lnt>24
+</span><span class=lnt>25
+</span><span class=lnt>26
+</span><span class=lnt>27
+</span><span class=lnt>28
+</span><span class=lnt>29
+</span><span class=lnt>30
+</span><span class=lnt>31
+</span><span class=lnt>32
+</span><span class=lnt>33
+</span><span class=lnt>34
+</span><span class=lnt>35
+</span><span class=lnt>36
+</span><span class=lnt>37
+</span><span class=lnt>38
+</span><span class=lnt>39
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>core</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c># The worker is cheap but it defaults to running every 60s which is excessive for a cluster that</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c>#    is all bare metal and not likely to have hardware changes often.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>sleepInterval</span><span class=p>:</span><span class=w> </span><span class=l>300s</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c># all -&gt; make sure `pci` features are included</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c># Disable CPU features to reduce excessive labels</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>featureSources</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span>- <span class=l>all</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span>- <span class=s2>&#34;-cpu&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>labelSources</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span>- <span class=l>all</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span>- <span class=s2>&#34;-cpu&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>sources</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>pci</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c># You only need `0880` for Coral but I have some other hardware that I use</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>deviceClassWhitelist</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=c># Network</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=s2>&#34;02&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=c># Display</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=s2>&#34;03&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=c># Base class for System peripherals</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=s2>&#34;08&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=c># Specific class for Coral</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=s2>&#34;0880&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span><span class=c># Accelerator</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=s2>&#34;12&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>custom</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;has-coral-tpu&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>labels</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>              </span><span class=nt>&#34;feature.node.kubernetes.io/has-pcie-tpu&#34;: </span><span class=s2>&#34;true&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>matchFeatures</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>              </span>- <span class=nt>feature</span><span class=p>:</span><span class=w> </span><span class=l>pci.device</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=nt>matchExpressions</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=nt>vendor</span><span class=p>:</span><span class=w> </span>{<span class=w> </span><span class=nt>op: In, value</span><span class=p>:</span><span class=w> </span><span class=p>[</span><span class=s2>&#34;1ac1&#34;</span><span class=p>]</span><span class=w> </span>}<span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=nt>device</span><span class=p>:</span><span class=w> </span>{<span class=w> </span><span class=nt>op: In, value</span><span class=p>:</span><span class=w> </span><span class=p>[</span><span class=s2>&#34;089a&#34;</span><span class=p>]</span><span class=w> </span>}<span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>Once NFD is deployed and running, each <code>kind: Node</code> in your cluster should have a label like so if it has a Coral TPU installed:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>1
+</span><span class=lnt>2
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-shell data-lang=shell><span class=line><span class=cl>❯ kubectl get nodes -l feature.node.kubernetes.io/has-pcie-tpu -o name
+</span></span><span class=line><span class=cl>node/panopticon01
+</span></span></code></pre></td></tr></table></div></div><p>Combine that with the <code>nodeSelector</code> as shown in the snippet \above and Frigate will only be scheduled on nodes that have Coral TPUs installed.</p><h3 id=ipv6>IPv6</h3><p>It&rsquo;s 2026 and IPv6 should just work by default everywhere but alas, Frigate is still a bit behind the times in this regard.</p><p>The <a href=https://docs.frigate.video/configuration/advanced/#enabling-ipv6 target=_blank rel="noopener noreffer">docs</a> are very sparse but they do hint at having to make some modification to a file inside the container.</p><p>Above, I am providing my own copy of <code>/usr/local/nginx/templates/listen.gotmpl</code> via a <code>ConfigMap</code> volume mount to override the default one that ships with the container:</p><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
+</span><span class=lnt> 2
+</span><span class=lnt> 3
+</span><span class=lnt> 4
+</span><span class=lnt> 5
+</span><span class=lnt> 6
+</span><span class=lnt> 7
+</span><span class=lnt> 8
+</span><span class=lnt> 9
+</span><span class=lnt>10
+</span><span class=lnt>11
+</span><span class=lnt>12
+</span><span class=lnt>13
+</span><span class=lnt>14
+</span><span class=lnt>15
+</span><span class=lnt>16
+</span><span class=lnt>17
+</span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>kind</span><span class=p>:</span><span class=w> </span><span class=l>ConfigMap</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># &lt;...&gt;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>data</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>listen.gotmpl</span><span class=p>:</span><span class=w> </span><span class=p>|</span><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>        listen 5000;
+</span></span></span><span class=line><span class=cl><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>        {{ if not .enabled }}
+</span></span></span><span class=line><span class=cl><span class=sd>        # intended for external traffic, protected by auth
+</span></span></span><span class=line><span class=cl><span class=sd>        listen [::]:8971 ipv6only=off;
+</span></span></span><span class=line><span class=cl><span class=sd>        {{ else }}
+</span></span></span><span class=line><span class=cl><span class=sd>        # intended for external traffic, protected by auth
+</span></span></span><span class=line><span class=cl><span class=sd>        listen [::]:8971 ipv6only=off ssl;
+</span></span></span><span class=line><span class=cl><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>        # intended for internal traffic, not protected by auth
+</span></span></span><span class=line><span class=cl><span class=sd>        listen [::]:5000 ipv6only=off;
+</span></span></span><span class=line><span class=cl><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>        {{ end }}</span><span class=w>
+</span></span></span></code></pre></td></tr></table></div></div><p>The above is more or less taken from <a href=https://github.com/blakeblackshear/frigate/issues/5275#issuecomment-2395553577 target=_blank rel="noopener noreffer">this GH issue</a> but modified slightly:</p><ul><li>The GH issue uses <code>[::1]</code> for some reason which only binds to the loopback interface and does not work for me. I changed it to just <code>[::]</code> to bind to all interfaces which is what I want for my use case.</li><li>The ACME/TLS stuff is not relevant to me so I removed that; I just handle TLS termination elsewhere in my stack.</li><li>There&rsquo;s still a ton of stuff inside the container that is IPv4 only but that&rsquo;s a problem for another day / does not violate my self-imposed &ldquo;IPv6 first, ideally exclusively&rdquo; requirement.</li></ul><h2 id=conclusion>Conclusion</h2><p>Frigate puts all the complexity into the container so it&rsquo;s a pretty straight-forward deployment in k8s.
+Things get a bit trickier when you start adding hardware acceleration into the mix but it&rsquo;s still manageable with a bit of effort.
+For reasons that are beyond me, Frigate still does not have first-class IPv6 support so that requires a bit of manual tinkering as well.</p></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>Updated on 2026-01-01</span></div></div><div class=post-info-line><div class=post-info-md><span><a class=link-to-markdown href=/frigate-in-k8s/index.md target=_blank>Read Markdown</a></span></div><div class=post-info-share><span></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw" aria-hidden=true></i>&nbsp;<a href=/tags/frigate/>Frigate</a>,&nbsp;<a href=/tags/home-assistant/>Home-Assistant</a>,&nbsp;<a href=/tags/kubernetes/>Kubernetes</a></section><section><span><a href=javascript:void(0); onclick=window.history.back()>Back</a></span>&nbsp;|&nbsp;<span><a href=/>Home</a></span></section></div><div class=post-nav><a href=/led-controllers/ class=prev rel=prev title="#TwoMinuteTeardown: Multiple LED Controllers"><i class="fas fa-angle-left fa-fw" aria-hidden=true></i>#TwoMinuteTeardown: Multiple LED Controllers</a></div></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line>¯\_(ツ)_/¯</div><div class=footer-line>Powered by <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.152.2">Hugo</a> | Theme - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.3.0"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden=true></i> LoveIt</a></div><div class=footer-line itemscope itemtype=http://schema.org/CreativeWork><i class="far fa-copyright fa-fw" aria-hidden=true></i><span itemprop=copyrightYear>2019 - 2026</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank>karl</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top"><i class="fas fa-arrow-up fa-fw" aria-hidden=true></i>
+</a><a href=# id=view-comments class=fixed-button title="View Comments"><i class="fas fa-comment fa-fw" aria-hidden=true></i></a></div><link rel=stylesheet href=/lib/katex/katex.min.76e39bd605d45b2d1944123c66608b0c8bb9baeb70720b212571531c7cf9bc2a.css integrity="sha256-duOb1gXUWy0ZRBI8ZmCLDIu5uutwcgshJXFTHHz5vCo="><script type=text/javascript src=/lib/autocomplete/autocomplete.min.ae2da1bd62c6469ee27770ad1cddf2e8296d8a7f6d85b091463e5200c5e320af.js integrity="sha256-ri2hvWLGRp7id3CtHN3y6Cltin9thbCRRj5SAMXjIK8="></script><script type=text/javascript src=/lib/lunr/lunr.min.08a93c0120364b01159db3c287f39b2180bb740334472bda0675bd3f18981676.js integrity="sha256-CKk8ASA2SwEVnbPCh/ObIYC7dAM0RyvaBnW9PxiYFnY="></script><script type=text/javascript src=/lib/lazysizes/lazysizes.min.3d9120fa621da6d613c1698b7014ec6bdf4620366e8f2b7b547059f4b6f6272b.js integrity="sha256-PZEg+mIdptYTwWmLcBTsa99GIDZujyt7VHBZ9Lb2Jys="></script><script type=text/javascript src=/lib/clipboard/clipboard.min.e17a1d816e13c0826e0ed7febfabc3277f45571234bde0bf9120829a7169edc9.js integrity="sha256-4XodgW4TwIJuDtf+v6vDJ39FVxI0veC/kSCCmnFp7ck="></script><script type=text/javascript src=/lib/katex/katex.min.eb18207487161674e717087c317db14ac1a62dadaecccb802499ce173bfeb739.js integrity="sha256-6xggdIcWFnTnFwh8MX2xSsGmLa2uzMuAJJnOFzv+tzk="></script><script type=text/javascript src=/lib/katex/contrib/auto-render.min.cb7f4ca60ed5dc3e258415f8c7a3b46d4a93578a52adf83011f18a7f190e7602.js integrity="sha256-y39Mpg7V3D4lhBX4x6O0bUqTV4pSrfgwEfGKfxkOdgI="></script><script type=text/javascript src=/lib/katex/contrib/copy-tex.min.52ce78fab4860d24ef22128a52ce24ca01368a9034457a565a1d3fccbab0ddbb.js integrity="sha256-Us54+rSGDSTvIhKKUs4kygE2ipA0RXpWWh0/zLqw3bs="></script><script type=text/javascript src=/lib/katex/contrib/mhchem.min.5c0a121a8b490afc85860a522347aeb34fb508c6b23044e5d29f6b2194227b51.js integrity="sha256-XAoSGotJCvyFhgpSI0eus0+1CMayMETl0p9rIZQie1E="></script><script type=text/javascript>window.config={code:{copyTitle:"Copy to clipboard",maxShownLines:10},comment:{},math:{delimiters:[{display:!0,left:"$$",right:"$$"},{display:!0,left:"\\[",right:"\\]"},{display:!0,left:"\\begin{equation}",right:"\\end{equation}"},{display:!0,left:"\\begin{equation*}",right:"\\end{equation*}"},{display:!0,left:"\\begin{align}",right:"\\end{align}"},{display:!0,left:"\\begin{align*}",right:"\\end{align*}"},{display:!0,left:"\\begin{alignat}",right:"\\end{alignat}"},{display:!0,left:"\\begin{alignat*}",right:"\\end{alignat*}"},{display:!0,left:"\\begin{gather}",right:"\\end{gather}"},{display:!0,left:"\\begin{CD}",right:"\\end{CD}"},{display:!1,left:"$",right:"$"},{display:!1,left:"\\(",right:"\\)"}],strict:!1},search:{highlightTag:"em",lunrIndexURL:"/index.json",maxResultLength:10,noResultsFound:"No results found",snippetLength:30,type:"lunr"}}</script><script type=text/javascript src=/js/theme.min.612a51a43205bbcf3b4af348dc2e8aa60f77f4fe5535ebc57f13054b61607d6c.js integrity="sha256-YSpRpDIFu887SvNI3C6Kpg939P5VNevFfxMFS2FgfWw="></script><script type=text/javascript>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-3WZ55XG701",{anonymize_ip:!0})</script><script type=text/javascript src="https://www.googletagmanager.com/gtag/js?id=G-3WZ55XG701" async></script></body></html>

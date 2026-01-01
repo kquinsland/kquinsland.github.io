@@ -2,8 +2,10 @@
 
 <!-- markdownlint-disable-file MD002 -->
 
-{{< admonition info "FYI" >}}
-Portions of this post was edited for clarity with the help of [ChatGPT](https://chat.openai.com/).
+{{< admonition info "Updates in 2025" >}}
+In early 2025, I began moving virtually all of my workloads into a k8s cluster. I have put some basic notes on frigate in k8s [here]({{<relref "/posts/2026/01/frigate-in-k8s">}}).
+
+Beyond that, the section [below](#coralai-edge-tpu) about installing the coral.ai edge TPU drivers is now out of date and has been revised.
 {{< /admonition >}}
 
 -----
@@ -164,7 +166,7 @@ karl@nvr:~$ sudo $EDITOR /etc/systemd/system/mnt-frigate.mount
 karl@nvr:~$ sudo $EDITOR /etc/systemd/system/mnt-frigate.automount
 # And apply them
 karl@nvr:~$ sudo systemctl daemon-reload
-karl@nvr:~$ sudo systemctl enable mnt-frigate.moun
+karl@nvr:~$ sudo systemctl enable mnt-frigate.mount
 karl@nvr:~$ sudo systemctl enable mnt-frigate.automount
 karl@nvr:~$ sudo systemctl start mnt-frigate.mount
 karl@nvr:~$ sudo systemctl start mnt-frigate.automount
@@ -222,9 +224,18 @@ At this point, all the _basic_ pre-requisites are satisfied: a `frigate` specifi
 
 ### Coral.ai edge TPU
 
-{{< admonition tip  >}}
+{{< admonition tip >}}
 Skip this step if you are not using PCI-E based edge TPU nodes.
 {{< /admonition >}}
+
+#### Updated for 2025 - an easier way to install the drivers
+
+So long as you are on a modern-ish debian based system, the [jnicolson/gasket-builder repo](https://github.com/jnicolson/gasket-builder) has automated the process of creating the [`DKMS` drivers](https://en.wikipedia.org/wiki/Dynamic_Kernel_Module_Support) for the Coral TPU.
+
+Fetch the deb file from the [releases page](https://github.com/jnicolson/gasket-builder/releases) and install it on the node(s) that will host the coral device(s).
+This saves you from having to manually fetch the driver source code, patch a few things and then compile and install the drivers yourself.
+
+#### Original 2023 install instructions
 
 As mentioned at the top, one of the features that makes Frigate so attractive is how easy it is to use dedicated hardware for image/object classification.
 

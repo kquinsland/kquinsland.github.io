@@ -1,4 +1,1181 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>All Posts - karl</title><link>https://karlquinsland.com/posts/</link><description>All Posts | karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 18 Dec 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/posts/" rel="self" type="application/rss+xml"/><item><title>#TwoMinuteTeardown: Ubiquiti SFP Wizard</title><link>https://karlquinsland.com/ubiquiti-uacc-sfp-wizard/</link><pubDate>Thu, 18 Dec 2025 00:00:00 +0000</pubDate><author>karl</author><guid>https://karlquinsland.com/ubiquiti-uacc-sfp-wizard/</guid><description><![CDATA[<h1 id="two-minute-teardown-ubiquiti-sfp-wizard">Two Minute Teardown: Ubiquiti SFP Wizard</h1>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>All Posts - karl</title><link>https://karlquinsland.com/posts/</link><description>All Posts | karl</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 01 Jan 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/posts/" rel="self" type="application/rss+xml"/><item><title>Frigate in Kubernetes</title><link>https://karlquinsland.com/frigate-in-k8s/</link><pubDate>Thu, 01 Jan 2026 00:00:00 +0000</pubDate><author>karl</author><guid>https://karlquinsland.com/frigate-in-k8s/</guid><description><![CDATA[<!-- markdownlint-disable-file MD002 -->
+<h1 id="frigate-kubernetes-edition">Frigate: Kubernetes edition</h1>
+<p>This is a follow up to my <a href="/frigate-install/" rel="">&lsquo;Frigate From Scratch&rsquo; post</a>.
+Most of that post is still relevant today but I have since moved almost all of my workloads into Kubernetes.</p>
+<p>This post is intended to document some of the issues I hit while trying to get Frigate running in my k8s cluster.
+This is not every issue I hit, just the ones that are not directly related to my specific environment/setup/workflows.</p>
+<p>I have essentially taken the relevant parts of my notes and lightly edited them into a more organized and structured format.</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<h2 id="overview">Overview</h2>
+<p>There is a <a href="https://github.com/blakeblackshear/blakeshome-charts" target="_blank" rel="noopener noreffer ">helm chart</a> but Frigate - at least <em>outside</em> of the container - is not a particularly complex deployment so there&rsquo;s no upside to using helm and just a <strong>ton</strong> of downside:</p>
+<ul>
+<li><a href="https://news.ycombinator.com/item?id=45902604" target="_blank" rel="noopener noreffer ">Helm 4.0 | Hacker News</a></li>
+<li><a href="https://news.ycombinator.com/item?id=24499272" target="_blank" rel="noopener noreffer ">`helm` is an absolute garbage. I&rsquo;ll reserve judgment about `kustomize` until I h...</a></li>
+<li><a href="https://news.ycombinator.com/item?id=44506696" target="_blank" rel="noopener noreffer ">Helm local code execution via a malicious chart</a></li>
+<li><a href="https://news.ycombinator.com/item?id=19580025" target="_blank" rel="noopener noreffer ">We use Helm, but we really only use it for two things: Templating and atomic dep...</a></li>
+<li><a href="https://glasskube.eu/en/r/knowledge/5-helm-shortcomings/" target="_blank" rel="noopener noreffer ">5 shortcomings of Helm | Glasskube</a></li>
+<li><a href="https://news.ycombinator.com/item?id=21526894" target="_blank" rel="noopener noreffer ">Helm is problematic in my view. To new Kubernetes users, Helm appears to be the ...</a></li>
+<li><a href="https://news.ycombinator.com/item?id=11100312" target="_blank" rel="noopener noreffer ">Helm may be the most flagrant example of a terrible package that remains inexpli...</a></li>
+<li><a href="https://blog.devops.dev/why-helms-design-is-flawed-a66c07c2e9a1?gi=6078bb173b62" target="_blank" rel="noopener noreffer ">Why Helm’s design is flawed</a></li>
+</ul>
+<p><code>&lt;/rant&gt;</code></p>
+<p>You can still use the <code>helm</code> chart as a reference for the various ports and volume mounts that need to be configured:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">❯ helm repo add blakeshome https://blakeblackshear.github.io/blakeshome-charts/
+</span></span><span class="line"><span class="cl"><span class="s2">&#34;blakeshome&#34;</span> has been added to your repositories
+</span></span><span class="line"><span class="cl"><span class="c1"># use --set to enable things like startup probes and coral support to get a better reference manifest</span>
+</span></span><span class="line"><span class="cl">❯ helm template blakeshome blakeshome/frigate --set probes.startup.enabled<span class="o">=</span><span class="nb">true</span> --set coral.enabled<span class="o">=</span><span class="nb">true</span> --set coral.hostPath<span class="o">=</span>/dev/apex_0 &gt; reference.yaml
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="pain-points">Pain Points</h2>
+<p>Below are two pain points I hit while getting Frigate running in k8s that are also likely to be relevant to others.
+Hopefully the notes here will save you some time!</p>
+<h3 id="coral-pass-through">Coral pass through</h3>
+<p>Frigate now supports <em>several</em> different <a href="https://docs.frigate.video/frigate/hardware/#detectors" target="_blank" rel="noopener noreffer ">hardware acceleration</a> options for object detection.
+I am still using the PCIe Coral EdgeTPU as the performance is excellent although that will likely change in the future as other options become available.</p>
+<p>To prepare for a future where I might have multiple viable hardware acceleration options available in my k8s cluster, I have elected to use <a href="#nfd" rel="">NFD (Node Feature Discovery)</a> to label nodes that have Coral TPUs installed.
+This is not particularly difficult to do <em>but it is also <strong>unnecessary</strong> if you only have a single node that will run Frigate</em>; regular taint/toleration or nodeSelector approaches will work just fine.</p>
+<p>Regardless, the Coral drivers need to be installed on the node(s) that will host the Coral device(s).</p>
+<p>The good news is that the process of manually patching and compiling the drivers has been made less tedious by the community!
+So long as you are on a modern-ish Debian based system, the <a href="https://github.com/jnicolson/gasket-builder" target="_blank" rel="noopener noreffer ">jnicolson/gasket-builder repo</a> has automated the process of installing the <a href="https://en.wikipedia.org/wiki/Dynamic_Kernel_Module_Support" target="_blank" rel="noopener noreffer "><code>DKMS</code> drivers</a> for the Coral TPU.</p>
+<p>You don&rsquo;t have to:</p>
+<ul>
+<li>track down a few unmerged patches and apply them</li>
+<li>figure out how to build the drivers against your current kernel</li>
+<li>manually load the modules</li>
+<li>create and load udev rules</li>
+<li>&hellip; etc</li>
+</ul>
+<p>You will still need kernel headers and basic build tools installed on the host but beyond that it&rsquo;s really just a matter of <code>wget ...; dpkg -i ...</code> and a <code>reboot now</code> for good measure.</p>
+<p>Once the drivers are installed, you should see the devices show up under <code>/dev/apex_*</code>:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">root@panopticon01:/mnt/frigate# ls -lah /dev/apex_*
+</span></span><span class="line"><span class="cl">crw-rw---- <span class="m">1</span> root apex 120, <span class="m">0</span> Dec <span class="m">30</span> 10:01 /dev/apex_0
+</span></span><span class="line"><span class="cl">crw-rw---- <span class="m">1</span> root apex 120, <span class="m">1</span> Dec <span class="m">30</span> 10:01 /dev/apex_1
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Assuming the devices are detected, you can then pass them through to the container as regular <code>hostPath</code> volumes.
+Unfortunately, there is no k8s equivalent of the <a href="https://docs.docker.com/reference/cli/docker/container/run/#device" target="_blank" rel="noopener noreffer "><code>--device</code> flag</a> and my attempts to use a tailored <code>securityContext</code> to grant the necessary permissions to access the devices failed:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">securityContext</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">privileged</span><span class="p">:</span><span class="w"> </span><span class="kc">false</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">capabilities</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">add</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="c"># DMA access</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">IPC_LOCK</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="c"># Required for PCIe memory access</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">SYS_RAWIO</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span><span class="c"># Permit more things if needed</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">      </span>- <span class="l">CAP_SYS_ADMIN</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="c"># Allow anything that wants to escalate privileges to do so...</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">  </span><span class="nt">allowPrivilegeEscalation</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>Kubernetes seems to prefer that hardware vendors create/ship a <a href="https://kubernetes.io/docs/concepts/extend-kubernetes/compute-storage-net/device-plugins/" target="_blank" rel="noopener noreffer ">Device Plugin</a> to safely/cleanly facilitate accessing devices from inside pods but there is only a <a href="https://gitlab.com/mike-ensor/k8s-edge-tpu-device-plugin" target="_blank" rel="noopener noreffer ">very experimental one</a> for the Coral TPU at this time.</p>
+<p>All of that is to say: <em>you <strong>will</strong> need to run the container in <code>privileged</code> mode for the device access to work correctly</em>.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span><span class="lnt">40
+</span><span class="lnt">41
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">apiVersion</span><span class="p">:</span><span class="w"> </span><span class="l">apps/v1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">Deployment</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># &lt;...&gt;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">template</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">spec</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">containers</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                  </span><span class="nt">image</span><span class="p">:</span><span class="w"> </span><span class="l">ghcr.io/blakeblackshear/frigate:0.16.3</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">frigate</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                  </span><span class="nt">securityContext</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                      </span><span class="c"># Needed for the Frigate UI to show CPU/TPU metrics (usage/temp...etc)</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                      </span><span class="nt">capabilities</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                          </span><span class="nt">add</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                              </span>- <span class="l">CAP_PERFMON</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                      </span><span class="c"># See note above</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                      </span><span class="nt">privileged</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                  </span><span class="nt">volumeMounts</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                      </span><span class="c"># Covered in the IPv6 section below</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                      </span>- <span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l">/usr/local/nginx/templates/listen.gotmpl</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">nginx-templates</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                        </span><span class="nt">readOnly</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                        </span><span class="nt">subPath</span><span class="p">:</span><span class="w"> </span><span class="l">listen.gotmpl</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                      </span>- <span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l">/dev/apex_0</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">coral-apex-0</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                      </span>- <span class="nt">mountPath</span><span class="p">:</span><span class="w"> </span><span class="l">/dev/apex_1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                        </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">coral-apex-1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="c"># &lt;...&gt;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="c"># Covered in the NFD section below</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">nodeSelector</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="nt">feature.node.kubernetes.io/has-pcie-tpu</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;true&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="nt">volumes</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span>- <span class="nt">configMap</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                      </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">frigate-nginx-templates</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">nginx-templates</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span>- <span class="nt">hostPath</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                      </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l">/dev/apex_0</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">coral-apex-0</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span>- <span class="nt">hostPath</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                      </span><span class="nt">path</span><span class="p">:</span><span class="w"> </span><span class="l">/dev/apex_1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l">coral-apex-1</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="c"># &lt;...&gt;</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h4 id="nfd">NFD</h4>
+<p><a href="https://github.com/kubernetes-sigs/node-feature-discovery" target="_blank" rel="noopener noreffer ">Node Feature Discovery</a> is a straight-forward project that puts a daemonset on each node in your cluster and scans the hardware for features.
+Depending on what hardware it finds, it will label the node with appropriate labels that can then be used for scheduling.</p>
+<div class="details admonition warning open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-exclamation-triangle fa-fw" aria-hidden="true"></i>Over Engineered<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">As noted <a href="#coral-pass-through" rel="">above</a>, NFD is not strictly necessary if you only have a single node that will run Frigate, just use a regular <code>nodeSelector</code> or taint/toleration approach instead.</div>
+        </div>
+    </div>
+<p>I have some other workloads that can benefit from NFD so I went ahead and set it up cluster-wide.
+Here is the relevant snippet from my NFD configuration that detects Coral TPUs and applies a label accordingly:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span><span class="lnt">23
+</span><span class="lnt">24
+</span><span class="lnt">25
+</span><span class="lnt">26
+</span><span class="lnt">27
+</span><span class="lnt">28
+</span><span class="lnt">29
+</span><span class="lnt">30
+</span><span class="lnt">31
+</span><span class="lnt">32
+</span><span class="lnt">33
+</span><span class="lnt">34
+</span><span class="lnt">35
+</span><span class="lnt">36
+</span><span class="lnt">37
+</span><span class="lnt">38
+</span><span class="lnt">39
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">core</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># The worker is cheap but it defaults to running every 60s which is excessive for a cluster that</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c">#    is all bare metal and not likely to have hardware changes often.</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">sleepInterval</span><span class="p">:</span><span class="w"> </span><span class="l">300s</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># all -&gt; make sure `pci` features are included</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="c"># Disable CPU features to reduce excessive labels</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">featureSources</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="l">all</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="s2">&#34;-cpu&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">labelSources</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="l">all</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="s2">&#34;-cpu&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">sources</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">pci</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="c"># You only need `0880` for Coral but I have some other hardware that I use</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span><span class="nt">deviceClassWhitelist</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="c"># Network</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="s2">&#34;02&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="c"># Display</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="s2">&#34;03&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="c"># Base class for System peripherals</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="s2">&#34;08&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="c"># Specific class for Coral</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="s2">&#34;0880&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span><span class="c"># Accelerator</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">            </span>- <span class="s2">&#34;12&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">custom</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">        </span>- <span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="s2">&#34;has-coral-tpu&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">labels</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span><span class="nt">&#34;feature.node.kubernetes.io/has-pcie-tpu&#34;: </span><span class="s2">&#34;true&#34;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">          </span><span class="nt">matchFeatures</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">              </span>- <span class="nt">feature</span><span class="p">:</span><span class="w"> </span><span class="l">pci.device</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                </span><span class="nt">matchExpressions</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="nt">vendor</span><span class="p">:</span><span class="w"> </span>{<span class="w"> </span><span class="nt">op: In, value</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;1ac1&#34;</span><span class="p">]</span><span class="w"> </span>}<span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">                    </span><span class="nt">device</span><span class="p">:</span><span class="w"> </span>{<span class="w"> </span><span class="nt">op: In, value</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&#34;089a&#34;</span><span class="p">]</span><span class="w"> </span>}<span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>Once NFD is deployed and running, each <code>kind: Node</code> in your cluster should have a label like so if it has a Coral TPU installed:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">❯ kubectl get nodes -l feature.node.kubernetes.io/has-pcie-tpu -o name
+</span></span><span class="line"><span class="cl">node/panopticon01
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Combine that with the <code>nodeSelector</code> as shown in the snippet \above and Frigate will only be scheduled on nodes that have Coral TPUs installed.</p>
+<h3 id="ipv6">IPv6</h3>
+<p>It&rsquo;s 2026 and IPv6 should just work by default everywhere but alas, Frigate is still a bit behind the times in this regard.</p>
+<p>The <a href="https://docs.frigate.video/configuration/advanced/#enabling-ipv6" target="_blank" rel="noopener noreffer ">docs</a> are very sparse but they do hint at having to make some modification to a file inside the container.</p>
+<p>Above, I am providing my own copy of <code>/usr/local/nginx/templates/listen.gotmpl</code> via a <code>ConfigMap</code> volume mount to override the default one that ships with the container:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-yaml" data-lang="yaml"><span class="line"><span class="cl"><span class="nt">kind</span><span class="p">:</span><span class="w"> </span><span class="l">ConfigMap</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="c"># &lt;...&gt;</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w"></span><span class="nt">data</span><span class="p">:</span><span class="w">
+</span></span></span><span class="line"><span class="cl"><span class="w">    </span><span class="nt">listen.gotmpl</span><span class="p">:</span><span class="w"> </span><span class="p">|</span><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">        listen 5000;
+</span></span></span><span class="line"><span class="cl"><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">        {{ if not .enabled }}
+</span></span></span><span class="line"><span class="cl"><span class="sd">        # intended for external traffic, protected by auth
+</span></span></span><span class="line"><span class="cl"><span class="sd">        listen [::]:8971 ipv6only=off;
+</span></span></span><span class="line"><span class="cl"><span class="sd">        {{ else }}
+</span></span></span><span class="line"><span class="cl"><span class="sd">        # intended for external traffic, protected by auth
+</span></span></span><span class="line"><span class="cl"><span class="sd">        listen [::]:8971 ipv6only=off ssl;
+</span></span></span><span class="line"><span class="cl"><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">        # intended for internal traffic, not protected by auth
+</span></span></span><span class="line"><span class="cl"><span class="sd">        listen [::]:5000 ipv6only=off;
+</span></span></span><span class="line"><span class="cl"><span class="sd">
+</span></span></span><span class="line"><span class="cl"><span class="sd">        {{ end }}</span><span class="w">
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>The above is more or less taken from <a href="https://github.com/blakeblackshear/frigate/issues/5275#issuecomment-2395553577" target="_blank" rel="noopener noreffer ">this GH issue</a> but modified slightly:</p>
+<ul>
+<li>The GH issue uses <code>[::1]</code> for some reason which only binds to the loopback interface and does not work for me. I changed it to just <code>[::]</code> to bind to all interfaces which is what I want for my use case.</li>
+<li>The ACME/TLS stuff is not relevant to me so I removed that; I just handle TLS termination elsewhere in my stack.</li>
+<li>There&rsquo;s still a ton of stuff inside the container that is IPv4 only but that&rsquo;s a problem for another day / does not violate my self-imposed &ldquo;IPv6 first, ideally exclusively&rdquo; requirement.</li>
+</ul>
+<h2 id="conclusion">Conclusion</h2>
+<p>Frigate puts all the complexity into the container so it&rsquo;s a pretty straight-forward deployment in k8s.
+Things get a bit trickier when you start adding hardware acceleration into the mix but it&rsquo;s still manageable with a bit of effort.
+For reasons that are beyond me, Frigate still does not have first-class IPv6 support so that requires a bit of manual tinkering as well.</p>
+]]></description></item><item><title>#TwoMinuteTeardown: Multiple LED Controllers</title><link>https://karlquinsland.com/led-controllers/</link><pubDate>Fri, 26 Dec 2025 00:00:00 +0000</pubDate><author>karl</author><guid>https://karlquinsland.com/led-controllers/</guid><description><![CDATA[<!-- markdownlint-disable MD024 -->
+<h2 id="introduction">Introduction</h2>
+<p>Bit of a change in format; instead of one <em>massive</em> post for all the misc. 11-11 teardowns, I&rsquo;m grouping them.
+This post is the &ldquo;LED Controller&rdquo; group.
+I managed to snag the following on Ali Express:</p>
+<ul>
+<li><a href="https://www.aliexpress.us/item/3256810107702305.html" target="_blank" rel="noopener noreffer ">Gledepto GL-C-618WL LED Controller</a></li>
+<li><a href="https://www.aliexpress.us/item/3256810030310796.html" target="_blank" rel="noopener noreffer ">IoTorero LS11PDual LED Controller</a></li>
+<li><a href="https://www.aliexpress.us/item/3256809568993977.html" target="_blank" rel="noopener noreffer ">SMLIGHT-A1-SLWF-09 LED Controller</a></li>
+</ul>
+<p>To continue from <a href="/aliexpress-11-11-sale-teardowns-2024/#side-note-the-ossha-community-is-being-heard" rel="">last year&rsquo;s trend</a>, I waned to celebrate that all three of these LED controllers have:</p>
+<ul>
+<li><a href="https://kno.wled.ge/" target="_blank" rel="noopener noreffer ">WLED</a> firmware flashed from the factory</li>
+<li>GPIO labeled for hacking</li>
+<li>No firmware lock-in; the USB interface shows up as a standard serial device on Linux so you don&rsquo;t even need to open it up to re-flash it!</li>
+</ul>
+<p>The broad changes compared to last year are:</p>
+<ul>
+<li>Designs are more modular, allowing for upgrades to be added to a flexible base design</li>
+<li>Ethernet is a common upgrade option now for more reliable LAN control</li>
+<li>PoE is an option on some models for easier deployment in locations without easy access to power outlets</li>
+</ul>
+<p>Beyond that, the internals are starting to converge on similar designs with similar components.
+I have created an <code>ICs and Markings</code> section for each teardown to help identify the key components used in each design &hellip; but you&rsquo;ll see that the same chips keep showing up across multiple designs.</p>
+<h2 id="gledepto-gl-c-618wl-led-controller">Gledepto GL-C-618WL LED Controller</h2>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Each connector is labeled with the GPIO that drives it &lt;3.
+Chunky user replicable fuse with a label stating the form factor and rating &lt;3.</p>
+<p>Not pictured; the back of the device has no screws.
+A simple pry tool is all you need to open it up.</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>About what you&rsquo;d expect from a WLED controller. Layout seems reasonable and intuitive.</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        <p>
+            That&#39;s glare form my light and leftover solder flux... not conformal coating.
+            
+                
+                
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        <p>
+            Backside is boring but everything is well labeled.
+            
+                
+                
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        <p>
+            Apparently if you order enough of them, Espressif will put your logo on the module.
+            
+                
+                
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>Not exactly sure why they have MOSFETS immediately after the power input <em>and</em> for the LED outputs.
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+</p>
+<p>It&rsquo;s not marked on the box or enclosure or mentioned in the product listing but it looks like you can select between termination resistors (24.9/33Ω) via switch.
+This is a nice touch for reliability over long runs of LED strip &hellip; but I&rsquo;m not sure how many users will actually need to use it with that 74HC chip there.</p>
+<p>No other controller I&rsquo;ve seen has this feature so far so I appreciate the attention to detail here.</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Beyond that, nice of them to mark what type of MIC is used and the GPIOs it&rsquo;s wired to.</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>I would expect the fuse to be the over-current protection for the entire board&hellip;. so I&rsquo;m not sure why there&rsquo;s a pair of MOSFETs right after the DC input.</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<h3 id="misc">Misc</h3>
+<h4 id="ics-and-markings">ICs and Markings</h4>
+<ul>
+<li><a href="https://all-power.com/module/product/manual_download.php?b_idx=1520&amp;idx=719" target="_blank" rel="noopener noreffer "><code>All Power G050N06K</code></a>:</li>
+<li><a href="https://all-power.com/module/product/manual_download.php?b_idx=868&amp;idx=501" target="_blank" rel="noopener noreffer "><code>All Power 126P03K</code></a></li>
+<li><a href="https://ww1.microchip.com/downloads/en/devicedoc/8720a.pdf" target="_blank" rel="noopener noreffer "><code>SMSC 8720A</code></a>: Ethernet PHY</li>
+<li><a href="https://www.lcsc.com/datasheet/C968586.pdf" target="_blank" rel="noopener noreffer "><code>CH340K</code></a>: Handles the USB to UART conversion</li>
+<li><a href="https://assets.nexperia.com/documents/data-sheet/74HC_HCT125.pdf" target="_blank" rel="noopener noreffer "><code>Nexperia 74HCT125D</code></a></li>
+</ul>
+<h4 id="dmesg"><code>dmesg</code></h4>
+<p>When plugged in via USB, shows up as a CH341 device:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span><span class="lnt">8
+</span><span class="lnt">9
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="c1"># dmesg</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>123456.814962<span class="o">]</span> usb 5-4.1.4: new full-speed USB device number <span class="m">77</span> using xhci_hcd
+</span></span><span class="line"><span class="cl"><span class="o">[</span>123456.914683<span class="o">]</span> usb 5-4.1.4: New USB device found, <span class="nv">idVendor</span><span class="o">=</span>1a86, <span class="nv">idProduct</span><span class="o">=</span>7522, <span class="nv">bcdDevice</span><span class="o">=</span> 2.64
+</span></span><span class="line"><span class="cl"><span class="o">[</span>123456.914688<span class="o">]</span> usb 5-4.1.4: New USB device strings: <span class="nv">Mfr</span><span class="o">=</span>0, <span class="nv">Product</span><span class="o">=</span>2, <span class="nv">SerialNumber</span><span class="o">=</span><span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>123456.914690<span class="o">]</span> usb 5-4.1.4: Product: USB Serial
+</span></span><span class="line"><span class="cl"><span class="o">[</span>123456.986923<span class="o">]</span> usbcore: registered new interface driver ch341
+</span></span><span class="line"><span class="cl"><span class="o">[</span>123456.986940<span class="o">]</span> usbserial: USB Serial support registered <span class="k">for</span> ch341-uart
+</span></span><span class="line"><span class="cl"><span class="o">[</span>123456.986960<span class="o">]</span> ch341 5-4.1.4:1.0: ch341-uart converter detected
+</span></span><span class="line"><span class="cl"><span class="o">[</span>123456.999771<span class="o">]</span> usb 5-4.1.4: ch341-uart converter now attached to ttyUSB0
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>I did not bother trying to check for logging output over the serial interface since WLED is already installed and there&rsquo;s no mystery firmware to reverse engineer.</p>
+<h2 id="iotorero-ls11pdual-led-controller">IoTorero LS11PDual LED Controller</h2>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<div class="details admonition note open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-pencil-alt fa-fw" aria-hidden="true"></i>Note<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content">IoTorero appears to be a sub-brand of <a href="https://www.athom.tech/" target="_blank" rel="noopener noreffer ">athom</a>; the designs are very similar.</div>
+        </div>
+    </div>
+<p>Again, nothing to unscrew on the back; just a pry tool to open it up.
+The tracks are quite wide and the extra solder implies some beefy current handling.</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>This design isn&rsquo;t quite so modular or as sophisticated so it&rsquo;s easier to follow.
+The individual GPIOs for the LED channels are labeled on the silkscreen but the integrated button and microphone are not so this is slightly less friendly for hacking.</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<h3 id="misc-1">Misc</h3>
+<h4 id="ics-and-markings-1">ICs and Markings</h4>
+<p>Some of these should look familiar if you&rsquo;ve read the Gledepto teardown above:</p>
+<ul>
+<li><a href="https://ww1.microchip.com/downloads/en/devicedoc/8720a.pdf" target="_blank" rel="noopener noreffer "><code>SMSC 8720A</code></a>: Ethernet PHY</li>
+<li><a href="https://www.lcsc.com/datasheet/C968586.pdf" target="_blank" rel="noopener noreffer "><code>CH340K</code></a>: Handles the USB to UART conversion</li>
+<li><a href="https://www.alldatasheet.com/datasheet-pdf/view/485386/AOSMD/D4184.html" target="_blank" rel="noopener noreffer "><code>Alpha and Omega D4184</code></a>: N-Channel MOSFET</li>
+<li><code>74HC245TA</code>, Unknown Manufacturer: Octal Bus Transceiver / level shifter</li>
+</ul>
+<h4 id="dmesg-1"><code>dmesg</code></h4>
+<p>Nothing unusual here; I did not bother trying to check for logging output over the serial interface since WLED is already installed and there&rsquo;s no mystery firmware to reverse engineer.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="o">[</span>123456.526400<span class="o">]</span> usb 5-4.1.4: new full-speed USB device number <span class="m">79</span> using xhci_hcd
+</span></span><span class="line"><span class="cl"><span class="o">[</span>123456.626682<span class="o">]</span> usb 5-4.1.4: New USB device found, <span class="nv">idVendor</span><span class="o">=</span>1a86, <span class="nv">idProduct</span><span class="o">=</span>7522, <span class="nv">bcdDevice</span><span class="o">=</span> 2.64
+</span></span><span class="line"><span class="cl"><span class="o">[</span>123456.626688<span class="o">]</span> usb 5-4.1.4: New USB device strings: <span class="nv">Mfr</span><span class="o">=</span>0, <span class="nv">Product</span><span class="o">=</span>2, <span class="nv">SerialNumber</span><span class="o">=</span><span class="m">0</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>123456.626690<span class="o">]</span> usb 5-4.1.4: Product: USB Serial
+</span></span><span class="line"><span class="cl"><span class="o">[</span>123456.668754<span class="o">]</span> ch341 5-4.1.4:1.0: ch341-uart converter detected
+</span></span><span class="line"><span class="cl"><span class="o">[</span>123456.682751<span class="o">]</span> usb 5-4.1.4: ch341-uart converter now attached to ttyUSB0
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="smlight-a1-slwf-09-led-controller">SMLIGHT-A1-SLWF-09 LED Controller</h2>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>And the best for last&hellip;
+This one is <em>very</em> modular; you can upgrade the &ldquo;base&rdquo; model with PoE/Ethernet and a Microphone via daughterboards.</p>
+<p>There are a few other &ldquo;nice touch!&rdquo; features here too:</p>
+<ul>
+<li>USB-C power input is a nice touch too. Shame it&rsquo;s limited to 12v. Would have been nice to see PPS used to negotiate between 12v or 20v as needed.</li>
+<li>QR Codes on the silk screen and labels to help track down documentation or order parts.</li>
+</ul>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        <p>
+            Common theme: no screws on the back; just a pry tool to open it up.
+            
+                
+                
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>Silkscreen makes it super clear which GPIOs are used for what purpose.</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        <p>
+            I don&#39;t know what the `AIR ADD-ON` header is for...
+            
+                
+                
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        <p>
+            Custom metal can for what is presumably an ESP32. &#39;core&#39; branding means this is likely used in most of their products.
+            
+                
+                
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        <p>
+            I guess they bought enough of these transformers that they could do customized branding...
+            
+                
+                
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<h3 id="misc-2">Misc</h3>
+<h4 id="ics-and-markings-2">ICs and Markings</h4>
+<p>The ethernet module features the familiar <code>SMSC 8720A</code> but beyond that:</p>
+<ul>
+<li><a href="https://datasheet4u.com/datasheets/APM/AP90N03D/1573548" target="_blank" rel="noopener noreffer "><code>APM AP90P03D</code></a>: MOSFET for controlling power out to the LED strips.</li>
+<li><a href="https://www.lcsc.com/datasheet/C2858418.pdf" target="_blank" rel="noopener noreffer "><code>WCH CH9102F</code></a>: USB to UART bridge chip.</li>
+<li><a href="https://www.toll-semi.com/PDPoEICir2/214.html" target="_blank" rel="noopener noreffer "><code>Toll Semiconductor TMI7321</code></a>: PoE controller IC.</li>
+</ul>
+<p>I didn&rsquo;t bother lifting the metal can off of the main microcontroller but based on the other two designs here it&rsquo;s presumably an ESP32 variant (does WLED even support anything else?).
+It&rsquo;s also identical in appearance to the ESP32 module used on the <a href="/slzb-mrw10/" rel="">SMLIGHT SLZB-MRW10
+</a> so presumably the same module is used across multiple SMLIGHT products.</p>
+<p>I didn&rsquo;t get a clear photo of the markings on the USB/PD chip either.</p>
+<h4 id="dmesg-2"><code>dmesg</code></h4>
+<p>Nothing unusual here; I did not bother trying to check for logging output over the serial interface since WLED is already installed and there&rsquo;s no mystery firmware to reverse engineer.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="o">[</span>123456.503226<span class="o">]</span> usb 5-4.1.4: new full-speed USB device number <span class="m">42</span> using xhci_hcd
+</span></span><span class="line"><span class="cl"><span class="o">[</span>123456.597674<span class="o">]</span> usb 5-4.1.4: New USB device found, <span class="nv">idVendor</span><span class="o">=</span>1a86, <span class="nv">idProduct</span><span class="o">=</span>55d4, <span class="nv">bcdDevice</span><span class="o">=</span> 4.44
+</span></span><span class="line"><span class="cl"><span class="o">[</span>123456.597679<span class="o">]</span> usb 5-4.1.4: New USB device strings: <span class="nv">Mfr</span><span class="o">=</span>0, <span class="nv">Product</span><span class="o">=</span>2, <span class="nv">SerialNumber</span><span class="o">=</span><span class="m">3</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>123456.597682<span class="o">]</span> usb 5-4.1.4: Product: USB Single Serial
+</span></span><span class="line"><span class="cl"><span class="o">[</span>123456.597684<span class="o">]</span> usb 5-4.1.4: SerialNumber: 5A&lt;...&gt;8
+</span></span><span class="line"><span class="cl"><span class="o">[</span>123456.647727<span class="o">]</span> cdc_acm 5-4.1.4:1.0: ttyACM0: USB ACM device
+</span></span></code></pre></td></tr></table>
+</div>
+</div>]]></description></item><item><title>#TwoMinuteTeardown: SLZB-MRW10</title><link>https://karlquinsland.com/slzb-mrw10/</link><pubDate>Fri, 26 Dec 2025 00:00:00 +0000</pubDate><author>karl</author><guid>https://karlquinsland.com/slzb-mrw10/</guid><description><![CDATA[<h1 id="two-minute-teardown-smlight-slzb-mrw10">Two Minute Teardown: SMLIGHT SLZB-MRW10</h1>
+<p>To make a very long story short, I need to move away from my <em>very</em> old <a href="https://en.wikipedia.org/wiki/IEEE_802.15.4" target="_blank" rel="noopener noreffer ">802.15.4</a> radios plugged into a <em>very</em> old Raspberry Pi for my smart home setup.
+After some research, the <a href="https://smlight.tech/product/slzbmrw10" target="_blank" rel="noopener noreffer ">SMLIGHT SLZB-MRW10</a> is new, uses modern radios and ships with firmware that <a href="https://www.zigbee2mqtt.io/advanced/remote-adapter/connect_to_a_remote_adapter.html" target="_blank" rel="noopener noreffer ">makes it trivial to move packet processing into compute distributed on the other end of the network</a>.</p>
+<p>Specifically, the <a href="https://www.silabs.com/wireless/z-wave/800-series-modem-soc" target="_blank" rel="noopener noreffer ">Silicon Labs EFR32ZG23</a> implements Z-Wave 800 (+ Long Range) and the <a href="https://www.ti.com/product/CC2674P10" target="_blank" rel="noopener noreffer ">Texas Instruments CC2674P10</a> implements Zigbee 3.0 or Thread.</p>
+<p>Shame you can&rsquo;t do both Zigbee and Thread at the same time, but I&rsquo;m not in any <a href="https://news.ycombinator.com/item?id=38763743" target="_blank" rel="noopener noreffer ">hurry</a> to switch to <a href="https://en.wikipedia.org/wiki/Matter_%28standard%29" target="_blank" rel="noopener noreffer ">Matter</a> for a <a href="https://news.ycombinator.com/item?id=44508740" target="_blank" rel="noopener noreffer ">long</a> <a href="https://news.ycombinator.com/item?id=38763743" target="_blank" rel="noopener noreffer ">list</a> of <a href="https://news.ycombinator.com/item?id=44508727" target="_blank" rel="noopener noreffer ">reasons</a> so I&rsquo;ll happily stick with the Zigbee firmware.</p>
+<p>The core is an ESP32 that handles the network connectivity and BT/WiFi radios.</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>In the box you get the main radio unit, antennas and some misc mounting hardware / a template to help with spacing for the wall mount.
+I love it when they include a template instead of just saying &ldquo;measure and drill holes yourself&rdquo;. Bonus; the QR code links to the documentation page.</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>No screws so the back just snaps right off.</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>SMLIGHT does have other devices that are similar form factor so I guess it makes sense to re-use the PCB and outfit it with a programming resistor.
+I don&rsquo;t think this is for indicating the radio regions because I can change that in software.</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        <p>
+            PoE circuitry.
+            
+                
+                
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        <p>
+            Sorry for the glare.
+            
+                
+                
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<h2 id="misc">Misc</h2>
+<p>Aside from the main ICs/Radios mentioned above, there are a few other interesting components:</p>
+<ul>
+<li><a href="https://www.ti.com/product/TMUX1574" target="_blank" rel="noopener noreffer "><code>Texas Instruments MUX1574</code></a>: not sure what this is doing here&hellip; unless it&rsquo;s managing the 6 LEDs scattered around the board? There appear to be two LEDs for each of: the ESP32, the CC2674P10, and the EFR32ZG23 which makes for a total of 6 LEDs &hellip; which is two more than the MUX1574 can handle.</li>
+<li><a href="https://ww1.microchip.com/downloads/en/devicedoc/8720a.pdf" target="_blank" rel="noopener noreffer "><code>SMSC 8720A</code></a>: Ethernet PHY, same as the ones used in the <a href="/led-controllers/" rel="">LED Controllers I recently tore down</a>.</li>
+<li><a href="https://www.toll-semi.com/PDPoEICir2/214.html" target="_blank" rel="noopener noreffer "><code>Toll Semiconductor TMI7321</code></a>: PoE controller IC, also used in one of the LED controllers.</li>
+</ul>
+<h3 id="dmesg"><code>dmesg</code></h3>
+<p>The USB-C port is not just for power; as far as I can tell, it&rsquo;s wired to a <a href="https://www.silabs.com/documents/public/data-sheets/CP2102-9.pdf" target="_blank" rel="noopener noreffer ">CP210</a> which is connected to the ESP32.
+Firmware on the ESP32 then proxies UART traffic from the two radios allowing you to interact with all radios over a single serial connection.</p>
+<p>Interesting to see that they bothered to set the product, manufacturer, and serial number strings on the USB device instead of leaving them w/ the default values.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl"><span class="o">[</span>176519.261646<span class="o">]</span> usb 5-4.1.4: new full-speed USB device number <span class="m">74</span> using xhci_hcd
+</span></span><span class="line"><span class="cl"><span class="o">[</span>176519.370686<span class="o">]</span> usb 5-4.1.4: New USB device found, <span class="nv">idVendor</span><span class="o">=</span>10c4, <span class="nv">idProduct</span><span class="o">=</span>ea60, <span class="nv">bcdDevice</span><span class="o">=</span> 1.00
+</span></span><span class="line"><span class="cl"><span class="o">[</span>176519.370691<span class="o">]</span> usb 5-4.1.4: New USB device strings: <span class="nv">Mfr</span><span class="o">=</span>1, <span class="nv">Product</span><span class="o">=</span>2, <span class="nv">SerialNumber</span><span class="o">=</span><span class="m">3</span>
+</span></span><span class="line"><span class="cl"><span class="o">[</span>176519.370693<span class="o">]</span> usb 5-4.1.4: Product: SMLIGHT SLZB-MRW10
+</span></span><span class="line"><span class="cl"><span class="o">[</span>176519.370695<span class="o">]</span> usb 5-4.1.4: Manufacturer: SMLIGHT
+</span></span><span class="line"><span class="cl"><span class="o">[</span>176519.370697<span class="o">]</span> usb 5-4.1.4: SerialNumber: 78&lt;....&gt;10
+</span></span><span class="line"><span class="cl"><span class="o">[</span>176519.393095<span class="o">]</span> usbcore: registered new interface driver cp210x
+</span></span><span class="line"><span class="cl"><span class="o">[</span>176519.393110<span class="o">]</span> usbserial: USB Serial support registered <span class="k">for</span> cp210x
+</span></span><span class="line"><span class="cl"><span class="o">[</span>176519.393159<span class="o">]</span> cp210x 5-4.1.4:1.0: cp210x converter detected
+</span></span><span class="line"><span class="cl"><span class="o">[</span>176519.400860<span class="o">]</span> usb 5-4.1.4: cp210x converter now attached to ttyUSB0
+</span></span></code></pre></td></tr></table>
+</div>
+</div>]]></description></item><item><title>#TwoMinuteTeardown: Ubiquiti SFP Wizard</title><link>https://karlquinsland.com/ubiquiti-uacc-sfp-wizard/</link><pubDate>Thu, 18 Dec 2025 00:00:00 +0000</pubDate><author>karl</author><guid>https://karlquinsland.com/ubiquiti-uacc-sfp-wizard/</guid><description><![CDATA[<h1 id="two-minute-teardown-ubiquiti-sfp-wizard">Two Minute Teardown: Ubiquiti SFP Wizard</h1>
 <figure >
 
     
@@ -1403,2446 +2580,4 @@ Of those 12, some don&rsquo;t have traces leading to them so they&rsquo;re proba
 <li><a href="https://www.alldatasheet.com/datasheet-pdf/pdf/1679343/NEXPERIA/HEF4051B.html" target="_blank" rel="noopener noreffer "><code>HEF4051B</code></a> - 8-channel analog multiplexer, probably for the display</li>
 <li><code>74hc164</code> - 8-bit shift register, probably for the display</li>
 </ul>
-]]></description></item><item><title>#TwoMinuteTeardown: Home Assistant Voice - Preview Edition</title><link>https://karlquinsland.com/home-assistant-voice-pe-teardown/</link><pubDate>Sat, 01 Feb 2025 00:00:00 +0000</pubDate><author>karl</author><guid>https://karlquinsland.com/home-assistant-voice-pe-teardown/</guid><description><![CDATA[<h1 id="home-assistant-voice-preview-edition-teardown">Home Assistant Voice: Preview Edition teardown</h1>
-<p>This is a quick <a href="/tags/two-minute-teardown/" rel="">#TwoMinuteTeardown</a> post for the recently released <a href="https://www.home-assistant.io/voice-pe/" target="_blank" rel="noopener noreffer ">Home Assistant Voice Node - Preview edition</a>.</p>
-<p>Normally, I&rsquo;d be doing a full teardown, but this is a little different; the Home Assistant team has done a <em>lot</em> of the work out in the open.
-With just a quick Google, you can find official:</p>
-<ul>
-<li>teardown instructions <a href="https://voice-pe.home-assistant.io/guides/disassemble/" target="_blank" rel="noopener noreffer ">here</a>.</li>
-<li>source code <a href="https://github.com/esphome/home-assistant-voice-pe" target="_blank" rel="noopener noreffer ">here</a>.</li>
-<li>3D printable case <a href="https://www.printables.com/model/1110526-home-assistant-voice-preview-edition-enclosure" target="_blank" rel="noopener noreffer ">files</a>.</li>
-<li>Instructions for adding custom devices <a href="https://voice-pe.home-assistant.io/guides/grove_port/" target="_blank" rel="noopener noreffer ">here</a>.</li>
-</ul>
-<p>I am grateful for such a well-documented and open project.
-Truly, by hackers for hackers!</p>
-<h2 id="teardown">Teardown</h2>
-<p>See the official instructions if you can&rsquo;t figure it out.</p>
-<p>There&rsquo;s not much to the device, really.
-The top half hosts the physical buttons and the microphones.
-The thin, metal-looking piece in the top right is the antenna.</p>
-<p>In the bottom right, there&rsquo;s a small switch that appears to mux between the main application processor (ESP32) and the audio processor.</p>
-<p>I wonder weather this is &ldquo;leftover&rdquo; from development and they haven&rsquo;t gotten around to simplifying the BOM yet or if this is intentionally populated for users to re-program the audio processor.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>All of the &ldquo;fun&rdquo; stuff is on the bottom half.</p>
-<p>Immediately, you notice the PCB has multiple <em>populated</em> pin headers for hacking. Bonus, they&rsquo;re all labeled!</p>
-<p>The layout and BOM is about what you&rsquo;d expect for a ~$50 single-purpose device.</p>
-<p>Where possible, I&rsquo;ve <a href="#ics" rel="">identified</a> the big ICs.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<h3 id="wishful-thinking">wishful thinking</h3>
-<p>In a word: Ethernet.</p>
-<p>Most of the ESP32 product line does not have support for ethernet via <a href="https://en.wikipedia.org/wiki/Media-independent_interface#RMII" target="_blank" rel="noopener noreffer ">RMII</a> (unfortunately) but there is always SPI based ethernet.</p>
-<p>There are a few areas where the PCB is bare/empty and with a few tweaks to the layout, it would have been possible to also expose SPI headers next to the <a href="https://wiki.seeedstudio.com/Grove-I2C_Hub/" target="_blank" rel="noopener noreffer ">grove connector</a>.</p>
-<p>Assuming there&rsquo;s a spare SPI peripheral to use, SPI based ethernet would have latency and throughput as good as or better than WiFi.</p>
-<p>It would have been a nice option for those of us who prefer the reliability of wired connections.</p>
-<p>Oh well.</p>
-<h2 id="ics">ICs</h2>
-<p>This is just the big ones that were going to be easy-ish to positively identify.
-I skipped a few of the super small ICs that had a few characters (at most!) of identification on them.</p>
-<p>Two flash chips, one for the ESP32 and one for the &ldquo;ai&rdquo; chip which is maybe doing detection and is almost certainly doing some other DSP stuff.
-TI parts for the audio codec and a few miscellaneous bits as well.</p>
-<h3 id="zbit-semiconductor-zb25vq128">zbit semiconductor ZB25VQ128</h3>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">AN2414
-</span></span><span class="line"><span class="cl">25VQ128DSJG
-</span></span><span class="line"><span class="cl">P3S952
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><a href="https://linux-chenxing.org/pioneer3/sv50pd/ZB25VQ128.pdf" target="_blank" rel="noopener noreffer ">This</a> is a clone of a super common winbond nor flash chip with the same part number.</p>
-<h3 id="zbit-semiconductor-zb25vq32">zbit semiconductor ZB25VQ32</h3>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">KN2444
-</span></span><span class="line"><span class="cl">25VQ32DSJG
-</span></span><span class="line"><span class="cl">EQ4537
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p><a href="https://semic-boutique.com/wp-content/uploads/2016/05/ZB25VQ32.pdf" target="_blank" rel="noopener noreffer ">Same</a> as above, but smaller.</p>
-<h3 id="ti-tlv320aic3204">TI TLV320AIC3204</h3>
-<p><a href="https://www.ti.com/product/TLV320AIC3204" target="_blank" rel="noopener noreffer ">This</a> is the audio codec.</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">AIC
-</span></span><span class="line"><span class="cl">3204
-</span></span><span class="line"><span class="cl">TI 48I
-</span></span><span class="line"><span class="cl">A69Y G4
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="ti-sn74lvc125a">TI SN74LVC125A</h3>
-<p><a href="https://www.ti.com/product/SN74LVC125A" target="_blank" rel="noopener noreffer ">This</a> is a pretty common buffer IC and I don&rsquo;t know for sure what it&rsquo;s being used for.
-I am 99% certain that the LEDs under the rotary encoder are neopixels and those can be driven directly from the ESP32.
-The only other thing that comes to mind is a &ldquo;switch&rdquo; to physically cut power to the microphones when the user has engaged the mute switch.</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">LC125A
-</span></span><span class="line"><span class="cl">TI44K
-</span></span><span class="line"><span class="cl">C237
-</span></span><span class="line"><span class="cl">9F
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="xmos-xu316">XMOS XU316</h3>
-<p>The <a href="https://www.xmos.com/download/XU316-1024-QF60A-xcore_ai-Datasheet%2826%29.pdf" target="_blank" rel="noopener noreffer ">XU316-1024-QF60A</a> is an interesting chip.
-The product name and datasheet suggest that it&rsquo;s instrumental in &ldquo;ai&rdquo; workloads 🙄 but the datasheet is a bit more concrete:</p>
-<blockquote>
-<p>The xcore.ai series is a comprehensive range of 32-bit multicore microcontrollers that brings the low latency and timing determinism of the xCORE architecture to mainstream embedded applications.
-Unlike conventional microcontrollers, xCORE multicore microcontrollers execute multiple real-time tasks simultaneously and communicate between tasks using a high speed network.
-Because xCORE multicore microcontrollers are completely deterministic when executing from internal memory, you can write software to implement functions that traditionally require dedicated hardware.</p>
-</blockquote>
-<p>This is doing real time audio processing - presumably to cancel background noise/echo - and might also be doing wake word detection.</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">XMOS
-</span></span><span class="line"><span class="cl">V16A0
-</span></span><span class="line"><span class="cl">GT2446P2
-</span></span><span class="line"><span class="cl">TMCY48.00
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="espressif-esp32-s3">Espressif ESP32-S3</h3>
-<p>This chip needs no introduction!</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">ESP32-S3
-</span></span><span class="line"><span class="cl">242024
-</span></span><span class="line"><span class="cl">R8MRK668000
-</span></span><span class="line"><span class="cl">UC00MBE423
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h3 id="the-little-guys">The little guys</h3>
-<p>All the ICs that are too small to have full/meaningful part numbers.</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">FE
-</span></span><span class="line"><span class="cl">NZ
-</span></span></code></pre></td></tr></table>
-</div>
-</div><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">f9
-</span></span><span class="line"><span class="cl">GkA
-</span></span></code></pre></td></tr></table>
-</div>
-</div><div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">CEDTI
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>Given the proximity to both the speaker connector and the <a href="#ti-tlv320aic3204" rel="">audio codec</a>, I am guessing this is an audio amplifier, probably also from TI.</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">TI 45
-</span></span><span class="line"><span class="cl">AYK
-</span></span></code></pre></td></tr></table>
-</div>
-</div>]]></description></item><item><title>Multi-Material Printing Hack for Prusa XL</title><link>https://karlquinsland.com/multi-material-printing-hack/</link><pubDate>Wed, 25 Dec 2024 00:00:00 +0000</pubDate><author>karl</author><guid>https://karlquinsland.com/multi-material-printing-hack/</guid><description><![CDATA[<!-- markdownlint-disable-file MD002 -->
-<p>In the same spirit as <a href="/extending-the-mk3s-print-area/" rel="">an earlier post</a>, here is a quick hack I used to get my <strong>dual</strong>-headed Prusa XL printer to print with <strong>three</strong> materials at once.</p>
-<p>While the technique worked, it may not be the best method, so proceed with caution.</p>
-<h2 id="the-problem">The problem</h2>
-<p>I am trying to print a part that requires two different materials at the same time: ABS and TPU.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            The shaded blue area is meant to be TPU/FLEX material. The shaded yellow area is meant to be ABS material.
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>The first complication comes from the &ldquo;unfriendly&rdquo; shape; the part is spherical and has no ideal orientation for printing without any supports.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            Grey is TPU, Green is ABS, and the Blue/Grey mix is the support material composed of interleaved PLA and TPU layers.
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>To make matters slightly more complicated, TPU is one of those filaments that likes to stick to pretty much everything; I have few good options for support material.
-The <a href="https://www.youtube.com/watch?v=5VV2fbJ0apg" target="_blank" rel="noopener noreffer "><em>least</em> sticky material</a> is PLA.</p>
-<p>So now I have a single job that requires three materials: ABS, TPU, and PLA&hellip;. but still only two print heads to work with.</p>
-<p>What to do?</p>
-<p>Usually when faced with the &ldquo;more materials than heads&rdquo; problem, the solution is to use the <a href="https://marlinfw.org/docs/gcode/M600.html" target="_blank" rel="noopener noreffer "><code>M600</code></a> gCode command to have the printer pause, eject the current material and wait for the user to load the new material.</p>
-<p>This technique is not new; it&rsquo;s widely supported and works perfectly <strong>if</strong> the materials are similar enough that the extrusion settings can be shared between them.</p>
-<p>For my part, the tool head will have to transition from <code>PLA</code> to <code>ABS</code> which means virtually every instruction in the gCode will have to change as well.</p>
-<h2 id="the-loophole">The loophole</h2>
-<p>Fortunately, the geometry for this part has a &ldquo;gap&rdquo; between the initial section where supports are needed and the internal section where the ABS material is needed.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            This is the &#39;per-layer&#39; view from the slicer with a &#39;bottom-up&#39; perspective. As before, Grey is TPU, Green is ABS, and the thin blue circle represents the topmost layer of the support material.
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>Notice that the <em>last</em> support layer (blue circle) is still a few layers away from the first ABS layer (the green section).</p>
-<p>Essentially, I do need three materials, <strong>but only two at a time</strong>.
-What a coincidence that I have a printer with two heads!</p>
-<h2 id="the-solution-hack">The <del>solution</del> hack</h2>
-<div class="details admonition warning open">
-        <div class="details-summary admonition-title">
-            <i class="icon fas fa-exclamation-triangle fa-fw" aria-hidden="true"></i>Warning<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
-        </div>
-        <div class="details-content">
-            <div class="admonition-content"><p>This is a hack and may not work for all printers or all slicers.
-Think of this more as a &ldquo;proof of concept&rdquo; than a reliable technique.
-You can likely adapt this technique to other printers but you will need to understand the gCode generated by your slicer and the firmware running on your printer.</p>
-<p>Ideally, this serves as a demonstration and inspires the development of a more robust solution; conceivably, the prusa slicer/firmware could be modified to support this use case directly with not much effort.</p>
-</div>
-        </div>
-    </div>
-<p>The solution is to lie to the slicer and tell it that I have three tool heads.
-This way, I can use correct profiles for each material and the slicer will generate the correct gCode for each material.</p>
-<p>All I have to do is post-process the gCode to pause for a manual material swap at the correct time and then replace all references to the third tool head with the second tool head after the swap.</p>
-<p>Simple, right?</p>
-<p>(yes, but not as simple as I thought)</p>
-<p>This particular part has a little over 400K lines of gCode so I&rsquo;m not going to do this by hand!
-Here&rsquo;s a quick and dirty Python script that rewrote the gCode for me:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span><span class="lnt">31
-</span><span class="lnt">32
-</span><span class="lnt">33
-</span><span class="lnt">34
-</span><span class="lnt">35
-</span><span class="lnt">36
-</span><span class="lnt">37
-</span><span class="lnt">38
-</span><span class="lnt">39
-</span><span class="lnt">40
-</span><span class="lnt">41
-</span><span class="lnt">42
-</span><span class="lnt">43
-</span><span class="lnt">44
-</span><span class="lnt">45
-</span><span class="lnt">46
-</span><span class="lnt">47
-</span><span class="lnt">48
-</span><span class="lnt">49
-</span><span class="lnt">50
-</span><span class="lnt">51
-</span><span class="lnt">52
-</span><span class="lnt">53
-</span><span class="lnt">54
-</span><span class="lnt">55
-</span><span class="lnt">56
-</span><span class="lnt">57
-</span><span class="lnt">58
-</span><span class="lnt">59
-</span><span class="lnt">60
-</span><span class="lnt">61
-</span><span class="lnt">62
-</span><span class="lnt">63
-</span><span class="lnt">64
-</span><span class="lnt">65
-</span><span class="lnt">66
-</span><span class="lnt">67
-</span><span class="lnt">68
-</span><span class="lnt">69
-</span><span class="lnt">70
-</span><span class="lnt">71
-</span><span class="lnt">72
-</span><span class="lnt">73
-</span><span class="lnt">74
-</span><span class="lnt">75
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="ch">#!/usr/bin/env -S uv run</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># /// script</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># requires-python = &#34;&gt;=3.13&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># dependencies = [</span>
-</span></span><span class="line"><span class="cl"><span class="c1">#   &#34;structlog&#34;,</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># ]</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># ///</span>
-</span></span><span class="line"><span class="cl"><span class="c1">##</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># See: https://github.com/prusa3d/Prusa-Firmware-Buddy/blob/master/lib/Marlin/Marlin/src/gcode/control/T.cpp</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># See: https://help.prusa3d.com/article/buddy-firmware-specific-g-code-commands_633112</span>
-</span></span><span class="line"><span class="cl"><span class="c1"># See: https://old.reddit.com/r/prusa3d/comments/15djlgu/change_filament_settings_mid_print_not_just_colour/ju2c37f/</span>
-</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">re</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">structlog</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">log</span> <span class="o">=</span> <span class="n">structlog</span><span class="o">.</span><span class="n">get_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">replace_t2_with_t1_after_m600</span><span class="p">(</span><span class="n">input_file</span><span class="p">,</span> <span class="n">output_file</span><span class="p">):</span>
-</span></span><span class="line"><span class="cl">    <span class="s2">&#34;&#34;&#34;
-</span></span></span><span class="line"><span class="cl"><span class="s2">    Modifies a GCode file based on the following rules:
-</span></span></span><span class="line"><span class="cl"><span class="s2">    1. Before the `M600` line, comment out any lines mentioning `T2` by adding `; HACK ;`.
-</span></span></span><span class="line"><span class="cl"><span class="s2">    2. After the `M600` line, replace all instances of `T2` with `T1` if surrounded by whitespace.
-</span></span></span><span class="line"><span class="cl"><span class="s2">    3. Lines beginning with `;` are always ignored.
-</span></span></span><span class="line"><span class="cl"><span class="s2">
-</span></span></span><span class="line"><span class="cl"><span class="s2">    Args:
-</span></span></span><span class="line"><span class="cl"><span class="s2">    - input_file: Path to the input GCode file.
-</span></span></span><span class="line"><span class="cl"><span class="s2">    - output_file: Path to the output GCode file.
-</span></span></span><span class="line"><span class="cl"><span class="s2">    &#34;&#34;&#34;</span>
-</span></span><span class="line"><span class="cl">    <span class="n">m600_found</span> <span class="o">=</span> <span class="kc">False</span>
-</span></span><span class="line"><span class="cl">    <span class="n">line_number</span> <span class="o">=</span> <span class="mi">0</span>
-</span></span><span class="line"><span class="cl">    <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&#34;Starting...&#34;</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">input_file</span><span class="p">,</span> <span class="s2">&#34;r&#34;</span><span class="p">)</span> <span class="k">as</span> <span class="n">infile</span><span class="p">,</span> <span class="nb">open</span><span class="p">(</span><span class="n">output_file</span><span class="p">,</span> <span class="s2">&#34;w&#34;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">infile</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">            <span class="c1"># For debugging / status</span>
-</span></span><span class="line"><span class="cl">            <span class="n">line_number</span> <span class="o">+=</span> <span class="mi">1</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">            <span class="c1"># Skip lines starting with a semicolon</span>
-</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&#34;;&#34;</span><span class="p">):</span>
-</span></span><span class="line"><span class="cl">                <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">                <span class="k">continue</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">            <span class="c1"># For all intents and purposes, tool head 3 (T2) does not exist.</span>
-</span></span><span class="line"><span class="cl">            <span class="c1"># AT the time of the &#34;color swap&#34;, The second tool head stops being a PLA and starts being an ABS tool.</span>
-</span></span><span class="line"><span class="cl">            <span class="c1"># This means that we need to comment out all mentions of T2 before the swap and</span>
-</span></span><span class="line"><span class="cl">            <span class="c1">#   after the swap, re-write everything.</span>
-</span></span><span class="line"><span class="cl">            <span class="c1"># In all cases, we should never refer to T2.</span>
-</span></span><span class="line"><span class="cl">            <span class="c1">##</span>
-</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="ow">not</span> <span class="n">m600_found</span><span class="p">:</span>
-</span></span><span class="line"><span class="cl">                <span class="c1"># Check for M600 line</span>
-</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="k">match</span><span class="p">(</span><span class="sa">r</span><span class="s2">&#34;^M600$&#34;</span><span class="p">,</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()):</span>
-</span></span><span class="line"><span class="cl">                    <span class="n">m600_found</span> <span class="o">=</span> <span class="kc">True</span>
-</span></span><span class="line"><span class="cl">                    <span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&#34;&#39;M600&#39; found!&#34;</span><span class="p">,</span> <span class="n">line_number</span><span class="o">=</span><span class="n">line_number</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">                    <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">                    <span class="k">continue</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">                <span class="c1"># Comment out lines mentioning T2 before M600</span>
-</span></span><span class="line"><span class="cl">                <span class="k">if</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">&#34;\bT2\b&#34;</span><span class="p">,</span> <span class="n">line</span><span class="p">):</span>
-</span></span><span class="line"><span class="cl">                    <span class="n">line</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&#34;; HACK ;</span><span class="si">{</span><span class="n">line</span><span class="si">}</span><span class="s2">&#34;</span>
-</span></span><span class="line"><span class="cl">                    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span>
-</span></span><span class="line"><span class="cl">                        <span class="s2">&#34;Removing mention of Tool Head 3 (t2)&#34;</span><span class="p">,</span> <span class="n">line_number</span><span class="o">=</span><span class="n">line_number</span>
-</span></span><span class="line"><span class="cl">                    <span class="p">)</span>
-</span></span><span class="line"><span class="cl">                <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">                <span class="k">continue</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">            <span class="c1"># Replace &#39;T2&#39; with &#39;T1&#39; only if surrounded by whitespace after M600</span>
-</span></span><span class="line"><span class="cl">            <span class="n">modified_line</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&#34;\bT2\b&#34;</span><span class="p">,</span> <span class="s2">&#34;T1&#34;</span><span class="p">,</span> <span class="n">line</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">            <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">modified_line</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">input_file</span> <span class="o">=</span> <span class="s2">&#34;your_gcode_file_here.gcode&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="n">output_file</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&#34;MOD.</span><span class="si">{</span><span class="n">input_file</span><span class="si">}</span><span class="s2">&#34;</span>
-</span></span><span class="line"><span class="cl"><span class="n">replace_t2_with_t1_after_m600</span><span class="p">(</span><span class="n">input_file</span><span class="p">,</span> <span class="n">output_file</span><span class="p">)</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&#34;Done!&#34;</span><span class="p">)</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>I ran that script, loaded the modified gCode into the printer, and&hellip;was not able to fool the printer.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            Prusa XL refusing to start the print because it knows I&#39;m trying to cheat.
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>The printer was - somehow - aware that the gCode wanted three heads with three distinct materials and refused to start the print until I added a third head.</p>
-<p>As it turns out, that python script isn&rsquo;t quite enough to fool the printer.
-I&rsquo;ll spare you from the many iterative attempts to get this working and say that the following additional optimizations/deletions were necessary:</p>
-<h3 id="manual-fix-1-remove-all-routines-for-the-third-tool-head">Manual fix 1: Remove all routines for the third tool head</h3>
-<p>Somewhere early on in the gCode is a section that looks like this</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-gdscript3" data-lang="gdscript3"><span class="line"><span class="cl"><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="p">;</span> <span class="n">purge</span> <span class="n">third</span> <span class="k">tool</span>
-</span></span><span class="line"><span class="cl"><span class="p">;</span>
-</span></span><span class="line"><span class="cl"><span class="n">G1</span> <span class="n">F24000</span>
-</span></span><span class="line"><span class="cl"><span class="n">P0</span> <span class="n">S1</span> <span class="n">L2</span> <span class="n">D0</span><span class="p">;</span> <span class="n">park</span> <span class="n">the</span> <span class="k">tool</span>
-</span></span><span class="line"><span class="cl"><span class="n">M109</span> <span class="n">T2</span> <span class="n">S255</span>
-</span></span><span class="line"><span class="cl"><span class="n">T2</span> <span class="n">S1</span> <span class="n">L0</span> <span class="n">D0</span><span class="p">;</span> <span class="n">pick</span> <span class="n">the</span> <span class="k">tool</span>
-</span></span><span class="line"><span class="cl"><span class="n">G92</span> <span class="n">E0</span> <span class="p">;</span> <span class="n">reset</span> <span class="n">extruder</span> <span class="n">position</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">M104</span><span class="o">.</span><span class="mi">1</span> <span class="n">T0</span> <span class="n">P13</span> <span class="n">Q13</span> <span class="n">S230</span>
-</span></span><span class="line"><span class="cl"><span class="n">G0</span> <span class="n">X210</span> <span class="n">Y</span><span class="o">-</span><span class="mi">7</span> <span class="n">Z10</span> <span class="n">F24000</span> <span class="p">;</span> <span class="n">move</span> <span class="n">close</span> <span class="n">to</span> <span class="n">the</span> <span class="n">sheet</span><span class="s1">&#39;s edge</span>
-</span></span><span class="line"><span class="cl"><span class="n">G0</span> <span class="n">E30</span> <span class="n">X220</span> <span class="n">Z0</span><span class="o">.</span><span class="mi">2</span> <span class="n">F170</span> <span class="p">;</span> <span class="n">purge</span> <span class="k">while</span> <span class="n">moving</span> <span class="n">towards</span> <span class="n">the</span> <span class="n">sheet</span>
-</span></span><span class="line"><span class="cl"><span class="n">G0</span> <span class="n">X250</span> <span class="n">E9</span> <span class="n">F800</span> <span class="p">;</span> <span class="k">continue</span> <span class="n">purging</span> <span class="ow">and</span> <span class="n">wipe</span> <span class="n">the</span> <span class="n">nozzle</span>
-</span></span><span class="line"><span class="cl"><span class="n">G0</span> <span class="n">X253</span> <span class="n">Z0</span><span class="o">.</span><span class="mi">05</span> <span class="n">F8000</span> <span class="p">;</span> <span class="n">wipe</span><span class="p">,</span> <span class="n">move</span> <span class="n">close</span> <span class="n">to</span> <span class="n">the</span> <span class="n">bed</span>
-</span></span><span class="line"><span class="cl"><span class="n">G0</span> <span class="n">X256</span> <span class="n">Z0</span><span class="o">.</span><span class="mi">2</span> <span class="n">F8000</span> <span class="p">;</span> <span class="n">wipe</span><span class="p">,</span> <span class="n">move</span> <span class="n">quickly</span> <span class="n">away</span> <span class="n">from</span> <span class="n">the</span> <span class="n">bed</span>
-</span></span><span class="line"><span class="cl"><span class="n">G1</span> <span class="n">E</span><span class="o">-</span><span class="mf">1.05</span> <span class="n">F2400</span> <span class="p">;</span> <span class="n">retract</span>
-</span></span><span class="line"><span class="cl"> <span class="p">;</span> <span class="n">update</span> <span class="n">slicer</span> <span class="n">internal</span> <span class="n">retract</span> <span class="n">variable</span>
-</span></span><span class="line"><span class="cl"><span class="n">G92</span> <span class="n">E0</span> <span class="p">;</span> <span class="n">reset</span> <span class="n">extruder</span> <span class="n">position</span>
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl"><span class="n">M104</span> <span class="n">S100</span> <span class="n">T2</span>
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>This can be removed from the gCode as there is no physical 3rd head to purge or park, heat up, probe&hellip;etc.</p>
-<p>If the python script naïvely replaced <em>all</em> instances of <code>T2</code> with <code>T1</code>, this section would be left in the gCode and would waste time running the second print head through the same routine twice.</p>
-<h3 id="manual-fix-2-remove-all-metadata">Manual fix 2: Remove all metadata</h3>
-<p>This one took quite a few trial/error attempts to figure out.
-At the tail end of the unmodified gCode there are some &ldquo;shutdown&rdquo; commands and then a ton of metadata:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;... many many lines omitted ...&gt;
-</span></span><span class="line"><span class="cl">; turn off extruder heaters
-</span></span><span class="line"><span class="cl"> M104 T0 S0
-</span></span><span class="line"><span class="cl"> M104 T1 S0
-</span></span><span class="line"><span class="cl"> M104 T2 S0
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">&lt;...&gt;
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">; objects_info = {&#34;objects&#34;:&lt;...&gt;}
-</span></span><span class="line"><span class="cl">; filament used [mm] = 24022.62, 2012.80, 3975.01
-</span></span><span class="line"><span class="cl">; filament used [cm3] = 57.78, 4.84, 9.56
-</span></span><span class="line"><span class="cl">&lt;...&gt;
-</span></span><span class="line"><span class="cl">
-</span></span><span class="line"><span class="cl">; prusaslicer_config = begin
-</span></span><span class="line"><span class="cl">&lt;...&gt;
-</span></span><span class="line"><span class="cl">; filament_type = FLEX;PLA;ABS
-</span></span><span class="line"><span class="cl">&lt;...&gt;
-</span></span><span class="line"><span class="cl">; filament_colour = #408080;#FF8000;#FFF2EC
-</span></span><span class="line"><span class="cl">&lt;...&gt;
-</span></span><span class="line"><span class="cl">; prusaslicer_config = end
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>As best as I can tell, there&rsquo;s a few hundred lines that encode some basic metadata about the part(s) and the filament(s) used / print times and the slicer specific configuration information.
-If you look closely, you can see that a fair number of properties have three values: one for each tool head:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-fallback" data-lang="fallback"><span class="line"><span class="cl">&lt;...&gt;
-</span></span><span class="line"><span class="cl">; filament_type = FLEX;PLA;ABS
-</span></span><span class="line"><span class="cl">&lt;...&gt;
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>I spent a few iterations trying to identify what each property did and if it was safe to drop the third value but wasn&rsquo;t making a ton of progress.
-Eventually I just decided to drop <em>all</em> of the metadata&hellip; and that worked!</p>
-<p>Initially I didn&rsquo;t think that the printer firmware would be reading <em>ANY</em> of the <strong>commented out</strong> sections of the file but I guess this makes sense for metadata and anything else that&rsquo;s not a gCode instruction.</p>
-<p>As best as I can tell, nothing contained in the metadata sections changes how the actual print is executed.
-All of the values are for the slicer UI and - in some cases - for the printer firmware to sanity check the gCode before starting the print.</p>
-<p>I could be wrong about this but I don&rsquo;t have the time/patience/resources to properly test this. The gCode works well enough for my needs without the metadata so I&rsquo;m content to move on to the next steps on this project.</p>
-<p>If I am wrong about what the metadata sections do and it turns out that they do help refine/improve how the printer firmware processes instructions&hellip;please do let me know!</p>
-<h2 id="tldr">TL;DR</h2>
-<p>If you have a need to print with more materials than you have tool heads, you <strong>might</strong> be able to trick the slicer/printer into re-configuring a print head mid-print.</p>
-<p>To do this, get the slicer to generate valid and correct gCode for each material/tool head combination as if you had an appropriately configured printer.
-After the gCode has been generated, map every &ldquo;virtual&rdquo; too head to a real tool head and remove any additional references to the virtual tool heads.</p>
-]]></description></item><item><title>AliExpress 11.11 Sale Teardowns (2024 edition)</title><link>https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/</link><pubDate>Sun, 01 Dec 2024 00:00:00 +0000</pubDate><author>karl</author><guid>https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/</guid><description><![CDATA[<!-- markdownlint-disable-file MD024 -->
-<h1 id="11-11-day-teardowns-2024-edition">11-11 day teardowns (2024 edition)</h1>
-<p>I guess this is becoming a <a href="http://localhost:1313/categories/11.11-sale/" target="_blank" rel="noopener noreffer ">tradition</a> now?</p>
-<p>During China&rsquo;s Single&rsquo;s Day sale on AliExpress, I bought various gadgets - both for projects and out of curiosity.
-Rather than write separate posts, here&rsquo;s a collection of mini teardowns showing what&rsquo;s inside each item.</p>
-<p>Previous years:</p>
-<ul>
-<li><a href="/aliexpress-11-11-sale-teardowns/" rel="">2023</a></li>
-</ul>
-<h2 id="tuya-zigbee-35-inch-smart-wall-switch">Tuya Zigbee 3.5 Inch Smart Wall Switch</h2>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p><a href="https://www.aliexpress.us/item/3256807444250563.html?gatewayAdapt=glo2usa" target="_blank" rel="noopener noreffer ">non-affiliate link</a></p>
-<p>I&rsquo;m always looking for a better scene controller/switch/Home Assistant interface.
-I was curious about which chip they used for the full graphics display and was hoping for an easily hackable Android device.
-Unfortunately, no such luck with this.</p>
-<p>The main application processor is <a href="https://linux-sunxi.org/F1C100s" target="_blank" rel="noopener noreffer "><code>F1C100s</code></a> which is a low-cost, low-power, ARM9-based SoC.
-It might be able to run a custom Linux build that could draw a custom UI, but it&rsquo;s not going to be as easy as rooting an Android device.</p>
-<p>There’s not much in the box, just the switch and a manual.
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-</p>
-<p>It&rsquo;s a pretty standard &ldquo;power supply and relays in the back, touch screen in the front&rdquo; design.
-This time, though, there&rsquo;s an <em>exposed</em> programming header!?</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            Note the &#39;fire wire&#39; label for mains input... :D
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>A few screws later, the back panel comes off to reveal some power regulation/switching components and the Zigbee module.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>They achieved the &ldquo;mushy, then clicky&rdquo; feel of the buttons by using a rubber insert around the tactile switches.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>The power supply doesn&rsquo;t look too bad.
-Clearance looks OK, there is a fuse, and the soldering is decent.
-I don&rsquo;t know how well isolated that transformer is, but it&rsquo;s probably fine.</p>
-<p><figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            J2 looks like it might be DC input or possibly RS485 for a future model?
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-</p>
-<h2 id="ueetop-175w-gan-usb-c-charger-bk-112d">Ueetop 175W GaN USB C Charger (BK-112D)</h2>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p><a href="https://www.aliexpress.us/item/3256807203418058.html?gatewayAdapt=glo2usa" target="_blank" rel="noopener noreffer ">non-affiliate link</a></p>
-<p>As the USB-C PD standard matures and GaN technology makes high-power chargers cheaper, it&rsquo;s fun to see the internals get more complex but also more integrated.
-This was less than $15 shipped which is <em>insane</em> for a 100W+ charger unless they cut corners somewhere&hellip;</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            Hey, it came with a mains cord and it&#39;s even correct for my country!
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>There are a LOTS of chips holding things together; it&rsquo;s almost impossible to open this without breaking at least one!
-Consider this a warning: you will be doing a destructive teardown if you open this!</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            Look at those PCB traces going to the output. Easily 5mm wide!
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>As this is a <a href="/tags/two-minute-teardown/" rel="">#TwoMinuteTeardown</a>, I&rsquo;m not going to remove all the silastic glue on the power supply module nor will I check the ripple in the output.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>Other than that, it&rsquo;s about what you&rsquo;d expect from a modern USB-C charger that isn&rsquo;t hyper-compact; beefy looking AC-to-DC converter, a few big caps and then the USB-C PD controller.</p>
-<p>Between each group of ports is a series of passives, some beefy looking power MOSFETs and a protocol negotiation IC.</p>
-<p><figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-</p>
-<h3 id="notable-ics">Notable ICs</h3>
-<p><a href="https://ismartware.com/article-1-2.html" target="_blank" rel="noopener noreffer ">SW3516</a></p>
-<p><a href="https://www.lcsc.com/product-detail/USB-Converters_Shenzhen-Fuman-Elec-XPD977D30A_C2892062.html" target="_blank" rel="noopener noreffer ">Shenzhen Fuman Elec XPD977D30A</a></p>
-<p><a href="https://www.lcsc.com/product-detail/Microcontroller-Units-MCUs-MPUs-SOCs_CHIPSEA-CSU32P10-SOP8_C914988.html" target="_blank" rel="noopener noreffer ">CHIPSEA CSU32P10</a></p>
-<h2 id="generic-ozone-generator-xd001">Generic Ozone generator (XD001)</h2>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p><a href="https://www.aliexpress.us/item/3256805759188983.html?gatewayAdapt=glo2usa" target="_blank" rel="noopener noreffer ">non-affiliate link</a></p>
-<p>There’s not much in the box other than the generator and a manual.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>It’s easy to take apart with no hidden screws!</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>Inside, you’ll find about what you’d expect: a potted HV module, fan, controller, and a battery.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>Instead of the cheaper &ldquo;carbon needle&rdquo; ozone generators, this one uses a ceramic plate.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            Such a pretty glow!
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            Micro USB is INEXCUSABLE in 2024!
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>Annoyingly, they used a micro USB port for charging.
-This is <em>inexcusable</em> in 2024.
-The silk screen on the PCB indicates that the design is from late 2020, which would be slightly more acceptable if USB-C wasn’t already the standard by then.
-Furthermore, this device doesn’t need any complicated USB-C PD features, so it’s not like they’d have to worry about the extra cost or complexity of a USB-C controller.
-Really, all they needed was <em>two</em> (very important, <a href="https://hackaday.com/2019/07/16/exploring-the-raspberry-pi-4-usb-c-issue-in-depth/" target="_blank" rel="noopener noreffer "><strong>NOT</strong> ONE</a>) 5.1k resistors and a USB-C port and they could have been future proofed!</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>They scrubbed the markings off the SOIC16 CPU. The rest of the components are about what you’d expect for managing lithium batteries, switching the fan, and driving the boost converter for the ozone generator.</p>
-<p>It appears another version of this device also features a buzzer.
-I&rsquo;m not sure what for, but the silk screen clearly shows a spot for it.</p>
-<p><figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-</p>
-<h2 id="btf-light-sp530e-led-controller">BTF Light SP530E LED Controller</h2>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p><a href="https://www.aliexpress.us/item/3256806286614116.html?gatewayAdapt=glo2usa" target="_blank" rel="noopener noreffer ">non-affiliate link</a></p>
-<p>This is the first of a few LED controllers I bought to see if they are compatible with <a href="https://kno.wled.ge/" target="_blank" rel="noopener noreffer ">WLED</a> or ESPHome.
-I have some <a href="#side-note-the-ossha-community-is-being-heard" rel="">thoughts</a> on the state of the LED controller market, but to summarize: it&rsquo;s <em>getting better</em>!</p>
-<p>The packaging is very nondescript, containing just the controller and a manual.</p>
-<p><figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-</p>
-<p>They did include a screwdriver, which&hellip; makes me wonder how many people are buying the individual components to DIY a LED lighting solution but also don&rsquo;t already have a screwdriver?</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>The PCB is pretty simple and, thankfully, is nothing more than an ESP32 and a level shifter.
-It also includes a small condenser microphone for the music reactive mode.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>The MOSFETs look robust enough to handle a decent amount of current, and there&rsquo;s a decent amount of via stitching around the power traces, so it <em>should</em> be able to handle the heat.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            They labeled the programming header. ❤️
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<h3 id="notable-ics-1">Notable ICs</h3>
-<p><a href="https://www.lcsc.com/product-detail/Microcontrollers-MCU-MPU-SOC_Espressif-Systems-ESP32-C3FN4_C2848860.html" target="_blank" rel="noopener noreffer ">ESP32-C3</a></p>
-<p><a href="https://www.lcsc.com/product-detail/74-Series_TM-Shenzhen-Titan-Micro-Elec-TM74HC245_C84121.html" target="_blank" rel="noopener noreffer ">TM(Shenzhen Titan Micro Elec) TM74HC245</a></p>
-<h2 id="gledepto-gl-c-015wl-d-led-controller">Gledepto GL-C-015WL-D LED Controller</h2>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p><a href="https://www.aliexpress.us/item/3256807239400011.html?gatewayAdapt=glo2usa" target="_blank" rel="noopener noreffer ">non-affiliate link</a></p>
-<p>As with the other device, this controller also has bare-bones packaging.</p>
-<p>No screwdriver needed because all the terminals have their own locking lever!</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>Happy to see an ESP32 module in here&hellip; on its own PCB? Complete with a micro USB port for flashing?!?</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>Yep, the ESP32 is on a separate PCB that&rsquo;s connected to the main board via a header.
-The silk screen on the PCB makes me think that this was <em>initially</em> developed for an ESP8266 but then they added the header for the ESP32 module late(?) in design.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>The silk screen is really well done; everything is labeled well.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            Really happy to see that the GPIOs are labeled... for both the ESP32 and 8266 variant!
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>Because this is an &ldquo;addressable&rdquo; LED controller, there&rsquo;s not much to look at.
-The GPIO from the ESP goes more or less directly to the output pins.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>And in case there was any doubt, the back of the PCB makes it super clear that this PCB <em>can</em> be used with an ESP8266 or ESP32.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<h2 id="smlight-a1-slwf-03-led-controller">SMLight A1-SLWF-03 LED Controller</h2>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p><a href="https://www.aliexpress.us/item/3256805957696665.html?gatewayAdapt=glo2usa" target="_blank" rel="noopener noreffer ">non-affiliate link</a></p>
-<p>I saved the <em>best</em> for last!
-This LED controller <em>really</em> did surprise me with how open it is!</p>
-<p>They&rsquo;re not putting a generic &ldquo;ESP32 powered&rdquo; message on the label leaving the reader to read between the lines / infer that the device can be flashed with alternate firmware.</p>
-<p>They&rsquo;re straight up saying so!
-The label has the GPIO pins clearly labeled.
-It uses USB-C for power and flashing.
-The USB port is <em>modern</em> unlike <a href="#generic-ozone-generator-xd001" rel="">other</a> devices I&rsquo;ve <a href="#gledepto-gl-c-015wl-d-led-controller" rel="">shown</a> in this post.
-The USB port can also be used for programming and isn&rsquo;t hidden!</p>
-<p>Here&rsquo;s to hoping that they release a version for analog LED strips! 🤞</p>
-<p><figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            🇺🇦
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-</p>
-<h3 id="side-note-the-ossha-community-is-being-heard">side note: the OSS/HA community is being heard</h3>
-<p>Over the past few years, I&rsquo;ve been scouring AliExpress to find the latest and greatest in LED controllers and every year I&rsquo;ve been disappointed.
-But over the last year or so, I&rsquo;ve noticed a <em>huge</em> uptick in the number of controllers that are <em>actually</em> compatible with Home Assistant and other open-source home automation systems.</p>
-<p>In the beginning, they were all ESP8266 based and trivial to reverse engineer and flash.
-Then they started using TuYa intermediate MCUs which were a bit more tedious to reverse engineer but still possible if you were willing to put in the effort.</p>
-<p>Now, they&rsquo;re using ESP32 based chips and going out of their way to LABEL which GPIOs go to which pin(s) and to generally make it TRIVIAL to flash WLED or ESPHome or whatever you want.</p>
-<p>This means some savvy manufacturers are paying attention and recognizing the growing hobbyist market for these devices and are catering to them.
-There&rsquo;s somebody out there that&rsquo;s not going to force their garbage app/api on you and is going to let you do whatever you want with the device you bought.
-This was UNHEARD OF just a few years ago and I&rsquo;m <em>so</em> happy to see it happening now!</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            This is such a victory for the DIY/HA/OSS community!
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<h2 id="g3061-pd65w-mini-hot-plate">G3061 PD65W Mini Hot Plate</h2>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p><a href="https://www.aliexpress.us/item/3256806193753913.html?gatewayAdapt=glo2usa" target="_blank" rel="noopener noreffer ">non-affiliate link</a></p>
-<p>And the winner of the &ldquo;feels most like a hand-built prototype&rdquo; award goes to&hellip; this thing!</p>
-<p>Normally I don&rsquo;t like it when screws are hidden under labels / stickers&hellip; but in this case, the &ldquo;sticker&rdquo; is a rubber foot that doesn&rsquo;t even &ldquo;hide&rdquo; the screws.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            Those lumps under the rubber mat are the screws holding the case together.
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>Looking from the side, the construction becomes pretty clear; it&rsquo;s probably just using a PCB for the heating element and the stacked PCBs separated with little brass standoffs is for thermal isolation.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>USB-C for power is <em>always</em> a good sign.
-Other than that, a basic <a href="https://www.mcu.com.cn/en/" target="_blank" rel="noopener noreffer ">CMSemicon</a> IC runs the show.</p>
-<p>The OLED screen module is for sure one of those prototype modules meant for hobbyists!</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            The use of threaded inserts for nuts just screams &#39;prototype&#39; to me. Nothing wrong with that, just makes me smile.
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>As expected, the heating element is just PCB traces on an aluminum substrate PCB.
-Cheap and effective!</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>If anybody needs the instructions for this, I scanned a copy and you can get it from <a href="
-
-
-https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/files/07_hotplate/g3601-instructions.pdf
-
-
-" rel="">here</a>.</p>
-<h2 id="generic-usb-c-dock-w-lcd">Generic USB-C Dock w/ LCD</h2>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p><a href="https://www.aliexpress.us/item/3256806850754746.html?gatewayAdapt=glo2usa" target="_blank" rel="noopener noreffer ">non-affiliate link</a></p>
-<p>USB-C &ldquo;expansion&rdquo; docs are a dime a dozen now.
-This caught my attention because of the LCD display on the side.
-What are the odds that it presents as a second display using <a href="https://www.displayport.org/displayport-over-usb-c/" target="_blank" rel="noopener noreffer ">display port tunneling</a> via usb-alt mode?</p>
-<p>There are no screws, just clips.</p>
-<p><figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-</p>
-<p>It looks like a pretty straightforward de-mux and breakout PCB.
-The display is an isolated / standalone component that&rsquo;s linked to the main PCB with just 4 wires.
-What are the odds that it&rsquo;s hanging off a USB hub?</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            I&#39;m not exactly sure why they made the USB-C &#34;tail&#34; detachable.
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>The silk screen markings make me think that the &ldquo;internal&rdquo; name for this product is <code>K0108-1D</code>.
-Interesting that the <code>HUB</code> PCB has a date code almost a full <em>year</em> after the <code>LCD</code> PCB..
-Also worth noting; the instructions that came with the device link to the same shady <code>key123.vip</code> site that the <a href="#ajazz-akp03e-stream-deck-clone" rel="">ajazz</a> used so there&rsquo;s <em>definitely</em> some sort of relationship between the two but I&rsquo;m not sure what it is.</p>
-<p><figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-</p>
-<p>Annoyingly, they lasered off the markings on the display module.
-I don&rsquo;t have a clip for the eeprom, but I bet that there&rsquo;d be at least a few interesting strings in there :D.</p>
-<p><figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            I wonder what SW1 is used for...
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            Nothing much on the under side of the USB-Dock PCB.
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-</p>
-<h3 id="usb-details">USB details</h3>
-<p>After seeing that the LCD is just a standalone module, I wanted to see how it presented itself to the host.
-As expected, it&rsquo;s just a USB hub with a few devices hanging off it.
-The display module is almost certainly the HID device.</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">❯ lsusb -vvv -t &gt; pre-dock
-</span></span><span class="line"><span class="cl">❯ lsusb -vvv -t &gt; pre-dock
-</span></span><span class="line"><span class="cl">❯ lsusb -vvv -t &gt; post-dock
-</span></span><span class="line"><span class="cl">❯ diff pre-dock post-dock
-</span></span><span class="line"><span class="cl">3a4,15
-</span></span><span class="line"><span class="cl">&gt;     <span class="p">|</span>__ Port 003: Dev 006, If 0, <span class="nv">Class</span><span class="o">=</span>Hub, <span class="nv">Driver</span><span class="o">=</span>hub/4p, 480M
-</span></span><span class="line"><span class="cl">&gt;         ID 1a40:0801 Terminus Technology Inc.
-</span></span><span class="line"><span class="cl">&gt;         /sys/bus/usb/devices/1-3  /dev/bus/usb/001/006
-</span></span><span class="line"><span class="cl">&gt;         <span class="p">|</span>__ Port 003: Dev 007, If 0, <span class="nv">Class</span><span class="o">=</span>Hub, <span class="nv">Driver</span><span class="o">=</span>hub/4p, 480M
-</span></span><span class="line"><span class="cl">&gt;             ID 1a40:0801 Terminus Technology Inc.
-</span></span><span class="line"><span class="cl">&gt;             /sys/bus/usb/devices/1-3.3  /dev/bus/usb/001/007
-</span></span><span class="line"><span class="cl">&gt;             <span class="p">|</span>__ Port 002: Dev 009, If 0, <span class="nv">Class</span><span class="o">=</span>Human Interface Device, <span class="nv">Driver</span><span class="o">=</span>usbhid, 480M
-</span></span><span class="line"><span class="cl">&gt;                 ID 5548:6667
-</span></span><span class="line"><span class="cl">&gt;                 /sys/bus/usb/devices/1-3.3.2  /dev/bus/usb/001/009
-</span></span><span class="line"><span class="cl">&gt;         <span class="p">|</span>__ Port 004: Dev 008, If 0, <span class="nv">Class</span><span class="o">=</span>Vendor Specific Class, <span class="nv">Driver</span><span class="o">=</span>r8152, 480M
-</span></span><span class="line"><span class="cl">&gt;             ID 0bda:8152 Realtek Semiconductor Corp. RTL8152 Fast Ethernet Adapter
-</span></span><span class="line"><span class="cl">&gt;             /sys/bus/usb/devices/1-3.4  /dev/bus/usb/001/008
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>And here&rsquo;s <code>dmesg</code> with the screen <em>not</em> attached versus <em>attached</em>:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span><span class="lnt">11
-</span><span class="lnt">12
-</span><span class="lnt">13
-</span><span class="lnt">14
-</span><span class="lnt">15
-</span><span class="lnt">16
-</span><span class="lnt">17
-</span><span class="lnt">18
-</span><span class="lnt">19
-</span><span class="lnt">20
-</span><span class="lnt">21
-</span><span class="lnt">22
-</span><span class="lnt">23
-</span><span class="lnt">24
-</span><span class="lnt">25
-</span><span class="lnt">26
-</span><span class="lnt">27
-</span><span class="lnt">28
-</span><span class="lnt">29
-</span><span class="lnt">30
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">usb 1-3: new high-speed USB device number <span class="m">23</span> using xhci_hcd
-</span></span><span class="line"><span class="cl">usb 1-3: New USB device found, <span class="nv">idVendor</span><span class="o">=</span>1a40, <span class="nv">idProduct</span><span class="o">=</span>0801, <span class="nv">bcdDevice</span><span class="o">=</span> 1.00
-</span></span><span class="line"><span class="cl">usb 1-3: New USB device strings: <span class="nv">Mfr</span><span class="o">=</span>0, <span class="nv">Product</span><span class="o">=</span>1, <span class="nv">SerialNumber</span><span class="o">=</span><span class="m">0</span>
-</span></span><span class="line"><span class="cl">usb 1-3: Product: USB 2.0 Hub
-</span></span><span class="line"><span class="cl">hub 1-3:1.0: USB hub found
-</span></span><span class="line"><span class="cl">hub 1-3:1.0: <span class="m">4</span> ports detected
-</span></span><span class="line"><span class="cl">usb 1-3: USB disconnect, device number <span class="m">23</span>
-</span></span><span class="line"><span class="cl">usb 1-3-port3: attempt power cycle
-</span></span><span class="line"><span class="cl">usb 1-3: new high-speed USB device number <span class="m">28</span> using xhci_hcd
-</span></span><span class="line"><span class="cl">usb 1-3: New USB device found, <span class="nv">idVendor</span><span class="o">=</span>1a40, <span class="nv">idProduct</span><span class="o">=</span>0801, <span class="nv">bcdDevice</span><span class="o">=</span> 1.00
-</span></span><span class="line"><span class="cl">usb 1-3: New USB device strings: <span class="nv">Mfr</span><span class="o">=</span>0, <span class="nv">Product</span><span class="o">=</span>1, <span class="nv">SerialNumber</span><span class="o">=</span><span class="m">0</span>
-</span></span><span class="line"><span class="cl">usb 1-3: Product: USB 2.0 Hub
-</span></span><span class="line"><span class="cl">hub 1-3:1.0: USB hub found
-</span></span><span class="line"><span class="cl">hub 1-3:1.0: <span class="m">4</span> ports detected
-</span></span><span class="line"><span class="cl">usb 1-3.3: new high-speed USB device number <span class="m">29</span> using xhci_hcd
-</span></span><span class="line"><span class="cl">usb 1-3.3: New USB device found, <span class="nv">idVendor</span><span class="o">=</span>1a40, <span class="nv">idProduct</span><span class="o">=</span>0801, <span class="nv">bcdDevice</span><span class="o">=</span> 1.00
-</span></span><span class="line"><span class="cl">usb 1-3.3: New USB device strings: <span class="nv">Mfr</span><span class="o">=</span>0, <span class="nv">Product</span><span class="o">=</span>1, <span class="nv">SerialNumber</span><span class="o">=</span><span class="m">0</span>
-</span></span><span class="line"><span class="cl">usb 1-3.3: Product: USB 2.0 Hub
-</span></span><span class="line"><span class="cl">hub 1-3.3:1.0: USB hub found
-</span></span><span class="line"><span class="cl">hub 1-3.3:1.0: <span class="m">4</span> ports detected
-</span></span><span class="line"><span class="cl">usb 1-3.4: new high-speed USB device number <span class="m">30</span> using xhci_hcd
-</span></span><span class="line"><span class="cl">usb 1-3.4: New USB device found, <span class="nv">idVendor</span><span class="o">=</span>0bda, <span class="nv">idProduct</span><span class="o">=</span>8152, <span class="nv">bcdDevice</span><span class="o">=</span>20.00
-</span></span><span class="line"><span class="cl">usb 1-3.4: New USB device strings: <span class="nv">Mfr</span><span class="o">=</span>1, <span class="nv">Product</span><span class="o">=</span>2, <span class="nv">SerialNumber</span><span class="o">=</span><span class="m">3</span>
-</span></span><span class="line"><span class="cl">usb 1-3.4: Product: USB 10/100 LAN
-</span></span><span class="line"><span class="cl">usb 1-3.4: Manufacturer: Realtek
-</span></span><span class="line"><span class="cl">usb 1-3.4: SerialNumber: 00E04C360C56
-</span></span><span class="line"><span class="cl">r8152-cfgselector 1-3.4: reset high-speed USB device number <span class="m">30</span> using xhci_hcd
-</span></span><span class="line"><span class="cl">r8152 1-3.4:1.0: skip request firmware
-</span></span><span class="line"><span class="cl">r8152 1-3.4:1.0 eth0: v1.12.13
-</span></span><span class="line"><span class="cl">r8152 1-3.4:1.0 enp5s0f1u3u4: renamed from eth0
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>And with the screen attached, there&rsquo;s some additional lines as another device is enumerated:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">usb 1-3.3.2: new high-speed USB device number <span class="m">34</span> using xhci_hcd
-</span></span><span class="line"><span class="cl">usb 1-3.3.2: New USB device found, <span class="nv">idVendor</span><span class="o">=</span>5548, <span class="nv">idProduct</span><span class="o">=</span>6667, <span class="nv">bcdDevice</span><span class="o">=</span> 3.00
-</span></span><span class="line"><span class="cl">usb 1-3.3.2: New USB device strings: <span class="nv">Mfr</span><span class="o">=</span>1, <span class="nv">Product</span><span class="o">=</span>2, <span class="nv">SerialNumber</span><span class="o">=</span><span class="m">3</span>
-</span></span><span class="line"><span class="cl">usb 1-3.3.2: Product: 997F1
-</span></span><span class="line"><span class="cl">usb 1-3.3.2: Manufacturer: <span class="m">997</span>
-</span></span><span class="line"><span class="cl">usb 1-3.3.2: SerialNumber: 997F11193737
-</span></span><span class="line"><span class="cl">on usb-0000:05:00.1-3.3.2/input0
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="ajazz-akp03e-stream-deck-clone">Ajazz AKP03E (Stream Deck clone)</h2>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p><a href="https://www.aliexpress.us/item/3256807320371570.html?gatewayAdapt=glo2usa" target="_blank" rel="noopener noreffer ">non-affiliate link</a></p>
-<p>This is a clone/knockoff of the Elgato Stream Deck products.
-I was curious to see if they did anything differently than the original for the internal hardware.
-Turns out, no.
-It&rsquo;s still a basic LCD screen behind a matrix of clear buttons.</p>
-<p>The unit can be easily separated from its stand and there are no hidden screws!</p>
-<p><figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-</p>
-<p>After going around the edge w/ a spudger, the internals reveal themselves.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>The <code>-VxNx</code> suffix on the silk screen matches the silk screen seen on the <a href="#generic-usb-c-dock-w-lcd" rel="">USB-C Dock</a>&hellip; which really does make me think that there&rsquo;s some sort of relationship between the two products.</p>
-<p>The board with the physical knobs/buttons is just a &ldquo;pass through&rdquo; PCB; everything here just goes right over the FFC to the board with the screen and buttons.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>I can&rsquo;t find <em>anything</em> when googling the main IC, unfortunately.</p>
-<blockquote>
-<p>ARX29025</p>
-<p>Q2402</p>
-</blockquote>
-<p>The silk screen is:</p>
-<blockquote>
-<p>HSV293-N3-LCD-V2P1</p>
-<p>20240620</p>
-</blockquote>
-<p><figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-</p>
-<p>The software is <em>super</em> sketchy; just trying to find a build that actually worked on macOS was a pain!</p>
-<p>The <a href="https://www.a-jazz.com/en/search.jsp?id=422&amp;q=03" target="_blank" rel="noopener noreffer ">official site</a> looks and functions like it was made with a 2000s-era website builder 🤮.</p>
-<p>With some google-fu, I found links to a <a href="https://bbs.key123.vip/" target="_blank" rel="noopener noreffer ">web forum</a> that may not be officially related to the product, but <a href="https://bbs.key123.vip/forum.php?mod=viewthread&amp;tid=1167&amp;highlight=AKP03" target="_blank" rel="noopener noreffer ">has some download links</a> to software that is supposed to work with the device, on macOS in English.</p>
-<p>I never got a working build of the software, but the few builds that I did try all have the same architecture; a <code>Qt</code> app that hosts plugins and does all of the thinking for the device.</p>
-<p>With a bit more digging, I think that this &ldquo;Mirabox&rdquo; company is the underlying OEM and the ajazz is just a white-labeled version of this product: <a href="https://miraboxbuy.com/collections/stream-dock/products/streamdock-mbox-n3" target="_blank" rel="noopener noreffer ">Stream Dock MBox 293N3</a>.</p>
-<p>Mirabox also appears to have a <a href="https://sdk.key123.vip/en/guide/overview.html#stream-dock-mbox-293n4" target="_blank" rel="noopener noreffer ">fledgling SDK</a> for plugins <em>and</em> a <a href="https://github.com/MiraboxSpace/Linux-StreamDock-PythonSDK" target="_blank" rel="noopener noreffer ">Python SDK</a> for Linux users!</p>
-<h3 id="usb-details-1">USB details</h3>
-<p>Similar architecture; USB hub with two HID devices hanging off it; probably one HID for reading the buttons and another for writing to the screen.</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
-</span><span class="lnt"> 2
-</span><span class="lnt"> 3
-</span><span class="lnt"> 4
-</span><span class="lnt"> 5
-</span><span class="lnt"> 6
-</span><span class="lnt"> 7
-</span><span class="lnt"> 8
-</span><span class="lnt"> 9
-</span><span class="lnt">10
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">❯ lsusb -vvv -t &gt; pre-deck
-</span></span><span class="line"><span class="cl">❯ lsusb -vvv -t &gt; post-deck
-</span></span><span class="line"><span class="cl">❯ diff pre-deck post-deck
-</span></span><span class="line"><span class="cl">3a4,9
-</span></span><span class="line"><span class="cl">&gt;     <span class="p">|</span>__ Port 003: Dev 019, If 0, <span class="nv">Class</span><span class="o">=</span>Human Interface Device, <span class="nv">Driver</span><span class="o">=</span>usbhid, 480M
-</span></span><span class="line"><span class="cl">&gt;         ID 0300:3002
-</span></span><span class="line"><span class="cl">&gt;         /sys/bus/usb/devices/1-3  /dev/bus/usb/001/019
-</span></span><span class="line"><span class="cl">&gt;     <span class="p">|</span>__ Port 003: Dev 019, If 1, <span class="nv">Class</span><span class="o">=</span>Human Interface Device, <span class="nv">Driver</span><span class="o">=</span>usbhid, 480M
-</span></span><span class="line"><span class="cl">&gt;         ID 0300:3002
-</span></span><span class="line"><span class="cl">&gt;         /sys/bus/usb/devices/1-3  /dev/bus/usb/001/019
-</span></span></code></pre></td></tr></table>
-</div>
-</div><p>And <code>dmesg</code>:</p>
-<div class="highlight"><div class="chroma">
-<table class="lntable"><tr><td class="lntd">
-<pre tabindex="0" class="chroma"><code><span class="lnt">1
-</span><span class="lnt">2
-</span><span class="lnt">3
-</span><span class="lnt">4
-</span><span class="lnt">5
-</span><span class="lnt">6
-</span><span class="lnt">7
-</span><span class="lnt">8
-</span><span class="lnt">9
-</span></code></pre></td>
-<td class="lntd">
-<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">usb 1-3: new high-speed USB device number <span class="m">22</span> using xhci_hcd
-</span></span><span class="line"><span class="cl">usb 1-3: New USB device found, <span class="nv">idVendor</span><span class="o">=</span>0300, <span class="nv">idProduct</span><span class="o">=</span>3002, <span class="nv">bcdDevice</span><span class="o">=</span> 0.02
-</span></span><span class="line"><span class="cl">usb 1-3: New USB device strings: <span class="nv">Mfr</span><span class="o">=</span>1, <span class="nv">Product</span><span class="o">=</span>2, <span class="nv">SerialNumber</span><span class="o">=</span><span class="m">3</span>
-</span></span><span class="line"><span class="cl">usb 1-3: Product: HOTSPOTEKUSB HID DEMO
-</span></span><span class="line"><span class="cl">usb 1-3: Manufacturer: HOTSPOTEKUSB
-</span></span><span class="line"><span class="cl">usb 1-3: SerialNumber: 0300D0781A4A
-</span></span><span class="line"><span class="cl">on usb-0000:05:00.1-3/input0
-</span></span><span class="line"><span class="cl">input: HOTSPOTEKUSB HOTSPOTEKUSB HID DEMO as /devices/pci0000:00/0000:00:01.2/0000:02:00.0/0000:03:08.0/0000:05:00.1/usb1/1-3/1-3:1.1/0003:0300:3002.00DE/input/input180
-</span></span><span class="line"><span class="cl">on usb-0000:05:00.1-3/input1
-</span></span></code></pre></td></tr></table>
-</div>
-</div><h2 id="generic-wifi-led-wall-clock">Generic WiFI LED Wall Clock</h2>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p><a href="https://www.aliexpress.us/item/3256807326722207.html?gatewayAdapt=glo2usa" target="_blank" rel="noopener noreffer ">non-affiliate link</a></p>
-<p>I&rsquo;ve been looking for a &ldquo;Works with Home Assistant&rdquo; version of the <a href="https://www.amazon.com/Introducing-Echo-Wall-Clock---An-Echo-companion-to-see-timers-at-a-glance./dp/B07FQDMKFT" target="_blank" rel="noopener noreffer ">Echo Wall Clock</a> ever since Amazon discontinued it.</p>
-<p>I was hoping this would be a simple ESP8266 or ESP32 module linked directly to the LEDs&hellip; but there&rsquo;s an anonymous intermediate microcontroller in there.</p>
-<p>Assuming that the microcontroller can be removed easily and the various segments of addressable LEDs can be driven directly from an ESP8266 or ESP32, this could still be a viable base for a custom LED wall clock.</p>
-<p><figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            Why bother with a custom USB cable? Just use a standard USB-C jack for power!
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            Lots of SMD neopixels and a partition/mask system to keep high contrast between the segments.
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            Kinda interesting to see how they spread the components out to not interfere with the partitions.
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            PCB marking: YC-9108-WIFI-0807, Ver 1.6, 2024-6-8
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            Markings have been sanded off. Why bother? What&#39;s the value in that?
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            I assume this is i2c for the RTC module.
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<h2 id="mirabox-n4">Mirabox N4</h2>
-<p>This was actually a late addition to the list.
-<em>Technically</em> I didn&rsquo;t order it in 2024, but after learning about the Ajazz possibly being a Mirabox product, I wanted to see if there was anything interesting in the Mirabox product line so I found this for a reasonable price and held off publishing this post until it arrived.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p><a href="https://www.aliexpress.us/item/3256807963651419.html" target="_blank" rel="noopener noreffer ">non-affiliate link</a></p>
-<p>The packaging is nondescript and minimal; the unit and a nice USB A -&gt; C cable is essentially all that&rsquo;s in the box.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            Did they have to use foam for this? Cardboard would have been fine...
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            The Mirabox logo on top is laser engraved which is a nice touch.
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            No screws, just clips! And they&#39;re not even that hard to find or pry up!
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>As was the case with the other LCD modules, this looks like it&rsquo;s just USB 2.0 module hanging off a USB hub.
-Conceivably, you could embed a tiny raspberry pi zero or other <em>small</em> computer with USB Host support inside this thing 🤔&hellip;</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            Really nice ofd them to label each FPC connector.
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>The two internal PCBs are marked very similarly to the <a href="#generic-usb-c-dock-w-lcd" rel="">USB-Dock</a> <em>and</em> the <a href="#ajazz-akp03e-stream-deck-clone" rel="">Stream Deck clone</a> which really does make me think that mirabox is the ODM for those products as well.</p>
-<p>Markings:</p>
-<blockquote>
-<p>HSV293-N4-LCD</p>
-<p>20240807</p>
-<p>HSV293-N4-SW</p>
-<p>202400711</p>
-</blockquote>
-<p>And the USB hub PCB in the base doesn&rsquo;t have a part number, just a date code.
-I&rsquo;d bet that they started designing this product in spring of 2024 and they finished the simplest part - the USB hub - first.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            As expected, the buttons and the lower display are really just different regions of the same LCD.
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>The dials are aluminum, which feels very premium for a device that&rsquo;s otherwise plastic.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            That plastic insert almost looks 3d printed...
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            Interesting to see what network calls were made...
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
 ]]></description></item></channel></rss>

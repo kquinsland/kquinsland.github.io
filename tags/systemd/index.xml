@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Systemd on karl</title><link>https://karlquinsland.com/tags/systemd/</link><description>Recent content in Systemd on karl</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Sat, 04 Mar 2023 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/systemd/index.xml" rel="self" type="application/rss+xml"/><item><title>Frigate From Scratch guide</title><link>https://karlquinsland.com/frigate-install/</link><pubDate>Sat, 04 Mar 2023 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/frigate-install/</guid><description>&lt;!-- markdownlint-disable-file MD002 --&gt;
 &lt;div class="details admonition info open"&gt;
  &lt;div class="details-summary admonition-title"&gt;
- &lt;i class="icon fas fa-info-circle fa-fw" aria-hidden="true"&gt;&lt;/i&gt;FYI&lt;i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"&gt;&lt;/i&gt;
+ &lt;i class="icon fas fa-info-circle fa-fw" aria-hidden="true"&gt;&lt;/i&gt;Updates in 2025&lt;i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"&gt;&lt;/i&gt;
  &lt;/div&gt;
  &lt;div class="details-content"&gt;
- &lt;div class="admonition-content"&gt;Portions of this post was edited for clarity with the help of &lt;a href="https://chat.openai.com/" target="_blank" rel="noopener noreffer "&gt;ChatGPT&lt;/a&gt;.&lt;/div&gt;
+ &lt;div class="admonition-content"&gt;&lt;p&gt;In early 2025, I began moving virtually all of my workloads into a k8s cluster. I have put some basic notes on frigate in k8s &lt;a href="https://karlquinsland.com/frigate-in-k8s/" rel=""&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Beyond that, the section &lt;a href="#coralai-edge-tpu" rel=""&gt;below&lt;/a&gt; about installing the coral.ai edge TPU drivers is now out of date and has been revised.&lt;/p&gt;
+&lt;/div&gt;
  &lt;/div&gt;
  &lt;/div&gt;
 &lt;hr&gt;

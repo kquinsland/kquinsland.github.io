@@ -44,6 +44,7 @@ Karl's technical expertise includes:
 ### Blog Posts
 
 Explore all posts in the [Posts Archive](https://karlquinsland.com/posts/).
+The posts most recently published are featured in the [posts.txt](https://karlquinsland.com/posts.txt) file.
 
 ### Tags
 
