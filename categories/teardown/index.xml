@@ -11,33 +11,14 @@ I managed to snag the following on Ali Express:&lt;/p&gt;
 &lt;p&gt;To continue from &lt;a href="https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/#side-note-the-ossha-community-is-being-heard" rel=""&gt;last year&amp;rsquo;s trend&lt;/a&gt;, I waned to celebrate that all three of these LED controllers have:&lt;/p&gt;</description></item><item><title>#TwoMinuteTeardown: SLZB-MRW10</title><link>https://karlquinsland.com/slzb-mrw10/</link><pubDate>Fri, 26 Dec 2025 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/slzb-mrw10/</guid><description>&lt;h1 id="two-minute-teardown-smlight-slzb-mrw10"&gt;Two Minute Teardown: SMLIGHT SLZB-MRW10&lt;/h1&gt;
 &lt;p&gt;To make a very long story short, I need to move away from my &lt;em&gt;very&lt;/em&gt; old &lt;a href="https://en.wikipedia.org/wiki/IEEE_802.15.4" target="_blank" rel="noopener noreffer "&gt;802.15.4&lt;/a&gt; radios plugged into a &lt;em&gt;very&lt;/em&gt; old Raspberry Pi for my smart home setup.
 After some research, the &lt;a href="https://smlight.tech/product/slzbmrw10" target="_blank" rel="noopener noreffer "&gt;SMLIGHT SLZB-MRW10&lt;/a&gt; is new, uses modern radios and ships with firmware that &lt;a href="https://www.zigbee2mqtt.io/advanced/remote-adapter/connect_to_a_remote_adapter.html" target="_blank" rel="noopener noreffer "&gt;makes it trivial to move packet processing into compute distributed on the other end of the network&lt;/a&gt;.&lt;/p&gt;</description></item><item><title>#TwoMinuteTeardown: Ubiquiti SFP Wizard</title><link>https://karlquinsland.com/ubiquiti-uacc-sfp-wizard/</link><pubDate>Thu, 18 Dec 2025 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/ubiquiti-uacc-sfp-wizard/</guid><description>&lt;h1 id="two-minute-teardown-ubiquiti-sfp-wizard"&gt;Two Minute Teardown: Ubiquiti SFP Wizard&lt;/h1&gt;
-&lt;figure &gt;
-
- 
- &lt;img src="https://karlquinsland.com/ubiquiti-uacc-sfp-wizard/images/render.webp" /&gt;
- 
-
- 
-
- &lt;figcaption&gt;
- 
- 
- &lt;/figcaption&gt;
- 
-&lt;/figure&gt;
-
-
-&lt;p&gt;SFP modules interface to their host over what is essentially a low speed i2c interface and a few high-speed differential pairs.&lt;/p&gt;
-&lt;p&gt;Devices that can interrogate and re-program the SFP modules have been around for a while but they are either niche, esoteric, expensive, or all of the above.&lt;/p&gt;
-&lt;p&gt;People have been &lt;a href="https://forums.servethehome.com/index.php?threads/transceiver-password-collection.39458/" target="_blank" rel="noopener noreffer "&gt;hacking on these things&lt;/a&gt; for a while:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;a href="https://forum.reveltronics.com/viewtopic.php?t=527" target="_blank" rel="noopener noreffer "&gt;Writing protected SFP / QSFP / XFP and searching password (brute force method) - REVELTRONICS&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://github.com/hfuller/transceiver-notes" target="_blank" rel="noopener noreffer "&gt;GitHub - hfuller/transceiver-notes: Notes about hacking, programming, and otherwise dinking with SFPs and other optical transceivers.&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://github.com/SloMusti/sfpddm" target="_blank" rel="noopener noreffer "&gt;GitHub - SloMusti/sfpddm: Arduino library for interfacing SFP modules and reading DDM information as per SFF-8472&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://www.hitoha.moe/read-sfp-i2c-via-ch341a-programmer" target="_blank" rel="noopener noreffer "&gt;Read SFP I2C via CH341a Programmer – HITOHA.もえ&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://osmocom.org/projects/misc-hardware/wiki/Sfp-experimenter" target="_blank" rel="noopener noreffer "&gt;sfp-experimenter&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;The &lt;a href="https://store.ui.com/us/en/category/accessories-modules-fiber/collections/accessories-pro-direct-attach-cables/products/uacc-sfp-wizard" target="_blank" rel="noopener noreffer "&gt;Ubiquiti SFP Wizard&lt;/a&gt; is a new entrant to the market.&lt;/p&gt;</description></item><item><title>#TwoMinuteTeardown: Hamgeek YK-1000H NTP</title><link>https://karlquinsland.com/hamgeek-yk-1000h-gps-ntp-server/</link><pubDate>Fri, 12 Dec 2025 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/hamgeek-yk-1000h-gps-ntp-server/</guid><description>&lt;h1 id="two-minute-teardown-hamgeek-yk-1000h-ntp"&gt;Two Minute Teardown: Hamgeek YK-1000H NTP&lt;/h1&gt;
+&lt;div class="details admonition warning open"&gt;
+ &lt;div class="details-summary admonition-title"&gt;
+ &lt;i class="icon fas fa-exclamation-triangle fa-fw" aria-hidden="true"&gt;&lt;/i&gt;Update / Do you have a device running Firmware version 1.0.5?&lt;i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"&gt;&lt;/i&gt;
+ &lt;/div&gt;
+ &lt;div class="details-content"&gt;
+ &lt;div class="admonition-content"&gt;&lt;p&gt;Details are &lt;a href="#update-some-news-on-the-esp32-side-of-things" rel=""&gt;below&lt;/a&gt;. but I wanted to put this up at the very top for visibility.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;If you have a SFP Wizard running Firmware version 1.0.5, &lt;em&gt;DO NOT&lt;/em&gt; update it.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;If you have a COPY of the 1.0.5 OTA file, please keep it safe and get in touch with me.&lt;/strong&gt;&lt;/p&gt;</description></item><item><title>#TwoMinuteTeardown: Hamgeek YK-1000H NTP</title><link>https://karlquinsland.com/hamgeek-yk-1000h-gps-ntp-server/</link><pubDate>Fri, 12 Dec 2025 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/hamgeek-yk-1000h-gps-ntp-server/</guid><description>&lt;h1 id="two-minute-teardown-hamgeek-yk-1000h-ntp"&gt;Two Minute Teardown: Hamgeek YK-1000H NTP&lt;/h1&gt;
 &lt;figure &gt;
 
  
