@@ -1,4 +1,496 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>karl</title><link>https://karlquinsland.com/</link><description>Karl's little corner of the internet</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Thu, 01 Jan 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/index.xml" rel="self" type="application/rss+xml"/><item><title>Frigate in Kubernetes</title><link>https://karlquinsland.com/frigate-in-k8s/</link><pubDate>Thu, 01 Jan 2026 00:00:00 +0000</pubDate><author>karl</author><guid>https://karlquinsland.com/frigate-in-k8s/</guid><description><![CDATA[<!-- markdownlint-disable-file MD002 -->
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>karl</title><link>https://karlquinsland.com/</link><description>Karl's little corner of the internet</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 24 Jan 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/index.xml" rel="self" type="application/rss+xml"/><item><title>#TwoMinuteTeardown: Corporate Systems Engineering SSHAAC00-S041911</title><link>https://karlquinsland.com/cse-sshaac00-s041911/</link><pubDate>Sat, 24 Jan 2026 00:00:00 +0000</pubDate><author>karl</author><guid>https://karlquinsland.com/cse-sshaac00-s041911/</guid><description><![CDATA[<h1 id="corporate-systems-engineering-sshaac00-s041911">Corporate Systems Engineering SSHAAC00-S041911</h1>
+<p>Electric utilities can employ <a href="http://corporatesystems.com/?page_id=64" target="_blank" rel="noopener noreffer ">&ldquo;load shed&rdquo; devices</a> throughout their grid to manage load.
+These devices are usually found on air conditioners, water heaters, pool pumps and other large electrical loads.
+Typically they&rsquo;ll offer you a small financial incentive to allow the utility to cycle your device off for short periods of time during peak demand events.</p>
+<p>The Corporate Systems Engineering SSHAAC00-S041911 is one such device.</p>
+<p>As you might expect from a single purpose device, the internals are pretty straightforward.
+There is a modem/radio side to communicate with the utility, and a power switching side to understand and control the load.</p>
+<p>This unit fell into my hands after it was taken off an air conditioner during a service call.</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>A bit counter intuitively, the entire assembly is attached to the lid of the enclosure and not the main body.
+This will start to make more sense when looking at a few other details below.</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>The purple and grey wires ran off to a CT clamp that was installed around one of the AC compressor lines.</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Small patch style antenna (<code>WPANT10170-S2B</code>) for the radio attached to the  side of the &rsquo;lid&rsquo; with a sticky pad.</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Taking a closer look at the main PCB and going in no particular order.</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>The PCB has cutouts for a few different LEDs, not all are populated in this unit.</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        <p>
+            LEDs face &#39;down&#39; to shine through the cutouts in the PCB and the lid.
+            
+                
+                
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        <p>
+            Layer indicator on the right is a nice touch.
+            
+                
+                
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>There really isn&rsquo;t much to see on the bottom of the main PCB.
+<strong>Big</strong> traces for the mains side of things, lots of clearance around everything else and a lot of ground plane stapling/via-stitching on the low voltage side of things.</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Both the transformer and the single relay are <code>Zettler</code> parts.
+The caps are <code>Nichicon</code>.
+No expense spared it seems!</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>The ARM seems to do house keeping&hellip; although it&rsquo;s probably overkill for what this device needs to do.
+The &rsquo;tall&rsquo; pin headers are where the modem module mates.</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Speaking of the modem module&hellip;</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        <p>
+            The 2x8 pin header (center, bottom) mates to the main PCB.
+            
+                
+                
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<h2 id="ics">ICs</h2>
+<p>In - roughly - the order they appear in the photos above.</p>
+<h3 id="power">Power</h3>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">324
+</span></span><span class="line"><span class="cl">MZJF150
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>The <a href="https://www.st.com/en/amplifiers-and-comparators/lm324.html" target="_blank" rel="noopener noreffer ">LM324</a> quad op-amp. For what, exactly, I&rsquo;m not sure.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">ATMEL
+</span></span><span class="line"><span class="cl">M90E26-YU
+</span></span><span class="line"><span class="cl">2249
+</span></span><span class="line"><span class="cl">2249W66
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>The <a href="https://ww1.microchip.com/downloads/en/DeviceDoc/Atmel-46002-SE-M90E26-Datasheet.pdf" target="_blank" rel="noopener noreffer ">M90E26</a> is a <em>very</em> accurate single phase energy metering IC.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">Zettler
+</span></span><span class="line"><span class="cl">AZ943-1CH
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a href="https://www.azettler.com/pdfs/az943.pdf" target="_blank" rel="noopener noreffer ">AZ943-1CH</a> is the &lsquo;dry contract&rsquo; wired in series with the thermostat to switch the AC compressor on/off.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">L2207
+</span></span><span class="line"><span class="cl">LTV827
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a href="https://datasheet.octopart.com/LTV-827-Lite-On-datasheet-7282434.pdf" target="_blank" rel="noopener noreffer ">Lite-On LTV-827</a> optoisolator. This is almost certainly for isolating the <code>M90E26</code> from the rest of the low voltage side of things.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">MIC
+</span></span><span class="line"><span class="cl">69153YME
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a href="https://ww1.microchip.com/downloads/aemDocuments/documents/OTH/ProductDocuments/DataSheets/MIC69153-Single-Supply-VIN-LOW-VIN-LOW-VOUT-1.5A-LDO-DS20006019A.pdf" target="_blank" rel="noopener noreffer ">Microchip MIC69153</a> is power conditioning for the housekeeping MCU.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">0AD8
+</span></span><span class="line"><span class="cl">L22676
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a href="https://www.ti.com/lit/gpn/LM22676-Q1" target="_blank" rel="noopener noreffer ">Texas Instruments LM22676</a> is power supply for the low voltage side of things.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">32F100
+</span></span><span class="line"><span class="cl">RDT6B
+</span></span><span class="line"><span class="cl">GQ277 93
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a href="https://www.st.com/en/microcontrollers-microprocessors/stm32f100-value-line.html" target="_blank" rel="noopener noreffer ">ST STM32F</a> is the main housekeeping MCU.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">95M01RP
+</span></span><span class="line"><span class="cl">K109K
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a href="https://www.st.com/en/memories/m95m01-r.html" target="_blank" rel="noopener noreffer ">ST M95M01</a> is flash memory for the MCU.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">PZGM
+</span></span><span class="line"><span class="cl">TI 268
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a href="https://www.ti.com/lit/ds/symlink/tps7a8300.pdf" target="_blank" rel="noopener noreffer ">Texas Instruments TPS7A8300</a> is another power conditioning IC.</p>
+<h3 id="modem">Modem</h3>
+<p>The modem module appears to be <code>Itron</code> <a href="https://fccid.io/OWS-NIC511-06" target="_blank" rel="noopener noreffer ">OWS-NIC511-06</a>.
+As far as I can tell, <code>Itron</code> acquired <code>Silver Spring Networks</code> who originally developed the module.
+The PCB has quite a few unpopulated footprints and design features; each customer/region(?) gets a slightly different configuration based on their needs.
+At least in <em>this</em> configuration, it uses 915MHz ISM band and a mesh technology that Itron calls <a href="http://corporatesystems.com/?page_id=47" target="_blank" rel="noopener noreffer "><code>OpenWay</code></a>.</p>
+<p>I&rsquo;ll defer you to the excellent work of <a href="https://www.youtube.com/@RECESSIM" target="_blank" rel="noopener noreffer ">@RECESSIM</a> for some details on smart meters and mesh networks.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">Silver Spring Networks
+</span></span><span class="line"><span class="cl">130-0117-01
+</span></span><span class="line"><span class="cl">Rev 8.0
+</span></span><span class="line"><span class="cl">VQ239257
+</span></span><span class="line"><span class="cl">GW00E 07 E
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Appears to be <a href="https://csrc.nist.gov/CSRC/media/projects/cryptographic-module-validation-program/documents/security-policies/140sp3445.pdf" target="_blank" rel="noopener noreffer ">&ldquo;endpoint security module&rdquo;</a>.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">ESMT
+</span></span><span class="line"><span class="cl">M14D128168A
+</span></span><span class="line"><span class="cl">AZY2 -2.5 BI
+</span></span><span class="line"><span class="cl">P2A2509 216
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a href="https://www.esmt.com.tw/upload/pdf/ESMT/datasheets/M14D128168A%282Y%29_operation%20temperature%20condition%20-40~95%C2%B0C.pdf" target="_blank" rel="noopener noreffer ">DDR 2 memory</a></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">RFFM
+</span></span><span class="line"><span class="cl">SSN1
+</span></span><span class="line"><span class="cl">VZ7K
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>I can&rsquo;t find anything definitive on this one but it&rsquo;s clearly a front end module for the RF side of things.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">Atmel
+</span></span><span class="line"><span class="cl">86RF215
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>Atmel <a href="https://www.microchip.com/en-us/product/at86rf215" target="_blank" rel="noopener noreffer ">AT86RF215</a> Sub-GHz / 2.4GHz Transceiver and I/Q Radio</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-text" data-lang="text"><span class="line"><span class="cl">SiGe
+</span></span><span class="line"><span class="cl">2435L
+</span></span><span class="line"><span class="cl">24OCM
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><a href="https://www.skyworksinc.com/products/front-end-modules/se2435l" target="_blank" rel="noopener noreffer ">SkyWorks SE2435L</a> is a power amplifier for the 902-928MHz ISM band.</p>
+]]></description></item><item><title>Frigate in Kubernetes</title><link>https://karlquinsland.com/frigate-in-k8s/</link><pubDate>Thu, 01 Jan 2026 00:00:00 +0000</pubDate><author>karl</author><guid>https://karlquinsland.com/frigate-in-k8s/</guid><description><![CDATA[<!-- markdownlint-disable-file MD002 -->
 <h1 id="frigate-kubernetes-edition">Frigate: Kubernetes edition</h1>
 <p>This is a follow up to my <a href="/frigate-install/" rel="">&lsquo;Frigate From Scratch&rsquo; post</a>.
 Most of that post is still relevant today but I have since moved almost all of my workloads into Kubernetes.</p>
@@ -2744,126 +3236,4 @@ It&rsquo;s two coils of magnet wire and some magnets. Nothing special here.</p>
 </figure>
 
 
-]]></description></item><item><title>#TwoMinuteTeardown: Panel Mount Liquid Level Indicator</title><link>https://karlquinsland.com/generic-liquid-level-display/</link><pubDate>Sat, 15 Feb 2025 00:00:00 +0000</pubDate><author>karl</author><guid>https://karlquinsland.com/generic-liquid-level-display/</guid><description><![CDATA[<h1 id="generic-liquid-level-meter-teardown">Generic liquid level meter teardown</h1>
-<p>I ordered this part years ago for a project I eventually canceled.</p>
-<p>I can&rsquo;t use it for anything, and it&rsquo;s just taking up space, so I&rsquo;m going to open it up before I recycle it.</p>
-<p>The Ali Express listing is a 404 so I don&rsquo;t have a link to share or really any information about it.</p>
-<p>The main thing to take away is that it&rsquo;s meant to interface with a liquid level sensor.
-It will display the level of liquid in a tank and - optionally - trigger a few relays based on the level.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>This is a generic case; not all screw terminals pictured here are actually wired up to anything on this model.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            Not all the screw terminals are actually wired up to anything on this model; the case is generic.
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>The main body slides off pretty easily.
-There are two PCBs inside: one for the display and one to handle the relays and sensor input.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>The display PCB is pretty simple; no active electronics and a tonne of LEDs.
-The bar graph LEDs are almost certainly <a href="https://en.wikipedia.org/wiki/Charlieplexing" target="_blank" rel="noopener noreffer ">charlieplexed</a> but the 7 segment might have an integrated driver.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>The screw terminals on the rear of the case are directly soldered to the main PCB so I&rsquo;m not going to be able to take it apart any further without disordering things&hellip; defeating the spirit of the <a href="/tags/two-minute-teardown/" rel="">#TwoMinuteTeardown</a>.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>Looking at the top left, you can see the few pins for the 7-segment displays; a total of 12 pins.
-Of those 12, some don&rsquo;t have traces leading to them so they&rsquo;re probably just for mechanical support. There are far too few remaining pins for even basic charlieplexing so I&rsquo;m guessing there&rsquo;s an integrated driver of some kind. Probably a <a href="https://www.analog.com/media/en/technical-documentation/data-sheets/max7219-max7221.pdf" target="_blank" rel="noopener noreffer ">max7219</a> or similar</p>
-<h2 id="the-main-ics">The main ICs</h2>
-<p>Really just the one main application processor and a few support ICs.</p>
-<ul>
-<li><a href="https://www.jotrin.com/product/parts/MA803AS2" target="_blank" rel="noopener noreffer "><code>MA803AS2</code></a> - 8051 based microcontroller that&rsquo;s running the show</li>
-<li><a href="https://www.alldatasheet.com/datasheet-pdf/pdf/1679343/NEXPERIA/HEF4051B.html" target="_blank" rel="noopener noreffer "><code>HEF4051B</code></a> - 8-channel analog multiplexer, probably for the display</li>
-<li><code>74hc164</code> - 8-bit shift register, probably for the display</li>
-</ul>
 ]]></description></item></channel></rss>
