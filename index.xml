@@ -1,4 +1,183 @@
-<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>karl</title><link>https://karlquinsland.com/</link><description>Karl's little corner of the internet</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sat, 24 Jan 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/index.xml" rel="self" type="application/rss+xml"/><item><title>#TwoMinuteTeardown: Corporate Systems Engineering SSHAAC00-S041911</title><link>https://karlquinsland.com/cse-sshaac00-s041911/</link><pubDate>Sat, 24 Jan 2026 00:00:00 +0000</pubDate><author>karl</author><guid>https://karlquinsland.com/cse-sshaac00-s041911/</guid><description><![CDATA[<h1 id="corporate-systems-engineering-sshaac00-s041911">Corporate Systems Engineering SSHAAC00-S041911</h1>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0"><channel><title>karl</title><link>https://karlquinsland.com/</link><description>Karl's little corner of the internet</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Sun, 01 Feb 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/index.xml" rel="self" type="application/rss+xml"/><item><title>#TwoMinuteTeardown: USB-C charged AAA battery</title><link>https://karlquinsland.com/usbc-aaa-battery-teardown/</link><pubDate>Sun, 01 Feb 2026 00:00:00 +0000</pubDate><author>karl</author><guid>https://karlquinsland.com/usbc-aaa-battery-teardown/</guid><description><![CDATA[<h1 id="two-minute-teardown-usb-c-charged-aaa-battery">Two Minute Teardown: USB-C charged AAA battery</h1>
+<p>First, these things have existed for quite a few years now but people still seem to be discovering them.
+If you are one of todays <a href="https://xkcd.com/1053/" target="_blank" rel="noopener noreffer ">lucky 10,000 people to find out about them</a>, you&rsquo;re welcome.
+I hope these can change your mind about rechargeable batteries; they&rsquo;re good, now!</p>
+<p>One of mine started failing with intermittent output voltage so I decided to take it apart and see what was inside.</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Technically, the one that I am taking apart is branded <code>MXBatt</code> but im keeping the title of this post generic because you can find these in many places under many different brand names and I&rsquo;m sure they are all more or less the same inside.</p>
+<p>The battery on the bottom left is a known good / still working one for comparison.
+The one in parts going across the top is the one I&rsquo;m tearing down.
+You do not need to spend a ton of time trying to peel the label off&hellip; it&rsquo;s going to be a pain and isn&rsquo;t necessary.</p>
+<p>Using plier, pull the positive tip part off the cell and the whole thing comes apart pretty easily.</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>And with that, here&rsquo;s what&rsquo;s inside:</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        
+    </figcaption>
+    
+</figure>
+
+
+<p>Yep, that&rsquo;s all there is to it!</p>
+<h2 id="ics-and-markings">ICs and Markings</h2>
+<p>The only chip on the tiny PCB is marked <a href="https://en.eeworld.com.cn/bbs/thread-1250284-1-1.html" target="_blank" rel="noopener noreffer "><code>LC9201D</code></a></p>
+<p>From the linked page:</p>
+<blockquote>
+<p>The LC9201D chip is highly integrated. One chip completes the functions of charging, discharging and lithium battery protection.
+The peripheral circuit only needs two capacitors, one resistor and one inductor to realize it.</p>
+</blockquote>
+<p>Yep, can confirm. The PCB has two capacitors, a resistor, a LED and the inductor.</p>
+<p>Had I known what was inside beforehand, I wouldn&rsquo;t have bothered taking it apart&hellip; once you google the IC number, you find other people have <a href="https://www.youtube.com/watch?v=skCxRBtkhLE" target="_blank" rel="noopener noreffer ">beaten me to the teardown</a>.</p>
+<h2 id="battery-capacity">Battery Capacity</h2>
+<p>The first words out of my mouth when I saw this was &ldquo;there&rsquo;s no way this is 1200mAh&rdquo;.</p>
+<p>For reference, the grey battery cell that came out has a mass of about 3.85g.
+The OD is about 9.2mm and it&rsquo;s about 27.5mm tall (not including the leads).</p>
+<p>If you google the patent number on the battery, you get this <a href="https://www.huahuibattery.com/huahui-energy-wins-first-chinese-patent-award-for-large-size-monobloc-batteries.html" target="_blank" rel="noopener noreffer ">press release</a>.</p>
+<p>I can&rsquo;t say for sure what the exact model/chemistry is, but if I poke around the Huahui Battery site, it looks like every 10x30mm cell they have weighs about 3.8 gram and has a capacity of about 100mAh at 3.2 - 3.7v (depending on chemistry).</p>
+<p>Let&rsquo;s do a bit of math:</p>
+<ul>
+<li>Capacity: <strong>100 mAh</strong></li>
+<li>Nominal voltage: <strong>3.2 V</strong></li>
+</ul>
+<p>Energy in watt-hours:</p>
+<p>$
+E = V \times Ah = 3.2 \times 0.1 = 0.32 \text{ Wh}
+$</p>
+<p>Since we know the AAA form factor is typically used in devices that expect <strong>1.5 V</strong> cells, let&rsquo;s see what the effective capacity would be  when we buck the voltage down to 1.5 V with <em>no losses whatsoever</em>.</p>
+<p>$
+Ah_{out} = \frac{E}{V_{out}} = \frac{0.32}{1.5} \approx 0.213 \text{ Ah}
+$</p>
+<p>$
+\boxed{\approx 213\ \text{mAh at 1.5 V (ideal)}}
+$</p>
+<p>So &hellip; yeah, not 1200mAh.
+Let&rsquo;s work backwards, then.</p>
+<p>We know the nominal voltage is 3.7v and the outer diameter must be about 10mm (to fit in AAA sized devices).
+Let&rsquo;s assume that since we are dropping the voltage by about half, the rated 1200mAh capacity would come from a 3.7v cell at about 600mAh.</p>
+<p>Now, how long of a cell would we need to get 600mAh at 3.7v?</p>
+<p>$
+E = 3.7 \times 0.6 = 2.22 \text{ Wh}
+$</p>
+<p>Ok, we need 2.22 Wh of energy storage.
+If we assume a cell-level energy density of about 500–700 Wh/L (which is reasonable for modern Li-ion cells), we can estimate the required volume and length.</p>
+<p>$
+V = \frac{2.22}{\text{Wh/L}}
+$</p>
+<ul>
+<li>700 Wh/L → $ 2.22/700 = 0.00317,L = 3.17,cm^3 $</li>
+<li>600 Wh/L → $ 2.22/600 = 0.00370,L = 3.70,cm^3 $</li>
+<li>500 Wh/L → $ 2.22/500 = 0.00444,L = 4.44,cm^3 $</li>
+</ul>
+<p>And then volume to length conversion:</p>
+<p>$
+r=5\text{ mm}=0.5\text{ cm}
+$</p>
+<p>$
+A=\pi r^2=\pi(0.5)^2=0.785,cm^2
+$</p>
+<p>$
+L=\frac{V}{A}
+$</p>
+<table>
+  <thead>
+      <tr>
+          <th style="text-align: right">Assumed cell-level energy density</th>
+          <th style="text-align: right">Required volume</th>
+          <th style="text-align: right">Length @ 10 mm OD</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td style="text-align: right">700 Wh/L</td>
+          <td style="text-align: right">3.17 cm³</td>
+          <td style="text-align: right">3.17 / 0.785 = <strong>4.04 cm ≈ 40 mm</strong></td>
+      </tr>
+      <tr>
+          <td style="text-align: right">600 Wh/L</td>
+          <td style="text-align: right">3.70 cm³</td>
+          <td style="text-align: right">3.70 / 0.785 = <strong>4.71 cm ≈ 47 mm</strong></td>
+      </tr>
+      <tr>
+          <td style="text-align: right">500 Wh/L</td>
+          <td style="text-align: right">4.44 cm³</td>
+          <td style="text-align: right">4.44 / 0.785 = <strong>5.66 cm ≈ 57 mm</strong></td>
+      </tr>
+  </tbody>
+</table>
+<p>So we need something between 40 mm and 57 mm long to get 600mAh at 3.7v.
+The cell inside this USB-C AAA battery is only about 27.5 mm long&hellip; 🤔.</p>
+]]></description></item><item><title>#TwoMinuteTeardown: Corporate Systems Engineering SSHAAC00-S041911</title><link>https://karlquinsland.com/cse-sshaac00-s041911/</link><pubDate>Sat, 24 Jan 2026 00:00:00 +0000</pubDate><author>karl</author><guid>https://karlquinsland.com/cse-sshaac00-s041911/</guid><description><![CDATA[<h1 id="corporate-systems-engineering-sshaac00-s041911">Corporate Systems Engineering SSHAAC00-S041911</h1>
 <p>Electric utilities can employ <a href="http://corporatesystems.com/?page_id=64" target="_blank" rel="noopener noreffer ">&ldquo;load shed&rdquo; devices</a> throughout their grid to manage load.
 These devices are usually found on air conditioners, water heaters, pool pumps and other large electrical loads.
 Typically they&rsquo;ll offer you a small financial incentive to allow the utility to cycle your device off for short periods of time during peak demand events.</p>
@@ -3069,171 +3248,4 @@ My <a href="/wozniak-wpx-0001a-qi-tester-teardown/" rel="">qi tester</a> does po
 </figure>
 
 </p>
-]]></description></item><item><title>#TwoMinuteTeardown: Wozniak WPX-0001 Qi Tester</title><link>https://karlquinsland.com/wozniak-wpx-0001a-qi-tester-teardown/</link><pubDate>Sun, 20 Apr 2025 00:00:00 +0000</pubDate><author>karl</author><guid>https://karlquinsland.com/wozniak-wpx-0001a-qi-tester-teardown/</guid><description><![CDATA[<h1 id="qi-wireless-power-tester">Qi wireless power tester</h1>
-<p>The <a href="https://en.wikipedia.org/wiki/Qi_%28standard%29" target="_blank" rel="noopener noreffer ">Qi standard</a> for transmitting power is ~ 15 years old and has been ubiquitous for at least a decade now.
-And yet, I have only <em>recently</em> seen any testing equipment for it.</p>
-<p>The <a href="https://www.aliexpress.us/item/3256808097182455.html" target="_blank" rel="noopener noreffer ">Wozniak WPX-0001A</a> is a simple tester that can measure the output level and protocol of Qi chargers.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            &#39;standard tools create wonderful things&#39; ❤️.
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            Please ignore the super shiny reflections...
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>In the box you get a basic NTC probe, a USB-C cable and the tester itself.
-The printed paper &ldquo;manual&rdquo; is just a QR code that points to <a href="https://user.ee-lab.cn" target="_blank" rel="noopener noreffer "><code>user.ee-lab.cn</code></a>.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            Yep, more reflections/glare. Sorry!
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>The unit is made up of two circular PCBs screwed together.
-The screws are hiding behind the decal face plate.</p>
-<p>Take your time here and use a heat gun to soften the adhesive&hellip; or you risk breaking the plastic cover.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            Three of the four screws can be seen here. The remaining screw is hiding beneath the remaining decal shard.
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p>The LCD is also glued in place. The ribbon cable is <em>just</em> long enough; putting it back together is a bit of a pain.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>The non-covered gold-plated traces and black silkscreen <em>pop</em>.
-Unfortunately, most ICs are either too small for me to read or the marking have been laser etched off.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<p>The business-end of the tester is a Qi receiver coil.
-It&rsquo;s two coils of magnet wire and some magnets. Nothing special here.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            The snaking black cable is the NTC probe.
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
 ]]></description></item></channel></rss>
