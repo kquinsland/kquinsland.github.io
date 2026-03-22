@@ -2,6 +2,19 @@
 
 # Two Minute Teardown: Ubiquiti SFP Wizard
 
+{{< admonition important "Disregard note below about 1.0.5" >}}
+
+To make a long story short, I allocated a few hours to build a [tool that can read/write the SFP module's EEPROM](https://github.com/kquinsland/sfp-eeprom-tool).
+I then wired this up to a logic analyzer and compared the read/write operations to what the SFP Wizard does when it tries to unlock a module.
+
+TL;DR:
+
+- I didn't see a meaningful difference in what my tool read from an EEPROM compared to the SFP Wizard.
+- Version 1.0.5 is the only firmware version that does not give me a "failed, locked" error when I try to write... But it's also the only version that just keeps trying to write despite despite the fact that bytes are not changing on the EEPROM.
+- The assessment [here](https://github.com/vitaminmoo/sfpw-tool/blob/main/doc/HOW_TO_DOWNGRADE_AND_WHY_NOT_TO.md) is correct; there's no value in downgrading. In fact, it's (slightly) cheaper to buy a basic USB <-> I2C adapter and use my tool (which lets you try any arbitrary password) than it is to buy a SFP Wizard. The Wizard is a hell of a lot more polished, though.
+
+{{< /admonition >}}
+
 {{< admonition warning "Update / Do you have a device running Firmware version 1.0.5?" >}}
 
 Details are [below](#update-some-news-on-the-esp32-side-of-things). but I wanted to put this up at the very top for visibility.

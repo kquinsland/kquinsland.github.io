@@ -1847,6 +1847,22 @@ Firmware on the ESP32 then proxies UART traffic from the two radios allowing you
 </span></span></code></pre></td></tr></table>
 </div>
 </div>]]></description></item><item><title>#TwoMinuteTeardown: Ubiquiti SFP Wizard</title><link>https://karlquinsland.com/ubiquiti-uacc-sfp-wizard/</link><pubDate>Thu, 18 Dec 2025 00:00:00 +0000</pubDate><author>karl</author><guid>https://karlquinsland.com/ubiquiti-uacc-sfp-wizard/</guid><description><![CDATA[<h1 id="two-minute-teardown-ubiquiti-sfp-wizard">Two Minute Teardown: Ubiquiti SFP Wizard</h1>
+<div class="details admonition important open">
+        <div class="details-summary admonition-title">
+            <i class="icon fas fa-pencil-alt fa-fw" aria-hidden="true"></i>Disregard note below about 1.0.5<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
+        </div>
+        <div class="details-content">
+            <div class="admonition-content"><p>To make a long story short, I allocated a few hours to build a <a href="https://github.com/kquinsland/sfp-eeprom-tool" target="_blank" rel="noopener noreffer ">tool that can read/write the SFP module&rsquo;s EEPROM</a>.
+I then wired this up to a logic analyzer and compared the read/write operations to what the SFP Wizard does when it tries to unlock a module.</p>
+<p>TL;DR:</p>
+<ul>
+<li>I didn&rsquo;t see a meaningful difference in what my tool read from an EEPROM compared to the SFP Wizard.</li>
+<li>Version 1.0.5 is the only firmware version that does not give me a &ldquo;failed, locked&rdquo; error when I try to write&hellip; But it&rsquo;s also the only version that just keeps trying to write despite despite the fact that bytes are not changing on the EEPROM.</li>
+<li>The assessment <a href="https://github.com/vitaminmoo/sfpw-tool/blob/main/doc/HOW_TO_DOWNGRADE_AND_WHY_NOT_TO.md" target="_blank" rel="noopener noreffer ">here</a> is correct; there&rsquo;s no value in downgrading. In fact, it&rsquo;s (slightly) cheaper to buy a basic USB &lt;-&gt; I2C adapter and use my tool (which lets you try any arbitrary password) than it is to buy a SFP Wizard. The Wizard is a hell of a lot more polished, though.</li>
+</ul>
+</div>
+        </div>
+    </div>
 <div class="details admonition warning open">
         <div class="details-summary admonition-title">
             <i class="icon fas fa-exclamation-triangle fa-fw" aria-hidden="true"></i>Update / Do you have a device running Firmware version 1.0.5?<i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"></i>
