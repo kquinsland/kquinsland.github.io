@@ -24,5 +24,18 @@ The details are on the [thingiverse](https://www.thingiverse.com/thing:4504948) 
 
 For archive / posterity, all source files are included here. All files are licensed as [Creative Commons Attribution-NonCommercial-ShareAlike](https://creativecommons.org/licenses/by-nc-sa/4.0/) (CC BY-NC-SA).
 
-{{< bundle-files >}}
+- [images/built.webp](https://karlquinsland.com/home-lab-consolidated-psu/images/built.webp)
+- [images/cad-back.webp](https://karlquinsland.com/home-lab-consolidated-psu/images/cad-back.webp)
+- [images/cad-front.webp](https://karlquinsland.com/home-lab-consolidated-psu/images/cad-front.webp)
+- [images/core.webp](https://karlquinsland.com/home-lab-consolidated-psu/images/core.webp)
+- [images/meter-panel.webp](https://karlquinsland.com/home-lab-consolidated-psu/images/meter-panel.webp)
+- [Consolidated PSU CAD](https://karlquinsland.com/home-lab-consolidated-psu/models/2x-lrs-psu.f3z): Fusion360 Archive
+- [Box](https://karlquinsland.com/home-lab-consolidated-psu/models/box.stl)
+- [Brace](https://karlquinsland.com/home-lab-consolidated-psu/models/brace.stl)
+- [Core Components](https://karlquinsland.com/home-lab-consolidated-psu/models/core.3mf)
+- [Lid](https://karlquinsland.com/home-lab-consolidated-psu/models/lid.stl)
+- [(Optional) Meter Panel](https://karlquinsland.com/home-lab-consolidated-psu/models/meter-panel.3mf)
+- [(Optional) Meter Panel](https://karlquinsland.com/home-lab-consolidated-psu/models/meter-panel.stl)
+- [images/meter-panel-slice.webp](https://karlquinsland.com/home-lab-consolidated-psu/images/meter-panel-slice.webp)
+
 

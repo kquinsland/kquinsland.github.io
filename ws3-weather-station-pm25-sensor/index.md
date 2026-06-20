@@ -21,13 +21,19 @@ This post covers two things:
 
 When deployed, it looks like this:
 
-{{< figure name="installed_feature" >}}
+![Picture showing designed parts assembled and deployed as intended](https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/04.installed.webp)
+
+_Excuse the awkward camera angle; sensor is deployed in an awkward to photograph location._
+
 
 Please ignore the awkward camera angle as the sensor is deployed in a location where there's not quite enough room for proper camera placement.
 
 And results in graphs that look like this:
 
-{{< figure name="example_dashboard" >}}
+![Picture showing a simple WS3 dashboard in Grafana](https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/example_dashboard.webp)
+
+_Smoke particles are between .4μm to .7μm in size... which explains the elevated red line relative to other particle sizes._
+
 
 A simplified copy of this post appears on [thingiverse](https://www.thingiverse.com/thing:4581351) and [prusaprinters](https://www.prusaprinters.org/prints/39560-outdoor-enclosure-for-pms5003-particulate-matter-s).
 
@@ -39,7 +45,8 @@ The sensor uses a small fan to draw ambient air past an infrared laser. As airbo
 
 The lower port is the intake which connects to a few small holes on the front of the sensor and the exhaust port is the raised port which connects directly to the exhaust fan. If you could remove the first few mm from the front, it would look something like this:
 
-{{< figure name="shroud-air-channels" >}}
+![Screenshot showing labeled ingress/egress for air flow](https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/f360_air_channels.webp)
+
 
 From the side, you can see the two air channels and the few mm of room in the back for wiring. The sensor sits on a 'pedestal' to keep it elevated away from any moisture that may collect on the bottom of the enclosure.
 
@@ -47,7 +54,10 @@ The base plate/pedestal are secured to the 'body' with two M3 screws. I used `10
 
 Besides the 'pedestal' there are a few contact surfaces that hold on to the sensor with a friction fit. The 'ceiling' is a few mm thick and shouldn't permit much moisture ingress but an optional slanted roof component can be printed as an extra precaution.
 
-{{< figure name="shroud-side-profile" >}}
+![Screenshot showing side profile of assembly and the two ports](https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/f360_side_profile.webp)
+
+_Upper and lower chambers for exhaust and intake._
+
 
 While designing the enclosure, I used this [`PMS5003` model](https://grabcad.com/library/pms5003-2) from Leclercq Gregory. :pray:
 
@@ -57,7 +67,10 @@ This is a functional part with only three small surfaces that require reasonably
 
 The shroud and the base are not optional, the triangle shaped block is intended to turn the flat roof of the shroud into a slanted roof so water can't collect. It is optional but shown below.
 
-{{< figure name="print_orientation" >}}
+![Screenshot showing suggested print bed arrangement](https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/suggested_print_orientation.webp)
+
+_No raft/support when printed in this orientation._
+
 
 ## Assemble
 
@@ -75,7 +88,10 @@ Briefly:
 
 More or less everything that is needed for assembly is pictured below.
 
-{{< figure name="preparation" >}}
+![Picture showing tools/materials required for assembly](https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/01.collect.webp)
+
+_More or less everything needed to assemble._
+
 
 Components:
 
@@ -119,17 +135,25 @@ Sacrifice the cable that comes with the PM2.5 sensor and the RJ11 cable by cutti
 
 For reference, Pin 1 on both the WS3 and PM2.5 Sensor:
 
-{{< figure name="pinout_ws3" >}}
+![Screenshot showing the RJ11 jack on WS3 board w/ pin numbers](https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/pin_out/WS3_Pins.webp)
 
-{{< figure name="pinout_pm25" >}}
+
+![Screenshot showing labeled pins on the 8 pin jack on the back of the PM2.5 sensor](https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/pin_out/PM2.5_Pins.webp)
+
 
 With the wiring done, the sensor just needs to be stuffed into the enclosure. Don't forget to thread the RJ11 cable through the hole in the base plate _BEFORE_ soldering it to the cable for the PM2.5 sensor... otherwise you'll need that stepped drill bit! 🙃
 
-{{< figure name="assembly" >}}
+![Picture showing sensor inserted into printed shroud](https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/02.assemble.webp)
+
+_Sensor has been press-fit into the enclosure and wire fed through the base plate._
+
 
 To finish, secure the base with screws and a bit of water-proofing caulk for good measure:
 
-{{< figure name="curing_glue" >}}
+![Picture showing assembled components while glue/caulk curing](https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/03.glue.webp)
+
+_I suggest waiting until the end to glue on the optional roof and waiting until just before that to glue on the optional mesh screens._
+
 
 ## The code
 
@@ -185,5 +209,22 @@ indicating that the WS3 has detected the PM2.5 sensor and is reporting it's read
 
 For archive / posterity, all source files are included here. All files are licensed as [Creative Commons Attribution-NonCommercial-ShareAlike](https://creativecommons.org/licenses/by-nc-sa/4.0/) (CC BY-NC-SA).
 
-{{< bundle-files >}}
+- [images/02.assemble.webp](https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/02.assemble.webp)
+- [images/03.glue.webp](https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/03.glue.webp)
+- [images/example_dashboard.webp](https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/example_dashboard.webp)
+- [images/04.installed.webp](https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/04.installed.webp)
+- [models/BASE.step](https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/BASE.step)
+- [models/BODY.step](https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/BODY.step)
+- [models/LID.step](https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/LID.step)
+- [models/base.stl](https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/base.stl)
+- [models/body.stl](https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/body.stl)
+- [models/combined.3mf](https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/combined.3mf)
+- [models/lid.stl](https://karlquinsland.com/ws3-weather-station-pm25-sensor/models/lid.stl)
+- [images/pin_out/PM2.5_Pins.webp](https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/pin_out/PM2.5_Pins.webp)
+- [images/pin_out/WS3_Pins.webp](https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/pin_out/WS3_Pins.webp)
+- [images/01.collect.webp](https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/01.collect.webp)
+- [images/suggested_print_orientation.webp](https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/suggested_print_orientation.webp)
+- [images/f360_air_channels.webp](https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/f360_air_channels.webp)
+- [images/f360_side_profile.webp](https://karlquinsland.com/ws3-weather-station-pm25-sensor/images/f360_side_profile.webp)
+
 

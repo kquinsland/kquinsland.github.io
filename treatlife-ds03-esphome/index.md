@@ -11,9 +11,9 @@ Tags: esphome, home-assistant, home-automation
 ---
 
 
-{{< admonition tip "Post depreciation notice" >}}
-This is an update to the [`Fixing Home Assistant discovery with Tasmota on the Treatlife DS03` post]({{<relref "posts/2021/05/Treatlife-DS03-Tasmota-Autoconfig-With-Homeassistant" >}}).
-{{< /admonition >}}
+> [!TIP] Post depreciation notice
+> This is an update to the [`Fixing Home Assistant discovery with Tasmota on the Treatlife DS03` post](/treatlife-ds03-tasmota-autoconfig-with-homeassistant/).
+
 
 # Tasmota reliability
 
@@ -29,15 +29,15 @@ The Tasmota rules were a workaround to a broader problem: tasmota offers very li
 
 # Using ESPHome with the DS03
 
-{{< admonition info "Beta software release" >}}
-I **strongly** prefer MQTT for my Home Automation interoperability.
+> [!NOTE] Beta software release
+> I **strongly** prefer MQTT for my Home Automation interoperability.
+> 
+> The MQTT <-> Home Assistant mechanism in ESPHome has been playing second fiddle to the native ESPHome <-> Home Assistant API as of late so there are more bugs and usability issues. As such, the YAML below depends on a fix for `mqtt.fan` component that exists in the  [2022.06.b2](https://github.com/esphome/esphome/releases/tag/2022.6.0b2) or later release.
+> 
+> Specifically, [this](https://github.com/esphome/esphome/pull/3537) commit.
+> 
+> If you do not use MQTT for your ESPHome <-> Home Assistant linking, you should be fine using the latest 'stable' release of ESPHome.
 
-The MQTT <-> Home Assistant mechanism in ESPHome has been playing second fiddle to the native ESPHome <-> Home Assistant API as of late so there are more bugs and usability issues. As such, the YAML below depends on a fix for `mqtt.fan` component that exists in the  [2022.06.b2](https://github.com/esphome/esphome/releases/tag/2022.6.0b2) or later release.
-
-Specifically, [this](https://github.com/esphome/esphome/pull/3537) commit.
-
-If you do not use MQTT for your ESPHome <-> Home Assistant linking, you should be fine using the latest 'stable' release of ESPHome.
-{{< /admonition >}}
 
 After [migrating the tasmota install to ESPHome](https://esphome.io/guides/migrate_sonoff_tasmota.html), I am happy to report that ESPHome is running on the DS03 and that the full/proper MQTT auto-discovery payload is published. 🥳
 

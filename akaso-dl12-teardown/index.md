@@ -13,26 +13,35 @@ Tags: two-minute-teardown
 <!-- markdownlint-disable-file MD002 -->
 # AKASO DL12 Dashcam Teardown
 
-{{<figure name="feat-product01">}}
+![If the double yellow lines are in the middle of your rear-view mirror, you're doing it wrong.](https://karlquinsland.com/akaso-dl12-teardown/images/product01.webp)
+
+_If the double yellow lines are in the middle of your rear-view mirror, you're doing it wrong._
+
 
 This was my dashcam for a while until the front camera stopped working.
 It was a good dashcam while it lasted but there are better options now... so let's take it apart!
 
 Ultimately, it's a highly integrated consumer-grade bit of electronics.
 Everything's built down to a price and anything that didn't need to be done ... wasn't.
-There's not much to see and not much to say so this is a ["two minute teardown" ]({{<relref "tags/two-minute-teardown">}}).
+There's not much to see and not much to say so this is a ["two minute teardown" ](/tags/two-minute-teardown/).
 
 ## Teardown
 
 There are 4 screws holding the case together. They are hidden under the rubber feet.
 
-{{<figure name="td02">}}
+![There are 4 screws holding the case together. Remove and the case comes apart easily.](https://karlquinsland.com/akaso-dl12-teardown/images/td02.webp)
+
+_There are 4 screws holding the case together. Remove and the case comes apart easily._
+
 
 Once the screws are removed, the case comes apart easily to reveal a mostly empty shell.
 The LiPo battery is an interesting choice given the heat that can build up in a car.
 As far as I know, this is only needed for the few seconds after power loss so the camera can save the current recording and shut down cleanly.
 
-{{<figure name="td05">}}
+![Lift the screen side away to reveal the paltry internals](https://karlquinsland.com/akaso-dl12-teardown/images/td05.webp)
+
+_Lift the screen side away to reveal the paltry internals_
+
 
 Close up of the rear of the main PCB shows a few test points and populated but unused connectors.
 
@@ -41,20 +50,32 @@ I love the `TV_IN` silkscreen for the rear camera connector. Almost makes me won
 Why there's a dedicated `RTC_BAT` connector and not sipper power from the main battery is a mystery to me.
 The unit does have a GPS module so there's really no need for an RTC battery... just use the GPS time!
 
-{{<figure name="td03">}}
+![Close up of the 'screen' side of the main PCB. Not much to see here.](https://karlquinsland.com/akaso-dl12-teardown/images/td03.webp)
+
+_Close up of the 'screen' side of the main PCB. Not much to see here._
+
 
 The 'forward facing' side of the PCB has a few more populated/un-used connectors and a heat-spreader over the main CPU.
 The two push buttons in the top left are not accessible from the outside of the case so there's probably something interesting that happens when they're pressed.
 
-{{<figure name="td01">}}
+![The 'rear' of the main PCB has a few unpopulated footprints and a flimsy heat-spreader.](https://karlquinsland.com/akaso-dl12-teardown/images/td01.webp)
+
+_The 'rear' of the main PCB has a few unpopulated footprints and a flimsy heat-spreader._
+
 
 Removing it reveals a HiSilicon Hi3556 SoC, EEPROM and what is probably the image processor for the rear camera.
 The large unpopulated footprint in the top right looks like it's meant for a radio module.
 Not sure if it's for a wireless link to the rear camera or for something like a [TPMS sensor](https://en.wikipedia.org/wiki/Tire-pressure_monitoring_system) or possibly WiFi for a phone app.
 
-{{<figure name="td06">}}
+![Close up of the most interesting part of the main PCB.](https://karlquinsland.com/akaso-dl12-teardown/images/td06.webp)
 
-{{<figure name="td04">}}
+_Close up of the most interesting part of the main PCB._
+
+
+![The forward facing camera is in a swivel mount and is highly integrated; there's nothing under that black tape.](https://karlquinsland.com/akaso-dl12-teardown/images/td04.webp)
+
+_The forward facing camera is in a swivel mount and is highly integrated; there's nothing under that black tape._
+
 
 ## PCB Markings
 

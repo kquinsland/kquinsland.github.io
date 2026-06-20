@@ -14,9 +14,9 @@ If you're here just for "how do I get it working with ESPHome" bit, skip to the 
 
 -----
 
-{{< admonition important "Update 2022.05.14" >}}
-I have just uploaded a basic PCB and enclosure to the  [ESPHome Component Repository](#esphome-component).
-{{< /admonition >}}
+> [!NOTE] Update 2022.05.14
+> I have just uploaded a basic PCB and enclosure to the  [ESPHome Component Repository](#esphome-component).
+
 
 For the last few months, I have been looking for a KVM switch to simplify switching between work and personal computers.
 Initially, I didn't think my criteria were that unreasonable, but for whatever reason there is no KVM switch that:
@@ -27,7 +27,7 @@ Initially, I didn't think my criteria were that unreasonable, but for whatever r
 - Works with the [DROP: SHIFT keyboard](https://drop.com/buy/drop-shift-mechanical-keyboard); internally this keyboard presents as it's own USB Hub and requires more than the standard 500ma to operate. Some KVM switches don't supply enough current and others results in the number of USB hubs between the root and the keyboard being > 5 which the USB spec does not support.
 - Costs less than $75 per host/port.
 
-Try as I might, I was not able to find anything that could satisfy all the requirements. If you know of any, [please do get in touch]({{<ref contact>}})!
+Try as I might, I was not able to find anything that could satisfy all the requirements. If you know of any, [please do get in touch](https://karlquinsland.com/contact/)!
 
 I spent a decent chunk of time searching through the usual consumer/IT electronics sites and they all had similar offerings... none of which were sufficient.
 I had some close contenders, but they are victims of the current chip shortage or otherwise very expensive unobtanium.
@@ -35,19 +35,20 @@ I had some close contenders, but they are victims of the current chip shortage o
 I recently read [USB-C hubs and my slow descent into madness - Dennis Schubert](https://overengineer.dev/blog/2021/04/25/usb-c-hub-madness.html) which prompted me to broaden my search horizons to include the marketplaces closer to where all the KVM switches I was seeing in my searches were actually designed.
 After a bit of searching, I found the [`PX-UHDKVM801-2.0`](https://www.aliexpress.com/item/1005003927404402.html):
 
-{{<figure name="ali_exp_listing">}}
+![ali_exp_listing](https://karlquinsland.com/hdmi-kvm-teardown-and-esphome/images/ali_exp_listing.webp)
+
 
 A single video channel isn't a deal breaker; ultra wide screens can render more pixels off of one HDMI port than 2 screens from a few years ago could. Assuming this continues, by the time my current monitor dies dual video might not matter at all.
 Likewise, speedy USB is a "nice to have". My keyboard, mouse and web cam **must** work with the KVM. If the webcam streams in SD over USB2 but full HD over a USB3 link that's a _nice_ benefit but not a deal breaker. For the occasional times where I need to transfer a file and can't do it over the network, I can either plug directly into the host computers' USB3.2 port or settle for slow USB2 file transfer speeds. Not the end of the world!
 
 Of all the KVMs that I considered, this one came with the least compromises and came with explicit documentation about how to integrate/control the switch via TCP or RS232. Buoyed by the thought of not having to reverse engineer any IR remote codes or otherwise resort to some hackery, I pulled the trigger.
 
-{{< admonition note "A quick note about the 'generic' switch" >}}
-I say "generic" because there are a few different brands / names on this thing and it's not clear who the actual manufacturer is.
+> [!NOTE] A quick note about the 'generic' switch
+> I say "generic" because there are a few different brands / names on this thing and it's not clear who the actual manufacturer is.
+> 
+> I got it from a seller by the name of [`PourXuan`](https://www.pourxuan.com/Product/9867345045.html) which does seem to be the OEM behind it.
+> However, there are a few other [interesting markings](#ics-and-distinguishing-markings) that could indicate other companies contributing to / designing some internal components.
 
-I got it from a seller by the name of [`PourXuan`](https://www.pourxuan.com/Product/9867345045.html) which does seem to be the OEM behind it.
-However, there are a few other [interesting markings](#ics-and-distinguishing-markings) that could indicate other companies contributing to / designing some internal components.
-{{< /admonition >}}
 
 Anyways, lets look inside.
 
@@ -62,33 +63,49 @@ I did not check, but I suspect that each of the primary functions / PCBs communi
 
 The switch came well packed in some nondescript packaging.
 
-{{< figure name="shipping-box" >}}
+![Picture showing a nondescript shipping box.](https://karlquinsland.com/hdmi-kvm-teardown-and-esphome/images/shipping-box.webp)
+
 
 The small white box containing the power supply and some accessory hardware crumpled up the single page user manual.
 
 I have uploaded a copy of this paper and the other software/documentation provided by the seller to the same git repository hosting the [ESPHome Component](#esphome-component).
 
-{{< figure name="shipping-box-internal" >}}
-{{< figure name="shipping-content" >}}
+![Picture showing the internal content of the shipping box. The KVM switch is secured with some foam.](https://karlquinsland.com/hdmi-kvm-teardown-and-esphome/images/shipping-box-internal.webp)
 
-{{< figure name="content-accessories-closeup" >}}
-{{< figure name="content-accessories-hardware" >}}
+![An overview of everything that came in the box](https://karlquinsland.com/hdmi-kvm-teardown-and-esphome/images/shipping-content.webp)
+
+_An overview of everything that came in the box_
+
+
+![content-accessories-closeup](https://karlquinsland.com/hdmi-kvm-teardown-and-esphome/images/content-accessories.webp)
+
+![Rack Mount ears, two extra screws and the proper connector block needed to interface with the UART.](https://karlquinsland.com/hdmi-kvm-teardown-and-esphome/images/content-accessories-3.webp)
+
+_Rack Mount ears, two extra screws and the proper connector block needed to interface with the UART._
+
 
 I have not opened up the power supply to check its construction but it doesn't feel incredibly cheap.
 It's rated for 2 Amps @ 12v but the switch only drew about 3.75 Watt when measured from the wall.
 
-{{< figure name="content-accessory-psu" >}}
+![Nothing special. It doesn't feel cheap.](https://karlquinsland.com/hdmi-kvm-teardown-and-esphome/images/content-accessory-psu.webp)
+
+_Nothing special. It doesn't feel cheap._
+
 
 ## The switch
 
 The metal shell is generic; there are holes on the side for ventilation fans that are not populated.
 Other than not-so-well hidden screw, the case is easy to open.
 
-{{< figure name="open-screw-sticker" >}}
+![Don't forget the screw behind the sticker](https://karlquinsland.com/hdmi-kvm-teardown-and-esphome/images/open-screw-sticker.webp)
+
+_Don't forget the screw behind the sticker_
+
 
 With all screws out, the two halves slide apart easily to give us the first look at the internals!
 
-{{< figure name="open-crack-case" >}}
+![open-crack-case](https://karlquinsland.com/hdmi-kvm-teardown-and-esphome/images/open-crack-case.webp)
+
 
 It looks like this is a pretty modular design:
 
@@ -97,7 +114,10 @@ It looks like this is a pretty modular design:
 - Each plane uses dedicated ASICs to route the signals.
 - A minimal number of microprocessors / wires coordinating between the PCBs.
 
-{{< figure name="feature-teardown.first-full-view" >}}
+![The small cable from the IR jack on the back is all that holds the two halves of the case together.](https://karlquinsland.com/hdmi-kvm-teardown-and-esphome/images/teardown.first-full-view.webp)
+
+_The small cable from the IR jack on the back is all that holds the two halves of the case together._
+
 
 The LAN module plugs into the HDMI PCB very close to where the RS232 port is and the protocol specific documentation from the seller indicates that the payloads to control the switch are the same irrespective of the transport.
 
@@ -114,11 +134,20 @@ Nothing particularly interesting here. The single IC (`STM8S003F3`) is a cheap 8
 
 Most of the lines from the grey ribbon cable are not actually connected to the pcb so I'd bet that this micro communicates with the 'main' PCBs over some serial bus.
 
-{{< figure name="teardown.front-pcb-rear" >}}
+![Sorry for the glare. There's a lot of flux residue on this PCB.](https://karlquinsland.com/hdmi-kvm-teardown-and-esphome/images/teardown.front-pcb-4.webp)
 
-{{< figure name="teardown.front-pcb-ic-closeup" >}}
+_Sorry for the glare. There's a lot of flux residue on this PCB._
 
-{{< figure name="teardown.front-pcb-2" >}}
+
+![Notice how at least 4 of the pins from the ribbon cable connector are note soldered to the PCB...](https://karlquinsland.com/hdmi-kvm-teardown-and-esphome/images/teardown.front-pcb-3.webp)
+
+_Notice how at least 4 of the pins from the ribbon cable connector are note soldered to the PCB..._
+
+
+![This PCB is means to be used in other SKUs that come with two extra buttons that are unpopulated here.](https://karlquinsland.com/hdmi-kvm-teardown-and-esphome/images/teardown.front-pcb-2.webp)
+
+_This PCB is means to be used in other SKUs that come with two extra buttons that are unpopulated here._
+
 
 ### The LAN module
 
@@ -127,35 +156,52 @@ Very simple / standalone module. There's a dedicated PHY (`CH395Q`) and the same
 Only after I made it most of the way through the ESPHome integration development did the seller provide _additional_ documentation that indicates the IP address _can_ be changed... but only if you use a Windows program.
 I opted to keep going with the ESPHome <-> RS232 integration as that would be the most flexible and accessible approach.
 
-{{< figure name="teardown.lan-ic" >}}
+![teardown.lan-ic](https://karlquinsland.com/hdmi-kvm-teardown-and-esphome/images/teardown.lan-ic.webp)
 
-{{< figure name="teardown.lan" >}}
+
+![The small LAN pcb is attached directly to the front panel with screws mating with some 90 degree flanges soldered to the PCB](https://karlquinsland.com/hdmi-kvm-teardown-and-esphome/images/teardown.lan.webp)
+
+_The small LAN pcb is attached directly to the front panel with screws mating with some 90 degree flanges soldered to the PCB_
+
 
 ## HDMI
 
 In addition to the HDMI switching duties, the HDMI PCB hosts the UART electronics:
 
-{{< figure name="teardown.hdmi.uart" >}}
+![teardown.hdmi.uart](https://karlquinsland.com/hdmi-kvm-teardown-and-esphome/images/teardown.hdmi.uart.webp)
+
 
 TTL to RS232 handled by the `SIPEX SP3223EEX`:
 
-{{< figure name="teardown.hdmi.uart.ic" >}}
+![teardown.hdmi.uart.ic](https://karlquinsland.com/hdmi-kvm-teardown-and-esphome/images/teardown.hdmi.uart.ic.webp)
+
 
 The main application processor appears to be a STM32 clone known as the `CHIPSEA F031C8T6`.
 
-{{< figure name="teardown.hdmi.main-cpu" >}}
+![teardown.hdmi.main-cpu](https://karlquinsland.com/hdmi-kvm-teardown-and-esphome/images/teardown.hdmi.main-cpu.webp)
+
 
 Switching / routing the HDMI is done with two `IT66341TE` chips reducing the 4 HDMI inputs down to a single output and a `IT66321E` to switch between those two streams.
 
-{{< figure name="teardown.hdmi.output-ic" >}}
+![2 to 1 HDMI mux to switch between the two outputs from the 4 -> 1 muxes on board.](https://karlquinsland.com/hdmi-kvm-teardown-and-esphome/images/teardown.hdmi.output-ic.webp)
 
-{{< figure name="teardown.hdmi.mux-1" >}}
+_2 to 1 HDMI mux to switch between the two outputs from the 4 -> 1 muxes on board._
+
+
+![4 to 1 HDMI mux; one of two on the board](https://karlquinsland.com/hdmi-kvm-teardown-and-esphome/images/teardown.hdmi.mux-1.webp)
+
+_4 to 1 HDMI mux; one of two on the board_
+
 
 I would bet that the unpopulated connector in the bottom right is the bus connection to a second HDMI PCB in the 16 port model but I don't see where the differential pairs for the HDMI signal would come from so who knows 🤷.
 
-{{< figure name="teardown.hdmi.mux-2" >}}
+![4 to 1 HDMI mux; one of two on the board](https://karlquinsland.com/hdmi-kvm-teardown-and-esphome/images/teardown.hdmi.mux-2.webp)
 
-{{< figure name="teardown.hdmi.pcb-label" >}}
+_4 to 1 HDMI mux; one of two on the board_
+
+
+![teardown.hdmi.pcb-label](https://karlquinsland.com/hdmi-kvm-teardown-and-esphome/images/teardown.hdmi.pcb-label.webp)
+
 
 ## USB
 
@@ -165,23 +211,34 @@ Near the 4 'output' USB ports, you can see the `CH559L` which runs the show. Thi
 This is usually `PrtScrn` a few times quickly followed by the number of the input bank you wish to switch to.
 I have not tested / verified this functionality but the seller does advertise that there is similar functionality
 
-{{< figure name="teardown.usb.output" >}}
-{{< figure name="teardown.usb.main-cpu" >}}
+![teardown.usb.output](https://karlquinsland.com/hdmi-kvm-teardown-and-esphome/images/teardown.usb.output.webp)
+
+![teardown.usb.main-cpu](https://karlquinsland.com/hdmi-kvm-teardown-and-esphome/images/teardown.usb.main-cpu.webp)
+
 
 Each 'input' USB port is the same: unpopulated headphone jack footprint for audio input and a `FE1.1s USB 2.0 HUB` ASIC and an unknown IC that looks like it's related to the unpopulated headphone jack.
 
-{{< figure name="teardown.usb-port-2" >}}
+![Each 'input' USB port is managed with the same IC. Note the unpopulated Headphone jack footprint on the PCB](https://karlquinsland.com/hdmi-kvm-teardown-and-esphome/images/teardown.usb-port-2.webp)
 
-{{< figure name="teardown.usb.hub-ic-closeup" >}}
+_Each 'input' USB port is managed with the same IC. Note the unpopulated Headphone jack footprint on the PCB_
 
-{{< figure name="teardown.usb-port" >}}
+
+![I can't make out the markings, but the 16 pin square IC is almost certainly an audio ID for the unpopulated headphone jack.](https://karlquinsland.com/hdmi-kvm-teardown-and-esphome/images/teardown.usb.hub-ic-closeup.webp)
+
+_I can't make out the markings, but the 16 pin square IC is almost certainly an audio ID for the unpopulated headphone jack._
+
+
+![teardown.usb-port](https://karlquinsland.com/hdmi-kvm-teardown-and-esphome/images/teardown.usb-port.webp)
+
 
 There's some generic 8:1 GPIO mux chips in the form of `3251QE`.
 They are simple IO expanders that would allow a microcontroller to read/write 8 GPIO pins using just 3 GPIO.
 I don't know why they're here or why an 8 port switch needs 2 of them... both on the USB PCB.
 
-{{< figure name="teardown.usb.io-bus-mux" >}}
-{{< figure name="teardown.usb.io-bus-mux-closeup" >}}
+![teardown.usb.io-bus-mux](https://karlquinsland.com/hdmi-kvm-teardown-and-esphome/images/teardown.usb.io-bus-mux.webp)
+
+![teardown.usb.io-bus-mux-closeup](https://karlquinsland.com/hdmi-kvm-teardown-and-esphome/images/teardown.usb.io-bus-mux-closeup.webp)
+
 
 That's it for teardown!
 
@@ -239,14 +296,15 @@ I did not dump [`EDID`](https://en.wikipedia.org/wiki/Extended_Display_Identific
 
 ## ESPHome component
 
-{{< admonition info >}}
-The ESPHome component and some additional documentation/software/details are over at [`kquinsland/hdmi-kvm-esphome`](https://github.com/kquinsland/hdmi-kvm-esphome).
-{{< /admonition >}}
+> [!NOTE] Info
+> The ESPHome component and some additional documentation/software/details are over at [`kquinsland/hdmi-kvm-esphome`](https://github.com/kquinsland/hdmi-kvm-esphome).
+
 
 Yes, I wanted to be able to control this KVM from my Home Assistant install.
 Some sort of API was a strong desire/requirement for KVM switches for a reason!
 
-{{<figure name="example_ha_conf">}}
+![example_ha_conf](https://karlquinsland.com/hdmi-kvm-teardown-and-esphome/images/example_ha_conf.webp)
+
 
 I am still working on a complementary ESPHome component to automate my standing desk (to be published soon!) but to give you an idea of the automations this KVM will be used in:
 

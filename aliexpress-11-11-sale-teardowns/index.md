@@ -17,7 +17,7 @@ Tags: two-minute-teardown
 
 In addition to project supplies, I found quite a few items that can only be classified as  "ohh, that looks interesting and I need another $11 in the cart to unlock free shipping..." items.
 
-I was planing on doing a series of posts covering some of the stuff I bought but nothing on it's own was really "worth" a full post so instead of a bunch of short ["Two Minute Teardown"]({{<relref "/tags/two-minute-teardown/">}}) posts, I decided to just roll everything into this massive post.
+I was planing on doing a series of posts covering some of the stuff I bought but nothing on it's own was really "worth" a full post so instead of a bunch of short ["Two Minute Teardown"](/tags/two-minute-teardown/) posts, I decided to just roll everything into this massive post.
 
 And with that, here's a whole grab bag of worth of #TwoMinuteTeardowns with the appropriate level of detail for each item.
 
@@ -31,9 +31,11 @@ One good reason why not: it's not compatible with Apple's Find My network.
 
 In hindsight, if it was only $5 and if it worked 'natively' with apple devices... I'd have heard about it before browsing Ali Express!
 
-{{< figure name="air-tag-td02" >}}
+![air-tag-td02](https://karlquinsland.com/aliexpress-11-11-sale-teardowns/images/air-tag/td02.webp)
 
-{{< figure name="air-tag-td01" >}}
+
+![air-tag-td01](https://karlquinsland.com/aliexpress-11-11-sale-teardowns/images/air-tag/td01.webp)
+
 
 ### Markings and other details
 
@@ -42,27 +44,33 @@ The main CPU appears to be a [Lenze Tech ST17H66B](https://www.lenzetech.com/pub
 The instructions point to an [`iSearching` app](https://www.qrtransfer.com/iSearching.html)
 I didn't bother installing it, here's what a quick scan of the BTLE characteristics shows quite a few services and characteristics:
 
-{{< figure name="air-tag-td03" >}}
+![air-tag-td03](https://karlquinsland.com/aliexpress-11-11-sale-teardowns/images/air-tag/td03.webp)
+
 
 ## TuYa WiFi Power Monitor
 
 Product in question: [16A Tuya WIFI Smart Socket AC220V 110V Digital Wattmeter EU Plug Electricity consumption Power KWH US AU FR Power Energy Meter](https://s.click.aliexpress.com/e/_mNLeK44)
 
-{{< figure name="tuya-power-meter-01" >}}
+![tuya-power-meter-01](https://karlquinsland.com/aliexpress-11-11-sale-teardowns/images/tuya-power-meter/td01.webp)
 
-{{< figure name="tuya-power-meter-02" >}}
+
+![tuya-power-meter-02](https://karlquinsland.com/aliexpress-11-11-sale-teardowns/images/tuya-power-meter/td02.webp)
+
 
 TuYa module doesn't seem to be running the show; most of the pads are not connected; only the UART pins seem to be going somewhere.
 
-{{< figure name="tuya-power-meter-03" >}}
+![tuya-power-meter-03](https://karlquinsland.com/aliexpress-11-11-sale-teardowns/images/tuya-power-meter/td03.webp)
+
 
 A bit more going on than you'd expect at first; I was expecting a simple Switch Mode power supply driver for DC and then a single MCU to do everything but the WiFi.
 Not so!
 There's a dedicated chip for power monitoring, BT, Power supply, and the main MCU...
 
-{{< figure name="tuya-power-meter-04" >}}
+![tuya-power-meter-04](https://karlquinsland.com/aliexpress-11-11-sale-teardowns/images/tuya-power-meter/td04.webp)
 
-{{< figure name="tuya-power-meter-05" >}}
+
+![tuya-power-meter-05](https://karlquinsland.com/aliexpress-11-11-sale-teardowns/images/tuya-power-meter/td05.webp)
+
 
 ### Markings and other details
 
@@ -85,25 +93,30 @@ At least they're just regular philips screws and not some weird security screws.
 
 Interesting to see the IR sensor at the top. Presumably this is for proximity sensing to turn the screen on and off and not some kind of IR blaster or remote control.
 
-{{< figure name="air-mon-td01" >}}
+![air-mon-td01](https://karlquinsland.com/aliexpress-11-11-sale-teardowns/images/air-mon/td01.webp)
+
 
 Makes sense that the various sensors would be facing the vents holes.
 
-{{< figure name="air-mon-td02" >}}
+![air-mon-td02](https://karlquinsland.com/aliexpress-11-11-sale-teardowns/images/air-mon/td02.webp)
+
 
 Looks like it's using a micro controller to do the heavy lifting and only communicate to the TuYa module via UART.
 This is a common and well-supported pattern for these kinds of devices ... even if it does mean that it won't be _trivial_ to just replace the TuYa module with an ESPHome or Tasmota compatible module.
 
 Sniffing the UART shouldn't be that difficult but it's not something I'm going to do in this post.
 
-{{< figure name="air-mon-td03" >}}
+![air-mon-td03](https://karlquinsland.com/aliexpress-11-11-sale-teardowns/images/air-mon/td03.webp)
 
-{{< figure name="air-mon-td04" >}}
+
+![air-mon-td04](https://karlquinsland.com/aliexpress-11-11-sale-teardowns/images/air-mon/td04.webp)
+
 
 The various sensors aren't easily removed or clearly identified so your guess is as good as mine.
 The main PCB has a few unpopulated connections so this module either works with a different suite of sensors or - more likely - supports a few different footprints for each sensor.
 
-{{< figure name="air-mon-td05" >}}
+![air-mon-td05](https://karlquinsland.com/aliexpress-11-11-sale-teardowns/images/air-mon/td05.webp)
+
 
 ### Markings and other details
 
@@ -127,21 +140,26 @@ Screen is marked with:
 
 Product in question: [with POE optional Modbus MQTT JSON serial server RS485 RS232 RS422 to Ethernet TCP/IP to serial converter](https://s.click.aliexpress.com/e/_mPR1X7e).
 
-{{< figure name="poe-rs232-td01" >}}
+![poe-rs232-td01](https://karlquinsland.com/aliexpress-11-11-sale-teardowns/images/poe-rs232/td01.webp)
+
 
 [Line termination resistors](https://electronics.stackexchange.com/questions/413295/rs485-termination) that can be switched  in/out via jumpers is a very nice touch!
 
-{{< figure name="poe-rs232-td02" >}}
+![poe-rs232-td02](https://karlquinsland.com/aliexpress-11-11-sale-teardowns/images/poe-rs232/td02.webp)
+
 
 Neat and clean PCB layout with adequate protections on the RS485/422/232 lines.
 
-{{< figure name="poe-rs232-td03" >}}
+![poe-rs232-td03](https://karlquinsland.com/aliexpress-11-11-sale-teardowns/images/poe-rs232/td03.webp)
+
 
 Unfortunately the main MCU has it's markings lasered off so your guess is as good as mine.
 
-{{< figure name="poe-rs232-td04" >}}
+![poe-rs232-td04](https://karlquinsland.com/aliexpress-11-11-sale-teardowns/images/poe-rs232/td04.webp)
 
-{{< figure name="poe-rs232-td05" >}}
+
+![poe-rs232-td05](https://karlquinsland.com/aliexpress-11-11-sale-teardowns/images/poe-rs232/td05.webp)
+
 
 ### Markings and other details
 
@@ -165,43 +183,54 @@ PoE negotiation via [Silan SD4950](https://www.silan.com.cn/en/index.php/product
 
 Product in question: [140W 6 Ports PD Fast Charger 30W Multi USB-C Fast Charging Station with LED Display for IPhone 14 13 Pro Max Samsung Xiaomi lpad](https://s.click.aliexpress.com/e/_mPlQZcs)
 
-{{< figure name="usbc-power-01" >}}
+![usbc-power-01](https://karlquinsland.com/aliexpress-11-11-sale-teardowns/images/usbc-power/td01.webp)
+
 
 The mirror finish ... is certainly a choice.
 It gets better once you remove the protective film, at least.
 
-{{< figure name="usbc-power-02" >}}
+![usbc-power-02](https://karlquinsland.com/aliexpress-11-11-sale-teardowns/images/usbc-power/td02.webp)
+
 
 There are no screws holding the case together; just pry the back panel off, slide out the power supply and you can access the front PCB that does the actual USB-C power negotiations.
 
-{{< figure name="usbc-power-03" >}}
+![usbc-power-03](https://karlquinsland.com/aliexpress-11-11-sale-teardowns/images/usbc-power/td03.webp)
 
-{{< figure name="usbc-power-04" >}}
 
-{{< figure name="usbc-power-05" >}}
+![usbc-power-04](https://karlquinsland.com/aliexpress-11-11-sale-teardowns/images/usbc-power/td04.webp)
 
-{{< figure name="usbc-power-06" >}}
+
+![usbc-power-05](https://karlquinsland.com/aliexpress-11-11-sale-teardowns/images/usbc-power/td05.webp)
+
+
+![usbc-power-06](https://karlquinsland.com/aliexpress-11-11-sale-teardowns/images/usbc-power/td06.webp)
+
 
 I am 100% sure that this power supply was originally designed for something else.
 One of the original leads was cut off before the power supply was re-purposed.
 
-{{< figure name="usbc-power-07" >}}
+![usbc-power-07](https://karlquinsland.com/aliexpress-11-11-sale-teardowns/images/usbc-power/td07.webp)
+
 
 After removing the power distribution board from the case, it's quite clean!
 It would also be trivial to use this board in other projects 🤔.
 
-{{< figure name="usbc-power-08" >}}
+![usbc-power-08](https://karlquinsland.com/aliexpress-11-11-sale-teardowns/images/usbc-power/td08.webp)
+
 
 Single CPU to run the show and a USB-C power negotiation chip per port.
 
-{{< figure name="usbc-power-09" >}}
+![usbc-power-09](https://karlquinsland.com/aliexpress-11-11-sale-teardowns/images/usbc-power/td09.webp)
 
-{{< figure name="usbc-power-10" >}}
+
+![usbc-power-10](https://karlquinsland.com/aliexpress-11-11-sale-teardowns/images/usbc-power/td010.webp)
+
 
 Too much glue keeping everything the power supply together for me to bother taking it apart further.
 It's got some heft to it but I'm not able to easily check out quality of transformer or other components.
 
-{{< figure name="usbc-power-11" >}}
+![usbc-power-11](https://karlquinsland.com/aliexpress-11-11-sale-teardowns/images/usbc-power/td011.webp)
+
 
 ### Markings and other details
 
@@ -212,16 +241,19 @@ It's got some heft to it but I'm not able to easily check out quality of transfo
 
 Product in question: [134.2Khz RFID Animal Tag Reader Handheld Pet Microchip Scanner IISO11784/85/FDX-B/EMID Data Storage Microchip For Pet/Dog/Cat/Pig](https://s.click.aliexpress.com/e/_mrfMB5i)
 
-{{< figure name = "pet-rfid-td01" >}}
+![pet-rfid-td01](https://karlquinsland.com/aliexpress-11-11-sale-teardowns/images/pet-rfid/td01.webp)
+
 
 Not much on the back of the PCB: just a beeper and generic battery management IC.
 
-{{< figure name = "pet-rfid-td02" >}}
+![pet-rfid-td02](https://karlquinsland.com/aliexpress-11-11-sale-teardowns/images/pet-rfid/td02.webp)
+
 
 I honestly thought this would be more integrated.
 Instead there's quite a few chips on the board.
 
-{{< figure name = "pet-rfid-td03" >}}
+![pet-rfid-td03](https://karlquinsland.com/aliexpress-11-11-sale-teardowns/images/pet-rfid/td03.webp)
+
 
 ### Markings and other details
 
@@ -241,11 +273,12 @@ PCB is marked `W90A-V1.9`
 
 Product in question: [DP100 DC Power Supply Adjustable Digital DC Power Supply MINI Portable Lab Source Power Supply Voltage Regulator Switch 30V 5A](https://s.click.aliexpress.com/e/_mOfFkQY)
 
-This is nothing more than a desk-friendly version of the [RD6006]({{< relref "electronics-lab-enhanced-bench-psu" >}}) power supply and it's amazing.
+This is nothing more than a desk-friendly version of the [RD6006](/electronics-lab-enhanced-bench-psu/) power supply and it's amazing.
 
 Here's everything that came in the box:
 
-{{< figure name = "dp100-02" >}}
+![dp100-02](https://karlquinsland.com/aliexpress-11-11-sale-teardowns/images/dp100/td02.webp)
+
 
 It shipped with this power supply and a barrel jack to USB-C adapter... because the DP100 actually expects its power to come _from_ a USB-C/PD capable source.
 It'll be trivial to use this power supply with a USB-C power bank.
@@ -253,44 +286,54 @@ It - annoyingly - has a USB-A **_male_** port for data logging / firmware update
 At least they included a Male <-> Male USB A cable...
 I would have preferred two USB-C ports with clear labeling about which was meant for PD input and which was meant for PC communications.
 
-{{< figure name = "dp100-05" >}}
+![dp100-05](https://karlquinsland.com/aliexpress-11-11-sale-teardowns/images/dp100/td05.webp)
+
 
 For reference, the power supply is pretty beefy:
 
-{{< figure name = "dp100-01" >}}
+![dp100-01](https://karlquinsland.com/aliexpress-11-11-sale-teardowns/images/dp100/td01.webp)
+
 
 Terminals are compact but decently high quality.
 The little red and black rubber bands are a nice touch.
 
-{{< figure name = "dp100-04" >}}
+![dp100-04](https://karlquinsland.com/aliexpress-11-11-sale-teardowns/images/dp100/td04.webp)
+
 
 Annoying security torx screws under the rubber feet.
 
-{{< figure name = "dp100-07" >}}
+![dp100-07](https://karlquinsland.com/aliexpress-11-11-sale-teardowns/images/dp100/td07.webp)
+
 
 Screen is a bit cramped and navigation is a bit clunky but once you get used to it, it's not bad.
 
-{{< figure name = "dp100-06" >}}
+![dp100-06](https://karlquinsland.com/aliexpress-11-11-sale-teardowns/images/dp100/td06.webp)
+
 
 After removing the screws and prying the case apart, it's quite clean inside.
 
-{{< figure name = "dp100-08" >}}
+![dp100-08](https://karlquinsland.com/aliexpress-11-11-sale-teardowns/images/dp100/td08.webp)
+
 
 Main CPU next to some unpopulated pin headers and some loctite screwing the PCB to the terminals.
 
-{{< figure name = "dp100-12" >}}
+![dp100-12](https://karlquinsland.com/aliexpress-11-11-sale-teardowns/images/dp100/td012.webp)
+
 
 On the other side of the PCB is a metal can with all the fun power conversion stuff.
 
-{{< figure name = "dp100-15" >}}
+![dp100-15](https://karlquinsland.com/aliexpress-11-11-sale-teardowns/images/dp100/td015.webp)
+
 
 They're doing a [4 wire measurement](https://www.allaboutcircuits.com/textbook/direct-current/chpt-8/kelvin-resistance-measurement/) at the terminals via a small secondary PCB.
 
-{{< figure name = "dp100-17" >}}
+![dp100-17](https://karlquinsland.com/aliexpress-11-11-sale-teardowns/images/dp100/td017.webp)
+
 
 And after removing the can, it's just a bunch of filter caps and an inductor.
 
-{{< figure name = "dp100-18" >}}
+![dp100-18](https://karlquinsland.com/aliexpress-11-11-sale-teardowns/images/dp100/td018.webp)
+
 
 ### Markings and other details
 

@@ -23,5 +23,5 @@ The really short version:
 
 No need to disable `resolved` and replace it with dnsmasq :smile:
 
-{{< gist kquinsland 5cdc63614a581d9b392f435740b58729 >}}
+[GitHub Gist: kquinsland/5cdc63614a581d9b392f435740b58729](https://gist.github.com/kquinsland/5cdc63614a581d9b392f435740b58729)
 

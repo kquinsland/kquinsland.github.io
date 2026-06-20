@@ -19,7 +19,7 @@ I managed to snag the following on Ali Express:
 - [IoTorero LS11PDual LED Controller](https://www.aliexpress.us/item/3256810030310796.html)
 - [SMLIGHT-A1-SLWF-09 LED Controller](https://www.aliexpress.us/item/3256809568993977.html)
 
-To continue from [last year's trend]({{< relref "/posts/2024/12/aliexpress-11-11-sale-teardowns-2024" >}}#side-note-the-ossha-community-is-being-heard), I waned to celebrate that all three of these LED controllers have:
+To continue from [last year's trend](/aliexpress-11-11-sale-teardowns-2024/#side-note-the-ossha-community-is-being-heard), I waned to celebrate that all three of these LED controllers have:
 
 - [WLED](https://kno.wled.ge/) firmware flashed from the factory
 - GPIO labeled for hacking
@@ -36,7 +36,8 @@ I have created an `ICs and Markings` section for each teardown to help identify 
 
 ## Gledepto GL-C-618WL LED Controller
 
-{{<figure name="feat-gledepto-render">}}
+![feat-gledepto-render](https://karlquinsland.com/led-controllers/images/gledepto/render.webp)
+
 
 Each connector is labeled with the GPIO that drives it <3.
 Chunky user replicable fuse with a label stating the form factor and rating <3.
@@ -44,33 +45,47 @@ Chunky user replicable fuse with a label stating the form factor and rating <3.
 Not pictured; the back of the device has no screws.
 A simple pry tool is all you need to open it up.
 
-{{<figure name="gledepto_td01">}}
+![gledepto_td01](https://karlquinsland.com/led-controllers/images/gledepto/td01.webp)
+
 
 About what you'd expect from a WLED controller. Layout seems reasonable and intuitive.
 
-{{<figure name="gledepto_td02">}}
+![That's glare form my light and leftover solder flux... not conformal coating.](https://karlquinsland.com/led-controllers/images/gledepto/td02.webp)
 
-{{<figure name="gledepto_td03">}}
+_That's glare form my light and leftover solder flux... not conformal coating._
 
-{{<figure name="gledepto_td04">}}
+
+![Backside is boring but everything is well labeled.](https://karlquinsland.com/led-controllers/images/gledepto/td03.webp)
+
+_Backside is boring but everything is well labeled._
+
+
+![Apparently if you order enough of them, Espressif will put your logo on the module.](https://karlquinsland.com/led-controllers/images/gledepto/td04.webp)
+
+_Apparently if you order enough of them, Espressif will put your logo on the module._
+
 
 Not exactly sure why they have MOSFETS immediately after the power input _and_ for the LED outputs.
-{{<figure name="gledepto_td05">}}
+![gledepto_td05](https://karlquinsland.com/led-controllers/images/gledepto/td05.webp)
+
 
 It's not marked on the box or enclosure or mentioned in the product listing but it looks like you can select between termination resistors (24.9/33Ω) via switch.
 This is a nice touch for reliability over long runs of LED strip ... but I'm not sure how many users will actually need to use it with that 74HC chip there.
 
 No other controller I've seen has this feature so far so I appreciate the attention to detail here.
 
-{{<figure name="gledepto_td06">}}
+![gledepto_td06](https://karlquinsland.com/led-controllers/images/gledepto/td06.webp)
+
 
 Beyond that, nice of them to mark what type of MIC is used and the GPIOs it's wired to.
 
-{{<figure name="gledepto_td07">}}
+![gledepto_td07](https://karlquinsland.com/led-controllers/images/gledepto/td07.webp)
+
 
 I would expect the fuse to be the over-current protection for the entire board.... so I'm not sure why there's a pair of MOSFETs right after the DC input.
 
-{{<figure name="gledepto_td08">}}
+![gledepto_td08](https://karlquinsland.com/led-controllers/images/gledepto/td08.webp)
+
 
 ### Misc
 
@@ -102,25 +117,27 @@ I did not bother trying to check for logging output over the serial interface si
 
 ## IoTorero LS11PDual LED Controller
 
-{{<figure name="iotorero-render">}}
+![iotorero-render](https://karlquinsland.com/led-controllers/images/iotorero/render.webp)
 
-{{< admonition note >}}
 
-IoTorero appears to be a sub-brand of [athom](https://www.athom.tech/); the designs are very similar.
+> [!NOTE] Note
+> IoTorero appears to be a sub-brand of [athom](https://www.athom.tech/); the designs are very similar.
 
-{{< /admonition >}}
 
 Again, nothing to unscrew on the back; just a pry tool to open it up.
 The tracks are quite wide and the extra solder implies some beefy current handling.
 
-{{<figure name="iotorero_td01">}}
+![iotorero_td01](https://karlquinsland.com/led-controllers/images/iotorero/td01.webp)
+
 
 This design isn't quite so modular or as sophisticated so it's easier to follow.
 The individual GPIOs for the LED channels are labeled on the silkscreen but the integrated button and microphone are not so this is slightly less friendly for hacking.
 
-{{<figure name="iotorero_td02">}}
+![iotorero_td02](https://karlquinsland.com/led-controllers/images/iotorero/td02.webp)
 
-{{<figure name="iotorero_td03">}}
+
+![iotorero_td03](https://karlquinsland.com/led-controllers/images/iotorero/td03.webp)
+
 
 ### Misc
 
@@ -148,7 +165,8 @@ Nothing unusual here; I did not bother trying to check for logging output over t
 
 ## SMLIGHT-A1-SLWF-09 LED Controller
 
-{{<figure name="smlight-render">}}
+![smlight-render](https://karlquinsland.com/led-controllers/images/smlight/render.webp)
+
 
 And the best for last...
 This one is _very_ modular; you can upgrade the "base" model with PoE/Ethernet and a Microphone via daughterboards.
@@ -158,29 +176,48 @@ There are a few other "nice touch!" features here too:
 - USB-C power input is a nice touch too. Shame it's limited to 12v. Would have been nice to see PPS used to negotiate between 12v or 20v as needed.
 - QR Codes on the silk screen and labels to help track down documentation or order parts.
 
-{{<figure name="smlight_td01">}}
+![Common theme: no screws on the back; just a pry tool to open it up.](https://karlquinsland.com/led-controllers/images/smlight/td01.webp)
+
+_Common theme: no screws on the back; just a pry tool to open it up._
+
 
 Silkscreen makes it super clear which GPIOs are used for what purpose.
 
-{{<figure name="smlight_td02">}}
+![smlight_td02](https://karlquinsland.com/led-controllers/images/smlight/td02.webp)
 
-{{<figure name="smlight_td03">}}
 
-{{<figure name="smlight_td04">}}
+![I don't know what the `AIR ADD-ON` header is for...](https://karlquinsland.com/led-controllers/images/smlight/td03.webp)
 
-{{<figure name="smlight_td05">}}
+_I don't know what the `AIR ADD-ON` header is for..._
 
-{{<figure name="smlight_td06">}}
 
-{{<figure name="smlight_td07">}}
+![Custom metal can for what is presumably an ESP32. 'core' branding means this is likely used in most of their products.](https://karlquinsland.com/led-controllers/images/smlight/td04.webp)
 
-{{<figure name="smlight_td08">}}
+_Custom metal can for what is presumably an ESP32. 'core' branding means this is likely used in most of their products._
 
-{{<figure name="smlight_td09">}}
 
-{{<figure name="smlight_td10">}}
+![smlight_td05](https://karlquinsland.com/led-controllers/images/smlight/td05.webp)
 
-{{<figure name="smlight_td11">}}
+
+![smlight_td06](https://karlquinsland.com/led-controllers/images/smlight/td06.webp)
+
+
+![smlight_td07](https://karlquinsland.com/led-controllers/images/smlight/td07.webp)
+
+
+![smlight_td08](https://karlquinsland.com/led-controllers/images/smlight/td08.webp)
+
+
+![smlight_td09](https://karlquinsland.com/led-controllers/images/smlight/td09.webp)
+
+
+![I guess they bought enough of these transformers that they could do customized branding...](https://karlquinsland.com/led-controllers/images/smlight/td10.webp)
+
+_I guess they bought enough of these transformers that they could do customized branding..._
+
+
+![smlight_td11](https://karlquinsland.com/led-controllers/images/smlight/td11.webp)
+
 
 ### Misc
 
@@ -194,7 +231,7 @@ The ethernet module features the familiar `SMSC 8720A` but beyond that:
 
 I didn't bother lifting the metal can off of the main microcontroller but based on the other two designs here it's presumably an ESP32 variant (does WLED even support anything else?).
 It's also identical in appearance to the ESP32 module used on the [SMLIGHT SLZB-MRW10
-]({{< relref "/posts/2025/12/slzb-mrw10" >}}) so presumably the same module is used across multiple SMLIGHT products.
+](/slzb-mrw10/) so presumably the same module is used across multiple SMLIGHT products.
 
 I didn't get a clear photo of the markings on the USB/PD chip either.
 

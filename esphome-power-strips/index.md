@@ -17,7 +17,10 @@ They're cheap, well made and - most importantly - trivial to flash with ESPHome 
 They do have one obvious draw back, though; optimized for a "traditional" US style outlet.
 When you try to deploy them to a power strip, you end up loosing about 50% of the outlets on the strip!
 
-{{<figure name="poor_p_strip_util">}}
+![This is how you loose about 50% of the outlets on your power strip.](https://karlquinsland.com/esphome-power-strips/images/poor_power-strip_util.webp)
+
+_This is how you loose about 50% of the outlets on your power strip._
+
 
 I figured that there must be a power strip out there that had the WiFi radio, power supply and relays built in.
 
@@ -39,11 +42,15 @@ I eventually took a gamble on two:
 
 ## BN-Link
 
-{{<figure name="bn_marketing">}}
+![Marketing photo for the BN-Link power strip](https://karlquinsland.com/esphome-power-strips/images/bn_marketing_photo.webp)
+
+_Marketing photo for the BN-Link power strip_
+
 
 This opens up with a standard philips screw driver and you only need one bit size for all screws - nice touch!
 
-{{<figure name="bn_01_hidden_screws">}}
+![bn_01_hidden_screws](https://karlquinsland.com/esphome-power-strips/images/bn_01_hidden_screws.webp)
+
 
 The screws are hiding under the anti-slip pads but instead of those being glued down, the pads use a friction fit on the `+` shaped locating pegs.
 I really like this design feature as the glued pads never stick quite as well when replaced.
@@ -52,13 +59,21 @@ If you have a thin metal pry tool / spudger, it will come in handy!
 
 Overall, the physical construction is solid enough and - pleasantly - serviceable.
 
-{{<figure name="bn_02_overview">}}
-{{<figure name="bn_03_usb_under_closeup">}}
+![bn_02_overview](https://karlquinsland.com/esphome-power-strips/images/bn_02_overview.webp)
+
+![I'm not loving the sloppy wiring connecting the USB power supply to the mains rails.](https://karlquinsland.com/esphome-power-strips/images/bn_03_usb_under_closeup.webp)
+
+_I'm not loving the sloppy wiring connecting the USB power supply to the mains rails._
+
 
 Like the USB power supply, the WiFi module is also separate from the main PCB.
 
-{{<figure name="bn_04_wifi_under_closeup">}}
-{{<figure name="bn_05_wifi_chip_closeup">}}
+![You know what's cheaper than pin headers? PCB fingers in slots.](https://karlquinsland.com/esphome-power-strips/images/bn_04_wifi_under_closeup.webp)
+
+_You know what's cheaper than pin headers? PCB fingers in slots._
+
+![bn_05_wifi_chip_closeup](https://karlquinsland.com/esphome-power-strips/images/bn_05_wifi_chip_closeup.webp)
+
 
 Bad news: this module is NOT an ESP powered device.
 
@@ -68,20 +83,26 @@ I'll go ahead and flash the OpenBK firmware and have a go to at least give it a 
 
 The relay switching electronics look reasonable enough:
 
-{{<figure name="bn_06_support_circuit_closeup">}}
+![bn_06_support_circuit_closeup](https://karlquinsland.com/esphome-power-strips/images/bn_06_support_circuit_closeup.webp)
+
 
 The relays themselves are nothing special to write home about:
 
-{{<figure name="bn_07_relay_outlet_closeup">}}
+![Note the links. I'd bet that it's simpler to scale a design by copy/pasting a self-contained footprint and adjust the number of links on the BOM as needed.](https://karlquinsland.com/esphome-power-strips/images/bn_07_relay_outlet_closeup.webp)
+
+_Note the links. I'd bet that it's simpler to scale a design by copy/pasting a self-contained footprint and adjust the number of links on the BOM as needed._
+
 
 There's nothing remarkable about the USB Power supply; standard switch mode power supply topology.
 The power conversion is done by the chip under the metal heat sink; I didn't bother to get an ID on it as the ports don't support any quick charge or power delivery protocols.
 
-{{<figure name="bn_08_usb_top_closeup">}}
+![bn_08_usb_top_closeup](https://karlquinsland.com/esphome-power-strips/images/bn_08_usb_top_closeup.webp)
+
 
 Before putting the strip back together, I secured the USB power supply wires with a bit of electrical tape to lessen the probability of a short due to insulation wearing off.
 
-{{<figure name="bn_09_usb_feed_bodge_fix">}}
+![bn_09_usb_feed_bodge_fix](https://karlquinsland.com/esphome-power-strips/images/bn_09_usb_feed_bodge_fix.webp)
+
 
 ### Flashing OpenBK
 
@@ -113,24 +134,26 @@ I **highly value** having the correct device/entity class, icon, name ... etc al
 I'll keep an eye on the project and may find another use for this power strip in the future.
 If ESPHome ever adds support for the `BK7231T` chips then this is _perfect_.
 
-{{< admonition tip >}}
+> [!TIP] Tip
+> While drafting this post, I [came across](https://old.reddit.com/r/esp8266/comments/qfg3yc/replaced_tuya_plug_controller_with_esp8266/) an ESP based drop in replacement for the `WB2S` module: the [`WT-01N`](https://www.lcsc.com/product-detail/WiFi-Modules_Wireless-tag-WT-01N_C477823.html).
+> Had I known, I would have just done the module swap, flashed ESPHome and stopped there.
+> 
+> While looking for the `WT-01N`, on Ali Express, I found that there's already a small supply of [`ESP-02S` modules that should be drop in replacements](https://www.aliexpress.com/w/wholesale--ESP%2525252d02S.html?catId=0&initiative_id=SB_20230114112241&SearchText=%2BESP-02S&spm=a2g0o.home.1000002.0&dida=y)!
+> 
+> Next time!
 
-While drafting this post, I [came across](https://old.reddit.com/r/esp8266/comments/qfg3yc/replaced_tuya_plug_controller_with_esp8266/) an ESP based drop in replacement for the `WB2S` module: the [`WT-01N`](https://www.lcsc.com/product-detail/WiFi-Modules_Wireless-tag-WT-01N_C477823.html).
-Had I known, I would have just done the module swap, flashed ESPHome and stopped there.
-
-While looking for the `WT-01N`, on Ali Express, I found that there's already a small supply of [`ESP-02S` modules that should be drop in replacements](https://www.aliexpress.com/w/wholesale--ESP%2525252d02S.html?catId=0&initiative_id=SB_20230114112241&SearchText=%2BESP-02S&spm=a2g0o.home.1000002.0&dida=y)!
-
-Next time!
-{{< /admonition >}}
 
 #### WT-01N swap
 
-{{< admonition >}}
-On a rainy afternoon in late 2023.03, I got around to doing the module swap.
-Below you'll find the appropriate Tasmota configuration for GPIO pins.
-{{< /admonition >}}
+> [!NOTE] Note
+> On a rainy afternoon in late 2023.03, I got around to doing the module swap.
+> Below you'll find the appropriate Tasmota configuration for GPIO pins.
 
-{{<figure name="bn_tasmota">}}
+
+![And here's the Tasmota configuration for the BN-Link.](https://karlquinsland.com/esphome-power-strips/images/tasmota.webp)
+
+_And here's the Tasmota configuration for the BN-Link._
+
 
 ### BN GPIO notes
 
@@ -151,36 +174,62 @@ The project needs some basic "here's how to figure out which GPIOs do what" docs
 
 Happy that I was able to get open firmware on the first but disappointed with the lack of customization, I moved onto the second candidate.
 
-{{<figure name="pow_marketing">}}
+![Marketing photo for the POWSAV power strip](https://karlquinsland.com/esphome-power-strips/images/pow_marketing_photo.webp)
 
-{{< admonition note >}}
+_Marketing photo for the POWSAV power strip_
 
-At one point in time, this _exact same device_ was sold under the `ahrise` branding and was [Tasmota compatible](https://templates.blakadder.com/ahrise_AHR-083.html).
 
-The model number is the same, the templates repo picture is identical, the GPIO pinout is identical... but the linked Amazon listing is no longer available.
-The PCB silk screen also include the old `AHR` markings so I'm guessing that this was just a re-brand with the new `POWSAV` branding after switching to TuYa?
-{{< /admonition >}}
+> [!NOTE] Note
+> At one point in time, this _exact same device_ was sold under the `ahrise` branding and was [Tasmota compatible](https://templates.blakadder.com/ahrise_AHR-083.html).
+> 
+> The model number is the same, the templates repo picture is identical, the GPIO pinout is identical... but the linked Amazon listing is no longer available.
+> The PCB silk screen also include the old `AHR` markings so I'm guessing that this was just a re-brand with the new `POWSAV` branding after switching to TuYa?
+
 
 To open this one, you'll need a 2.2mm triangle bit.
 There are 6 screws. four hidden under the anti-slip pads.
 
-{{<figure name="ps_01_rear_exterior_overview" >}}
+![Why are the screw mounting slots not centered :/.](https://karlquinsland.com/esphome-power-strips/images/ps_01_rear_exterior_overview.webp)
+
+_Why are the screw mounting slots not centered :/._
+
 
 The USB, WiFI and mains switching are all on a single PCB but the main power cut off and protection features are all on a separate PCB.
 
-{{<figure name="ps_02_rear_overview" >}}
+![Nothing of concern to see on the bottom, everything looks pretty boring... which is good when it comes to mains handling!](https://karlquinsland.com/esphome-power-strips/images/ps_02_rear_overview.webp)
 
-{{<figure name="ps_04_top_overview" >}}
+_Nothing of concern to see on the bottom, everything looks pretty boring... which is good when it comes to mains handling!_
+
+
+![About what you'd expect for a PCB layout. Plenty of distance between the HV and LV sides!](https://karlquinsland.com/esphome-power-strips/images/ps_04_top_overview.webp)
+
+_About what you'd expect for a PCB layout. Plenty of distance between the HV and LV sides!_
+
 
 It's nice to see that the surge suppression circuitry is on it's own PCB. Repairs there should be easier to pull off - in theory.
 
 Here's a few more shots of the primary components/assemblies:
 
-{{<figure name="ps_06_protection_closeup_2" >}}
-{{<figure name="ps_07_wifi_closeup" >}}
-{{<figure name="ps_08_usb_closeup" >}}
-{{<figure name="ps_09_wifi_removed" >}}
-{{<figure name="cover-ps_10_wifi_replaced" >}}
+![Note the silk screen: this protection PCB is common to the AHR-053 model as well.](https://karlquinsland.com/esphome-power-strips/images/ps_06_protection_closeup_2.webp)
+
+_Note the silk screen: this protection PCB is common to the AHR-053 model as well._
+
+![WB3S is a TuYa branded module that is pin compatible with the ubiquitous ESP-8266 modules.](https://karlquinsland.com/esphome-power-strips/images/ps_07_wifi_closeup.webp)
+
+_WB3S is a TuYa branded module that is pin compatible with the ubiquitous ESP-8266 modules._
+
+![Note the black insulating material separating the USB ports from the mains side of things.](https://karlquinsland.com/esphome-power-strips/images/ps_08_usb_closeup.webp)
+
+_Note the black insulating material separating the USB ports from the mains side of things._
+
+![Relatively painless extraction, only partially lifted the pad in the bottom left.](https://karlquinsland.com/esphome-power-strips/images/ps_09_wifi_removed.webp)
+
+_Relatively painless extraction, only partially lifted the pad in the bottom left._
+
+![Not even 5 min later, the TuYa modules has been replaced with one running a firmware powered by ESPHome.](https://karlquinsland.com/esphome-power-strips/images/ps_10_wifi_replaced.webp)
+
+_Not even 5 min later, the TuYa modules has been replaced with one running a firmware powered by ESPHome._
+
 
 ### POWSAV GPIO notes
 

@@ -10,9 +10,9 @@ Tags: teardown, home assistant
 
 ---
 
-{{< admonition info >}}
-As of 2022-05-11, there is an update on my experience with the thermostat [below](#an-update-on-wifi-connectivity)!
-{{< /admonition >}}
+> [!NOTE] Info
+> As of 2022-05-11, there is an update on my experience with the thermostat [below](#an-update-on-wifi-connectivity)!
+
 
 This is another one of those posts from my never ending quest to integrate Home Assistant with All The Things!
 
@@ -48,7 +48,8 @@ As most people don't particularly care about the network protocol(s) used to lin
 
 For whatever reason, you have to dig much deeper to find people discussing **WiFi** based thermostats that play nice with Home Assistant w/o an internet connection but there are a few out there. I settled on the Venstar T7850.
 
-{{<figure name="oem_render">}}
+![Official manufacturer render image of product.](https://karlquinsland.com/venstar-t7850-teardown-review/images/oem_render.webp)
+
 
 # Initial Impressions
 
@@ -77,45 +78,82 @@ After a few factory resets and additional troubleshooting, I started to look aro
 
 Here are two 'relatively new' reddit threads that mention similar connection issues with similar models in the same product family:
 
-{{<figure name="wifi_issue_01">}}
+![Source: /r/homeassistant post:](https://karlquinsland.com/venstar-t7850-teardown-review/images/wifi_issue_01.webp)
 
-{{<figure name="wifi_issue_02">}}
+_Source: /r/homeassistant post:_
+
+_ALL Local Control Thermostat with MQTT and Home Assistant - Venstar T7900_
+
+
+![Source: /r/thermostats post:](https://karlquinsland.com/venstar-t7850-teardown-review/images/wifi_issue_02.webp)
+
+_Source: /r/thermostats post:_
+
+_Venstar T7900 - problem with WIFI_
+
 
 And an Amazon question from years ago indicating that this might not be a 'new' issue:
 
-{{<figure name="wifi_issue_03">}}
+![Source: Amazon question: ](https://karlquinsland.com/venstar-t7850-teardown-review/images/wifi_issue_03.webp)
+
+_Source: Amazon question: _
+
+_My venstar phone app says thermostat is offline. How do I reconnect it ?_
+
 
 A Home Assistant community/support form poster seems to have a similar issue and even offers a fix... which did not work.
 
-{{<figure name="wifi_issue_04">}}
+![Source: Home Assistant community forums: ](https://karlquinsland.com/venstar-t7850-teardown-review/images/wifi_issue_04.webp)
+
+_Source: Home Assistant community forums: _
+
+_Venstar T7900 & Trane Air Conditioning / Amana Forced Air Furnace_
+
 
 My access point is also a Unifi AP so of course there are a few threads on the unifi support forums:
 
-{{<figure name="wifi_issue_05">}}
+![Source: Ubiquity community forums: ](https://karlquinsland.com/venstar-t7850-teardown-review/images/wifi_issue_05.webp)
 
-{{< admonition note >}}
-Note: [The FCC documents indicate](https://fccid.io/MUH-SKYPORT2/Attestation-Statements/Models-Covered-2531030) that Venstar did re-brand the thermostat for `First Alert` and `Bionaire`. It is likely that they also did this for `Carrier` as well judging by [pictures](https://images.google.com/search?q=carrier+infinity+touch+control&tbm=isch) of a `Carrier Infinity Touch Control` thermostat.
+_Source: Ubiquity community forums: _
 
-{{< /admonition >}}
+_Trouble associating Venstar Wifi thermostats with one particular UAP-AC-PRO_
 
-{{<figure name="wifi_issue_06">}}
+
+> [!NOTE] Note
+> Note: [The FCC documents indicate](https://fccid.io/MUH-SKYPORT2/Attestation-Statements/Models-Covered-2531030) that Venstar did re-brand the thermostat for `First Alert` and `Bionaire`. It is likely that they also did this for `Carrier` as well judging by [pictures](https://images.google.com/search?q=carrier+infinity+touch+control&tbm=isch) of a `Carrier Infinity Touch Control` thermostat.
+
+
+![Source: Ubiquity community forums: ](https://karlquinsland.com/venstar-t7850-teardown-review/images/wifi_issue_06.webp)
+
+_Source: Ubiquity community forums: _
+
+_Cant connect to Carrier Infinity Thermostat_
+
 
 The user name seems familiar; probably the same user from one of the above reddit threads:
-{{<figure name="wifi_issue_07">}}
+![Source: Ubiquity community forums: ](https://karlquinsland.com/venstar-t7850-teardown-review/images/wifi_issue_07.webp)
 
-{{<figure name="wifi_issue_08">}}
+_Source: Ubiquity community forums: _
 
-{{< admonition warning "TL;DR:" >}}
+_Venstar T7900 Thermostat Won't Connect to WiFi_
 
-Ubiquity's Unifi line of wireless access points has a pretty solid reputation for a reason; by and large they just work. I have installed dozens of them over the years and have supported installs with _thousands_ of them and had far fewer issues with those customers/sites than with your typical 'soho' routers and other consumer-grade access points.
 
-As of **right now**, I have a little more than a hundred wireless devices hanging off of the same AP that the thermostat failed to reliably connect to. Over the past several years, I have acquired many more devices and - with the exception of **one other device** - I have never had issues connecting anything to my wireless network.
+![Source: Ubiquity community forums: ](https://karlquinsland.com/venstar-t7850-teardown-review/images/wifi_issue_08.webp)
 
-Even if only some users experience issues with Venstar thermostats connecting to WiFi, I have to wonder why the issue exists at all. It's 2022 and there's no excuse for basic WiFi network compatibility issues like the kind that were more common in the bad old days of early WiFi circa _2005_. Somehow, the hundred+ other devices got their WiFi right... what is Venstar missing?
+_Source: Ubiquity community forums: _
 
-While I didn't want to introduce _yet another_ wireless's networking standard to my home, I am _considerably_ happier with the Honeywell TH6320ZW2003 that has replaced the T7850.
+_Venstar ColorTouch Thermostat Unable to Connect to AC-LR_
 
-{{< /admonition >}}
+
+> [!WARNING] TL;DR:
+> Ubiquity's Unifi line of wireless access points has a pretty solid reputation for a reason; by and large they just work. I have installed dozens of them over the years and have supported installs with _thousands_ of them and had far fewer issues with those customers/sites than with your typical 'soho' routers and other consumer-grade access points.
+> 
+> As of **right now**, I have a little more than a hundred wireless devices hanging off of the same AP that the thermostat failed to reliably connect to. Over the past several years, I have acquired many more devices and - with the exception of **one other device** - I have never had issues connecting anything to my wireless network.
+> 
+> Even if only some users experience issues with Venstar thermostats connecting to WiFi, I have to wonder why the issue exists at all. It's 2022 and there's no excuse for basic WiFi network compatibility issues like the kind that were more common in the bad old days of early WiFi circa _2005_. Somehow, the hundred+ other devices got their WiFi right... what is Venstar missing?
+> 
+> While I didn't want to introduce _yet another_ wireless's networking standard to my home, I am _considerably_ happier with the Honeywell TH6320ZW2003 that has replaced the T7850.
+
 
 ## The Good
 
@@ -137,12 +175,12 @@ While I didn't want to introduce _yet another_ wireless's networking standard to
 
 ### API limitations
 
-{{< admonition warning >}}
-The only _documented_ portions of the API [cover interrogating the device for state about sensors and mode](https://developer.venstar.com/documentation/#query).
-Keep these limitations in mind when considering exactly what you want to be able to control via the API.
+> [!WARNING] Warning
+> The only _documented_ portions of the API [cover interrogating the device for state about sensors and mode](https://developer.venstar.com/documentation/#query).
+> Keep these limitations in mind when considering exactly what you want to be able to control via the API.
+> 
+> E.G.: It was _very_ disappointing to find out that I can't adjust the screen on/off/brightness state via the API! So much for automatically turning the screen at night and waking it only when nearby motion was detected!
 
-E.G.: It was _very_ disappointing to find out that I can't adjust the screen on/off/brightness state via the API! So much for automatically turning the screen at night and waking it only when nearby motion was detected!
-{{< /admonition >}}
 
 There is no _documented_ way to control most of the other device settings that can be manipulated through the screen.
 Things you can do via the screen but not via the (documented) API:
@@ -158,7 +196,7 @@ I have not bothered with the "skyport" remote control functionality that Venstar
 
 Given that the thermostat seems to have it's own CA created by Venstar engineering, I would bet that simple TLS proxy will not be enough to discover any undocumented API endpoints in the unit that could allow for more control.
 
-If anybody does know of a local API endpoint that allows for controlling the screen brightness...[please do get in touch]({{<ref contact>}})!
+If anybody does know of a local API endpoint that allows for controlling the screen brightness...[please do get in touch](https://karlquinsland.com/contact/)!
 
 # Teardown
 
@@ -172,7 +210,10 @@ I am including mine for some additional detail and as a 'mirror' of the FCC phot
 
 The main PCB is readily accessed - just remove the rear panel / wall mount bracket.
 
-{{<figure name="main_pcb" >}}
+![Picture showing the main PCB of the thermostat](https://karlquinsland.com/venstar-t7850-teardown-review/images/main_pcb.webp)
+
+_I don't see any (mechanical) relays_
+
 
 Lots of passives and misc ICs and a few unpopulated footprints. This is consistent with [some of the documentation on file with the FCC](https://fccid.io/MUH-SKYPORT2/Attestation-Statements/Models-Covered-2531030): there is 1 PCB for all 6 products in the family and the only significant difference is the software and the humidity sensor.
 If i had to guess, I'd be that `U13` is the humidity sensor.
@@ -180,7 +221,8 @@ If i had to guess, I'd be that `U13` is the humidity sensor.
 Only one obvious pin header but the silkscreen `JP2` implies that there's another one somewhere (`JP1`).
 The pins are suspiciously close to the full sized SD card and don't match the pinout for an obvious UART but 6 pins could be JTAG.
 
-{{<figure name="main_pcb_rear" >}}
+![Picture showing the rear of the main PCB where LCD screen and SD card attach.](https://karlquinsland.com/venstar-t7850-teardown-review/images/main_pcb_rear.webp)
+
 
 There's nothing remarkable on the other side; just a connection for the LCD and a beeper. At least the beeper module is trivial to "factory delete" if the software option to disable it ever stops working!
 
@@ -189,15 +231,22 @@ Photo parsing is notoriously tricky so there's a decent chance that a malicious 
 
 All the business logic lives under the big metal shield. I didn't probe the two test points but they certainly look like they could be UART or similar interface to the app processor.
 
-{{<figure name="feat_main_app_proc" >}}
+![Closeup photo showing the main application processor and supporting ICs](https://karlquinsland.com/venstar-t7850-teardown-review/images/main_app_proc.webp)
+
+_Highly integrated ARM with external flash and ram. Almost a given these days!_
+
 
 Here's a partial shot of the LCD panel barcode.
-{{<figure name="lcd_beeper_closeup" >}}
+![Photo showing a barcode on teh back of the LCD. Part of the label is obstructed](https://karlquinsland.com/venstar-t7850-teardown-review/images/lcd_beeper_closeup.webp)
+
 
 And a quick bonus picture! I took this just a few moments after the thermostat had been installed and powered up.
 I had connected it to the WiFi network just 45 seconds before and was exploring the system settings when the unit locked up for a second and then kicked me to this screen:
 
-{{<figure name="surprise_upgrade" >}}
+![Picture showing the installed thermostat with a disruptive dialogue indicating an incipient reboot.](https://karlquinsland.com/venstar-t7850-teardown-review/images/surprise_upgrade.webp)
+
+_No way to cancel or defer. No explanation of 'why'!_
+
 
 There was no explanation for the abrupt reboot but after the device came back, the system settings indicated the device was running the latest firmware.
 
@@ -258,9 +307,9 @@ I could do a whole _series_ of posts on reverse engineering the firmware but tha
 
 ## network
 
-{{< admonition warning >}}
-Even though the `skyport` functionality has been switched off, [I still see the thermostat phoning home to `ctupdate.skyport.io` on startup](#dns). In addition to the usual "write firewall rules preventing WAN access", I would suggest sinkholing the `skyport.io` domain.
-{{< /admonition >}}
+> [!WARNING] Warning
+> Even though the `skyport` functionality has been switched off, [I still see the thermostat phoning home to `ctupdate.skyport.io` on startup](#dns). In addition to the usual "write firewall rules preventing WAN access", I would suggest sinkholing the `skyport.io` domain.
+
 
 Like with all new devices, I ran `tcpdump` while setting it up. Almost all of the traffic was TLS1.2 protected but I did notice a few interesting things from the packet capture.
 

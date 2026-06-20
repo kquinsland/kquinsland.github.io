@@ -15,36 +15,47 @@ Tags: esphome, home assistant
 Monitor-top light bars are wonderful for reducing eye strain and fatigue and the effect is even better with a bias light behind the monitor.
 Enter the [Yeelight Light Bar Pro (YLTD003)](https://www.aliexpress.us/item/3256801709519092.html).
 
-{{< figure name="feature_marketing_photo" >}}
+![YeeLight marketing photo from AliExpress listing. The background wash light really does help reduce eye strain and fatigue.](https://karlquinsland.com/yeelight-monitor-lamp-teardown-esphome/images/marketing-photo.webp)
 
-It appears to be a pretty straightforward clone of the Xaomi MJGJD02YL that I've torn down [previously]({{< relref "xaomi-s1-monitor-lamp-teardown-and-tasmota" >}}) but with some welcome changes internally.
+_YeeLight marketing photo from AliExpress listing. The background wash light really does help reduce eye strain and fatigue._
+
+
+It appears to be a pretty straightforward clone of the Xaomi MJGJD02YL that I've torn down [previously](/xaomi-s1-monitor-lamp-teardown-and-tasmota/) but with some welcome changes internally.
 
 ## Unbox
 
 Before teardown, quick look at the box.
 The shipping damage is just part of the Ali Express experience!
 
-{{< figure name="unbox-front" >}}
-{{< figure name="unbox-open" >}}
-{{< figure name="unbox-rear" >}}
+![Picture showing the front of the product box.](https://karlquinsland.com/yeelight-monitor-lamp-teardown-esphome/images/unbox-front.webp)
+
+_The box isn't anything to write home about._
+
+![Picture showing internals of the opened box.](https://karlquinsland.com/yeelight-monitor-lamp-teardown-esphome/images/unbox-open.webp)
+
+_Neatly packed, for what it's worth._
+
+![Picture showing the rear of the product box.](https://karlquinsland.com/yeelight-monitor-lamp-teardown-esphome/images/unbox-rear.webp)
+
 
 Not only does it look a lot like the Xaomi lamp, it's dimensionally similar, too.
 It's 100% compatible with the mounting bracket that Xaomi shipped with their lamp.
 
-{{< figure name="xaomi-size-comparison" >}}
+![Picture showing the Yee light bar next to the Xaomi light bar. The Yeelight is slightly longer and has a larger end cap on the left.](https://karlquinsland.com/yeelight-monitor-lamp-teardown-esphome/images/xaomi-size-comparison.webp)
+
+_Xaomi desk lamp on top, Yeelight on bottom._
+
 
 ## Teardown
 
-{{< admonition tip >}}
+> [!TIP] Tip
+> I am going to run through a _complete_ teardown.
+> 
+> You do not need to **completely** disassemble the lamp to replace the ESP8266 with an ESP32.
+> 
+> To access the ESP8266 based module controlling the lamp, you really only need to remove the larger of the two end caps.
+> From there, you will have a few inches of ribbon cable to work with. If you're careful, you can replace the ESP8266 with an ESP32 without removing the main PCB from the tube but you may find that taking the main PCB out of the tube makes it easier to work with.
 
-I am going to run through a _complete_ teardown.
-
-You do not need to **completely** disassemble the lamp to replace the ESP8266 with an ESP32.
-
-To access the ESP8266 based module controlling the lamp, you really only need to remove the larger of the two end caps.
-From there, you will have a few inches of ribbon cable to work with. If you're careful, you can replace the ESP8266 with an ESP32 without removing the main PCB from the tube but you may find that taking the main PCB out of the tube makes it easier to work with.
-
-{{< /admonition >}}
 
 Just like with the Xaomi lamp, you will start by removing the sticker covering the small metal protrusion that holds the pogo pins and mates with the power supply "dock".
 The pogo pins are one of the two features that keep the main PCB from sliding out of the tube.
@@ -55,44 +66,72 @@ This step is not pictured.
 Next, note that Yeelight bar has a larger plastic cap on the left relative to the one on the right.
 Not only does this cap have a grip feature moulded in, it's also secured to the tube with a lot less glue than the Xaomi lamp; just grip and twist to remove this cap.
 
-{{< figure name="teardown-endcap" >}}
+![Picture showing a close up of the Yee light bar end cap.](https://karlquinsland.com/yeelight-monitor-lamp-teardown-esphome/images/teardown-endcap.webp)
+
+_The cap is trivial to remove._
+
 
 After the end cap is removed, you will be able to see inside the tube.
 There's not much room, but the micro controller is on it's own little PCB attached to the main PCB with ~50mm of ribbon cable.
 If you're careful, this is all the disassembly you need to do to access the ESP8266 module.
 
-{{< figure name="teardown-tube-interior" >}}
+![Picture showing the interior of the tube after removing the end cap](https://karlquinsland.com/yeelight-monitor-lamp-teardown-esphome/images/teardown-tube-interior.webp)
+
+_There's not much room to work with. Left most is the cw/ww led strip and reflector. Middle is ribbon cable connecting leds to main pcb. Right most is the ESP8266 module._
+
 
 As of writing, I could not find any information about which pins on the module are used for programming.
 I was under a bit of time pressure and wanted to use a more "future proof" ESP32 module anyways so I didn't bother trying to program the ESP8266 module.
 
 I opted to replace it with an ESP32 module that I had on hand.
 
-{{< figure name="teardown-oem-esp-closeup-front" >}}
-{{< figure name="teardown-oem-esp-closeup-rear" >}}
+![Picture showing closeup of the ESP8266 module that shipped with the lamp](https://karlquinsland.com/yeelight-monitor-lamp-teardown-esphome/images/teardown-oem-esp-closeup-front.webp)
+
+_It's clearly an ESP8266 module but the pinout/form-factor are unusual._
+
+![Picture showing closeup of the ESP8266 module that shipped with the lamp](https://karlquinsland.com/yeelight-monitor-lamp-teardown-esphome/images/teardown-oem-esp-closeup-rear.webp)
+
 
 If you want to extract the main PCB from the tube, you will notice that there's still _something_ holding it in place.
 That something is the plastic lens closest to the now removed end cap.
 
 Using a small flat pry tool or razor blade, you can carefully pry the lens out of the tube.
 
-{{< figure name="teardown-main-pcb-slid-out" >}}
+![Picture showing final disassembly step of the Yee light bar.](https://karlquinsland.com/yeelight-monitor-lamp-teardown-esphome/images/teardown-main-pcb-slid-out.webp)
+
+_Note the plastic lense that used to cover the RGB LEDs._
+
 
 With the plastic lense out of the way, the main PCB and the cw/ww light ribbon and reflector can be slid out of the tube.
 
-{{< figure name="teardown-complete" >}}
+![There's not much to it, really. Tube, big PCB and small ESP8266 module on a ribbon cable.](https://karlquinsland.com/yeelight-monitor-lamp-teardown-esphome/images/teardown-complete.webp)
+
+_There's not much to it, really. Tube, big PCB and small ESP8266 module on a ribbon cable._
+
 
 That's really all there is to opening up the lamp.
 
 Below a few more photos of the internals.
 
-{{< figure name="teardown-pcb-2" >}}
+![A look at the power regulation and LED drive circuitry.](https://karlquinsland.com/yeelight-monitor-lamp-teardown-esphome/images/teardown-pcb-2.webp)
 
-{{< figure name="teardown-pcb-3" >}}
+_A look at the power regulation and LED drive circuitry._
 
-{{< figure name="teardown-pcb-4" >}}
 
-{{< figure name="teardown-oem-esp-delid" >}}
+![Picture showing](https://karlquinsland.com/yeelight-monitor-lamp-teardown-esphome/images/teardown-pcb-3.webp)
+
+_A closer look at the chips for the remote control puck._
+
+
+![Picture showing](https://karlquinsland.com/yeelight-monitor-lamp-teardown-esphome/images/teardown-pcb-4.webp)
+
+_A closer look at the power regulation circuitry._
+
+
+![Picture showing ESP module damaged by hotplate.](https://karlquinsland.com/yeelight-monitor-lamp-teardown-esphome/images/teardown-oem-esp-delid.webp)
+
+_This is what happens when you are impatient and set the hotplate to an aggressive temperature._
+
 
 ## ESP32 Retrofit
 
@@ -109,14 +148,15 @@ Fortunately, each wire connecting the ESP8266 module to the main PCB is clearly 
 | 7   | `EN`  | Master enable/disable for all light output |
 | 8   | `W`   | PWM signal for warm white channel          |
 
-{{< admonition note "I2C, probably"  >}}
+> [!NOTE] I2C, probably
+> 99% sure this is I2C for communications to the micro controller handing communication with the remote control puck.
+> There's nothing else on the PCB that would need I2C, but I haven't bothered to verify this... hence 99% sure.
 
-99% sure this is I2C for communications to the micro controller handing communication with the remote control puck.
-There's nothing else on the PCB that would need I2C, but I haven't bothered to verify this... hence 99% sure.
 
-{{< /admonition >}}
+![I am eternally grateful for every PCB designer that bothers with clear silkscreen labels.](https://karlquinsland.com/yeelight-monitor-lamp-teardown-esphome/images/esp-to-pcb-ribbon-closeup.webp)
 
-{{< figure name="esp-to-pcb-ribbon-closeup" >}}
+_I am eternally grateful for every PCB designer that bothers with clear silkscreen labels._
+
 
 To drive the LEDs, we only need 4 GPIOs. Two for PWM channels and another two for master output enable and neopixels.
 
@@ -126,7 +166,10 @@ If you don't care about that, you can use any ESP32 module you have on hand but 
 
 I had a few of the incredibly tiny [ESP32-C3-0.42LCD](https://github.com/01Space/ESP32-C3-0.42LCD) modules on hand, so I used one and it _barely_ fit:
 
-{{< figure name="esp32_inside" >}}
+![Tube is quite narrow and the ESP32 module takes up almost all of the available space.](https://karlquinsland.com/yeelight-monitor-lamp-teardown-esphome/images/esp32_inside.webp)
+
+_Tube is quite narrow and the ESP32 module takes up almost all of the available space._
+
 
 All in all, you want to make sure the module is no more than ~20mm wide and probably not much longer than that either.
 To make my life easier in the future, I soldered the ESP32 module to the main PCB with AWS30 wires about ~100mm long. You can see the colored wires in the photo above.
@@ -139,7 +182,10 @@ In any case, the extra bulk from the wires and the ESP32 module meant that the O
 Rather than play a game of "cut some more plastic away and see if it fits yet", I decided to just model a new end cap in Fusion 360.
 This replacement cap specifically does not have any features that extend deep into the tube so there's no risk of it interfering with the ESP32 module.
 
-{{< figure name="endcap" >}}
+![Suggested print orientation. Choose resolution, material and color to suit your needs.](https://karlquinsland.com/yeelight-monitor-lamp-teardown-esphome/models/endcap.webp)
+
+_Suggested print orientation. Choose resolution, material and color to suit your needs._
+
 
 You can download `endcap.step` file [here](models/endcap.step).
 Print it in whatever material and color you want but be mindful of dimensional accuracy; the end cap is meant to be press-fit into the tube.

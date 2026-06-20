@@ -24,11 +24,11 @@ But before diving into the configuration, let's briefly take a closer look at th
 
 ## Brief hardware overview
 
-{{< admonition note >}}
-Everything I'm going to cover below is for the US version.
+> [!NOTE] Note
+> Everything I'm going to cover below is for the US version.
+> 
+> Presumably the international version has a different layout and total number of LEDs.
 
-Presumably the international version has a different layout and total number of LEDs.
-{{< /admonition >}}
 
 The T5 series follows the "two part" design of the M5 switches; there's a "base" that gets mounted in the wall and then the "face plate" that snaps on to the base.
 All high-voltage electronics stay in the base and the face plate is just a PCB with a touch sensor and LEDs.
@@ -40,7 +40,10 @@ The one bit of information that [doesn't seem to be readily available online](ht
 
 For the US version, there are 32 LEDs around the perimeter of the switch; 6 on the top, 6 on the bottom, and 10 on each side.
 
-{{< figure name="feature-pcb" >}}
+![Clear shot of the PCB showing location of each LED. This is from the rear so the numbers on the right will be on the left when looking at the front of the switch.](https://karlquinsland.com/sonoff-t5-esphome/images/pcb.webp)
+
+_Clear shot of the PCB showing location of each LED. This is from the rear so the numbers on the right will be on the left when looking at the front of the switch._
+
 
 From the front of the switch, mounted in traditional "tall" orientation:
 
@@ -53,9 +56,9 @@ From the front of the switch, mounted in traditional "tall" orientation:
 - Top left corner going across the top to the right
      LED 26-31
 
-{{< admonition note >}}
-Note that the silk screen on the PCB starts counting at 1 but ESPHome starts counting at 0.
-{{< /admonition >}}
+> [!NOTE] Note
+> Note that the silk screen on the PCB starts counting at 1 but ESPHome starts counting at 0.
+
 
 ## T5 improvements over M5
 
@@ -72,16 +75,25 @@ As you increase the number of relays, the area dedicated to each physical touch 
 If you're coming into a room with arms full of groceries and you try to hit one of the buttons on the `3C` variant with your elbow, you're going to have a bad time.
 There's no reason why the physical touch zones couldn't use the entire surface of the switch.
 
-{{< figure name="sonoff_m5_series" >}}
+![Unlike the International version of the M5 series, the US version doesn't use the full surface of the switch for touch input.](https://karlquinsland.com/sonoff-t5-esphome/images/sonoff_m5_series.webp)
+
+_Unlike the International version of the M5 series, the US version doesn't use the full surface of the switch for touch input._
+
 
 The T5 series fixes this by making the entire surface of the switch touch sensitive!
 
-{{< figure name="sonoff_full_touch" >}}
+![Instead of a single touch zone, the entire surface is touch sensitive.](https://karlquinsland.com/sonoff-t5-esphome/images/sonoff_full_touch.webp)
+
+_Instead of a single touch zone, the entire surface is touch sensitive._
+
 
 This introduces a _new_ problem, though, how do you know where to touch to toggle a given output?
 Look at these two styles of face plates for the T5 series and see if you can identify which belongs to the 1, 2, 3 and 4 relay variants:
 
-{{< figure name="sonoff_t5_faceplates" >}}
+![Which face plate belongs to which variant? You can't tell just by looking at them!](https://karlquinsland.com/sonoff-t5-esphome/images/sonoff_t5_faceplates.webp)
+
+_Which face plate belongs to which variant? You can't tell just by looking at them!_
+
 
 **You can't.**
 
@@ -95,7 +107,10 @@ We can solve this with the LEDs around the perimeter of the switch, though!
 The M5 switches have a single red LED for each physical button that is fully illuminated when the relay is on.
 As a group, these indicator LEDs can be dimmed to indicate where to touch to trigger the relay.
 
-{{< figure name="sonoff_m5_led" >}}
+![You can _clearly_ tell that this is a 3 relay variant and the left most relay is ON.](https://karlquinsland.com/sonoff-t5-esphome/images/sonoff_m5_led.webp)
+
+_You can _clearly_ tell that this is a 3 relay variant and the left most relay is ON._
+
 
 To get a comparable visual indicator, we can use the LEDs around the perimeter of the touch panel; split the LEDs on the sides into groups; one group per relay/touch-area.
 
@@ -103,7 +118,10 @@ Instead of using LEDs on both the right and left side together, alternate which 
 
 Given this picture, you can _clearly_ tell that this T5 switch supports two touch areas and both relays are currently off:
 
-{{< figure name="2c-side-example" >}}
+![Please ignore the smudge on the bottom half of the switch that I didn't notice until after I took the picture.](https://karlquinsland.com/sonoff-t5-esphome/images/2c_side-example.webp)
+
+_Please ignore the smudge on the bottom half of the switch that I didn't notice until after I took the picture._
+
 
 This is a _huge_ improvement over the M5 series switches but it comes with a cost: complexity.
 The T5 comes in 1, 2, 3 and 4 relay variants.
@@ -114,17 +132,20 @@ Excluding the RGB LEDs on the top/bottom of the switch, this gives us up to 8 pa
 
 Here's what the UI looks like for the 1 relay variant.
 
-{{< figure name="ha01" >}}
+![1 Relay variant with timer for light counting down.](https://karlquinsland.com/sonoff-t5-esphome/images/ha01.webp)
+
+_1 Relay variant with timer for light counting down._
+
 
 For a single switch that has just a single relay, there's an awful lot going on here as the copious amount of `yaml` [below](#file-structure) will demonstrate.
 Normally I'd just show the `yaml` with comments in the relevant sections but there's a few "features" that I want to detail first before diving into how they are implemented.
 
 ### Features
 
-{{< admonition note >}}
-Home Assistant orders entities alphabetically and does not offer any way to cluster related entities together.
-I'm going in the same order that they appear in the screenshot above even though it'll seem like I'm jumping around a bit.
-{{< /admonition >}}
+> [!NOTE] Note
+> Home Assistant orders entities alphabetically and does not offer any way to cluster related entities together.
+> I'm going in the same order that they appear in the screenshot above even though it'll seem like I'm jumping around a bit.
+
 
 **Controls:**
 
@@ -165,19 +186,17 @@ This is useful for quickly getting each indicator light into a consistent state 
 
 #### Regimes
 
-{{< admonition note >}}
+> [!NOTE] Note
+> I use the word regime and mode interchangeably to refer to a set of color/brightness values for the indicator lights.
+> This is a byproduct of an earlier version of the configuration where I had stricter control over weather or not the partition lights or moodlight should be "in control" of what the RGB LEDs are doing.
+> I've since relaxed this requirement and settled on a general "the partition lights are in control until the Moodlight is turned on" policy.
+> 
+> This ultimately stems from how ESPHome tries to make a single string of addressable LEDs behave like multiple independent strings of LEDs.
+> The last "light" to be updated is the one that "wins", and gets to control the LEDs.
+> If you set an effect like Rainbow on the moodlight and then turn on the partition lights, the partition lights will "win" until the moodlight moves to a new color; then the moodlight will "win" until the partition lights are updated again.
+> 
+> However, when the moodlight is turned _off_, the partition lights will resume their default regime.
 
-I use the word regime and mode interchangeably to refer to a set of color/brightness values for the indicator lights.
-This is a byproduct of an earlier version of the configuration where I had stricter control over weather or not the partition lights or moodlight should be "in control" of what the RGB LEDs are doing.
-I've since relaxed this requirement and settled on a general "the partition lights are in control until the Moodlight is turned on" policy.
-
-This ultimately stems from how ESPHome tries to make a single string of addressable LEDs behave like multiple independent strings of LEDs.
-The last "light" to be updated is the one that "wins", and gets to control the LEDs.
-If you set an effect like Rainbow on the moodlight and then turn on the partition lights, the partition lights will "win" until the moodlight moves to a new color; then the moodlight will "win" until the partition lights are updated again.
-
-However, when the moodlight is turned _off_, the partition lights will resume their default regime.
-
-{{< /admonition >}}
 
 Since each "indicator" light is exposed to Home Assistant, it's possible to set a unique color for each relay if desired.
 But without explicitly changing the color/brightness of the indicator lights, two "baked-in" modes are present: daytime, and nighttime.
@@ -190,13 +209,19 @@ Here's two pictures of the same switch under the "no-moodlight" regime in both d
 In the first photo, relays 1 and 3 are on, relay 2 is off.
 In the second photo, relay 1 is off but 2 and 3 are on.
 
-{{< figure name="daytime_lighting" >}}
+![Lightish blue is easy to see / spot in the daytime.](https://karlquinsland.com/sonoff-t5-esphome/images/daytime.webp)
 
-{{< figure name="nighttime_lighting" >}}
+_Lightish blue is easy to see / spot in the daytime._
+
+
+![The dark red color looks a lot better at night.](https://karlquinsland.com/sonoff-t5-esphome/images/nighttime.webp)
+
+_The dark red color looks a lot better at night._
+
 
 #### Dynamic Timer
 
-I've already covered the basics of how to do this with ESPHome in my ["dynamic timers in ESPHome"]({{< ref "esphome-dynamic-timer" >}}) post.
+I've already covered the basics of how to do this with ESPHome in my ["dynamic timers in ESPHome"](https://karlquinsland.com/esphome-dynamic-timer/) post.
 The same technique is used again here but it's been refined a bit and turned into a proper package which is easier to re-use.
 
 ## YAML

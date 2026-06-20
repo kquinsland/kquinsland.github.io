@@ -39,14 +39,20 @@ If I had found the equivalent of this post while doing my research, I would have
 
 Searching for rod-based curtain actuators will turn up a _ton_ of results. A fair number of them use product images very similar to these:
 
-{{<figure name="product01">}}
+![Official product marketing photo showing two curtain robots](https://karlquinsland.com/tuya-smart-curtain-driver-robot-teardown/images/product_photo01.webp)
+
+_Official marketing photo_
+
 
 How well the robot performs will depend on how well the little white wheel is held against the bottom of the curtain rod.
 The arms that the upper sled attaches to are spring loaded for additional clamping force.
 
 The case seems to be fairly generic and used across multiple brands so it's safe to say that depending on the version / hardware variant, you may or may not have all of the featured inputs/sensors.
 
-{{<figure name="product02">}}
+![Official product marketing photo showing one curtain robot from the front with each port/button/sensor annotated.](https://karlquinsland.com/tuya-smart-curtain-driver-robot-teardown/images/product_photo02.webp)
+
+_Only one of the two units in a pair comes equipped with the light sensor._
+
 
 The light sensor is a nice touch. I will absolutely be borrowing that idea when designing my own solution 💡🤔!
 
@@ -54,21 +60,36 @@ The light sensor is a nice touch. I will absolutely be borrowing that idea when 
 
 I'm not a huge fan of unboxing videos. The box is rather unremarkable; it sustained some damage in transit, but that's what it's supposed to do.
 
-{{<figure name="td01_unboxing">}}
+![Slightly warped photo showing the content of hte box after some initial unpacking](https://karlquinsland.com/tuya-smart-curtain-driver-robot-teardown/images/teardown01_unboxing.webp)
+
+_Relatively well packaged. The seller that I purchased from had explicit listings for different curtain rod styles so I am not sure why I received hardware for all styles. There does not appear to be any easy way to install this hardware._
+
 
 The upper sled is coupled to the main body through two spring-loaded arms with a ratchet and paw setup. The arms can be easily removed from the main body if needed.
 
-{{<figure name="td02_splay">}}
+![Closeup photo of a curtain robot with the modular curtain rod interface hardware detached along side the main unit.](https://karlquinsland.com/tuya-smart-curtain-driver-robot-teardown/images/teardown02_splay.webp)
+
+_I am getting some vague Portal2 Turret vibes..._
+
 
 Since the entire weight of the robot will be hanging from the upper sled, the springs are the only thing that will pull the actuator wheel into the curtain rod. I don't know how the springs will last over time, but I absolutely can foresee needing to re-tension things as the springs inevitably stretch out.
 
-{{<figure name="td03_splay_side">}}
+![Closeup photo of the side of the curtain robot with all hardware attached showing the primary drive mechanism.](https://karlquinsland.com/tuya-smart-curtain-driver-robot-teardown/images/teardown03_side.webp)
 
-{{<figure name="td04_splay">}}
+_The ratchet/paws seem to indicate compatibility with some comically large diameter curtain rods!_
+
+
+![Closeup photo of a curtain robot with the modular curtain rod interface hardware detached next to the curtain robot which has also been turned on its side. The machine screws holding the unit together are visible.](https://karlquinsland.com/tuya-smart-curtain-driver-robot-teardown/images/teardown04_splay_side.webp)
+
+_Obligatory 'i void warranties' reference._
+
 
 Use a Philips style `J00` or `J000` screwdriver to remove the four screws holding the thing together. Use any flat pry tool to crack the two halves apart.
 
-{{<figure name="td05_cracked">}}
+![Photo showing a curtain robot that has been cracked open along it's main seem. A small glimpse at a few wires and internal components.](https://karlquinsland.com/tuya-smart-curtain-driver-robot-teardown/images/teardown05_cracked_open.webp)
+
+_Screw hiding under warranty void sticker and obvious mechanical/snap seam make it pretty obvious how this will come apart._
+
 
 And with that, our first real look at the electronics inside!
 
@@ -87,20 +108,32 @@ only a few passive components besides some radio-on-module
 - The USB-C port does not have any active electronics connected to it. The port likely does not speak any power delivery protocols and certainly does not have a hidden UART for talking to either of the microcontrollers.
 - No motor is visible so that means that it must be embedded in the comically small drive wheel...
 
-Some more technical details are discussed [below]({{< ref "#technical-details" >}}).
+Some more technical details are discussed [below](#technical-details).
 
-{{<figure name="td06_pcb">}}
+![Photo showing the internals of a robot. A fairly sophisticated PCB is visible.](https://karlquinsland.com/tuya-smart-curtain-driver-robot-teardown/images/teardown06_pcb.webp)
+
+_Huh. Was not expecting the PCB to be quite so big or complex!_
+
 
 Lifting up the PCB reveals the battery pack. I did not slice the pack open to see which brand of cells went into the pack.
-{{<figure name="td07_battery">}}
+![Photo showing the drive motor wheel and battery below the main PCB.](https://karlquinsland.com/tuya-smart-curtain-driver-robot-teardown/images/teardown07_battery.webp)
 
-{{<figure name="td08_battery_close">}}
+_Grateful that they didn't solder the battery directly to the PCB._
+
+
+![A closeup of the battery cell. Closely resembles two 18650 cells with built in protection PCB. Pack is rated 4000mAh/14.8Wh/3.7V](https://karlquinsland.com/tuya-smart-curtain-driver-robot-teardown/images/teardown08_battery_closeup.webp)
+
+_I have not tested the battery to see accurate the labeled capacity is._
+
 
 I was still looking for that elusive light sensor so I opened up the second unit... and found it!
 
 Other than the populated second radio module, `R20` and the LDR, the PCBs appear identical.
 
-{{<figure name="feature-td09_pcb-comparison">}}
+![Photo showing closeup of the top of the main PCBs from both units side by side. It's clear that one PCB has two radio modules equipped.](https://karlquinsland.com/tuya-smart-curtain-driver-robot-teardown/images/teardown09_pcb-comparison.webp)
+
+_Something tells me that the PCB with two radio modules is the 'leader' out of the two._
+
 
 On the rear we can see an obvious programming / debug port and a PCB/product designator: `ZNCL_TY_V1.5`.
 
@@ -112,13 +145,19 @@ I did find [this](https://old.reddit.com/r/esp32/comments/q3omwh/can_somebody_te
 
 Nothing new to be learned about the tuya device from that thread, sadly.
 
-{{<figure name="td010_pcb_rear">}}
+![Photo showing closeup of the read of the main PCBs from both units side by side.](https://karlquinsland.com/tuya-smart-curtain-driver-robot-teardown/images/teardown10_pcb_comparison_rear.webp)
+
+_No, I didn't hook a scope up or trace out the obvious programming/debug header._
+
 
 ## The App
 
 I never intended to use the manufacturer provided app for anything other than the initial setup so this will be a very brief section. The robot was quickly discovered and provisioned through the app.
 
-{{<figure name="app01-pairing">}}
+![Screenshot showing the curtin robot being provisioned within the TuYa app](https://karlquinsland.com/tuya-smart-curtain-driver-robot-teardown/images/app01_pairing.webp)
+
+_BTLE Pair/Provisioning was straightforward_
+
 
 The device calibration process is pretty rudimentary and does not have an easy "undo" process.
 
@@ -126,16 +165,23 @@ If you make a mistake in configuring the direction/distance that the robot needs
 
 The _two_ firmware version strings strongly hints at a "two processors for two domains" architecture: the anonymous 20pin chip runs everything on the PCB and the `BT7L` module deals with external communications and is only abstractly aware of the PCB/motor/sensor/battery state.
 
-{{<figure name="app02_fw-versions">}}
+![Screenshot showing the curtin robot firmware versions as reported by the TuYa app.](https://karlquinsland.com/tuya-smart-curtain-driver-robot-teardown/images/app02_fw-versions.webp)
 
-{{<figure name="app03_uuids">}}
+
+![Screenshot showing the curtin robot radio MAC addresses and other unique information](https://karlquinsland.com/tuya-smart-curtain-driver-robot-teardown/images/app03_UUIDS.webp)
+
+_I have only skimmed the TuYa developer documentation but I think that the VirtualID is common to _all_ of the curtain robots._
+
 
 # Verdict
 
 While disappointing that there was no easily hackable ESP microcontroller running the show, it doesn't matter.
 I can't use this product as is for my intended application; the motor is just too puny for the task.
 
-{{<figure name="td011_BT7L_closeup">}}
+![Photo showing a closeup of the 'primary' radio module.](https://karlquinsland.com/tuya-smart-curtain-driver-robot-teardown/images/teardown11_tuya_closeup.webp)
+
+_The brains(?)_
+
 
 My curtains are rather thick and heavy. A tiny motor can't _possibly_ have enough power to do this on it's own... especially with a sub-optimal coupling mechanism!
 
@@ -160,7 +206,10 @@ If you can stand the whiny/slow movement, expect frequent re-calibrations 👎.
 **TL;DR**: Looks like there's a reason why the hobbyist/DIY community has produced such a _wide variety_ of bespoke curtain/drape actuators... most of the commercial ones have sacrificed too much in order to be widely usable.
 The solution that I end up implementing will be designed with my heavy drapes in mind and will use an appropriately sized and quiet motor!
 
-{{<figure name="td012_drive_motor">}}
+![photo showing a hilariously small motor with a gearbox embedded in the drive roller mechanism.](https://karlquinsland.com/tuya-smart-curtain-driver-robot-teardown/images/teardown12_motor.webp)
+
+_A simple brushed DC motor with no position encoder and what is probably a cheaply made gearbox. What could go wrong?_
+
 
 # Technical Details
 

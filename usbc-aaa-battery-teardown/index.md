@@ -18,7 +18,8 @@ I hope these can change your mind about rechargeable batteries; they're good, no
 
 One of mine started failing with intermittent output voltage so I decided to take it apart and see what was inside.
 
-{{<figure name="images_render">}}
+![images_render](https://karlquinsland.com/usbc-aaa-battery-teardown/images/render.webp)
+
 
 Technically, the one that I am taking apart is branded `MXBatt` but im keeping the title of this post generic because you can find these in many places under many different brand names and I'm sure they are all more or less the same inside.
 
@@ -28,15 +29,19 @@ You do not need to spend a ton of time trying to peel the label off... it's goin
 
 Using plier, pull the positive tip part off the cell and the whole thing comes apart pretty easily.
 
-{{<figure name="images_td01">}}
+![images_td01](https://karlquinsland.com/usbc-aaa-battery-teardown/images/td01.webp)
+
 
 And with that, here's what's inside:
 
-{{<figure name="images_td02">}}
+![images_td02](https://karlquinsland.com/usbc-aaa-battery-teardown/images/td02.webp)
 
-{{<figure name="images_td03">}}
 
-{{<figure name="images_td04">}}
+![images_td03](https://karlquinsland.com/usbc-aaa-battery-teardown/images/td03.webp)
+
+
+![images_td04](https://karlquinsland.com/usbc-aaa-battery-teardown/images/td04.webp)
+
 
 Yep, that's all there is to it!
 

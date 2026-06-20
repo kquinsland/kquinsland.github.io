@@ -15,35 +15,53 @@ And yet, I have only _recently_ seen any testing equipment for it.
 
 The [Wozniak WPX-0001A](https://www.aliexpress.us/item/3256808097182455.html) is a simple tester that can measure the output level and protocol of Qi chargers.
 
-{{<figure name="feat-td01">}}
+!['standard tools create wonderful things' ❤️.](https://karlquinsland.com/wozniak-wpx-0001a-qi-tester-teardown/images/td01.webp)
 
-{{<figure name="td08">}}
+_'standard tools create wonderful things' ❤️._
+
+
+![Please ignore the super shiny reflections...](https://karlquinsland.com/wozniak-wpx-0001a-qi-tester-teardown/images/td08.webp)
+
+_Please ignore the super shiny reflections..._
+
 
 In the box you get a basic NTC probe, a USB-C cable and the tester itself.
 The printed paper "manual" is just a QR code that points to [`user.ee-lab.cn`](https://user.ee-lab.cn).
 
-{{<figure name="td07">}}
+![Yep, more reflections/glare. Sorry!](https://karlquinsland.com/wozniak-wpx-0001a-qi-tester-teardown/images/td07.webp)
+
+_Yep, more reflections/glare. Sorry!_
+
 
 The unit is made up of two circular PCBs screwed together.
 The screws are hiding behind the decal face plate.
 
 Take your time here and use a heat gun to soften the adhesive... or you risk breaking the plastic cover.
 
-{{<figure name="td06">}}
+![Three of the four screws can be seen here. The remaining screw is hiding beneath the remaining decal shard.](https://karlquinsland.com/wozniak-wpx-0001a-qi-tester-teardown/images/td06.webp)
+
+_Three of the four screws can be seen here. The remaining screw is hiding beneath the remaining decal shard._
+
 
 The LCD is also glued in place. The ribbon cable is _just_ long enough; putting it back together is a bit of a pain.
 
-{{<figure name="td03">}}
+![td03](https://karlquinsland.com/wozniak-wpx-0001a-qi-tester-teardown/images/td03.webp)
+
 
 The non-covered gold-plated traces and black silkscreen _pop_.
 Unfortunately, most ICs are either too small for me to read or the marking have been laser etched off.
 
-{{<figure name="td02">}}
+![td02](https://karlquinsland.com/wozniak-wpx-0001a-qi-tester-teardown/images/td02.webp)
+
 
 The business-end of the tester is a Qi receiver coil.
 It's two coils of magnet wire and some magnets. Nothing special here.
 
-{{<figure name="td04">}}
+![td04](https://karlquinsland.com/wozniak-wpx-0001a-qi-tester-teardown/images/td04.webp)
 
-{{<figure name="td05">}}
+
+![The snaking black cable is the NTC probe.](https://karlquinsland.com/wozniak-wpx-0001a-qi-tester-teardown/images/td05.webp)
+
+_The snaking black cable is the NTC probe._
+
 

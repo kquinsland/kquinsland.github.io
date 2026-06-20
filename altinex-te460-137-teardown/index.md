@@ -18,16 +18,22 @@ There are LOADS of devices that can snoop USB and Ethernet, but HDMI is a bit of
 
 After a bit of searching, I found the [Altinex TE460-137](https://www.altinex.com/product/te460-137/) could do exactly what I wanted.
 
-({{< relref "posts/2020/10/Enhanced HomeAssistantSwitchPlate" >}}) project.
+(/enhanced-homeassistantswitchplate/) project.
 
-Like the [HDMI CEC dongle]({{< relref "posts/2023/12/pulse-eight-hdmi-cec-injector-teardown" >}}) this device is a bit specialized and so there's not a lot of readily available information about it online.
+Like the [HDMI CEC dongle](/pulse-eight-hdmi-cec-injector-teardown/) this device is a bit specialized and so there's not a lot of readily available information about it online.
 I was curious about what's inside and how it works, so I decided to take a look.
 
-{{< figure name="feat-td07" >}}
+![Front of the device.](https://karlquinsland.com/altinex-te460-137-teardown/images/td07.webp)
+
+_Front of the device._
+
 
 ## Magnuson-Moss Warranty Act
 
-{{< figure name="td06" >}}
+![The case split open.](https://karlquinsland.com/altinex-te460-137-teardown/images/td06.webp)
+
+_The case split open._
+
 
 Notice that pierced `Warranty void if removed` sticker over the bottom right screw?
 Yeah, that's [**illegal**](https://www.npr.org/sections/thetwo-way/2018/04/11/601582169/warranty-void-if-removed-as-it-turns-out-feds-say-those-warnings-are-illegal).
@@ -47,38 +53,59 @@ The construction is a bit more elaborate than expected; there's a main PCB, a co
 I was in a hurry so the photos are "as-is" and not my best work.
 I've [noted down the markings on the chips](#chips-and-other-markings) and other components for future reference.
 
-{{< figure name="td05" >}}
+![Internals feature three PCBs.](https://karlquinsland.com/altinex-te460-137-teardown/images/td05.webp)
+
+_Internals feature three PCBs._
+
 
 If the battery ever does leak, the entire PCB assembly can be removed and replaced.
 It also shouldn't be that difficult to just modify the battery interface PCB to use a different battery.
 The thermistor is a nice touch!
 
-{{< figure name="td04" >}}
+![Rear of the battery interface PCB.](https://karlquinsland.com/altinex-te460-137-teardown/images/td04.webp)
+
+_Rear of the battery interface PCB._
+
 
 Taking a quick look at the control PCB, we can see a few big ICs...
 The populated JTAG header is an interesting find.
 
-{{< figure name="td03" >}}
+![Top of the control PCB.](https://karlquinsland.com/altinex-te460-137-teardown/images/td03.webp)
+
+_Top of the control PCB._
+
 
 There's not much on the rear of the control PCB:
 
-{{< figure name="td02" >}}
+![Bottom of the control PCB.](https://karlquinsland.com/altinex-te460-137-teardown/images/td02.webp)
+
+_Bottom of the control PCB._
+
 
 Nor is there much on the side of the PCB just behind the OLED screen / front panel.
 Oddly enough, each button gets _two_ sets of contacts...
 
-{{< figure name="td01" >}}
+![The side of the main PCB that faces the user from within.](https://karlquinsland.com/altinex-te460-137-teardown/images/td01.webp)
+
+_The side of the main PCB that faces the user from within._
+
 
 And there's nothing interesting on the 'internal' side of the front panel:
 
-{{< figure name="td08" >}}
+![Interior of the front panel features button matrix and OLED.](https://karlquinsland.com/altinex-te460-137-teardown/images/td08.webp)
+
+_Interior of the front panel features button matrix and OLED._
+
 
 ## Some Technical Details
 
 If you catch the device early enough in boot, you can see the panasonic HDMI switch chip enumerating in it's default state.
 Don't ask me where the 2% overscan comes from...
 
-{{< figure name="default-edid-enumeration" >}}
+![The default EDID info doesn't last long; as soon as the device is powered on, it tries to read the EDID from the connected sink and use that.](https://karlquinsland.com/altinex-te460-137-teardown/images/default-edid-enumeration.webp)
+
+_The default EDID info doesn't last long; as soon as the device is powered on, it tries to read the EDID from the connected sink and use that._
+
 
 ### Chips and other markings
 
@@ -141,11 +168,9 @@ usb 5-4.1.2.2: device descriptor read/64, error -110
 
 ### Firmware
 
-{{< admonition note >}}
+> [!NOTE] Note
+> The device ships with FW 3.06A/R3.
+> 
+> Their [website](https://www.altinex.com/download/te460-137-firmware-update-v-3-04a-easy-mode/) only have 3.04 available.
 
-The device ships with FW 3.06A/R3.
-
-Their [website](https://www.altinex.com/download/te460-137-firmware-update-v-3-04a-easy-mode/) only have 3.04 available.
-
-{{< /admonition >}}
 

@@ -21,21 +21,36 @@ This is a common enough problem that there's a few different devices out there t
 I chose the [Pulse-Eight HDMI CEC Injector](https://www.pulse-eight.com/p/104/usb-hdmi-cec-adapter) because it's natively supported by LibreELEC.
 
 I was curious what was inside and I couldn't find any teardowns online so I decided to do one myself.
-There's not much to the device and I'm not doing any serious reverse engineering here so let's call this a ["Two Minute Teardown"]({{<relref "/tags/two-minute-teardown/">}}).
+There's not much to the device and I'm not doing any serious reverse engineering here so let's call this a ["Two Minute Teardown"](/tags/two-minute-teardown/).
 
-{{< figure name="td01" >}}
+![The device is small and unassuming.](https://karlquinsland.com/pulse-eight-hdmi-cec-injector-teardown/images/td01.webp)
 
-{{< figure name="td02" >}}
+_The device is small and unassuming._
+
+
+![Opening is trivial. No glue or anything. Just a few pins and sockets. Gently pry the two halves apart and you're in.](https://karlquinsland.com/pulse-eight-hdmi-cec-injector-teardown/images/td02.webp)
+
+_Opening is trivial. No glue or anything. Just a few pins and sockets. Gently pry the two halves apart and you're in._
+
 
 I wasn't expecting much; I thought CEC was implemented via UART and not SPI so I was expecting to see a cheap FTDI knockoff chip or similar.
 Turns out I was wrong and the device uses an [ATMEL 90USB162](https://www.microchip.com/en-us/product/at90usb162) which is a USB to SPI bridge.
 I haven't looked too closely at the [firmware](https://github.com/Pulse-Eight/libcec) but I suspect there's some abstraction layer that makes it look like a [UART](#dmesg) to the OS.
 
-{{< figure name="td03" >}}
+![Other than a few passives, there's only one chip on the board.](https://karlquinsland.com/pulse-eight-hdmi-cec-injector-teardown/images/td03.webp)
 
-{{< figure name="td04" >}}
+_Other than a few passives, there's only one chip on the board._
 
-{{< figure name="feat-td05" >}}
+
+![Nothing interesting other than a programming header.](https://karlquinsland.com/pulse-eight-hdmi-cec-injector-teardown/images/td04.webp)
+
+_Nothing interesting other than a programming header._
+
+
+![The full PCB sans case.](https://karlquinsland.com/pulse-eight-hdmi-cec-injector-teardown/images/td05.webp)
+
+_The full PCB sans case._
+
 
 ## `dmesg`
 

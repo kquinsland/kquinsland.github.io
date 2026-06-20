@@ -8,7 +8,7 @@ Tags: fusion-360, has:download
 
 ---
 
-While doing the PoE related testing for [this]({{< ref "/posts/2020/07/POE-at-a-distance-ruined-my-cat5-speeds.md" >}}) incident, it occurred to me that I never got around to sharing the files for a small modification to the popular RD6006 PSU.
+While doing the PoE related testing for [this](https://karlquinsland.com/poe-at-a-distance-ruined-my-cat5-speeds/) incident, it occurred to me that I never got around to sharing the files for a small modification to the popular RD6006 PSU.
 
 While drafting this post, I discovered that there appears to be a newer version of the RD6006: the 6012. As far as I can tell, they're in the same 'family' and have the same dimensions so the CAD and related model files below _should_ work w/ the RD6012 just as they do w/ the 6006, but i can only 'guarantee' that the CAD and related model files below will work with the [RD6006](https://hackaday.com/tag/riden-rd6006/).
 
@@ -20,7 +20,10 @@ A small enclosure for a PoE injector and QC 3.0 charger designed to sit on top o
 
 Assembled, it looks like this:
 
-{{< figure name="rd6012" >}}
+![picture of assembled DR60 series PSU](https://karlquinsland.com/electronics-lab-enhanced-bench-psu/images/rd6012-assembled.webp)
+
+_As seen on AliExpress_
+
 
 The RD6006 is incredibly versatile, but can only supply power for about 85% of the devices that make their way onto my 'healing' bench. I wasn't keen on taking up more valuable space with a device dedicated to PoE injection so finding a way to mod one into the PSU seemed like a good idea. Similarly, adding a versatile USB port seemed like a no-brainer as my [favorite soldering iron](http://www.miniware.com.cn/product/ts80-soldering-iron-more/) is powered via QuickCharge 3.
 
@@ -33,7 +36,10 @@ There are two components for this build:
 - the 'plate' which rests on the top of the PSU case and has small 'fences' to fix the circuit boards in place. It's the 'salmon' colored component
 - the 'lid' is the (mostly) transparent yellow component which holds the auxiliary power supplies (pink components) in place and keeps all voltages away from people.
 
-{{< figure name="cad components" show_title="true" >}}
+![picture of assembled components, colored](https://karlquinsland.com/electronics-lab-enhanced-bench-psu/images/plate_and_lid.webp)
+
+_Relevant components, colored in F360_
+
 
 I used black PETG, but any material and at least 10% infill should be fine. Tune the layer height to taste.
 
@@ -41,7 +47,10 @@ The 'plate' does not need any supports nor does the lid if printed in the sugges
 
 If you're not comfortable with bridging long distances, you can optionally enforce support material from the build plate to the top of the lid **or** flip the lid upside down and use supports for the four feet where the screws go. Because any sagging would be hidden inside,
 
-{{< figure name="print_orientation" >}}
+![picture of components arranged on print bed](https://karlquinsland.com/electronics-lab-enhanced-bench-psu/images/print_orientation.webp)
+
+_suggested print orientation_
+
 
 ## Components
 
@@ -71,11 +80,17 @@ I don't have any pictures from the assembly :disappointed:, but it's not particu
 
 Just prior to seating the 'lid' you should have something like this:
 
-{{< figure name="pre-lid" >}}
+![picture of auxiliary PSUs seated and wired](https://karlquinsland.com/electronics-lab-enhanced-bench-psu/images/cover-and-screws-off.webp)
+
+_components seated and wired_
+
 
 When all said and done, you'll get this:
 
-{{< figure name="assembled-feature" >}}
+![picture of plate and lid attached to PSU](https://karlquinsland.com/electronics-lab-enhanced-bench-psu/images/modded-assembled.webp)
+
+_everything assembled and powered up_
+
 
 ## Files
 
@@ -83,5 +98,13 @@ The f360 file is... a mess. I'm not going to share it here. Contact me if you re
 
 For archive / posterity, all source files are included here. All files are licensed as [Creative Commons Attribution-NonCommercial-ShareAlike](https://creativecommons.org/licenses/by-nc-sa/4.0/) (CC BY-NC-SA).
 
-{{< bundle-files >}}
+- [images/modded-assembled.webp](https://karlquinsland.com/electronics-lab-enhanced-bench-psu/images/modded-assembled.webp)
+- [Colorized Components](https://karlquinsland.com/electronics-lab-enhanced-bench-psu/images/plate_and_lid.webp)
+- [models/combined.3mf](https://karlquinsland.com/electronics-lab-enhanced-bench-psu/models/combined.3mf)
+- [models/lid.stl](https://karlquinsland.com/electronics-lab-enhanced-bench-psu/models/lid.stl)
+- [models/plate.stl](https://karlquinsland.com/electronics-lab-enhanced-bench-psu/models/plate.stl)
+- [images/cover-and-screws-off.webp](https://karlquinsland.com/electronics-lab-enhanced-bench-psu/images/cover-and-screws-off.webp)
+- [images/print_orientation.webp](https://karlquinsland.com/electronics-lab-enhanced-bench-psu/images/print_orientation.webp)
+- [images/rd6012-assembled.webp](https://karlquinsland.com/electronics-lab-enhanced-bench-psu/images/rd6012-assembled.webp)
+
 

@@ -11,7 +11,7 @@ Tags: onvif, home assistant, rant, security
 ---
 
 <!-- markdownlint-disable-file MD001-->
-This is part rant, part "reference" for anybody else that's struggling to get their Amcrest IP Camera to work with [Home Assistant](https://www.home-assistant.io/integrations/onvif/) via ONVIF. Skip to [TL;DR]({{< relref "#tldr">}}) for a working Home Assistant config.
+This is part rant, part "reference" for anybody else that's struggling to get their Amcrest IP Camera to work with [Home Assistant](https://www.home-assistant.io/integrations/onvif/) via ONVIF. Skip to [TL;DR](#tldr) for a working Home Assistant config.
 
 Briefly, [ONVIF](https://www.onvif.org/profiles/) is an industry group that maintains a set of standards to allow for interoperability between IP Cameras and related devices from multiple vendors. One set of protocols so your cameras from `$vendorA` will work with with the recording/analytics software from `$vendorB` which can then pipe events into software from `$vendorC`.
 How ONVIF works and how it's implemented are beyond the scope of this rant, but, like most standards that haven't aged well, [SOAP](https://en.wikipedia.org/wiki/SOAP) is involved. 🤮.
@@ -33,7 +33,10 @@ I've only spent a few hours with the camera so far, but here's an incomplete lis
 Before anybody asks, yes, I did update the firmware to the latest version immediately after unboxing.
 As of writing, the latest firmware available is version `V2.620.00AC000.3.R.20191218` which can be downloaded [here](https://sup-files.s3.us-east-2.amazonaws.com/Firmware/IP4M-1051/Amcrest_IPC-AWXX-V2-Rhea_Eng_NP_AMCREST_V2.620.00AC000.3.R.20191218.bin).
 
-{{< figure name="latest_firmware" >}}
+![Screenshot showing the Amcrest Firmware page](https://karlquinsland.com/amcrest-ip-cam-security-isnt-a-feature-its-a-punchine/images/fw-update-download.webp)
+
+_FW for all Amcrest devices can be fetched from https://amcrest.com/firmwaredownloads._
+
 
 In the unlikely event that anybody sees this post and somehow gets Amcrest to correct their issues, the versions of software on the affected cameras are:
 
@@ -48,11 +51,17 @@ ONVIF Version:          16.12(V2.4.1.513183)
 Nothing shocking about a networking equipped, consumer-grade bit of electronics with a web based management interface. The only reason I'm noting it here is because I can't find a way to
 force the web UI to be served over HTTPS 😢.
 
-{{< figure name="port_conflict" >}}
+![Screenshot showing the port assignment page on the camera management interface](https://karlquinsland.com/amcrest-ip-cam-security-isnt-a-feature-its-a-punchine/images/network_port-conflict.webp)
+
+_*sigh*_
+
 
 And the `HTTPS` tab has no way to disable the web server on port 80 or at least do a simple redirect to the HTTPS URL 😞.
 
-{{< figure name="https_config" >}}
+![Screenshot showing the HTTPS / certificate configuration on the camera management interface](https://karlquinsland.com/amcrest-ip-cam-security-isnt-a-feature-its-a-punchine/images/network_https.webp)
+
+_I'll leave you to determine if it's a good idea for the web interface to generate a self-signed certificate or not._
+
 
 I suspect that the next issue might have something to do with the 'always on' HTTP server... 🤔
 
@@ -86,7 +95,10 @@ So yeah. ONVIF traffic, just like the web UI traffic, can be sniffed by anybody 
 
 So this little setting is basically useless:
 
-{{< figure name="onvif_auth" >}}
+![Screenshot showing the 'authentication' setting for the ONVIF service on the camera management interface](https://karlquinsland.com/amcrest-ip-cam-security-isnt-a-feature-its-a-punchine/images/manual_onvif_auth.webp)
+
+_'Authentication' is misleading. It should be labeled something along the lines of 'allow just ADMIN to use onvif or allow anybody to use onvif'_
+
 
 That screenshot is from the PDF file [here](https://drive.google.com/file/d/1X-f5xH4aSjhd4vXpIT9yPN_y9-LSgVWN/view) which has this revision info:
 
@@ -106,19 +118,29 @@ After discovering that ONVIF only 'works' over port 80, I took a moment to get o
 
 Except I was never able to get HA to successfully connect to the camera when using the secondary user. Home Assistant still failed to connect to the camera over ONVIF even after elevating the secondary user to the privilege level of an admin:
 
-{{< figure name="admin_user" >}}
+![Screenshot showing the admin user and its entitlements on the camera web UI](https://karlquinsland.com/amcrest-ip-cam-security-isnt-a-feature-its-a-punchine/images/web_ui-admin_user.webp)
+
+_Admin users have all 34 permissions enabled_
+
 
 My secondary user permissions:
 
-{{< figure name="ha_user" >}}
+![Screenshot showing the secondary/home-assistant user and its entitlements on the camera web UI](https://karlquinsland.com/amcrest-ip-cam-security-isnt-a-feature-its-a-punchine/images/web_ui-ha_user.webp)
+
 
 As Home Assistant really does not expose a ton of debugging information, I tried the secondary user credentials with the [`Onvifer`](https://play.google.com/store/apps/details?id=net.biyee.onvifer&hl=en_US&gl=US) app. The debugging logs from that app confirmed that only the `admin` credential set 'worked' with ONVIF.
 
 After a bit more research, it turns out that I'm not the first person to discover this:
 
-{{< figure name="support_1" >}}
+![Screenshot showing a post on the amcrest support forums where other people have noticed the lack of multi-user authentication for ONVIF authentication](https://karlquinsland.com/amcrest-ip-cam-security-isnt-a-feature-its-a-punchine/images/forum01.webp)
 
-{{< figure name="support_2" >}}
+_Source: https://amcrest.com/forum/ip-cameras-f18/firmware-security-bug-regarding-onvif--t13445-s10.html_
+
+
+![Screenshot showing a post on the amcrest support forums where other people have noticed the lack of multi-user authentication for ONVIF authentication](https://karlquinsland.com/amcrest-ip-cam-security-isnt-a-feature-its-a-punchine/images/forum02.webp)
+
+_Source: https://amcrest.com/forum/ip-cameras-f18/ip3m-941b-onvif-and-user-management-t12647.html_
+
 
 Now i'm embarrassed that it took me so long to discover an issue that's been documented since AT LEAST summer of 2019! 😳
 
@@ -137,9 +159,15 @@ I didn't realize that the password stored in the manager wouldn't let me in unti
 
 The `maxlength` property of the login form differs from the password set form. In any case, there's no warning that the input exceeds the length!
 
-{{< figure name="pw_login" >}}
+![Screenshot showing the HTML for the password field on the login page](https://karlquinsland.com/amcrest-ip-cam-security-isnt-a-feature-its-a-punchine/images/pw_login.webp)
 
-{{< figure name="pw_reset" >}}
+_..._
+
+
+![Screenshot showing the HTML for the password field on the password reset page](https://karlquinsland.com/amcrest-ip-cam-security-isnt-a-feature-its-a-punchine/images/pw_reset.webp)
+
+_..._
+
 
 <!-- markdownlint-disable MD036 -->
 *sigh*
@@ -152,7 +180,10 @@ The `maxlength` property of the login form differs from the password set form. I
 
 The first bit of documentation you see when unboxing the camera is this little guy:
 
-{{< figure name="security_advisory_feature" >}}
+![Picture of an ironic leaflet urging the customer to use long, complex passwords and up to date firmware.](https://karlquinsland.com/amcrest-ip-cam-security-isnt-a-feature-its-a-punchine/images/unboxing_security_warning.webp)
+
+_This is *literally* the first thing you see when unpacking the camera._
+
 
 which reads:
 

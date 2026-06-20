@@ -10,21 +10,17 @@ Tags: tasmota, home assistant
 
 ---
 
-{{< admonition note "MJGJD02YL vs MUGJD01YL" >}}
+> [!NOTE] MJGJD02YL vs MUGJD01YL
+> There are _at least two_ versions of this lamp. Thanks to `@htvekov` for confirming that the `MUGJD01YL` variant **does _not_ contain an ESP32**. It contains a `TLSR8368`.
+> Some photos of the `MUGJD01YL` internals are provided [below](#mugjd01yl).
 
-There are _at least two_ versions of this lamp. Thanks to `@htvekov` for confirming that the `MUGJD01YL` variant **does _not_ contain an ESP32**. It contains a `TLSR8368`.
-Some photos of the `MUGJD01YL` internals are provided [below](#mugjd01yl).
-
-{{< /admonition >}}
 
 If you're here just for "how do I flash tasmota" bit, skip to the [Tasmota](#tasmota) section below.
 
-{{< admonition tip "Now with ESPHome" >}}
+> [!TIP] Now with ESPHome
+> ESPHome support for the single-core ESP32 chip in the lamp has come a long way.
+> You can find the ESPHome configuration that I used with this lamp [below](#esphome).
 
-ESPHome support for the single-core ESP32 chip in the lamp has come a long way.
-You can find the ESPHome configuration that I used with this lamp [below](#esphome).
-
-{{< /admonition >}}
 
 -----
 
@@ -43,7 +39,8 @@ A wired remote would be simpler and thus cheaper but my desk is already too crow
 
 After a bit of searching, I found the `2021 Xiaomi Mijia Lite Desk Lamp 1S` which fit the bill exactly.
 
-{{< figure name="ali_exp_listing" >}}
+![Screenshot showing the Aliexpress.com listing that I purchased the lamp from.](https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/ali_exp_listing.webp)
+
 
 Beyond the basic puck shaped wireless remote, the listing indicated that the 'new 1s version' could be controlled with the `Xiaomi` app.
 
@@ -57,11 +54,12 @@ Worst case, the fall back plan of using a microcontroller to emulate interacting
 
 Once the lamp showed up, I of course opened up the remote to see what type of wireless system I was going to be dealing with.
 
-{{<figure name="puck_module_closeup">}}
+![Even closer shot of the tiny system on module that powers the remote puck.](https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/puck05-module_closeup.webp)
 
-{{< admonition note >}}
-More photos of the remote are [below](#teardown)
-{{< /admonition >}}
+
+> [!NOTE] Note
+> More photos of the remote are [below](#teardown)
+
 
 Giving the model number `MHCB07P` a quick google didn't reveal much information other than confirm that it was using BTLE.
 This almost certainly means that the phone app will _also_ use BTLE to control the lamp!
@@ -71,7 +69,8 @@ If I'm lucky, I can capture the entire discovery/pair/command packets using a ro
 
 After getting the app setup, it did discover the lamp and began to walk me through the setup flow.
 
-{{<figure name="app_wifi_setup">}}
+![Screenshot from the Xiaomi app showing that the phone needed to connect to the lamp over WiFi.](https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/app01_wifi_provision.webp)
+
 
 WiFi!? Really!? But why? This must be some generic screen shown for all devices, right?
 
@@ -79,7 +78,8 @@ WiFi!? Really!? But why? This must be some generic screen shown for all devices,
 
 There really is a simple access point inside this lamp!
 
-{{<figure name="app_wifi">}}
+![Screenshot from android connection settings confirming that phone was connected to a WiFi access point](https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/app02_yep_wifi.webp)
+
 
 Well now I'm curious.
 
@@ -90,7 +90,8 @@ What could this lamp _possibly need_ WiFi credentials for? The remote used BTLE 
 I threw the lamp behind an isolated access point and it sure is _chatty_...
 After getting an IP address, the lamp looks up the `A` record for `dk.io.mi.com` and then attempts to open a TCP connection and send some bytes:
 
-{{<figure name="wireshark">}}
+![Screenshot from Wireshark showing the packet payload that the lamp tried to send to a remote server during setup / pairing with phone.](https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/wireshark.webp)
+
 
 Now I'm more than a little bit curious.
 
@@ -138,12 +139,12 @@ If I could get either of those alternative firmwares running on the lamp, then c
 
 # Teardown
 
-{{< admonition warning >}}
-The plastic end caps on either end of the lamp tube are _glued in_.
-You will need some force to break the glue.
-Even with all possible precautions, getting access to the lamp PCB _is a **destructive** process_.
-If you are _careful_ you can keep the destruction and cosmetic damage to a minimum.
-{{< /admonition >}}
+> [!WARNING] Warning
+> The plastic end caps on either end of the lamp tube are _glued in_.
+> You will need some force to break the glue.
+> Even with all possible precautions, getting access to the lamp PCB _is a **destructive** process_.
+> If you are _careful_ you can keep the destruction and cosmetic damage to a minimum.
+
 
 I did this teardown the hard way and damaged more of the lamp than necessary.
 Some of the photos below reflect this.
@@ -155,12 +156,18 @@ Now that I know how it all is _meant_ to come apart, you will hopefully have an 
 A closer look at the marked device information before we move _into_ the lamp.
 The ESP that we will soon flash with Tasmota is just behind this product information.
 
-{{< figure name="lamp01" >}}
+![Photo showing the various product info and regulatory markings on the lamp](https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/lamp01.webp)
+
+_Product info and regulatory markings_
+
 
 Locate the small rectangle shaped protrusion from the lamp tube that mates with the magnetic mount. The protrusion has two small pogo pins on it.
 You can see the protrusion in the middle of the tube facing the coiled USB power cable:
 
-{{< figure name="td00" >}}
+![Picture showing everything that came inside the product packaging; lamp, cradle that attaches to monitor and secures the lamp, power cord, remote puck and paper instructions.](https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/td00.webp)
+
+_Everything that came in the box_
+
 
 With the protrusion facing you, locate the plastic cap closest to the product information.
 This should be plastic cap on the _left_ side of the tube.
@@ -187,13 +194,17 @@ Be mindful of the two spring like contacts on the back of the PCB that mated wit
 
 You can see the small black plastic bracket holding the pogo pins and the protrusion bit with some of the grip-tape still attached:
 
-{{< figure name="td01" >}}
+![Closeup photo showing damaged components on the main PCB. The components were damaged during initial teardown because of hidden screws.](https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/td01.webp)
+
+_If it feels like you're using too much force to open the lamp... you probably are!_
+
 
 If you try to remove the PCB without first detaching the pogo pins, you'll damage one or both of the spring contacts that mate the PCB to the pogo pins!
 
 You _don't_ want your `GND` spring to look like mine!
 
-{{< figure name="feature-td02" >}}
+![Photo showing a few of the lamp components removed and the primary PCB partially removed from the lamp body.](https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/td02.webp)
+
 
 Before realizing that the pogo pins could be removed from the lamp, I removed _both_ caps and tried push/pull the PCB out.
 
@@ -206,16 +217,21 @@ If you're going to use the `3V3` test pin instead of a dedicated external power 
 
 You can do this with some flush-cut snips.
 
-{{< figure name="td04" >}}
+![Photo showing flush cutting snips used to remove a component that has been heat staked onto the main PCB](https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/td04.webp)
+
+_Be careful to not scratch the solder mask / PCB with the sharp edges of the snips_
+
 
 The sled isn't technically required for re-assembly but it's pretty easy to re-attach to the PCB with some hotglue. Discard it at your peril!
 
-{{< figure name="td05" >}}
+![Photo showing flush cutting snips and the removed component next to the PCB](https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/td05.webp)
+
 
 Here's a closeup of the PCB with most of the test points labeled.
 You can see the `3V3` test point immediately to the left of `R6` in the shadow of the 'sled'.
 
-{{< figure name="td03" >}}
+![Photo showing a closeup of the primary lamp PCB where the test points are located.](https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/td03.webp)
+
 
 Repeat these steps in reverse order to re-assemble the lamp.
 
@@ -225,41 +241,49 @@ Fortunately, opening up the remote is not difficult.
 
 Remove the two philips screws under the bottom cap.
 
-{{< figure name="puck_td_01" >}}
+![Photo of the remote puck used to control the lamp with its base removed. Two screws are all that hold it together](https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/puck_td_01.webp)
+
 
 The main body / rotary knob lifts away from the midframe.
 
-{{< figure name="puck_td_02" >}}
+![Photo of the remote broken down into it's primary components; the PCB is visible.](https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/puck_td_02.webp)
 
-{{< figure name="puck_td_03" >}}
 
-{{< figure name="puck_module_closeup" >}}
+![Closeup photo of the remote puck PCB.](https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/puck_td_03.webp)
+
+
+![Even closer shot of the tiny system on module that powers the remote puck.](https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/puck05-module_closeup.webp)
+
 
 Like with the lamp PCB, there are a few test points:
 
-{{< figure name="puck_td_06" >}}
+![Photo of the remote puck PCB underside showing some of the test points and other PCB markings.](https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/puck_td_06.webp)
 
-{{< figure name="puck_td_07" >}}
+
+![Photo of the remote puck PCB underside showing some of the test points and other PCB markings.](https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/puck_td_07.webp)
+
 
 # Tasmota
 
-{{< admonition warning >}}
-It is likely that both the WW and CW LEDs _will_ briefly light up during the flashing process. When this happens, you _will_ draw more current than a typical USB <-> Serial adapter can provide. At _best_ you'll cause a brownout and the flash will be interrupted.
+> [!WARNING] Warning
+> It is likely that both the WW and CW LEDs _will_ briefly light up during the flashing process. When this happens, you _will_ draw more current than a typical USB <-> Serial adapter can provide. At _best_ you'll cause a brownout and the flash will be interrupted.
+> 
+> **Use a dedicated 5V supply that can provide _at least_ 10W of power** while flashing the lamp! Make sure that the `GND` wire from your serial programmer _and_ the `GND` wire for your dedicated 5V@2A/10W supply are tied together or you will likely destroy some of the electronics on both the lamp, your serial adapter _and_ possibly your computer!
 
-**Use a dedicated 5V supply that can provide _at least_ 10W of power** while flashing the lamp! Make sure that the `GND` wire from your serial programmer _and_ the `GND` wire for your dedicated 5V@2A/10W supply are tied together or you will likely destroy some of the electronics on both the lamp, your serial adapter _and_ possibly your computer!
-
-{{< /admonition >}}
 
 Having said all that, it's totally worth it:
 
-{{< figure name="lamp_in_ha" >}}
+![Screenshot showing the lamps' device info an control page within Home Assistant](https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/lamp_in_ha.webp)
+
+_When all is said and done, the lamp is easily integrated and controlled with Home Assistant_
+
 
 ## Flashing
 
-{{< admonition info >}}
-The ESP32 chip on this PCB is a _single core_ version.
-Follow the [instructions for flashing the ESP32 version of Tasmota](https://tasmota.github.io/docs/ESP32/#flashing), specifically the `tasmota32solo1` version!
-{{< /admonition >}}
+> [!NOTE] Info
+> The ESP32 chip on this PCB is a _single core_ version.
+> Follow the [instructions for flashing the ESP32 version of Tasmota](https://tasmota.github.io/docs/ESP32/#flashing), specifically the `tasmota32solo1` version!
+
 
 Solder wires to the usual `RX`, `TX`, `GPIO0` and `GND` test points.
 The `GPIO0` test point is the test point nearest to the ESP32 chip; directly off the bottom right corner.
@@ -269,11 +293,13 @@ Solder a jumper between the `EN` and `3V3` test point. I used a small yellow wir
 The solid blue wire attached to `GPIO0` and the blue/white wire attached to `GND` are joined together just out of frame.
 The ESP will not boot into programming mode unless `GPIO0` is tied to ground.
 
-{{< figure name="flash02" >}}
+![Picture showing the various jumper wires and other soldered connections needed to flash Tasmota to the PCB](https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/flash02.webp)
+
 
 Leads from a dedicated 5V power supply are attached to the main contacts with reg/green alligator clips
 
-{{< figure name="flash01" >}}
+![Picture showing the various jumper wires and other soldered connections needed to flash Tasmota to the PCB](https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/flash01.webp)
+
 
 After confirming that each point is soldered sufficiently and wired to the correct pin on your USB <-> Serial programmer, turn the dedicated power supply on and you should be able to flash.
 
@@ -398,14 +424,30 @@ Some of the interesting ICs and PCB markings
 
 ## MUGJD01YL
 
-{{< figure name="MUGJD01YL_04" >}}
-{{< figure name="MUGJD01YL_03" >}}
-{{< figure name="MUGJD01YL_02" >}}
-{{< figure name="MUGJD01YL_01" >}}
+![Picture showing product details for MUGJD01YL version of the lamp.](https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/MUGJD01YL_04.webp)
+
+_Product details for the lamp that can't be converted to run Tasmota._
+
+_Courtesy of @htvekov_
+
+![Picture showing portion of the internal PCB for MUGJD01YL version of the lamp.](https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/MUGJD01YL_03.webp)
+
+_The PCB is held in the tube with similar plastic 'sleds'. They are secured with screws rather than heatstake so they are easier to remove. The move to heatstake in the revised edition was likely to reduce costs._
+
+_Courtesy of @htvekov_
+
+![Picture showing closeup of SOIC-8 package on the PCB.](https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/MUGJD01YL_02.webp)
+
+_Courtesy of @htvekov_
+
+![Closeup of the non ESP microcontroller in the MUGJD01YL version of the lamp.](https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/images/MUGJD01YL_01.webp)
+
+_Courtesy of @htvekov_
+
 
 ## ESPHome
 
-While putting together the ["update"]({{< ref "yeelight-monitor-lamp-teardown-esphome" >}}) to this post, I figured I should update this post with the configuration that I used for ESPHome:
+While putting together the ["update"](https://karlquinsland.com/yeelight-monitor-lamp-teardown-esphome/) to this post, I figured I should update this post with the configuration that I used for ESPHome:
 
 ```yaml
 ##

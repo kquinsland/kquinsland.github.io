@@ -14,7 +14,12 @@ Tags: tmtdt, automation, ToDoist
 
 As the name implies, TMTDT started as a small collection of scripts that I used to augment ToDoist with features they can't/won't implement. It's grown quite a bit since then.
 
-{{< figure name="demo gif" >}}
+![I don't know how to make flashy demo gifs.](https://karlquinsland.com/the-missing-todoist-tools/images/demo.webp)
+
+_I don't know how to make flashy demo gifs._
+
+_See the file driving the demo_
+
 
 Those scripts started as simple idea and quickly morphed into a creaky, but essential, tool. As more features were added it continued too morph into an unmaintainable mess. Untangling that mess was on my todo list but never a high priority partly because of issues TMTDT was designed to solve 🤦.
 
@@ -34,9 +39,12 @@ I had several scripts that I would run on a regular basis to do things like:
 
 No joke, I'd spend a _lot_ of time fixing typos, expanding ideas for a project into proper sub-tasks and sections and other routine administrative work:
 
-{{< figure name="admin_time_report" >}}
+![Representative of time spent during a typical week](https://karlquinsland.com/the-missing-todoist-tools/images/time-report.webp)
 
-In that specific week, I kept track of how 37 hours were spent. Of those 37, about 4 were spent on general Inbox review / process. At least 3 of those 4 were spent _directly_ on task triage. 3/37 is about 8%. With no full time day job - [hire me]({{< relref "/contact" >}}) - that's a fairly representative breakdown for a given week; some time planning the things, lots of time doing the things.
+_Representative of time spent during a typical week_
+
+
+In that specific week, I kept track of how 37 hours were spent. Of those 37, about 4 were spent on general Inbox review / process. At least 3 of those 4 were spent _directly_ on task triage. 3/37 is about 8%. With no full time day job - [hire me](/contact/) - that's a fairly representative breakdown for a given week; some time planning the things, lots of time doing the things.
 
 What would you do with 8% of your time back each week?
 
@@ -44,7 +52,10 @@ I'm kidding.
 
 We all know that I'm not getting any free time back from this.
 
-{{< figure name="xkcd-1319" >}}
+![xkcd-1319](https://karlquinsland.com/the-missing-todoist-tools/images/xkcd-1319.webp)
+
+_ Credit: XKCD #1319_
+
 
 I've written this software to suit my needs, but the decision to make it a bit more robust and featured before release is because I've noticed a few 'new' tools to better augment ToDoist:
 

@@ -16,11 +16,12 @@ This is one of those posts that sat in the `Drafts` folder for _way_ too long.
 Just before release, I'd discover something new that would warrant substantial rewrites.
 After several delays, false starts and re-writes, I finally have something that is mostly new _and_ worth sharing with the world.
 
-Like with the past few [teardown]({{< ref "/categories/teardown/" >}}) posts, this one also started off as a 'cart-stuffer' item so I could unlock a more generous discount on the total purchase. The listing that caught my eye had the generic title:
+Like with the past few [teardown](https://karlquinsland.com/categories/teardown/) posts, this one also started off as a 'cart-stuffer' item so I could unlock a more generous discount on the total purchase. The listing that caught my eye had the generic title:
 
 > EU US Wifi LCD Smart Wall Light Touch Switch Tuya Smart Life App Remote Control ON OFF Timer Voice Control For Google Home Alexa
 
-{{< figure name="ali_exp_listing" >}}
+![Picture showing...](https://karlquinsland.com/lanbon-l8-tuya-lcd-switch-openhasp/images/ali_exp_listing.webp)
+
 
 Naturally, a cursory check for existing writeups / teardowns didn't yield much.
 
@@ -46,12 +47,12 @@ Just after finding the aforementioned blakadder.com posts on the L8 device, I fo
 
 I thought that second link seemed familiar...🤔.
 
-Turns out, the [openHASP project](https://haswitchplate.github.io/openHASP-docs/latest/) is a _substantial_ rewrite of the initial software that powered my [Enhanced HomeAssistant Switch Plate (eHasp)]({{< relref "posts/2020/10/Enhanced HomeAssistantSwitchPlate" >}}) project.
+Turns out, the [openHASP project](https://haswitchplate.github.io/openHASP-docs/latest/) is a _substantial_ rewrite of the initial software that powered my [Enhanced HomeAssistant Switch Plate (eHasp)](/enhanced-homeassistantswitchplate/) project.
 
-{{< admonition info >}}
-While digging through the above links, I realized that the model I had opened up had a different PCB layout.
-In the interest of adding to the collective internet KB, photos and some other technical details from the model I tore apart are [below](#teardown).
-{{< /admonition >}}
+> [!NOTE] Info
+> While digging through the above links, I realized that the model I had opened up had a different PCB layout.
+> In the interest of adding to the collective internet KB, photos and some other technical details from the model I tore apart are [below](#teardown).
+
 
 # openHasp
 
@@ -67,7 +68,12 @@ For example, [here is the example `jsonl`](https://haswitchplate.github.io/openH
 {"page":1,"id":3,"obj":"btn","x":125,"y":40,"w":105,"h":90,"toggle":true,"text":"#FFD700 Toggle# Button","mode":"break","align":"center"}
 ```
 
-{{< figure name="oHasp_ex_btn" >}}
+![Picture showing...](https://karlquinsland.com/lanbon-l8-tuya-lcd-switch-openhasp/images/lv_ex_btn_1.webp)
+
+_Image credit/source:_
+
+_openHasp Docs_
+
 
 Notice how the absolute coordinates on screen (`x` and `y`) and and absolute width (`w`) and height (`w`) properties are explicitly declared.
 The only reason the buttons look appropriately sized/positioned in the above screenshot is because someone took the time to calculate the appropriate values for the particular screen resolution and orientation.
@@ -88,17 +94,17 @@ My C++ skills are pretty weak so contributing new code to enable dynamic layouts
 There is, however, a robust [Home Assistant integration](https://haswitchplate.github.io/openHASP-docs/latest/integrations/home-assistant/howto/) published in the form of a [custom component](https://github.com/HASwitchPlate/openHASP-custom-component).
 Home Assistant means Python and some Python code to calculate the appropriate position/size for a given element _is_ immediately within my means.
 
-{{< admonition warning >}}
-A few [(small) changes to the openHasp firmware](https://github.com/HASwitchPlate/openHASP/issues/278) were required to make this work.
-Any _recent_ build of `0.7` should work.
-As of 2022-01, there is no release of the custom component that works with `0.7` out of the box so if installing through [HACS](https://hacs.xyz/), [you will need to patch the custom component](https://github.com/HASwitchPlate/openHASP-custom-component/issues/87) so devices running `.0.7` can be controlled via Home Assistant.
-{{< /admonition >}}
+> [!WARNING] Warning
+> A few [(small) changes to the openHasp firmware](https://github.com/HASwitchPlate/openHASP/issues/278) were required to make this work.
+> Any _recent_ build of `0.7` should work.
+> As of 2022-01, there is no release of the custom component that works with `0.7` out of the box so if installing through [HACS](https://hacs.xyz/), [you will need to patch the custom component](https://github.com/HASwitchPlate/openHASP-custom-component/issues/87) so devices running `.0.7` can be controlled via Home Assistant.
+
 
 Please see the [openHasp <-> Home Assistant docs](https://haswitchplate.github.io/openHASP-docs/latest/integrations/home-assistant/sampl_conf/) for background information, examples and a lot more detail on how Home Assistant and openHasp work together or if any of the `jsonl` and `yaml` below does not make sense.
 
-{{< admonition warning >}}
-Please make sure that your openHasp device can connect to your MQTT broker and that the openHasp custom integration can discover and 'register' your device with Home Assistant before proceeding!
-{{< /admonition >}}
+> [!WARNING] Warning
+> Please make sure that your openHasp device can connect to your MQTT broker and that the openHasp custom integration can discover and 'register' your device with Home Assistant before proceeding!
+
 
 ### Two devices, one `pages.jsonl`
 
@@ -113,11 +119,23 @@ That _singular_ `pages.jsonl` file was uploaded it to two devices:
 Each screenshot was taken with the device display configured to 0º and 90º of rotation.
 A reboot was required for the configuration change to take effect but I made _zero_ changes to the `pages.jsonl` file on the device between changing the screen orientation.
 
-{{< figure name="layout_l8_landscape" >}}
-{{< figure name="layout_l8_portrait" >}}
+![Picture showing...](https://karlquinsland.com/lanbon-l8-tuya-lcd-switch-openhasp/images/l8_landscape.webp)
 
-{{< figure name="layout_sc01_landscape" >}}
-{{< figure name="feature-layout_sc01_portrait" >}}
+_Lanbon L8 in it's rotated 'landscape' orientation_
+
+![Picture showing...](https://karlquinsland.com/lanbon-l8-tuya-lcd-switch-openhasp/images/l8_portrait.webp)
+
+_Lanbon L8 in it's default 'portrait' orientation_
+
+
+![Picture showing...](https://karlquinsland.com/lanbon-l8-tuya-lcd-switch-openhasp/images/wt32-sc01_landscape.webp)
+
+_wt32-sc01 in 'landscape' orientation._
+
+![Picture showing...](https://karlquinsland.com/lanbon-l8-tuya-lcd-switch-openhasp/images/wt32-sc01_portrait.webp)
+
+_wt32-sc01 in 'portrait' orientation._
+
 
 ### building a `pages.jsonl`
 
@@ -130,17 +148,16 @@ The page/id values declared in your `jsonl` file _must match_ the object IDs tha
 ❯ curl http://roomPlateIpv4Here/edit --form name=data --form data=@pages.jsonl
 ```
 
-{{< admonition info >}}
-I store the combined files in `pages.jsonl` because this is the default page that an openHasp device will render.
-You can change this setting via the web UI: `http://roomPlateIpv4Here/config/hasp` or via telnet:
+> [!NOTE] Info
+> I store the combined files in `pages.jsonl` because this is the default page that an openHasp device will render.
+> You can change this setting via the web UI: `http://roomPlateIpv4Here/config/hasp` or via telnet:
+> 
+> ```shell
+> ❯ telnet roomPlateIpv4Here
+> <...>
+> prompt> config/hasp {"pages":"/foo.jsonl"}
+> ```
 
-```shell
-❯ telnet roomPlateIpv4Here
-<...>
-prompt> config/hasp {"pages":"/foo.jsonl"}
-```
-
-{{< /admonition >}}
 
 #### `header.frag.jsonl`
 
@@ -599,13 +616,13 @@ plate00:
 
 ```
 
-{{< admonition tip >}}
-This technique _could_ be considered overkill. Each template incurs some additional memory/cpu overhead on the Home Assistant instance.
+> [!TIP] Tip
+> This technique _could_ be considered overkill. Each template incurs some additional memory/cpu overhead on the Home Assistant instance.
+> 
+> While this technique is pretty helpful during rapid prototyping, at some point the additional resource usage is hard to justify for layouts that do not change often.
+> 
+> A reasonable compromise would be to leverage the template evaluation functionality via the Home Assistant Developer tools to calculate the positions and locations for each UI elements while building out your interface(s) and then copy the computed values into your `pages.jsonl` file once the layout has been more or less finalized.
 
-While this technique is pretty helpful during rapid prototyping, at some point the additional resource usage is hard to justify for layouts that do not change often.
-
-A reasonable compromise would be to leverage the template evaluation functionality via the Home Assistant Developer tools to calculate the positions and locations for each UI elements while building out your interface(s) and then copy the computed values into your `pages.jsonl` file once the layout has been more or less finalized.
-{{< /admonition >}}
 
 And you're done!
 You might need to restart Home Assistant or reload the openHasp component/configuration so your update YAML is picked up.
@@ -622,19 +639,31 @@ You'll just have to trust me when I say that It's kinda neat to watch this happe
 
 Since it's all but impossible to find any photos of the product packaging online, here's a few of those:
 
-{{< figure name="unbox00" >}}
+![Photo showing the product package from the front.](https://karlquinsland.com/lanbon-l8-tuya-lcd-switch-openhasp/images/unbox00.webp)
 
-{{< figure name="unbox01" >}}
 
-{{< figure name="unbox02" >}}
+![Photo showing the product package from the rear.](https://karlquinsland.com/lanbon-l8-tuya-lcd-switch-openhasp/images/unbox01.webp)
 
-{{< figure name="unbox03" >}}
+
+![Photo showing the inner product package opened to reveal the main switch.](https://karlquinsland.com/lanbon-l8-tuya-lcd-switch-openhasp/images/unbox02.webp)
+
+_Minimal instructions and wasteful packaging. Other than the small foam insert, this entire package can be recycled!_
+
+
+![Picture showing the main switch and provided installation screws.](https://karlquinsland.com/lanbon-l8-tuya-lcd-switch-openhasp/images/unbox03.webp)
+
+_The provided screws are NOT the US standard #6 32 thread-per-inch. They are slightly larger and will strip out any screw holes in an electrical box!_
+
 
 ### Internals
 
-{{< figure name="td01" >}}
+![Picture showing the front of the switch next to the portion of the switch that is mean to be installed in the wall](https://karlquinsland.com/lanbon-l8-tuya-lcd-switch-openhasp/images/td01.webp)
 
-{{< figure name="td02" >}}
+_This particular model is the 3 relay version. Packaging claims 200W power. It's not clear if that is per channel or total. My money is on total._
+
+
+![Picture showing the rear of the switch screen panel and the front of the power module that would be installed in the wall.](https://karlquinsland.com/lanbon-l8-tuya-lcd-switch-openhasp/images/td02.webp)
+
 
 You can clearly see the revised PCB that is substantially different from the one featured on [this blakadder post](https://blakadder.com/lanbon-L8-custom-firmware/#disassembly).
 My PCB has a parasitic TuYa module also attached.
@@ -644,13 +673,21 @@ Removing the TuYa module is pretty painless with some hot air.
 It can also be left alone and the openHasp binaries will just ignore it.
 You can also place an order directly with Lanbon for units that do not have the TuYa module populated but this will require a minimum order quantity.
 
-{{< figure name="td03" >}}
+![Picture showing the internal circuit board of the low-voltage switch screen. There are two system on modules present. One is an ESP32 that runs the show and the other is a minimally connected TuYa module.](https://karlquinsland.com/lanbon-l8-tuya-lcd-switch-openhasp/images/td03.webp)
 
-{{< figure name="td04" >}}
 
-{{< figure name="td05" >}}
+![Picture showing the power / switch module PCB from the front.](https://karlquinsland.com/lanbon-l8-tuya-lcd-switch-openhasp/images/td04.webp)
 
-{{< figure name="td06" >}}
+_Generic relays, generic caps, generic transformers... don't switch any critical loads with this!_
+
+
+![Picture showing a smaller PCB attached to the main power module](https://karlquinsland.com/lanbon-l8-tuya-lcd-switch-openhasp/images/td05.webp)
+
+_A closer look at what appears to be a dedicated power monitoring IC. It appears to monitor the aggregate of all three channels, not each individually. Very likely to make sure no more than 200W is switched at one time..._
+
+
+![Another picture of the power module PCB from the rear. A single unlabeled IC and several passive components are present](https://karlquinsland.com/lanbon-l8-tuya-lcd-switch-openhasp/images/td06.webp)
+
 
 ### PCB/IC Markings
 

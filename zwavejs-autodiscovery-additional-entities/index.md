@@ -12,7 +12,7 @@ This is a super quick "because the official docs didn't make it super clear so h
 
 -----
 <!-- markdownlint-disable-file MD033 -->
-After some [very disappointing WiFi connectivity issues]({{< relref "posts/2022/04/venstar-t7850-teardown-review#an-update-on-wifi-connectivity"  >}}), I settled on a Zwave based thermostat to replace the Venstar thermostat.
+After some [very disappointing WiFi connectivity issues](/venstar-t7850-teardown-review/#an-update-on-wifi-connectivity), I settled on a Zwave based thermostat to replace the Venstar thermostat.
 
 After installing the Honeywell TH6320 and connecting it to the ZwaveJS gateway, a new `climate`` entity appeared in Home Assistant. From there, I was able to see/control:
 
@@ -22,7 +22,10 @@ After installing the Honeywell TH6320 and connecting it to the ZwaveJS gateway, 
 
 I knew that it was possible to adjust the the screen backlight from the thermostat itself so I was a bit confused when there was no such configuration entity exposed in Home Assistant.
 
-{{<figure name="ha_01">}}
+![Note the `Idle_brightness` sensor. That's not part of the 'default' zwavejs2mqtt install.](https://karlquinsland.com/zwavejs-autodiscovery-additional-entities/images/ha_01.webp)
+
+_Note the `Idle_brightness` sensor. That's not part of the 'default' zwavejs2mqtt install._
+
 
 After playing around with the ZwaveJS2MQTT web interface for bit, I discovered that it was possible to adjust the backlight brightness...and over 40 other settings under the `Configuration v4` section.
 
@@ -35,13 +38,16 @@ So, How do I go about getting ZwaveJS2MQTT to automatically tell Home Assistant 
 From the `Configuration v4` tab for the thermostat node, I found the input field `[4-112-0-39] Idle Brightness` which let me control the thermostat screen backlight level.
 I don't know what the numbers mean, but they are important / uniquely identify _a specific setting_.
 
-{{< admonition note >}}
-If you are using this as a guide but for a _different_ setting (perhaps you want to keep an eye on `[4-112-0-28] Minimum Cool Temperature`, for example) then you will want to substitute your parameter setting 'address' as appropriate.
-{{< /admonition >}}
+> [!NOTE] Note
+> If you are using this as a guide but for a _different_ setting (perhaps you want to keep an eye on `[4-112-0-28] Minimum Cool Temperature`, for example) then you will want to substitute your parameter setting 'address' as appropriate.
+
 
 After some more experimentation and trying to grok [documentation](https://zwave-js.github.io/zwavejs2mqtt/#/homeassistant/homeassistant-mqtt?id=add-new-component), I figured out how to get ZwaveJS to advertise the current value for the backlight brightness as a sensor in Home Assistant.
 
-{{<figure name="feat_zwjs2mqtt_01">}}
+![The 'HOME ASSISTANT' tab of my thermostats' page.](https://karlquinsland.com/zwavejs-autodiscovery-additional-entities/images/zwjs2mqtt_01.webp)
+
+_The 'HOME ASSISTANT' tab of my thermostats' page._
+
 
 Here's how to do it:
 
@@ -56,7 +62,8 @@ Here's how to do it:
 
 When all is said and done, this is what you should see:
 
-{{<figure name="zwjs2mqtt_02">}}
+![zwjs2mqtt_02](https://karlquinsland.com/zwavejs-autodiscovery-additional-entities/images/zwjs2mqtt_02.webp)
+
 
 ### Example payload
 
@@ -98,7 +105,10 @@ I have replaced a few things in the example payload. You will want to retrieve t
 
 ## Ok, but what about writing to the thermostat?
 
-{{<figure name="ha_02">}}
+![A basic 'helper' widget for use in Home Assistant Automations.](https://karlquinsland.com/zwavejs-autodiscovery-additional-entities/images/ha_02.webp)
+
+_A basic 'helper' widget for use in Home Assistant Automations._
+
 
 Once the sensor exists in Home Assistant, you will probably want to use it in an automation.
 Here is a simple automation that watches a basic number input widget and sets the backlight brightness for the thermostat based on what the widget is set to:
@@ -206,13 +216,12 @@ action:
 mode: single
 ```
 
-{{< admonition important "Notice" >}}
-If you look carefully, you will notice two things:
+> [!NOTE] Notice
+> If you look carefully, you will notice two things:
+> 
+> - The json payload has been escaped and turned into a string
+> - The templates inside the string are [_further_ escaped](https://community.home-assistant.io/t/how-can-i-use-escape-characters-while-templating/135324) by wrapping them in `{{ '` and `'}}`.
 
-- The json payload has been escaped and turned into a string
-- The templates inside the string are [_further_ escaped](https://community.home-assistant.io/t/how-can-i-use-escape-characters-while-templating/135324) by wrapping them in `{{ '` and `'}}`.
-
-{{< /admonition >}}
 
 Here is a pretty formatted JSON document:
 
@@ -250,7 +259,10 @@ Once the automation is created, save it. You can test your work by clicking "run
 
 When the payload is properly escaped, you should see a new entity added to the Device page:
 
-{{<figure name="ha_03">}}
+![Automatically created!](https://karlquinsland.com/zwavejs-autodiscovery-additional-entities/images/ha_03.webp)
+
+_Automatically created!_
+
 
 When you select a brightness value from the drop down, the backlight brightness should change.
 That's how you get a 'non standard' thermostat configuration value to automatically show up on the correct device page.

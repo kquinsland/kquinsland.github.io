@@ -10,7 +10,8 @@ Tags: two-minute-teardown
 
 # Two Minute Teardown: Duogalia A-M70 Optical Fiber Multi-Meter
 
-{{<figure name="feat-render">}}
+![feat-render](https://karlquinsland.com/duogalia-am70-optical-fiber-multi-meter/images/render.webp)
+
 
 While diagnosing a flakey fiber link, i ran into a situation where a basic "flashing red" visual fault finder was not sufficient.
 I needed to actually measure the optical power levels on both ends of the link to ensure that the fiber was not damaged and that the SFPs were operating within spec.
@@ -18,13 +19,12 @@ I needed to actually measure the optical power levels on both ends of the link t
 [This](https://www.amazon.com/dp/B0B6TY7X6K) was the cheapest tool that could be delivered quickly.
 The issue was found and fixed so now let's have a look inside.
 
-{{< admonition note "Many Generics" >}}
-There are many many similar looking units on Ali Express and the other usual import sites.
-I do not know who the ODM is but it's clear that the `Duogalia A-M70` is just another rebrand of the same design.
+> [!NOTE] Many Generics
+> There are many many similar looking units on Ali Express and the other usual import sites.
+> I do not know who the ODM is but it's clear that the `Duogalia A-M70` is just another rebrand of the same design.
+> 
+> As best as I can tell, the ODM for this is `T-Better`?
 
-As best as I can tell, the ODM for this is `T-Better`?
-
-{{< /admonition >}}
 
 ## Teardown
 
@@ -36,15 +36,18 @@ The few unpopulated components near where the battery attaches are almost certai
 
 The square IC in the middle is running the show, the large IC off to the side is likely the display driver and the two SOP-16 chips near the ethernet port and optical sensors are for abstracting the details away for the benefit of the microcontroller.
 
-{{<figure name="td-02">}}
+![td-02](https://karlquinsland.com/duogalia-am70-optical-fiber-multi-meter/images/td02.webp)
+
 
 There are 4 more screws holding the PCB to the front half of the case; if you remove them, you can get a look at the side of the PCB with the screen on it... revealing that there's absolutely nothing special on the other side of the PCB.
 
-{{<figure name="td-03">}}
+![td-03](https://karlquinsland.com/duogalia-am70-optical-fiber-multi-meter/images/td03.webp)
+
 
 And here's a close up of the silk screen on the main controller that makes me think `T-Better` is the ODM.
 
-{{<figure name="td-04">}}
+![td-04](https://karlquinsland.com/duogalia-am70-optical-fiber-multi-meter/images/td04.webp)
+
 
 ## Miscellaneous
 
@@ -66,5 +69,5 @@ The main ICs are:
 
 - [`TM(Shenzhen Titan Micro Elec) TM1621B / TM1621B`](https://www.lcsc.com/datasheet/C5174490.pdf): the LCD driver IC for the display.
 
-I was not able to locate the OEM or get a digital copy of the manual that came with this thing so I scanned it myself. You can fetch it [here]({{< resource-ref "product-manual-scan" >}}).
+I was not able to locate the OEM or get a digital copy of the manual that came with this thing so I scanned it myself. You can fetch it [here](https://karlquinsland.com/duogalia-am70-optical-fiber-multi-meter/files/manual-scan.pdf).
 

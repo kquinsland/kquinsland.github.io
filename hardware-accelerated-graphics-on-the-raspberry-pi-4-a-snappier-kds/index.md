@@ -16,7 +16,10 @@ I have been experimenting with the concept of a Home Assistant powered [KDS](htt
 
 <br>
 
-{{<figure name="kds-feature">}}
+![Poorly edited picture showing home automation dashboard on LCD screen mounted to door of refrigerator](https://karlquinsland.com/hardware-accelerated-graphics-on-the-raspberry-pi-4-a-snappier-kds/kds01.webp)
+
+_Yes, it's over-exposed and shot at an awkward angle but that's what it took to minimize glare!_
+
 
 <br>
 

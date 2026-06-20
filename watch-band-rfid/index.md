@@ -17,7 +17,10 @@ The idea is to have a small RFID tag that can be used for various purposes, such
 
 I was inspired by both the [bio-hacking community](https://en.wikipedia.org/wiki/Microchip_implant_(human)) and the medical-alert 'accessory bands' for Android Wear devices.
 
-{{<figure name="official-render">}}
+![The inspiration for this project](https://karlquinsland.com/watch-band-rfid/images/official-medical-band-render.webp)
+
+_The inspiration for this project_
+
 
 Don't mind the few small print imperfections; _this was a prototype_ printed with a .6mm nozzle.
 A final version of this would be printed with a smaller nozzle, a finer layer height and probably a different color/material.
@@ -25,11 +28,20 @@ A final version of this would be printed with a smaller nozzle, a finer layer he
 The point is to have a small, unobtrusive design that can be easily attached to a watch band.
 Because of the wide variety of watch bands available, I have [included](#files) the raw Fusion360 file for you to modify as needed.
 
-{{<figure name="prototype03">}}
+![Installed on a watch band.](https://karlquinsland.com/watch-band-rfid/images/prototype03.webp)
 
-{{<figure name="prototype02">}}
+_Installed on a watch band._
 
-{{<figure name="prototype01">}}
+
+![A single watch band pin is used to secure the plastic part to the band.](https://karlquinsland.com/watch-band-rfid/images/prototype02.webp)
+
+_A single watch band pin is used to secure the plastic part to the band._
+
+
+![Hopefully this gives you an idea of how the parts come together.](https://karlquinsland.com/watch-band-rfid/images/prototype01.webp)
+
+_Hopefully this gives you an idea of how the parts come together._
+
 
 ## Bill of Materials
 
@@ -41,7 +53,10 @@ A kit is advisable if you need to prototype multiple designs / play with differe
 
 Printing the tag enclosure is straightforward but due to it's small size, the more precise your printer is, the better the results will be.
 
-{{<figure name="print-orientation">}}
+![Suggested print orientation for best results](https://karlquinsland.com/watch-band-rfid/images/suggested-print-orientation.webp)
+
+_Suggested print orientation for best results_
+
 
 ## Sourcing the RFID tag
 
@@ -51,7 +66,10 @@ If you search for tags meant to be embedded under the skin of animals, you will 
 There are also tags meant for [humans](https://dangerousthings.com/category/implants/x-series/) but they're not cheap!
 I did eventually find a suitable tag on eBay:
 
-{{<figure name="feat-ebay-listing">}}
+![eBay listing for the RFID tag](https://karlquinsland.com/watch-band-rfid/images/eBay-listing.webp)
+
+_eBay listing for the RFID tag_
+
 
 eBay being what it is, there's no guarantee that [the same listing I purchased from](https://www.ebay.com/itm/254607033331) will still be active in the future so I am including a copy of the listing description that you can use for reference when searching for a suitable tag:
 
@@ -83,5 +101,13 @@ A portion of the listing text:
 
 ## Files
 
-{{< bundle-files >}}
+- [images/eBay-listing.webp](https://karlquinsland.com/watch-band-rfid/images/eBay-listing.webp)
+- [files/fusion-export.step](https://karlquinsland.com/watch-band-rfid/files/fusion-export.step)
+- [files/main.f3z](https://karlquinsland.com/watch-band-rfid/files/main.f3z)
+- [images/official-medical-band-render.webp](https://karlquinsland.com/watch-band-rfid/images/official-medical-band-render.webp)
+- [images/suggested-print-orientation.webp](https://karlquinsland.com/watch-band-rfid/images/suggested-print-orientation.webp)
+- [images/prototype01.webp](https://karlquinsland.com/watch-band-rfid/images/prototype01.webp)
+- [images/prototype02.webp](https://karlquinsland.com/watch-band-rfid/images/prototype02.webp)
+- [images/prototype03.webp](https://karlquinsland.com/watch-band-rfid/images/prototype03.webp)
+
 

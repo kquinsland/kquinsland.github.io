@@ -142,7 +142,12 @@ Turns out, it's a very clever trick meant to [prevent Lets Encrypt certificates 
 
 The two valid chains of trust for Lets Encrypt certificates look like this:
 
-{{< figure name="le-compat" >}}
+![Picture from LetsEncrypt blog post showing logical relationship between end-user certificates, the intermediate certificate chains and root certificates](https://karlquinsland.com/skyhole-expired-lets-encrypt-ca/2020.12.21-android-compat-cert-chain.webp)
+
+_Image credit/source:_
+
+_LetsEncrypt_
+
 
 With the help of [this](https://github.com/certbot/certbot/issues/8577) GitHub issue, the revised CertBot `cli.ini` file becomes:
 

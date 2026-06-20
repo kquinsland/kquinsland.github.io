@@ -20,11 +20,12 @@ Rather than write separate posts, here's a collection of mini teardowns showing 
 
 Previous years:
 
-- [2023]({{< relref "aliexpress-11-11-sale-teardowns" >}})
+- [2023](/aliexpress-11-11-sale-teardowns/)
 
 ## Tuya Zigbee 3.5 Inch Smart Wall Switch
 
-{{<figure name="01_tuya_switch_render">}}
+![01_tuya_switch_render](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/01_tuya_switch/render.webp)
+
 
 [non-affiliate link](https://www.aliexpress.us/item/3256807444250563.html?gatewayAdapt=glo2usa)
 
@@ -36,56 +37,78 @@ The main application processor is [`F1C100s`](https://linux-sunxi.org/F1C100s) w
 It might be able to run a custom Linux build that could draw a custom UI, but it's not going to be as easy as rooting an Android device.
 
 There’s not much in the box, just the switch and a manual.
-{{<figure name="01_tuya_switch_td01">}}
+![01_tuya_switch_td01](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/01_tuya_switch/td01.webp)
+
 
 It's a pretty standard "power supply and relays in the back, touch screen in the front" design.
 This time, though, there's an _exposed_ programming header!?
 
-{{<figure name="01_tuya_switch_td02">}}
+![Note the 'fire wire' label for mains input... :D](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/01_tuya_switch/td02.webp)
+
+_Note the 'fire wire' label for mains input... :D_
+
 
 A few screws later, the back panel comes off to reveal some power regulation/switching components and the Zigbee module.
 
-{{<figure name="01_tuya_switch_td03">}}
+![01_tuya_switch_td03](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/01_tuya_switch/td03.webp)
+
 
 They achieved the "mushy, then clicky" feel of the buttons by using a rubber insert around the tactile switches.
 
-{{<figure name="01_tuya_switch_td04">}}
+![01_tuya_switch_td04](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/01_tuya_switch/td04.webp)
+
 
 The power supply doesn't look too bad.
 Clearance looks OK, there is a fuse, and the soldering is decent.
 I don't know how well isolated that transformer is, but it's probably fine.
 
-{{<figure name="01_tuya_switch_td05">}}
-{{<figure name="01_tuya_switch_td06">}}
+![01_tuya_switch_td05](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/01_tuya_switch/td05.webp)
+
+![J2 looks like it might be DC input or possibly RS485 for a future model?](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/01_tuya_switch/td06.webp)
+
+_J2 looks like it might be DC input or possibly RS485 for a future model?_
+
 
 ## Ueetop 175W GaN USB C Charger (BK-112D)
 
-{{<figure name="02_usb_charger_render">}}
+![02_usb_charger_render](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/02_usb_charger/render.webp)
+
 
 [non-affiliate link](https://www.aliexpress.us/item/3256807203418058.html?gatewayAdapt=glo2usa)
 
 As the USB-C PD standard matures and GaN technology makes high-power chargers cheaper, it's fun to see the internals get more complex but also more integrated.
 This was less than $15 shipped which is _insane_ for a 100W+ charger unless they cut corners somewhere...
 
-{{<figure name="02_usb_charger_td01">}}
+![Hey, it came with a mains cord and it's even correct for my country!](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/02_usb_charger/td01.webp)
+
+_Hey, it came with a mains cord and it's even correct for my country!_
+
 
 There are a LOTS of chips holding things together; it's almost impossible to open this without breaking at least one!
 Consider this a warning: you will be doing a destructive teardown if you open this!
 
-{{<figure name="02_usb_charger_td02">}}
+![Look at those PCB traces going to the output. Easily 5mm wide!](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/02_usb_charger/td02.webp)
 
-As this is a [#TwoMinuteTeardown]({{< relref "tags/two-minute-teardown" >}}), I'm not going to remove all the silastic glue on the power supply module nor will I check the ripple in the output.
+_Look at those PCB traces going to the output. Easily 5mm wide!_
 
-{{<figure name="02_usb_charger_td03">}}
+
+As this is a [#TwoMinuteTeardown](/tags/two-minute-teardown/), I'm not going to remove all the silastic glue on the power supply module nor will I check the ripple in the output.
+
+![02_usb_charger_td03](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/02_usb_charger/td03.webp)
+
 
 Other than that, it's about what you'd expect from a modern USB-C charger that isn't hyper-compact; beefy looking AC-to-DC converter, a few big caps and then the USB-C PD controller.
 
 Between each group of ports is a series of passives, some beefy looking power MOSFETs and a protocol negotiation IC.
 
-{{<figure name="02_usb_charger_td04">}}
-{{<figure name="02_usb_charger_td05">}}
-{{<figure name="02_usb_charger_td06">}}
-{{<figure name="02_usb_charger_td07">}}
+![02_usb_charger_td04](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/02_usb_charger/td04.webp)
+
+![02_usb_charger_td05](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/02_usb_charger/td05.webp)
+
+![02_usb_charger_td06](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/02_usb_charger/td06.webp)
+
+![02_usb_charger_td07](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/02_usb_charger/td07.webp)
+
 
 ### Notable ICs
 
@@ -97,27 +120,37 @@ Between each group of ports is a series of passives, some beefy looking power MO
 
 ## Generic Ozone generator (XD001)
 
-{{<figure name="03_ozone_render">}}
+![03_ozone_render](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/03_ozone/render.webp)
+
 
 [non-affiliate link](https://www.aliexpress.us/item/3256805759188983.html?gatewayAdapt=glo2usa)
 
 There’s not much in the box other than the generator and a manual.
 
-{{<figure name="03_ozone_td01">}}
+![03_ozone_td01](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/03_ozone/td01.webp)
+
 
 It’s easy to take apart with no hidden screws!
 
-{{<figure name="03_ozone_td02">}}
+![03_ozone_td02](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/03_ozone/td02.webp)
+
 
 Inside, you’ll find about what you’d expect: a potted HV module, fan, controller, and a battery.
 
-{{<figure name="03_ozone_td03">}}
+![03_ozone_td03](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/03_ozone/td03.webp)
+
 
 Instead of the cheaper "carbon needle" ozone generators, this one uses a ceramic plate.
 
-{{<figure name="03_ozone_td04">}}
+![Such a pretty glow!](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/03_ozone/td04.webp)
 
-{{<figure name="03_ozone_td05">}}
+_Such a pretty glow!_
+
+
+![Micro USB is INEXCUSABLE in 2024!](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/03_ozone/td05.webp)
+
+_Micro USB is INEXCUSABLE in 2024!_
+
 
 Annoyingly, they used a micro USB port for charging.
 This is _inexcusable_ in 2024.
@@ -125,19 +158,23 @@ The silk screen on the PCB indicates that the design is from late 2020, which wo
 Furthermore, this device doesn’t need any complicated USB-C PD features, so it’s not like they’d have to worry about the extra cost or complexity of a USB-C controller.
 Really, all they needed was _two_ (very important, [**NOT** ONE](https://hackaday.com/2019/07/16/exploring-the-raspberry-pi-4-usb-c-issue-in-depth/)) 5.1k resistors and a USB-C port and they could have been future proofed!
 
-{{<figure name="03_ozone_td06">}}
+![03_ozone_td06](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/03_ozone/td06.webp)
+
 
 They scrubbed the markings off the SOIC16 CPU. The rest of the components are about what you’d expect for managing lithium batteries, switching the fan, and driving the boost converter for the ozone generator.
 
 It appears another version of this device also features a buzzer.
 I'm not sure what for, but the silk screen clearly shows a spot for it.
 
-{{<figure name="03_ozone_td07">}}
-{{<figure name="03_ozone_td08">}}
+![03_ozone_td07](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/03_ozone/td07.webp)
+
+![03_ozone_td08](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/03_ozone/td08.webp)
+
 
 ## BTF Light SP530E LED Controller
 
-{{<figure name="04_btf_controller_render">}}
+![04_btf_controller_render](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/04_btf_controller/render.webp)
+
 
 [non-affiliate link](https://www.aliexpress.us/item/3256806286614116.html?gatewayAdapt=glo2usa)
 
@@ -146,23 +183,31 @@ I have some [thoughts](#side-note-the-ossha-community-is-being-heard) on the sta
 
 The packaging is very nondescript, containing just the controller and a manual.
 
-{{<figure name="04_btf_controller_td01">}}
-{{<figure name="04_btf_controller_td02">}}
+![04_btf_controller_td01](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/04_btf_controller/td01.webp)
+
+![04_btf_controller_td02](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/04_btf_controller/td02.webp)
+
 
 They did include a screwdriver, which... makes me wonder how many people are buying the individual components to DIY a LED lighting solution but also don't already have a screwdriver?
 
-{{<figure name="04_btf_controller_td03">}}
+![04_btf_controller_td03](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/04_btf_controller/td03.webp)
+
 
 The PCB is pretty simple and, thankfully, is nothing more than an ESP32 and a level shifter.
 It also includes a small condenser microphone for the music reactive mode.
 
-{{<figure name="04_btf_controller_td04">}}
+![04_btf_controller_td04](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/04_btf_controller/td04.webp)
+
 
 The MOSFETs look robust enough to handle a decent amount of current, and there's a decent amount of via stitching around the power traces, so it _should_ be able to handle the heat.
 
-{{<figure name="04_btf_controller_td05">}}
+![04_btf_controller_td05](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/04_btf_controller/td05.webp)
 
-{{<figure name="04_btf_controller_td06">}}
+
+![They labeled the programming header. ❤️](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/04_btf_controller/td06.webp)
+
+_They labeled the programming header. ❤️_
+
 
 ### Notable ICs
 
@@ -172,7 +217,8 @@ The MOSFETs look robust enough to handle a decent amount of current, and there's
 
 ## Gledepto GL-C-015WL-D LED Controller
 
-{{<figure name="05_gledepto_controller_render">}}
+![05_gledepto_controller_render](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/05_gledepto_controller/render.webp)
+
 
 [non-affiliate link](https://www.aliexpress.us/item/3256807239400011.html?gatewayAdapt=glo2usa)
 
@@ -180,33 +226,42 @@ As with the other device, this controller also has bare-bones packaging.
 
 No screwdriver needed because all the terminals have their own locking lever!
 
-{{<figure name="05_gledepto_controller_td01">}}
+![05_gledepto_controller_td01](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/05_gledepto_controller/td01.webp)
+
 
 Happy to see an ESP32 module in here... on its own PCB? Complete with a micro USB port for flashing?!?
 
-{{<figure name="05_gledepto_controller_td02">}}
+![05_gledepto_controller_td02](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/05_gledepto_controller/td02.webp)
+
 
 Yep, the ESP32 is on a separate PCB that's connected to the main board via a header.
 The silk screen on the PCB makes me think that this was _initially_ developed for an ESP8266 but then they added the header for the ESP32 module late(?) in design.
 
-{{<figure name="05_gledepto_controller_td03">}}
+![05_gledepto_controller_td03](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/05_gledepto_controller/td03.webp)
+
 
 The silk screen is really well done; everything is labeled well.
 
-{{<figure name="05_gledepto_controller_td04">}}
+![Really happy to see that the GPIOs are labeled... for both the ESP32 and 8266 variant!](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/05_gledepto_controller/td04.webp)
+
+_Really happy to see that the GPIOs are labeled... for both the ESP32 and 8266 variant!_
+
 
 Because this is an "addressable" LED controller, there's not much to look at.
 The GPIO from the ESP goes more or less directly to the output pins.
 
-{{<figure name="05_gledepto_controller_td05">}}
+![05_gledepto_controller_td05](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/05_gledepto_controller/td05.webp)
+
 
 And in case there was any doubt, the back of the PCB makes it super clear that this PCB _can_ be used with an ESP8266 or ESP32.
 
-{{<figure name="05_gledepto_controller_td06">}}
+![05_gledepto_controller_td06](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/05_gledepto_controller/td06.webp)
+
 
 ## SMLight A1-SLWF-03 LED Controller
 
-{{<figure name="06_smlight_controller_render">}}
+![06_smlight_controller_render](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/06_smlight_controller/render.webp)
+
 
 [non-affiliate link](https://www.aliexpress.us/item/3256805957696665.html?gatewayAdapt=glo2usa)
 
@@ -223,9 +278,14 @@ The USB port can also be used for programming and isn't hidden!
 
 Here's to hoping that they release a version for analog LED strips! 🤞
 
-{{<figure name="06_smlight_controller_td01">}}
-{{<figure name="06_smlight_controller_td02">}}
-{{<figure name="06_smlight_controller_td03">}}
+![06_smlight_controller_td01](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/06_smlight_controller/td01.webp)
+
+![06_smlight_controller_td02](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/06_smlight_controller/td02.webp)
+
+![🇺🇦](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/06_smlight_controller/td03.webp)
+
+_🇺🇦_
+
 
 ### side note: the OSS/HA community is being heard
 
@@ -241,11 +301,15 @@ This means some savvy manufacturers are paying attention and recognizing the gro
 There's somebody out there that's not going to force their garbage app/api on you and is going to let you do whatever you want with the device you bought.
 This was UNHEARD OF just a few years ago and I'm _so_ happy to see it happening now!
 
-{{<figure name="06_smlight_controller_promotes_programming">}}
+![This is such a victory for the DIY/HA/OSS community!](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/06_smlight_controller/promotes_programming.webp)
+
+_This is such a victory for the DIY/HA/OSS community!_
+
 
 ## G3061 PD65W Mini Hot Plate
 
-{{<figure name="07_hotplate_render">}}
+![07_hotplate_render](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/07_hotplate/render.webp)
+
 
 [non-affiliate link](https://www.aliexpress.us/item/3256806193753913.html?gatewayAdapt=glo2usa)
 
@@ -253,29 +317,38 @@ And the winner of the "feels most like a hand-built prototype" award goes to... 
 
 Normally I don't like it when screws are hidden under labels / stickers... but in this case, the "sticker" is a rubber foot that doesn't even "hide" the screws.
 
-{{<figure name="07_hotplate_td01">}}
+![Those lumps under the rubber mat are the screws holding the case together.](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/07_hotplate/td01.webp)
+
+_Those lumps under the rubber mat are the screws holding the case together._
+
 
 Looking from the side, the construction becomes pretty clear; it's probably just using a PCB for the heating element and the stacked PCBs separated with little brass standoffs is for thermal isolation.
 
-{{<figure name="07_hotplate_td02">}}
+![07_hotplate_td02](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/07_hotplate/td02.webp)
+
 
 USB-C for power is _always_ a good sign.
 Other than that, a basic [CMSemicon](https://www.mcu.com.cn/en/) IC runs the show.
 
 The OLED screen module is for sure one of those prototype modules meant for hobbyists!
 
-{{<figure name="07_hotplate_td03">}}
+![The use of threaded inserts for nuts just screams 'prototype' to me. Nothing wrong with that, just makes me smile.](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/07_hotplate/td03.webp)
+
+_The use of threaded inserts for nuts just screams 'prototype' to me. Nothing wrong with that, just makes me smile._
+
 
 As expected, the heating element is just PCB traces on an aluminum substrate PCB.
 Cheap and effective!
 
-{{<figure name="07_hotplate_td04">}}
+![07_hotplate_td04](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/07_hotplate/td04.webp)
 
-If anybody needs the instructions for this, I scanned a copy and you can get it from [here]({{< resource-ref "07_hotplate_instructions" >}}).
+
+If anybody needs the instructions for this, I scanned a copy and you can get it from [here](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/files/07_hotplate/g3601-instructions.pdf).
 
 ## Generic USB-C Dock w/ LCD
 
-{{<figure name="08_usbc_lcd_dock_render">}}
+![08_usbc_lcd_dock_render](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/08_usbc_lcd_dock/render.webp)
+
 
 [non-affiliate link](https://www.aliexpress.us/item/3256806850754746.html?gatewayAdapt=glo2usa)
 
@@ -285,28 +358,42 @@ What are the odds that it presents as a second display using [display port tunne
 
 There are no screws, just clips.
 
-{{<figure name="08_usbc_lcd_dock_td01">}}
-{{<figure name="08_usbc_lcd_dock_td02">}}
-{{<figure name="08_usbc_lcd_dock_td03">}}
+![08_usbc_lcd_dock_td01](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/08_usbc_lcd_dock/td01.webp)
+
+![08_usbc_lcd_dock_td02](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/08_usbc_lcd_dock/td02.webp)
+
+![08_usbc_lcd_dock_td03](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/08_usbc_lcd_dock/td03.webp)
+
 
 It looks like a pretty straightforward de-mux and breakout PCB.
 The display is an isolated / standalone component that's linked to the main PCB with just 4 wires.
 What are the odds that it's hanging off a USB hub?
 
-{{<figure name="08_usbc_lcd_dock_td04">}}
+![I'm not exactly sure why they made the USB-C "tail" detachable.](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/08_usbc_lcd_dock/td04.webp)
+
+_I'm not exactly sure why they made the USB-C "tail" detachable._
+
 
 The silk screen markings make me think that the "internal" name for this product is `K0108-1D`.
 Interesting that the `HUB` PCB has a date code almost a full _year_ after the `LCD` PCB..
 Also worth noting; the instructions that came with the device link to the same shady `key123.vip` site that the [ajazz](#ajazz-akp03e-stream-deck-clone) used so there's _definitely_ some sort of relationship between the two but I'm not sure what it is.
 
-{{<figure name="08_usbc_lcd_dock_td05">}}
-{{<figure name="08_usbc_lcd_dock_td06">}}
+![08_usbc_lcd_dock_td05](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/08_usbc_lcd_dock/td05.webp)
+
+![08_usbc_lcd_dock_td06](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/08_usbc_lcd_dock/td06.webp)
+
 
 Annoyingly, they lasered off the markings on the display module.
 I don't have a clip for the eeprom, but I bet that there'd be at least a few interesting strings in there :D.
 
-{{<figure name="08_usbc_lcd_dock_td07">}}
-{{<figure name="08_usbc_lcd_dock_td08">}}
+![I wonder what SW1 is used for...](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/08_usbc_lcd_dock/td07.webp)
+
+_I wonder what SW1 is used for..._
+
+![Nothing much on the under side of the USB-Dock PCB.](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/08_usbc_lcd_dock/td08.webp)
+
+_Nothing much on the under side of the USB-Dock PCB._
+
 
 ### USB details
 
@@ -383,7 +470,8 @@ on usb-0000:05:00.1-3.3.2/input0
 
 ## Ajazz AKP03E (Stream Deck clone)
 
-{{<figure name="09_AKP03E_render">}}
+![09_AKP03E_render](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/09_AKP03E/render.webp)
+
 
 [non-affiliate link](https://www.aliexpress.us/item/3256807320371570.html?gatewayAdapt=glo2usa)
 
@@ -394,18 +482,22 @@ It's still a basic LCD screen behind a matrix of clear buttons.
 
 The unit can be easily separated from its stand and there are no hidden screws!
 
-{{<figure name="09_AKP03E_td01">}}
-{{<figure name="09_AKP03E_td02">}}
+![09_AKP03E_td01](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/09_AKP03E/td01.webp)
+
+![09_AKP03E_td02](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/09_AKP03E/td02.webp)
+
 
 After going around the edge w/ a spudger, the internals reveal themselves.
 
-{{<figure name="09_AKP03E_td03">}}
+![09_AKP03E_td03](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/09_AKP03E/td03.webp)
+
 
 The `-VxNx` suffix on the silk screen matches the silk screen seen on the [USB-C Dock](#generic-usb-c-dock-w-lcd)... which really does make me think that there's some sort of relationship between the two products.
 
 The board with the physical knobs/buttons is just a "pass through" PCB; everything here just goes right over the FFC to the board with the screen and buttons.
 
-{{<figure name="09_AKP03E_td04">}}
+![09_AKP03E_td04](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/09_AKP03E/td04.webp)
+
 
 I can't find _anything_ when googling the main IC, unfortunately.
 
@@ -419,8 +511,10 @@ The silk screen is:
 >
 > 20240620
 
-{{<figure name="09_AKP03E_td05">}}
-{{<figure name="09_AKP03E_td06">}}
+![09_AKP03E_td05](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/09_AKP03E/td05.webp)
+
+![09_AKP03E_td06](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/09_AKP03E/td06.webp)
+
 
 The software is _super_ sketchy; just trying to find a build that actually worked on macOS was a pain!
 
@@ -467,7 +561,8 @@ on usb-0000:05:00.1-3/input1
 
 ## Generic WiFI LED Wall Clock
 
-{{<figure name="10_wifi_led_clock_render">}}
+![10_wifi_led_clock_render](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/10_wifi_led_clock/render.webp)
+
 
 [non-affiliate link](https://www.aliexpress.us/item/3256807326722207.html?gatewayAdapt=glo2usa)
 
@@ -477,46 +572,81 @@ I was hoping this would be a simple ESP8266 or ESP32 module linked directly to t
 
 Assuming that the microcontroller can be removed easily and the various segments of addressable LEDs can be driven directly from an ESP8266 or ESP32, this could still be a viable base for a custom LED wall clock.
 
-{{<figure name="10_wifi_led_clock_td01">}}
-{{<figure name="10_wifi_led_clock_td02">}}
+![Why bother with a custom USB cable? Just use a standard USB-C jack for power!](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/10_wifi_led_clock/td01.webp)
 
-{{<figure name="10_wifi_led_clock_td03">}}
+_Why bother with a custom USB cable? Just use a standard USB-C jack for power!_
 
-{{<figure name="10_wifi_led_clock_td04">}}
+![Lots of SMD neopixels and a partition/mask system to keep high contrast between the segments.](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/10_wifi_led_clock/td02.webp)
 
-{{<figure name="10_wifi_led_clock_td05">}}
+_Lots of SMD neopixels and a partition/mask system to keep high contrast between the segments._
 
-{{<figure name="10_wifi_led_clock_td06">}}
 
-{{<figure name="10_wifi_led_clock_td07">}}
+![Kinda interesting to see how they spread the components out to not interfere with the partitions.](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/10_wifi_led_clock/td03.webp)
+
+_Kinda interesting to see how they spread the components out to not interfere with the partitions._
+
+
+![10_wifi_led_clock_td04](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/10_wifi_led_clock/td04.webp)
+
+
+![PCB marking: YC-9108-WIFI-0807, Ver 1.6, 2024-6-8](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/10_wifi_led_clock/td05.webp)
+
+_PCB marking: YC-9108-WIFI-0807, Ver 1.6, 2024-6-8_
+
+
+![Markings have been sanded off. Why bother? What's the value in that?](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/10_wifi_led_clock/td06.webp)
+
+_Markings have been sanded off. Why bother? What's the value in that?_
+
+
+![I assume this is i2c for the RTC module.](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/10_wifi_led_clock/td07.webp)
+
+_I assume this is i2c for the RTC module._
+
 
 ## Mirabox N4
 
 This was actually a late addition to the list.
 _Technically_ I didn't order it in 2024, but after learning about the Ajazz possibly being a Mirabox product, I wanted to see if there was anything interesting in the Mirabox product line so I found this for a reasonable price and held off publishing this post until it arrived.
 
-{{<figure name="11_mirabox_n4_render">}}
+![11_mirabox_n4_render](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/11_mirabox_n4/render.webp)
+
 
 [non-affiliate link](https://www.aliexpress.us/item/3256807963651419.html)
 
 The packaging is nondescript and minimal; the unit and a nice USB A -> C cable is essentially all that's in the box.
 
-{{<figure name="11_mirabox_n4_td01">}}
+![Did they have to use foam for this? Cardboard would have been fine...](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/11_mirabox_n4/td01.webp)
 
-{{<figure name="11_mirabox_n4_td02">}}
+_Did they have to use foam for this? Cardboard would have been fine..._
 
-{{<figure name="11_mirabox_n4_td03">}}
 
-{{<figure name="11_mirabox_n4_td04">}}
+![The Mirabox logo on top is laser engraved which is a nice touch.](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/11_mirabox_n4/td02.webp)
 
-{{<figure name="11_mirabox_n4_td05">}}
+_The Mirabox logo on top is laser engraved which is a nice touch._
+
+
+![No screws, just clips! And they're not even that hard to find or pry up!](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/11_mirabox_n4/td03.webp)
+
+_No screws, just clips! And they're not even that hard to find or pry up!_
+
+
+![11_mirabox_n4_td04](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/11_mirabox_n4/td04.webp)
+
+
+![11_mirabox_n4_td05](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/11_mirabox_n4/td05.webp)
+
 
 As was the case with the other LCD modules, this looks like it's just USB 2.0 module hanging off a USB hub.
 Conceivably, you could embed a tiny raspberry pi zero or other _small_ computer with USB Host support inside this thing 🤔...
 
-{{<figure name="11_mirabox_n4_td06">}}
+![Really nice ofd them to label each FPC connector.](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/11_mirabox_n4/td06.webp)
 
-{{<figure name="11_mirabox_n4_td07">}}
+_Really nice ofd them to label each FPC connector._
+
+
+![11_mirabox_n4_td07](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/11_mirabox_n4/td07.webp)
+
 
 The two internal PCBs are marked very similarly to the [USB-Dock](#generic-usb-c-dock-w-lcd) _and_ the [Stream Deck clone](#ajazz-akp03e-stream-deck-clone) which really does make me think that mirabox is the ODM for those products as well.
 
@@ -533,11 +663,20 @@ Markings:
 And the USB hub PCB in the base doesn't have a part number, just a date code.
 I'd bet that they started designing this product in spring of 2024 and they finished the simplest part - the USB hub - first.
 
-{{<figure name="11_mirabox_n4_td08">}}
+![As expected, the buttons and the lower display are really just different regions of the same LCD.](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/11_mirabox_n4/td08.webp)
+
+_As expected, the buttons and the lower display are really just different regions of the same LCD._
+
 
 The dials are aluminum, which feels very premium for a device that's otherwise plastic.
 
-{{<figure name="11_mirabox_n4_td09">}}
+![That plastic insert almost looks 3d printed...](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/11_mirabox_n4/td09.webp)
 
-{{<figure name="11_mirabox_n4_little-snitch">}}
+_That plastic insert almost looks 3d printed..._
+
+
+![For sketchy software, it's nice to see that it's only making calls to the manufacturer's site and not 25 other ad networks...](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/images/11_mirabox_n4/ls_network.webp)
+
+_Interesting to see what network calls were made..._
+
 

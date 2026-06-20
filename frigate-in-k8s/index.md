@@ -11,7 +11,7 @@ Tags: frigate, home-assistant, kubernetes
 <!-- markdownlint-disable-file MD002 -->
 # Frigate: Kubernetes edition
 
-This is a follow up to my ['Frigate From Scratch' post]({{<relref "/posts/2023/03/frigate-install/">}}).
+This is a follow up to my ['Frigate From Scratch' post](/frigate-install/).
 Most of that post is still relevant today but I have since moved almost all of my workloads into Kubernetes.
 
 This post is intended to document some of the issues I hit while trying to get Frigate running in my k8s cluster.
@@ -19,7 +19,8 @@ This is not every issue I hit, just the ones that are not directly related to my
 
 I have essentially taken the relevant parts of my notes and lightly edited them into a more organized and structured format.
 
-{{<figure name="cover-frigate_logo">}}
+![cover-frigate_logo](https://karlquinsland.com/frigate-in-k8s/images/logo.svg)
+
 
 ## Overview
 
@@ -152,9 +153,9 @@ spec:
 [Node Feature Discovery](https://github.com/kubernetes-sigs/node-feature-discovery) is a straight-forward project that puts a daemonset on each node in your cluster and scans the hardware for features.
 Depending on what hardware it finds, it will label the node with appropriate labels that can then be used for scheduling.
 
-{{< admonition warning "Over Engineered" >}}
-As noted [above](#coral-pass-through), NFD is not strictly necessary if you only have a single node that will run Frigate, just use a regular `nodeSelector` or taint/toleration approach instead.
-{{< /admonition >}}
+> [!WARNING] Over Engineered
+> As noted [above](#coral-pass-through), NFD is not strictly necessary if you only have a single node that will run Frigate, just use a regular `nodeSelector` or taint/toleration approach instead.
+
 
 I have some other workloads that can benefit from NFD so I went ahead and set it up cluster-wide.
 Here is the relevant snippet from my NFD configuration that detects Coral TPUs and applies a label accordingly:

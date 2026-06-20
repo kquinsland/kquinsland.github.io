@@ -14,9 +14,13 @@ This is another brief "i made a thing!" posts.
 
 **Update 2020-12-12:** I outgrew version 1! I needed a few more ports and didn't have much time... so I just scaled the part up to double the number of jacks. The links below and the thingiverse and prusaprinters links have been updated w/ the new STL files. Printing and attachment works exactly the same as with the 1x8 version. Rather than include the Fusion360 source, I have included a standard STEP file.
 
-{{< figure name="v2_front" >}}
+![Picture showing the new 2x8 keystone bracket installed on rack from the front.](https://karlquinsland.com/home-lab-keystone-bracket/images/v2_installed_front.webp)
 
-{{< figure name="v2_rear_featured" >}}
+
+![Picture showing the new 2x8 keystone bracket installed on rack from the rear.](https://karlquinsland.com/home-lab-keystone-bracket/images/v2_installed_rear.webp)
+
+_Yes, I do need to re-do the cable runs; they're a mess_
+
 
 ## What
 
@@ -50,5 +54,16 @@ Tolerances on the jacks are somewhat tight so printing at a more accurate settin
 
 For archive / posterity, all source files are included here. All files are licensed as [Creative Commons Attribution-NonCommercial-ShareAlike](https://creativecommons.org/licenses/by-nc-sa/4.0/) (CC BY-NC-SA).
 
-{{< bundle-files >}}
+- [images/rear-installed.webp](https://karlquinsland.com/home-lab-keystone-bracket/images/rear-installed.webp)
+- [images/front-installed.webp](https://karlquinsland.com/home-lab-keystone-bracket/images/front-installed.webp)
+- [models/v1_keystone-bracket.3mf](https://karlquinsland.com/home-lab-keystone-bracket/models/v1_keystone-bracket.3mf)
+- [models/v1_keystone-bracket.f3z](https://karlquinsland.com/home-lab-keystone-bracket/models/v1_keystone-bracket.f3z): Fusion360 Archive
+- [models/v1_keystone-bracket.stl](https://karlquinsland.com/home-lab-keystone-bracket/models/v1_keystone-bracket.stl)
+- [models/v2.3mf](https://karlquinsland.com/home-lab-keystone-bracket/models/v2.3mf)
+- [models/v2.step](https://karlquinsland.com/home-lab-keystone-bracket/models/v2.step): STEP file
+- [models/v2.stl](https://karlquinsland.com/home-lab-keystone-bracket/models/v2.stl)
+- [images/print_orientation.webp](https://karlquinsland.com/home-lab-keystone-bracket/images/print_orientation.webp)
+- [images/v2_installed_front.webp](https://karlquinsland.com/home-lab-keystone-bracket/images/v2_installed_front.webp)
+- [images/v2_installed_rear.webp](https://karlquinsland.com/home-lab-keystone-bracket/images/v2_installed_rear.webp)
+
 

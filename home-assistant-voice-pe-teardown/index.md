@@ -13,7 +13,7 @@ Tags: two-minute-teardown, esphome, home-assistant, home-automation
 
 # Home Assistant Voice: Preview Edition teardown
 
-This is a quick [#TwoMinuteTeardown]({{< relref "tags/two-minute-teardown" >}}) post for the recently released [Home Assistant Voice Node - Preview edition](https://www.home-assistant.io/voice-pe/).
+This is a quick [#TwoMinuteTeardown](/tags/two-minute-teardown/) post for the recently released [Home Assistant Voice Node - Preview edition](https://www.home-assistant.io/voice-pe/).
 
 Normally, I'd be doing a full teardown, but this is a little different; the Home Assistant team has done a _lot_ of the work out in the open.
 With just a quick Google, you can find official:
@@ -38,7 +38,8 @@ In the bottom right, there's a small switch that appears to mux between the main
 
 I wonder weather this is "leftover" from development and they haven't gotten around to simplifying the BOM yet or if this is intentionally populated for users to re-program the audio processor.
 
-{{<figure name="pcb_top">}}
+![pcb_top](https://karlquinsland.com/home-assistant-voice-pe-teardown/images/pcb_top.webp)
+
 
 All of the "fun" stuff is on the bottom half.
 
@@ -48,7 +49,8 @@ The layout and BOM is about what you'd expect for a ~$50 single-purpose device.
 
 Where possible, I've [identified](#ics) the big ICs.
 
-{{<figure name="feat_pcb_btm">}}
+![feat_pcb_btm](https://karlquinsland.com/home-assistant-voice-pe-teardown/images/pcb_btm.webp)
+
 
 ### wishful thinking
 

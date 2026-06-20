@@ -32,32 +32,41 @@ There is one sticker covering a screw on the rear but it's not the "tamper-evide
 
 Excess cable slack can be looped around the rear of the docking station to minimize errant cords.
 
-{{<figure name="dock01_rear" >}}
+![Note the white sticker covering the screw in the middle on the bottom.](https://karlquinsland.com/roborock-s8-pro-ultra-dock-teardown/images/dock01_rear.webp)
+
+_Note the white sticker covering the screw in the middle on the bottom._
+
 
 Near the mains input is a simple USB-C port.
 `dmesg` doesn't show any signs of life on the port both with and without the mains cable plugged in. I have not yet tried with the robot docked so there may be some simple handshake that's needed before this port becomes interesting.
 
-{{<figure name="dock02_usbc" >}}
+![dock02_usbc](https://karlquinsland.com/roborock-s8-pro-ultra-dock-teardown/images/dock02_usbc.webp)
+
 
 With screws removed, the rear panel lifts off to reveal the internals.
 The overall layout seems logical and there's lots of room between components which is nice to see.
 Each component is well labeled secured to the main body with standard screws and Zip-Ties.
 
-{{<figure name="feat_dock03_internals" >}}
+![feat_dock03_internals](https://karlquinsland.com/roborock-s8-pro-ultra-dock-teardown/images/dock03_internals.webp)
+
 
 In addition to the small features molded into the body for cable management, the cables to the components that move are protected with an easy to remove cable chain.
 
-{{<figure name="dock04_mop_brush_motor" >}}
+![dock04_mop_brush_motor](https://karlquinsland.com/roborock-s8-pro-ultra-dock-teardown/images/dock04_mop_brush_motor.webp)
 
-{{<figure name="dock05_mop_brush_motor_cable_chain" >}}
+
+![dock05_mop_brush_motor_cable_chain](https://karlquinsland.com/roborock-s8-pro-ultra-dock-teardown/images/dock05_mop_brush_motor_cable_chain.webp)
+
 
 The strong vaccuum motor that empties the mobile dustbin into the larger bin is powered directly via mains but isn't easily accessible.
-{{<figure name="dock06_vac_motor" >}}
+![dock06_vac_motor](https://karlquinsland.com/roborock-s8-pro-ultra-dock-teardown/images/dock06_vac_motor.webp)
+
 
 The mains PSU is nothing special to write home about.
 There is a low-voltage connection right next to the mains cabling that heads down to the main "evacuation" suction motor but there is no obvious relay.
 
-{{<figure name="dock07_psu" >}}
+![dock07_psu](https://karlquinsland.com/roborock-s8-pro-ultra-dock-teardown/images/dock07_psu.webp)
+
 
 Here's a closeup of the main control board for the docking station.
 
@@ -66,26 +75,38 @@ Each of the connectors around the edge is a different size/number of pins os it'
 The conformal coating does obscure component IDs and traces, but you can still get a high-level idea of the topology.
 More than likely, all sensors and actuators are controlled by the [Nation N32G455](https://www.nationstech.com/en/N32G455MCUs/) and the ESP32 is (probably) just there for communicating status to the robot and/or cloud.
 
-{{<figure name="dock08_pcb_closeup" >}}
+![dock08_pcb_closeup](https://karlquinsland.com/roborock-s8-pro-ultra-dock-teardown/images/dock08_pcb_closeup.webp)
+
 
 From this angle it's a bit easier to see where the USB-C traces go but since the ESP32 module is BGA packaged and everything is conformally coated, I skipped the tedious work of trying to beep things out.
 
-{{<figure name="dock09_pcb_mcu_closeup" >}}
+![At least the conformal coating is pretty easy to rub off the IC.](https://karlquinsland.com/roborock-s8-pro-ultra-dock-teardown/images/dock09_pcb_mcu_closeup.webp)
+
+_At least the conformal coating is pretty easy to rub off the IC._
+
 
 ## The vacuum
 
 More photos coming in a later update, but here's what I have so far.
 
-{{<figure name="vac01_dis01" >}}
-{{<figure name="vac02_dis02" >}}
+![It would be better if Roborock provided tools to verify this claim, but at least they're trying to address consumer privacy concerns.](https://karlquinsland.com/roborock-s8-pro-ultra-dock-teardown/images/vac01_dis01.webp)
+
+_It would be better if Roborock provided tools to verify this claim, but at least they're trying to address consumer privacy concerns._
+
+![Like with the S7, the panel surrounding the LIDAR puck can be pried off.](https://karlquinsland.com/roborock-s8-pro-ultra-dock-teardown/images/vac02_dis02.webp)
+
+_Like with the S7, the panel surrounding the LIDAR puck can be pried off._
+
 
 Nice to see that the labeling for which roller goes into which position is molding into the robot body for ultimate wear-resistance.
 
-{{<figure name="vac05_dis05" >}}
+![vac05_dis05](https://karlquinsland.com/roborock-s8-pro-ultra-dock-teardown/images/vac05_dis05.webp)
+
 
 And here's a shot of the LIDAR pcb.
 
-{{<figure name="vac06_dis06" >}}
+![vac06_dis06](https://karlquinsland.com/roborock-s8-pro-ultra-dock-teardown/images/vac06_dis06.webp)
+
 
 As for getting into the rest of the robot, it's not that difficult.
 Standard "keep track of all the screws and take photos at each step" advice applies here.
@@ -94,7 +115,8 @@ You can follow the the [existing S7 teardown guides](https://www.youtube.com/wat
 There are two obvious ones, two next to the castor wheel and a few more hiding under the mop pad.
 With those removed, the lid slides off pretty easily to reveal the PCB:
 
-{{<figure name ="vac07_no-lid">}}
+![vac07_no-lid](https://karlquinsland.com/roborock-s8-pro-ultra-dock-teardown/images/vac07_no-lid.webp)
+
 
 There's a few interesting things to note here:
 
@@ -102,9 +124,11 @@ There's a few interesting things to note here:
 
 - There are only two small locating features for the PCB. When installing the PCB back in to the chassis start with the small plastic peg between the screw and the micro USB port. If you seat this corner of the PCB first and everything else should fall into place nicely.
 
-{{<figure name ="vac08_pcb_front">}}
+![vac08_pcb_front](https://karlquinsland.com/roborock-s8-pro-ultra-dock-teardown/images/vac08_pcb_front.webp)
 
-{{<figure name ="vac08_pcb_rear">}}
+
+![vac08_pcb_rear](https://karlquinsland.com/roborock-s8-pro-ultra-dock-teardown/images/vac08_pcb_rear.webp)
+
 
 The conformal coating is annoying but here's the big players:
 

@@ -27,10 +27,10 @@ Hopefully this will save you some trouble!
 
 ### Mr. Coffee
 
-{{< admonition note >}}
-I have since replaced my Tasmota based automation with an ESPHome based automation.
-Details on that are [here]({{< relref "posts/2023/01/improved-esphome-coffee-automation" >}}).
-{{< /admonition >}}
+> [!NOTE] Note
+> I have since replaced my Tasmota based automation with an ESPHome based automation.
+> Details on that are [here](/improved-esphome-coffee-automation/).
+
 
 A $15 '[smart relay](https://tasmota.github.io/docs/devices/Sonoff-Pow/)' is all that's needed to turn a simple drip-over coffee maker into a remote-controllable coffee maker.
 Immediately, you gain the ability to start brewing coffee in the morning from bed.
@@ -106,7 +106,7 @@ to fire off a _timely_ notification when the kettle is done.
 The 'brute-force' solution is to configure Tasmota to transmit the telemetry [continuously](https://github.com/arendst/Tasmota/issues/2567).
 Except there's no need for the Tasmota device on the kettle to be constantly informing Home Assistant that there's no power being used whenever the kettle is not on; my application only cares about the '[falling edge](https://en.wikipedia.org/wiki/Signal_edge)'.
 
-Borrow the trigger from the [Mr. Coffee]({{< relref "#mr-coffee" >}}) rule and shorten the [telemetry period](https://tasmota.github.io/docs/Commands/#teleperiod) only when the kettle
+Borrow the trigger from the [Mr. Coffee](#mr-coffee) rule and shorten the [telemetry period](https://tasmota.github.io/docs/Commands/#teleperiod) only when the kettle
 is consuming more than 1 Watt. Like the coffee maker, it's either consuming 0 Watts or about 1.1 Kilowatt.
 
 ```console

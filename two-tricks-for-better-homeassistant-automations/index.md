@@ -22,7 +22,7 @@ To be sure, nothing below is new or groundbreaking. I am just presenting how I u
 
 Sometimes, you'll have many entities in a given [template](https://www.home-assistant.io/docs/configuration/templating/) and - depending on the complexity of the template - you may need to refer to each entity multiple times. This is a simple technique that allows you define the list of entities one time and refer to them as needed throughout the template in  a succinct way. This makes the template a bit cleaner / shorter which inturn makes it easier to maintain.
 
-To illustrate the technique, I've reproduced a [template sensor](https://www.home-assistant.io/integrations/template/) that averages all of the different particulate matter readings from my [outdoor weather station]({{< relref "posts/2020/08/ws3-weather-station-pm25-sensor" >}}) into a single number. **Bonus:** this approach works around the 'only one entity' limit with the [statistics](https://www.home-assistant.io/integrations/statistics/) platform!
+To illustrate the technique, I've reproduced a [template sensor](https://www.home-assistant.io/integrations/template/) that averages all of the different particulate matter readings from my [outdoor weather station](/ws3-weather-station-pm25-sensor/) into a single number. **Bonus:** this approach works around the 'only one entity' limit with the [statistics](https://www.home-assistant.io/integrations/statistics/) platform!
 
 I want to get an average of 6 different entities:
 
@@ -138,12 +138,10 @@ Here is an example automation that turns a bathroom fan on if the humidity in th
       entity_id: switch.bathroom_fan
 ```
 
-{{< admonition note >}}
+> [!NOTE] Note
+> Yes, I absolutely could've used the [`state`](https://www.home-assistant.io/docs/automation/trigger/#state-trigger) trigger to fire off the contrition check every time that a new humidity reading came in. I chose to use the 'cron' approach to illustrate how to make this technique work for two reasons:
+> 
+>   1. I find the `state` trigger to be useful when combined with the `above:` / `below:` and `for:` 'modifiers'. Currently, those modifiers are only supported in the `trigger` block and therefore can't be configured with `input_*`. The whole point is to have some aspects of the automation that can be adjusted at run time w/o  having to edit the automation.
+>   2. Some automations may not have a reliable/consistent push-based trigger event that they can use. In these cases, a regular polling approach is the only 'fall back'.
 
-Yes, I absolutely could've used the [`state`](https://www.home-assistant.io/docs/automation/trigger/#state-trigger) trigger to fire off the contrition check every time that a new humidity reading came in. I chose to use the 'cron' approach to illustrate how to make this technique work for two reasons:
-
-  1. I find the `state` trigger to be useful when combined with the `above:` / `below:` and `for:` 'modifiers'. Currently, those modifiers are only supported in the `trigger` block and therefore can't be configured with `input_*`. The whole point is to have some aspects of the automation that can be adjusted at run time w/o  having to edit the automation.
-  2. Some automations may not have a reliable/consistent push-based trigger event that they can use. In these cases, a regular polling approach is the only 'fall back'.
-
-{{< /admonition >}}
 

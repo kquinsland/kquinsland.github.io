@@ -12,38 +12,61 @@ Tags: teardown
 
 # TESmart HKS801-P23-USBK KVM Teardown
 
-Recently, one of the USB ports on [my previous KVM switch]({{< relref "posts/2022/04/hdmi-kvm-teardown-and-esphome" >}}) failed. Since it's a critical piece of equipment, I needed a replacement the same day. The original AliExpress product page was no longer available; the seller seems to have closed up shop entirely.
+Recently, one of the USB ports on [my previous KVM switch](/hdmi-kvm-teardown-and-esphome/) failed. Since it's a critical piece of equipment, I needed a replacement the same day. The original AliExpress product page was no longer available; the seller seems to have closed up shop entirely.
 
 Fortunately, the OEM—`XUFUNG`—has released an updated version, now sold in the US as the [TESmart HKS801-P23-USBK](https://www.tesmart.com/products/hks801-p23). It looks visually identical to the previous KVM switch, but the USB ports now feature the characteristic blue color indicating USB 3.0 support.
 
-{{<figure name="oem01">}}
+![OEM 'what's in the box' image.](https://karlquinsland.com/tesmart-hks801-p23-usbk-kvm-teardown/images/oem01.webp)
 
-{{<figure name="oem02">}}
+_OEM 'what's in the box' image._
 
-{{<figure name="oem03">}}
 
-{{< admonition note >}}
+![OEM feature overview image.](https://karlquinsland.com/tesmart-hks801-p23-usbk-kvm-teardown/images/oem02.webp)
 
-Despite every PCB featuring a clear `XUFUNG` label, that specific string doesn't appear in many places online! A quick Google search only returns my prior post and [this teardown of another TESmart KVM](https://dancharblog.wordpress.com/2025/05/02/tesmart-hdc202-x24-thunderbolt-4-kvm-teardown-and-review/). You should check out the internals of that one too! Because it uses Thunderbolt, the internals are quite a bit more complicated.
-{{< /admonition >}}
+_OEM feature overview image._
+
+
+![OEM "what's new" image; the big upgrade here is 5 Gbps USB support.](https://karlquinsland.com/tesmart-hks801-p23-usbk-kvm-teardown/images/oem03.webp)
+
+_OEM "what's new" image; the big upgrade here is 5 Gbps USB support._
+
+
+> [!NOTE] Note
+> Despite every PCB featuring a clear `XUFUNG` label, that specific string doesn't appear in many places online! A quick Google search only returns my prior post and [this teardown of another TESmart KVM](https://dancharblog.wordpress.com/2025/05/02/tesmart-hdc202-x24-thunderbolt-4-kvm-teardown-and-review/). You should check out the internals of that one too! Because it uses Thunderbolt, the internals are quite a bit more complicated.
+
 
 ## What's inside?
 
-{{< admonition tip "TL;DR">}}
-It's the same architecture as before, but with some minor component changes and corresponding PCB layout updates.
-{{< /admonition >}}
+> [!TIP] TL;DR
+> It's the same architecture as before, but with some minor component changes and corresponding PCB layout updates.
+
 
 As before, two main PCBs are stacked: the top houses the main microcontroller and HDMI ports, while the bottom contains the USB ports and power supply.
 
-{{<figure name="td01">}}
+![Photo taken just after top cover removed.](https://karlquinsland.com/tesmart-hks801-p23-usbk-kvm-teardown/images/td01.webp)
 
-{{<figure name="td02">}}
-{{<figure name="td03">}}
-{{<figure name="td04">}}
+_Photo taken just after top cover removed._
+
+
+![Close up of the "output" portion of the HDMI PCB.](https://karlquinsland.com/tesmart-hks801-p23-usbk-kvm-teardown/images/td02.webp)
+
+_Close up of the "output" portion of the HDMI PCB._
+
+![Closeup of the network interface PCB.](https://karlquinsland.com/tesmart-hks801-p23-usbk-kvm-teardown/images/td03.webp)
+
+_Closeup of the network interface PCB._
+
+![Angled shot of the dupont connector between the top (HDMI) and bottom (USB) PCBs.](https://karlquinsland.com/tesmart-hks801-p23-usbk-kvm-teardown/images/td04.webp)
+
+_Angled shot of the dupont connector between the top (HDMI) and bottom (USB) PCBs._
+
 
 It's interesting to see that the power rails differ: 5V for the 4K version, and apparently there's an 8K version that uses 12V. It's also nice that the RX/TX lines are explicitly labeled; it makes things a bit easier to hack on.
 
-{{<figure name="td05">}}
+![Close up of the RTS5411S USB hub controller and the mysterious F68B chips.](https://karlquinsland.com/tesmart-hks801-p23-usbk-kvm-teardown/images/td05.webp)
+
+_Close up of the RTS5411S USB hub controller and the mysterious F68B chips._
+
 
 ## Chips
 

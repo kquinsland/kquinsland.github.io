@@ -24,7 +24,10 @@ In the interest of expediting things, I asked for the FCC IDs from the devices s
 
 😕
 
-{{<figure name="official_render">}}
+![Here's what it looks like on the outside](https://karlquinsland.com/omron-bp7000-evolv-teardown/images/official_render.webp)
+
+_Here's what it looks like on the outside_
+
 
 So with that out of the way, here's what the `Omron BP7000` looks like on the inside.
 
@@ -34,37 +37,47 @@ There are a total of 7 philips screws holding the unit together. Two of the six 
 
 After removing all the screws and carefully prying back the plastic clips, the front panel comes off of the body giving us the first look at the PCB stackup and mechanical internals.
 
-{{<figure name="feat_td01_first_look" >}}
+![feat_td01_first_look](https://karlquinsland.com/omron-bp7000-evolv-teardown/images/td01_first_look.webp)
+
 
 The OLED screen is not held in place with anything so be exceedingly careful when opening!
 
-{{<figure name="td02_side_profile" >}}
+![td02_side_profile](https://karlquinsland.com/omron-bp7000-evolv-teardown/images/td02_side_profile.webp)
+
 
 Here's a closeup of the 'front' of the main PCB.
 There's a ton more passives than I thought there would be but a single large controller next to a pressure sensor is about what I figured.
 
-{{<figure name="td03_pcb_closeup" >}}
+![td03_pcb_closeup](https://karlquinsland.com/omron-bp7000-evolv-teardown/images/td03_pcb_closeup.webp)
+
 
 Details on the ICs are [below](#pcb-markings).
 
-{{<figure name="td04_cpu_closeup" >}}
+![td04_cpu_closeup](https://karlquinsland.com/omron-bp7000-evolv-teardown/images/td04_cpu_closeup.webp)
+
 
 I am not quite sure what this little IC is for. Calibration or firmware?
 
-{{<figure name="td05_other_ic" >}}
+![td05_other_ic](https://karlquinsland.com/omron-bp7000-evolv-teardown/images/td05_other_ic.webp)
+
 
 The BTLE module is connected through a 8 wire FFC.
 
-{{<figure name="td06_pcb_conn_closeup" >}}
+![td06_pcb_conn_closeup](https://karlquinsland.com/omron-bp7000-evolv-teardown/images/td06_pcb_conn_closeup.webp)
 
-{{<figure name="td07_pcb_rear" >}}
+
+![Several of the square pads are accessible from the exterior before the pressure cuff is attached. Almost certainly for programming at the factory.](https://karlquinsland.com/omron-bp7000-evolv-teardown/images/td07_pcb_rear.webp)
+
+_Several of the square pads are accessible from the exterior before the pressure cuff is attached. Almost certainly for programming at the factory._
+
 
 With the main PCB removed, you can see the actual mechanical components that build up and release the air pressure.
 The two blue wires are for the solenoid that vents air pressure out of the system.
 The port to the right and just above the BTLE module is where air pressure is measured.
 The white box attached tot the motor is the air pump.
 
-{{<figure name="td08_bt_module" >}}
+![td08_bt_module](https://karlquinsland.com/omron-bp7000-evolv-teardown/images/td08_bt_module.webp)
+
 
 ## BTLE module
 
@@ -72,9 +85,11 @@ For some additional photos of the module w/o a shield, check the amazing [fccid.
 
 This module appears to be used in _several_ similar blood pressure monitors.
 
-{{<figure name="bt_front" >}}
+![bt_front](https://karlquinsland.com/omron-bp7000-evolv-teardown/images/bt_front.webp)
 
-{{<figure name="bt_rear" >}}
+
+![bt_rear](https://karlquinsland.com/omron-bp7000-evolv-teardown/images/bt_rear.webp)
+
 
 ## PCB Markings
 

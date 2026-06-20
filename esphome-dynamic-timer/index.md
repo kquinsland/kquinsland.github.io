@@ -63,7 +63,10 @@ I have put clarifying comments throughout the file as there is some similar but 
 
 The device shows up in HA like so:
 
-{{<figure name="example_ha_panel">}}
+![This is how my entity shows up in HA. I can toggle the timeout period and disable the functionality altogether.](https://karlquinsland.com/esphome-dynamic-timer/images/example_ha_panel.webp)
+
+_This is how my entity shows up in HA. I can toggle the timeout period and disable the functionality altogether._
+
 
 The count-down timer can be engaged at any time; if the light is already on, the timer begins counting.
 The length of the timer can be adjusted at any time; the new value is used for the "turn off now?" calculation withing a second or so if it being updated.

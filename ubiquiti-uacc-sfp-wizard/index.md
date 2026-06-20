@@ -10,32 +10,29 @@ Tags: two-minute-teardown
 
 # Two Minute Teardown: Ubiquiti SFP Wizard
 
-{{< admonition important "Disregard note below about 1.0.5" >}}
+> [!NOTE] Disregard note below about 1.0.5
+> To make a long story short, I allocated a few hours to build a [tool that can read/write the SFP module's EEPROM](https://github.com/kquinsland/sfp-eeprom-tool).
+> I then wired this up to a logic analyzer and compared the read/write operations to what the SFP Wizard does when it tries to unlock a module.
+> 
+> TL;DR:
+> 
+> - I didn't see a meaningful difference in what my tool read from an EEPROM compared to the SFP Wizard.
+> - Version 1.0.5 is the only firmware version that does not give me a "failed, locked" error when I try to write... But it's also the only version that just keeps trying to write despite despite the fact that bytes are not changing on the EEPROM.
+> - The assessment [here](https://github.com/vitaminmoo/sfpw-tool/blob/main/doc/HOW_TO_DOWNGRADE_AND_WHY_NOT_TO.md) is correct; there's no value in downgrading. In fact, it's (slightly) cheaper to buy a basic USB <-> I2C adapter and use my tool (which lets you try any arbitrary password) than it is to buy a SFP Wizard. The Wizard is a hell of a lot more polished, though.
 
-To make a long story short, I allocated a few hours to build a [tool that can read/write the SFP module's EEPROM](https://github.com/kquinsland/sfp-eeprom-tool).
-I then wired this up to a logic analyzer and compared the read/write operations to what the SFP Wizard does when it tries to unlock a module.
 
-TL;DR:
+> [!WARNING] Update / Do you have a device running Firmware version 1.0.5?
+> Details are [below](#update-some-news-on-the-esp32-side-of-things). but I wanted to put this up at the very top for visibility.
+> 
+> **If you have a SFP Wizard running Firmware version 1.0.5, _DO NOT_ update it.**
+> 
+> **If you have a COPY of the 1.0.5 OTA file, please keep it safe and get in touch with me.**
+> 
+> [Some work](#did-they-cripple-the-device-on-purpose) has been done to understand precisely _what_ changed between early FW versions and the more recent FW versions that have crippled the device's ability to program arbitrary SFP modules.
 
-- I didn't see a meaningful difference in what my tool read from an EEPROM compared to the SFP Wizard.
-- Version 1.0.5 is the only firmware version that does not give me a "failed, locked" error when I try to write... But it's also the only version that just keeps trying to write despite despite the fact that bytes are not changing on the EEPROM.
-- The assessment [here](https://github.com/vitaminmoo/sfpw-tool/blob/main/doc/HOW_TO_DOWNGRADE_AND_WHY_NOT_TO.md) is correct; there's no value in downgrading. In fact, it's (slightly) cheaper to buy a basic USB <-> I2C adapter and use my tool (which lets you try any arbitrary password) than it is to buy a SFP Wizard. The Wizard is a hell of a lot more polished, though.
 
-{{< /admonition >}}
+![feat-render](https://karlquinsland.com/ubiquiti-uacc-sfp-wizard/images/render.webp)
 
-{{< admonition warning "Update / Do you have a device running Firmware version 1.0.5?" >}}
-
-Details are [below](#update-some-news-on-the-esp32-side-of-things). but I wanted to put this up at the very top for visibility.
-
-**If you have a SFP Wizard running Firmware version 1.0.5, _DO NOT_ update it.**
-
-**If you have a COPY of the 1.0.5 OTA file, please keep it safe and get in touch with me.**
-
-[Some work](#did-they-cripple-the-device-on-purpose) has been done to understand precisely _what_ changed between early FW versions and the more recent FW versions that have crippled the device's ability to program arbitrary SFP modules.
-
-{{< /admonition >}}
-
-{{<figure name="feat-render">}}
 
 SFP modules interface to their host over what is essentially a low speed i2c interface and a few high-speed differential pairs.
 
@@ -71,21 +68,29 @@ Once the clips along the side are undone, there's one more clip that holds the b
 
 You'll need a bright light and a long-neck screwdriver to hit it, but if you look through the gap between the two sfp module bays you should be able to see the tab.
 
-{{<figure name="td-01">}}
+![td-01](https://karlquinsland.com/ubiquiti-uacc-sfp-wizard/images/01.webp)
+
 
 Instead of weights to make the thing feel more premium in the hand, how about a bigger battery that's also user-replaceable!?
 
 The LCD is heat-staked into the front panel.
 
-{{<figure name="td-02">}}
+![td-02](https://karlquinsland.com/ubiquiti-uacc-sfp-wizard/images/02.webp)
+
 
 Yep, it's an ESP32. Not expected ... but welcome!
 
-{{<figure name="td-03">}}
+![Yep, ESP32 inside. I did not have that on my bingo card!](https://karlquinsland.com/ubiquiti-uacc-sfp-wizard/images/03.webp)
+
+_Yep, ESP32 inside. I did not have that on my bingo card!_
+
 
 There's a few more interesting things on the underside of the board... including a few headers that are almost certainly for programming/debugging.
 
-{{<figure name="td-04">}}
+![That USB-C Port is not going anywhere!](https://karlquinsland.com/ubiquiti-uacc-sfp-wizard/images/04.webp)
+
+_That USB-C Port is not going anywhere!_
+
 
 That's about it! Once you manage to get in, it's a pretty simple device.
 
@@ -109,11 +114,11 @@ Yep, it's wired up as a USB device:
 I wasn't able to use _just_ `esptool` to reboot into bootloader mode and I didn't look for `boot0` pins so no attempt to dump the firmware was made.
 If they didn't trigger any of the eFuse features, this thing could end up being a nice little SFP programmer for hobbyists that want to hack on SFPs beyond what the Ubiquiti stock firmware allows.
 
-{{< admonition warning >}}
-**Do not update firmware above 1.1.0.** Apparently the device can [no-longer flash _arbitrary_ modules after updating](https://community.ui.com/releases/SFP-Wizard-1-1-1/3249a171-c563-4fe1-91de-6b670057b541).
+> [!WARNING] Warning
+> **Do not update firmware above 1.1.0.** Apparently the device can [no-longer flash _arbitrary_ modules after updating](https://community.ui.com/releases/SFP-Wizard-1-1-1/3249a171-c563-4fe1-91de-6b670057b541).
+> 
+> It's not clear if that's a mistake or they caved to some pressure from the SFP module manufacturers.
 
-It's not clear if that's a mistake or they caved to some pressure from the SFP module manufacturers.
-{{< /admonition >}}
 
 ### Other ICs
 

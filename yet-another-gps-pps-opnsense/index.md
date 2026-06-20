@@ -8,11 +8,11 @@ Tags: fusion-360, KiCad, opnsense
 
 ---
 
-{{< admonition tip >}}
-This is just a 'pointer' post.
+> [!TIP] Tip
+> This is just a 'pointer' post.
+> 
+> All the details are in the [`kquinsland/yet-another-gps-pps-opnsense` repo](https://github.com/kquinsland/yet-another-gps-pps-opnsense) on github.
 
-All the details are in the [`kquinsland/yet-another-gps-pps-opnsense` repo](https://github.com/kquinsland/yet-another-gps-pps-opnsense) on github.
-{{< /admonition >}}
 
 ---
 
@@ -23,9 +23,11 @@ Recently, the miroSD card on the ntp pi died and I decided to leverage the seria
 It didn't take that much time to but together a bare-bones schematic in KiCad.
 One LCSC order, one mouser order and about a week later, I had a basic RS232 <-> TTL converter for use with a cheap GPS module
 
-{{<figure name="done">}}
+![done](https://karlquinsland.com/yet-another-gps-pps-opnsense/images/done.webp)
+
 
 After a bit more testing, I was convinced I hadn't made any egregious mistakes and the new module didn't pose a significant threat/risk to my production router.
 
-{{<figure name="installed-feature">}}
+![installed-feature](https://karlquinsland.com/yet-another-gps-pps-opnsense/images/installed.webp)
+
 

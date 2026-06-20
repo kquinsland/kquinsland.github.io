@@ -16,7 +16,7 @@ There are a few [clever](https://github.com/martignoni/hugo-cloak-email) ways to
 
 So with that in mind, here's a simple algorithm to derive the best email to contact me
 
-1. Visit the [home page]({{< ref "/" >}})
+1. Visit the [home page](https://karlquinsland.com/)
 2. Split my name into `$first_name` and `$last_name`
 3. Send your email to `contact@$fist_name$last_name.com`
 

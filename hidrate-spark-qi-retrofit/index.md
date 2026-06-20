@@ -10,10 +10,10 @@ Tags: tuya, 3dPrintable
 
 ---
 
-{{< admonition info "Parts and Instructions" >}}
-The majority of this post covers the "why" this mod came to be. If you're just looking for the mod, you can find
-the 3d printable parts, BOM and instructions in [accompanying github repo](https://github.com/kquinsland/hidrate-spark-qi-charging).
-{{< /admonition >}}
+> [!NOTE] Parts and Instructions
+> The majority of this post covers the "why" this mod came to be. If you're just looking for the mod, you can find
+> the 3d printable parts, BOM and instructions in [accompanying github repo](https://github.com/kquinsland/hidrate-spark-qi-charging).
+
 
 # What
 
@@ -32,9 +32,9 @@ There are a _ton_ of reasons why you might want to track your water intake but t
 
 Now as for why you'd need to bolt a kitchen scale and a BTLE radio onto the bottom of a water bottle in order to record this, there's really only one reason: Automation.
 
-{{< admonition warning >}}
-I'm not going to entertain the "now you're just being silly; there's no need for a water bottle to have a radio or battery in it" crowd. If you don't value any of the reasons outlined above then we agree... this is a silly water bottle and **you** don't have a good reason to own one.
-{{< /admonition >}}
+> [!WARNING] Warning
+> I'm not going to entertain the "now you're just being silly; there's no need for a water bottle to have a radio or battery in it" crowd. If you don't value any of the reasons outlined above then we agree... this is a silly water bottle and **you** don't have a good reason to own one.
+
 
 ## Design evaluation
 
@@ -49,7 +49,10 @@ To charge the battery, you need to remove the sensor puck from the bottle and th
 Ignoring the shameful and unnecessary use of a non-standard USB micro/C port for charing, you now have to wait a few hours for the battery to charge; during this time, the puck can't be inserted into the bottle so it can't record data while it's being charged.
 Remind you of anything?
 
-{{<figure name="mighty_mouse">}}
+![Apple won all sorts of 'asshole design' awards for this. Hidrate spark was inspired to also win such an award! src: YouTube/Tony H](https://karlquinsland.com/hidrate-spark-qi-retrofit/images/apple_mighty_mouse_assholedesign.webp)
+
+_Apple won all sorts of 'asshole design' awards for this. Hidrate spark was inspired to also win such an award! src: YouTube/Tony H_
+
 
 So to re-cap:
 
@@ -62,7 +65,10 @@ After some additional testing, I was able to confirm that the firmware also does
 
 At the **_very least_** the Hidrate team could have put the pogo pins on the bottom and shipped the bottle with a charging dock/base similar to how Ember does their mugs.
 
-{{<figure name="ember_mug">}}
+![Pogo pins and slip-rings are not perfect but at least you can charge and use the mug at the same time!](https://karlquinsland.com/hidrate-spark-qi-retrofit/images/ember_mug.webp)
+
+_Pogo pins and slip-rings are not perfect but at least you can charge and use the mug at the same time!_
+
 
 The proprietary nature of the charge connection is still not ideal but at least the bottle could be "used" while it was charging.
 If the charging dock was centrally or conveniently located, the sensor puck could be consistently 'topped off'; trickle charing while idle in the same way wireless charging of phots works; take a sip and put the bottle back down to charge and measure the consumption.
@@ -99,7 +105,10 @@ Likewise, if the bottle is dropped or otherwise experiences a sharp impact, the 
 If you search the usual eastern import sites, you'll see that the _massive_ TuYa ecosystem has it's own smart water bottle that can keep track of liquid intake.
 As best as I can tell, this is branded for TuYa but the OEM is [`Maxevis Smart Bottle(BLE)`](https://expo.tuya.com/product/839372) but the best FCC ID listing that I could find has [`2ALQ5-M1`](https://fccid.io/2ALQ5-M1/Internal-Photos/Internal-photos-5000615) listed.
 
-{{<figure name="tuya_bottle">}}
+![Example aliexpress listing.](https://karlquinsland.com/hidrate-spark-qi-retrofit/images/tuya_bottle.webp)
+
+_Example aliexpress listing._
+
 
 Rather than use a load cell to measure the weight of the bottle and then calculate the liquid volume, the TuYa bottle uses an AMS IR range detector (probably `TMF8805`) to measure the distance to the top of the liquid.
 
@@ -117,7 +126,7 @@ Downsides:
 ### Brief bit of TuYa / Maxevis / Sguai M1 BTLE logs
 
 Below is a (lightly) obfuscated log file from the _amazing_ [nRF connect app](https://play.google.com/store/apps/details?id=no.nordicsemi.android.mcp&hl=en_US&gl=US).
-I am dumping the BTLE characteristics and data here for SEO purposes. If you do find this post and these logs and _do_ manage to reverse engineer the packet format... [do let me know!]({{< relref "/contact" >}}).
+I am dumping the BTLE characteristics and data here for SEO purposes. If you do find this post and these logs and _do_ manage to reverse engineer the packet format... [do let me know!](/contact/).
 
 <!-- markdownlint-disable-file MD010 -->
 ```text
@@ -298,7 +307,7 @@ I still don't know why the Hidrate team didn't make the puck charge wirelessly t
 
 Here is a quick "proof of concept" video taken just before final testing and assembly.
 
-{{< video src="poc_video" controls="yes" >}}
+[Video: poc_video](https://karlquinsland.com/hidrate-spark-qi-retrofit/images/it%20works.mp4)
 
 The version shown above is "mark 2". It is simpler to assemble, uses less material and is about 30% thinner relative to the "mark 1" designs.
 I put a _ton_ of effort into making the design as approachable and affordable as possible. The idea was to make it easy for average people to make their bottle _better the stock_ in just a few hours.
@@ -311,7 +320,10 @@ My hope is that the engineers at Hidrate will see that it's not _**that difficul
 
 Fingers crossed that their next generation of hardware won't look like this 🤞:
 
-{{<figure name="hidrate_spark_asshole_design">}}
+![Source is still 'YouTube/Tony H' but I've had a bit of fun trying to figure out how to blend images with GIMP :P.](https://karlquinsland.com/hidrate-spark-qi-retrofit/images/hidrate_spark_asshole_design.webp)
+
+_Source is still 'YouTube/Tony H' but I've had a bit of fun trying to figure out how to blend images with GIMP :P._
+
 
 You can find a through set of instructions, printable part files and BOM at the [`kquinsland/hidrate-spark-qi-charging`](https://github.com/kquinsland/hidrate-spark-qi-charging) repo.
 If you do follow the instructions and manage to make your bottle charge wirelessly, let me know!

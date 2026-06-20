@@ -10,7 +10,10 @@ Tags: home assistant, MQTT, ESPHome, has:download
 
 ---
 
-{{<figure name="feature">}}
+![Picture showing assembled light attached to enclosure from the front. All 5 lights are lit.](https://karlquinsland.com/poe-stack-light/images/complete/02_all_on.webp)
+
+_The lights are much brighter than they appear in this picture; had to intentionally darken the image to prevent camera from blowing out the colors._
+
 
 [Stack/signal lights](https://en.wikipedia.org/wiki/Stack_light) are _everywhere_ in industrial applications for good reason: they're a compact and relatively information-dense indicator system. They always seemed like the kind of indicator that only people with expensive machines needed. Until I found that they can be had for just under $6/light from Ali Express, that is.
 
@@ -29,7 +32,10 @@ It was immediately obvious that an ESP32 module would be **ideal** to run the sh
 
 It wouldn't be an ESP32 powered project w/o the the _fantastic_ [ESPHome](https://esphome.io/) framework! With ESPHome comes trivial Home Assistant integration; each individual light / channel on the stack light is automatically configured via MQTT a a light:
 
-{{<figure name="ha_integration">}}
+![Screenshot showing the stack light automatically configured in Home Assistant.](https://karlquinsland.com/poe-stack-light/images/home-assistant.webp)
+
+_Stack light is controlled via MQTT making it easy to control from Home Assistant or any other program that can speak MQTT._
+
 
 A slightly modified version of the ESPHome config that I use to build the firmware for the light is attached at the end of this post.
 
@@ -61,7 +67,10 @@ I've linked to the screws that I used, but any similar ones should work. Strong 
 The m3 screws are for attaching the PCB to the printed part (in yellow, below)
 The shorter m4 screws are for attaching the base (yellow) to the lid (dark blue) and the longer screws are for attaching the stack light to the lid.
 
-{{<figure name="prep">}}
+![Picture showing some of the components and tools used in assembly.](https://karlquinsland.com/poe-stack-light/images/assemble/01_prep.webp)
+
+_About to start melting threads into the 3D printed parts._
+
 
 ### Stack light
 
@@ -118,11 +127,17 @@ The plate has features for several attachment methods:
 - 4 circular indents (`10mm` diameter) included for anti-slip pads
 - drywall screw/slot mounting for walls/ceilings
 
-{{<figure name="base_mounting_options">}}
+![Picture annotated to call out specific design features in the base for a variety of mounting options.](https://karlquinsland.com/poe-stack-light/images/assemble/base_mounting_options.webp)
+
+_I wasn't sure where I'd want to install this, so there are a few options for attaching the base to surfaces._
+
 
 Pause the print job at the correct layer if you intend to embed magnets:
 
-{{<figure name="print_orientation">}}
+![Screenshot showing 3D printed parts arranged on slicing software with annotation pointing out when to insert optional magnets.](https://karlquinsland.com/poe-stack-light/images/slicer.webp)
+
+_Insert your magnets before the layer covering thee 6 cavities is printed._
+
 
 Both the `lid` and `base` are easy to print; material and color are up to you, as is layer height and quality settings. The `stl` and `step` files for both are at the end of this post.
 Should you want to make your own enclosure from scratch, I have also included the `step` files for the PoE dongle and PCB below.
@@ -154,17 +169,26 @@ Once the screw is fully inserted, allow it to fully cool (~5min) so the softened
 
 The screws that hold the base plate to the body of the enclosure are meant to sit flush. Ensure that you screw them in fully before the plastic cools!
 
-{{<figure name="flush_screws">}}
+![Picture showing assembly detail; the base plate is secured to the enclosure with screws.](https://karlquinsland.com/poe-stack-light/images/assemble/00_flush_screws.webp)
+
+_If the screws protrude even a fraction of a millimeter, the light can wobble and the magnetic attachment is weakened._
+
 
 While waiting for the screws to cool, cut the Ethernet and power leads from the PoE dongle down to size. Desolder the leads from the dongle, trim to be as short as possible and re-solder.
 
 The less 'slack' cable in the enclosure, the easier it will be to finish assembly!
 
-{{<figure name="wire">}}
+![Picture showing all components secured to the base and wired together.](https://karlquinsland.com/poe-stack-light/images/assemble/03_wire.webp)
+
+_I cut a few inches off the Ethernet cable and power leads so everything fits in the enclosure better._
+
 
 After the screws have cooled, ensure that the PCB sits flush against the mounts.
 
-{{<figure name="pcb_attached">}}
+![Picture showing assembly detail; the PCB should be attached to the base plate with screws and should be flush against the mounting posts.](https://karlquinsland.com/poe-stack-light/images/assemble/02_pcb_attached.webp)
+
+_PCB should be flush against the mounting posts._
+
 
 With all wires connected, lift the PoE dongle off of the base plate slightly and align the RJ45 jack with the square hole in the enclosure.
 
@@ -172,15 +196,24 @@ Make sure the side of the base plate opposite the side with the RJ45 jack is sec
 
 Gently press the remaining side of the base plate into the enclosure. As the base plate gets closer to flush with the body, the RJ45 jack should slowly come into alignment with the wall.
 
-{{<figure name="close">}}
+![Picture showing assembly detail; the base plate acts like a lever to carefully line the PoE jack up with the enclosure body.](https://karlquinsland.com/poe-stack-light/images/assemble/04_close.webp)
+
+_Use the plate as a lever to carefully push, then hold, the PoE dongle in place._
+
 
 When the base blate is completely installed into the body, the RJ45 jack should be flush with the external wall of the enclosure.
 
-{{<figure name="plugged_in">}}
+![Picture showing assembled light attached to enclosure, focus is on the RJ45 port in the rear.](https://karlquinsland.com/poe-stack-light/images/complete/00_plugged_in.webp)
+
+_RJ45 jack should be flush to the outer wall of the enclosure._
+
 
 Attach the base plate to the enclosure body with the 4 screws, attach silicon feet or a 3M command strip and then you're done!
 
-{{<figure name="all_off">}}
+![Picture showing assembled light attached to enclosure from the front. No individual light is powered up, they all have the same translucent white color.](https://karlquinsland.com/poe-stack-light/images/complete/01_all_off.webp)
+
+_Translucent white lenses for much less ambiguity than the stack lights with colored lenses._
+
 
 ## Files
 
@@ -189,5 +222,24 @@ All files below are licensed under the [Attribution-NonCommercial-ShareAlike 4.0
 <!-- markdownlint-disable MD036 -->
 **None of the files below may be used for commercial purposes**
 
-{{< bundle-files >}}
+- [images/complete/01_all_off.webp](https://karlquinsland.com/poe-stack-light/images/complete/01_all_off.webp)
+- [images/assemble/base_mounting_options.webp](https://karlquinsland.com/poe-stack-light/images/assemble/base_mounting_options.webp)
+- [images/assemble/04_close.webp](https://karlquinsland.com/poe-stack-light/images/assemble/04_close.webp)
+- [images/complete/02_all_on.webp](https://karlquinsland.com/poe-stack-light/images/complete/02_all_on.webp)
+- [files/easy_eda_gerber.zip](https://karlquinsland.com/poe-stack-light/files/easy_eda_gerber.zip): sha1: d7686b0ad88a1686a5a11cb009632b53ca474c75
+- [files/easy_eda_source.zip](https://karlquinsland.com/poe-stack-light/files/easy_eda_source.zip): sha1: e05a00cdca9af94dd0e8d1d8f3aa998b75c14a08
+- [files/enclosure-lid-m1v2.stl](https://karlquinsland.com/poe-stack-light/files/enclosure-lid-m1v2.stl): sha1: 3870a674d9cf08bf26e3607e42ee766e9816ac6c
+- [files/enclosure-plate-m1v2.stl](https://karlquinsland.com/poe-stack-light/files/enclosure-plate-m1v2.stl): sha1: 8f90b54be2a798cf87bc6ca4fc118b82669e0668
+- [files/esphome_config.yaml](https://karlquinsland.com/poe-stack-light/files/esphome_config.yaml)
+- [files/pcb.step](https://karlquinsland.com/poe-stack-light/files/pcb.step): sha1: e212f3cd3d90a639e6518b7d11bc5cc20df09b67
+- [files/poe-dongle.step](https://karlquinsland.com/poe-stack-light/files/poe-dongle.step): sha1: a698c249d89f2ab2c981427df49620cb09ce5f66
+- [files/stack-light-base.step](https://karlquinsland.com/poe-stack-light/files/stack-light-base.step): sha1: 3c3d0d6162a985b4f09d0f9a58fdacb3f08beb78
+- [images/assemble/00_flush_screws.webp](https://karlquinsland.com/poe-stack-light/images/assemble/00_flush_screws.webp)
+- [images/home-assistant.webp](https://karlquinsland.com/poe-stack-light/images/home-assistant.webp)
+- [images/assemble/02_pcb_attached.webp](https://karlquinsland.com/poe-stack-light/images/assemble/02_pcb_attached.webp)
+- [images/complete/00_plugged_in.webp](https://karlquinsland.com/poe-stack-light/images/complete/00_plugged_in.webp)
+- [images/assemble/01_prep.webp](https://karlquinsland.com/poe-stack-light/images/assemble/01_prep.webp)
+- [images/slicer.webp](https://karlquinsland.com/poe-stack-light/images/slicer.webp)
+- [images/assemble/03_wire.webp](https://karlquinsland.com/poe-stack-light/images/assemble/03_wire.webp)
+
 

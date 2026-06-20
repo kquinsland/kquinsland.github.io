@@ -16,7 +16,8 @@ So with that, here's a revised copy of my notes from the process of getting the 
 
 ## The Hardware
 
-{{< figure name="ap7900" >}}
+![marketing photo of AP7900](https://karlquinsland.com/monitoring-ap7900-switched-pdu-prometheus-grafana/images/ap7900.webp)
+
 
 Unfortunately, there's no "reset everything to defaults" button or button sequence on the PDU. The unit I purchased had been configured with a manual IP assignment so it wasn't as straightforward as using an unfolded paperclip to press the reboot button at boot and wait for a successful DHCP negotiation. This process has been [covered before](https://dan.langille.org/2015/01/13/apc-pdu-ap7900-resetting-the-password/), so I'll omit it here. In short: connect to the local mgmt interface via the [serial port](https://pinoutguide.com/UPS/apc_smart_cable_pinout.shtml), adjust the network configuration and other settings as needed.
 
@@ -262,9 +263,12 @@ Once metrics are making their way into prometheus, it's only a bit of work to ge
 
 For sanity checking I fired up a load; a crypto-miner. See if you can spot when... :).
 
-{{< figure name="grafana_dashboard_featured" >}}
+![screenshot showing simple grafana dashboard consuming some of the PDU metrics](https://karlquinsland.com/monitoring-ap7900-switched-pdu-prometheus-grafana/images/grafana.webp)
 
-The `json` file for the dashboard is about 750 lines long, so rather than embed it, I've [attached]({{< ref "#files" >}}) it as a file; the sha1 hash of `dashboard.json` is `400edb0c4064068f12e17c2f1f0d6862d3b8d449`.
+_Simple dashboard in grafana_
+
+
+The `json` file for the dashboard is about 750 lines long, so rather than embed it, I've [attached](#files) it as a file; the sha1 hash of `dashboard.json` is `400edb0c4064068f12e17c2f1f0d6862d3b8d449`.
 
 ### estimating costs
 
@@ -274,5 +278,8 @@ The rate I pay for electricity changes based on the hour in which the power is u
 
 ## Files
 
-{{< bundle-files >}}
+- [images/ap7900.webp](https://karlquinsland.com/monitoring-ap7900-switched-pdu-prometheus-grafana/images/ap7900.webp)
+- [files/dashboard.json](https://karlquinsland.com/monitoring-ap7900-switched-pdu-prometheus-grafana/files/dashboard.json): sha1(dashboard.json): 400edb0c4064068f12e17c2f1f0d6862d3b8d449
+- [images/grafana.webp](https://karlquinsland.com/monitoring-ap7900-switched-pdu-prometheus-grafana/images/grafana.webp)
+
 

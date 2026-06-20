@@ -10,9 +10,9 @@ Tags: tasmota, home-assistant, home-automation
 
 ---
 
-{{< admonition warning "Update" >}}
-This post is now deprecated. It has been superseded by  [`Using ESPHome with the Treatlife DS03`]({{<relref "posts/2022/06/treatlife-ds03-esphome" >}}) from 2022-06.
-{{< /admonition >}}
+> [!WARNING] Update
+> This post is now deprecated. It has been superseded by  [`Using ESPHome with the Treatlife DS03`](/treatlife-ds03-esphome/) from 2022-06.
+
 
 **UPDATE:** (2021-10-22): Tasmota 9.5.0 has been superseded by the new [Tasmota 10.0.0 release](https://github.com/arendst/Tasmota/releases/tag/v10.0.0). This release works perfectly with the rules/automation outlined below; you no longer need to avoid the problematic 9.5 release with the DS03. I am extremely grateful to every one of the people that contributes to the Tasmota project to keep it improving!
 
@@ -28,7 +28,10 @@ This is a totally reasonable way to build such a device, but for reasons that I 
 
 Home Assistant automatically discovers the full light/dimmer capabilities of the DS03, but for some reason does not see that the DS03 is capable of running a fan at 4 different speeds; Home Assistant only allows for turning the fan on/off.
 
-{{<figure name="ha_default">}}
+![Screenshot showing DS03 device entity with the default binary switch control for the ceiling fan.](https://karlquinsland.com/treatlife-ds03-tasmota-autoconfig-with-homeassistant/images/ha_default.webp)
+
+_The default auto-configuration leads Home Assistant to believe the fan can only be switched on/off._
+
 
 The [existing](https://templates.blakadder.com/treatlife_DS03.html) guides on [how to flash the device](https://www.digiblur.com/2020/07/the-tasmota-fan-controller-ive-been.html) with Tasmota and integrate it with Home Assistant all work around this limitation by _*manually*_ configuring Home Assistant to see the device as a multi-speed fan 🤦.
 
@@ -123,7 +126,10 @@ Altogether, It'll look something like this:
 
 If everything worked correctly, Home Assistant should now show a single device in the [device registry](https://developers.home-assistant.io/docs/device_registry_index/) with a dimmable light entity and a variable-speed fan entity!
 
-{{<figure name="ha_mqtt_fan">}}
+![Screenshot showing DS03 device entity in Home Assistant with the multi-speed MQTT fan.](https://karlquinsland.com/treatlife-ds03-tasmota-autoconfig-with-homeassistant/images/ha_mqtt_fan.webp)
+
+_The DS03 device entity after the variable speed configuration document is received by Home Assistant._
+
 
 **Note:** Depending on weather or not Home Assistant has previously 'seen' your DS03 via the native native [Tasmota](https://www.home-assistant.io/integrations/tasmota/) integration, you may see _three_ entities on the device page; the light/dimmer, the switch/fan and the variable speed fan. Just disable the 'basic' fan switch entity that Tasmota publishes as discussed below.
 
@@ -138,7 +144,10 @@ Once Home Assistant has forgotten all about the manual entities and the native [
 
 If your DS03 was already configured with Home Assistant via the Tasmota integration, just disable the simple switch entity that Tasmota configures Home Assistant with:
 
-{{<figure name="ha_disable_default_entity">}}
+![Screenshot showing Home Assistant UX for disabling the default binary switch entity](https://karlquinsland.com/treatlife-ds03-tasmota-autoconfig-with-homeassistant/images/ha_disable_default_entity.webp)
+
+_Toggle 'Enable entity' off to hide the basic binary switch that Tasmota configured Home Assistant with._
+
 
 After disabling the switch/fan entity, trigger `rule2` again and refresh the device entity page in Home Assistant to confirm that the device now has a `MQTT Fan` entity if it wasn't there already.
 

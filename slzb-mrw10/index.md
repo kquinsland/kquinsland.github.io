@@ -21,40 +21,54 @@ Shame you can't do both Zigbee and Thread at the same time, but I'm not in any [
 
 The core is an ESP32 that handles the network connectivity and BT/WiFi radios.
 
-{{<figure name="render">}}
+![render](https://karlquinsland.com/slzb-mrw10/images/render.webp)
+
 
 In the box you get the main radio unit, antennas and some misc mounting hardware / a template to help with spacing for the wall mount.
 I love it when they include a template instead of just saying "measure and drill holes yourself". Bonus; the QR code links to the documentation page.
 
-{{<figure name="td01">}}
+![td01](https://karlquinsland.com/slzb-mrw10/images/td01.webp)
+
 
 No screws so the back just snaps right off.
 
-{{<figure name="td02">}}
+![td02](https://karlquinsland.com/slzb-mrw10/images/td02.webp)
 
-{{<figure name="td03">}}
 
-{{<figure name="td04">}}
+![td03](https://karlquinsland.com/slzb-mrw10/images/td03.webp)
+
+
+![td04](https://karlquinsland.com/slzb-mrw10/images/td04.webp)
+
 
 SMLIGHT does have other devices that are similar form factor so I guess it makes sense to re-use the PCB and outfit it with a programming resistor.
 I don't think this is for indicating the radio regions because I can change that in software.
 
-{{<figure name="td05">}}
+![td05](https://karlquinsland.com/slzb-mrw10/images/td05.webp)
 
-{{<figure name="td06">}}
 
-{{<figure name="td07">}}
+![PoE circuitry.](https://karlquinsland.com/slzb-mrw10/images/td06.webp)
 
-{{<figure name="td08">}}
+_PoE circuitry._
 
-{{<figure name="td09">}}
+
+![Sorry for the glare.](https://karlquinsland.com/slzb-mrw10/images/td07.webp)
+
+_Sorry for the glare._
+
+
+![td08](https://karlquinsland.com/slzb-mrw10/images/td08.webp)
+
+
+![td09](https://karlquinsland.com/slzb-mrw10/images/td09.webp)
+
 
 ## Misc
 
 Aside from the main ICs/Radios mentioned above, there are a few other interesting components:
 
 - [`Texas Instruments MUX1574`](https://www.ti.com/product/TMUX1574): not sure what this is doing here... unless it's managing the 6 LEDs scattered around the board? There appear to be two LEDs for each of: the ESP32, the CC2674P10, and the EFR32ZG23 which makes for a total of 6 LEDs ... which is two more than the MUX1574 can handle.
-- [`SMSC 8720A`](https://ww1.microchip.com/downloads/en/devicedoc/8720a.pdf): Ethernet PHY, same as the ones used in the [LED Controllers I recently tore down]({{< relref "/posts/2025/12/led-controllers" >}}).
+- [`SMSC 8720A`](https://ww1.microchip.com/downloads/en/devicedoc/8720a.pdf): Ethernet PHY, same as the ones used in the [LED Controllers I recently tore down](/led-controllers/).
 - [`Toll Semiconductor TMI7321`](https://www.toll-semi.com/PDPoEICir2/214.html): PoE controller IC, also used in one of the LED controllers.
 
 ### `dmesg`

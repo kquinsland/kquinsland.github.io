@@ -23,62 +23,85 @@ There is a modem/radio side to communicate with the utility, and a power switchi
 
 This unit fell into my hands after it was taken off an air conditioner during a service call.
 
-{{<figure name="_td01">}}
+![_td01](https://karlquinsland.com/cse-sshaac00-s041911/images/td01.webp)
+
 
 A bit counter intuitively, the entire assembly is attached to the lid of the enclosure and not the main body.
 This will start to make more sense when looking at a few other details below.
 
-{{<figure name="_td02">}}
+![_td02](https://karlquinsland.com/cse-sshaac00-s041911/images/td02.webp)
+
 
 The purple and grey wires ran off to a CT clamp that was installed around one of the AC compressor lines.
 
-{{<figure name="_td03">}}
+![_td03](https://karlquinsland.com/cse-sshaac00-s041911/images/td03.webp)
+
 
 Small patch style antenna (`WPANT10170-S2B`) for the radio attached to the  side of the 'lid' with a sticky pad.
 
-{{<figure name="_td04">}}
+![_td04](https://karlquinsland.com/cse-sshaac00-s041911/images/td04.webp)
+
 
 Taking a closer look at the main PCB and going in no particular order.
 
-{{<figure name="_power01">}}
+![_power01](https://karlquinsland.com/cse-sshaac00-s041911/images/power01.webp)
 
-{{<figure name="_power02">}}
+
+![_power02](https://karlquinsland.com/cse-sshaac00-s041911/images/power02.webp)
+
 
 The PCB has cutouts for a few different LEDs, not all are populated in this unit.
 
-{{<figure name="_power03">}}
+![LEDs face 'down' to shine through the cutouts in the PCB and the lid.](https://karlquinsland.com/cse-sshaac00-s041911/images/power03.webp)
 
-{{<figure name="_power04">}}
+_LEDs face 'down' to shine through the cutouts in the PCB and the lid._
+
+
+![Layer indicator on the right is a nice touch.](https://karlquinsland.com/cse-sshaac00-s041911/images/power04.webp)
+
+_Layer indicator on the right is a nice touch._
+
 
 There really isn't much to see on the bottom of the main PCB.
 **Big** traces for the mains side of things, lots of clearance around everything else and a lot of ground plane stapling/via-stitching on the low voltage side of things.
 
-{{<figure name="_power05">}}
+![_power05](https://karlquinsland.com/cse-sshaac00-s041911/images/power05.webp)
+
 
 Both the transformer and the single relay are `Zettler` parts.
 The caps are `Nichicon`.
 No expense spared it seems!
 
-{{<figure name="_power06">}}
+![_power06](https://karlquinsland.com/cse-sshaac00-s041911/images/power06.webp)
 
-{{<figure name="_power07">}}
 
-{{<figure name="_power08">}}
+![_power07](https://karlquinsland.com/cse-sshaac00-s041911/images/power07.webp)
+
+
+![_power08](https://karlquinsland.com/cse-sshaac00-s041911/images/power08.webp)
+
 
 The ARM seems to do house keeping... although it's probably overkill for what this device needs to do.
 The 'tall' pin headers are where the modem module mates.
 
-{{<figure name="_power09">}}
+![_power09](https://karlquinsland.com/cse-sshaac00-s041911/images/power09.webp)
+
 
 Speaking of the modem module...
 
-{{<figure name="_modem01">}}
+![The 2x8 pin header (center, bottom) mates to the main PCB.](https://karlquinsland.com/cse-sshaac00-s041911/images/modem01.webp)
 
-{{<figure name="_modem02">}}
+_The 2x8 pin header (center, bottom) mates to the main PCB._
 
-{{<figure name="_modem03">}}
 
-{{<figure name="_modem04">}}
+![_modem02](https://karlquinsland.com/cse-sshaac00-s041911/images/modem02.webp)
+
+
+![_modem03](https://karlquinsland.com/cse-sshaac00-s041911/images/modem03.webp)
+
+
+![_modem04](https://karlquinsland.com/cse-sshaac00-s041911/images/modem04.webp)
+
 
 ## ICs
 

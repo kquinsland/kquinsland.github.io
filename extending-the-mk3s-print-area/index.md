@@ -29,7 +29,10 @@ PrusaSlicer refuses to slice the part and gives the following error message:
 
 > "An object outside the print area was detected. Resolve the current problem to continue slicing.
 
-{{<figure name="feat-slicer_01">}}
+![The part JUST BARELY fits on the print bed. This whole trick only works because the dark blue portion is so small.](https://karlquinsland.com/extending-the-mk3s-print-area/images/slicer_01.webp)
+
+_The part JUST BARELY fits on the print bed. This whole trick only works because the dark blue portion is so small._
+
 
 Since the part is circular, there's no way to "rotate" it to fit within the print area.
 
@@ -72,7 +75,8 @@ To do this:
 
 Graphically, it looks like this:
 
-{{<figure name="slicer_02">}}
+![slicer_02](https://karlquinsland.com/extending-the-mk3s-print-area/images/slicer_02.webp)
+
 
 After saving the adjusted print bed dimensions, the part should fit and slice without any warnings.
 
@@ -113,7 +117,10 @@ adjust_gcode_y_position(input_gcode_path, output_gcode_path, y_adjustment)
 
 See for yourself:
 
-{{<figure name="modded-gcode-working">}}
+![Ignore the wrinkles just to the right of the PINDA probe; it's a separate issue.](https://karlquinsland.com/extending-the-mk3s-print-area/images/modded-gcode-working.webp)
+
+_Ignore the wrinkles just to the right of the PINDA probe; it's a separate issue._
+
 
 Note that the edge of the circle just barely touches the edge of the print bed on the right and "sits" a few mm below the "usable" print bed area on the left.
 

@@ -23,14 +23,17 @@ The perpetual serviceability is a side effect of an ultra-simple design; this co
 Fortunately, we can add a decent amount of control with a basic smart outlet.
 Naturally, I went with the amazing Sonoff S31 but you can get similar results with _any_ ESPHome compatible device so long as you have a way to control power to the coffee maker and to monitor the power used by the coffee maker.
 
-This borrows a technique that I first wrote about in [`Dynamic timers in ESPHome`]({{< relref "posts/2022/08/esphome-dynamic-timer" >}}) and tweaks it a bit to add of coffee-specific automations:
+This borrows a technique that I first wrote about in [`Dynamic timers in ESPHome`](/esphome-dynamic-timer/) and tweaks it a bit to add of coffee-specific automations:
 
 - Run the boiler for a moment, then pause. This is to let the [coffee bloom](https://www.homegrounds.co/coffee-bloom/).
 - Turn relay off automatically after a period of no power use. This is done locally for safety and to save me the hassle of putting a template "is coffee brewing" sensor in home assistant. I still report energy data to home assistant for statistical purposes but don't use the data for automations.
 
 Here's what that looks like:
 
-{{<figure name="cover-ha_device_page">}}
+![S31 powered coffee maker in Home Assistant. Note that the bloom settings can be adjusted on the fly.](https://karlquinsland.com/improved-esphome-coffee-automation/images/ha_device_page.webp)
+
+_S31 powered coffee maker in Home Assistant. Note that the bloom settings can be adjusted on the fly._
+
 
 ### ESPHome
 

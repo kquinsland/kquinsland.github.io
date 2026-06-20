@@ -23,7 +23,10 @@ The GitHub repo is [here](https://github.com/kquinsland/sb820_prometheus_exporte
 
 When set up, one possible way to visualize the data looks like this:
 
-{{<figure name="feat-dashboard">}}
+![blah](https://karlquinsland.com/arris-sb8200-prometheus-exporter/images/dashboard01.webp)
+
+_blah_
+
 
 ## A few observations
 
@@ -33,11 +36,17 @@ After rebooting the modem, the metrics that keep track of error-corrected symbol
 This makes sense as the modem has just been rebooted and hasn't had time to accumulate any errors yet.
 The first jump in correctable/uncorrectable errors... happens to corelate directly with a meaningful change in both received/downstream power _and_ transmit/upstream power.
 
-{{<figure name="insight-01">}}
+![blah](https://karlquinsland.com/arris-sb8200-prometheus-exporter/images/insight01.webp)
+
+_blah_
+
 
 The metric exporter keeps track of how long scraping the modem's web interface takes as well as weather or not the scraped data was complete / well formed.
 The time it takes to scrape a particular endpoint increases pretty quickly after power up before leveling off.
 I'd love to know why the web server on the modem slows down so quickly after booting up....
 
-{{<figure name="insight-02">}}
+![blah](https://karlquinsland.com/arris-sb8200-prometheus-exporter/images/insight02.webp)
+
+_blah_
+
 

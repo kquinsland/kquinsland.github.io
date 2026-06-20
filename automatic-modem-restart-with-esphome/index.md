@@ -12,7 +12,7 @@ Tags: esphome, home-assistant, home-automation
 
 <!-- markdownlint-disable-file MD002 -->
 
-Part of the reason for developing my [SB8200 monitor]({{< relref "posts/2024/03/arris-sb8200-prometheus-exporter" >}}) was to get to the bottom of some infrequent but regular outages.
+Part of the reason for developing my [SB8200 monitor](/arris-sb8200-prometheus-exporter/) was to get to the bottom of some infrequent but regular outages.
 
 To make a long story short, the [LAG](https://en.wikipedia.org/wiki/Link_aggregation) implementation on the modem seems to have some issues.
 A quick google will return many complaint threads detailing issues with the modem regularly locking up all traffic stopping.
@@ -42,7 +42,10 @@ To make this bit of ESPHome configuration re-usable, I've packaged up the functi
 
 Documentation for why/how things work has been put in the comments of each file to aid understanding.
 
-{{< figure name="feat-ha" >}}
+![How the S31 powering modem appears in Home Assistant](https://karlquinsland.com/automatic-modem-restart-with-esphome/images/ha.webp)
+
+_How the S31 powering modem appears in Home Assistant_
+
 
 ### `base.yaml`
 

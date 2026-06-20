@@ -20,40 +20,42 @@ That device?
 A simple WiFi equipped micro controller that gets wired between the power button on a PC and the motherboard.
 This makes it possible to remotely control and monitor the power state of any PC!
 
-I am using these devices in conjunction with my [previously integrated KVM switch]({{< relref "hdmi-kvm-teardown-and-esphome" >}}) to automate turning hosts on/off as they are activated/deactivated on the KVM switch.
+I am using these devices in conjunction with my [previously integrated KVM switch](/hdmi-kvm-teardown-and-esphome/) to automate turning hosts on/off as they are activated/deactivated on the KVM switch.
 
-{{< admonition note >}}
-There are _several_ different types of device on Ali Express.
-Most appear to use TuYa MCUs so it's not immediately clear if/how those devices can be converted to use ESPHome or not; buy those at your own risk.
+> [!NOTE] Note
+> There are _several_ different types of device on Ali Express.
+> Most appear to use TuYa MCUs so it's not immediately clear if/how those devices can be converted to use ESPHome or not; buy those at your own risk.
+> 
+> The two Sinilink devices liked below are trivial to get working with ESPHome/Tasmota though!
 
-The two Sinilink devices liked below are trivial to get working with ESPHome/Tasmota though!
-{{< /admonition >}}
 
 - [Sinilink PCIe Computer Remote (XY-WPCE)](https://templates.blakadder.com/sinilink_XY-WPCE.html)
 - [Sinilink USB Computer Remote (XY-WPCL)](https://templates.blakadder.com/sinilink_XY-WPCL.html)
 
-{{<figure name="usb">}}
-{{<figure name="pcie-feature">}}
+![usb](https://karlquinsland.com/esphome-sinilink-pc-remotes/images/WPCL.webp)
+
+![pcie-feature](https://karlquinsland.com/esphome-sinilink-pc-remotes/images/WPCE.webp)
+
 
 The PCI Express version is simpler to integrate with a PC as it uses the 3.3v power rails to determine when the PC is on.
 The USB version does not have this luxury so power must be supplied via the DC barrel jack.
 Additionally, the USB version is also wired series with the power LED(s) on the computer so the module can discern the PCs power state.
 
-{{< admonition question "Why not just use Wake On Lan?" >}}
-Yes, Home Assistant does have support for [Wake On Lan](https://www.home-assistant.io/integrations/wake_on_lan/) but I chose not to use it for a few reasons:
+> [!NOTE] Why not just use Wake On Lan?
+> Yes, Home Assistant does have support for [Wake On Lan](https://www.home-assistant.io/integrations/wake_on_lan/) but I chose not to use it for a few reasons:
+> 
+> - Does not work across subnets. WoL uses a broadcast packet and routers tend to frown on forwarding those between subnets. As my HA instance runs inside of Kubernetes, it's going to be more than a little difficult to get the WoL packets out of the cluster!
+> 
+> - Does not do status checking. The Sinilink modules have direct feedback about the state of the PC power.
+> 
+> - Does not do shutdown. There is no WoL packet that can send a PC back to sleep!
 
-- Does not work across subnets. WoL uses a broadcast packet and routers tend to frown on forwarding those between subnets. As my HA instance runs inside of Kubernetes, it's going to be more than a little difficult to get the WoL packets out of the cluster!
 
-- Does not do status checking. The Sinilink modules have direct feedback about the state of the PC power.
+> [!TIP] Tip
+> If you use the PCI Express version and find that the module does not stay powered up while the PC is asleep/off, check your PC BIOS for [`ErP` settings](https://superuser.com/questions/1074074/disadvantages-of-enabling-erp-in-bios).
+> 
+> I had to explicitly turn off ErP _and_ permit the PC to wake from PCI-E devices before the 3.3v standby rail was activated.
 
-- Does not do shutdown. There is no WoL packet that can send a PC back to sleep!
-{{< /admonition >}}
-
-{{< admonition tip >}}
-If you use the PCI Express version and find that the module does not stay powered up while the PC is asleep/off, check your PC BIOS for [`ErP` settings](https://superuser.com/questions/1074074/disadvantages-of-enabling-erp-in-bios).
-
-I had to explicitly turn off ErP _and_ permit the PC to wake from PCI-E devices before the 3.3v standby rail was activated.
-{{< /admonition >}}
 
 ## A quick detour about `write_flash` errors
 
@@ -126,7 +128,7 @@ There are a few "fixes" for this issue but none worked for me:
 I tried _all_ of the above and nothing worked.
 
 - I soldered wires directly to the modules instead of just inserting pins into the programming header.
-- I tried a [power supply that can supply _considerably more_ than]({{<relref "electronics-lab-enhanced-bench-psu" >}}) the ~200 ma needed to power/flash the chip.
+- I tried a [power supply that can supply _considerably more_ than](/electronics-lab-enhanced-bench-psu/) the ~200 ma needed to power/flash the chip.
 - I tried a few different USB ports and a few different USB <-> TTL adapters with both counterfeit and authentic FTDI chips.
 - I used `read_flash_status` and saw that the `--non-volatile` settings were already `0x0000`.
 
@@ -142,20 +144,20 @@ For SEO/Archival purposes, I have also uploaded a copy of the config to the [esp
 ~~As of publishing _this_ article, the PR is pending review.
 If/When the page goes live, I'll update the link here.~~
 
-{{< admonition success  >}}
-The pr is [LIVE](https://www.esphome-devices.com/devices/Sinilink-XY-WPCE). Thanks to the super quick work of [`@tekmaven`](https://github.com/tekmaven)!
-{{< /admonition >}}
+> [!TIP] Success
+> The pr is [LIVE](https://www.esphome-devices.com/devices/Sinilink-XY-WPCE). Thanks to the super quick work of [`@tekmaven`](https://github.com/tekmaven)!
+
 
 The configurations there are bare-bones and cover _just_ the basics required to get the GPIO working with ESPhome.
 
 The configuration below is a bit more featured and is a lot closer to the versions that I use in production.
 It features a "pc power button lockout" feature and more.
 
-{{< admonition warning  >}}
-The code below will not compile "as is".
-All of the entities under the `packages:` heading are "standard" across all of my ESPHome configurations and are not included here.
-Either remove them or substitute as needed to get something that works for _you_.
-{{< /admonition >}}
+> [!WARNING] Warning
+> The code below will not compile "as is".
+> All of the entities under the `packages:` heading are "standard" across all of my ESPHome configurations and are not included here.
+> Either remove them or substitute as needed to get something that works for _you_.
+
 
 ```yaml
 substitutions:

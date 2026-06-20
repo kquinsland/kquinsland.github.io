@@ -10,11 +10,12 @@ Tags: two-minute-teardown
 
 # Two Minute Teardown: Hamgeek YK-1000H NTP
 
-{{<figure name="feat-render">}}
+![feat-render](https://karlquinsland.com/hamgeek-yk-1000h-gps-ntp-server/images/render.webp)
+
 
 Curiosity got the better of me when browsing AliExpress and I spotted [this](https://www.aliexpress.us/item/3256808325833761.html?gatewayAdapt=glo2usa) GPS NTP server for under $100 USD.
 
-I needed a cart-stuffer anyways so I ordered one as a backup for my [existing]({{<relref "posts/2022/10/yet-another-gps-pps-opnsense/index.md">}}) GPS/NTP server.
+I needed a cart-stuffer anyways so I ordered one as a backup for my [existing](/yet-another-gps-pps-opnsense/) GPS/NTP server.
 
 While waiting, I took a look around to see if there was any additional information about who makes this / if there was a custom firmware or similar.
 Nope, there there is [_not_ a ton of information](https://www.dzombak.com/blog/2024/12/yk-1000h-ntp-server/) about the `YK-1000H` online.
@@ -24,7 +25,10 @@ After about 24 hours, still no fix!
 
 That's when I noticed the warning that the seller had added to their product listing:
 
-{{<figure name="warning-image">}}
+![You'll never guess what I didn't see until after it arrived...](https://karlquinsland.com/hamgeek-yk-1000h-gps-ntp-server/images/warning01.webp)
+
+_You'll never guess what I didn't see until after it arrived..._
+
 
 I do not really understand why there's a $3 surcharge for the international version; I _assumed_ that all of the major GPS constellations use the same CDMA modulation in the same ~1.5GHz band so as long as you don't need the encrypted military signals, the radio hardware should be the same everywhere and just work everywhere.
 
@@ -35,24 +39,31 @@ Oh well, the unofficial motto of AliExpress is _一分钱一分货_ ("Buyer Bewa
 
 Start from the rear, remove the screws and the nut/grommet around the SMA connector.
 
-{{<figure name="td-01">}}
+![td-01](https://karlquinsland.com/hamgeek-yk-1000h-gps-ntp-server/images/01.webp)
+
 
 You will not be able to slide the main PCB out because it's still connected to the front panel via a ribbon cable.
 
 Then remove the front screws and then the main PCB can be slid out.
 
-{{<figure name="td-02">}}
+![td-02](https://karlquinsland.com/hamgeek-yk-1000h-gps-ntp-server/images/02.webp)
 
-{{<figure name="td-03">}}
+
+![td-03](https://karlquinsland.com/hamgeek-yk-1000h-gps-ntp-server/images/03.webp)
+
 
 There's nothing of interest on the reverse side of the main PCB or the LCD board.
 
-{{<figure name="td-04">}}
+![td-04](https://karlquinsland.com/hamgeek-yk-1000h-gps-ntp-server/images/04.webp)
+
 
 The cans on the GPS module are soldered on ... but not well.
 With just a little bit of prying, they came right off... to reveal a very dusty interior.
 
-{{<figure name="td-05">}}
+![I do not know what that dust is...](https://karlquinsland.com/hamgeek-yk-1000h-gps-ntp-server/images/05.webp)
+
+_I do not know what that dust is..._
+
 
 I can't get an ID on the RF front-end chip, the [`MX-70G`](https://www.digikey.com/en/products/detail/macronix/MX29LV320EBTI-70G/2744812) next to the `UBX-G5000-BT` is almost certainly flash memory for the GPS module.
 Almost none of the pads go anywhere; the two pads near that SMA connector are likely power and the other two pads that go anywhere (top left) are likely the serial TX/RX lines for configuration/debug.
@@ -91,9 +102,9 @@ I asked the seller for the software and they sent me a copy.
 I do not know why they couldn't just have linked to it in the product listing ... but oh well.
 Now you can download it w/o having to bother w/ the language barrier :).
 
-- [Scanned Manual]({{< resource-ref "scanned-manual" >}}) (chinese and english)
-- [OEM Manual (`YK-1000H卫星同步时钟产品说明书.pdf`)]({{< resource-ref "oem-manual" >}}) (chinese, only)
-- [OEM Software (`90467 90479 YK-1000H 英文软件.exe`)]({{< resource-ref "oem-software" >}})
+- [Scanned Manual](https://karlquinsland.com/hamgeek-yk-1000h-gps-ntp-server/files/manual-scan.pdf) (chinese and english)
+- [OEM Manual (`YK-1000H卫星同步时钟产品说明书.pdf`)](https://karlquinsland.com/hamgeek-yk-1000h-gps-ntp-server/files/YK-1000H%E5%8D%AB%E6%98%9F%E5%90%8C%E6%AD%A5%E6%97%B6%E9%92%9F%E4%BA%A7%E5%93%81%E8%AF%B4%E6%98%8E%E4%B9%A6.pdf) (chinese, only)
+- [OEM Software (`90467 90479 YK-1000H 英文软件.exe`)](https://karlquinsland.com/hamgeek-yk-1000h-gps-ntp-server/files/90467%2090479%20YK-1000H%20%E8%8B%B1%E6%96%87%E8%BD%AF%E4%BB%B6.exe)
 
 ### Software
 
@@ -101,8 +112,8 @@ Partly because I didn't get the "international" version and partly because I don
 
 Googling the very unique `CH9126_MODULE_V1.03` string turns up ... _one_ [reference](https://www.cnblogs.com/Lqqq123/p/18058274) post with some C code that probably matches what the OEM software is doing to configure the module.
 
-I have archived the reference post [here](https://web.archive.org/save/https://www.cnblogs.com/Lqqq123/p/18058274) and [here]({{< resource-ref "random-reference-code" >}}).
-That reference post has a link to a [`CH9126ConfigTool.zip`]({{< resource-ref "random-reference-sdk" >}}) which appears to be a reference implementation/SDK with a compiled `.exe` as well.
+I have archived the reference post [here](https://web.archive.org/save/https://www.cnblogs.com/Lqqq123/p/18058274) and [here](https://karlquinsland.com/hamgeek-yk-1000h-gps-ntp-server/files/random-reference-code.pdf).
+That reference post has a link to a [`CH9126ConfigTool.zip`](https://karlquinsland.com/hamgeek-yk-1000h-gps-ntp-server/files/CH9126ConfigTool.zip) which appears to be a reference implementation/SDK with a compiled `.exe` as well.
 The `.exe` isn't the same one as what the seller sent me ... but the icon is identical so they're probably from the same source.
 
 The `strings` output did raise an eyebrow:

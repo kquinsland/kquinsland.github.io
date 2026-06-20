@@ -19,14 +19,15 @@ I'm writing this up because the approach that I ended up taking was _not_ the in
 
 I originally pulled the trigger on this particular version because it had a built in screen attached to a micro controller.
 
-{{<figure name="ali_img">}}
+![ali_img](https://karlquinsland.com/esphome-geiger-counter/images/ali_img.webp)
+
 
 I naïvely thought that I'd be able to get a simple UART from the 4 pins next to the microcontroller or maybe even get data directly off of the micro USB port.
 
-{{< admonition info >}}
-As of 2022.11, the geiger counter pictured above can be found [here](https://www.aliexpress.us/item/3256804497523971.html).
-The listing title is `DIY Geiger Counter Kit Assembled Module Nuclear Radiation Detector X γ β rays Iodine 131 Detecting OLED Display Radiation Tester`
-{{< /admonition >}}
+> [!NOTE] Info
+> As of 2022.11, the geiger counter pictured above can be found [here](https://www.aliexpress.us/item/3256804497523971.html).
+> The listing title is `DIY Geiger Counter Kit Assembled Module Nuclear Radiation Detector X γ β rays Iodine 131 Detecting OLED Display Radiation Tester`
+
 
 ### The USB / UART port
 
@@ -43,7 +44,8 @@ With the identifying markings sanded off of the chip, attempting to dump / rever
 
 After some quick testing, I determined that the micro controller toggles the beeper and the LED via _distinct_ GPIO pins and that the LED is pulsed to 3.3v for 5ms.
 
-{{<figure name="oscope">}}
+![oscope](https://karlquinsland.com/esphome-geiger-counter/images/oscope.webp)
+
 
 For reference, here are the points that I chose to inject power and observe the LED.
 I am injecting 5V into the geiger counter from the ESP module so I can program and power the entire assembly with a single cable.
@@ -52,22 +54,34 @@ If you choose to use separate power supplies for both, make sure that the ESP an
 Removing `R1` is optional; keep it if you want the beeper to click as well.
 I have some thoughts on being able to toggle this behavior [below](#beeper)
 
-{{<figure name="pcb_marked_up">}}
+![I left R1 in place so it's easier to reverse the mod.](https://karlquinsland.com/esphome-geiger-counter/images/pcb_marked_up.webp)
+
+_I left R1 in place so it's easier to reverse the mod._
+
 
 And with a bit of hot glue, we're done with the hardware assembly.
 
-{{<figure name="feature-assembled">}}
+![There's no good place for the ESP module so I chose to strategically obfuscate the portion of the screen that does not display the actual measurements.](https://karlquinsland.com/esphome-geiger-counter/images/assembled.webp)
 
-{{< admonition warning >}}
-There's no _good_ place to put the ESP module such that the screen is unobstructed and such that the ESP is not near the geiger tube.
-As the tube is charged up to ~400v, it putting the ESP module directly over it seems like a potential problem.
-{{< /admonition >}}
+_There's no good place for the ESP module so I chose to strategically obfuscate the portion of the screen that does not display the actual measurements._
 
-{{<figure name="assembled-doa">}}
+
+> [!WARNING] Warning
+> There's no _good_ place to put the ESP module such that the screen is unobstructed and such that the ESP is not near the geiger tube.
+> As the tube is charged up to ~400v, it putting the ESP module directly over it seems like a potential problem.
+
+
+![I wouldn't put the ESP right here because a) the tube is partially obstructed and b) the tube is charged to a few hundred volts and putting any delicate electronics that close seems like a bad idea.](https://karlquinsland.com/esphome-geiger-counter/images/assembled-doa.webp)
+
+_I wouldn't put the ESP right here because a) the tube is partially obstructed and b) the tube is charged to a few hundred volts and putting any delicate electronics that close seems like a bad idea._
+
 
 ## ESPHome
 
-{{<figure name="ha_geiger_history">}}
+![Ignore that 12 hour gap in the data... I forgot to plug the assembly back in after doing some tests.](https://karlquinsland.com/esphome-geiger-counter/images/ha_geiger_history.webp)
+
+_Ignore that 12 hour gap in the data... I forgot to plug the assembly back in after doing some tests._
+
 
 The firmware is pretty simple.
 The configuration below is an abridged version of what I am currently using.

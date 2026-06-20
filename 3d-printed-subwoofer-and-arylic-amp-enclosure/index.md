@@ -38,7 +38,10 @@ I'm not equipped to verify any of the claims made by the original subwoofer desi
 
 ## Tweaks
 
-{{<figure name="cad_sub_gaskets" >}}
+![The green elements are meant to be printed in TPU or another gasket like material. The cable channel runs from the RCA jack enclosure in the rear (pink color), under the gasket material to the main speaker cavity.](https://karlquinsland.com/3d-printed-subwoofer-and-arylic-amp-enclosure/images/cad_sub_gaskets.webp)
+
+_The green elements are meant to be printed in TPU or another gasket like material. The cable channel runs from the RCA jack enclosure in the rear (pink color), under the gasket material to the main speaker cavity._
+
 
 ### Wiring
 
@@ -54,21 +57,30 @@ You no longer need to use goopy adhesives to seal the panels to the body! The su
 
 There is also a subtle channel cut into the sub body which is meant for gasket cord as a fall back.
 
-{{<figure name="cad_gasket-cord_overview" >}}
-{{<figure name="cad_gasket-cord_closeup" >}}
+![The dark blue represents the path that gasket cord material should be laid down.](https://karlquinsland.com/3d-printed-subwoofer-and-arylic-amp-enclosure/images/cad_gasket-cord_overview.webp)
+
+_The dark blue represents the path that gasket cord material should be laid down._
+
+![When properly joined, there will be a slight interference between the panel and the gasket material; this ensures a fantastic seal.](https://karlquinsland.com/3d-printed-subwoofer-and-arylic-amp-enclosure/images/cad_gasket-cord_closeup.webp)
+
+_When properly joined, there will be a slight interference between the panel and the gasket material; this ensures a fantastic seal._
+
 
 ### Mounting
 
 - The sides of the subwoofer feature a 100x100mm [VESA/FDMI](https://en.wikipedia.org/wiki/Flat_Display_Mounting_Interface) mounting pattern.
   - When printing with the holes facing the print bed, support material all but entirely obscures their existence.
 
-{{<figure name="sub_feat_panel_vesa">}}
+![Picture showing close up of subwoofer panel; the hole meant for VESA mounting is almost invisible as it's full of support material.](https://karlquinsland.com/3d-printed-subwoofer-and-arylic-amp-enclosure/images/sub_feat_panel_vesa.webp)
+
+_The support material hides the hole almost perfectly. If the image brightness wasn't turned up, you'd never notice :D_
+
 
 # Build
 
-{{< admonition info >}}
-This is an abridged assembly guide and Bill of Materials. I have included only what's different/new/specific to this build. Consult the various build guides and BOMs for the original subwoofer so you understand what _else_ is required.
-{{< /admonition >}}
+> [!NOTE] Info
+> This is an abridged assembly guide and Bill of Materials. I have included only what's different/new/specific to this build. Consult the various build guides and BOMs for the original subwoofer so you understand what _else_ is required.
+
 
 ## BOM
 
@@ -123,17 +135,29 @@ Screws:
 
 And it all fits together inside an enclosure like so:
 
-{{<figure name="cad_amp_front" >}}
+![The amp enclosure as seen from the front corner.](https://karlquinsland.com/3d-printed-subwoofer-and-arylic-amp-enclosure/images/cad_amp_front.webp)
 
-{{<figure name="cad_amp_rear" >}}
+_The amp enclosure as seen from the front corner._
+
+
+![The amp enclosure as seen from the rear corner.](https://karlquinsland.com/3d-printed-subwoofer-and-arylic-amp-enclosure/images/cad_amp_rear.webp)
+
+_The amp enclosure as seen from the rear corner._
+
 
 ## Procedure
 
 To give you an idea of how things go together:
 
-{{<figure name="cad_amp_01" >}}
+![Viewed from the rear corner, the PCB (purple) sits on top of a midplate (green, highlighted) which sits on top of the power supply (also purple, bottom).](https://karlquinsland.com/3d-printed-subwoofer-and-arylic-amp-enclosure/images/cad_amp_01.webp)
 
-{{<figure name="cad_amp_02" >}}
+_Viewed from the rear corner, the PCB (purple) sits on top of a midplate (green, highlighted) which sits on top of the power supply (also purple, bottom)._
+
+
+![To make printing easier, the midplate is actually two components joined together by the two screws furthest from the knobs.](https://karlquinsland.com/3d-printed-subwoofer-and-arylic-amp-enclosure/images/cad_amp_02.webp)
+
+_To make printing easier, the midplate is actually two components joined together by the two screws furthest from the knobs._
+
 
 ### Print
 
@@ -143,21 +167,20 @@ Just a few things to note:
 - Tolerances are reasonably tight, you'll need ~ .15mm tolerance.
   - Layer height, material, speed settings are up to you. All that matters is that you can achieve the ~.15mm tolerance.
 
-{{< admonition warning "This will take a while!" >}}
+> [!WARNING] This will take a while!
+> With respect to the subwoofer skeleton and panels, at least.
+> 
+> Essentially, the more mass in the parts, the more energy will be required to make them rattle/flex/vibrate.
+> The less this happens, the less "extra" noise will be emitted by your subwoofer.
+> Following along with the original instructions for printing, I chose about 35% infill and 3 perimeters for the subwoofer skeleton. Using a .6mm nozzle and some other well tuned slicing settings, I was able to print the entire skeleton in about 40 hours using just over 1 kg of filament. I would plan on at least 80 if using a smaller nozzle with a finer layer height!
 
-With respect to the subwoofer skeleton and panels, at least.
-
-Essentially, the more mass in the parts, the more energy will be required to make them rattle/flex/vibrate.
-The less this happens, the less "extra" noise will be emitted by your subwoofer.
-Following along with the original instructions for printing, I chose about 35% infill and 3 perimeters for the subwoofer skeleton. Using a .6mm nozzle and some other well tuned slicing settings, I was able to print the entire skeleton in about 40 hours using just over 1 kg of filament. I would plan on at least 80 if using a smaller nozzle with a finer layer height!
-{{< /admonition >}}
 
 #### Prep screw holes & flashing
 
-{{< admonition info "Intentionally undersized holes" >}}
-Almost all screw holes on this build are intentionally undersized.
-As a general preparation step, **_carefully_** drive the appropriate screw into each hole and then let it sit!
-{{< /admonition >}}
+> [!NOTE] Intentionally undersized holes
+> Almost all screw holes on this build are intentionally undersized.
+> As a general preparation step, **_carefully_** drive the appropriate screw into each hole and then let it sit!
+
 
 In the CAD model, almost all holes meant to receive a screw are intentionally undersized by about .3mm.
 besides the general 'it's easier to expand the hole to the correct size than it is to shrink it' reason, this is done for one key reason; it **eliminates the need for dedicated screw thread hardware**.
@@ -177,30 +200,40 @@ You must take every precaution to ensure that:
 - The molten plastic forms screw threads more or less instantly... but they won't _stay formed_ until the excess heat has dissipated and the material has solidified.
   - Do not remove any screws from the body until they are cool to the touch! This can take _several minutes_!
 
-{{<figure name="sub_assembly_prep_2" >}}
+![All 11(!) of the m4 screws driven into the sub body waiting for the plastic to set](https://karlquinsland.com/3d-printed-subwoofer-and-arylic-amp-enclosure/images/sub_assembly_prep_2.webp)
+
+_All 11(!) of the m4 screws driven into the sub body waiting for the plastic to set_
+
 
 After all 11 screws had cooled and the threads had formed, the screws were removed.
 Nearly every one of the holes had some (small) build up of material:
 
-{{<figure name="cut_threads_flashing" >}}
+![cut_threads_flashing](https://karlquinsland.com/3d-printed-subwoofer-and-arylic-amp-enclosure/images/cut_threads_flashing.webp)
+
 
 Use a straight edge blade or scrape tool to remove the flashing bits.
 
-{{<figure name="cut_threads_flashing_bits" >}}
+![cut_threads_flashing_bits](https://karlquinsland.com/3d-printed-subwoofer-and-arylic-amp-enclosure/images/cut_threads_flashing_bits.webp)
+
 
 In some cases, there may be some additional material that builds up on the screw threads themselves.
 Simply use a different screw for final assembly or use scrape tool or flame to remove the excess material from the threads:
 
-{{<figure name="cut_threads_buildup" >}}
+![cut_threads_buildup](https://karlquinsland.com/3d-printed-subwoofer-and-arylic-amp-enclosure/images/cut_threads_buildup.webp)
+
 
 After the flashing is removed from around screw holes you should still be able to see threads within the hole but shouldn't be able to see/feel any protrusions _from_ the hole:
 
-{{<figure name="cut_threads_flashing_removed" >}}
+![cut_threads_flashing_removed](https://karlquinsland.com/3d-printed-subwoofer-and-arylic-amp-enclosure/images/cut_threads_flashing_removed.webp)
+
 
 Where possible, I have made the screw holes much deeper than strictly necessary.
 As the screw drives deeper, the tip will push molten plastic into this "well".
 
-{{<figure name="cad_intentionally-deep-hole" >}}
+![The extra depth on the screw hole gives the molten plastic somewhere to go.](https://karlquinsland.com/3d-printed-subwoofer-and-arylic-amp-enclosure/images/cad_intentionally-deep-hole.webp)
+
+_The extra depth on the screw hole gives the molten plastic somewhere to go._
+
 
 ### Subwoofer Skeleton
 
@@ -208,18 +241,23 @@ As the screw drives deeper, the tip will push molten plastic into this "well".
 
 Begin by driving the screws into the side panels and speaker driver then attach the gaskets.
 
-{{<figure name="sub_assembly_gasket_panel" >}}
-{{<figure name="sub_assembly_gasket-speaker" >}}
+![sub_assembly_gasket_panel](https://karlquinsland.com/3d-printed-subwoofer-and-arylic-amp-enclosure/images/sub_assembly_gasket_panel.webp)
 
-{{< admonition info >}}
-You do not need to press the gasket all the way up against the component; it will be compressed between the two components during final assembly.
-{{< /admonition >}}
+![sub_assembly_gasket-speaker](https://karlquinsland.com/3d-printed-subwoofer-and-arylic-amp-enclosure/images/sub_assembly_gasket-speaker.webp)
 
-{{< admonition warning "Secure the gasketed components to the body carefully" >}}
-Rotate each screw a few turns before moving to the next one. Do this [in an alternating pattern similar to how you would tighten Lug Nuts on a car](https://www.tyreplex.com/news/how-to-tighten-lug-nuts-on-a-car-the-criss-cross-pattern/). Failure to do so will likely result in the gasket being rotated out of place internally!
-{{< /admonition >}}
 
-{{<figure name="sub_assembly_gasket_pinch" >}}
+> [!NOTE] Info
+> You do not need to press the gasket all the way up against the component; it will be compressed between the two components during final assembly.
+
+
+> [!WARNING] Secure the gasketed components to the body carefully
+> Rotate each screw a few turns before moving to the next one. Do this [in an alternating pattern similar to how you would tighten Lug Nuts on a car](https://www.tyreplex.com/news/how-to-tighten-lug-nuts-on-a-car-the-criss-cross-pattern/). Failure to do so will likely result in the gasket being rotated out of place internally!
+
+
+![Picture showing close up of subwoofer panel and gasket attached to the subwoofer body. The torque from one of the screws has distorted the gasket material every so slightly.](https://karlquinsland.com/3d-printed-subwoofer-and-arylic-amp-enclosure/images/sub_assembly_gasket_pinch.webp)
+
+_Be mindful of the gasket as you secure the panel to the subwoofer body. Too much torque/clamping force can cause the gasket to distort._
+
 
 #### Speaker wire
 
@@ -228,13 +266,14 @@ Don't forget to use heat shrink tubing or similar to insulate/protect the electr
 
 Pass the housing assembly through the speaker hole and the attach the driver and then housing to the back of the subwoofer.
 
-{{<figure name="sub_assembly_rca-through" >}}
+![sub_assembly_rca-through](https://karlquinsland.com/3d-printed-subwoofer-and-arylic-amp-enclosure/images/sub_assembly_rca-through.webp)
+
 
 Firmly press the speaker wire into the the cable channel and push any slack wire into the RCA jack housing.
 
-{{< admonition info >}}
-There should be - at most - a few inches / 15cm of slack wire. Any more than this and you'll run out of room inside the small housing!
-{{< /admonition >}}
+> [!NOTE] Info
+> There should be - at most - a few inches / 15cm of slack wire. Any more than this and you'll run out of room inside the small housing!
+
 
 Once the speaker and jack housing are attached to the subwoofer body, simply line up and then attach the panels with the gaskets.
 
@@ -243,24 +282,33 @@ Now is a good time to test that your soldering / connections are working!
 If you elected to use the gasket cord material, you would need to spend a non-trivial amount of time carefully cutting and routing segments of the material to fit inside the channel.
 You will almost certainly want to use superglue or similar to help you hold the material into the channel!
 
-{{<figure name="sub_assembly_prep_1" >}}
+![The speaker wire should press-fit into the cable channel more or less sealing it completely.](https://karlquinsland.com/3d-printed-subwoofer-and-arylic-amp-enclosure/images/sub_assembly_prep_1.webp)
+
+_The speaker wire should press-fit into the cable channel more or less sealing it completely._
+
 
 ### Amp
 
-{{< admonition tip >}}
-Just like with the subwoofer components, you'll want to ["pre-thread"](#prep-screw-holes--flashing) the various holes.
-{{< /admonition >}}
+> [!TIP] Tip
+> Just like with the subwoofer components, you'll want to ["pre-thread"](#prep-screw-holes--flashing) the various holes.
+
 
 #### Prep
 
-{{<figure name="amp_rear_undersized_screws" >}}
+![Notice the holes on the left that have been "rightsized" during threading and the holes on the top right that are relatively deformed still.](https://karlquinsland.com/3d-printed-subwoofer-and-arylic-amp-enclosure/images/assembly_amp_rear_undersized_screws.webp)
+
+_Notice the holes on the left that have been "rightsized" during threading and the holes on the top right that are relatively deformed still._
+
 
 For the various panel mounted jacks, there are small interior cavities designed to capture the nut.
 This cavity is actually _oversized_ in the CAD model but due to various printer/slicing factors it is almost certainly going to be a **tight fit**!
 
 Align the nut with the cavity and then use the screw to pull the nut into the hole then tighten the screw all the way to pull the nuts into place:
 
-{{<figure name="amp_rear_nut_cavity" >}}
+![Picture showing closeup of design feature meant to hold panel mounted jacks in place](https://karlquinsland.com/3d-printed-subwoofer-and-arylic-amp-enclosure/images/assembly_amp_rear_nut_cavity.webp)
+
+_After the screw has pulled the nut into place, it should stay put._
+
 
 After the various holes have been prepared and the nuts have been fitted, you are ready for final assembly
 
@@ -268,7 +316,10 @@ After the various holes have been prepared and the nuts have been fitted, you ar
 
 First, combine both parts of the midplate with the amp board. Set aside.
 
-{{<figure name="amp_midplate" >}}
+![Pro tip: print the MAC addresses of a network device somewhere on the device... Also, don't put unique device IDs onto the internet!](https://karlquinsland.com/3d-printed-subwoofer-and-arylic-amp-enclosure/images/assembly_amp_midplate.webp)
+
+_Pro tip: print the MAC addresses of a network device somewhere on the device... Also, don't put unique device IDs onto the internet!_
+
 
 ##### Power
 
@@ -278,41 +329,57 @@ Secure the Powercon receptacle to the rear of the enclosure and then attach to t
 Lower the PSU into the enclosure and secure it with the two screws in opposite corners.
 Start with the screw closest to the Powercon connector:
 
-{{<figure name="amp_psu_screw_2" >}}
+![Room inside the enclosure is intentionally tight so do as much wiring/connecting as possible before you start securing things to the enclosure.](https://karlquinsland.com/3d-printed-subwoofer-and-arylic-amp-enclosure/images/assembly_amp_psu_screw_2.webp)
+
+_Room inside the enclosure is intentionally tight so do as much wiring/connecting as possible before you start securing things to the enclosure._
+
 
 Then add the seconds screw in the opposite corner:
 
-{{<figure name="amp_psu_screw_1" >}}
+![amp_psu_screw_1](https://karlquinsland.com/3d-printed-subwoofer-and-arylic-amp-enclosure/images/assembly_amp_psu_screw_1.webp)
+
 
 Take this opportunity to power up and confirm that the polarity and voltage is correct!
 
-{{<figure name="amp_mains" >}}
+![amp_mains](https://karlquinsland.com/3d-printed-subwoofer-and-arylic-amp-enclosure/images/assembly_amp_mains.webp)
+
 
 ##### Amp PCB
 
 Push the three rotary encoders through the holes in the enclosure and then lower the midplate/PCB on top of the PSU.
 Route the DC wires up and around to the DC plug on the PCB.
 
-{{<figure name="amp_dc_attached" >}}
+![amp_dc_attached](https://karlquinsland.com/3d-printed-subwoofer-and-arylic-amp-enclosure/images/assembly_amp_dc_attached.webp)
+
 
 Install the RCA jacks and route wires as needed to the PCB.
 
-{{<figure name="amp_wires_done" >}}
+![amp_wires_done](https://karlquinsland.com/3d-printed-subwoofer-and-arylic-amp-enclosure/images/assembly_amp_wires_done.webp)
+
 
 Then connect both the USB and RJ54 jacks on the amp module to their respective panel mount jacks.
 I forgot to get a picture of the USB cable but it works more or less the exact same way the ethernet cable does:
 
-{{<figure name="amp_rear_add_eth" >}}
+![A 6 inch patch cable was quicker but a custom length cable would almost certainly look better. Good thing this will soon be hidden away!](https://karlquinsland.com/3d-printed-subwoofer-and-arylic-amp-enclosure/images/assembly_amp_rear_add_eth.webp)
+
+_A 6 inch patch cable was quicker but a custom length cable would almost certainly look better. Good thing this will soon be hidden away!_
+
 
 Either remove the BT/WiFi antenna or secure it to the inside of the enclosure just above the LEDs (not pictured here).
 
 And before attaching the lid, attach the knobs:
 
-{{<figure name="amp_almost_done" >}}
+![Don't forget the washer/nut!](https://karlquinsland.com/3d-printed-subwoofer-and-arylic-amp-enclosure/images/assembly_amp_almost_done.webp)
+
+_Don't forget the washer/nut!_
+
 
 And just like that, the complete sub and amp.
 
-{{<figure name="sub_and_amp_installed-feature" >}}
+![Subwoofer and amp enclosure mounted to the leg of my desk. Please ignore the mess of wires in the background!](https://karlquinsland.com/3d-printed-subwoofer-and-arylic-amp-enclosure/images/sub_and_amp_installed.webp)
+
+_Subwoofer and amp enclosure mounted to the leg of my desk. Please ignore the mess of wires in the background!_
+
 
 # Files and licenses
 

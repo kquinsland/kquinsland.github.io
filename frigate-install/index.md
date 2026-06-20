@@ -12,11 +12,11 @@ Tags: frigate, home-assistant, systemd
 
 <!-- markdownlint-disable-file MD002 -->
 
-{{< admonition info "Updates in 2025" >}}
-In early 2025, I began moving virtually all of my workloads into a k8s cluster. I have put some basic notes on frigate in k8s [here]({{<relref "/posts/2026/01/frigate-in-k8s">}}).
+> [!NOTE] Updates in 2025
+> In early 2025, I began moving virtually all of my workloads into a k8s cluster. I have put some basic notes on frigate in k8s [here](/frigate-in-k8s/).
+> 
+> Beyond that, the section [below](#coralai-edge-tpu) about installing the coral.ai edge TPU drivers is now out of date and has been revised.
 
-Beyond that, the section [below](#coralai-edge-tpu) about installing the coral.ai edge TPU drivers is now out of date and has been revised.
-{{< /admonition >}}
 
 -----
 
@@ -123,29 +123,28 @@ CONTAINER ID   IMAGE         COMMAND    CREATED         STA
 dd7a5d1694c7   hello-world   "/hello"   4 minutes ago   Exited (0) 4 minutes ago             mystifying_yalow
 ```
 
-{{< admonition warning "Quite note about docker security" >}}
-Yes, I am aware that - because the `frigate` user can invoke `docker` commands directly - it isn't difficult for the `frigate` user to [escalate credentials to those of `root`](https://docs.docker.com/engine/security/#docker-daemon-attack-surface).
+> [!WARNING] Quite note about docker security
+> Yes, I am aware that - because the `frigate` user can invoke `docker` commands directly - it isn't difficult for the `frigate` user to [escalate credentials to those of `root`](https://docs.docker.com/engine/security/#docker-daemon-attack-surface).
+> 
+> Running the docker daemon in [rootless mode](https://docs.docker.com/engine/security/rootless/) or an alternative 'non-root' container management tool is one way to eliminate this risk but is beyond the scope of this post.
+> 
+> As always, [defense in depth](https://en.wikipedia.org/wiki/Defense_in_depth_(computing)); this frigate host is appropriately firewalled off from the rest of the network.
 
-Running the docker daemon in [rootless mode](https://docs.docker.com/engine/security/rootless/) or an alternative 'non-root' container management tool is one way to eliminate this risk but is beyond the scope of this post.
-
-As always, [defense in depth](https://en.wikipedia.org/wiki/Defense_in_depth_(computing)); this frigate host is appropriately firewalled off from the rest of the network.
-{{< /admonition >}}
 
 After `docker` is installed and the `frigate` user is added to the `docker` group, the next pre-requisite is storage for Frigate recordings.
 
 ### Create Mounts
 
-{{< admonition tip >}}
-You can skip this step if you do not wish to use remote storage for the Frigate configuration and recordings.
-{{< /admonition >}}
+> [!TIP] Tip
+> You can skip this step if you do not wish to use remote storage for the Frigate configuration and recordings.
 
-{{< admonition warning "Storage quotas" >}}
-Frigate does not have [sophisticated controls](https://docs.frigate.video/configuration/record) for configuring how long recordings are kept so you are encouraged to set up a storage quota for whatever disk/mount/share you use for network recordings.
 
-If you are going the network share route, the software on the NAS likely has this functionality.
-If you are going with local storage, the simplest way to enforce a quota is to use a dedicated partition.
+> [!WARNING] Storage quotas
+> Frigate does not have [sophisticated controls](https://docs.frigate.video/configuration/record) for configuring how long recordings are kept so you are encouraged to set up a storage quota for whatever disk/mount/share you use for network recordings.
+> 
+> If you are going the network share route, the software on the NAS likely has this functionality.
+> If you are going with local storage, the simplest way to enforce a quota is to use a dedicated partition.
 
-{{< /admonition >}}
 
 Using [`.mount` files](https://www.freedesktop.org/software/systemd/man/systemd.mount.html), it is trivial to have systemd mount the network share before starting Frigate.
 I chose to use a [NFS](https://en.wikipedia.org/wiki/Network_File_System) share as both the NAS and the Frigate host are *NIX based and file system permissions tend to work a lot cleaner over NFS compared to Samba.
@@ -234,9 +233,9 @@ At this point, all the _basic_ pre-requisites are satisfied: a `frigate` specifi
 
 ### Coral.ai edge TPU
 
-{{< admonition tip >}}
-Skip this step if you are not using PCI-E based edge TPU nodes.
-{{< /admonition >}}
+> [!TIP] Tip
+> Skip this step if you are not using PCI-E based edge TPU nodes.
+
 
 #### Updated for 2025 - an easier way to install the drivers
 
@@ -342,12 +341,12 @@ FRIGATE_CAM01_RTSP_USER=frigate
 FRIGATE_CAM01_RTSP_PASS=changeme
 ```
 
-{{< admonition warning >}}
-The use of env-var substitution for the `username` field in the MQTT section of the config requires frigate 0.12 or higher.
-At the time of writing (2023.03), the latest `stable` release is `0.11`.
+> [!WARNING] Warning
+> The use of env-var substitution for the `username` field in the MQTT section of the config requires frigate 0.12 or higher.
+> At the time of writing (2023.03), the latest `stable` release is `0.11`.
+> 
+> Some additional details in [this](https://github.com/blakeblackshear/frigate/issues/5640) GH issue.
 
-Some additional details in [this](https://github.com/blakeblackshear/frigate/issues/5640) GH issue.
-{{< /admonition >}}
 
 ### Systemd Unit for Frigate
 

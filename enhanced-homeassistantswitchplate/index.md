@@ -42,32 +42,47 @@ It just so happens that there is _just enough_ room to fit a LDR beneath the sur
 
 The range of values from the LDR isn't great, but they are adequate enough to reliably detect if the HASP is in a darkened room.
 
-{{< figure name="ldr-graph" >}}
+![Screenshot depicting graph of LDR values, rising over time. Annotated to indicate sharp rise in brightness right around sunrise](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/ldr-graph.webp)
+
+_ignore the spikes just before noon, those are due to to testing with a flash light_
+
 
 While researching potential ways to measure the ambient brightness, I stumbled across the [HomeSeer HS-WD200+](https://shop.homeseer.com/products/z-wave-dimmer-switch) which features a rather novel way to convey additional information to a user; seven RGB leds 😍. It's a brilliant use of such a simple and ubiquitous technology that I'm not really sure why every smart switch doesn't do this!
 
-{{< figure name="wd200_inspiration" >}}
+![Picture showing tools/materials required for assembly](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/HS-WD200-Modes.webp)
+
+_HomeSeer's WS200 has a delightful innovation... RGB LEDs!_
+
 
 With _zero_ room to spare, four LEDs can fit into a small cavity between the LCD and decor plate surface. Like with the LDR, there is no visual 'tell' that there are LEDs beneath the surface... unless they're on, of course.
 
-{{< figure  name="prototype-leds" >}}
+![Picture showing a prototype HASP with LEDs embedded beneath the surface and powered on](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/prototype-leds.webp)
+
+_Ignore the dirt on the switch. Notice how you can't tell there's an LDR beneath the surface_
+
 
 #### The enclosure
 
 Without consuming more than 1 [gang](https://diy.stackexchange.com/questions/11654/what-does-1-gang-2-gang-and-so-forth-mean-when-talking-about-electrical-bo), the only realistic way to get the wires for the new components to the HASP PCB is to go around the edge of the LCD's PCB. This is accomplished with two small 'channels' that slightly protrude in the vertical directions from the lip around the LCD and into the box that encloses the electronics.
 
-{{< figure name="CAD-channel-profile" >}}
+![Screenshot of Fusion360, showing side profile of HASP, annotated to indicate channels in enclosure for wires leading to LED tape, LDR in relation to LCD](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/CAD-channel-profile.webp)
+
+_Section analysis from f360 showing small channels around the LCD for wires to LDR and LEDs_
+
 
 Additionally, I found that the original printed parts do not properly fit in the [two gang electrical box](https://www.amazon.com/Thomas-Betts-B232A-UPC-Carlon-Bulk/dp/B000GAWYZ8/) where I intended to deploy the HASP.
 
-{{< figure name="CAD-electric-box-clearance" >}}
+![Closeup photograph of prototype HASP enclosure and 2-gang electric box. Annotated to show interfering surfaces](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/electric-box-clearance.webp)
+
+_The only way to fit the HASP in my 2-gang electric boxes is to cut out a small section_
+
 
 In total, the modifications required to accommodate the LDR and LED tape are relatively small, but [I had to re-create the model from scratch](https://github.com/aderusha/HASwitchPlate/issues/116) so several things are likely a bit different from the original model. It should be relatively easy to port the modifications to the other multi-gang configurations that the original HASP supports.
 
 The `.step` and `.f3z` files are available should you want to make the necessary modifications to other switch plate configurations.
 The `.stl` and `.3mf` files are available for easy printing.
 
-All files available [below]({{< ref "#files" >}}) and on [github](https://github.com/kquinsland/HASwitchPlate/tree/master/3D_Printable_Models/enhanced-HASP).
+All files available [below](#files) and on [github](https://github.com/kquinsland/HASwitchPlate/tree/master/3D_Printable_Models/enhanced-HASP).
 
 ## Assembly
 
@@ -92,7 +107,10 @@ In addition to everything in the original BOM, you'll need:
 
 - Standard 2.54mm pin headers. You can get a set of male and female headers [here](https://rover.ebay.com/rover/1/711-53200-19255-0/1?mpre=https%3A%2F%2Fwww.ebay.com%2Fitm%2F10pcs-Male-Header-1x40-2-54mm-40-Pin-PCB-Through-Hole-Arduino-and-Pi%2F223105297271%3Fepid%3D28022683725%26hash%3Ditem33f21cab77%3Ag%3A~X8AAOSwvFpbdZWA&campid=5338745533&toolid=10001).
 
-{{< figure name="assemble-00-prep-electronics">}}
+![Picture showing the additional electronic components for mod](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/00.prep-electronics.webp)
+
+_All the components needed for assembly_
+
 
 **Note**: Where possible, I've used commission links. The links don't raise the price of any item, they simply let the retailer know that I'm the reason for your business. In return, I get a small cut of your purchase as a 'thanks' from the retailer. If you're not comfortable with that, you can use a URL unwinding service to get the 'raw' product link and drop the attribution/commission part.
 
@@ -102,11 +120,17 @@ The original instructions suggest using glue to secure the brass inserts to the 
 
 Fully insert the 20mm screw into the brass insert, use pliers to grasp the screw and apply heat with a lighter for a few seconds and then insert into the face plate. Make sure that the screw is **completely** inserted into the insert so that molten plastic can't flow into the insert. If molten plastic enters and cools on the threads, it will be rather difficult to later screw things together!
 
-{{< figure name="assemble-01-prep-inserts" >}}
+![Picture showing a 20mm screw fully inserted into brass threaded insert](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/01.prep-brass-inserts.webp)
+
+_Molten plastic can't flow into a filled insert_
+
 
 As the inserts cool, you'll have a few seconds to make adjustments to their orientation before they become fixed. Make sure that each screw is vertical and cool to the touch before moving on to the wiring harness.
 
-{{< figure name="assemble-02-inserts-cooling" >}}
+![Picture showing threaded inserts inserted into faceplate with screws sticking out, pointed vertically](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/02.inserts-cooling.webp)
+
+_screws make it easy to perform final alignment on inserts and act as a heatsink_
+
 
 ### Wire Harness
 
@@ -131,27 +155,45 @@ Additionally, you can flash my [modified HASP firmware](https://github.com/kquin
 
 Fit the LDR into the face plate and position the leads in the channel under and to the top of the LCD PCB. Then trim the excess length off of the LDR leads so that they extend 'beyond' the LCD by about 8mm or so.
 
-{{< figure name="assemble-03-ldr-position" >}}
+![Picture showing the LDR in position under the LCD with it's leads trimmed slightly](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/03.ldr-position.webp)
+
+_LDR under the LCD w/ trimmed leads..._
+
 
 Remove the LDR from the face plate and straighten the leads out. Lay the LDR, resistor, and wire out as shown below. Use this time to cut the HST down to size so everything but the leg of the LDR that joins the resistor can be covered. **Note:** the leads on the resistor have also been trimmed down to ~15mm to better fit.
 
-{{< figure name="assemble-04-wire-harness" >}}
+![Picture showing rough layout of LDR and related components](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/04.wire-harness.webp)
+
+_rough layout of LDR harness_
+
 
 It's probably going to be easiest to start with the 'supply' wire which runs directly from the HASP PCB's +3.3v pin to the LDR. As space is exceedingly tight, there is no room for overly large solder joints. Carefully wrap the wire around the lead and apply just enough solder to make good electrical contact. Once the supply wire has been soldered to the LDR, affix the HST so the entirety of the lead and solder joint are protected.
 
-{{< figure name="assemble-05-ldr-wire-wrap" >}}
+![picture showing wire wrapped around the lead of LDR prior to soldering](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/05.ldr-wire-wrap.webp)
+
+_strip ~1cm off the end of the wire, wrap around the lead, then solder_
+
 
 Repeat the same procedure with the lead of the resistor that will go directly to the ground. Affix the HST after the solder joint has cooled.
 
-{{< figure name="assemble-06-ldr-ground" >}}
+![picture showing sire soldered to the 'ground-facing' lead of the 10k resistor with heat shrink tubing about to be applied](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/06.ldr-ground.webp)
+
+_No room for mechanically strong solder joints_
+
 
 Use the same 'wrap' technique with the remaining leads from the LDR and the resistor. Apply just enough solder for good electrical contact between the signal wire and the two leads of the LDR and resistor.
 
-{{< figure name="assemble-07-ldr-signal" >}}
+![picture showing wire wrapped around the LDR and 10K resistor leads](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/07.ldr-signal.webp)
+
+_same wrapping technique, just with two leads this time_
+
 
 After the solder joint cools, cover the entire LDR/Resistor assembly in HST so there is no exposed wire or component lead.
 
-{{< figure name="assemble-08-ldr-hst" >}}
+![Picture showing rough layout of LDR and related components](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/08.hst.webp)
+
+_get everything nicely protected behind HST_
+
 
 Set the LDR component aside for now and move on to the LED tape.
 
@@ -161,11 +203,17 @@ If you've not already trimmed the LED tape to fit in the face plate, do so now. 
 
 The LED tape has incredibly small pads so take your time on this. You have about 5 cubic millimeters _total_ for the three solder joints on the LED tape. Solder just enough for electrical contact, there will be no significant mechanical stress. **Note:** The arrows printed on the strip point in the direction of data flow; combined with the off-center placement of the LED packages, there is only one way to properly install the LED tape in  the decor plate.
 
-{{< figure name="assemble-09-led-tape-alignment" >}}
+![picture showing wire lined up with one solder pad on the LED tape ](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/09.wire-alignment.webp)
+
+_know which way the LED tape wires will need to point to make it into the 'channel' prior to soldering_
+
 
 After soldering the power, signal and ground wires, flatten them and gently shape them so they align and flow into the channel on the face plate in a manner similar to the LDR. For a bit of mechanical robustness, consider braiding the wires together.
 
-{{< figure name="assemble-10-led-wire-braid" >}}
+![picture showing three wires from LED tape carefully braised together for a more compact and stronger cable](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/10.twisted-cable.webp)
+
+_twist the wires together for a more compact and robust cable_
+
 
 #### Pin Header
 
@@ -173,25 +221,38 @@ After soldering wires onto the two components, all that's left is soldering the 
 
 One at a time, carefully take the pins out of the plastic 'frame'. This is to prevent the heat from the soldering and HST steps from melting the plastic. Consider marking the pin with the location of the 'frame' so you don't take up too much room with the solder joint. You will need the 'business end' of the pin to make good contact with the socket on the HASP board; this is quite difficult if most of the pin can't be slid through the 'frame' because of an excessively large solder joint!
 
-{{< figure name="assemble-11-process" >}}
+![picture showing single pin removed from pin header, about to be soldered](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/11.process.webp)
+
+_remove the pin from the plastic 'frame' and carefully solder the wires to the pins_
+
 
 Make sure that HST is on the wire(s) _before_ soldering! After the solder joint cools, slip the HST over the solder joint and apply heat until the joint is covered. Repeat this process for the remaining pins. There will be three 'unused' pins that you can just ignore.
 
-{{< figure name="assemble-12-unused-pins" >}}
+![picture showing the unused pins in the wire harness](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/12.unused-pins.webp)
+
+_A few pins are not needed_
+
 
 When all the wires have been soldered and covered,  you'll have something that looks like this:
 
-{{< figure name="assemble-13-harness-finished" >}}
+![picture showing each component in the decor plate and the finished wiring harness.](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/13.harness-finished.webp)
+
 
 Double check electrical connections and then combine the PCB, enclosure, plate and harness. Carefully align the 'channels' for LDR and LED wires:
 
-{{< figure name="assemble-14-finished" >}}
+![picture of finished assembly ready to be screwed together. Annotated to call attention to pinch points w/ wires](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/14.finished.webp)
+
+_Align and ensure no pinched wires!_
+
 
 ### Printing
 
 In the electrical boxes there's absolutely no room to spare, so all parts are designed to fit together with **very** tight clearances. Print as slow as you need to in order too achieve very good dimensional accuracy. Like with the brass inserts, the various screw holes are intentionally undersized for better thread engagement.
 
-{{< figure name ="suggested-print-orientation">}}
+![Screenshot showing modified enclosure files in slicer for 3d printer](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/suggested-print.webp)
+
+_The obvious orientation is the best, no supports needed_
+
 
 The HASP does run a bit warm, but not any warmer than other smart switches with similar form-factor. PLA will likely be fine unless you in tend to deploy the HASP in a particularly hot location.
 
@@ -199,18 +260,36 @@ The HASP does run a bit warm, but not any warmer than other smart switches with 
 
 In testing, the parts of the HASP ran ~20º above ambient. Most of that heat comes from the small AC->DC converter and the LCD. Surprisingly, the ESP8266 does not emit that much heat. Overall, nothing particularly alarming, especially when the HASP is deployed into a larger multi-gang electrical box with with plenty of air to radiate heat into. Apologies in advance for the mixed ºC/ºF units.
 
-{{< figure name ="thermals-01-removed-side-rear">}}
-{{< figure name ="thermals-02-removed-top-side">}}
-{{< figure name ="thermals-03-removed-rear-side">}}
-{{< figure name ="thermals-04-front-leds-on">}}
+![photo from a thermal camera showing the HASP device removed from it's electrical box, the sides and rear are warm](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/thermals/01.removed-side-rear.webp)
+
+_HASP removed from electrical box, heat from the AC-DC converter radiating through the enclosure_
+
+![photo from a thermal camera showing the HASP device removed from it's electrical box, the sides and rear are warm](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/thermals/02.removed-top-side.webp)
+
+_similar to first picture, parts inside enclosure radiate heat through the enclosure, bringing it to about 20 degrees above ambient temperature_
+
+![photo from a thermal camera showing the HASP device removed from it's electrical box, the sides and rear are warm](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/thermals/03.removed-rear-side.webp)
+
+_there are clear hot-spots on the enclosure that match up with the location of the ESP and the AC-DC converter_
+
+![photo from a thermal camera showing the HASP device installed in its electrical enclosure. The LCD and LEDs are the warmest part](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/thermals/04.front-leds-on.webp)
+
+_Less heat is radiated through the front of the HASP; the LCD backlight and embedded LEDs are clearly the warmest components_
+
 
 The tiny PNP transistor that toggles the LCD power is the hottest component, by far. Everything else has a relatively consistent temperature:
 
-{{< figure name ="thermals-05-internals">}}
+![photo from a thermal camera showing the internals of deployed HASP; the AC->DC converter is clearly the warmest object](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/thermals/05.internals.webp)
+
+_PNP Transistor is clearly warmest internal component, ESP8266 cooler than expected_
+
 
 When installed in wall, the HASP is radiating heat into the electrical box and through neighboring switches:
 
-{{< figure name ="thermals-06-markup">}}
+![photo from a thermal camera showing the HASP as deployed in wall. Heat is evenly radiated through LCD and through neighboring switch](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/thermals/06.installed-markup.webp)
+
+_a little bit of ambient heat radiating through the gap between LCD and switch as well as through the switch_
+
 
 ## Future work
 
@@ -241,5 +320,40 @@ However, there's a few aspects of the HASP that i'd like to further improve:
 
 For archive / posterity, all source files are included here. Unless otherwise explicitly stated otherwise, all files below are licensed as [Creative Commons Attribution-NonCommercial-ShareAlike](https://creativecommons.org/licenses/by-nc-sa/4.0/) (CC BY-NC-SA).
 
-{{< bundle-files >}}
+- [images/CAD-channel-profile.webp](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/CAD-channel-profile.webp)
+- [images/electric-box-clearance.webp](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/electric-box-clearance.webp)
+- [images/assembly/00.prep-electronics.webp](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/00.prep-electronics.webp)
+- [images/assembly/01.prep-brass-inserts.webp](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/01.prep-brass-inserts.webp)
+- [images/assembly/02.inserts-cooling.webp](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/02.inserts-cooling.webp)
+- [images/assembly/03.ldr-position.webp](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/03.ldr-position.webp)
+- [images/assembly/04.wire-harness.webp](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/04.wire-harness.webp)
+- [images/assembly/05.ldr-wire-wrap.webp](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/05.ldr-wire-wrap.webp)
+- [images/assembly/06.ldr-ground.webp](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/06.ldr-ground.webp)
+- [images/assembly/07.ldr-signal.webp](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/07.ldr-signal.webp)
+- [images/assembly/08.hst.webp](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/08.hst.webp)
+- [images/assembly/09.wire-alignment.webp](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/09.wire-alignment.webp)
+- [images/assembly/10.twisted-cable.webp](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/10.twisted-cable.webp)
+- [images/assembly/11.process.webp](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/11.process.webp)
+- [images/assembly/12.unused-pins.webp](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/12.unused-pins.webp)
+- [images/assembly/13.harness-finished.webp](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/13.harness-finished.webp)
+- [images/assembly/14.finished.webp](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/assembly/14.finished.webp)
+- [images/installed.webp](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/installed.webp)
+- [images/ldr-graph.webp](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/ldr-graph.webp)
+- [models/box.step](https://karlquinsland.com/enhanced-homeassistantswitchplate/models/box.step)
+- [models/box.stl](https://karlquinsland.com/enhanced-homeassistantswitchplate/models/box.stl)
+- [models/combined.3mf](https://karlquinsland.com/enhanced-homeassistantswitchplate/models/combined.3mf)
+- [models/combined.step](https://karlquinsland.com/enhanced-homeassistantswitchplate/models/combined.step)
+- [models/enhanced-HASP.f3z](https://karlquinsland.com/enhanced-homeassistantswitchplate/models/enhanced-HASP.f3z)
+- [models/plate.step](https://karlquinsland.com/enhanced-homeassistantswitchplate/models/plate.step)
+- [models/plate.stl](https://karlquinsland.com/enhanced-homeassistantswitchplate/models/plate.stl)
+- [images/prototype-leds.webp](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/prototype-leds.webp)
+- [images/suggested-print.webp](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/suggested-print.webp)
+- [images/thermals/01.removed-side-rear.webp](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/thermals/01.removed-side-rear.webp)
+- [images/thermals/02.removed-top-side.webp](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/thermals/02.removed-top-side.webp)
+- [images/thermals/03.removed-rear-side.webp](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/thermals/03.removed-rear-side.webp)
+- [images/thermals/04.front-leds-on.webp](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/thermals/04.front-leds-on.webp)
+- [images/thermals/05.internals.webp](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/thermals/05.internals.webp)
+- [images/thermals/06.installed-markup.webp](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/thermals/06.installed-markup.webp)
+- [images/HS-WD200-Modes.webp](https://karlquinsland.com/enhanced-homeassistantswitchplate/images/HS-WD200-Modes.webp)
+
 

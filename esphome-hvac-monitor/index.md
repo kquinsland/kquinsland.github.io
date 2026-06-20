@@ -18,7 +18,10 @@ Here's a quick "show-and-tell" about a recent project I completed.
 
 I'm not sure how I first came across the idea of measuring air pressure drop across a filter to gauge its remaining life, but I remember thinking it was a great idea.
 
-{{<figure name="concept">}}
+![Conceptual diagram for the project.](https://karlquinsland.com/esphome-hvac-monitor/images/concept.webp)
+
+_Conceptual diagram for the project._
+
 
 The idea has been lurking in the back of my mind for a while, but I never got around to implementing it... until now.
 
@@ -33,14 +36,12 @@ I then designed a PCB to integrate the sensors and electronics and 3D-printed a 
 
 ## The Hardware
 
-{{< admonition note >}}
+> [!NOTE] Note
+> I'm not sharing the PCB or other mechanical files because they're specific to my setup.
+> Unless you have the same HVAC system configuration, layout, and dimensional constraints, these files likely won't be useful.
+> This post aims to share the concept and hopefully inspire others.
+> Use this as a starting point and adapt it to your needs.
 
-I'm not sharing the PCB or other mechanical files because they're specific to my setup.
-Unless you have the same HVAC system configuration, layout, and dimensional constraints, these files likely won't be useful.
-This post aims to share the concept and hopefully inspire others.
-Use this as a starting point and adapt it to your needs.
-
-{{< /admonition >}}
 
 At a high level, the BOM for the project includes:
 
@@ -52,15 +53,24 @@ At a high level, the BOM for the project includes:
 
 The assembled setup looks like this:
 
-{{<figure name="feature-sense01">}}
+![Fully assembled PCB just before final assembly.](https://karlquinsland.com/esphome-hvac-monitor/images/sense01.webp)
+
+_Fully assembled PCB just before final assembly._
+
 
 Installed in the HVAC system, it appears like this:
 
-{{<figure name="sense02">}}
+![A picture of the probe installed and operating. The air filter has been removed and you can see the AC evaporator.](https://karlquinsland.com/esphome-hvac-monitor/images/sense02.webp)
+
+_A picture of the probe installed and operating. The air filter has been removed and you can see the AC evaporator._
+
 
 ## ESPHome Config
 
-{{<figure name="ha">}}
+![How the sensor shows up in HomeAssistant.](https://karlquinsland.com/esphome-hvac-monitor/images/ha.webp)
+
+_How the sensor shows up in HomeAssistant._
+
 
 Below is a snippet of the ESPHome configuration file for this project. It’s similar to my configuration, but I've removed boilerplate sections (e.g., `mqtt`, `wifi`, etc.) for brevity.
 

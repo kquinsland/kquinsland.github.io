@@ -27,7 +27,8 @@ So here is _my_ teardown. No login required!
 
 The Shelly Pro 4 PM is a rather compact DIN mounted relay/power monitoring module with some connectivity. The `4` is for the number of channels that can be independently switches and monitored.
 
-{{<figure name="official_product">}}
+![Render of Shelly Pro 4 PM](https://karlquinsland.com/shelly-pro-4pm-teardown/images/shelly_pro_4pm_render.webp)
+
 
 As for connectivity, the [official product page](https://shelly.cloud/knowledge-base/devices/shelly-pro-4pm/) sums it up nicely:
 
@@ -49,15 +50,20 @@ And with that, let's get into it:
 
 The main body of the shelly is clipped to the rear 'plate' which houses the DIN rail attachment mechanism. You can see the clips on the very top and bottom along the left edge:
 
-{{<figure name="td_side">}}
+![Picture showing the product information printed on the side of the Shelly device](https://karlquinsland.com/shelly-pro-4pm-teardown/images/td01_side.webp)
+
+_40A at 240V is a _lot_ of power to fit into a fairly compact device!_
+
 
 Viewed from the rear, the clips are easier to see in the four corners:
 
-{{<figure name="td_btm">}}
+![Picture showing the rear of the shelly device.](https://karlquinsland.com/shelly-pro-4pm-teardown/images/td02_btm.webp)
+
 
 The rear plate lifts off to reveal the largest PCB. There are 4 copies of the same circuit. Very nice to see big traces with extra solder and some beefy current shunts!
 
-{{<figure name="feature-td_btm_int">}}
+![Picture showing the first and largest PCB inside the device. Accessible immediately after removing the rear](https://karlquinsland.com/shelly-pro-4pm-teardown/images/td03_btm_int.webp)
+
 
 Just behind the 'input trigger' terminals on the main PCB is a `2x10 @ 2.54mm pitch` female header. Into which slides the 'smarts' PCB which hosts the main ESP32 MCU as well as the ethernet jack.
 
@@ -67,7 +73,10 @@ If I had to guess, this is a debug/programming header for at least the main MCU.
 
 It's not pictured until later, but there is a `2x2 @ 2.54mm pitch` male header block on the other side of the smarts PCB. This is where a small daughterboard containing only the 3 buttons connects.
 
-{{<figure name="td04_dbg_con">}}
+![Picture showing what appears to be a debug connector next to the ethernet jack.](https://karlquinsland.com/shelly-pro-4pm-teardown/images/td04_dbg_con.webp)
+
+_How much do you want to bet that the pins on the debug header are the usual +3.3, GND, IO0, RX, TX for ESP flashing?_
+
 
 On the main PCB, behind the 'smarts' PCB is a set of two ICs marked with `ADE7953ACPZ`. As expected, these are [the energy management / monitoring ICs](https://www.digikey.com/en/products/detail/analog-devices-inc/ADE7953ACPZ/2700176).
 
@@ -75,7 +84,8 @@ Why two crystals, though?
 
 The IC marked `MCP23S17` is a simple SPI based IO expander... almost certainly used to drive the relays and possibly command the power management ICs.
 
-{{<figure name="td05_main_pcb_ics">}}
+![Picture showing the few ICs on the primary relay board.](https://karlquinsland.com/shelly-pro-4pm-teardown/images/td05_main_pcb_ics.webp)
+
 
 On the rear of the 'smarts' PCB is the star of the show: [ESP32-D0WDQ6](https://www.mouser.com/ProductDetail/Espressif-Systems/ESP32-D0WDQ6?qs=chTDxNqvsykWgzfXx0gR%252BQ%3D%3D).
 
@@ -88,11 +98,15 @@ There is also _another_ daughterboard covered in kapton tape. This is soldered t
 
 In the top right corner you can see the 4 pin header where the button daughter board attaches... just next to the ethernet phy.
 
-{{<figure name="td06_smarts_ic">}}
+![Picture showing primary MCU daughterboard from the side with MCU and supporting components.](https://karlquinsland.com/shelly-pro-4pm-teardown/images/td06_smarts_ic.webp)
+
 
 From this angle, still in the top right corner, you can see the button daughter board attached to the 4 pin header.
 
-{{<figure name="td07_smarts_pcb_rear">}}
+![Picture showing primary MCU daughterboard from the side with the ethernet jack attached.](https://karlquinsland.com/shelly-pro-4pm-teardown/images/td07_smarts_pcb_rear.webp)
+
+_Just a few very tiny passives!_
+
 
 Electrically, nothing unusual or bizarre. Layout was a bit 'inventive' but the unusual but standard shape of the case probably drove at least some of the decision to have 4 different PCBs that all have to be tediously connected by hand during manufacture!
 

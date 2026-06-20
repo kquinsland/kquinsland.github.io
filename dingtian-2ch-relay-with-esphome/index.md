@@ -17,7 +17,8 @@ This is another one of those quick "I wish that was easier to find when I was go
 For a project, I needed a small relay module to switch a few mains loads.
 I chose this generic looking relay module from AliExpress because it was powered by an ESP32 and featured ethernet connectivity.
 
-{{<figure name="cover-product_image">}}
+![cover-product_image](https://karlquinsland.com/dingtian-2ch-relay-with-esphome/images/product_image.webp)
+
 
 AliExpress is full of generic looking relay modules but [this](https://www.aliexpress.us/item/2255800812755068.html) one is branded [`dingtian-tech`](https://www.dingtian-tech.com/en_us/relay2.html)
 
@@ -30,14 +31,13 @@ This post is a super condensed version of my notes that I'm posting in the off c
 
 ## ESP32 Secure Boot
 
-{{< admonition success "Update: 2023.12" >}}
+> [!TIP] Update: 2023.12
+> I needed a few more of these modules for another project and before placing my order, I asked about the possibility of getting an "empty" module shipped with no firmware protections set.
+> 
+> The seller told me to place my order and then message them with the order number and a note asking to `send relay board with test firmware`.
+> 
+> I did just that and a little over two weeks later, I received a module with no protections set!
 
-I needed a few more of these modules for another project and before placing my order, I asked about the possibility of getting an "empty" module shipped with no firmware protections set.
-
-The seller told me to place my order and then message them with the order number and a note asking to `send relay board with test firmware`.
-
-I did just that and a little over two weeks later, I received a module with no protections set!
-{{< /admonition >}}
 
 No matter what I did to flash the ESP32 module, it would always boot loop with output like this:
 
@@ -141,11 +141,15 @@ DECIMAL       HEXADECIMAL     DESCRIPTION
 It was late and I was tired so I didn't bother with trying to reverse engineer the flash dump or trying to figure out if there was a way to disable the protections.
 Nothing was going to compete with 10 minute to heat-soak and remove the ESP module so I just did that.
 
-{{<figure name="pcb_no_esp">}}
+![Note the sharpie next to the pin headers. Order is GND, RX, TX, EN, GPIO0, VCC from top to bottom.](https://karlquinsland.com/dingtian-2ch-relay-with-esphome/images/pcb_closeup_no_esp32.webp)
+
+_Note the sharpie next to the pin headers. Order is GND, RX, TX, EN, GPIO0, VCC from top to bottom._
+
 
 And a better look at some of the PCB traces to the ethernet PHY:
 
-{{<figure name="pcb_eth_phy">}}
+![pcb_eth_phy](https://karlquinsland.com/dingtian-2ch-relay-with-esphome/images/pcb_closeup_eth_phy.webp)
+
 
 With a "fresh" ESP module installed, figuring out th GPIO assignments wasn't particularly difficult.
 
@@ -168,7 +172,10 @@ And here's the working Tasmota template:
 
 And visually:
 
-{{<figure name="tasmota">}}
+![This configuration works even though GPIO34 should be Button_i.](https://karlquinsland.com/dingtian-2ch-relay-with-esphome/images/tasmota_config.webp)
+
+_This configuration works even though GPIO34 should be Button_i._
+
 
 ## ESPHome
 

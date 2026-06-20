@@ -17,17 +17,24 @@ Turns out, quite a few PLCs come with network interfaces and can speak MQTT now!
 
 So I picked up a [`PR-18DC-DAI-R-N`](https://www.rievtech.com/PR-18DC-DAI-R-N-pd72286477.html) PLC from the 'budget friendly' supplier rievtech. The PLC was put into service in 2018 and never updated; the firmware version it was running was almost certainly below `150` but I didn't record the specific version.
 
-{{< figure name="plc_stock" >}}
+![Stock photo from manufacturer's website showing a device from the same product line as my bricked unit](https://karlquinsland.com/unbrick-rievtech-plc-failed-firmware-update/images/plc-00.webp)
+
 
 Hoping to squash a small bug, I chose to upgrade the firmware to version `152` which was released at the end of 2020 and somehow managed to brick the device 🤦.
 
 I am _speculating_ but it looks like something significant changed around firmware version `150`. If you try to update a device from a version prior to `150` - like I did - something in memory is not properly migrated to the format required by versions after `150` and this causes the update process to fail before completion:
 
-{{< figure name="update_fail-feature" >}}
+![Screenshot showing 'Communicate is FAILED!' message with only .83% left to go on the firmware update.](https://karlquinsland.com/unbrick-rievtech-plc-failed-firmware-update/images/update-01.webp)
+
+_SO close!_
+
 
 That failure message came from the [Update_Net_V152_20201205.zip](https://www.rievtech.com/phoenix/admin/download?fileId=jGUKpAvYWcQE&dp=GvUApKfKKUAU) file which is meant for the ethernet equipped PLCs in the `PR` line. The failure apparently soft bricks the PLC.
 
-{{< figure name="plc_brick" >}}
+![Picture showing the bricked PLC powered up.](https://karlquinsland.com/unbrick-rievtech-plc-failed-firmware-update/images/plc-01.webp)
+
+_Blank white screen. Non responsive buttons, Occasional blinking Ethernet lights. Fun! 🙃_
+
 
 The PLC seemed 'alive' as I could still see `arp` packets coming from it's ethernet port on boot and the web server seemed to accept my connection but never return any data. Even after restarting the PLC, the firmware updater was able to open a new connection and flash the firmware... always failing at the same spot: 99.17%.
 
@@ -51,9 +58,18 @@ This left me with a _completely working_ PLC 🥳! I was able to access the web 
 
 So there you go. If a failed network update leaves your `PR` series PLC in a mostly-not-working state, there is hope!
 
-{{< figure name="recovery_ok" >}}
+![Screenshot showing 'Update is SUCCEED!' message after device recovery.](https://karlquinsland.com/unbrick-rievtech-plc-failed-firmware-update/images/recovery-01.webp)
+
+_Able to flash Version 152 w/o issue!_
+
 
 ## Files
 
-{{< bundle-files >}}
+- [files/How to update the hardware.doc.pdf](https://karlquinsland.com/unbrick-rievtech-plc-failed-firmware-update/files/How%20to%20update%20the%20hardware.doc.pdf): sha1(How to update the hardware.doc.pdf): 0b451b11938b58c384465f5bf350b2f133848649
+- [files/UpdateFail_PR-18DC-DAI-R-N_V150.zip](https://karlquinsland.com/unbrick-rievtech-plc-failed-firmware-update/files/UpdateFail_PR-18DC-DAI-R-N_V150.zip): sha1(UpdateFail_PR-18DC-DAI-R-N_V150.zip): 60c306b521cdb15589b0e36dc73df484c2117539
+- [images/plc-01.webp](https://karlquinsland.com/unbrick-rievtech-plc-failed-firmware-update/images/plc-01.webp)
+- [images/plc-00.webp](https://karlquinsland.com/unbrick-rievtech-plc-failed-firmware-update/images/plc-00.webp)
+- [images/recovery-01.webp](https://karlquinsland.com/unbrick-rievtech-plc-failed-firmware-update/images/recovery-01.webp)
+- [images/update-01.webp](https://karlquinsland.com/unbrick-rievtech-plc-failed-firmware-update/images/update-01.webp)
+
 

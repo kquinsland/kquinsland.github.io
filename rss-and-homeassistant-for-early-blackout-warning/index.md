@@ -91,7 +91,10 @@ If you're not in a position to do any sophisticated automation based on the noti
 
 Which should create a simple notification that'll look something like this:
 
-{{< figure name="example_notification" show_title="false" >}}
+![Ignore the sample text from my testing](https://karlquinsland.com/rss-and-homeassistant-for-early-blackout-warning/images/notification.webp)
+
+_Ignore the sample text from my testing_
+
 
 The `strptime` function yields `start` and `end` objects that can be manipulated further:
 
