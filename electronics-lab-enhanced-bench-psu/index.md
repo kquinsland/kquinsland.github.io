@@ -1,5 +1,13 @@
 # electronics lab: enhanced psu
 
+Canonical: https://karlquinsland.com/electronics-lab-enhanced-bench-psu/
+Published: 2020-07-09
+Updated: 2020-07-09
+Tags: fusion-360, has:download
+
+
+---
+
 While doing the PoE related testing for [this]({{< ref "/posts/2020/07/POE-at-a-distance-ruined-my-cat5-speeds.md" >}}) incident, it occurred to me that I never got around to sharing the files for a small modification to the popular RD6006 PSU.
 
 While drafting this post, I discovered that there appears to be a newer version of the RD6006: the 6012. As far as I can tell, they're in the same 'family' and have the same dimensions so the CAD and related model files below _should_ work w/ the RD6012 just as they do w/ the 6006, but i can only 'guarantee' that the CAD and related model files below will work with the [RD6006](https://hackaday.com/tag/riden-rd6006/).

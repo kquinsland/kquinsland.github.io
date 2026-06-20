@@ -1,5 +1,15 @@
 # AliExpress 11.11 Sale Teardowns
 
+It's a whole Grab bag of worth of #TwoMinuteTeardowns.
+
+Canonical: https://karlquinsland.com/aliexpress-11-11-sale-teardowns/
+Published: 2023-12-01
+Updated: 2023-12-01
+Tags: two-minute-teardown
+
+
+---
+
 <!-- markdownlint-disable-file MD024 -->
 # 11-11 day teardowns
 

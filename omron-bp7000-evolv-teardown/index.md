@@ -1,5 +1,15 @@
 # Quick look inside the OMRON Evolv BP7000 Blood Pressure cuff
 
+Because I couldn't find any pictures online
+
+Canonical: https://karlquinsland.com/omron-bp7000-evolv-teardown/
+Published: 2022-05-14
+Updated: 2022-05-14
+Tags: teardown
+
+
+---
+
 A friend recently asked for my help with some reverse engineering.
 They wanted to know how difficult it would be to re-use some components from a lot of refurbished blood pressure cuffs they had recently acquired.
 

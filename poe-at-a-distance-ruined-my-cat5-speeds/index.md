@@ -1,5 +1,15 @@
 # PoE at a distance caused terrible cat5 speeds
 
+A quick tale of troubleshooting a bizarre PoE related problem
+
+Canonical: https://karlquinsland.com/poe-at-a-distance-ruined-my-cat5-speeds/
+Published: 2020-07-01
+Updated: 2020-07-01
+Tags: short-posts, home-automation, raspberry-pi, PoE
+
+
+---
+
 
 This is a quick post for made in the hopes that some poor soul in the future will find it and save themselves some time.
 

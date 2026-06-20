@@ -1,5 +1,15 @@
 # ESPHome for Sinilink PC remotes
 
+My endless quest to Integrate ALL THE THINGS with Home Assistant claims another victim.
+
+Canonical: https://karlquinsland.com/esphome-sinilink-pc-remotes/
+Published: 2022-10-22
+Updated: 2022-10-22
+Tags: esphome, home assistant
+
+
+---
+
 
 # PC (power) remote control
 

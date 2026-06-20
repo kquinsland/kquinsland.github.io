@@ -1,5 +1,15 @@
 # Watch Band RFID fob
 
+A compact, wearable RFID fob that can be easily attached to a watch band.
+
+Canonical: https://karlquinsland.com/watch-band-rfid/
+Published: 2024-09-14
+Updated: 2024-09-14
+Tags: fusion-360
+
+
+---
+
 # Watch Band RFID fob
 
 This is a quick project to create a wearable RFID fob that can be easily attached to a watch band.

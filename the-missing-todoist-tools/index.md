@@ -1,5 +1,15 @@
 # Announcing The Missing ToDoist Tools
 
+A powerful collection of scriptable tools for managing ToDoist
+
+Canonical: https://karlquinsland.com/the-missing-todoist-tools/
+Published: 2020-07-26
+Updated: 2020-07-26
+Tags: tmtdt, automation, ToDoist
+
+
+---
+
 # TMTDT: The Missing ToDoist Tools 🎉
 
 As the name implies, TMTDT started as a small collection of scripts that I used to augment ToDoist with features they can't/won't implement. It's grown quite a bit since then.

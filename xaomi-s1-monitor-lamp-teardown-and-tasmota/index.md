@@ -1,5 +1,15 @@
 # Installing Tasmota on the Xiaomi Desk Lamp
 
+Assimilate all the things into Home Assistant!
+
+Canonical: https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/
+Published: 2022-01-22
+Updated: 2022-01-22
+Tags: tasmota, home assistant
+
+
+---
+
 {{< admonition note "MJGJD02YL vs MUGJD01YL" >}}
 
 There are _at least two_ versions of this lamp. Thanks to `@htvekov` for confirming that the `MUGJD01YL` variant **does _not_ contain an ESP32**. It contains a `TLSR8368`.

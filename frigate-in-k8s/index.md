@@ -1,5 +1,13 @@
 # Frigate in Kubernetes
 
+Canonical: https://karlquinsland.com/frigate-in-k8s/
+Published: 2026-01-01
+Updated: 2026-01-01
+Tags: frigate, home-assistant, kubernetes
+
+
+---
+
 <!-- markdownlint-disable-file MD002 -->
 # Frigate: Kubernetes edition
 

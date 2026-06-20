@@ -1,5 +1,15 @@
 # #TwoMinuteTeardown: Home Assistant Voice - Preview Edition
 
+I got curious and couldn't find a teardown of the thing so I did one myself.
+
+Canonical: https://karlquinsland.com/home-assistant-voice-pe-teardown/
+Published: 2025-02-01
+Updated: 2025-02-01
+Tags: two-minute-teardown, esphome, home-assistant, home-automation
+
+
+---
+
 
 # Home Assistant Voice: Preview Edition teardown
 

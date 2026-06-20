@@ -1,5 +1,15 @@
 # Arris SB8200 Prometheus Exporter
 
+Yep, another one.
+
+Canonical: https://karlquinsland.com/arris-sb8200-prometheus-exporter/
+Published: 2024-03-19
+Updated: 2024-03-19
+Tags: short-posts, prometheus, kubernetes
+
+
+---
+
 <!-- markdownlint-disable-file MD002 -->
 
 This is a very short "announcement" post.

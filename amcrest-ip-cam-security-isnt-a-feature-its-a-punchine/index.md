@@ -1,5 +1,15 @@
 # Amcrest IP Cameras: security isn't a feature, it's a punchline
 
+Seriously, why is this so hard?
+
+Canonical: https://karlquinsland.com/amcrest-ip-cam-security-isnt-a-feature-its-a-punchine/
+Published: 2020-11-27
+Updated: 2020-11-27
+Tags: onvif, home assistant, rant, security
+
+
+---
+
 <!-- markdownlint-disable-file MD001-->
 This is part rant, part "reference" for anybody else that's struggling to get their Amcrest IP Camera to work with [Home Assistant](https://www.home-assistant.io/integrations/onvif/) via ONVIF. Skip to [TL;DR]({{< relref "#tldr">}}) for a working Home Assistant config.
 

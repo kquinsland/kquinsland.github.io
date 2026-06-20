@@ -1,5 +1,15 @@
 # Dynamic timers in ESPHome
 
+With UI components in the HA UI to enable/disable and change the duration of the timer.
+
+Canonical: https://karlquinsland.com/esphome-dynamic-timer/
+Published: 2022-08-14
+Updated: 2022-08-14
+Tags: esphome
+
+
+---
+
 <!-- markdownlint-disable-file MD002 -->
 
 As much as I love the [ESPHome](https://esphome.io/) project, there are some features that seem like they'd be essential in an embedded/IoT firmware sdk yet their implementation remain left as an exercise to the user.

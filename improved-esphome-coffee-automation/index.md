@@ -1,5 +1,15 @@
 # Integrating a dumb coffee maker with Home Assistant via ESPHome
 
+And getting some hyper-personalized control over my coffee brewing in the process!
+
+Canonical: https://karlquinsland.com/improved-esphome-coffee-automation/
+Published: 2023-01-21
+Updated: 2023-01-21
+Tags: esphome, home-assistant, home-automation, sonoff-S31
+
+
+---
+
 <!-- markdownlint-disable-file MD002 -->
 
 My beloved coffee maker of 10 years has finally died 😢.

@@ -1,5 +1,15 @@
 # Frigate From Scratch guide
 
+A (relatively) straightforward guide to installing Frigate NVR without Docker Compose.
+
+Canonical: https://karlquinsland.com/frigate-install/
+Published: 2023-03-04
+Updated: 2023-03-04
+Tags: frigate, home-assistant, systemd
+
+
+---
+
 <!-- markdownlint-disable-file MD002 -->
 
 {{< admonition info "Updates in 2025" >}}

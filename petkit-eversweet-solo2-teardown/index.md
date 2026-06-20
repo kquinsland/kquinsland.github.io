@@ -1,5 +1,15 @@
 # #TwoMinuteTeardown: Petkit Eversweet Solo 2
 
+Doing research for a project and got curious; I took mine apart so you don't have to.
+
+Canonical: https://karlquinsland.com/petkit-eversweet-solo2-teardown/
+Published: 2025-04-20
+Updated: 2025-04-20
+Tags: two-minute-teardown
+
+
+---
+
 # Two Minute Teardown: Petkit Eversweet Solo 2
 
 {{<figure name="feat-render">}}

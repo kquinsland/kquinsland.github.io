@@ -1,5 +1,15 @@
 # Inside of the Pulse-Eight HDMI CEC Injector.
 
+Tis the season for tearing down things!
+
+Canonical: https://karlquinsland.com/pulse-eight-hdmi-cec-injector-teardown/
+Published: 2023-12-01
+Updated: 2023-12-01
+Tags: two-minute-teardown
+
+
+---
+
 # Inside the Pulse-Eight HDMI CEC Injector
 
 To make a long store short, Google recently pushed a few updates to my TV that made it slow as all hell and frustratingly unusable.

@@ -1,5 +1,13 @@
 # #TwoMinuteTeardown: Multiple LED Controllers
 
+Canonical: https://karlquinsland.com/led-controllers/
+Published: 2025-12-26
+Updated: 2025-12-26
+Tags: two-minute-teardown
+
+
+---
+
 <!-- markdownlint-disable MD024 -->
 ## Introduction
 

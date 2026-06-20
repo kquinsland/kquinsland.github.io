@@ -1,5 +1,15 @@
 # Two Tasmota rules
 
+A few rules for better home automation with Tasmota
+
+Canonical: https://karlquinsland.com/two-tasmota-rules/
+Published: 2020-11-20
+Updated: 2020-11-20
+Tags: tasmota, home-assistant, home-automation
+
+
+---
+
 <!-- markdownlint-disable-file MD002 MD001-->
 
 [Tasmota](https://tasmota.github.io/) is an incredibly powerful alternative/open source firmware for the ever popular Espressif family of WiFi equipped microcontrollers.

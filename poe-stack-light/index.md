@@ -1,5 +1,15 @@
 # PoE powered Stack Light
 
+AKA a real-life 'unread' indicator
+
+Canonical: https://karlquinsland.com/poe-stack-light/
+Published: 2021-02-28
+Updated: 2021-02-28
+Tags: home assistant, MQTT, ESPHome, has:download
+
+
+---
+
 {{<figure name="feature">}}
 
 [Stack/signal lights](https://en.wikipedia.org/wiki/Stack_light) are _everywhere_ in industrial applications for good reason: they're a compact and relatively information-dense indicator system. They always seemed like the kind of indicator that only people with expensive machines needed. Until I found that they can be had for just under $6/light from Ali Express, that is.

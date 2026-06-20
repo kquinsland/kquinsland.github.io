@@ -1,5 +1,15 @@
 # ESPHome on the Yeelight Monitor Light Bar Pro
 
+Quick look at the internals of YLTD003 and ESPHome config
+
+Canonical: https://karlquinsland.com/yeelight-monitor-lamp-teardown-esphome/
+Published: 2023-09-18
+Updated: 2023-09-18
+Tags: esphome, home assistant
+
+
+---
+
 # Yeelight Light Bar Pro (YLTD003) Teardown
 
 Monitor-top light bars are wonderful for reducing eye strain and fatigue and the effect is even better with a bias light behind the monitor.

@@ -1,5 +1,15 @@
 # Two quick tricks for better HomeAssistant automations
 
+Simple techniques for cleaner and more powerful automations/templates
+
+Canonical: https://karlquinsland.com/two-tricks-for-better-homeassistant-automations/
+Published: 2020-09-23
+Updated: 2020-09-23
+Tags: short-posts, home-automation
+
+
+---
+
 <!-- markdownlint-disable-file MD002 MD001-->
 
 It's hard to believe, but the venerable Home Assistant project has just celebrated it's [**7th** birthday with release `.115`](https://www.home-assistant.io/blog/2020/09/17/release-115/)! While HA does get better with each new release, it is by no means perfect :D. This post came about because of a new feature in release `.115` and the subsequent limitations of that feature!

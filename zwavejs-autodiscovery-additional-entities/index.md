@@ -1,5 +1,13 @@
 # Configuring additional ZwaveJS entities in Home Assistant over MQTT
 
+Canonical: https://karlquinsland.com/zwavejs-autodiscovery-additional-entities/
+Published: 2022-05-12
+Updated: 2022-05-12
+Tags: zwave, home assistant
+
+
+---
+
 This is a super quick "because the official docs didn't make it super clear so here's what ended up working for me" post.
 
 -----

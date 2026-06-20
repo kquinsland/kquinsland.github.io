@@ -1,4 +1,4 @@
-<!doctype html><html lang=en-us><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><title>ESPHome for Sonoff T5 family of Switches - karl</title><meta name=Description content="... and a brief teardown of the US version."><meta property="og:url" content="https://karlquinsland.com/sonoff-t5-esphome/"><meta property="og:site_name" content="karl"><meta property="og:title" content="ESPHome for Sonoff T5 family of Switches"><meta property="og:description" content="... and a brief teardown of the US version."><meta property="og:locale" content="en_us"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2023-11-11T00:00:00+00:00"><meta property="article:modified_time" content="2023-11-11T00:00:00+00:00"><meta property="article:tag" content="Esphome"><meta property="article:tag" content="Home-Assistant"><meta property="og:image" content="https://karlquinsland.com/sonoff-t5-esphome/images/pcb.webp"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://karlquinsland.com/sonoff-t5-esphome/images/pcb.webp"><meta name=twitter:title content="ESPHome for Sonoff T5 family of Switches"><meta name=twitter:description content="... and a brief teardown of the US version."><meta name=application-name content="My cool site"><meta name=apple-mobile-web-app-title content="My cool site"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://karlquinsland.com/sonoff-t5-esphome/><link rel=prev href=https://karlquinsland.com/yeelight-monitor-lamp-teardown-esphome/><link rel=next href=https://karlquinsland.com/pulse-eight-hdmi-cec-injector-teardown/><link rel=stylesheet href=/css/style.min.658eb25b73ad29ab864a36ed014516c5047802d1ff98d0080132d1abe1332f5b.css integrity="sha256-ZY6yW3OtKauGSjbtAUUWxQR4AtH/mNAIATLRq+EzL1s="><link rel=preload href=/lib/fontawesome-free/all.min.0df5a33710e433de1f5415b1d47e4130ca7466aee5b81955f1045c4844bbb3ed.css integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" as=style onload='this.onload=null,this.rel="stylesheet"'><noscript><link rel=stylesheet href=/lib/fontawesome-free/all.min.0df5a33710e433de1f5415b1d47e4130ca7466aee5b81955f1045c4844bbb3ed.css integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0="></noscript><link rel=preload href=/lib/animate/animate.min.5fbaeb9f8e25d7e0143bae61d4b1802c16ce7390b96ceb2d498b0d96ff4c853f.css integrity="sha256-X7rrn44l1+AUO65h1LGALBbOc5C5bOstSYsNlv9MhT8=" as=style onload='this.onload=null,this.rel="stylesheet"'><noscript><link rel=stylesheet href=/lib/animate/animate.min.5fbaeb9f8e25d7e0143bae61d4b1802c16ce7390b96ceb2d498b0d96ff4c853f.css integrity="sha256-X7rrn44l1+AUO65h1LGALBbOc5C5bOstSYsNlv9MhT8="></noscript><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"ESPHome for Sonoff T5 family of Switches","inLanguage":"en-us","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/karlquinsland.com\/sonoff-t5-esphome\/"},"genre":"posts","keywords":"esphome, home assistant","wordcount":9554,"url":"https:\/\/karlquinsland.com\/sonoff-t5-esphome\/","datePublished":"2023-11-11T00:00:00+00:00","dateModified":"2023-11-11T00:00:00+00:00","publisher":{"@type":"Organization","name":""},"author":{"@type":"Person","name":"karl"},"description":"... and a brief teardown of the US version."}</script></head><body data-header-desktop=fixed data-header-mobile=auto><script type=text/javascript>(window.localStorage&&localStorage.getItem("theme")?localStorage.getItem("theme")==="dark":"auto"==="auto"?window.matchMedia("(prefers-color-scheme: dark)").matches:"auto"==="dark")&&document.body.setAttribute("theme","dark")</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=/ title=karl>Karl</a></div><div class=menu><div class=menu-inner><a class=menu-item href=/posts/><i class="fas fa-blog"></i> Posts </a><a class=menu-item href=/resume/ title="Hire Me!"><i class="fas fa-briefcase"></i> Résumé </a><a class=menu-item href=/tags/ title="Can you tell that I don't have a super consistent or clear taxonomy?"><i class="fas fa-tags"></i> Tags </a><a class=menu-item href=/contact/><i class="fas fa-address-book"></i> Contact </a><a class=menu-item href=/wander/ title="Discover the small web"><i class="fas fa-compass"></i> Wander </a><span class="menu-item delimiter"></span><span class="menu-item search" id=search-desktop>
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><title>ESPHome for Sonoff T5 family of Switches - karl</title><meta name=Description content="... and a brief teardown of the US version."><meta property="og:url" content="https://karlquinsland.com/sonoff-t5-esphome/"><meta property="og:site_name" content="karl"><meta property="og:title" content="ESPHome for Sonoff T5 family of Switches"><meta property="og:description" content="... and a brief teardown of the US version."><meta property="og:locale" content="en_us"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2023-11-11T00:00:00+00:00"><meta property="article:modified_time" content="2023-11-11T00:00:00+00:00"><meta property="article:tag" content="Esphome"><meta property="article:tag" content="Home Assistant"><meta property="og:image" content="https://karlquinsland.com/sonoff-t5-esphome/images/pcb.webp"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://karlquinsland.com/sonoff-t5-esphome/images/pcb.webp"><meta name=twitter:title content="ESPHome for Sonoff T5 family of Switches"><meta name=twitter:description content="... and a brief teardown of the US version."><meta name=application-name content="My cool site"><meta name=apple-mobile-web-app-title content="My cool site"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://karlquinsland.com/sonoff-t5-esphome/><link rel=prev href=https://karlquinsland.com/yeelight-monitor-lamp-teardown-esphome/><link rel=next href=https://karlquinsland.com/pulse-eight-hdmi-cec-injector-teardown/><link rel=alternate href=/sonoff-t5-esphome/index.md type=text/markdown title="ESPHome for Sonoff T5 family of Switches Markdown"><link rel=alternate href=/llms.txt type=text/plain title="karl llms.txt"><link rel=stylesheet href=/css/style.min.658eb25b73ad29ab864a36ed014516c5047802d1ff98d0080132d1abe1332f5b.css integrity="sha256-ZY6yW3OtKauGSjbtAUUWxQR4AtH/mNAIATLRq+EzL1s="><link rel=preload href=/lib/fontawesome-free/all.min.0df5a33710e433de1f5415b1d47e4130ca7466aee5b81955f1045c4844bbb3ed.css integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" as=style onload='this.onload=null,this.rel="stylesheet"'><noscript><link rel=stylesheet href=/lib/fontawesome-free/all.min.0df5a33710e433de1f5415b1d47e4130ca7466aee5b81955f1045c4844bbb3ed.css integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0="></noscript><link rel=preload href=/lib/animate/animate.min.5fbaeb9f8e25d7e0143bae61d4b1802c16ce7390b96ceb2d498b0d96ff4c853f.css integrity="sha256-X7rrn44l1+AUO65h1LGALBbOc5C5bOstSYsNlv9MhT8=" as=style onload='this.onload=null,this.rel="stylesheet"'><noscript><link rel=stylesheet href=/lib/animate/animate.min.5fbaeb9f8e25d7e0143bae61d4b1802c16ce7390b96ceb2d498b0d96ff4c853f.css integrity="sha256-X7rrn44l1+AUO65h1LGALBbOc5C5bOstSYsNlv9MhT8="></noscript><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"ESPHome for Sonoff T5 family of Switches","inLanguage":"en-us","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/karlquinsland.com\/sonoff-t5-esphome\/"},"genre":"posts","keywords":"esphome, home assistant","wordcount":9554,"url":"https:\/\/karlquinsland.com\/sonoff-t5-esphome\/","datePublished":"2023-11-11T00:00:00+00:00","dateModified":"2023-11-11T00:00:00+00:00","publisher":{"@type":"Organization","name":""},"author":{"@type":"Person","name":"karl"},"description":"... and a brief teardown of the US version."}</script></head><body data-header-desktop=fixed data-header-mobile=auto><script type=text/javascript>(window.localStorage&&localStorage.getItem("theme")?localStorage.getItem("theme")==="dark":"auto"==="auto"?window.matchMedia("(prefers-color-scheme: dark)").matches:"auto"==="dark")&&document.body.setAttribute("theme","dark")</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=/ title=karl>Karl</a></div><div class=menu><div class=menu-inner><a class=menu-item href=/posts/><i class="fas fa-blog"></i> Posts </a><a class=menu-item href=/resume/ title="Hire Me!"><i class="fas fa-briefcase"></i> Résumé </a><a class=menu-item href=/tags/ title="Can you tell that I don't have a super consistent or clear taxonomy?"><i class="fas fa-tags"></i> Tags </a><a class=menu-item href=/contact/><i class="fas fa-address-book"></i> Contact </a><a class=menu-item href=/wander/ title="Discover the small web"><i class="fas fa-compass"></i> Wander </a><span class="menu-item delimiter"></span><span class="menu-item search" id=search-desktop>
 <input type=text placeholder="Search titles or contents..." id=search-input-desktop>
 <a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=Search><i class="fas fa-search fa-fw" aria-hidden=true></i>
 </a><a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=Clear><i class="fas fa-times-circle fa-fw" aria-hidden=true></i>
@@ -286,19 +286,19 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span><span class=lnt>209
 </span><span class=lnt>210
 </span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=c># A lightly modified version of a deployed sonoff T5 switch.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># This example demonstrates how to use multiple relays to control multiple different types of devices.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># In this case, two lights and a fan.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># Also demonstrates how to use the timer package to create a countdown timer for the fan.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c>##</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># Build / flash with:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># ❯ esphome -s version_hash $(git rev-parse --short HEAD) run garage.yaml</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c>#</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># This build results in a pretty full flash so be careful about adding more features!</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c>#     RAM:   [=         ]  13.0% (used 42704 bytes from 327680 bytes)</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c>#     Flash: [======    ]  61.3% (used 1124229 bytes from 1835008 bytes)</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c>##</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c># This example demonstrates how to use multiple relays to control multiple different types of devices.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c># In this case, two lights and a fan.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c># Also demonstrates how to use the timer package to create a countdown timer for the fan.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c>##</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c># Build / flash with:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c># ❯ esphome -s version_hash $(git rev-parse --short HEAD) run garage.yaml</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c>#</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c># This build results in a pretty full flash so be careful about adding more features!</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c>#     RAM:   [=         ]  13.0% (used 42704 bytes from 327680 bytes)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c>#     Flash: [======    ]  61.3% (used 1124229 bytes from 1835008 bytes)</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c>##</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>substitutions</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>substitutions</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># Upper case used for human facing labels</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>variant</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;Garage&#34;</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># Lower case is for hostname and machine facing labels</span><span class=w>
@@ -311,7 +311,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># This suffix will be appended to the id of each component to make it unique.</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>timer_one_instance_uid</span><span class=p>:</span><span class=w> </span><span class=l>fan</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>packages</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>packages</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>common</span><span class=p>:</span><span class=w> </span>!<span class=l>include packages/base.yaml</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># 3 relay version</span><span class=w>
@@ -349,8 +349,8 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class=line><span class=cl><span class=w>      </span><span class=c># being controlled. E.G.: &#34;.current_values.is_on()&#34; or &#34;.state&#34;</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>timer_control_entity_state_exp</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;id(out_2).state&#34;</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># Customize what each of the three relays do</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>light</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c># Customize what each of the three relays do</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>light</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># Relay 1 and 2 are the fan/light combo</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>Fan Light</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>out_1</span><span class=w>
@@ -387,8 +387,8 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>figure_out_which_partition_to_light</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>output_num</span><span class=p>:</span><span class=w> </span><span class=m>3</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># See: https://esphome.io/components/fan/binary.html</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>fan</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c># See: https://esphome.io/components/fan/binary.html</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>fan</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>Fan</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>out_2</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>binary</span><span class=w>
@@ -439,11 +439,11 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class=line><span class=cl><span class=w>                  </span><span class=nt>level</span><span class=p>:</span><span class=w> </span><span class=l>DEBUG</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>                  </span><span class=nt>format</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;${timer_one_instance_uid} turned off, countdown timer not armed&#34;</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c>##</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># Don&#39;t abstract the touch handling away behind a variant specific file.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># Allow for customizing what happens for a given touch event/location on a per-device basis.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c>##</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>tx_ultimate_touch</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c>##</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c># Don&#39;t abstract the touch handling away behind a variant specific file.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c># Allow for customizing what happens for a given touch event/location on a per-device basis.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c>##</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>tx_ultimate_touch</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>tx_touch</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>uart</span><span class=p>:</span><span class=w> </span><span class=l>uart_touch</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
@@ -619,16 +619,16 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>then</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>button.press</span><span class=p>:</span><span class=w> </span><span class=l>button_determine_mode</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># Throttle writing parameters to the internal flash memory to reduce ESP memory wear / degradation</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>preferences</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c># Throttle writing parameters to the internal flash memory to reduce ESP memory wear / degradation</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>preferences</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>flash_write_interval</span><span class=p>:</span><span class=w> </span><span class=l>15min</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>esp32</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>esp32</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># There is no platform.io board preset so we go with a generic one</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>board</span><span class=p>:</span><span class=w> </span><span class=l>esp32dev</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># Enable logging</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>logger</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c># Enable logging</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>logger</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c>#  hardware_uart: UART2</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>level</span><span class=p>:</span><span class=w> </span><span class=l>INFO</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>logs</span><span class=p>:</span><span class=w>
@@ -650,10 +650,10 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>uart_debug</span><span class=p>:</span><span class=w> </span><span class=l>INFO</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>ledc.output</span><span class=p>:</span><span class=w> </span><span class=l>INFO</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># Note: the content of these includes is not shown in this example as the values are unique to my setup</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># The name of the package matches the name of the component set up in the package so you can substitute</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c>#   your own values as needed. E.G.: you&#39;d set up your own MQTT connection and remove the one I have here.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>packages</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c># Note: the content of these includes is not shown in this example as the values are unique to my setup</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c># The name of the package matches the name of the component set up in the package so you can substitute</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c>#   your own values as needed. E.G.: you&#39;d set up your own MQTT connection and remove the one I have here.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>packages</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>time</span><span class=p>:</span><span class=w> </span>!<span class=l>include ../../../packages/ntp/home.yaml</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>mqtt</span><span class=p>:</span><span class=w> </span>!<span class=l>include ../../../packages/mqtt/home.yaml</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>ota</span><span class=p>:</span><span class=w> </span>!<span class=l>include ../../../packages/ota/home.yaml</span><span class=w>
@@ -667,21 +667,21 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c>##</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>ipv6</span><span class=p>:</span><span class=w> </span>!<span class=l>include ../../../packages/network/ipv6.yaml</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>text_sensor</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>text_sensor</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># See above GH issue</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>&lt;&lt;</span><span class=p>:</span><span class=w> </span>!<span class=l>include ../../../packages/sensor/ip_addr.wifi.yaml</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>button</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>button</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># Allow restarting via HA UI</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span>- !<span class=l>include ../../../packages/button/restart.external.config.yaml</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span>- !<span class=l>include ../../../packages/button/safemode.external.config.yaml</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>sensor</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>sensor</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># Misc diagnostic sensors</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>&lt;&lt;</span><span class=p>:</span><span class=w> </span>!<span class=l>include ../../../packages/sensor/esp32_internal_temp.yaml</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>&lt;&lt;</span><span class=p>:</span><span class=w> </span>!<span class=l>include ../../../packages/sensor/wifi_signal_strength.config.yaml</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>binary_sensor</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>binary_sensor</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>&lt;&lt;</span><span class=p>:</span><span class=w> </span>!<span class=l>include ../../../packages/binary_sensor/connection_status.config.yaml</span><span class=w>
 </span></span></span></code></pre></td></tr></table></div></div><h4 id=packagesbaseyaml><code>packages/base.yaml</code></h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt>  1
 </span><span class=lnt>  2
@@ -827,18 +827,18 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span><span class=lnt>142
 </span><span class=lnt>143
 </span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=c>##</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># Base configuration for the Sonoff T5 switches</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># See: https://templates.blakadder.com/sonoff_T5-1C-86</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># See: https://github.com/SmartHome-yourself/sonoff-tx-ultimate-for-esphome</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c>##</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>substitutions</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c># Base configuration for the Sonoff T5 switches</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c># See: https://templates.blakadder.com/sonoff_T5-1C-86</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c># See: https://github.com/SmartHome-yourself/sonoff-tx-ultimate-for-esphome</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c>##</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>substitutions</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># Displayed in HA frontend</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>friendly_name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;${variant} Switch&#34;</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>friendly_name_short</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;${variant}&#34;</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>hostname</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;${variant_lc}-switch&#34;</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>version_hash</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;not_set&#34;</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>external_components</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>external_components</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>source</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>git</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>url</span><span class=p>:</span><span class=w> </span><span class=l>https://github.com/SmartHome-yourself/sonoff-tx-ultimate-for-esphome</span><span class=w>
@@ -846,8 +846,8 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>components</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=l>tx_ultimate_touch</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># See: https://esphome.io/guides/configuration-types.html#packages</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>packages</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c># See: https://esphome.io/guides/configuration-types.html#packages</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>packages</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># Common configuration used in virtually every device on my network</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>esphome</span><span class=p>:</span><span class=w> </span>!<span class=l>include base.esphome.yaml</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
@@ -863,8 +863,8 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># Global &#34;ignore touch&#34; switch</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>touch_disable</span><span class=p>:</span><span class=w> </span>!<span class=l>include touch_disable.yaml</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># regardless of which variant, we have some common configurations for LED lights</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>light</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c># regardless of which variant, we have some common configurations for LED lights</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>light</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># Expose all LEDs as a single lamp</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;Mood Light&#34;</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>neopixelbus</span><span class=w>
@@ -931,8 +931,8 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>speed</span><span class=p>:</span><span class=w> </span><span class=m>10</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>width</span><span class=p>:</span><span class=w> </span><span class=m>20</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># Interact with the touch panel</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>uart</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c># Interact with the touch panel</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>uart</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>tx_pin</span><span class=p>:</span><span class=w> </span><span class=l>GPIO19</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>rx_pin</span><span class=p>:</span><span class=w> </span><span class=l>GPIO22</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>uart_touch</span><span class=w>
@@ -951,7 +951,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>sequence</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=l>UARTDebug::log_hex(direction, bytes, &#39; &#39;);</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>switch</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>switch</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># I tried to make this a switch that I could toggle from HA.</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># The hope was that It would function as a quick way to disable all touch inputs.</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># I was able to reliably trigger a crash when the switch was toggled.</span><span class=w>
@@ -997,14 +997,14 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span><span class=lnt>26
 </span><span class=lnt>27
 </span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=c># There is a very small motor w/ an offset weight that vibrates the switch.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># Rather than basic binary control we can use PWM for more interesting patterns.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c>##</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>output</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c># Rather than basic binary control we can use PWM for more interesting patterns.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c>##</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>output</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>ledc</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>pin</span><span class=p>:</span><span class=w> </span><span class=l>GPIO21</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>out_buzzer</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>script</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>script</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># Standard &#34;click&#34;</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>buzz_default</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>mode</span><span class=p>:</span><span class=w> </span><span class=l>single</span><span class=w>
@@ -1270,7 +1270,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span><span class=lnt>245
 </span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=c># Common bits for GPIO based timer</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>globals</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>globals</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># For the auto-off automation</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>glbl_timeout_armed_${instance_uid}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>bool</span><span class=w>
@@ -1288,18 +1288,18 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>restore_value</span><span class=p>:</span><span class=w> </span><span class=kc>no</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>initial_value</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;0&#34;</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># This particular implementation intentionally does not restart the timer when the time is running</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c>#   and changed. If the timer is running but the user changes the duration, the timer will keep</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c>#   counting ticks until it expires. Restarting the timer via HA is possible by either toggling the enabled</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c>#   switch or setting the time to 0, waiting 1 second for ESPHome to figure out that the timer has expires</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c>#   and then setting the time back / turning on the $thing.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># Not elegant so we provide this helper button to clear out the elapsed time and start the timer over.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># This can be more useful than the above method if the timer is running and the user wants to &#34;add&#34; more time.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># E.G.: Home Assistant can detect that $room is still occupied but that the timer is about to expire and can just</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c>#   press the button so the light does not go off while the room is still occupied instead of having to guess</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c>#   about what the user wants and just extending the timer by some arbitrary amount.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c>##</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>button</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c># This particular implementation intentionally does not restart the timer when the time is running</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c>#   and changed. If the timer is running but the user changes the duration, the timer will keep</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c>#   counting ticks until it expires. Restarting the timer via HA is possible by either toggling the enabled</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c>#   switch or setting the time to 0, waiting 1 second for ESPHome to figure out that the timer has expires</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c>#   and then setting the time back / turning on the $thing.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c># Not elegant so we provide this helper button to clear out the elapsed time and start the timer over.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c># This can be more useful than the above method if the timer is running and the user wants to &#34;add&#34; more time.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c># E.G.: Home Assistant can detect that $room is still occupied but that the timer is about to expire and can just</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c>#   press the button so the light does not go off while the room is still occupied instead of having to guess</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c>#   about what the user wants and just extending the timer by some arbitrary amount.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c>##</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>button</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;${entity_name} Timeout Restart&#34;</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>btn_restart_timer_${instance_uid}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>template</span><span class=w>
@@ -1312,8 +1312,8 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>value</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;0&#34;</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>script.execute</span><span class=p>:</span><span class=w> </span><span class=l>_timer_tick_${instance_uid}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># And a way to disable the timer</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>switch</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c># And a way to disable the timer</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>switch</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># Another arm/disarm toggle for the &#34;auto off&#34; timer</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;${entity_name} Timer&#34;</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>template</span><span class=w>
@@ -1362,10 +1362,10 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class=line><span class=cl><span class=sd>            // Don&#39;t wait for ESPHome to schedule updating the text sensor to re-draw the HA ui
 </span></span></span><span class=line><span class=cl><span class=sd>            id(s_txt_timeout_remaining_${instance_uid}).update();</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># Expose a control to HA so we can adjust timer length</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># See: https://esphome.io/components/number/template.html</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c>##</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>number</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c># Expose a control to HA so we can adjust timer length</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c># See: https://esphome.io/components/number/template.html</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c>##</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>number</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;${entity_name} Timeout Length&#34;</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>num_timeout_length_${instance_uid}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>template</span><span class=w>
@@ -1401,8 +1401,8 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class=line><span class=cl><span class=w>        </span><span class=c># And update the text sensor so HA displays the new value</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>        </span>- <span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;id(s_txt_timeout_remaining_${instance_uid}).update();&#34;</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># And while counting down, show the time remaining to HA</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>text_sensor</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c># And while counting down, show the time remaining to HA</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>text_sensor</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;${entity_name} Timeout Time Remaining&#34;</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>s_txt_timeout_remaining_${instance_uid}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>template</span><span class=w>
@@ -1443,7 +1443,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class=line><span class=cl><span class=sd>      ESP_LOGD(TAG, &#34;buff: %s&#34;, buff);
 </span></span></span><span class=line><span class=cl><span class=sd>      return to_string(buff);</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>script</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>script</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># End meaning the natural conclusion of the timer. Do whatever we&#39;re supposed to do when the timer fires off</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>on_timer_end_${instance_uid}</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>mode</span><span class=p>:</span><span class=w> </span><span class=l>single</span><span class=w>
@@ -1673,11 +1673,11 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span><span class=lnt>158
 </span><span class=lnt>159
 </span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nn>---</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># Create two buttons to trigger night/day mode immediately and expose them to HA for easy automation.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># Also offer up a template switch + global to control weather or not the sun triggers transition between modes.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c>##</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c># Create two buttons to trigger night/day mode immediately and expose them to HA for easy automation.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c># Also offer up a template switch + global to control weather or not the sun triggers transition between modes.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c>##</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>substitutions</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>substitutions</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># Found after some trial/error.</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># In dark room, make light.turn_on calls in HA dev tools, dialing the brightness down as much as possible</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># until lights no longer turned on and the general color/brightness was what I wanted for the room.</span><span class=w>
@@ -1693,7 +1693,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>dt_exp_blue</span><span class=p>:</span><span class=w> </span><span class=m>255</span><span class=l>/255.0;</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>dt_exp_bright</span><span class=p>:</span><span class=w> </span><span class=m>100</span><span class=l>/255.0;</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>globals</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>globals</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>glbl_automation_sun_position_triggers_light_modes</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>bool</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=c># Store to flash on change; not expected to change often</span><span class=w>
@@ -1706,7 +1706,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>restore_value</span><span class=p>:</span><span class=w> </span><span class=kc>yes</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>initial_value</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;false&#34;</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>script</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>script</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=c># Note that this only figures out WHICH mode we should be in, it does not actually change any light colors.</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>figure_out_normal_regime_mode</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>mode</span><span class=p>:</span><span class=w> </span><span class=l>single</span><span class=w>
@@ -1726,7 +1726,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class=line><span class=cl><span class=w>                </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>glbl_normal_regime_mode_is_nighttime</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>                </span><span class=nt>value</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;true&#34;</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>button</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>button</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;Daytime Mode&#34;</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>template</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>button_daytime_mode</span><span class=w>
@@ -1770,8 +1770,8 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class=line><span class=cl><span class=sd>          }
 </span></span></span><span class=line><span class=cl><span class=sd>          id(resume_normal_regime_for_leds).execute();</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># Switch to control different bits of functionality</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>switch</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c># Switch to control different bits of functionality</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>switch</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;Sun position changes light modes&#34;</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>template</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>sw_sun_position_triggers_light_modes</span><span class=w>
@@ -1798,8 +1798,8 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class=line><span class=cl><span class=w>        </span>- <span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=p>|-</span><span class=sd>
 </span></span></span><span class=line><span class=cl><span class=sd>            id(glbl_automation_sun_position_triggers_light_modes) = false;</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># See: https://esphome.io/components/sun.html</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>sun</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c># See: https://esphome.io/components/sun.html</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>sun</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>sun_position</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>latitude</span><span class=p>:</span><span class=w> </span>!<span class=l>secret home_latitude_deg</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>longitude</span><span class=p>:</span><span class=w> </span>!<span class=l>secret home_longitude_deg</span><span class=w>
@@ -1839,9 +1839,9 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span><span class=lnt>6
 </span><span class=lnt>7
 </span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=c># I can&#39;t find a ton of evidence that there actually IS a status LED on the T5... but it costs nothing to include this.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># See: https://github.com/SmartHome-yourself/sonoff-tx-ultimate-for-esphome/blob/main/tx_ultimate_local.yaml#L53</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c>##</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>status_led</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c># See: https://github.com/SmartHome-yourself/sonoff-tx-ultimate-for-esphome/blob/main/tx_ultimate_local.yaml#L53</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c>##</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>status_led</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span><span class=nt>pin</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>number</span><span class=p>:</span><span class=w> </span><span class=l>GPIO33</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>inverted</span><span class=p>:</span><span class=w> </span><span class=kc>True</span><span class=w>
@@ -1885,7 +1885,7 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span><span class=lnt>38
 </span><span class=lnt>39
 </span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-cpp data-lang=cpp><span class=line><span class=cl><span class=cp>#include</span> <span class=cpf>&#34;esphome.h&#34;</span><span class=cp>
-</span></span></span><span class=line><span class=cl><span class=cp></span>
+</span></span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl><span class=cm>/*
 </span></span></span><span class=line><span class=cl><span class=cm>  ESPHome does not have a template light component but it does have &#34;custom&#34; light component.
 </span></span></span><span class=line><span class=cl><span class=cm>  As it turns out, the backbones example that they provide for setting up a custom light component
@@ -1912,16 +1912,16 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span><span class=line><span class=cl>  <span class=p>}</span>
 </span></span><span class=line><span class=cl>
 </span></span><span class=line><span class=cl>  <span class=c1>// Called when there&#39;s a new state to write out to hardware.
-</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=c1>// The whole point of this Light is that there IS no hardware to drive so we do nothing
-</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=kt>void</span> <span class=nf>write_state</span><span class=p>(</span><span class=n>LightState</span> <span class=o>*</span><span class=n>state</span><span class=p>)</span> <span class=k>override</span>
+</span></span></span><span class=line><span class=cl>  <span class=c1>// The whole point of this Light is that there IS no hardware to drive so we do nothing
+</span></span></span><span class=line><span class=cl>  <span class=kt>void</span> <span class=nf>write_state</span><span class=p>(</span><span class=n>LightState</span> <span class=o>*</span><span class=n>state</span><span class=p>)</span> <span class=k>override</span>
 </span></span><span class=line><span class=cl>  <span class=p>{</span>
 </span></span><span class=line><span class=cl>    <span class=c1>// TODO: I might need to implement the minimum brightness here
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1>// Implementation here might be useful: https://esphome.io/api/float__output_8cpp_source#l00016
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1>// See: https://github.com/esphome/feature-requests/issues/920
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1>// float red, green, blue;
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1>// state-&gt;current_values_as_rgb(&amp;red, &amp;green, &amp;blue);
-</span></span></span><span class=line><span class=cl><span class=c1></span>    <span class=c1>// ESP_LOGD(&#34;TemplateLight&#34;, &#34;Color is. R: %f, G: %f, B: %f.&#34;, red, green, blue);
-</span></span></span><span class=line><span class=cl><span class=c1></span>  <span class=p>}</span>
+</span></span></span><span class=line><span class=cl>    <span class=c1>// Implementation here might be useful: https://esphome.io/api/float__output_8cpp_source#l00016
+</span></span></span><span class=line><span class=cl>    <span class=c1>// See: https://github.com/esphome/feature-requests/issues/920
+</span></span></span><span class=line><span class=cl>    <span class=c1>// float red, green, blue;
+</span></span></span><span class=line><span class=cl>    <span class=c1>// state-&gt;current_values_as_rgb(&amp;red, &amp;green, &amp;blue);
+</span></span></span><span class=line><span class=cl>    <span class=c1>// ESP_LOGD(&#34;TemplateLight&#34;, &#34;Color is. R: %f, G: %f, B: %f.&#34;, red, green, blue);
+</span></span></span><span class=line><span class=cl>  <span class=p>}</span>
 </span></span><span class=line><span class=cl><span class=p>};</span>
 </span></span></code></pre></td></tr></table></div></div><h4 id=packagestouch_disableyaml><code>packages/touch_disable.yaml</code></h4><div class=highlight><div class=chroma><table class=lntable><tr><td class=lntd><pre tabindex=0 class=chroma><code><span class=lnt> 1
 </span><span class=lnt> 2
@@ -1958,17 +1958,17 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span><span class=lnt>33
 </span><span class=lnt>34
 </span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=c># For reasons that I don&#39;t understand, toggling the GPIO that powers the touch panel causes a crash.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># I would have preferred using that to lock out touch inputs but this plan-B works well enough.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># This is useful for &#34;guest&#34; or &#34;cleaning&#34; mode when you don&#39;t want the touch panel to do anything.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c>##</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>globals</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c># I would have preferred using that to lock out touch inputs but this plan-B works well enough.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c># This is useful for &#34;guest&#34; or &#34;cleaning&#34; mode when you don&#39;t want the touch panel to do anything.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c>##</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>globals</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>glbl_sw_touch_enable</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>bool</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>restore_value</span><span class=p>:</span><span class=w> </span><span class=kc>no</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>initial_value</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;true&#34;</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>switch</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>switch</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;Touch Enable&#34;</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>template</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>sw_sw_touch_disable</span><span class=w>
@@ -2369,21 +2369,21 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span><span class=lnt>376
 </span><span class=lnt>377
 </span></code></pre></td><td class=lntd><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=c># Each variant has a slightly different set of template lights to turn on/off for day/night mode.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># The c2 and c1 versions of this file are mostly identical except for:</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c>#     - the number of the template lights; the C1 variant only has a left/right partition light instead of 2 or three</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c>#         left/right partition lights as would be present on the C2 or C3 variants.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c>#     - the specific led numbers used in each partition are different; all variants have 10 LEDs on each side but</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c>#         those 10 total must be broken up into 1,2,3 partitions based on the variant.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c>#     - the number of outputs; the C1 variant only has 1 outputs instead of 2 or 3</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c>#</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># Each variant file must define/implement the same scripts though.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># WHAT each script does is slightly different per variant. The C1 variant of `do_nighttime_mode_active` only</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c>#   adjusts `template_light_1` since there is no template_light_2 or template_light_3 on the C1 variant.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c>#</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># Likewise, the C2 variant of `figure_out_which_partition_to_light` only has case 1 and case 2 defined since</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c>#   there is no `leds_button_3_right` or `leds_button_3_left` on the C2 variant.</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c>##</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>script</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c># The c2 and c1 versions of this file are mostly identical except for:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c>#     - the number of the template lights; the C1 variant only has a left/right partition light instead of 2 or three</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c>#         left/right partition lights as would be present on the C2 or C3 variants.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c>#     - the specific led numbers used in each partition are different; all variants have 10 LEDs on each side but</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c>#         those 10 total must be broken up into 1,2,3 partitions based on the variant.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c>#     - the number of outputs; the C1 variant only has 1 outputs instead of 2 or 3</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c>#</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c># Each variant file must define/implement the same scripts though.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c># WHAT each script does is slightly different per variant. The C1 variant of `do_nighttime_mode_active` only</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c>#   adjusts `template_light_1` since there is no template_light_2 or template_light_3 on the C1 variant.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c>#</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c># Likewise, the C2 variant of `figure_out_which_partition_to_light` only has case 1 and case 2 defined since</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c>#   there is no `leds_button_3_right` or `leds_button_3_left` on the C2 variant.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c>##</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>script</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>do_nighttime_mode_active</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>then</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>      </span>- <span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=p>|-</span><span class=sd>
@@ -2499,12 +2499,12 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>figure_out_which_partition_to_light</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>output_num</span><span class=p>:</span><span class=w> </span><span class=m>3</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c>##</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># See the LEDs section of readme.md</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># There are 10 LEDs on each side, we have 3 groups which means we&#39;ll need 4 &#34;buffers&#34;</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># 10 - 4 = 6 and 6/3 is 2 so we&#39;ll use 2 leds per partition</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c>##</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>light</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c>##</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c># See the LEDs section of readme.md</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c># There are 10 LEDs on each side, we have 3 groups which means we&#39;ll need 4 &#34;buffers&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c># 10 - 4 = 6 and 6/3 is 2 so we&#39;ll use 2 leds per partition</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c>##</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>light</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;Button TOP Left (internal)&#34;</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>partition</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>leds_button_1_left</span><span class=w>
@@ -2732,8 +2732,8 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class=line><span class=cl><span class=w>              </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>figure_out_which_partition_to_light</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>              </span><span class=nt>output_num</span><span class=p>:</span><span class=w> </span><span class=m>3</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=c># Set up the gpio outputs for the relays</span><span class=w>
-</span></span></span><span class=line><span class=cl><span class=w></span><span class=nt>output</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=c># Set up the gpio outputs for the relays</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>output</span><span class=p>:</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>relay_1</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>gpio</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>pin</span><span class=p>:</span><span class=w> </span><span class=l>GPIO18</span><span class=w>
@@ -2745,6 +2745,6 @@ Those comments - in addition to the &ldquo;features&rdquo; described above - sho
 </span></span></span><span class=line><span class=cl><span class=w>  </span>- <span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>relay_3</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>gpio</span><span class=w>
 </span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>pin</span><span class=p>:</span><span class=w> </span><span class=l>GPIO27</span><span class=w>
-</span></span></span></code></pre></td></tr></table></div></div></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>Updated on 2023-11-11</span></div></div><div class=post-info-line><div class=post-info-md><span><a class=link-to-markdown href=/sonoff-t5-esphome/index.md target=_blank>Read Markdown</a></span></div><div class=post-info-share><span></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw" aria-hidden=true></i>&nbsp;<a href=/tags/esphome/>Esphome</a>,&nbsp;<a href=/tags/home-assistant/>Home-Assistant</a></section><section><span><a href=javascript:void(0); onclick=window.history.back()>Back</a></span>&nbsp;|&nbsp;<span><a href=/>Home</a></span></section></div><div class=post-nav><a href=/yeelight-monitor-lamp-teardown-esphome/ class=prev rel=prev title="ESPHome on the Yeelight Monitor Light Bar Pro"><i class="fas fa-angle-left fa-fw" aria-hidden=true></i>ESPHome on the Yeelight Monitor Light Bar Pro</a>
-<a href=/pulse-eight-hdmi-cec-injector-teardown/ class=next rel=next title="Inside of the Pulse-Eight HDMI CEC Injector.">Inside of the Pulse-Eight HDMI CEC Injector.<i class="fas fa-angle-right fa-fw" aria-hidden=true></i></a></div></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line>¯\_(ツ)_/¯</div><div class=footer-line>Powered by <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.152.2">Hugo</a> | Theme - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.3.0"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden=true></i> LoveIt</a></div><div class=footer-line itemscope itemtype=http://schema.org/CreativeWork><i class="far fa-copyright fa-fw" aria-hidden=true></i><span itemprop=copyrightYear>2019 - 2026</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank>karl</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top"><i class="fas fa-arrow-up fa-fw" aria-hidden=true></i>
-</a><a href=# id=view-comments class=fixed-button title="View Comments"><i class="fas fa-comment fa-fw" aria-hidden=true></i></a></div><link rel=stylesheet href=/lib/katex/katex.min.76e39bd605d45b2d1944123c66608b0c8bb9baeb70720b212571531c7cf9bc2a.css integrity="sha256-duOb1gXUWy0ZRBI8ZmCLDIu5uutwcgshJXFTHHz5vCo="><script type=text/javascript src=/lib/autocomplete/autocomplete.min.ae2da1bd62c6469ee27770ad1cddf2e8296d8a7f6d85b091463e5200c5e320af.js integrity="sha256-ri2hvWLGRp7id3CtHN3y6Cltin9thbCRRj5SAMXjIK8="></script><script type=text/javascript src=/lib/lunr/lunr.min.08a93c0120364b01159db3c287f39b2180bb740334472bda0675bd3f18981676.js integrity="sha256-CKk8ASA2SwEVnbPCh/ObIYC7dAM0RyvaBnW9PxiYFnY="></script><script type=text/javascript src=/lib/lazysizes/lazysizes.min.3d9120fa621da6d613c1698b7014ec6bdf4620366e8f2b7b547059f4b6f6272b.js integrity="sha256-PZEg+mIdptYTwWmLcBTsa99GIDZujyt7VHBZ9Lb2Jys="></script><script type=text/javascript src=/lib/clipboard/clipboard.min.e17a1d816e13c0826e0ed7febfabc3277f45571234bde0bf9120829a7169edc9.js integrity="sha256-4XodgW4TwIJuDtf+v6vDJ39FVxI0veC/kSCCmnFp7ck="></script><script type=text/javascript src=/lib/katex/katex.min.eb18207487161674e717087c317db14ac1a62dadaecccb802499ce173bfeb739.js integrity="sha256-6xggdIcWFnTnFwh8MX2xSsGmLa2uzMuAJJnOFzv+tzk="></script><script type=text/javascript src=/lib/katex/contrib/auto-render.min.cb7f4ca60ed5dc3e258415f8c7a3b46d4a93578a52adf83011f18a7f190e7602.js integrity="sha256-y39Mpg7V3D4lhBX4x6O0bUqTV4pSrfgwEfGKfxkOdgI="></script><script type=text/javascript src=/lib/katex/contrib/copy-tex.min.52ce78fab4860d24ef22128a52ce24ca01368a9034457a565a1d3fccbab0ddbb.js integrity="sha256-Us54+rSGDSTvIhKKUs4kygE2ipA0RXpWWh0/zLqw3bs="></script><script type=text/javascript src=/lib/katex/contrib/mhchem.min.5c0a121a8b490afc85860a522347aeb34fb508c6b23044e5d29f6b2194227b51.js integrity="sha256-XAoSGotJCvyFhgpSI0eus0+1CMayMETl0p9rIZQie1E="></script><script type=text/javascript>window.config={code:{copyTitle:"Copy to clipboard",maxShownLines:10},comment:{},math:{delimiters:[{display:!0,left:"$$",right:"$$"},{display:!0,left:"\\[",right:"\\]"},{display:!0,left:"\\begin{equation}",right:"\\end{equation}"},{display:!0,left:"\\begin{equation*}",right:"\\end{equation*}"},{display:!0,left:"\\begin{align}",right:"\\end{align}"},{display:!0,left:"\\begin{align*}",right:"\\end{align*}"},{display:!0,left:"\\begin{alignat}",right:"\\end{alignat}"},{display:!0,left:"\\begin{alignat*}",right:"\\end{alignat*}"},{display:!0,left:"\\begin{gather}",right:"\\end{gather}"},{display:!0,left:"\\begin{CD}",right:"\\end{CD}"},{display:!1,left:"$",right:"$"},{display:!1,left:"\\(",right:"\\)"}],strict:!1},search:{highlightTag:"em",lunrIndexURL:"/index.json",maxResultLength:10,noResultsFound:"No results found",snippetLength:30,type:"lunr"}}</script><script type=text/javascript src=/js/theme.min.612a51a43205bbcf3b4af348dc2e8aa60f77f4fe5535ebc57f13054b61607d6c.js integrity="sha256-YSpRpDIFu887SvNI3C6Kpg939P5VNevFfxMFS2FgfWw="></script><script type=text/javascript>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-3WZ55XG701",{anonymize_ip:!0})</script><script type=text/javascript src="https://www.googletagmanager.com/gtag/js?id=G-3WZ55XG701" async></script></body></html>
+</span></span></span></code></pre></td></tr></table></div></div></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>Updated on 2023-11-11</span></div></div><div class=post-info-line><div class=post-info-md><span><a class=link-to-markdown href=/sonoff-t5-esphome/index.md target=_blank>Read Markdown</a></span></div><div class=post-info-share><span></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags fa-fw" aria-hidden=true></i>&nbsp;<a href=/tags/esphome/>Esphome</a>,&nbsp;<a href=/tags/home-assistant/>Home Assistant</a></section><section><span><a href=javascript:void(0); onclick=window.history.back()>Back</a></span>&nbsp;|&nbsp;<span><a href=/>Home</a></span></section></div><div class=post-nav><a href=/yeelight-monitor-lamp-teardown-esphome/ class=prev rel=prev title="ESPHome on the Yeelight Monitor Light Bar Pro"><i class="fas fa-angle-left fa-fw" aria-hidden=true></i>ESPHome on the Yeelight Monitor Light Bar Pro</a>
+<a href=/pulse-eight-hdmi-cec-injector-teardown/ class=next rel=next title="Inside of the Pulse-Eight HDMI CEC Injector.">Inside of the Pulse-Eight HDMI CEC Injector.<i class="fas fa-angle-right fa-fw" aria-hidden=true></i></a></div></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line>¯\_(ツ)_/¯</div><div class=footer-line>Powered by <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.160.1">Hugo</a> | Theme - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.3.0"><i class="far fa-kiss-wink-heart fa-fw" aria-hidden=true></i> LoveIt</a></div><div class=footer-line itemscope itemtype=http://schema.org/CreativeWork><i class="far fa-copyright fa-fw" aria-hidden=true></i><span itemprop=copyrightYear>2019 - 2026</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank>karl</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top"><i class="fas fa-arrow-up fa-fw" aria-hidden=true></i>
+</a><a href=# id=view-comments class=fixed-button title="View Comments"><i class="fas fa-comment fa-fw" aria-hidden=true></i></a></div><link rel=stylesheet href=/lib/katex/katex.min.76e39bd605d45b2d1944123c66608b0c8bb9baeb70720b212571531c7cf9bc2a.css integrity="sha256-duOb1gXUWy0ZRBI8ZmCLDIu5uutwcgshJXFTHHz5vCo="><script type=text/javascript src=/lib/autocomplete/autocomplete.min.ae2da1bd62c6469ee27770ad1cddf2e8296d8a7f6d85b091463e5200c5e320af.js integrity="sha256-ri2hvWLGRp7id3CtHN3y6Cltin9thbCRRj5SAMXjIK8="></script><script type=text/javascript src=/lib/lunr/lunr.min.08a93c0120364b01159db3c287f39b2180bb740334472bda0675bd3f18981676.js integrity="sha256-CKk8ASA2SwEVnbPCh/ObIYC7dAM0RyvaBnW9PxiYFnY="></script><script type=text/javascript src=/lib/lazysizes/lazysizes.min.3d9120fa621da6d613c1698b7014ec6bdf4620366e8f2b7b547059f4b6f6272b.js integrity="sha256-PZEg+mIdptYTwWmLcBTsa99GIDZujyt7VHBZ9Lb2Jys="></script><script type=text/javascript src=/lib/clipboard/clipboard.min.e17a1d816e13c0826e0ed7febfabc3277f45571234bde0bf9120829a7169edc9.js integrity="sha256-4XodgW4TwIJuDtf+v6vDJ39FVxI0veC/kSCCmnFp7ck="></script><script type=text/javascript src=/lib/katex/katex.min.eb18207487161674e717087c317db14ac1a62dadaecccb802499ce173bfeb739.js integrity="sha256-6xggdIcWFnTnFwh8MX2xSsGmLa2uzMuAJJnOFzv+tzk="></script><script type=text/javascript src=/lib/katex/contrib/auto-render.min.cb7f4ca60ed5dc3e258415f8c7a3b46d4a93578a52adf83011f18a7f190e7602.js integrity="sha256-y39Mpg7V3D4lhBX4x6O0bUqTV4pSrfgwEfGKfxkOdgI="></script><script type=text/javascript src=/lib/katex/contrib/copy-tex.min.52ce78fab4860d24ef22128a52ce24ca01368a9034457a565a1d3fccbab0ddbb.js integrity="sha256-Us54+rSGDSTvIhKKUs4kygE2ipA0RXpWWh0/zLqw3bs="></script><script type=text/javascript src=/lib/katex/contrib/mhchem.min.5c0a121a8b490afc85860a522347aeb34fb508c6b23044e5d29f6b2194227b51.js integrity="sha256-XAoSGotJCvyFhgpSI0eus0+1CMayMETl0p9rIZQie1E="></script><script type=text/javascript>window.config={code:{copyTitle:"Copy to clipboard",maxShownLines:10},comment:{},math:{delimiters:[{display:!0,left:"$$",right:"$$"},{display:!0,left:"\\[",right:"\\]"},{display:!0,left:"\\begin{equation}",right:"\\end{equation}"},{display:!0,left:"\\begin{equation*}",right:"\\end{equation*}"},{display:!0,left:"\\begin{align}",right:"\\end{align}"},{display:!0,left:"\\begin{align*}",right:"\\end{align*}"},{display:!0,left:"\\begin{alignat}",right:"\\end{alignat}"},{display:!0,left:"\\begin{alignat*}",right:"\\end{alignat*}"},{display:!0,left:"\\begin{gather}",right:"\\end{gather}"},{display:!0,left:"\\begin{CD}",right:"\\end{CD}"},{display:!1,left:"$",right:"$"},{display:!1,left:"\\(",right:"\\)"}],strict:!1},search:{highlightTag:"em",lunrIndexURL:"/index.json",maxResultLength:10,noResultsFound:"No results found",snippetLength:30,type:"lunr"}}</script><script type=text/javascript src=/js/theme.min.fcc4b2598536d354c4d84962be4444c5927aaea63d2b149db5eaf96cf32220c1.js integrity="sha256-/MSyWYU201TE2ElivkRExZJ6rqY9KxSdter5bPMiIME="></script><script type=text/javascript>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-3WZ55XG701",{anonymize_ip:!0})</script><script type=text/javascript src="https://www.googletagmanager.com/gtag/js?id=G-3WZ55XG701" async></script></body></html>

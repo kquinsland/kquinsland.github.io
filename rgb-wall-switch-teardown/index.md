@@ -1,5 +1,15 @@
 # Generic RGB Wall Switch teardown
 
+Where 'generic' means 'SSMS118 clone'
+
+Canonical: https://karlquinsland.com/rgb-wall-switch-teardown/
+Published: 2022-01-01
+Updated: 2022-01-01
+Tags: tuya
+
+
+---
+
 Yep! Another teardown post! This one was also a cheap "because i'm curious" post.
 
 ----

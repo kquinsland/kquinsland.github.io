@@ -1,5 +1,15 @@
 # #TwoMinuteTeardown: SLZB-MRW10
 
+Network attached Multiprotocol Smart Home Adapter from SMLIGHT
+
+Canonical: https://karlquinsland.com/slzb-mrw10/
+Published: 2025-12-26
+Updated: 2025-12-26
+Tags: two-minute-teardown
+
+
+---
+
 # Two Minute Teardown: SMLIGHT SLZB-MRW10
 
 To make a very long story short, I need to move away from my _very_ old [802.15.4](https://en.wikipedia.org/wiki/IEEE_802.15.4) radios plugged into a _very_ old Raspberry Pi for my smart home setup.

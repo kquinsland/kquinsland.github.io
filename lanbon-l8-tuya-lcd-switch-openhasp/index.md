@@ -1,5 +1,15 @@
 # Using Home Assistant to dynamically layout openHasp widgets
 
+And a tangential update to a blakadder.com post about a mystery device that turned out to be the Lanbon L8
+
+Canonical: https://karlquinsland.com/lanbon-l8-tuya-lcd-switch-openhasp/
+Published: 2022-01-18
+Updated: 2022-01-18
+Tags: TuYa, openHasp
+
+
+---
+
 # Background
 
 This is one of those posts that sat in the `Drafts` folder for _way_ too long.

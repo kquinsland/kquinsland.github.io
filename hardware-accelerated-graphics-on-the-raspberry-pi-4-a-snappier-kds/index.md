@@ -1,5 +1,15 @@
 # Hardware accelerated graphics on the raspberry pi4 for a speedier KDS
 
+How is X11 still so unpleasant to use and configure in 2021?!
+
+Canonical: https://karlquinsland.com/hardware-accelerated-graphics-on-the-raspberry-pi-4-a-snappier-kds/
+Published: 2021-11-20
+Updated: 2021-11-20
+Tags: raspberry-pi, xorg, KDS
+
+
+---
+
 Surfacing the right information at the right time in the right place is a difficult but essential task for any credible automation system.
 
 I have been experimenting with the concept of a Home Assistant powered [KDS](https://www.qsrautomations.com/blog/kitchen-automation/what-is-a-kds/) for a few years now and have found that the refrigerator happens to be an especially good place to surface some information and device controls.

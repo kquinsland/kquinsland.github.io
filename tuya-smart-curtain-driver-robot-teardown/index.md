@@ -1,5 +1,15 @@
 # Tuya Smart Curtain Driver Robot Teardown
 
+Something here
+
+Canonical: https://karlquinsland.com/tuya-smart-curtain-driver-robot-teardown/
+Published: 2021-12-11
+Updated: 2021-12-11
+Tags: tuya
+
+
+---
+
 I am trying something new out with this post; some mix of hardware teardown and a brief product review.
 
 -----

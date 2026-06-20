@@ -1,5 +1,15 @@
 # #TwoMinuteTeardown: Panel Mount Liquid Level Indicator
 
+Doing some spring cleaning and found this thing.
+
+Canonical: https://karlquinsland.com/generic-liquid-level-display/
+Published: 2025-02-15
+Updated: 2025-02-15
+Tags: two-minute-teardown, home-assistant, home-automation
+
+
+---
+
 # Generic liquid level meter teardown
 
 I ordered this part years ago for a project I eventually canceled.

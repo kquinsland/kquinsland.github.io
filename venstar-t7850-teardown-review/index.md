@@ -1,5 +1,15 @@
 # Quick look inside Venstar T7850 - One of the only 'no-cloud' WiFi Thermostats that plays nice with Home Assistant
 
+And some initial thoughts / technical details
+
+Canonical: https://karlquinsland.com/venstar-t7850-teardown-review/
+Published: 2022-04-23
+Updated: 2022-04-23
+Tags: teardown, home assistant
+
+
+---
+
 {{< admonition info >}}
 As of 2022-05-11, there is an update on my experience with the thermostat [below](#an-update-on-wifi-connectivity)!
 {{< /admonition >}}

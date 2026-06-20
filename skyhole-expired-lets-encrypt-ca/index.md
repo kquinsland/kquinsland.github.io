@@ -1,5 +1,15 @@
 # Using new Lets Encrypt intermediate chain with SkyHole
 
+Another victim of the recently expired Lets Encrypt Root Certificate
+
+Canonical: https://karlquinsland.com/skyhole-expired-lets-encrypt-ca/
+Published: 2021-10-01
+Updated: 2021-10-01
+Tags: troubleshooting, LetsEncrypt
+
+
+---
+
 If you somehow missed it, one of the certificates used by Lets Encrypt chain of trust [expired](https://letsencrypt.org/docs/dst-root-ca-x3-expiration-september-2021/) this week.
 As expected, things broke.... including my private, filtered DNS over TLS server - [SkyHole](https://github.com/kquinsland/skyhole/). Below is a condensed form of my notes to create the exact document that I wish I had while trying to triage broken DNS on my phone.
 

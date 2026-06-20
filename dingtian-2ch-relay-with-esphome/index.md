@@ -1,5 +1,15 @@
 # ESPHome on dingtian-tech relay modules
 
+Yet another 'karl puts ESPHome on something cheap from AliExpress' posts.
+
+Canonical: https://karlquinsland.com/dingtian-2ch-relay-with-esphome/
+Published: 2023-04-21
+Updated: 2023-04-21
+Tags: Tasmota, esphome, home-assistant
+
+
+---
+
 <!-- markdownlint-disable-file MD002 -->
 
 This is another one of those quick "I wish that was easier to find when I was googling it" posts.

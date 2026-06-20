@@ -1,5 +1,15 @@
 # Systemd Resolved With Consul Agent
 
+get *.consul domains resolved from within docker containers without resorting to dnsmasq
+
+Canonical: https://karlquinsland.com/systemd-resolved-with-consul-agent/
+Published: 2020-07-21
+Updated: 2020-07-21
+Tags: consul, systemd, systemd-resolved
+
+
+---
+
 
 I pieced this technique together a while back and created a gist for it. I'm creating _this_ post as a pointer to that gist so I have something that's a bit easier to reference and refer others to.
 

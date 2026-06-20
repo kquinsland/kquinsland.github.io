@@ -1,5 +1,15 @@
 # Teardown and Home Assistant integration with two generic Chinese 'smart' power strips.
 
+Taking a look inside the `BN-LINK U158WT` and `POWSAV AHR-083` and flashing both with a custom firmware.
+
+Canonical: https://karlquinsland.com/esphome-power-strips/
+Published: 2023-01-15
+Updated: 2023-01-15
+Tags: teardown, esphome, tasmota, OpenBeken, sonoff-S31
+
+
+---
+
 <!-- markdownlint-disable-file MD002 -->
 
 I love the Sonoff-S31 smart plugs.

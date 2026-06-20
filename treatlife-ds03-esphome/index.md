@@ -1,5 +1,15 @@
 # Using ESPHome with the Treatlife DS03
 
+Its not me, Tasmota. It's you. Lets agree to still be friends, though!
+
+Canonical: https://karlquinsland.com/treatlife-ds03-esphome/
+Published: 2022-06-09
+Updated: 2022-06-09
+Tags: esphome, home-assistant, home-automation
+
+
+---
+
 
 {{< admonition tip "Post depreciation notice" >}}
 This is an update to the [`Fixing Home Assistant discovery with Tasmota on the Treatlife DS03` post]({{<relref "posts/2021/05/Treatlife-DS03-Tasmota-Autoconfig-With-Homeassistant" >}}).

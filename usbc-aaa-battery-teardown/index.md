@@ -1,5 +1,15 @@
 # #TwoMinuteTeardown: USB-C charged AAA battery
 
+It's an AAA battery with the charger built in! Teardown and analysis.
+
+Canonical: https://karlquinsland.com/usbc-aaa-battery-teardown/
+Published: 2026-02-01
+Updated: 2026-02-01
+Tags: two-minute-teardown
+
+
+---
+
 # Two Minute Teardown: USB-C charged AAA battery
 
 First, these things have existed for quite a few years now but people still seem to be discovering them.

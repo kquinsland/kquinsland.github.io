@@ -1,5 +1,15 @@
 # Multi-Material Printing Hack for Prusa XL
 
+A quick hack to print with three materials on a dual-headed Prusa XL.
+
+Canonical: https://karlquinsland.com/multi-material-printing-hack/
+Published: 2024-12-25
+Updated: 2024-12-25
+Tags: short-posts, tip
+
+
+---
+
 <!-- markdownlint-disable-file MD002 -->
 
 In the same spirit as [an earlier post]({{< relref "posts/2024/02/extending-the-mk3s-print-area" >}}), here is a quick hack I used to get my **dual**-headed Prusa XL printer to print with **three** materials at once.

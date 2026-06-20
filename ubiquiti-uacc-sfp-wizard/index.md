@@ -1,5 +1,13 @@
 # #TwoMinuteTeardown: Ubiquiti SFP Wizard
 
+Canonical: https://karlquinsland.com/ubiquiti-uacc-sfp-wizard/
+Published: 2025-12-18
+Updated: 2025-12-18
+Tags: two-minute-teardown
+
+
+---
+
 # Two Minute Teardown: Ubiquiti SFP Wizard
 
 {{< admonition important "Disregard note below about 1.0.5" >}}

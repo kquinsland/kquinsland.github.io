@@ -1,68 +1,103 @@
-# llms.txt
+# karl
 
-Welcome to Karl Quinsland's website! This site showcases the portfolio, professional background, and interests of Karl Quinsland: a tinkerer, maker, seasoned Site Reliability Engineer (SRE), and Infrastructure Operations expert.
+> Karl's little corner of the internet
 
-## Purpose
+Karl Quinsland's personal site, professional resume, and technical blog about infrastructure, reliability, home automation, IoT, electronics, and project notes.
 
-The site provides:
+## Primary Resources
+- [Resume](https://karlquinsland.com/resume/) ([Markdown](https://karlquinsland.com/resume/index.md)): Professional background and downloadable resume artifacts.
+- [Contact](https://karlquinsland.com/contact/) ([Markdown](https://karlquinsland.com/contact/index.md)): Contact and security disclosure details.
+- [Posts archive](https://karlquinsland.com/posts/): Complete blog archive.
+- [Tags](https://karlquinsland.com/tags/): Topic index.
 
-- A résumé highlighting Karl's professional experience and offering insight into his projects.
-- In-depth tutorials and project walkthroughs focusing primarily on home automation, IoT, electronics, and other technical topics.
+## Recent Blog Posts
+- [#TwoMinuteTeardown: USB-C charged AAA battery](https://karlquinsland.com/usbc-aaa-battery-teardown/index.md): It's an AAA battery with the charger built in! Teardown and analysis.
+- [#TwoMinuteTeardown: Corporate Systems Engineering SSHAAC00-S041911](https://karlquinsland.com/cse-sshaac00-s041911/index.md): Utility grade Air Conditioning Load Shed Device teardown.
+- [Frigate in Kubernetes](https://karlquinsland.com/frigate-in-k8s/index.md): Frigate: Kubernetes edition This is a follow up to my ‘Frigate From Scratch’ post. Most of that post is still relevant today but I have since moved almost all of my workloads into …
+- [#TwoMinuteTeardown: Multiple LED Controllers](https://karlquinsland.com/led-controllers/index.md): Introduction Bit of a change in format; instead of one massive post for all the misc. 11-11 teardowns, I’m grouping them. This post is the “LED Controller” group. I managed to snag …
+- [#TwoMinuteTeardown: SLZB-MRW10](https://karlquinsland.com/slzb-mrw10/index.md): Network attached Multiprotocol Smart Home Adapter from SMLIGHT
+- [#TwoMinuteTeardown: Ubiquiti SFP Wizard](https://karlquinsland.com/ubiquiti-uacc-sfp-wizard/index.md): Two Minute Teardown: Ubiquiti SFP Wizard Disregard note below about 1.0.5 To make a long story short, I allocated a few hours to build a tool that can read/write the SFP module’s …
+- [#TwoMinuteTeardown: Hamgeek YK-1000H NTP](https://karlquinsland.com/hamgeek-yk-1000h-gps-ntp-server/index.md): Two Minute Teardown: Hamgeek YK-1000H NTP Curiosity got the better of me when browsing AliExpress and I spotted this GPS NTP server for under $100 USD. I needed a cart-stuffer …
+- [#TwoMinuteTeardown: Duogalia AM70 Optical Fiber Multi-Meter](https://karlquinsland.com/duogalia-am70-optical-fiber-multi-meter/index.md): Two Minute Teardown: Duogalia A-M70 Optical Fiber Multi-Meter While diagnosing a flakey fiber link, i ran into a situation where a basic “flashing red” visual fault finder was not …
+- [TESmart HKS801-P23-USBK KVM Teardown](https://karlquinsland.com/tesmart-hks801-p23-usbk-kvm-teardown/index.md): KVM died, so I bought a new one. Different brand/make/model but similar architecture and internals.
+- [#TwoMinuteTeardown: Petkit Eversweet Solo 2](https://karlquinsland.com/petkit-eversweet-solo2-teardown/index.md): Doing research for a project and got curious; I took mine apart so you don't have to.
 
-## About Karl Quinsland
+## All Markdown Pages
+- [Contact](https://karlquinsland.com/contact/index.md)
+- [#TwoMinuteTeardown: Corporate Systems Engineering SSHAAC00-S041911](https://karlquinsland.com/cse-sshaac00-s041911/index.md)
+- [#TwoMinuteTeardown: Duogalia AM70 Optical Fiber Multi-Meter](https://karlquinsland.com/duogalia-am70-optical-fiber-multi-meter/index.md)
+- [#TwoMinuteTeardown: Hamgeek YK-1000H NTP](https://karlquinsland.com/hamgeek-yk-1000h-gps-ntp-server/index.md)
+- [#TwoMinuteTeardown: Home Assistant Voice - Preview Edition](https://karlquinsland.com/home-assistant-voice-pe-teardown/index.md)
+- [#TwoMinuteTeardown: Multiple LED Controllers](https://karlquinsland.com/led-controllers/index.md)
+- [#TwoMinuteTeardown: Panel Mount Liquid Level Indicator](https://karlquinsland.com/generic-liquid-level-display/index.md)
+- [#TwoMinuteTeardown: Petkit Eversweet Solo 2](https://karlquinsland.com/petkit-eversweet-solo2-teardown/index.md)
+- [#TwoMinuteTeardown: SLZB-MRW10](https://karlquinsland.com/slzb-mrw10/index.md)
+- [#TwoMinuteTeardown: Ubiquiti SFP Wizard](https://karlquinsland.com/ubiquiti-uacc-sfp-wizard/index.md)
+- [#TwoMinuteTeardown: USB-C charged AAA battery](https://karlquinsland.com/usbc-aaa-battery-teardown/index.md)
+- [#TwoMinuteTeardown: Wozniak WPX-0001 Qi Tester](https://karlquinsland.com/wozniak-wpx-0001a-qi-tester-teardown/index.md)
+- [Adding an airborne particulate mater sensor to WS3 Weather Station](https://karlquinsland.com/ws3-weather-station-pm25-sensor/index.md)
+- [Adding an APC UPS to Home Assistant energy dashboard](https://karlquinsland.com/apc-ups-energy-in-homeassistant/index.md)
+- [AKASO DL12 Dashcam Teardown](https://karlquinsland.com/akaso-dl12-teardown/index.md)
+- [AliExpress 11.11 Sale Teardowns](https://karlquinsland.com/aliexpress-11-11-sale-teardowns/index.md)
+- [AliExpress 11.11 Sale Teardowns (2024 edition)](https://karlquinsland.com/aliexpress-11-11-sale-teardowns-2024/index.md)
+- [Altinex TE460-137 Teardown](https://karlquinsland.com/altinex-te460-137-teardown/index.md)
+- [Amcrest IP Cameras: security isn't a feature, it's a punchline](https://karlquinsland.com/amcrest-ip-cam-security-isnt-a-feature-its-a-punchine/index.md)
+- [Announcing The Missing ToDoist Tools](https://karlquinsland.com/the-missing-todoist-tools/index.md)
+- [Arizer XQ2 Teardown](https://karlquinsland.com/arizer-xq2-teardown/index.md)
+- [Arris SB8200 Prometheus Exporter](https://karlquinsland.com/arris-sb8200-prometheus-exporter/index.md)
+- [Configuring additional ZwaveJS entities in Home Assistant over MQTT](https://karlquinsland.com/zwavejs-autodiscovery-additional-entities/index.md)
+- [Dynamic timers in ESPHome](https://karlquinsland.com/esphome-dynamic-timer/index.md)
+- [electronics lab: enhanced psu](https://karlquinsland.com/electronics-lab-enhanced-bench-psu/index.md)
+- [Enhanced Home Assistant Switch Plate (HASP)](https://karlquinsland.com/enhanced-homeassistantswitchplate/index.md)
+- [ESPHome for Sinilink PC remotes](https://karlquinsland.com/esphome-sinilink-pc-remotes/index.md)
+- [ESPHome for Sonoff T5 family of Switches](https://karlquinsland.com/sonoff-t5-esphome/index.md)
+- [ESPHome on dingtian-tech relay modules](https://karlquinsland.com/dingtian-2ch-relay-with-esphome/index.md)
+- [ESPHome on the Yeelight Monitor Light Bar Pro](https://karlquinsland.com/yeelight-monitor-lamp-teardown-esphome/index.md)
+- [Fixing Home Assistant discovery with Tasmota on the Treatlife DS03](https://karlquinsland.com/treatlife-ds03-tasmota-autoconfig-with-homeassistant/index.md)
+- [Frigate From Scratch guide](https://karlquinsland.com/frigate-install/index.md)
+- [Frigate in Kubernetes](https://karlquinsland.com/frigate-in-k8s/index.md)
+- [Generic RGB Wall Switch teardown](https://karlquinsland.com/rgb-wall-switch-teardown/index.md)
+- [Hardware accelerated graphics on the raspberry pi4 for a speedier KDS](https://karlquinsland.com/hardware-accelerated-graphics-on-the-raspberry-pi-4-a-snappier-kds/index.md)
+- [Hello World](https://karlquinsland.com/hello-world/index.md)
+- [home lab: consolidating multiple PSUs](https://karlquinsland.com/home-lab-consolidated-psu/index.md)
+- [home lab: mini 'universal' patch panel](https://karlquinsland.com/home-lab-keystone-bracket/index.md)
+- [home lab: simple printable cable org](https://karlquinsland.com/home-lab-simple-printable-cable-org/index.md)
+- [I made a thing: GPS/PPS clock source for ntpd](https://karlquinsland.com/yet-another-gps-pps-opnsense/index.md)
+- [I made a thing: Yet another 3d printed speaker](https://karlquinsland.com/3d-printed-subwoofer-and-arylic-amp-enclosure/index.md)
+- [Inside a generic/white-label HDMI KVM Switch](https://karlquinsland.com/hdmi-kvm-teardown-and-esphome/index.md)
+- [Inside of the Pulse-Eight HDMI CEC Injector.](https://karlquinsland.com/pulse-eight-hdmi-cec-injector-teardown/index.md)
+- [Installing Tasmota on the Xiaomi Desk Lamp](https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/index.md)
+- [Integrating a dumb coffee maker with Home Assistant via ESPHome](https://karlquinsland.com/improved-esphome-coffee-automation/index.md)
+- [Integrating ESPHome with a cheap Geiger Counter](https://karlquinsland.com/esphome-geiger-counter/index.md)
+- [Monitoring APC AP7900 switched PDU with Prometheus and Grafana](https://karlquinsland.com/monitoring-ap7900-switched-pdu-prometheus-grafana/index.md)
+- [Monitoring HVAC system with ESPHome](https://karlquinsland.com/esphome-hvac-monitor/index.md)
+- [Multi-Material Printing Hack for Prusa XL](https://karlquinsland.com/multi-material-printing-hack/index.md)
+- [PoE at a distance caused terrible cat5 speeds](https://karlquinsland.com/poe-at-a-distance-ruined-my-cat5-speeds/index.md)
+- [PoE powered Stack Light](https://karlquinsland.com/poe-stack-light/index.md)
+- [Quick and dirty hack to extend the MK3S print area.](https://karlquinsland.com/extending-the-mk3s-print-area/index.md)
+- [Quick look inside the OMRON Evolv BP7000 Blood Pressure cuff](https://karlquinsland.com/omron-bp7000-evolv-teardown/index.md)
+- [Quick look inside two Ali Express mmWave presence detection sensors](https://karlquinsland.com/two-mmwave-sensors/index.md)
+- [Quick look inside Venstar T7850 - One of the only 'no-cloud' WiFi Thermostats that plays nice with Home Assistant](https://karlquinsland.com/venstar-t7850-teardown-review/index.md)
+- [Resume](https://karlquinsland.com/resume/index.md)
+- [Roborock S8 Pro Ultra Teardown](https://karlquinsland.com/roborock-s8-pro-ultra-dock-teardown/index.md)
+- [RSS and Home Assistant: early warning for grid blackouts](https://karlquinsland.com/rss-and-homeassistant-for-early-blackout-warning/index.md)
+- [Shelly Pro 4PM teardown](https://karlquinsland.com/shelly-pro-4pm-teardown/index.md)
+- [Solum 2.2 inch Electronic Shelf Label Teardown](https://karlquinsland.com/solum-el022hwra-teardown/index.md)
+- [Systemd Resolved With Consul Agent](https://karlquinsland.com/systemd-resolved-with-consul-agent/index.md)
+- [Teardown and Home Assistant integration with two generic Chinese 'smart' power strips.](https://karlquinsland.com/esphome-power-strips/index.md)
+- [TESmart HKS801-P23-USBK KVM Teardown](https://karlquinsland.com/tesmart-hks801-p23-usbk-kvm-teardown/index.md)
+- [Tuya Smart Curtain Driver Robot Teardown](https://karlquinsland.com/tuya-smart-curtain-driver-robot-teardown/index.md)
+- [Two quick tricks for better HomeAssistant automations](https://karlquinsland.com/two-tricks-for-better-homeassistant-automations/index.md)
+- [Two Tasmota rules](https://karlquinsland.com/two-tasmota-rules/index.md)
+- [Unbrick a rievtech PLC after failed firmware upgrade](https://karlquinsland.com/unbrick-rievtech-plc-failed-firmware-update/index.md)
+- [Using ESPHome to Automatically restart frozen cable modem](https://karlquinsland.com/automatic-modem-restart-with-esphome/index.md)
+- [Using ESPHome with the Treatlife DS03](https://karlquinsland.com/treatlife-ds03-esphome/index.md)
+- [Using Home Assistant to dynamically layout openHasp widgets](https://karlquinsland.com/lanbon-l8-tuya-lcd-switch-openhasp/index.md)
+- [Using new Lets Encrypt intermediate chain with SkyHole](https://karlquinsland.com/skyhole-expired-lets-encrypt-ca/index.md)
+- [Using Qi charging to fix the biggest design flaw with the HidrateSpark Steel Pro bottle](https://karlquinsland.com/hidrate-spark-qi-retrofit/index.md)
+- [Watch Band RFID fob](https://karlquinsland.com/watch-band-rfid/index.md)
 
-Karl Quinsland is a Senior SRE and Infrastructure Operations Engineer with over a decade of experience in:
+## Notes
 
-- Cloud platforms (AWS specialist with 10+ years of experience).
-- Infrastructure as Code (IaC) using tools like Terraform, Kubernetes, and Argo.
-- Programming in Python, Rust, and other languages.
-- Automation and optimization of processes to enhance reliability and performance.
-
-Karl is passionate about:
-
-- Leveraging generative AI to accelerate workflows.
-- Automation in both professional and personal life.
-- Creating systems that combine technical precision with a delightful user experience.
-
-In addition, Karl is an advocate of Docs as Code and observability practices, and he enjoys contributing to open-source projects.
-
-### Skills and Expertise
-
-Karl's technical expertise includes:
-
-- **Cloud Platforms**: Advanced AWS, DigitalOcean and Azure/Google Cloud.
-- **IaC and Operations Tools**: Terraform, Kubernetes, Argo, Consul, Vault, KubeFlow and more.
-- **Programming Languages**: Advanced Python, beginner Rust, and experience with Golang, Ruby, PHP, and C++.
-- **Containerization**: Expertise in Docker and Kubernetes for scalable deployments both.
-
-## Docs
-
-### Résumé
-
-- View the full résumé: [Karl Quinsland - Résumé](https://karlquinsland.com/resume/)
-
-### Blog Posts
-
-Explore all posts in the [Posts Archive](https://karlquinsland.com/posts/).
-The posts most recently published are featured in the [posts.txt](https://karlquinsland.com/posts.txt) file.
-
-### Tags
-
-Discover posts by [Tags](https://karlquinsland.com/tags/) to find content on:
-
-- Home Assistant, ESPHome, Home Automation, Tasmota, and more.
-- Unique series such as "Two-Minute Teardown" and project-based tags like 3D Printing and KiCad.
-
-## Contact
-
-- [Contact Karl](https://karlquinsland.com/contact) for inquiries, collaborations, or feedback.
-
-## Licensing
-
-- Content is primarily licensed under [CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/), though some notable exceptions apply.
-
----
-
-This `/llms.txt` file is curated to help LLMs access relevant resources efficiently.
-Dive deeper into the linked sections for comprehensive details.
-Details on the file specification can be found here: [llms.txt Specification](https://llmstxt.org)
+- Per-page Markdown is published as `index.md` beside each HTML page.
+- Markdown output preserves source Markdown, so some pages may include Hugo shortcodes where the HTML page renders richer media.

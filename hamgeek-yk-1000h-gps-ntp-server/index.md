@@ -1,5 +1,13 @@
 # #TwoMinuteTeardown: Hamgeek YK-1000H NTP
 
+Canonical: https://karlquinsland.com/hamgeek-yk-1000h-gps-ntp-server/
+Published: 2025-12-12
+Updated: 2025-12-12
+Tags: two-minute-teardown
+
+
+---
+
 # Two Minute Teardown: Hamgeek YK-1000H NTP
 
 {{<figure name="feat-render">}}

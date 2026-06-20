@@ -1,5 +1,15 @@
 # #TwoMinuteTeardown: Corporate Systems Engineering SSHAAC00-S041911
 
+Utility grade Air Conditioning Load Shed Device teardown.
+
+Canonical: https://karlquinsland.com/cse-sshaac00-s041911/
+Published: 2026-01-24
+Updated: 2026-01-24
+Tags: two-minute-teardown
+
+
+---
+
 # Corporate Systems Engineering SSHAAC00-S041911
 
 Electric utilities can employ ["load shed" devices](http://corporatesystems.com/?page_id=64) throughout their grid to manage load.

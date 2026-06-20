@@ -1,5 +1,15 @@
 # Monitoring APC AP7900 switched PDU with Prometheus and Grafana
 
+Monitor all the things!
+
+Canonical: https://karlquinsland.com/monitoring-ap7900-switched-pdu-prometheus-grafana/
+Published: 2020-12-27
+Updated: 2020-12-27
+Tags: prometheus, grafana, SNMP
+
+
+---
+
 The APC AP7900 is a 1U single phase PDU with 8 switchable outlets and a network interface. It's been EoL'd and can be had for less than 20% of it's original price on [eBay](https://www.ebay.com/sch/i.html?_nkw=AP7900). The network interface is so underpowered tha it can't [support any modern cryptographic ciphers](http://origin-faq.pro-face.com/resources/sites/PROFACE/content/live/FAQS/300000/FA300635/en_US/APC%20AP7000%20Series%20End%20of%20Life%20Notice.pdf).
 
 So with that, here's a revised copy of my notes from the process of getting the device reset, updated and monitored.

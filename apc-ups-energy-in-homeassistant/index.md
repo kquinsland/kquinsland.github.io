@@ -1,5 +1,13 @@
 # Adding an APC UPS to Home Assistant energy dashboard
 
+Canonical: https://karlquinsland.com/apc-ups-energy-in-homeassistant/
+Published: 2021-09-05
+Updated: 2021-09-05
+Tags: SNMP, home-assistant
+
+
+---
+
 
 
 **EDIT:** (2021-09-19): After some [back and forth](https://old.reddit.com/r/homeassistant/comments/pi3pv2/how_to_use_an_apc_ups_as_an_energy_dashboard/hbqudh5/) with [/u/Laxarus](https://old.reddit.com/user/Laxarus), there is now a simpler method! The `snmp` platform still does not support setting `device_class`, but wrapping the sensor in another template sensor is not required; just do so in your [`customize.yaml`](https://www.home-assistant.io/docs/configuration/customizing-devices/). I have called this out [below]({{< relref "#edit-2021-09-19" >}}).

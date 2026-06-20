@@ -1,5 +1,13 @@
 # #TwoMinuteTeardown: Wozniak WPX-0001 Qi Tester
 
+Canonical: https://karlquinsland.com/wozniak-wpx-0001a-qi-tester-teardown/
+Published: 2025-04-20
+Updated: 2025-04-20
+Tags: two-minute-teardown
+
+
+---
+
 # Qi wireless power tester
 
 The [Qi standard](https://en.wikipedia.org/wiki/Qi_(standard)) for transmitting power is ~ 15 years old and has been ubiquitous for at least a decade now.

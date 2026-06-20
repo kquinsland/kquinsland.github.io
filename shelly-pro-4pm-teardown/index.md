@@ -1,5 +1,15 @@
 # Shelly Pro 4PM teardown
 
+All new product line, still familiar internals.
+
+Canonical: https://karlquinsland.com/shelly-pro-4pm-teardown/
+Published: 2022-01-01
+Updated: 2022-01-01
+Tags: shelly
+
+
+---
+
 Yet another teardown post!
 
 Curiosity got the better of me while putting together a BOM for a project and I decided to add one of the new Shelly devices to my order to bump the total over the threshold for a nice discount.

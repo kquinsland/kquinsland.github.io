@@ -1,5 +1,15 @@
 # RSS and Home Assistant: early warning for grid blackouts
 
+California Electric Grid Regulators publish alerts indicating a pending blackout
+
+Canonical: https://karlquinsland.com/rss-and-homeassistant-for-early-blackout-warning/
+Published: 2020-08-16
+Updated: 2020-08-16
+Tags: home assistant, automation
+
+
+---
+
 California, like most of the West Coast, is currently in the middle of a prolonged and serious heat-wave. Record breaking temperatures results in a distribution grid stressed beyond it's abilities which guarantees blackouts.
 
 The [organization that oversees the electric grid](https://en.wikipedia.org/wiki/California_Independent_System_Operator) in California publishes RSS feeds for various types of grid related news and events. All the CA ISO RSS feeds are published [here](http://www.caiso.com/Pages/GlobalRSS.aspx), but the two feed that I'm using are:

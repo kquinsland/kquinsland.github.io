@@ -1,4 +1,9 @@
-# 
+# Contact
+
+Canonical: https://karlquinsland.com/contact/
+
+
+---
 
 <!--
 Simple contact me page

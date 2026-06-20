@@ -1,5 +1,13 @@
 # Unbrick a rievtech PLC after failed firmware upgrade
 
+Canonical: https://karlquinsland.com/unbrick-rievtech-plc-failed-firmware-update/
+Published: 2021-01-13
+Updated: 2021-01-13
+Tags: PLC, recovery, rant
+
+
+---
+
 This is "reference" post for anybody else that happens to have this same very specific problem.
 
 I was looking for a way to incorporate some of the _many_ cheap / industrial grade sensors from AliExpress with Home Assistant.

@@ -1,5 +1,11 @@
 # Resume
 
+Canonical: https://karlquinsland.com/resume/
+Tags: resume
+
+
+---
+
 
 ## Download 💾
 

@@ -1,5 +1,13 @@
 # #TwoMinuteTeardown: Duogalia AM70 Optical Fiber Multi-Meter
 
+Canonical: https://karlquinsland.com/duogalia-am70-optical-fiber-multi-meter/
+Published: 2025-12-10
+Updated: 2025-12-10
+Tags: two-minute-teardown
+
+
+---
+
 # Two Minute Teardown: Duogalia A-M70 Optical Fiber Multi-Meter
 
 {{<figure name="feat-render">}}

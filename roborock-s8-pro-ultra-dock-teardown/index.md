@@ -1,5 +1,15 @@
 # Roborock S8 Pro Ultra Teardown
 
+Just the docking station for now, robot coming soon
+
+Canonical: https://karlquinsland.com/roborock-s8-pro-ultra-dock-teardown/
+Published: 2023-05-06
+Updated: 2023-05-06
+Tags: teardown
+
+
+---
+
 # Roborock S8 teardown
 
 I recently acquired the new S8 from Roborock to replace my rapidly failing roomba.

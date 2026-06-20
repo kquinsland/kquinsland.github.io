@@ -1,5 +1,13 @@
 # home lab: simple printable cable org
 
+Canonical: https://karlquinsland.com/home-lab-simple-printable-cable-org/
+Published: 2020-07-18
+Updated: 2020-07-18
+Tags: fusion-360, has:download, organization
+
+
+---
+
 Quick / another "i made a thing!" post.
 
 {{< figure name="installed" >}}

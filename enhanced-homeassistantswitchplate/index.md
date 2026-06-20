@@ -1,5 +1,15 @@
 # Enhanced Home Assistant Switch Plate (HASP)
 
+A few new hardware features and software tweaks to make the wonderful HASP project even better
+
+Canonical: https://karlquinsland.com/enhanced-homeassistantswitchplate/
+Published: 2020-10-01
+Updated: 2020-10-01
+Tags: fusion-360, has:download, home assistant
+
+
+---
+
 The [HASwitchPlate](https://github.com/aderusha/HASwitchPlate/) project by `aderusha` is brilliant. He's managed to arrange some relatively cheap commodity hardware into a package that conveniently fits into a prime location for interacting with Home Automation - the light switch. The entire package sips power off of the already present mains wiring and connects to any MQTT broker via the esp8266 chip. As the HASP was designed to be used with Home Assistant, the humble 2.4 inch LCD transforms into an accessible control surface for an incredibly powerful home automation platform!
 
 ## Modifications

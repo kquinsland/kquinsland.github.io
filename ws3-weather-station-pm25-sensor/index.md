@@ -1,5 +1,15 @@
 # Adding an airborne particulate mater sensor to WS3 Weather Station
 
+An update to ESPHome custom_component to capture particulate matter sensor values from WS3 Weather Station
+
+Canonical: https://karlquinsland.com/ws3-weather-station-pm25-sensor/
+Published: 2020-08-27
+Updated: 2020-08-27
+Tags: fusion-360, has:download, esphome, home assistant
+
+
+---
+
 A while back, I [posted a small bit of code](https://github.com/kquinsland/ws3-to-esphome-bridge/) that could decode the data from the ubiquitous WS3 Weather Station and make it accessible to the amazing [HomeAssistant](https://www.home-assistant.io/) via the wonderful [ESPHome](https://esphome.io/) project. Since then, my weather station has been dutifully collecting data that's been invaluable for augmenting automation that deals with indoor climate.
 
 As the numerous wild fires in California rage on, [the air quality has gone from bad to dangerous](https://www.forbes.com/sites/ericmack/2020/08/21/wildfire-smoke-blankets-the-west-as-california-records-worlds-worst-air-quality/). Knowing that outside was warmer, but less humid, was no longer enough to make a smart decision about weather or not to open the windows for some cost-effective cooling. I now need HomeAssistant to be aware of how clean the outside air was before making the decision to pipe in outdoor air.

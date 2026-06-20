@@ -1,5 +1,15 @@
 # Inside a generic/white-label HDMI KVM Switch
 
+Still searching for the perfect KVM but in the mean time here's an ESPHome integration.
+
+Canonical: https://karlquinsland.com/hdmi-kvm-teardown-and-esphome/
+Published: 2022-04-16
+Updated: 2022-04-16
+Tags: esphome, home assistant
+
+
+---
+
 If you're here just for "how do I get it working with ESPHome" bit, skip to the [ESPHome Component](#esphome-component) section below.
 
 -----

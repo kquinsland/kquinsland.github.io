@@ -1,5 +1,15 @@
 # TESmart HKS801-P23-USBK KVM Teardown
 
+KVM died, so I bought a new one. Different brand/make/model but similar architecture and internals.
+
+Canonical: https://karlquinsland.com/tesmart-hks801-p23-usbk-kvm-teardown/
+Published: 2025-05-17
+Updated: 2025-05-17
+Tags: teardown
+
+
+---
+
 # TESmart HKS801-P23-USBK KVM Teardown
 
 Recently, one of the USB ports on [my previous KVM switch]({{< relref "posts/2022/04/hdmi-kvm-teardown-and-esphome" >}}) failed. Since it's a critical piece of equipment, I needed a replacement the same day. The original AliExpress product page was no longer available; the seller seems to have closed up shop entirely.

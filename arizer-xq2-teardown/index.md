@@ -1,5 +1,15 @@
 # Arizer XQ2 Teardown
 
+And a hacky way to remote control it with ESPhome via IR Remote Control
+
+Canonical: https://karlquinsland.com/arizer-xq2-teardown/
+Published: 2024-07-01
+Updated: 2024-07-01
+Tags: two-minute-teardown, esphome, home assistant
+
+
+---
+
 <!-- markdownlint-disable-file MD002 -->
 # Arizer XQ2 Teardown
 

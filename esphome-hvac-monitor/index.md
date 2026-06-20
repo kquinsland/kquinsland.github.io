@@ -1,5 +1,15 @@
 # Monitoring HVAC system with ESPHome
 
+A central air quality and filter monitoring system using ESPHome and Home Assistant
+
+Canonical: https://karlquinsland.com/esphome-hvac-monitor/
+Published: 2024-11-02
+Updated: 2024-11-02
+Tags: esphome, home-assistant, home-automation
+
+
+---
+
 # Using ESPHome to Monitor HVAC System
 
 Here's a quick "show-and-tell" about a recent project I completed.

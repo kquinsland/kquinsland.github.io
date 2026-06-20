@@ -1,5 +1,15 @@
 # Quick and dirty hack to extend the MK3S print area.
 
+Easier than you'd think but probably don't make it a habit?
+
+Canonical: https://karlquinsland.com/extending-the-mk3s-print-area/
+Published: 2024-02-04
+Updated: 2024-02-04
+Tags: short-posts, tip
+
+
+---
+
 <!-- markdownlint-disable-file MD002 -->
 
 This isn't going to be a long post. I'm working on a larger project but hit a snag and I didn't find any easy/obvious solutions online so I thought I'd share what I came up with.

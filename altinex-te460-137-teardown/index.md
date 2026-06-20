@@ -1,5 +1,15 @@
 # Altinex TE460-137 Teardown
 
+Tis the season for tearing down things!
+
+Canonical: https://karlquinsland.com/altinex-te460-137-teardown/
+Published: 2023-12-02
+Updated: 2023-12-02
+Tags: two-minute-teardown
+
+
+---
+
 # Altinex TE460-137 Teardown
 
 It is surprisingly hard to find a device that can dump details about the various protocols and negotiated standards for a HDMI connection.

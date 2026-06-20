@@ -1,5 +1,15 @@
 # Fixing Home Assistant discovery with Tasmota on the Treatlife DS03
 
+A working Tasmota rule to automatically configure the DS03 as a 4 speed fan controller
+
+Canonical: https://karlquinsland.com/treatlife-ds03-tasmota-autoconfig-with-homeassistant/
+Published: 2021-05-12
+Updated: 2021-05-12
+Tags: tasmota, home-assistant, home-automation
+
+
+---
+
 {{< admonition warning "Update" >}}
 This post is now deprecated. It has been superseded by  [`Using ESPHome with the Treatlife DS03`]({{<relref "posts/2022/06/treatlife-ds03-esphome" >}}) from 2022-06.
 {{< /admonition >}}

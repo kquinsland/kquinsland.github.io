@@ -1,5 +1,15 @@
 # Using Qi charging to fix the biggest design flaw with the HidrateSpark Steel Pro bottle
 
+Why wasn't this thing Qi compatible from the beginning?!
+
+Canonical: https://karlquinsland.com/hidrate-spark-qi-retrofit/
+Published: 2022-06-10
+Updated: 2022-06-10
+Tags: tuya, 3dPrintable
+
+
+---
+
 {{< admonition info "Parts and Instructions" >}}
 The majority of this post covers the "why" this mod came to be. If you're just looking for the mod, you can find
 the 3d printable parts, BOM and instructions in [accompanying github repo](https://github.com/kquinsland/hidrate-spark-qi-charging).

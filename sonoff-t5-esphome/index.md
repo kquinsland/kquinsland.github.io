@@ -1,5 +1,15 @@
 # ESPHome for Sonoff T5 family of Switches
 
+... and a brief teardown of the US version.
+
+Canonical: https://karlquinsland.com/sonoff-t5-esphome/
+Published: 2023-11-11
+Updated: 2023-11-11
+Tags: esphome, home assistant
+
+
+---
+
 # ESPHome for Sonoff T5 family of Switches
 
 It's hard to beat Sonoff switches when it comes to well-made, affordable, Home Assistant compatible switches.

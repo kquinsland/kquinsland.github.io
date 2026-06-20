@@ -1,5 +1,15 @@
 # Using ESPHome to Automatically restart frozen cable modem
 
+Alternate title: Something I probably wouldn't have had to hack together if Comcast wasn't so terrible.
+
+Canonical: https://karlquinsland.com/automatic-modem-restart-with-esphome/
+Published: 2024-06-09
+Updated: 2024-06-09
+Tags: esphome, home-assistant, home-automation
+
+
+---
+
 <!-- markdownlint-disable-file MD002 -->
 
 Part of the reason for developing my [SB8200 monitor]({{< relref "posts/2024/03/arris-sb8200-prometheus-exporter" >}}) was to get to the bottom of some infrequent but regular outages.

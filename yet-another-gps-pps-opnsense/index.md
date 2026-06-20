@@ -1,5 +1,13 @@
 # I made a thing: GPS/PPS clock source for ntpd
 
+Canonical: https://karlquinsland.com/yet-another-gps-pps-opnsense/
+Published: 2022-10-15
+Updated: 2022-10-15
+Tags: fusion-360, KiCad, opnsense
+
+
+---
+
 {{< admonition tip >}}
 This is just a 'pointer' post.
 

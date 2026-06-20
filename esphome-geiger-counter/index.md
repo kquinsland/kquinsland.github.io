@@ -1,5 +1,15 @@
 # Integrating ESPHome with a cheap Geiger Counter
 
+This 'i made an IoT geiger counter' post isn't like all the other ones, I swear!
+
+Canonical: https://karlquinsland.com/esphome-geiger-counter/
+Published: 2022-11-09
+Updated: 2022-11-09
+Tags: esphome, home assistant
+
+
+---
+
 Yes, there have [been](https://community.home-assistant.io/t/geiger-counter-with-ha-integration/107660/12) _loads_ of [people](https://www.rhelectronics.store/radiation-detector-geiger-counter-diy-kit-second-edition) doing [similar](https://www.connectix.nl/connecting-a-geiger-counter-to-home-assistant/) [things](https://old.reddit.com/r/homeassistant/comments/l92fbf/doomsday_sensor_v10/)! ESPHome already has a tutorial [covering _exactly_ this](https://esphome.io/cookbook/geiger-counter.html)!
 
 I'm writing this up because the approach that I ended up taking was _not_ the intended/planned approach.

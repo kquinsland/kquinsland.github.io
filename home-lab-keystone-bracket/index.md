@@ -1,5 +1,13 @@
 # home lab: mini 'universal' patch panel
 
+Canonical: https://karlquinsland.com/home-lab-keystone-bracket/
+Published: 2020-07-05
+Updated: 2020-07-05
+Tags: fusion-360, has:download
+
+
+---
+
 This is another brief "i made a thing!" posts.
 
 ## Version 2

@@ -1,5 +1,15 @@
 # AKASO DL12 Dashcam Teardown
 
+Two minute teardown edition
+
+Canonical: https://karlquinsland.com/akaso-dl12-teardown/
+Published: 2024-08-01
+Updated: 2024-08-01
+Tags: two-minute-teardown
+
+
+---
+
 <!-- markdownlint-disable-file MD002 -->
 # AKASO DL12 Dashcam Teardown
 

@@ -1,5 +1,15 @@
 # I made a thing: Yet another 3d printed speaker
 
+and enclosure for 2.1 amplifier module.
+
+Canonical: https://karlquinsland.com/3d-printed-subwoofer-and-arylic-amp-enclosure/
+Published: 2022-08-31
+Updated: 2022-08-31
+Tags: fusion-360
+
+
+---
+
 <!-- markdownlint-disable-file MD002 -->
 
 # Background
