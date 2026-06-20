@@ -21,11 +21,12 @@ I managed to snag the following on Ali Express:&lt;/p&gt;
 After some research, the &lt;a href="https://smlight.tech/product/slzbmrw10" target="_blank" rel="noopener noreffer "&gt;SMLIGHT SLZB-MRW10&lt;/a&gt; is new, uses modern radios and ships with firmware that &lt;a href="https://www.zigbee2mqtt.io/advanced/remote-adapter/connect_to_a_remote_adapter.html" target="_blank" rel="noopener noreffer "&gt;makes it trivial to move packet processing into compute distributed on the other end of the network&lt;/a&gt;.&lt;/p&gt;</description></item><item><title>#TwoMinuteTeardown: Ubiquiti SFP Wizard</title><link>https://karlquinsland.com/ubiquiti-uacc-sfp-wizard/</link><pubDate>Thu, 18 Dec 2025 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/ubiquiti-uacc-sfp-wizard/</guid><description>&lt;h1 id="two-minute-teardown-ubiquiti-sfp-wizard"&gt;Two Minute Teardown: Ubiquiti SFP Wizard&lt;/h1&gt;
 &lt;div class="details admonition important open"&gt;
  &lt;div class="details-summary admonition-title"&gt;
- &lt;i class="icon fas fa-pencil-alt fa-fw" aria-hidden="true"&gt;&lt;/i&gt;Disregard note below about 1.0.5&lt;i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"&gt;&lt;/i&gt;
+ &lt;i class="icon fas fa-pencil-alt" aria-hidden="true"&gt;&lt;/i&gt;Disregard note below about 1.0.5&lt;i class="details-icon fas fa-angle-right" aria-hidden="true"&gt;&lt;/i&gt;
  &lt;/div&gt;
  &lt;div class="details-content"&gt;
  &lt;div class="admonition-content"&gt;&lt;p&gt;To make a long story short, I allocated a few hours to build a &lt;a href="https://github.com/kquinsland/sfp-eeprom-tool" target="_blank" rel="noopener noreffer "&gt;tool that can read/write the SFP module&amp;rsquo;s EEPROM&lt;/a&gt;.
-I then wired this up to a logic analyzer and compared the read/write operations to what the SFP Wizard does when it tries to unlock a module.&lt;/p&gt;</description></item><item><title>#TwoMinuteTeardown: Hamgeek YK-1000H NTP</title><link>https://karlquinsland.com/hamgeek-yk-1000h-gps-ntp-server/</link><pubDate>Fri, 12 Dec 2025 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/hamgeek-yk-1000h-gps-ntp-server/</guid><description>&lt;h1 id="two-minute-teardown-hamgeek-yk-1000h-ntp"&gt;Two Minute Teardown: Hamgeek YK-1000H NTP&lt;/h1&gt;
+I then wired this up to a logic analyzer and compared the read/write operations to what the SFP Wizard does when it tries to unlock a module.&lt;/p&gt;
+&lt;p&gt;TL;DR:&lt;/p&gt;</description></item><item><title>#TwoMinuteTeardown: Hamgeek YK-1000H NTP</title><link>https://karlquinsland.com/hamgeek-yk-1000h-gps-ntp-server/</link><pubDate>Fri, 12 Dec 2025 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/hamgeek-yk-1000h-gps-ntp-server/</guid><description>&lt;h1 id="two-minute-teardown-hamgeek-yk-1000h-ntp"&gt;Two Minute Teardown: Hamgeek YK-1000H NTP&lt;/h1&gt;
 &lt;figure &gt;
 
  
@@ -216,7 +217,7 @@ It was a good dashcam while it lasted but there are better options now&amp;helli
 &lt;p&gt;A friend of mine reached out and asked me about automating some aspects of their &lt;a href="https://www.webmd.com/balance/stress-management/aromatherapy-overview" target="_blank" rel="noopener noreffer "&gt;aroma therapy&lt;/a&gt; treatment.&lt;/p&gt;
 &lt;div class="details admonition note open"&gt;
  &lt;div class="details-summary admonition-title"&gt;
- &lt;i class="icon fas fa-pencil-alt fa-fw" aria-hidden="true"&gt;&lt;/i&gt;Note&lt;i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"&gt;&lt;/i&gt;
+ &lt;i class="icon fas fa-pencil-alt" aria-hidden="true"&gt;&lt;/i&gt;Note&lt;i class="details-icon fas fa-angle-right" aria-hidden="true"&gt;&lt;/i&gt;
  &lt;/div&gt;
  &lt;div class="details-content"&gt;
  &lt;div class="admonition-content"&gt;I was not given permission to share the specifics of their medical condition or the larger treatment plan so this post is going to deal with &lt;em&gt;just&lt;/em&gt; the technical aspects of the device.&lt;/div&gt;
@@ -324,7 +325,7 @@ At a high level, there&amp;rsquo;s going to be:&lt;/p&gt;
 &lt;/ul&gt;
 &lt;p&gt;In the interest of expediting things, I asked for the FCC IDs from the devices so I could have a look inside&amp;hellip; and was surprized to find out that there was no FCC listing for this particular model from the lot.&lt;/p&gt;</description></item><item><title>Quick look inside Venstar T7850 - One of the only 'no-cloud' WiFi Thermostats that plays nice with Home Assistant</title><link>https://karlquinsland.com/venstar-t7850-teardown-review/</link><pubDate>Sat, 23 Apr 2022 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/venstar-t7850-teardown-review/</guid><description>&lt;div class="details admonition info open"&gt;
  &lt;div class="details-summary admonition-title"&gt;
- &lt;i class="icon fas fa-info-circle fa-fw" aria-hidden="true"&gt;&lt;/i&gt;Info&lt;i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"&gt;&lt;/i&gt;
+ &lt;i class="icon fas fa-info-circle" aria-hidden="true"&gt;&lt;/i&gt;Info&lt;i class="details-icon fas fa-angle-right" aria-hidden="true"&gt;&lt;/i&gt;
  &lt;/div&gt;
  &lt;div class="details-content"&gt;
  &lt;div class="admonition-content"&gt;As of 2022-05-11, there is an update on my experience with the thermostat &lt;a href="#an-update-on-wifi-connectivity" rel=""&gt;below&lt;/a&gt;!&lt;/div&gt;
@@ -335,7 +336,7 @@ At a high level, there&amp;rsquo;s going to be:&lt;/p&gt;
 &lt;hr&gt;
 &lt;div class="details admonition important open"&gt;
  &lt;div class="details-summary admonition-title"&gt;
- &lt;i class="icon fas fa-pencil-alt fa-fw" aria-hidden="true"&gt;&lt;/i&gt;Update 2022.05.14&lt;i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"&gt;&lt;/i&gt;
+ &lt;i class="icon fas fa-pencil-alt" aria-hidden="true"&gt;&lt;/i&gt;Update 2022.05.14&lt;i class="details-icon fas fa-angle-right" aria-hidden="true"&gt;&lt;/i&gt;
  &lt;/div&gt;
  &lt;div class="details-content"&gt;
  &lt;div class="admonition-content"&gt;I have just uploaded a basic PCB and enclosure to the &lt;a href="#esphome-component" rel=""&gt;ESPHome Component Repository&lt;/a&gt;.&lt;/div&gt;
@@ -344,7 +345,7 @@ At a high level, there&amp;rsquo;s going to be:&lt;/p&gt;
 &lt;p&gt;For the last few months, I have been looking for a KVM switch to simplify switching between work and personal computers.
 Initially, I didn&amp;rsquo;t think my criteria were that unreasonable, but for whatever reason there is no KVM switch that:&lt;/p&gt;</description></item><item><title>Installing Tasmota on the Xiaomi Desk Lamp</title><link>https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/</link><pubDate>Sat, 22 Jan 2022 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/</guid><description>&lt;div class="details admonition note open"&gt;
  &lt;div class="details-summary admonition-title"&gt;
- &lt;i class="icon fas fa-pencil-alt fa-fw" aria-hidden="true"&gt;&lt;/i&gt;MJGJD02YL vs MUGJD01YL&lt;i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"&gt;&lt;/i&gt;
+ &lt;i class="icon fas fa-pencil-alt" aria-hidden="true"&gt;&lt;/i&gt;MJGJD02YL vs MUGJD01YL&lt;i class="details-icon fas fa-angle-right" aria-hidden="true"&gt;&lt;/i&gt;
  &lt;/div&gt;
  &lt;div class="details-content"&gt;
  &lt;div class="admonition-content"&gt;There are &lt;em&gt;at least two&lt;/em&gt; versions of this lamp. Thanks to &lt;code&gt;@htvekov&lt;/code&gt; for confirming that the &lt;code&gt;MUGJD01YL&lt;/code&gt; variant &lt;strong&gt;does &lt;em&gt;not&lt;/em&gt; contain an ESP32&lt;/strong&gt;. It contains a &lt;code&gt;TLSR8368&lt;/code&gt;.
@@ -354,7 +355,7 @@ Some photos of the &lt;code&gt;MUGJD01YL&lt;/code&gt; internals are provided &lt
 &lt;p&gt;If you&amp;rsquo;re here just for &amp;ldquo;how do I flash tasmota&amp;rdquo; bit, skip to the &lt;a href="#tasmota" rel=""&gt;Tasmota&lt;/a&gt; section below.&lt;/p&gt;
 &lt;div class="details admonition tip open"&gt;
  &lt;div class="details-summary admonition-title"&gt;
- &lt;i class="icon fas fa-lightbulb fa-fw" aria-hidden="true"&gt;&lt;/i&gt;Now with ESPHome&lt;i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"&gt;&lt;/i&gt;
+ &lt;i class="icon fas fa-lightbulb" aria-hidden="true"&gt;&lt;/i&gt;Now with ESPHome&lt;i class="details-icon fas fa-angle-right" aria-hidden="true"&gt;&lt;/i&gt;
  &lt;/div&gt;
  &lt;div class="details-content"&gt;
  &lt;div class="admonition-content"&gt;ESPHome support for the single-core ESP32 chip in the lamp has come a long way.

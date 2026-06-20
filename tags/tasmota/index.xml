@@ -40,7 +40,7 @@ When you try to deploy them to a power strip, you end up loosing about 50% of th
  
  &lt;/p&gt;</description></item><item><title>Installing Tasmota on the Xiaomi Desk Lamp</title><link>https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/</link><pubDate>Sat, 22 Jan 2022 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/</guid><description>&lt;div class="details admonition note open"&gt;
  &lt;div class="details-summary admonition-title"&gt;
- &lt;i class="icon fas fa-pencil-alt fa-fw" aria-hidden="true"&gt;&lt;/i&gt;MJGJD02YL vs MUGJD01YL&lt;i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"&gt;&lt;/i&gt;
+ &lt;i class="icon fas fa-pencil-alt" aria-hidden="true"&gt;&lt;/i&gt;MJGJD02YL vs MUGJD01YL&lt;i class="details-icon fas fa-angle-right" aria-hidden="true"&gt;&lt;/i&gt;
  &lt;/div&gt;
  &lt;div class="details-content"&gt;
  &lt;div class="admonition-content"&gt;There are &lt;em&gt;at least two&lt;/em&gt; versions of this lamp. Thanks to &lt;code&gt;@htvekov&lt;/code&gt; for confirming that the &lt;code&gt;MUGJD01YL&lt;/code&gt; variant &lt;strong&gt;does &lt;em&gt;not&lt;/em&gt; contain an ESP32&lt;/strong&gt;. It contains a &lt;code&gt;TLSR8368&lt;/code&gt;.
@@ -50,7 +50,7 @@ Some photos of the &lt;code&gt;MUGJD01YL&lt;/code&gt; internals are provided &lt
 &lt;p&gt;If you&amp;rsquo;re here just for &amp;ldquo;how do I flash tasmota&amp;rdquo; bit, skip to the &lt;a href="#tasmota" rel=""&gt;Tasmota&lt;/a&gt; section below.&lt;/p&gt;
 &lt;div class="details admonition tip open"&gt;
  &lt;div class="details-summary admonition-title"&gt;
- &lt;i class="icon fas fa-lightbulb fa-fw" aria-hidden="true"&gt;&lt;/i&gt;Now with ESPHome&lt;i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"&gt;&lt;/i&gt;
+ &lt;i class="icon fas fa-lightbulb" aria-hidden="true"&gt;&lt;/i&gt;Now with ESPHome&lt;i class="details-icon fas fa-angle-right" aria-hidden="true"&gt;&lt;/i&gt;
  &lt;/div&gt;
  &lt;div class="details-content"&gt;
  &lt;div class="admonition-content"&gt;ESPHome support for the single-core ESP32 chip in the lamp has come a long way.
@@ -62,7 +62,7 @@ You can find the ESPHome configuration that I used with this lamp &lt;a href="#e
 The easiest way to prevent glare on a screen is to change the orientation of the light relative to the screen either from under or behind the screen.
 This is not practical for ceiling mounted lights or for any floor lamps.&lt;/p&gt;</description></item><item><title>Fixing Home Assistant discovery with Tasmota on the Treatlife DS03</title><link>https://karlquinsland.com/treatlife-ds03-tasmota-autoconfig-with-homeassistant/</link><pubDate>Wed, 12 May 2021 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/treatlife-ds03-tasmota-autoconfig-with-homeassistant/</guid><description>&lt;div class="details admonition warning open"&gt;
  &lt;div class="details-summary admonition-title"&gt;
- &lt;i class="icon fas fa-exclamation-triangle fa-fw" aria-hidden="true"&gt;&lt;/i&gt;Update&lt;i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"&gt;&lt;/i&gt;
+ &lt;i class="icon fas fa-exclamation-triangle" aria-hidden="true"&gt;&lt;/i&gt;Update&lt;i class="details-icon fas fa-angle-right" aria-hidden="true"&gt;&lt;/i&gt;
  &lt;/div&gt;
  &lt;div class="details-content"&gt;
  &lt;div class="admonition-content"&gt;This post is now deprecated. It has been superseded by &lt;a href="https://karlquinsland.com/treatlife-ds03-esphome/" rel=""&gt;&lt;code&gt;Using ESPHome with the Treatlife DS03&lt;/code&gt;&lt;/a&gt; from 2022-06.&lt;/div&gt;

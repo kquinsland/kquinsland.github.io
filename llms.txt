@@ -11,6 +11,7 @@ Karl Quinsland's personal site, professional resume, and technical blog about in
 - [Tags](https://karlquinsland.com/tags/): Topic index.
 
 ## Recent Blog Posts
+- [Converting PurpleAir Classic to ESPHome](https://karlquinsland.com/converting-purpleair-classic-to-esphome/index.md): LLM assisted firmware reverse engineering and ESPHome conversion of a PurpleAir Classic air quality sensor.
 - [#TwoMinuteTeardown: USB-C charged AAA battery](https://karlquinsland.com/usbc-aaa-battery-teardown/index.md): It's an AAA battery with the charger built in! Teardown and analysis.
 - [#TwoMinuteTeardown: Corporate Systems Engineering SSHAAC00-S041911](https://karlquinsland.com/cse-sshaac00-s041911/index.md): Utility grade Air Conditioning Load Shed Device teardown.
 - [Frigate in Kubernetes](https://karlquinsland.com/frigate-in-k8s/index.md): Frigate: Kubernetes edition This is a follow up to my ‘Frigate From Scratch’ post. Most of that post is still relevant today but I have since moved almost all of my workloads into …
@@ -20,7 +21,6 @@ Karl Quinsland's personal site, professional resume, and technical blog about in
 - [#TwoMinuteTeardown: Hamgeek YK-1000H NTP](https://karlquinsland.com/hamgeek-yk-1000h-gps-ntp-server/index.md): Two Minute Teardown: Hamgeek YK-1000H NTP Curiosity got the better of me when browsing AliExpress and I spotted this GPS NTP server for under $100 USD. I needed a cart-stuffer …
 - [#TwoMinuteTeardown: Duogalia AM70 Optical Fiber Multi-Meter](https://karlquinsland.com/duogalia-am70-optical-fiber-multi-meter/index.md): Two Minute Teardown: Duogalia A-M70 Optical Fiber Multi-Meter While diagnosing a flakey fiber link, i ran into a situation where a basic “flashing red” visual fault finder was not …
 - [TESmart HKS801-P23-USBK KVM Teardown](https://karlquinsland.com/tesmart-hks801-p23-usbk-kvm-teardown/index.md): KVM died, so I bought a new one. Different brand/make/model but similar architecture and internals.
-- [#TwoMinuteTeardown: Petkit Eversweet Solo 2](https://karlquinsland.com/petkit-eversweet-solo2-teardown/index.md): Doing research for a project and got curious; I took mine apart so you don't have to.
 
 ## All Markdown Pages
 - [Contact](https://karlquinsland.com/contact/index.md)
@@ -46,6 +46,7 @@ Karl Quinsland's personal site, professional resume, and technical blog about in
 - [Arizer XQ2 Teardown](https://karlquinsland.com/arizer-xq2-teardown/index.md)
 - [Arris SB8200 Prometheus Exporter](https://karlquinsland.com/arris-sb8200-prometheus-exporter/index.md)
 - [Configuring additional ZwaveJS entities in Home Assistant over MQTT](https://karlquinsland.com/zwavejs-autodiscovery-additional-entities/index.md)
+- [Converting PurpleAir Classic to ESPHome](https://karlquinsland.com/converting-purpleair-classic-to-esphome/index.md)
 - [Dynamic timers in ESPHome](https://karlquinsland.com/esphome-dynamic-timer/index.md)
 - [electronics lab: enhanced psu](https://karlquinsland.com/electronics-lab-enhanced-bench-psu/index.md)
 - [Enhanced Home Assistant Switch Plate (HASP)](https://karlquinsland.com/enhanced-homeassistantswitchplate/index.md)

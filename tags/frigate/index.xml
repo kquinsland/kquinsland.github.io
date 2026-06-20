@@ -6,7 +6,7 @@ Most of that post is still relevant today but I have since moved almost all of m
 This is not every issue I hit, just the ones that are not directly related to my specific environment/setup/workflows.&lt;/p&gt;</description></item><item><title>Frigate From Scratch guide</title><link>https://karlquinsland.com/frigate-install/</link><pubDate>Sat, 04 Mar 2023 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/frigate-install/</guid><description>&lt;!-- markdownlint-disable-file MD002 --&gt;
 &lt;div class="details admonition info open"&gt;
  &lt;div class="details-summary admonition-title"&gt;
- &lt;i class="icon fas fa-info-circle fa-fw" aria-hidden="true"&gt;&lt;/i&gt;Updates in 2025&lt;i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"&gt;&lt;/i&gt;
+ &lt;i class="icon fas fa-info-circle" aria-hidden="true"&gt;&lt;/i&gt;Updates in 2025&lt;i class="details-icon fas fa-angle-right" aria-hidden="true"&gt;&lt;/i&gt;
  &lt;/div&gt;
  &lt;div class="details-content"&gt;
  &lt;div class="admonition-content"&gt;&lt;p&gt;In early 2025, I began moving virtually all of my workloads into a k8s cluster. I have put some basic notes on frigate in k8s &lt;a href="https://karlquinsland.com/frigate-in-k8s/" rel=""&gt;here&lt;/a&gt;.&lt;/p&gt;

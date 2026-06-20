@@ -72,7 +72,7 @@ At a high level, there&amp;rsquo;s going to be:&lt;/p&gt;
 &lt;/ul&gt;
 &lt;p&gt;In the interest of expediting things, I asked for the FCC IDs from the devices so I could have a look inside&amp;hellip; and was surprized to find out that there was no FCC listing for this particular model from the lot.&lt;/p&gt;</description></item><item><title>Quick look inside Venstar T7850 - One of the only 'no-cloud' WiFi Thermostats that plays nice with Home Assistant</title><link>https://karlquinsland.com/venstar-t7850-teardown-review/</link><pubDate>Sat, 23 Apr 2022 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/venstar-t7850-teardown-review/</guid><description>&lt;div class="details admonition info open"&gt;
  &lt;div class="details-summary admonition-title"&gt;
- &lt;i class="icon fas fa-info-circle fa-fw" aria-hidden="true"&gt;&lt;/i&gt;Info&lt;i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"&gt;&lt;/i&gt;
+ &lt;i class="icon fas fa-info-circle" aria-hidden="true"&gt;&lt;/i&gt;Info&lt;i class="details-icon fas fa-angle-right" aria-hidden="true"&gt;&lt;/i&gt;
  &lt;/div&gt;
  &lt;div class="details-content"&gt;
  &lt;div class="admonition-content"&gt;As of 2022-05-11, there is an update on my experience with the thermostat &lt;a href="#an-update-on-wifi-connectivity" rel=""&gt;below&lt;/a&gt;!&lt;/div&gt;

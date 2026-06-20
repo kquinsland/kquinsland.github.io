@@ -1,4 +1,7 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>ESPHome on karl</title><link>https://karlquinsland.com/tags/esphome/</link><description>Recent content in ESPHome on karl</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Sat, 01 Feb 2025 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/esphome/index.xml" rel="self" type="application/rss+xml"/><item><title>#TwoMinuteTeardown: Home Assistant Voice - Preview Edition</title><link>https://karlquinsland.com/home-assistant-voice-pe-teardown/</link><pubDate>Sat, 01 Feb 2025 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/home-assistant-voice-pe-teardown/</guid><description>&lt;h1 id="home-assistant-voice-preview-edition-teardown"&gt;Home Assistant Voice: Preview Edition teardown&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>ESPHome on karl</title><link>https://karlquinsland.com/tags/esphome/</link><description>Recent content in ESPHome on karl</description><generator>Hugo</generator><language>en-us</language><lastBuildDate>Sat, 20 Jun 2026 00:00:00 +0000</lastBuildDate><atom:link href="https://karlquinsland.com/tags/esphome/index.xml" rel="self" type="application/rss+xml"/><item><title>Converting PurpleAir Classic to ESPHome</title><link>https://karlquinsland.com/converting-purpleair-classic-to-esphome/</link><pubDate>Sat, 20 Jun 2026 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/converting-purpleair-classic-to-esphome/</guid><description>&lt;h1 id="converting-a-purpleair-classic-to-esphome"&gt;Converting a PurpleAir Classic to ESPHome&lt;/h1&gt;
+&lt;p&gt;I still don&amp;rsquo;t 100% know what the issue is but for the past several months, my &lt;a href="https://www2.purpleair.com/products/purpleair-pa-ii" target="_blank" rel="noopener noreffer "&gt;PurpleAir Classic&lt;/a&gt; sensor has been incredibly flakey when it comes to reporting data.
+Home Assistant would report random bouts of &amp;ldquo;timeouts&amp;rdquo; while trying to poll the sensor and that would result in gaps in the data.
+In the best case, the gaps were only a few minutes long but sometimes they would last for &lt;em&gt;hours&lt;/em&gt; at a time.&lt;/p&gt;</description></item><item><title>#TwoMinuteTeardown: Home Assistant Voice - Preview Edition</title><link>https://karlquinsland.com/home-assistant-voice-pe-teardown/</link><pubDate>Sat, 01 Feb 2025 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/home-assistant-voice-pe-teardown/</guid><description>&lt;h1 id="home-assistant-voice-preview-edition-teardown"&gt;Home Assistant Voice: Preview Edition teardown&lt;/h1&gt;
 &lt;p&gt;This is a quick &lt;a href="https://karlquinsland.com/tags/two-minute-teardown/" rel=""&gt;#TwoMinuteTeardown&lt;/a&gt; post for the recently released &lt;a href="https://www.home-assistant.io/voice-pe/" target="_blank" rel="noopener noreffer "&gt;Home Assistant Voice Node - Preview edition&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;Normally, I&amp;rsquo;d be doing a full teardown, but this is a little different; the Home Assistant team has done a &lt;em&gt;lot&lt;/em&gt; of the work out in the open.
 With just a quick Google, you can find official:&lt;/p&gt;
@@ -55,7 +58,7 @@ Truly, by hackers for hackers!&lt;/p&gt;</description></item><item><title>Monito
 &lt;p&gt;A friend of mine reached out and asked me about automating some aspects of their &lt;a href="https://www.webmd.com/balance/stress-management/aromatherapy-overview" target="_blank" rel="noopener noreffer "&gt;aroma therapy&lt;/a&gt; treatment.&lt;/p&gt;
 &lt;div class="details admonition note open"&gt;
  &lt;div class="details-summary admonition-title"&gt;
- &lt;i class="icon fas fa-pencil-alt fa-fw" aria-hidden="true"&gt;&lt;/i&gt;Note&lt;i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"&gt;&lt;/i&gt;
+ &lt;i class="icon fas fa-pencil-alt" aria-hidden="true"&gt;&lt;/i&gt;Note&lt;i class="details-icon fas fa-angle-right" aria-hidden="true"&gt;&lt;/i&gt;
  &lt;/div&gt;
  &lt;div class="details-content"&gt;
  &lt;div class="admonition-content"&gt;I was not given permission to share the specifics of their medical condition or the larger treatment plan so this post is going to deal with &lt;em&gt;just&lt;/em&gt; the technical aspects of the device.&lt;/div&gt;
@@ -164,7 +167,7 @@ This post is about one of those &amp;ldquo;Wait, that&amp;rsquo;s not built in?!
 &lt;p&gt;To be clear, ESPHome &lt;em&gt;does&lt;/em&gt; &lt;a href="https://github.com/esphome/feature-requests/issues/84#issuecomment-469678382" target="_blank" rel="noopener noreffer "&gt;have all of the primitives needed&lt;/a&gt; to build &lt;em&gt;basic&lt;/em&gt; timers.
 You can get basic non-blocking pauses in automations with the &lt;a href="https://esphome.io/guides/automations.html#delay-action" target="_blank" rel="noopener noreffer "&gt;&lt;code&gt;delay:&lt;/code&gt;&lt;/a&gt; action.&lt;/p&gt;</description></item><item><title>Using ESPHome with the Treatlife DS03</title><link>https://karlquinsland.com/treatlife-ds03-esphome/</link><pubDate>Thu, 09 Jun 2022 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/treatlife-ds03-esphome/</guid><description>&lt;div class="details admonition tip open"&gt;
  &lt;div class="details-summary admonition-title"&gt;
- &lt;i class="icon fas fa-lightbulb fa-fw" aria-hidden="true"&gt;&lt;/i&gt;Post depreciation notice&lt;i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"&gt;&lt;/i&gt;
+ &lt;i class="icon fas fa-lightbulb" aria-hidden="true"&gt;&lt;/i&gt;Post depreciation notice&lt;i class="details-icon fas fa-angle-right" aria-hidden="true"&gt;&lt;/i&gt;
  &lt;/div&gt;
  &lt;div class="details-content"&gt;
  &lt;div class="admonition-content"&gt;This is an update to the &lt;a href="https://karlquinsland.com/treatlife-ds03-tasmota-autoconfig-with-homeassistant/" rel=""&gt;&lt;code&gt;Fixing Home Assistant discovery with Tasmota on the Treatlife DS03&lt;/code&gt; post&lt;/a&gt;.&lt;/div&gt;
@@ -176,7 +179,7 @@ Very regularly, the devices would crash and reboot! I almost never noticed unles
 &lt;hr&gt;
 &lt;div class="details admonition important open"&gt;
  &lt;div class="details-summary admonition-title"&gt;
- &lt;i class="icon fas fa-pencil-alt fa-fw" aria-hidden="true"&gt;&lt;/i&gt;Update 2022.05.14&lt;i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"&gt;&lt;/i&gt;
+ &lt;i class="icon fas fa-pencil-alt" aria-hidden="true"&gt;&lt;/i&gt;Update 2022.05.14&lt;i class="details-icon fas fa-angle-right" aria-hidden="true"&gt;&lt;/i&gt;
  &lt;/div&gt;
  &lt;div class="details-content"&gt;
  &lt;div class="admonition-content"&gt;I have just uploaded a basic PCB and enclosure to the &lt;a href="#esphome-component" rel=""&gt;ESPHome Component Repository&lt;/a&gt;.&lt;/div&gt;

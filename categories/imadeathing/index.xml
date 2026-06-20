@@ -52,7 +52,7 @@ The idea is to have a small RFID tag that can be used for various purposes, such
 &lt;p&gt;A simple WiFi equipped micro controller that gets wired between the power button on a PC and the motherboard.
 This makes it possible to remotely control and monitor the power state of any PC!&lt;/p&gt;</description></item><item><title>I made a thing: GPS/PPS clock source for ntpd</title><link>https://karlquinsland.com/yet-another-gps-pps-opnsense/</link><pubDate>Sat, 15 Oct 2022 00:00:00 +0000</pubDate><guid>https://karlquinsland.com/yet-another-gps-pps-opnsense/</guid><description>&lt;div class="details admonition tip open"&gt;
  &lt;div class="details-summary admonition-title"&gt;
- &lt;i class="icon fas fa-lightbulb fa-fw" aria-hidden="true"&gt;&lt;/i&gt;Tip&lt;i class="details-icon fas fa-angle-right fa-fw" aria-hidden="true"&gt;&lt;/i&gt;
+ &lt;i class="icon fas fa-lightbulb" aria-hidden="true"&gt;&lt;/i&gt;Tip&lt;i class="details-icon fas fa-angle-right" aria-hidden="true"&gt;&lt;/i&gt;
  &lt;/div&gt;
  &lt;div class="details-content"&gt;
  &lt;div class="admonition-content"&gt;&lt;p&gt;This is just a &amp;lsquo;pointer&amp;rsquo; post.&lt;/p&gt;

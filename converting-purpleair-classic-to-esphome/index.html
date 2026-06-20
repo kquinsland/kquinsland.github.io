@@ -1,0 +1,696 @@
+<!doctype html><html lang=en-us><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=robots content="noodp"><title>Converting PurpleAir Classic to ESPHome - karl</title><meta name=Description content="LLM assisted firmware reverse engineering and ESPHome conversion of a PurpleAir Classic air quality sensor."><meta property="og:url" content="https://karlquinsland.com/converting-purpleair-classic-to-esphome/"><meta property="og:site_name" content="karl"><meta property="og:title" content="Converting PurpleAir Classic to ESPHome"><meta property="og:description" content="LLM assisted firmware reverse engineering and ESPHome conversion of a PurpleAir Classic air quality sensor."><meta property="og:locale" content="en_us"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2026-06-20T00:00:00+00:00"><meta property="article:modified_time" content="2026-06-20T00:00:00+00:00"><meta property="article:tag" content="ESPHome"><meta property="article:tag" content="MQTT"><meta property="article:tag" content="Home-Assistant"><meta property="article:tag" content="Two-Minute-Teardown"><meta property="og:image" content="https://karlquinsland.com/images/avatar.webp"><meta property="og:see_also" content="https://karlquinsland.com/usbc-aaa-battery-teardown/"><meta property="og:see_also" content="https://karlquinsland.com/cse-sshaac00-s041911/"><meta property="og:see_also" content="https://karlquinsland.com/led-controllers/"><meta property="og:see_also" content="https://karlquinsland.com/slzb-mrw10/"><meta property="og:see_also" content="https://karlquinsland.com/ubiquiti-uacc-sfp-wizard/"><meta property="og:see_also" content="https://karlquinsland.com/hamgeek-yk-1000h-gps-ntp-server/"><meta name=twitter:card content="summary_large_image"><meta name=twitter:image content="https://karlquinsland.com/images/avatar.webp"><meta name=twitter:title content="Converting PurpleAir Classic to ESPHome"><meta name=twitter:description content="LLM assisted firmware reverse engineering and ESPHome conversion of a PurpleAir Classic air quality sensor."><meta name=application-name content="My cool site"><meta name=apple-mobile-web-app-title content="My cool site"><meta name=referrer content="no-referrer"><meta name=theme-color content="#ffffff"><meta name=msapplication-TileColor content="#da532c"><link rel="shortcut icon" type=image/x-icon href=/favicon.ico><link rel=icon type=image/png sizes=32x32 href=/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/favicon-16x16.png><link rel=apple-touch-icon sizes=180x180 href=/apple-touch-icon.png><link rel=mask-icon href=/safari-pinned-tab.svg color=#5bbad5><link rel=manifest href=/site.webmanifest><link rel=canonical href=https://karlquinsland.com/converting-purpleair-classic-to-esphome/><link rel=prev href=https://karlquinsland.com/usbc-aaa-battery-teardown/><link rel=alternate href=/converting-purpleair-classic-to-esphome/index.md type=text/markdown title="Converting PurpleAir Classic to ESPHome Markdown"><link rel=alternate href=/llms.txt type=text/plain title="karl llms.txt"><link rel=stylesheet href=/css/style.min.f3e0e5d358041e05bcc0a66b2c80fbcaf7f4b34479822f551004e2bcfbeb1e9b.css integrity="sha256-8+Dl01gEHgW8wKZrLID7yvf0s0R5gi9VEATivPvrHps="><link rel=preload href=lib/fontawesome-free/all.min.css as=style onload='this.onload=null,this.rel="stylesheet"'><noscript><link rel=stylesheet href=lib/fontawesome-free/all.min.css></noscript><link rel=preload href=/lib/animate/animate.min.5fbaeb9f8e25d7e0143bae61d4b1802c16ce7390b96ceb2d498b0d96ff4c853f.css integrity="sha256-X7rrn44l1+AUO65h1LGALBbOc5C5bOstSYsNlv9MhT8=" as=style onload='this.onload=null,this.rel="stylesheet"'><noscript><link rel=stylesheet href=/lib/animate/animate.min.5fbaeb9f8e25d7e0143bae61d4b1802c16ce7390b96ceb2d498b0d96ff4c853f.css integrity="sha256-X7rrn44l1+AUO65h1LGALBbOc5C5bOstSYsNlv9MhT8="></noscript><script type=application/ld+json>{"@context":"http://schema.org","@type":"BlogPosting","headline":"Converting PurpleAir Classic to ESPHome","inLanguage":"en-us","mainEntityOfPage":{"@type":"WebPage","@id":"https:\/\/karlquinsland.com\/converting-purpleair-classic-to-esphome\/"},"genre":"posts","keywords":"esphome, mqtt, home-assistant, two-minute-teardown","wordcount":3619,"url":"https:\/\/karlquinsland.com\/converting-purpleair-classic-to-esphome\/","datePublished":"2026-06-20T00:00:00+00:00","dateModified":"2026-06-20T00:00:00+00:00","publisher":{"@type":"Organization","name":""},"author":{"@type":"Person","name":"karl"},"description":"LLM assisted firmware reverse engineering and ESPHome conversion of a PurpleAir Classic air quality sensor."}</script></head><body data-header-desktop=fixed data-header-mobile=auto><script>const query=window.matchMedia("(prefers-color-scheme: dark)");function applyTheme(){let e=window.localStorage?.getItem("theme")||"auto",t=e==="dark"||e==="auto"&&query.matches;document.body.setAttribute("theme",t?"dark":"light"),document.body.setAttribute("cfg-theme",e)}applyTheme(),query.addEventListener("change",applyTheme)</script><div id=mask></div><div class=wrapper><header class=desktop id=header-desktop><div class=header-wrapper><div class=header-title><a href=/ title=karl>Karl</a></div><div class=menu><div class=menu-inner><a class=menu-item href=/posts/><i class="fas fa-blog"></i> Posts </a><a class=menu-item href=/resume/ title="Hire Me!"><i class="fas fa-briefcase"></i> Résumé </a><a class=menu-item href=/tags/ title="Can you tell that I don't have a super consistent or clear taxonomy?"><i class="fas fa-tags"></i> Tags </a><a class=menu-item href=/contact/><i class="fas fa-address-book"></i> Contact </a><a class=menu-item href=/wander/ title="Discover the small web"><i class="fas fa-compass"></i> Wander </a><span class="menu-item delimiter"></span><span class="menu-item search" id=search-desktop>
+<input type=text placeholder="Search titles or contents..." id=search-input-desktop>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-desktop title=Search><i class="fas fa-search" aria-hidden=true></i>
+</a><a href=javascript:void(0); class="search-button search-clear" id=search-clear-desktop title=Clear><i class="fas fa-times-circle" aria-hidden=true></i>
+</a><span class="search-button search-loading" id=search-loading-desktop><i class="fas fa-spinner fa-spin" aria-hidden=true></i>
+</span></span><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme"><i class="fas fa-adjust" aria-hidden=true></i></a></div></div></div></header><header class=mobile id=header-mobile><div class=header-container><div class=header-wrapper><div class=header-title><a href=/ title=karl>Karl</a></div><div class=menu-toggle id=menu-toggle-mobile><span></span><span></span><span></span></div></div><div class=menu id=menu-mobile><div class=search-wrapper><div class="search mobile" id=search-mobile><input type=text placeholder="Search titles or contents..." id=search-input-mobile>
+<a href=javascript:void(0); class="search-button search-toggle" id=search-toggle-mobile title=Search><i class="fas fa-search" aria-hidden=true></i>
+</a><a href=javascript:void(0); class="search-button search-clear" id=search-clear-mobile title=Clear><i class="fas fa-times-circle" aria-hidden=true></i>
+</a><span class="search-button search-loading" id=search-loading-mobile><i class="fas fa-spinner fa-spin" aria-hidden=true></i></span></div><a href=javascript:void(0); class=search-cancel id=search-cancel-mobile>Cancel</a></div><a class=menu-item href=/posts/ title><i class="fas fa-blog"></i>Posts</a><a class=menu-item href=/resume/ title="Hire Me!"><i class="fas fa-briefcase"></i>Résumé</a><a class=menu-item href=/tags/ title="Can you tell that I don't have a super consistent or clear taxonomy?"><i class="fas fa-tags"></i>Tags</a><a class=menu-item href=/contact/ title><i class="fas fa-address-book"></i>Contact</a><a class=menu-item href=/wander/ title="Discover the small web"><i class="fas fa-compass"></i>Wander</a><a href=javascript:void(0); class="menu-item theme-switch" title="Switch Theme">
+<i class="fas fa-adjust" aria-hidden=true></i></a></div></div></header><div class="search-dropdown desktop"><div id=search-dropdown-desktop></div></div><div class="search-dropdown mobile"><div id=search-dropdown-mobile></div></div><main class=main><div class=container><div class=toc id=toc-auto><h2 class=toc-title>Contents</h2><div class=toc-content id=toc-content-auto></div></div><article class="page single"><h1 class="single-title animate__animated animate__flipInX">Converting PurpleAir Classic to ESPHome</h1><div class=post-meta><div class=post-meta-line><span class=post-author><a href=/ title=Author rel=author class=author><i class="fas fa-user-circle" aria-hidden=true></i>karl</a></span>&nbsp;<span class=post-category>included in <a href=/categories/home-automation/><i class="far fa-folder" aria-hidden=true></i>Home-Automation</a></span></div><div class=post-meta-line><i class="far fa-calendar-alt" aria-hidden=true></i>&nbsp;<time datetime=2026-06-20>2026-06-20</time>&nbsp;<i class="fas fa-pencil-alt" aria-hidden=true></i>&nbsp;3619 words&nbsp;
+<i class="far fa-clock" aria-hidden=true></i>&nbsp;17 minutes&nbsp;</div></div><div class="details toc" id=toc-static data-kept=true><div class="details-summary toc-title"><span>Contents</span>
+<span><i class="details-icon fas fa-angle-right" aria-hidden=true></i></span></div><div class="details-content toc-content" id=toc-content-static><nav id=TableOfContents><ul><li><a href=#converting-a-purpleair-classic-to-esphome>Converting a PurpleAir Classic to ESPHome</a><ul><li><a href=#but-why>But why?</a></li><li><a href=#teardown>Teardown</a><ul><li><a href=#so-who-won>So who won?</a></li></ul></li><li><a href=#codex-notes>Codex Notes</a><ul><li><a href=#firmware-contents>Firmware contents</a></li><li><a href=#hardware-map-from-the-firmware>Hardware map from the firmware</a></li><li><a href=#sensor-data-and-aqi>Sensor data and AQI</a></li></ul></li><li><a href=#code>Code</a></li></ul></li></ul></nav></div></div><div class=content id=content><h1 id=converting-a-purpleair-classic-to-esphome>Converting a PurpleAir Classic to ESPHome</h1><p>I still don&rsquo;t 100% know what the issue is but for the past several months, my <a href=https://www2.purpleair.com/products/purpleair-pa-ii target=_blank rel="noopener noreffer">PurpleAir Classic</a> sensor has been incredibly flakey when it comes to reporting data.
+Home Assistant would report random bouts of &ldquo;timeouts&rdquo; while trying to poll the sensor and that would result in gaps in the data.
+In the best case, the gaps were only a few minutes long but sometimes they would last for <em>hours</em> at a time.</p><p>I rely on the readings from this unit to inform other automations around when it&rsquo;s a good time to open windows versus use the AC so I wanted to find a more reliable solution.</p><p>Somewhere in the middle of frantically troubleshooting all of this, I realized/remembered that this is just an ESP8266 based device so it <em>should</em> be straight-forward to convert it to run ESPHome instead of the stock firmware.</p><figure><img src=/converting-purpleair-classic-to-esphome/images/render.webp><figcaption></figcaption></figure><p>Turns out, yeah, it was pretty straight forward.</p><h2 id=but-why>But why?</h2><p>To their credit, the PurpleAir team does not make it <em>hard</em> to get the data off of your device directly.
+They have a <a href=https://community.purpleair.com/t/local-json-endpoint-documentation/6097 target=_blank rel="noopener noreffer">local API</a> that you can query for the raw sensor data.</p><p>Combine this with a bunch of <a href=https://www.home-assistant.io/integrations/sensor.rest/ target=_blank rel="noopener noreffer">RESTful sensors in Home Assistant</a> and you <em>can</em> get the data into your home automation system without too much trouble.</p><p>You will still need a firewall rule to prevent the device from phoning home to the PurpleAir cloud if desired.</p><p>Converting to ESPHome, however, has a few advantages:</p><ul><li><p>I get full control over the firmware and the transport(s) used to get data off the device and into Home Assistant. As noted above, <em>something</em> about the stock firmware was flakey and resulted in data gaps. ESPhome lets me move to rock-solid reliable MQTT.</p></li><li><p>The stock firmware does not support IPv6 at all. ESPHome still <a href="https://www.youtube.com/watch?v=5TxFjNoNoHY" target=_blank rel="noopener noreffer">only has <em>ok-ish</em> support for IPv6</a> but &ldquo;some&rdquo; is better than &ldquo;none&rdquo; and I will <em>never</em> achieve my goal of moving to a fully IPv6 home network if I have devices that don&rsquo;t support it.</p></li><li><p>Much simpler Home Assistant configuration. With the stock firmware, I had to set up a bunch of RESTful sensors and then use a ton of template jinja to extract the useful data from the <code>/json</code> endpoint on the device. A side effect of this is that HomeAssistant never had a &ldquo;device&rdquo; to own the various entities. This is no longer the case with ESPHome. I define everything once in YAML and as soon as the device comes online, Home Assistant automatically discovers it and all of the sensors that I defined in the ESPHome config and creates entities for them under a single device.</p></li></ul><h2 id=teardown>Teardown</h2><p>I couldn&rsquo;t find any authoritative schematics or teardowns online so I didn&rsquo;t know what pins on the ESP module would be wired up to which sensors.</p><p>One reliable way to answer those questions is with a teardown and manual reverse-engineering of the PCB.
+But I wanted to try another approach first; could I dump the firmware and set up a little container for Codex with <code>--yolo</code> enabled and see if it could figure out the pinout information for me?
+And could it do it faster than I could?</p><p>Let&rsquo;s find out :).</p><p>There is only one philips screw on the exterior ot the device.
+Remove it and then the grey PVC &lsquo;ring&rsquo; that holds the components can be gently pried off.</p><p>Once you get the ring off, the components will slid out of the cap:</p><figure><img src=/converting-purpleair-classic-to-esphome/images/td_02.webp><figcaption></figcaption></figure><p>And here&rsquo;s the same thing from a different angle:</p><figure><img src=/converting-purpleair-classic-to-esphome/images/td_01.webp><figcaption></figcaption></figure><p>I didn&rsquo;t take the teardown any further because it&rsquo;s all covered in Kapton tape that I can&rsquo;t really replace and I don&rsquo;t want to risk damaging anything.
+And it was at about this time that Codex notified me that it had some strong guesses about the pinout for the BME280 and PMS5003 sensors so I figured that I didn&rsquo;t really <em>need</em> to dig deeper unless those guesses turned out to be off base.</p><p>As far as I can tell, this is a <em>super</em> early version of the hardware; the grey PVC ring that holds the components was clearly modified by hand to accommodate the sensors.
+The Kapton tape is all hand-applied as well.</p><p>To be clear, nothing wrong with that!
+It&rsquo;s just interesting to see that they keep the same PVC cap enclosure on <a href=https://www2.purpleair.com/products/list target=_blank rel="noopener noreffer">newer models</a> but it appears that the internals now have a custom plastic frame to position components in a manner that is a bit more polished than what I have.</p><h3 id=so-who-won>So who won?</h3><p>It was a tie&mldr; sorta.
+Using nothing more than basic ad-hock python tools (&lt;3 <code>uv</code>), Codex took about 20 min to figure out:</p><ul><li>They used a pretty standard <code>app0</code> and <code>app1</code> partition scheme for the firmware</li><li>The applications on each partition were different versions; Codex took both apart and compared what changed between the older version and the newer version</li><li>Figured out the formula/constants used to calculate the AQI metric from the raw sensor data</li><li>Determined that the firmware supports some optional (development?) hardware:<ul><li>a RTC modules</li><li>logging to an SD card</li></ul></li></ul><p>In any case, Codex was very confident that it knew the i2c pins for the BME280 but it was less confident about the UART pins for the PMS5003 sensors and which - if any GPIO - were used to enable/disable the sensors.</p><p>I asked it to write a basic ESPHome config that would compile down to a firmware that looped over the possible pin combinations for the PMS5003 sensors and to report that back over the USB/UART connection.
+It did so and after several minutes of watching Codex try different pin combinations, it was able to figure out how the module talks to both the BME280 and the PMS5003 sensors.</p><h2 id=codex-notes>Codex Notes</h2><p>In any case, here are a few snips from the Codex conversation/notepad.
+Everything below is more or less verbatim from Codex.
+I have only made <em>slight</em> edits for formatting and clarity.</p><h3 id=firmware-contents>Firmware contents</h3><p>The 2 MB flash dump contains multiple ESP8266 images:</p><table><thead><tr><th>Offset</th><th>Contents</th></tr></thead><tbody><tr><td><code>0x000000</code></td><td>bootloader</td></tr><tr><td><code>0x001000</code></td><td>app image, <code>PurpleAir/7.02</code></td></tr><tr><td><code>0x076000</code></td><td>bootloader</td></tr><tr><td><code>0x077000</code></td><td>app image, <code>PurpleAir/6.07</code></td></tr><tr><td><code>0x101000</code></td><td>small SDK/RF/test style image</td></tr><tr><td><code>0x16a000</code></td><td>bootloader</td></tr><tr><td><code>0x16b000</code></td><td>app image, <code>PurpleAir/7.02</code></td></tr></tbody></table><p>The v7.02 app was built against the Arduino ESP8266 core 2.5.2.
+It contains local web/JSON output, OTA update support, and strings for PurpleAir cloud, ThingSpeak, Google geolocation, NTP, and Azure IoT endpoints.</p><h3 id=hardware-map-from-the-firmware>Hardware map from the firmware</h3><table><thead><tr><th>Device</th><th>Interface</th><th>Pins / address</th><th>Confidence</th><th>Notes</th></tr></thead><tbody><tr><td><code>BME280</code> / <code>BME680</code></td><td>I2C</td><td>SDA <code>GPIO4</code>, SCL <code>GPIO5</code>; firmware tries <code>0x77</code>, then <code>0x76</code>; live scan found <code>0x76</code></td><td>high</td><td><code>BSEC</code> strings are present for BME680 IAQ support.</td></tr><tr><td>PMSX003 A</td><td>Plantower UART RX + enable</td><td>RX <code>GPIO2</code>, enable <code>GPIO0</code> active high</td><td>high</td><td>Confirmed with ESPHome probe on this unit.</td></tr><tr><td>PMSX003 B</td><td>Plantower UART RX + enable</td><td>RX <code>GPIO13</code>, enable <code>GPIO12</code> active high</td><td>high</td><td>Confirmed with ESPHome probe on this unit.</td></tr><tr><td>PMS firmware-probed alternates</td><td>UART-ish input / output-control layouts</td><td><code>GPIO12</code>, <code>GPIO14</code></td><td>medium</td><td>Present in the firmware, but live probes did not need them for the two physical PMS sensors.</td></tr><tr><td>ADC0</td><td>ESP8266 ADC</td><td>ADC0</td><td>high</td><td>Exposed as <code>ADC0</code> / <code>adc</code>.</td></tr><tr><td><code>RV3028</code>, <code>DS3231</code>, <code>KX122</code></td><td>likely I2C</td><td>likely shared <code>GPIO4</code> / <code>GPIO5</code></td><td>medium</td><td>Optional support strings; may not be populated.</td></tr><tr><td><code>OPENLOG</code></td><td>serial logging</td><td>not fully pinned down</td><td>medium-low</td><td>Firmware contains <code>OPENLOG</code>, <code>!Baud</code>, <code>115200</code>, <code>.log</code>, <code>.csv</code>, and <code>disk</code> strings.</td></tr></tbody></table><p>The PMS constructor stores Plantower frame magic bytes <code>0x42 0x4d</code> (<code>B</code>, <code>M</code>) and probes these layouts:</p><table><thead><tr><th>Channel</th><th style=text-align:right>Input pin</th><th style=text-align:right>Output/control pin</th><th>Label</th></tr></thead><tbody><tr><td>A</td><td style=text-align:right><code>GPIO12</code></td><td style=text-align:right><code>GPIO0</code></td><td><code>A</code></td></tr><tr><td>B</td><td style=text-align:right><code>GPIO13</code></td><td style=text-align:right><code>GPIO2</code></td><td><code>B</code></td></tr><tr><td>B alternate</td><td style=text-align:right><code>GPIO13</code></td><td style=text-align:right><code>GPIO12</code></td><td><code>B</code></td></tr><tr><td>A alternate</td><td style=text-align:right><code>GPIO2</code></td><td style=text-align:right><code>GPIO0</code></td><td><code>A</code></td></tr><tr><td>O / other</td><td style=text-align:right><code>GPIO14</code></td><td style=text-align:right><code>GPIO0</code></td><td><code>O</code></td></tr></tbody></table><p>Current best ESPHome wiring model for this unit:</p><table><thead><tr><th>Function</th><th style=text-align:right>Pin</th><th>State</th></tr></thead><tbody><tr><td>PMS A UART RX</td><td style=text-align:right><code>GPIO2</code></td><td>9600 baud</td></tr><tr><td>PMS A enable / wake / gate</td><td style=text-align:right><code>GPIO0</code></td><td>high = PMS A frames, low = no sustained PMS A frames</td></tr><tr><td>PMS B UART RX</td><td style=text-align:right><code>GPIO13</code></td><td>9600 baud</td></tr><tr><td>PMS B enable / wake / gate</td><td style=text-align:right><code>GPIO12</code></td><td>high = PMS B frames, low = no sustained PMS B frames</td></tr><tr><td>BME I2C SDA</td><td style=text-align:right><code>GPIO4</code></td><td>I2C</td></tr><tr><td>BME I2C SCL</td><td style=text-align:right><code>GPIO5</code></td><td>I2C</td></tr></tbody></table><p>To switch between the two PMS sensors, assert one enable pin and de-assert the other:</p><table><thead><tr><th>Selected sensor</th><th style=text-align:right><code>GPIO0</code></th><th style=text-align:right><code>GPIO12</code></th><th>Read from</th></tr></thead><tbody><tr><td>PMS A</td><td style=text-align:right>high</td><td style=text-align:right>low</td><td><code>GPIO2</code></td></tr><tr><td>PMS B</td><td style=text-align:right>low</td><td style=text-align:right>high</td><td><code>GPIO13</code></td></tr></tbody></table><p>Both sensors appear to have separate UART RX lines into the ESP, so switching is about sensor enable/wake/gate rather than changing one shared UART pin.
+In ESPHome, it is still safer to read one at a time on ESP8266 because both PMS inputs use software serial.</p><h3 id=sensor-data-and-aqi>Sensor data and AQI</h3><p>The firmware publishes raw Plantower PMSX003 fields:</p><ul><li><code>pm1_0_cf_1</code></li><li><code>pm2_5_cf_1</code></li><li><code>pm10_0_cf_1</code></li><li><code>pm1_0_atm</code></li><li><code>pm2_5_atm</code></li><li><code>pm10_0_atm</code></li><li><code>p_0_3_um</code></li><li><code>p_0_5_um</code></li><li><code>p_1_0_um</code></li><li><code>p_2_5_um</code></li><li><code>p_5_0_um</code></li><li><code>p_10_0_um</code></li></ul><p>It also computes PM2.5 AQI locally for both <code>cf_1</code> and <code>atm</code>:</p><ul><li><code>pm2.5_aqi_cf_1</code></li><li><code>pm2.5_aqi_atm</code></li></ul><p>In the Plantower/PMS field names, <code>cf_1</code> means the sensor&rsquo;s <code>CF=1</code> standard/factory-calibrated concentration channel.
+The <code>atm</code> fields are the atmospheric-environment concentration values normally used for ambient air readings.</p><p>The AQI function is a standard linear interpolation over breakpoint ranges:</p><div class="code-block code-line-numbers open" style="counter-reset:code-block 0"><div class="code-header language-text"><span class=code-title><i class="arrow fas fa-angle-right" aria-hidden=true></i></span>
+<span class=ellipses><i class="fas fa-ellipsis-h" aria-hidden=true></i></span>
+<span class=copy title="Copy to clipboard"><i class="far fa-copy" aria-hidden=true></i></span></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text><span class=line><span class=cl>AQI = round(((I_high - I_low) / (C_high - C_low)) * (C - C_low) + I_low)</span></span></code></pre></div></div><p>PM2.5 concentration breakpoints found in the firmware:</p><div class="code-block code-line-numbers open" style="counter-reset:code-block 0"><div class="code-header language-text"><span class=code-title><i class="arrow fas fa-angle-right" aria-hidden=true></i></span>
+<span class=ellipses><i class="fas fa-ellipsis-h" aria-hidden=true></i></span>
+<span class=copy title="Copy to clipboard"><i class="far fa-copy" aria-hidden=true></i></span></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text><span class=line><span class=cl>0, 12, 35, 55, 150, 250, 350, 500</span></span></code></pre></div></div><p>AQI breakpoints found in the firmware:</p><div class="code-block code-line-numbers open" style="counter-reset:code-block 0"><div class="code-header language-text"><span class=code-title><i class="arrow fas fa-angle-right" aria-hidden=true></i></span>
+<span class=ellipses><i class="fas fa-ellipsis-h" aria-hidden=true></i></span>
+<span class=copy title="Copy to clipboard"><i class="far fa-copy" aria-hidden=true></i></span></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-text data-lang=text><span class=line><span class=cl>0, 50, 51, 100, 101, 150, 151, 200, 201, 300, 301, 400, 401, 500</span></span></code></pre></div></div><p>The firmware uses integer-ish PM2.5 concentration cutoffs (<code>35</code>, <code>55</code>, etc.) rather than preserving the usual EPA decimal cutoffs (<code>35.4</code>, <code>55.4</code>, etc.) in the literal table.</p><h2 id=code>Code</h2><p>And with that, here&rsquo;s a basic ESPHome configuration that you should be able to use on your own PurpleAir Classic.
+This config offers up (almost) all of the same data that was available from the <code>/json</code> endpoint on the stock firmware and even does the combining/averaging on the device so you don&rsquo;t have to do it in Home Assistant with a bunch of template sensors like you would with the stock firmware and the RESTFul sensor pattern.</p><p>Total time from &ldquo;wait, I can probably not bother debugging this flaky data availability issue if I just put ESPHome on it&rdquo; to &ldquo;have a working ESPHome config that I can flash&rdquo; was about an hour!</p><div class="code-block code-line-numbers" style="counter-reset:code-block 0"><div class="code-header language-yaml"><span class=code-title><i class="arrow fas fa-angle-right" aria-hidden=true></i></span>
+<span class=ellipses><i class="fas fa-ellipsis-h" aria-hidden=true></i></span>
+<span class=copy title="Copy to clipboard"><i class="far fa-copy" aria-hidden=true></i></span></div><div class=highlight><pre tabindex=0 class=chroma><code class=language-yaml data-lang=yaml><span class=line><span class=cl><span class=nt>substitutions</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>purpleair</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>esphome</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=l>${name}</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>on_boot</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>priority</span><span class=p>:</span><span class=w> </span><span class=m>600</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>        </span><span class=nt>then</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=nt>switch.turn_on</span><span class=p>:</span><span class=w> </span><span class=l>pms_a_enable_gpio0</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=nt>switch.turn_on</span><span class=p>:</span><span class=w> </span><span class=l>pms_b_enable_gpio12</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=nt>delay</span><span class=p>:</span><span class=w> </span><span class=l>1s</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=p>|-</span><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>                  id(active_pms_sensor) = 0;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>            </span>- <span class=nt>script.execute</span><span class=p>:</span><span class=w> </span><span class=l>select_pms_a</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>esp8266</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>board</span><span class=p>:</span><span class=w> </span><span class=l>esp_wroom_02</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>board_flash_mode</span><span class=p>:</span><span class=w> </span><span class=l>dio</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>logger</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>level</span><span class=p>:</span><span class=w> </span><span class=l>DEBUG</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>baud_rate</span><span class=p>:</span><span class=w> </span><span class=m>115200</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>i2c</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>sda</span><span class=p>:</span><span class=w> </span><span class=l>GPIO4</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>scl</span><span class=p>:</span><span class=w> </span><span class=l>GPIO5</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span><span class=nt>scan</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>uart</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>pms_a_uart</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>rx_pin</span><span class=p>:</span><span class=w> </span><span class=l>GPIO2</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>baud_rate</span><span class=p>:</span><span class=w> </span><span class=m>9600</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>rx_buffer_size</span><span class=p>:</span><span class=w> </span><span class=m>512</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>pms_b_uart</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>rx_pin</span><span class=p>:</span><span class=w> </span><span class=l>GPIO13</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>baud_rate</span><span class=p>:</span><span class=w> </span><span class=m>9600</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>rx_buffer_size</span><span class=p>:</span><span class=w> </span><span class=m>512</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>globals</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>active_pms_sensor</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>int</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>restore_value</span><span class=p>:</span><span class=w> </span><span class=kc>no</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>initial_value</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;0&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>switch</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;PMS A Enable GPIO0&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>pms_a_enable_gpio0</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>gpio</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>pin</span><span class=p>:</span><span class=w> </span><span class=l>GPIO0</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>restore_mode</span><span class=p>:</span><span class=w> </span><span class=l>ALWAYS_ON</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>internal</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;PMS B Enable GPIO12&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>pms_b_enable_gpio12</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>gpio</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>pin</span><span class=p>:</span><span class=w> </span><span class=l>GPIO12</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>restore_mode</span><span class=p>:</span><span class=w> </span><span class=l>ALWAYS_ON</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>internal</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>text_sensor</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;Active PMS Sensor&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>active_pms_sensor_name</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>template</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>entity_category</span><span class=p>:</span><span class=w> </span><span class=l>diagnostic</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>update_interval</span><span class=p>:</span><span class=w> </span><span class=l>5s</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=p>|-</span><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>          if (id(active_pms_sensor) == 0)
+</span></span></span><span class=line><span class=cl><span class=sd>            return std::string(&#34;PMS A&#34;);
+</span></span></span><span class=line><span class=cl><span class=sd>          if (id(active_pms_sensor) == 1)
+</span></span></span><span class=line><span class=cl><span class=sd>            return std::string(&#34;PMS B&#34;);
+</span></span></span><span class=line><span class=cl><span class=sd>          return std::string(&#34;Unknown&#34;);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;AQI Description&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>pms_pm25_aqi_description</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>template</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>icon</span><span class=p>:</span><span class=w> </span><span class=l>mdi:air-filter</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>update_interval</span><span class=p>:</span><span class=w> </span><span class=l>30s</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=p>|-</span><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>          const float aqi = id(pms_pm25_aqi_atm_average).state;
+</span></span></span><span class=line><span class=cl><span class=sd>          if (isnan(aqi))
+</span></span></span><span class=line><span class=cl><span class=sd>            return std::string(&#34;undefined&#34;);
+</span></span></span><span class=line><span class=cl><span class=sd>          if (aqi &gt;= 401.0f)
+</span></span></span><span class=line><span class=cl><span class=sd>            return std::string(&#34;Very Hazardous&#34;);
+</span></span></span><span class=line><span class=cl><span class=sd>          if (aqi &gt;= 301.0f)
+</span></span></span><span class=line><span class=cl><span class=sd>            return std::string(&#34;Hazardous&#34;);
+</span></span></span><span class=line><span class=cl><span class=sd>          if (aqi &gt;= 201.0f)
+</span></span></span><span class=line><span class=cl><span class=sd>            return std::string(&#34;Very Unhealthy&#34;);
+</span></span></span><span class=line><span class=cl><span class=sd>          if (aqi &gt;= 151.0f)
+</span></span></span><span class=line><span class=cl><span class=sd>            return std::string(&#34;Unhealthy&#34;);
+</span></span></span><span class=line><span class=cl><span class=sd>          if (aqi &gt;= 101.0f)
+</span></span></span><span class=line><span class=cl><span class=sd>            return std::string(&#34;Unhealthy for Sensitive Groups&#34;);
+</span></span></span><span class=line><span class=cl><span class=sd>          if (aqi &gt;= 51.0f)
+</span></span></span><span class=line><span class=cl><span class=sd>            return std::string(&#34;Moderate&#34;);
+</span></span></span><span class=line><span class=cl><span class=sd>          if (aqi &gt;= 0.0f)
+</span></span></span><span class=line><span class=cl><span class=sd>            return std::string(&#34;Good&#34;);
+</span></span></span><span class=line><span class=cl><span class=sd>          return std::string(&#34;undefined&#34;);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>script</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>select_pms_a</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>mode</span><span class=p>:</span><span class=w> </span><span class=l>restart</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>then</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span>- <span class=nt>switch.turn_off</span><span class=p>:</span><span class=w> </span><span class=l>pms_b_enable_gpio12</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span>- <span class=nt>delay</span><span class=p>:</span><span class=w> </span><span class=l>250ms</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span>- <span class=nt>switch.turn_on</span><span class=p>:</span><span class=w> </span><span class=l>pms_a_enable_gpio0</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span>- <span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=p>|-</span><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>                id(active_pms_sensor) = 0;
+</span></span></span><span class=line><span class=cl><span class=sd>                ESP_LOGW(&#34;pms_select&#34;, &#34;Selected PMS A: RX GPIO2, enable GPIO0=HIGH, GPIO12=LOW&#34;);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span>- <span class=nt>text_sensor.template.publish</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>active_pms_sensor_name</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=nt>state</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;PMS A&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>select_pms_b</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>mode</span><span class=p>:</span><span class=w> </span><span class=l>restart</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>then</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span>- <span class=nt>switch.turn_off</span><span class=p>:</span><span class=w> </span><span class=l>pms_a_enable_gpio0</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span>- <span class=nt>delay</span><span class=p>:</span><span class=w> </span><span class=l>250ms</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span>- <span class=nt>switch.turn_on</span><span class=p>:</span><span class=w> </span><span class=l>pms_b_enable_gpio12</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span>- <span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=p>|-</span><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>                id(active_pms_sensor) = 1;
+</span></span></span><span class=line><span class=cl><span class=sd>                ESP_LOGW(&#34;pms_select&#34;, &#34;Selected PMS B: RX GPIO13, enable GPIO12=HIGH, GPIO0=LOW&#34;);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span>- <span class=nt>text_sensor.template.publish</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>active_pms_sensor_name</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=nt>state</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;PMS B&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>interval</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>interval</span><span class=p>:</span><span class=w> </span><span class=l>60s</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=c># Without a startup delay, ESPHome runs this interval at boot and flips</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=c># from PMS A to PMS B before A gets its first full sampling window.</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>startup_delay</span><span class=p>:</span><span class=w> </span><span class=l>60s</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>then</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span>- <span class=nt>if</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=nt>condition</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span><span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;return id(active_pms_sensor) == 0;&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=nt>then</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span>- <span class=nt>script.execute</span><span class=p>:</span><span class=w> </span><span class=l>select_pms_b</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                </span><span class=nt>else</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>                    </span>- <span class=nt>script.execute</span><span class=p>:</span><span class=w> </span><span class=l>select_pms_a</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=nt>sensor</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;Uptime&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>uptime</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>seconds</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>bme280_i2c</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>address</span><span class=p>:</span><span class=w> </span><span class=m>0x76</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>temperature</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;BME280 Temperature Raw&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>bme_temperature_c</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>entity_category</span><span class=p>:</span><span class=w> </span><span class=l>diagnostic</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>pressure</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;Pressure&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>humidity</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;BME280 Humidity Raw&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>bme_humidity</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>entity_category</span><span class=p>:</span><span class=w> </span><span class=l>diagnostic</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>pmsx003</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>PMSX003</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>uart_id</span><span class=p>:</span><span class=w> </span><span class=l>pms_a_uart</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>update_interval</span><span class=p>:</span><span class=w> </span><span class=l>0s</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>pm_1_0_std</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;PMS A PM1.0 CF1&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>pms_a_pm1_cf1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>internal</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>pm_2_5_std</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;PMS A PM2.5 CF1&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>pms_a_pm25_cf1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>internal</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>pm_10_0_std</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;PMS A PM10 CF1&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>pms_a_pm10_cf1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>internal</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>pm_1_0</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;PMS A PM1.0 Atmospheric&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>pms_a_pm1_atm</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>internal</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>pm_2_5</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;PMS A PM2.5 Atmospheric&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>pms_a_pm25_atm</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>internal</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>pm_10_0</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;PMS A PM10 Atmospheric&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>pms_a_pm10_atm</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>internal</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>pm_0_3um</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;PMS A Particles 0.3um&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>pms_a_particles_0_3um</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>internal</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>pm_0_5um</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;PMS A Particles 0.5um&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>pms_a_particles_0_5um</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>internal</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>pm_1_0um</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;PMS A Particles 1.0um&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>pms_a_particles_1_0um</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>internal</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>pm_2_5um</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;PMS A Particles 2.5um&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>pms_a_particles_2_5um</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>internal</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>pm_5_0um</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;PMS A Particles 5.0um&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>pms_a_particles_5_0um</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>internal</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>pm_10_0um</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;PMS A Particles 10.0um&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>pms_a_particles_10_0um</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>internal</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>pmsx003</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>type</span><span class=p>:</span><span class=w> </span><span class=l>PMSX003</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>uart_id</span><span class=p>:</span><span class=w> </span><span class=l>pms_b_uart</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>update_interval</span><span class=p>:</span><span class=w> </span><span class=l>0s</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>pm_1_0_std</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;PMS B PM1.0 CF1&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>pms_b_pm1_cf1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>internal</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>pm_2_5_std</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;PMS B PM2.5 CF1&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>pms_b_pm25_cf1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>internal</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>pm_10_0_std</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;PMS B PM10 CF1&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>pms_b_pm10_cf1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>internal</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>pm_1_0</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;PMS B PM1.0 Atmospheric&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>pms_b_pm1_atm</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>internal</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>pm_2_5</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;PMS B PM2.5 Atmospheric&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>pms_b_pm25_atm</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>internal</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>pm_10_0</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;PMS B PM10 Atmospheric&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>pms_b_pm10_atm</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>internal</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>pm_0_3um</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;PMS B Particles 0.3um&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>pms_b_particles_0_3um</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>internal</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>pm_0_5um</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;PMS B Particles 0.5um&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>pms_b_particles_0_5um</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>internal</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>pm_1_0um</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;PMS B Particles 1.0um&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>pms_b_particles_1_0um</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>internal</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>pm_2_5um</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;PMS B Particles 2.5um&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>pms_b_particles_2_5um</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>internal</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>pm_5_0um</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;PMS B Particles 5.0um&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>pms_b_particles_5_0um</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>internal</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>pm_10_0um</span><span class=p>:</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;PMS B Particles 10.0um&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>pms_b_particles_10_0um</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>          </span><span class=nt>internal</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;Temperature&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>purpleair_temperature_c</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>template</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>unit_of_measurement</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;°C&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>device_class</span><span class=p>:</span><span class=w> </span><span class=l>temperature</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>accuracy_decimals</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>state_class</span><span class=p>:</span><span class=w> </span><span class=l>measurement</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>update_interval</span><span class=p>:</span><span class=w> </span><span class=l>60s</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=p>|-</span><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>          const float c = id(bme_temperature_c).state;
+</span></span></span><span class=line><span class=cl><span class=sd>          if (isnan(c))
+</span></span></span><span class=line><span class=cl><span class=sd>            return NAN;
+</span></span></span><span class=line><span class=cl><span class=sd>          // Match the old HA package/PurpleAir convention: the BME280 reads
+</span></span></span><span class=line><span class=cl><span class=sd>          // about 8 F / 4.4 C high in this enclosure.
+</span></span></span><span class=line><span class=cl><span class=sd>          return c - (8.0f * 5.0f / 9.0f);</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;Humidity&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>purpleair_humidity_corrected</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>template</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>unit_of_measurement</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;%&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>device_class</span><span class=p>:</span><span class=w> </span><span class=l>humidity</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>accuracy_decimals</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>state_class</span><span class=p>:</span><span class=w> </span><span class=l>measurement</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>update_interval</span><span class=p>:</span><span class=w> </span><span class=l>60s</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=p>|-</span><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>          const float humidity = id(bme_humidity).state;
+</span></span></span><span class=line><span class=cl><span class=sd>          if (isnan(humidity))
+</span></span></span><span class=line><span class=cl><span class=sd>            return NAN;
+</span></span></span><span class=line><span class=cl><span class=sd>          // Match the old HA package/PurpleAir convention: RH is corrected
+</span></span></span><span class=line><span class=cl><span class=sd>          // down by 4 percentage points for this enclosure.
+</span></span></span><span class=line><span class=cl><span class=sd>          const float corrected = humidity - 4.0f;
+</span></span></span><span class=line><span class=cl><span class=sd>          if (corrected &lt; 0.0f)
+</span></span></span><span class=line><span class=cl><span class=sd>            return 0.0f;
+</span></span></span><span class=line><span class=cl><span class=sd>          if (corrected &gt; 100.0f)
+</span></span></span><span class=line><span class=cl><span class=sd>            return 100.0f;
+</span></span></span><span class=line><span class=cl><span class=sd>          return corrected;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;Dewpoint&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>purpleair_dewpoint_c</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>template</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>unit_of_measurement</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;°C&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>device_class</span><span class=p>:</span><span class=w> </span><span class=l>temperature</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>accuracy_decimals</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>state_class</span><span class=p>:</span><span class=w> </span><span class=l>measurement</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>update_interval</span><span class=p>:</span><span class=w> </span><span class=l>60s</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=p>|-</span><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>          const float temp_c = id(purpleair_temperature_c).state;
+</span></span></span><span class=line><span class=cl><span class=sd>          const float humidity = id(purpleair_humidity_corrected).state;
+</span></span></span><span class=line><span class=cl><span class=sd>          if (isnan(temp_c) || isnan(humidity) || humidity &lt;= 0.0f)
+</span></span></span><span class=line><span class=cl><span class=sd>            return NAN;
+</span></span></span><span class=line><span class=cl><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>          const float a = 17.625f;
+</span></span></span><span class=line><span class=cl><span class=sd>          const float b = 243.04f;
+</span></span></span><span class=line><span class=cl><span class=sd>          const float gamma = logf(humidity / 100.0f) + ((a * temp_c) / (b + temp_c));
+</span></span></span><span class=line><span class=cl><span class=sd>          const float dewpoint_c = (b * gamma) / (a - gamma);
+</span></span></span><span class=line><span class=cl><span class=sd>          return dewpoint_c;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;PM1.0 CF1 Average&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>pms_pm1_cf1_average</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>template</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>unit_of_measurement</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;μg/m³&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>device_class</span><span class=p>:</span><span class=w> </span><span class=l>pm1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>accuracy_decimals</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>state_class</span><span class=p>:</span><span class=w> </span><span class=l>measurement</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>update_interval</span><span class=p>:</span><span class=w> </span><span class=l>30s</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=p>|-</span><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>          const float a = id(pms_a_pm1_cf1).state;
+</span></span></span><span class=line><span class=cl><span class=sd>          const float b = id(pms_b_pm1_cf1).state;
+</span></span></span><span class=line><span class=cl><span class=sd>          const bool a_ok = !isnan(a);
+</span></span></span><span class=line><span class=cl><span class=sd>          const bool b_ok = !isnan(b);
+</span></span></span><span class=line><span class=cl><span class=sd>          if (a_ok &amp;&amp; b_ok)
+</span></span></span><span class=line><span class=cl><span class=sd>            return (a + b) / 2.0f;
+</span></span></span><span class=line><span class=cl><span class=sd>          if (a_ok)
+</span></span></span><span class=line><span class=cl><span class=sd>            return a;
+</span></span></span><span class=line><span class=cl><span class=sd>          if (b_ok)
+</span></span></span><span class=line><span class=cl><span class=sd>            return b;
+</span></span></span><span class=line><span class=cl><span class=sd>          return NAN;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;PM2.5 CF1 Average&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>pms_pm25_cf1_average</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>template</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>unit_of_measurement</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;μg/m³&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>device_class</span><span class=p>:</span><span class=w> </span><span class=l>pm25</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>accuracy_decimals</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>state_class</span><span class=p>:</span><span class=w> </span><span class=l>measurement</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>update_interval</span><span class=p>:</span><span class=w> </span><span class=l>30s</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=p>|-</span><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>          const float a = id(pms_a_pm25_cf1).state;
+</span></span></span><span class=line><span class=cl><span class=sd>          const float b = id(pms_b_pm25_cf1).state;
+</span></span></span><span class=line><span class=cl><span class=sd>          const bool a_ok = !isnan(a);
+</span></span></span><span class=line><span class=cl><span class=sd>          const bool b_ok = !isnan(b);
+</span></span></span><span class=line><span class=cl><span class=sd>          if (a_ok &amp;&amp; b_ok)
+</span></span></span><span class=line><span class=cl><span class=sd>            return (a + b) / 2.0f;
+</span></span></span><span class=line><span class=cl><span class=sd>          if (a_ok)
+</span></span></span><span class=line><span class=cl><span class=sd>            return a;
+</span></span></span><span class=line><span class=cl><span class=sd>          if (b_ok)
+</span></span></span><span class=line><span class=cl><span class=sd>            return b;
+</span></span></span><span class=line><span class=cl><span class=sd>          return NAN;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;PM10 CF1 Average&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>pms_pm10_cf1_average</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>template</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>unit_of_measurement</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;μg/m³&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>device_class</span><span class=p>:</span><span class=w> </span><span class=l>pm10</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>accuracy_decimals</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>state_class</span><span class=p>:</span><span class=w> </span><span class=l>measurement</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>update_interval</span><span class=p>:</span><span class=w> </span><span class=l>30s</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=p>|-</span><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>          const float a = id(pms_a_pm10_cf1).state;
+</span></span></span><span class=line><span class=cl><span class=sd>          const float b = id(pms_b_pm10_cf1).state;
+</span></span></span><span class=line><span class=cl><span class=sd>          const bool a_ok = !isnan(a);
+</span></span></span><span class=line><span class=cl><span class=sd>          const bool b_ok = !isnan(b);
+</span></span></span><span class=line><span class=cl><span class=sd>          if (a_ok &amp;&amp; b_ok)
+</span></span></span><span class=line><span class=cl><span class=sd>            return (a + b) / 2.0f;
+</span></span></span><span class=line><span class=cl><span class=sd>          if (a_ok)
+</span></span></span><span class=line><span class=cl><span class=sd>            return a;
+</span></span></span><span class=line><span class=cl><span class=sd>          if (b_ok)
+</span></span></span><span class=line><span class=cl><span class=sd>            return b;
+</span></span></span><span class=line><span class=cl><span class=sd>          return NAN;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;PM1.0 Atmospheric Average&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>pms_pm1_atm_average</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>template</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>unit_of_measurement</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;μg/m³&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>device_class</span><span class=p>:</span><span class=w> </span><span class=l>pm1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>accuracy_decimals</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>state_class</span><span class=p>:</span><span class=w> </span><span class=l>measurement</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>update_interval</span><span class=p>:</span><span class=w> </span><span class=l>30s</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=p>|-</span><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>          const float a = id(pms_a_pm1_atm).state;
+</span></span></span><span class=line><span class=cl><span class=sd>          const float b = id(pms_b_pm1_atm).state;
+</span></span></span><span class=line><span class=cl><span class=sd>          const bool a_ok = !isnan(a);
+</span></span></span><span class=line><span class=cl><span class=sd>          const bool b_ok = !isnan(b);
+</span></span></span><span class=line><span class=cl><span class=sd>          if (a_ok &amp;&amp; b_ok)
+</span></span></span><span class=line><span class=cl><span class=sd>            return (a + b) / 2.0f;
+</span></span></span><span class=line><span class=cl><span class=sd>          if (a_ok)
+</span></span></span><span class=line><span class=cl><span class=sd>            return a;
+</span></span></span><span class=line><span class=cl><span class=sd>          if (b_ok)
+</span></span></span><span class=line><span class=cl><span class=sd>            return b;
+</span></span></span><span class=line><span class=cl><span class=sd>          return NAN;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;PM2.5 Atmospheric Average&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>pms_pm25_atm_average</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>template</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>unit_of_measurement</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;μg/m³&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>device_class</span><span class=p>:</span><span class=w> </span><span class=l>pm25</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>accuracy_decimals</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>state_class</span><span class=p>:</span><span class=w> </span><span class=l>measurement</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>update_interval</span><span class=p>:</span><span class=w> </span><span class=l>30s</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=p>|-</span><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>          const float a = id(pms_a_pm25_atm).state;
+</span></span></span><span class=line><span class=cl><span class=sd>          const float b = id(pms_b_pm25_atm).state;
+</span></span></span><span class=line><span class=cl><span class=sd>          const bool a_ok = !isnan(a);
+</span></span></span><span class=line><span class=cl><span class=sd>          const bool b_ok = !isnan(b);
+</span></span></span><span class=line><span class=cl><span class=sd>          if (a_ok &amp;&amp; b_ok)
+</span></span></span><span class=line><span class=cl><span class=sd>            return (a + b) / 2.0f;
+</span></span></span><span class=line><span class=cl><span class=sd>          if (a_ok)
+</span></span></span><span class=line><span class=cl><span class=sd>            return a;
+</span></span></span><span class=line><span class=cl><span class=sd>          if (b_ok)
+</span></span></span><span class=line><span class=cl><span class=sd>            return b;
+</span></span></span><span class=line><span class=cl><span class=sd>          return NAN;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;PM10 Atmospheric Average&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>pms_pm10_atm_average</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>template</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>unit_of_measurement</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;μg/m³&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>device_class</span><span class=p>:</span><span class=w> </span><span class=l>pm10</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>accuracy_decimals</span><span class=p>:</span><span class=w> </span><span class=m>1</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>state_class</span><span class=p>:</span><span class=w> </span><span class=l>measurement</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>update_interval</span><span class=p>:</span><span class=w> </span><span class=l>30s</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=p>|-</span><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>          const float a = id(pms_a_pm10_atm).state;
+</span></span></span><span class=line><span class=cl><span class=sd>          const float b = id(pms_b_pm10_atm).state;
+</span></span></span><span class=line><span class=cl><span class=sd>          const bool a_ok = !isnan(a);
+</span></span></span><span class=line><span class=cl><span class=sd>          const bool b_ok = !isnan(b);
+</span></span></span><span class=line><span class=cl><span class=sd>          if (a_ok &amp;&amp; b_ok)
+</span></span></span><span class=line><span class=cl><span class=sd>            return (a + b) / 2.0f;
+</span></span></span><span class=line><span class=cl><span class=sd>          if (a_ok)
+</span></span></span><span class=line><span class=cl><span class=sd>            return a;
+</span></span></span><span class=line><span class=cl><span class=sd>          if (b_ok)
+</span></span></span><span class=line><span class=cl><span class=sd>            return b;
+</span></span></span><span class=line><span class=cl><span class=sd>          return NAN;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;Particles 0.3um Average&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>pms_particles_0_3um_average</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>template</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>unit_of_measurement</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;p/m³&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>accuracy_decimals</span><span class=p>:</span><span class=w> </span><span class=m>0</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>state_class</span><span class=p>:</span><span class=w> </span><span class=l>measurement</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>update_interval</span><span class=p>:</span><span class=w> </span><span class=l>30s</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=p>|-</span><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>          const float a = id(pms_a_particles_0_3um).state;
+</span></span></span><span class=line><span class=cl><span class=sd>          const float b = id(pms_b_particles_0_3um).state;
+</span></span></span><span class=line><span class=cl><span class=sd>          const bool a_ok = !isnan(a);
+</span></span></span><span class=line><span class=cl><span class=sd>          const bool b_ok = !isnan(b);
+</span></span></span><span class=line><span class=cl><span class=sd>          if (a_ok &amp;&amp; b_ok)
+</span></span></span><span class=line><span class=cl><span class=sd>            return ((a + b) / 2.0f) * 10000.0f;
+</span></span></span><span class=line><span class=cl><span class=sd>          if (a_ok)
+</span></span></span><span class=line><span class=cl><span class=sd>            return a * 10000.0f;
+</span></span></span><span class=line><span class=cl><span class=sd>          if (b_ok)
+</span></span></span><span class=line><span class=cl><span class=sd>            return b * 10000.0f;
+</span></span></span><span class=line><span class=cl><span class=sd>          return NAN;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;Particles 0.5um Average&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>pms_particles_0_5um_average</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>template</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>unit_of_measurement</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;p/m³&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>accuracy_decimals</span><span class=p>:</span><span class=w> </span><span class=m>0</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>state_class</span><span class=p>:</span><span class=w> </span><span class=l>measurement</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>update_interval</span><span class=p>:</span><span class=w> </span><span class=l>30s</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=p>|-</span><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>          const float a = id(pms_a_particles_0_5um).state;
+</span></span></span><span class=line><span class=cl><span class=sd>          const float b = id(pms_b_particles_0_5um).state;
+</span></span></span><span class=line><span class=cl><span class=sd>          const bool a_ok = !isnan(a);
+</span></span></span><span class=line><span class=cl><span class=sd>          const bool b_ok = !isnan(b);
+</span></span></span><span class=line><span class=cl><span class=sd>          if (a_ok &amp;&amp; b_ok)
+</span></span></span><span class=line><span class=cl><span class=sd>            return ((a + b) / 2.0f) * 10000.0f;
+</span></span></span><span class=line><span class=cl><span class=sd>          if (a_ok)
+</span></span></span><span class=line><span class=cl><span class=sd>            return a * 10000.0f;
+</span></span></span><span class=line><span class=cl><span class=sd>          if (b_ok)
+</span></span></span><span class=line><span class=cl><span class=sd>            return b * 10000.0f;
+</span></span></span><span class=line><span class=cl><span class=sd>          return NAN;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;Particles 1.0um Average&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>pms_particles_1_0um_average</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>template</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>unit_of_measurement</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;p/m³&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>accuracy_decimals</span><span class=p>:</span><span class=w> </span><span class=m>0</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>state_class</span><span class=p>:</span><span class=w> </span><span class=l>measurement</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>update_interval</span><span class=p>:</span><span class=w> </span><span class=l>30s</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=p>|-</span><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>          const float a = id(pms_a_particles_1_0um).state;
+</span></span></span><span class=line><span class=cl><span class=sd>          const float b = id(pms_b_particles_1_0um).state;
+</span></span></span><span class=line><span class=cl><span class=sd>          const bool a_ok = !isnan(a);
+</span></span></span><span class=line><span class=cl><span class=sd>          const bool b_ok = !isnan(b);
+</span></span></span><span class=line><span class=cl><span class=sd>          if (a_ok &amp;&amp; b_ok)
+</span></span></span><span class=line><span class=cl><span class=sd>            return ((a + b) / 2.0f) * 10000.0f;
+</span></span></span><span class=line><span class=cl><span class=sd>          if (a_ok)
+</span></span></span><span class=line><span class=cl><span class=sd>            return a * 10000.0f;
+</span></span></span><span class=line><span class=cl><span class=sd>          if (b_ok)
+</span></span></span><span class=line><span class=cl><span class=sd>            return b * 10000.0f;
+</span></span></span><span class=line><span class=cl><span class=sd>          return NAN;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;Particles 2.5um Average&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>pms_particles_2_5um_average</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>template</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>unit_of_measurement</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;p/m³&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>accuracy_decimals</span><span class=p>:</span><span class=w> </span><span class=m>0</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>state_class</span><span class=p>:</span><span class=w> </span><span class=l>measurement</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>update_interval</span><span class=p>:</span><span class=w> </span><span class=l>30s</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=p>|-</span><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>          const float a = id(pms_a_particles_2_5um).state;
+</span></span></span><span class=line><span class=cl><span class=sd>          const float b = id(pms_b_particles_2_5um).state;
+</span></span></span><span class=line><span class=cl><span class=sd>          const bool a_ok = !isnan(a);
+</span></span></span><span class=line><span class=cl><span class=sd>          const bool b_ok = !isnan(b);
+</span></span></span><span class=line><span class=cl><span class=sd>          if (a_ok &amp;&amp; b_ok)
+</span></span></span><span class=line><span class=cl><span class=sd>            return ((a + b) / 2.0f) * 10000.0f;
+</span></span></span><span class=line><span class=cl><span class=sd>          if (a_ok)
+</span></span></span><span class=line><span class=cl><span class=sd>            return a * 10000.0f;
+</span></span></span><span class=line><span class=cl><span class=sd>          if (b_ok)
+</span></span></span><span class=line><span class=cl><span class=sd>            return b * 10000.0f;
+</span></span></span><span class=line><span class=cl><span class=sd>          return NAN;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;Particles 5.0um Average&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>pms_particles_5_0um_average</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>template</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>unit_of_measurement</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;p/m³&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>accuracy_decimals</span><span class=p>:</span><span class=w> </span><span class=m>0</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>state_class</span><span class=p>:</span><span class=w> </span><span class=l>measurement</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>update_interval</span><span class=p>:</span><span class=w> </span><span class=l>30s</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=p>|-</span><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>          const float a = id(pms_a_particles_5_0um).state;
+</span></span></span><span class=line><span class=cl><span class=sd>          const float b = id(pms_b_particles_5_0um).state;
+</span></span></span><span class=line><span class=cl><span class=sd>          const bool a_ok = !isnan(a);
+</span></span></span><span class=line><span class=cl><span class=sd>          const bool b_ok = !isnan(b);
+</span></span></span><span class=line><span class=cl><span class=sd>          if (a_ok &amp;&amp; b_ok)
+</span></span></span><span class=line><span class=cl><span class=sd>            return ((a + b) / 2.0f) * 10000.0f;
+</span></span></span><span class=line><span class=cl><span class=sd>          if (a_ok)
+</span></span></span><span class=line><span class=cl><span class=sd>            return a * 10000.0f;
+</span></span></span><span class=line><span class=cl><span class=sd>          if (b_ok)
+</span></span></span><span class=line><span class=cl><span class=sd>            return b * 10000.0f;
+</span></span></span><span class=line><span class=cl><span class=sd>          return NAN;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;Particles 10.0um Average&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>pms_particles_10_0um_average</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>template</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>unit_of_measurement</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;p/m³&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>accuracy_decimals</span><span class=p>:</span><span class=w> </span><span class=m>0</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>state_class</span><span class=p>:</span><span class=w> </span><span class=l>measurement</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>update_interval</span><span class=p>:</span><span class=w> </span><span class=l>30s</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=p>|-</span><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>          const float a = id(pms_a_particles_10_0um).state;
+</span></span></span><span class=line><span class=cl><span class=sd>          const float b = id(pms_b_particles_10_0um).state;
+</span></span></span><span class=line><span class=cl><span class=sd>          const bool a_ok = !isnan(a);
+</span></span></span><span class=line><span class=cl><span class=sd>          const bool b_ok = !isnan(b);
+</span></span></span><span class=line><span class=cl><span class=sd>          if (a_ok &amp;&amp; b_ok)
+</span></span></span><span class=line><span class=cl><span class=sd>            return ((a + b) / 2.0f) * 10000.0f;
+</span></span></span><span class=line><span class=cl><span class=sd>          if (a_ok)
+</span></span></span><span class=line><span class=cl><span class=sd>            return a * 10000.0f;
+</span></span></span><span class=line><span class=cl><span class=sd>          if (b_ok)
+</span></span></span><span class=line><span class=cl><span class=sd>            return b * 10000.0f;
+</span></span></span><span class=line><span class=cl><span class=sd>          return NAN;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;AirQuality A&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>pms_a_pm25_aqi_atm</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>template</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>device_class</span><span class=p>:</span><span class=w> </span><span class=l>aqi</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>icon</span><span class=p>:</span><span class=w> </span><span class=l>mdi:air-filter</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>accuracy_decimals</span><span class=p>:</span><span class=w> </span><span class=m>0</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>state_class</span><span class=p>:</span><span class=w> </span><span class=l>measurement</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>internal</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>update_interval</span><span class=p>:</span><span class=w> </span><span class=l>30s</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=p>|-</span><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>          const float c = id(pms_a_pm25_atm).state;
+</span></span></span><span class=line><span class=cl><span class=sd>          if (isnan(c) || c &lt; 0.0f)
+</span></span></span><span class=line><span class=cl><span class=sd>            return NAN;
+</span></span></span><span class=line><span class=cl><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>          auto aqi = [](float value, float c_low, float c_high, float i_low, float i_high) -&gt; float {
+</span></span></span><span class=line><span class=cl><span class=sd>            return roundf(((i_high - i_low) / (c_high - c_low)) * (value - c_low) + i_low);
+</span></span></span><span class=line><span class=cl><span class=sd>          };
+</span></span></span><span class=line><span class=cl><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>          if (c &lt;= 12.0f)
+</span></span></span><span class=line><span class=cl><span class=sd>            return aqi(c, 0.0f, 12.0f, 0.0f, 50.0f);
+</span></span></span><span class=line><span class=cl><span class=sd>          if (c &lt;= 35.0f)
+</span></span></span><span class=line><span class=cl><span class=sd>            return aqi(c, 12.0f, 35.0f, 51.0f, 100.0f);
+</span></span></span><span class=line><span class=cl><span class=sd>          if (c &lt;= 55.0f)
+</span></span></span><span class=line><span class=cl><span class=sd>            return aqi(c, 35.0f, 55.0f, 101.0f, 150.0f);
+</span></span></span><span class=line><span class=cl><span class=sd>          if (c &lt;= 150.0f)
+</span></span></span><span class=line><span class=cl><span class=sd>            return aqi(c, 55.0f, 150.0f, 151.0f, 200.0f);
+</span></span></span><span class=line><span class=cl><span class=sd>          if (c &lt;= 250.0f)
+</span></span></span><span class=line><span class=cl><span class=sd>            return aqi(c, 150.0f, 250.0f, 201.0f, 300.0f);
+</span></span></span><span class=line><span class=cl><span class=sd>          if (c &lt;= 350.0f)
+</span></span></span><span class=line><span class=cl><span class=sd>            return aqi(c, 250.0f, 350.0f, 301.0f, 400.0f);
+</span></span></span><span class=line><span class=cl><span class=sd>          if (c &lt;= 500.0f)
+</span></span></span><span class=line><span class=cl><span class=sd>            return aqi(c, 350.0f, 500.0f, 401.0f, 500.0f);
+</span></span></span><span class=line><span class=cl><span class=sd>          return 500.0f;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;AirQuality B&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>pms_b_pm25_aqi_atm</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>template</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>device_class</span><span class=p>:</span><span class=w> </span><span class=l>aqi</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>icon</span><span class=p>:</span><span class=w> </span><span class=l>mdi:air-filter</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>accuracy_decimals</span><span class=p>:</span><span class=w> </span><span class=m>0</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>state_class</span><span class=p>:</span><span class=w> </span><span class=l>measurement</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>internal</span><span class=p>:</span><span class=w> </span><span class=kc>true</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>update_interval</span><span class=p>:</span><span class=w> </span><span class=l>30s</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=p>|-</span><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>          const float c = id(pms_b_pm25_atm).state;
+</span></span></span><span class=line><span class=cl><span class=sd>          if (isnan(c) || c &lt; 0.0f)
+</span></span></span><span class=line><span class=cl><span class=sd>            return NAN;
+</span></span></span><span class=line><span class=cl><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>          auto aqi = [](float value, float c_low, float c_high, float i_low, float i_high) -&gt; float {
+</span></span></span><span class=line><span class=cl><span class=sd>            return roundf(((i_high - i_low) / (c_high - c_low)) * (value - c_low) + i_low);
+</span></span></span><span class=line><span class=cl><span class=sd>          };
+</span></span></span><span class=line><span class=cl><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>          if (c &lt;= 12.0f)
+</span></span></span><span class=line><span class=cl><span class=sd>            return aqi(c, 0.0f, 12.0f, 0.0f, 50.0f);
+</span></span></span><span class=line><span class=cl><span class=sd>          if (c &lt;= 35.0f)
+</span></span></span><span class=line><span class=cl><span class=sd>            return aqi(c, 12.0f, 35.0f, 51.0f, 100.0f);
+</span></span></span><span class=line><span class=cl><span class=sd>          if (c &lt;= 55.0f)
+</span></span></span><span class=line><span class=cl><span class=sd>            return aqi(c, 35.0f, 55.0f, 101.0f, 150.0f);
+</span></span></span><span class=line><span class=cl><span class=sd>          if (c &lt;= 150.0f)
+</span></span></span><span class=line><span class=cl><span class=sd>            return aqi(c, 55.0f, 150.0f, 151.0f, 200.0f);
+</span></span></span><span class=line><span class=cl><span class=sd>          if (c &lt;= 250.0f)
+</span></span></span><span class=line><span class=cl><span class=sd>            return aqi(c, 150.0f, 250.0f, 201.0f, 300.0f);
+</span></span></span><span class=line><span class=cl><span class=sd>          if (c &lt;= 350.0f)
+</span></span></span><span class=line><span class=cl><span class=sd>            return aqi(c, 250.0f, 350.0f, 301.0f, 400.0f);
+</span></span></span><span class=line><span class=cl><span class=sd>          if (c &lt;= 500.0f)
+</span></span></span><span class=line><span class=cl><span class=sd>            return aqi(c, 350.0f, 500.0f, 401.0f, 500.0f);
+</span></span></span><span class=line><span class=cl><span class=sd>          return 500.0f;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>    </span>- <span class=nt>name</span><span class=p>:</span><span class=w> </span><span class=s2>&#34;AirQuality Combined&#34;</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>id</span><span class=p>:</span><span class=w> </span><span class=l>pms_pm25_aqi_atm_average</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>platform</span><span class=p>:</span><span class=w> </span><span class=l>template</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>device_class</span><span class=p>:</span><span class=w> </span><span class=l>aqi</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>icon</span><span class=p>:</span><span class=w> </span><span class=l>mdi:air-filter</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>accuracy_decimals</span><span class=p>:</span><span class=w> </span><span class=m>0</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>state_class</span><span class=p>:</span><span class=w> </span><span class=l>measurement</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>update_interval</span><span class=p>:</span><span class=w> </span><span class=l>30s</span><span class=w>
+</span></span></span><span class=line><span class=cl><span class=w>      </span><span class=nt>lambda</span><span class=p>:</span><span class=w> </span><span class=p>|-</span><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>          const float a = id(pms_a_pm25_aqi_atm).state;
+</span></span></span><span class=line><span class=cl><span class=sd>          const float b = id(pms_b_pm25_aqi_atm).state;
+</span></span></span><span class=line><span class=cl><span class=sd>          const bool a_ok = !isnan(a);
+</span></span></span><span class=line><span class=cl><span class=sd>          const bool b_ok = !isnan(b);
+</span></span></span><span class=line><span class=cl><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>          auto round_like_ha_min_max = [](float value) -&gt; float {
+</span></span></span><span class=line><span class=cl><span class=sd>            return roundf(value / 10.0f) * 10.0f;
+</span></span></span><span class=line><span class=cl><span class=sd>          };
+</span></span></span><span class=line><span class=cl><span class=sd>
+</span></span></span><span class=line><span class=cl><span class=sd>          // ha.yaml used Home Assistant min_max type=mean with round_digits=-1.
+</span></span></span><span class=line><span class=cl><span class=sd>          if (a_ok &amp;&amp; b_ok)
+</span></span></span><span class=line><span class=cl><span class=sd>            return round_like_ha_min_max((a + b) / 2.0f);
+</span></span></span><span class=line><span class=cl><span class=sd>          if (a_ok)
+</span></span></span><span class=line><span class=cl><span class=sd>            return round_like_ha_min_max(a);
+</span></span></span><span class=line><span class=cl><span class=sd>          if (b_ok)
+</span></span></span><span class=line><span class=cl><span class=sd>            return round_like_ha_min_max(b);
+</span></span></span><span class=line><span class=cl><span class=sd>          return NAN;</span></span></span></code></pre></div></div></div><div class=post-footer id=post-footer><div class=post-info><div class=post-info-line><div class=post-info-mod><span>Updated on 2026-06-20</span></div><div id=page-views class=post-info-mod></div></div><div class=post-info-line><div class=post-info-md><span><a class=link-to-markdown href=/converting-purpleair-classic-to-esphome/index.md target=_blank>Read Markdown</a></span></div><div class=post-info-share><span></span></div></div></div><div class=post-info-more><section class=post-tags><i class="fas fa-tags" aria-hidden=true></i>&nbsp;<a href=/tags/esphome/>ESPHome</a>,&nbsp;<a href=/tags/mqtt/>MQTT</a>,&nbsp;<a href=/tags/home-assistant/>Home-Assistant</a>,&nbsp;<a href=/tags/two-minute-teardown/>Two-Minute-Teardown</a></section><section><span><a href=javascript:void(0); onclick=window.history.back()>Back</a></span>&nbsp;|&nbsp;<span><a href=/>Home</a></span></section></div><div class=post-nav><a href=/usbc-aaa-battery-teardown/ class=prev rel=prev title="#TwoMinuteTeardown: USB-C charged AAA battery"><i class="fas fa-angle-left" aria-hidden=true></i>#TwoMinuteTeardown: USB-C charged AAA battery</a></div></div></article></div></main><footer class=footer><div class=footer-container><div class=footer-line>¯\_(ツ)_/¯</div><div class=footer-line>Powered by <a href=https://gohugo.io/ target=_blank rel="noopener noreffer" title="Hugo 0.163.3">Hugo</a> | Theme - <a href=https://github.com/dillonzq/LoveIt target=_blank rel="noopener noreffer" title="LoveIt 0.3.1-DEV"><i class="far fa-kiss-wink-heart" aria-hidden=true></i> LoveIt</a></div><div class=footer-line itemscope itemtype=http://schema.org/CreativeWork><i class="far fa-copyright" aria-hidden=true></i><span itemprop=copyrightYear>2019 - 2026</span><span class=author itemprop=copyrightHolder>&nbsp;<a href=/ target=_blank>karl</a></span>&nbsp;|&nbsp;<span class=license><a rel="license external nofollow noopener noreffer" href=https://creativecommons.org/licenses/by-nc/4.0/ target=_blank>CC BY-NC 4.0</a></span></div></div></footer></div><div id=fixed-buttons><a href=# id=back-to-top class=fixed-button title="Back to Top"><i class="fas fa-arrow-up" aria-hidden=true></i></a></div><div id=fixed-buttons-hidden><a href=# id=view-comments class=fixed-button title="View Comments"><i class="fas fa-comment" aria-hidden=true></i></a></div><link rel=stylesheet href=/lib/katex/katex.min.f787891b550d554c214aa8902f39ac46df2dbd48fdec500a2040a5dce1e8ab58.css integrity="sha256-94eJG1UNVUwhSqiQLzmsRt8tvUj97FAKIECl3OHoq1g="><script src=/lib/autocomplete/autocomplete.min.ae2da1bd62c6469ee27770ad1cddf2e8296d8a7f6d85b091463e5200c5e320af.js integrity="sha256-ri2hvWLGRp7id3CtHN3y6Cltin9thbCRRj5SAMXjIK8="></script><script src=/lib/lunr/lunr.min.08a93c0120364b01159db3c287f39b2180bb740334472bda0675bd3f18981676.js integrity="sha256-CKk8ASA2SwEVnbPCh/ObIYC7dAM0RyvaBnW9PxiYFnY="></script><script src=/lib/lazysizes/lazysizes.min.3d9120fa621da6d613c1698b7014ec6bdf4620366e8f2b7b547059f4b6f6272b.js integrity="sha256-PZEg+mIdptYTwWmLcBTsa99GIDZujyt7VHBZ9Lb2Jys="></script><script src=/lib/clipboard/clipboard.min.e17a1d816e13c0826e0ed7febfabc3277f45571234bde0bf9120829a7169edc9.js integrity="sha256-4XodgW4TwIJuDtf+v6vDJ39FVxI0veC/kSCCmnFp7ck="></script><script src=/lib/katex/katex.min.863811e2baa0849c77bc92d26d44f4d0a4843c2a8ab52c462017dea57316e4d8.js integrity="sha256-hjgR4rqghJx3vJLSbUT00KSEPCqKtSxGIBfepXMW5Ng="></script><script src=/lib/katex/contrib/auto-render.min.bb53eb953394531aae36fdd537065c4244eb8542901a3ce914601d932675b8ac.js integrity="sha256-u1PrlTOUUxquNv3VNwZcQkTrhUKQGjzpFGAdkyZ1uKw="></script><script src=/lib/katex/contrib/copy-tex.min.07770af90943a1de1a1010794bc78c6a7346d46d48fb63e35cc76ba76b827604.js integrity="sha256-B3cK+QlDod4aEBB5S8eManNG1G1I+2PjXMdrp2uCdgQ="></script><script src=/lib/katex/contrib/mhchem.min.9f87e5e9c384a160472d0045035a8641f6013358eddb3ece708634a50f946a40.js integrity="sha256-n4fl6cOEoWBHLQBFA1qGQfYBM1jt2z7OcIY0pQ+UakA="></script><script>window.config={comment:{},math:{delimiters:[{display:!0,left:"$$",right:"$$"},{display:!0,left:"\\[",right:"\\]"},{display:!0,left:"\\begin{equation}",right:"\\end{equation}"},{display:!0,left:"\\begin{equation*}",right:"\\end{equation*}"},{display:!0,left:"\\begin{align}",right:"\\end{align}"},{display:!0,left:"\\begin{align*}",right:"\\end{align*}"},{display:!0,left:"\\begin{alignat}",right:"\\end{alignat}"},{display:!0,left:"\\begin{alignat*}",right:"\\end{alignat*}"},{display:!0,left:"\\begin{gather}",right:"\\end{gather}"},{display:!0,left:"\\begin{CD}",right:"\\end{CD}"},{display:!1,left:"$",right:"$"},{display:!1,left:"\\(",right:"\\)"}],strict:!1},search:{highlightTag:"em",lunrIndexURL:"/index.json",maxResultLength:10,noResultsFound:"No results found",snippetLength:30,type:"lunr"}}</script><script src=/js/theme.min.15182b9bb06a8f3558f28de5085c553678c346bb45d7ec530b1855eb84524d66.js integrity="sha256-FRgrm7BqjzVY8o3lCFxVNnjDRrtF1+xTCxhV64RSTWY="></script><script>var dnt,doNotTrack=!1;if(!doNotTrack){window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag("js",new Date),gtag("config","G-3WZ55XG701")}</script><script src="https://www.googletagmanager.com/gtag/js?id=G-3WZ55XG701" async></script></body></html>
