@@ -1038,6 +1038,590 @@ This config offers up (almost) all of the same data that was available from the 
 </span></span></span><span class="line"><span class="cl"><span class="sd">          if (b_ok)
 </span></span></span><span class="line"><span class="cl"><span class="sd">            return round_like_ha_min_max(b);
 </span></span></span><span class="line"><span class="cl"><span class="sd">          return NAN;</span></span></span></code></pre></div></div>
+]]></description></item><item><title>Loading a certificate onto Avigilon without using CCT</title><link>https://karlquinsland.com/adding-custom-certs-to-avigilon-without-camera-configuration-tool/</link><pubDate>Mon, 01 Jun 2026 00:00:00 +0000</pubDate><author>karl</author><guid>https://karlquinsland.com/adding-custom-certs-to-avigilon-without-camera-configuration-tool/</guid><description><![CDATA[<h1 id="loading-a-certificate-onto-avigilon-without-using-cct">Loading a certificate onto Avigilon without using CCT</h1>
+<p>I recently won an auction for a used Avigilon camera with the intention of replacing my cheap Reolink cameras with something a bit more &ldquo;pro&rdquo; and that would integrate better with Home Assistant.</p>
+<p>This isn&rsquo;t going to be a &ldquo;review&rdquo; of the camera or an analysis of the firmware, just a quick &ldquo;I googled, found nothing so now I&rsquo;m sharing how I did it for the next guy&rdquo; post.</p>
+<h2 id="the-problem">The Problem</h2>
+<p>Out of the box, the camera ships with a self-signed certificate.
+The web UI allows you to switch between OpenSSL or FIPS-140 compliant &ldquo;encryption engine&rdquo; but it does not allow you to load your own certificate.</p>
+<figure >
+
+    
+        
+        
+
+    
+
+    <figcaption>
+        
+        <p>
+            Yes, really. This is all that you can adjust from the web UI. No option to upload your own cert.
+            
+                
+                
+        </p> 
+    </figcaption>
+    
+</figure>
+
+
+<p>You can customize a lot of <em>other</em> things about the camera from the web UI but the web-server certificates is not one of them&hellip; for some reason.
+The web UI lets you manage 802.1X certificates but &hellip; not the web server certificates.</p>
+<p>WHY?</p>
+<p>You can re-use the same html form/input from the 802.1X certificate management page to upload your own certs for the web server but &hellip; they just don&rsquo;t give you that option.</p>
+<p>Docs indicate that at least <a href="https://docs.avigilon.com/bundle/pro-camera-web-interface/page/network-and-security/create-certificates.htm" target="_blank" rel="noopener noreffer "><em>newer</em> cameras can do this through the web UI</a> embedded into the camera&hellip; but this guy just isn&rsquo;t going to get that update.</p>
+<p>The &ldquo;fall back&rdquo; is to use their <a href="https://docs.avigilon.com/bundle/camera-configuration-tool-2-16/page/CCT-Intro.htm" target="_blank" rel="noopener noreffer ">Camera Configuration Tool (CCT)</a> which is a Windows only application.
+You also need to create an account to download the tool.</p>
+<p>No thank you.</p>
+<p>I am trying to <em>automate</em> updating certificates on these cameras and &ldquo;automate&rdquo; in this case means &ldquo;write a script that I can run in some container on a Linux host&rdquo; and the CCT doesn&rsquo;t really fit into that workflow.</p>
+<h2 id="the-solution">The solution</h2>
+<p>Because CCT is a <code>.net</code> application, it was <em>trivial</em> to reverse engineer the protocol details.</p>
+<p>As it turns out, the CCT app only exposes graphical elements for working with camera-generated CSRs and uploading only the signed certificate.</p>
+<p>Fortunately, the API that the CCT uses under the hood is the <a href="https://www.onvif.org/ver10/device/wsdl/devicemgmt.wsdl" target="_blank" rel="noopener noreffer ">ONVIF Device Management</a> API which lets us do a <em>lot</em> more than just upload a signed certificate; the <code>LoadCertificateWithPrivateKey</code> command is not exposed via CCT but it is supported by the camera firmware!</p>
+<p>After a bit more testing with a sample LetsEncrypt certificate, I was able to confirm that the camera will accept a custom certificate and private key without using CCT at all:</p>
+<ul>
+<li>A Let&rsquo;s Encrypt leaf certificate can be uploaded as DER X.509.
+<ul>
+<li>The matching private key can be uploaded as unencrypted DER PKCS#8.</li>
+</ul>
+</li>
+<li>The new certificate is not useful until it is activated with <code>SetCertificatesStatus</code>.</li>
+</ul>
+<p>One other thing to call out from testing:</p>
+<ul>
+<li>Uploading CA certificates to the camera CA store did not make the camera serve a full HTTPS chain! This means that you can/should only upload the leaf certificates. Fortunately most modern browsers will be able to handle this just fine as long as the leaf certificate is valid and signed by a trusted CA.</li>
+</ul>
+<h3 id="show-me-the-code">Show Me The Code</h3>
+<p>This is a lightly modified version of the script I wrote while testing things.
+It&rsquo;s a bit more verbose than I would like but:</p>
+<ul>
+<li>I wanted to make it explicit and robust for automation purposes</li>
+<li>I wanted to have zero dependencies outside of <code>cryptography</code> and <code>requests</code> from <code>stdlib</code> so this would run cheaply anywhere <a href="https://docs.astral.sh/uv/" target="_blank" rel="noopener noreffer "><code>uv</code></a> was present</li>
+</ul>
+<p>And also SOAP is just &hellip; grossly verbose. Nothing I could do about that!</p>
+<div class="code-block code-line-numbers" style="counter-reset: code-block 0">
+    <div class="code-header language-python">
+        <span class="code-title"><i class="arrow fas fa-angle-right" aria-hidden="true"></i></span>
+        <span class="ellipses"><i class="fas fa-ellipsis-h" aria-hidden="true"></i></span>
+        <span class="copy" title="Copy to clipboard"><i class="far fa-copy" aria-hidden="true"></i></span>
+    </div><div class="highlight"><pre tabindex="0" class="chroma"><code class="language-python" data-lang="python"><span class="line"><span class="cl"><span class="ch">#!/usr/bin/env -S uv run</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># /// script</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># requires-python = &#34;&gt;=3.12&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># dependencies = [</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#   &#34;cryptography&gt;=45.0.0&#34;,</span>
+</span></span><span class="line"><span class="cl"><span class="c1">#   &#34;requests&gt;=2.32.0&#34;,</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># ]</span>
+</span></span><span class="line"><span class="cl"><span class="c1"># ///</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">argparse</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">base64</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">dataclasses</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">hashlib</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">os</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">re</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">socket</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">ssl</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">sys</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">textwrap</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">time</span>
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">xml.etree.ElementTree</span> <span class="k">as</span> <span class="nn">ET</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">collections.abc</span> <span class="kn">import</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">Sequence</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">UTC</span><span class="p">,</span> <span class="n">datetime</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Literal</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">xml.sax.saxutils</span> <span class="kn">import</span> <span class="n">escape</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="kn">import</span> <span class="nn">requests</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">cryptography</span> <span class="kn">import</span> <span class="n">x509</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">cryptography.hazmat.primitives</span> <span class="kn">import</span> <span class="n">serialization</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">cryptography.hazmat.primitives.serialization</span> <span class="kn">import</span> <span class="n">load_pem_private_key</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">cryptography.x509.oid</span> <span class="kn">import</span> <span class="n">ExtensionOID</span><span class="p">,</span> <span class="n">NameOID</span>
+</span></span><span class="line"><span class="cl"><span class="kn">from</span> <span class="nn">requests.auth</span> <span class="kn">import</span> <span class="n">HTTPDigestAuth</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">SOAP_ENV_NS</span> <span class="o">=</span> <span class="s2">&#34;http://www.w3.org/2003/05/soap-envelope&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">TDS_NS</span> <span class="o">=</span> <span class="s2">&#34;http://www.onvif.org/ver10/device/wsdl&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">TT_NS</span> <span class="o">=</span> <span class="s2">&#34;http://www.onvif.org/ver10/schema&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="n">WSSE_NS</span> <span class="o">=</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;http://docs.oasis-open.org/wss/2004/01/&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;oasis-200401-wss-wssecurity-secext-1.0.xsd&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">WSU_NS</span> <span class="o">=</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;http://docs.oasis-open.org/wss/2004/01/&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;oasis-200401-wss-wssecurity-utility-1.0.xsd&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="n">PASSWORD_DIGEST_TYPE</span> <span class="o">=</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;http://docs.oasis-open.org/wss/2004/01/&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="s2">&#34;oasis-200401-wss-username-token-profile-1.0#PasswordDigest&#34;</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="n">AuthMode</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span><span class="s2">&#34;wsse&#34;</span><span class="p">,</span> <span class="s2">&#34;digest&#34;</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">Error</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">    <span class="k">pass</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nd">@dataclasses.dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">CameraCert</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cert_id</span><span class="p">:</span> <span class="nb">str</span>
+</span></span><span class="line"><span class="cl">    <span class="n">fingerprint</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nd">@dataclasses.dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">CertStatus</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cert_id</span><span class="p">:</span> <span class="nb">str</span>
+</span></span><span class="line"><span class="cl">    <span class="n">active</span><span class="p">:</span> <span class="nb">bool</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="nd">@dataclasses.dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl"><span class="k">class</span> <span class="nc">LocalMaterial</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cert_der</span><span class="p">:</span> <span class="nb">bytes</span>
+</span></span><span class="line"><span class="cl">    <span class="n">key_der_pkcs8</span><span class="p">:</span> <span class="nb">bytes</span>
+</span></span><span class="line"><span class="cl">    <span class="n">fingerprint</span><span class="p">:</span> <span class="nb">str</span>
+</span></span><span class="line"><span class="cl">    <span class="n">not_after</span><span class="p">:</span> <span class="n">datetime</span>
+</span></span><span class="line"><span class="cl">    <span class="n">tls_name</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">argv</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">args</span> <span class="o">=</span> <span class="n">parse_args</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">password</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">password</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&#34;AVIGILON_PASSWORD&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="ow">not</span> <span class="n">password</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">raise</span> <span class="n">Error</span><span class="p">(</span><span class="s2">&#34;Pass --password or set AVIGILON_PASSWORD&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">material</span> <span class="o">=</span> <span class="n">load_material</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">cert</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">key</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">host</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cert_id</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">certificate_id</span> <span class="ow">or</span> <span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="sa">f</span><span class="s2">&#34;le-</span><span class="si">{</span><span class="n">material</span><span class="o">.</span><span class="n">not_after</span><span class="si">:</span><span class="s2">%Y%m%d</span><span class="si">}</span><span class="s2">-</span><span class="si">{</span><span class="n">material</span><span class="o">.</span><span class="n">fingerprint</span><span class="p">[:</span><span class="mi">12</span><span class="p">]</span><span class="si">}</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">endpoint</span> <span class="o">=</span> <span class="n">endpoint_url</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">scheme</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">port</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">path</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">auth_mode</span><span class="p">:</span> <span class="n">AuthMode</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">auth</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;endpoint: </span><span class="si">{</span><span class="n">endpoint</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;target certificate id: </span><span class="si">{</span><span class="n">cert_id</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;target fingerprint: </span><span class="si">{</span><span class="n">material</span><span class="o">.</span><span class="n">fingerprint</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">soap_call</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="n">endpoint</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">args</span><span class="o">.</span><span class="n">user</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">password</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">auth_mode</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;GetDeviceInformation&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;&lt;tds:GetDeviceInformation/&gt;&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">args</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">args</span><span class="o">.</span><span class="n">verify_onvif_tls</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">certs</span> <span class="o">=</span> <span class="n">get_certificates</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="n">endpoint</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="n">auth_mode</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">verify_onvif_tls</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">statuses</span> <span class="o">=</span> <span class="n">get_statuses</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="n">endpoint</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">user</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="n">auth_mode</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">verify_onvif_tls</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">active_id</span> <span class="o">=</span> <span class="nb">next</span><span class="p">((</span><span class="n">status</span><span class="o">.</span><span class="n">cert_id</span> <span class="k">for</span> <span class="n">status</span> <span class="ow">in</span> <span class="n">statuses</span> <span class="k">if</span> <span class="n">status</span><span class="o">.</span><span class="n">active</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">active_cert</span> <span class="o">=</span> <span class="nb">next</span><span class="p">((</span><span class="n">cert</span> <span class="k">for</span> <span class="n">cert</span> <span class="ow">in</span> <span class="n">certs</span> <span class="k">if</span> <span class="n">cert</span><span class="o">.</span><span class="n">cert_id</span> <span class="o">==</span> <span class="n">active_id</span><span class="p">),</span> <span class="kc">None</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">active_cert</span> <span class="ow">and</span> <span class="n">active_cert</span><span class="o">.</span><span class="n">fingerprint</span> <span class="o">==</span> <span class="n">material</span><span class="o">.</span><span class="n">fingerprint</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;camera is already serving this certificate&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">verify_served</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">https_port</span><span class="p">,</span> <span class="n">material</span><span class="o">.</span><span class="n">tls_name</span> <span class="ow">or</span> <span class="n">args</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="n">material</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">existing_match</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="p">(</span><span class="n">cert</span><span class="o">.</span><span class="n">cert_id</span> <span class="k">for</span> <span class="n">cert</span> <span class="ow">in</span> <span class="n">certs</span> <span class="k">if</span> <span class="n">cert</span><span class="o">.</span><span class="n">fingerprint</span> <span class="o">==</span> <span class="n">material</span><span class="o">.</span><span class="n">fingerprint</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">        <span class="kc">None</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">target_id</span> <span class="o">=</span> <span class="n">existing_match</span> <span class="ow">or</span> <span class="n">cert_id</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">conflicting</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="p">(</span>
+</span></span><span class="line"><span class="cl">            <span class="n">cert</span>
+</span></span><span class="line"><span class="cl">            <span class="k">for</span> <span class="n">cert</span> <span class="ow">in</span> <span class="n">certs</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="n">cert</span><span class="o">.</span><span class="n">cert_id</span> <span class="o">==</span> <span class="n">cert_id</span> <span class="ow">and</span> <span class="n">cert</span><span class="o">.</span><span class="n">fingerprint</span> <span class="o">!=</span> <span class="n">material</span><span class="o">.</span><span class="n">fingerprint</span>
+</span></span><span class="line"><span class="cl">        <span class="p">),</span>
+</span></span><span class="line"><span class="cl">        <span class="kc">None</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">conflicting</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">raise</span> <span class="n">Error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;certificate id already exists with different bytes: </span><span class="si">{</span><span class="n">cert_id</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="ow">not</span> <span class="n">existing_match</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;uploading certificate and private key&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">load_certificate_with_private_key</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">            <span class="n">endpoint</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="n">args</span><span class="o">.</span><span class="n">user</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="n">password</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="n">auth_mode</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="n">target_id</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="n">material</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="n">args</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="n">args</span><span class="o">.</span><span class="n">verify_onvif_tls</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">else</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;certificate already exists on camera as </span><span class="si">{</span><span class="n">target_id</span><span class="si">}</span><span class="s2">; activating&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">all_ids</span> <span class="o">=</span> <span class="n">unique</span><span class="p">([</span><span class="n">target_id</span><span class="p">,</span> <span class="o">*</span><span class="p">(</span><span class="n">cert</span><span class="o">.</span><span class="n">cert_id</span> <span class="k">for</span> <span class="n">cert</span> <span class="ow">in</span> <span class="n">certs</span><span class="p">)])</span>
+</span></span><span class="line"><span class="cl">    <span class="n">set_statuses</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="n">endpoint</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">args</span><span class="o">.</span><span class="n">user</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">password</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">auth_mode</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="p">[</span><span class="n">CertStatus</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">item</span> <span class="o">==</span> <span class="n">target_id</span><span class="p">)</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">all_ids</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">        <span class="n">args</span><span class="o">.</span><span class="n">timeout</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">args</span><span class="o">.</span><span class="n">verify_onvif_tls</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">verify_served</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="n">args</span><span class="o">.</span><span class="n">https_port</span><span class="p">,</span> <span class="n">material</span><span class="o">.</span><span class="n">tls_name</span> <span class="ow">or</span> <span class="n">args</span><span class="o">.</span><span class="n">host</span><span class="p">,</span> <span class="n">material</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="nb">print</span><span class="p">(</span><span class="s2">&#34;deploy complete&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="mi">0</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">parse_args</span><span class="p">(</span><span class="n">argv</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">argparse</span><span class="o">.</span><span class="n">Namespace</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&#34;--host&#34;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&#34;--user&#34;</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&#34;--password&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&#34;--cert&#34;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">Path</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&#34;--key&#34;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">Path</span><span class="p">,</span> <span class="n">required</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&#34;--certificate-id&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&#34;--scheme&#34;</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s2">&#34;http&#34;</span><span class="p">,</span> <span class="s2">&#34;https&#34;</span><span class="p">],</span> <span class="n">default</span><span class="o">=</span><span class="s2">&#34;http&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&#34;--port&#34;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&#34;--path&#34;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s2">&#34;/onvif/device_service&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&#34;--auth&#34;</span><span class="p">,</span> <span class="n">choices</span><span class="o">=</span><span class="p">[</span><span class="s2">&#34;wsse&#34;</span><span class="p">,</span> <span class="s2">&#34;digest&#34;</span><span class="p">],</span> <span class="n">default</span><span class="o">=</span><span class="s2">&#34;wsse&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&#34;--timeout&#34;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">20.0</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&#34;--https-port&#34;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">443</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s2">&#34;--verify-onvif-tls&#34;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s2">&#34;store_true&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">(</span><span class="n">argv</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">endpoint_url</span><span class="p">(</span><span class="n">scheme</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">host</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">default_port</span> <span class="o">=</span> <span class="mi">443</span> <span class="k">if</span> <span class="n">scheme</span> <span class="o">==</span> <span class="s2">&#34;https&#34;</span> <span class="k">else</span> <span class="mi">80</span>
+</span></span><span class="line"><span class="cl">    <span class="n">port_part</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span> <span class="k">if</span> <span class="n">port</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">port</span> <span class="o">==</span> <span class="n">default_port</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&#34;:</span><span class="si">{</span><span class="n">port</span><span class="si">}</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">path</span> <span class="o">=</span> <span class="n">path</span> <span class="k">if</span> <span class="n">path</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&#34;/&#34;</span><span class="p">)</span> <span class="k">else</span> <span class="sa">f</span><span class="s2">&#34;/</span><span class="si">{</span><span class="n">path</span><span class="si">}</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="sa">f</span><span class="s2">&#34;</span><span class="si">{</span><span class="n">scheme</span><span class="si">}</span><span class="s2">://</span><span class="si">{</span><span class="n">host</span><span class="si">}{</span><span class="n">port_part</span><span class="si">}{</span><span class="n">path</span><span class="si">}</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">load_material</span><span class="p">(</span><span class="n">cert_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">key_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">,</span> <span class="n">fallback_tls_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">LocalMaterial</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cert_blocks</span> <span class="o">=</span> <span class="n">extract_pem_blocks</span><span class="p">(</span><span class="n">cert_path</span><span class="o">.</span><span class="n">read_bytes</span><span class="p">(),</span> <span class="s2">&#34;CERTIFICATE&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="ow">not</span> <span class="n">cert_blocks</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">raise</span> <span class="n">Error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;no certificate PEM block found in </span><span class="si">{</span><span class="n">cert_path</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">leaf</span> <span class="o">=</span> <span class="n">x509</span><span class="o">.</span><span class="n">load_pem_x509_certificate</span><span class="p">(</span><span class="n">cert_blocks</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">    <span class="n">key</span> <span class="o">=</span> <span class="n">load_pem_private_key</span><span class="p">(</span><span class="n">key_path</span><span class="o">.</span><span class="n">read_bytes</span><span class="p">(),</span> <span class="n">password</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">cert_public</span> <span class="o">=</span> <span class="n">leaf</span><span class="o">.</span><span class="n">public_key</span><span class="p">()</span><span class="o">.</span><span class="n">public_bytes</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="n">serialization</span><span class="o">.</span><span class="n">Encoding</span><span class="o">.</span><span class="n">DER</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">serialization</span><span class="o">.</span><span class="n">PublicFormat</span><span class="o">.</span><span class="n">SubjectPublicKeyInfo</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">key_public</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">public_key</span><span class="p">()</span><span class="o">.</span><span class="n">public_bytes</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="n">serialization</span><span class="o">.</span><span class="n">Encoding</span><span class="o">.</span><span class="n">DER</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">serialization</span><span class="o">.</span><span class="n">PublicFormat</span><span class="o">.</span><span class="n">SubjectPublicKeyInfo</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">cert_public</span> <span class="o">!=</span> <span class="n">key_public</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">raise</span> <span class="n">Error</span><span class="p">(</span><span class="s2">&#34;certificate and private key do not match&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">cert_der</span> <span class="o">=</span> <span class="n">leaf</span><span class="o">.</span><span class="n">public_bytes</span><span class="p">(</span><span class="n">serialization</span><span class="o">.</span><span class="n">Encoding</span><span class="o">.</span><span class="n">DER</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">key_der</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">private_bytes</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="n">serialization</span><span class="o">.</span><span class="n">Encoding</span><span class="o">.</span><span class="n">DER</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">serialization</span><span class="o">.</span><span class="n">PrivateFormat</span><span class="o">.</span><span class="n">PKCS8</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">serialization</span><span class="o">.</span><span class="n">NoEncryption</span><span class="p">(),</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">LocalMaterial</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cert_der</span><span class="o">=</span><span class="n">cert_der</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">key_der_pkcs8</span><span class="o">=</span><span class="n">key_der</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">fingerprint</span><span class="o">=</span><span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">(</span><span class="n">cert_der</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">(),</span>
+</span></span><span class="line"><span class="cl">        <span class="n">not_after</span><span class="o">=</span><span class="n">leaf</span><span class="o">.</span><span class="n">not_valid_after_utc</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">tls_name</span><span class="o">=</span><span class="n">preferred_tls_name</span><span class="p">(</span><span class="n">leaf</span><span class="p">)</span> <span class="ow">or</span> <span class="n">fallback_tls_name</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">get_certificates</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">endpoint</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">user</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">password</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">auth_mode</span><span class="p">:</span> <span class="n">AuthMode</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">timeout</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">verify_tls</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">CameraCert</span><span class="p">]:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">root</span> <span class="o">=</span> <span class="n">soap_call</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="n">endpoint</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">user</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">password</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">auth_mode</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;GetCertificates&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;&lt;tds:GetCertificates/&gt;&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">timeout</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">verify_tls</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">result</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">CameraCert</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">iter_local</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="p">{</span><span class="s2">&#34;NvtCertificate&#34;</span><span class="p">,</span> <span class="s2">&#34;NVTCertificate&#34;</span><span class="p">}):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cert_id</span> <span class="o">=</span> <span class="n">child_text</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="s2">&#34;CertificateID&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">data</span> <span class="o">=</span> <span class="n">descendant_text</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="s2">&#34;Data&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">cert_id</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">CameraCert</span><span class="p">(</span><span class="n">cert_id</span><span class="p">,</span> <span class="n">certificate_data_fingerprint</span><span class="p">(</span><span class="n">data</span><span class="p">)))</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">result</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">get_statuses</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">endpoint</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">user</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">password</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">auth_mode</span><span class="p">:</span> <span class="n">AuthMode</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">timeout</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">verify_tls</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="n">CertStatus</span><span class="p">]:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">root</span> <span class="o">=</span> <span class="n">soap_call</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="n">endpoint</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">user</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">password</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">auth_mode</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;GetCertificatesStatus&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;&lt;tds:GetCertificatesStatus/&gt;&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">timeout</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">verify_tls</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">result</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">CertStatus</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">iter_local</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="p">{</span><span class="s2">&#34;CertificateStatus&#34;</span><span class="p">}):</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cert_id</span> <span class="o">=</span> <span class="n">child_text</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="s2">&#34;CertificateID&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">active</span> <span class="o">=</span> <span class="n">child_text</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="s2">&#34;Status&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">cert_id</span> <span class="ow">and</span> <span class="n">active</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">CertStatus</span><span class="p">(</span><span class="n">cert_id</span><span class="p">,</span> <span class="n">active</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">{</span><span class="s2">&#34;true&#34;</span><span class="p">,</span> <span class="s2">&#34;1&#34;</span><span class="p">}))</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">result</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">load_certificate_with_private_key</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">endpoint</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">user</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">password</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">auth_mode</span><span class="p">:</span> <span class="n">AuthMode</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">cert_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">material</span><span class="p">:</span> <span class="n">LocalMaterial</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">timeout</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">verify_tls</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">body</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="sa">f</span><span class="s2">&#34;&#34;&#34;</span><span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="s2">        &lt;tds:LoadCertificateWithPrivateKey&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">          &lt;tds:CertificateWithPrivateKey&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">            &lt;tt:CertificateID&gt;</span><span class="si">{</span><span class="n">xml_text</span><span class="p">(</span><span class="n">cert_id</span><span class="p">)</span><span class="si">}</span><span class="s2">&lt;/tt:CertificateID&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">            &lt;tt:Certificate&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">              &lt;tt:Data&gt;</span><span class="si">{</span><span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">material</span><span class="o">.</span><span class="n">cert_der</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&#34;ascii&#34;</span><span class="p">)</span><span class="si">}</span><span class="s2">&lt;/tt:Data&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">            &lt;/tt:Certificate&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">            &lt;tt:PrivateKey&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">              &lt;tt:Data&gt;</span><span class="si">{</span><span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">material</span><span class="o">.</span><span class="n">key_der_pkcs8</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&#34;ascii&#34;</span><span class="p">)</span><span class="si">}</span><span class="s2">&lt;/tt:Data&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">            &lt;/tt:PrivateKey&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">          &lt;/tds:CertificateWithPrivateKey&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">        &lt;/tds:LoadCertificateWithPrivateKey&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">        &#34;&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">soap_call</span><span class="p">(</span><span class="n">endpoint</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">password</span><span class="p">,</span> <span class="n">auth_mode</span><span class="p">,</span> <span class="s2">&#34;LoadCertificateWithPrivateKey&#34;</span><span class="p">,</span> <span class="n">body</span><span class="p">,</span> <span class="n">timeout</span><span class="p">,</span> <span class="n">verify_tls</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">set_statuses</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">endpoint</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">user</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">password</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">auth_mode</span><span class="p">:</span> <span class="n">AuthMode</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">statuses</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">CertStatus</span><span class="p">],</span>
+</span></span><span class="line"><span class="cl">    <span class="n">timeout</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">verify_tls</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">items</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;&lt;tds:CertificateStatus&gt;&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="sa">f</span><span class="s2">&#34;&lt;tt:CertificateID&gt;</span><span class="si">{</span><span class="n">xml_text</span><span class="p">(</span><span class="n">status</span><span class="o">.</span><span class="n">cert_id</span><span class="p">)</span><span class="si">}</span><span class="s2">&lt;/tt:CertificateID&gt;&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="sa">f</span><span class="s2">&#34;&lt;tt:Status&gt;</span><span class="si">{</span><span class="s1">&#39;true&#39;</span> <span class="k">if</span> <span class="n">status</span><span class="o">.</span><span class="n">active</span> <span class="k">else</span> <span class="s1">&#39;false&#39;</span><span class="si">}</span><span class="s2">&lt;/tt:Status&gt;&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;&lt;/tds:CertificateStatus&gt;&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">status</span> <span class="ow">in</span> <span class="n">statuses</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">soap_call</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="n">endpoint</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">user</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">password</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">auth_mode</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="s2">&#34;SetCertificatesStatus&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="sa">f</span><span class="s2">&#34;&lt;tds:SetCertificatesStatus&gt;</span><span class="si">{</span><span class="n">items</span><span class="si">}</span><span class="s2">&lt;/tds:SetCertificatesStatus&gt;&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">timeout</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">verify_tls</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">soap_call</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">    <span class="n">endpoint</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">user</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">password</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">auth_mode</span><span class="p">:</span> <span class="n">AuthMode</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">operation</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">body_xml</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">timeout</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="n">verify_tls</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl"><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">ET</span><span class="o">.</span><span class="n">Element</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">action</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&#34;</span><span class="si">{</span><span class="n">TDS_NS</span><span class="si">}</span><span class="s2">/</span><span class="si">{</span><span class="n">operation</span><span class="si">}</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">header_xml</span> <span class="o">=</span> <span class="n">wsse_header</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span> <span class="k">if</span> <span class="n">auth_mode</span> <span class="o">==</span> <span class="s2">&#34;wsse&#34;</span> <span class="k">else</span> <span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="n">envelope</span> <span class="o">=</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="sa">f</span><span class="s2">&#34;&#34;&#34;</span><span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="s2">        &lt;?xml version=&#34;1.0&#34; encoding=&#34;utf-8&#34;?&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">        &lt;s:Envelope xmlns:s=&#34;</span><span class="si">{</span><span class="n">SOAP_ENV_NS</span><span class="si">}</span><span class="s2">&#34; xmlns:tds=&#34;</span><span class="si">{</span><span class="n">TDS_NS</span><span class="si">}</span><span class="s2">&#34; xmlns:tt=&#34;</span><span class="si">{</span><span class="n">TT_NS</span><span class="si">}</span><span class="s2">&#34;&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">          &lt;s:Header&gt;</span><span class="si">{</span><span class="n">header_xml</span><span class="si">}</span><span class="s2">&lt;/s:Header&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">          &lt;s:Body&gt;</span><span class="si">{</span><span class="n">body_xml</span><span class="si">}</span><span class="s2">&lt;/s:Body&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">        &lt;/s:Envelope&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">        &#34;&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">auth</span> <span class="o">=</span> <span class="n">HTTPDigestAuth</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span> <span class="k">if</span> <span class="n">auth_mode</span> <span class="o">==</span> <span class="s2">&#34;digest&#34;</span> <span class="k">else</span> <span class="kc">None</span>
+</span></span><span class="line"><span class="cl">    <span class="n">response</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="n">endpoint</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">data</span><span class="o">=</span><span class="n">envelope</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&#34;utf-8&#34;</span><span class="p">),</span>
+</span></span><span class="line"><span class="cl">        <span class="n">headers</span><span class="o">=</span><span class="p">{</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;Content-Type&#34;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;application/soap+xml; charset=utf-8; action=&#34;</span><span class="si">{</span><span class="n">action</span><span class="si">}</span><span class="s1">&#34;&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;SOAPAction&#34;</span><span class="p">:</span> <span class="sa">f</span><span class="s1">&#39;&#34;</span><span class="si">{</span><span class="n">action</span><span class="si">}</span><span class="s1">&#34;&#39;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">            <span class="s2">&#34;Accept&#34;</span><span class="p">:</span> <span class="s2">&#34;application/soap+xml, text/xml, */*&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="p">},</span>
+</span></span><span class="line"><span class="cl">        <span class="n">auth</span><span class="o">=</span><span class="n">auth</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">timeout</span><span class="o">=</span><span class="n">timeout</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">verify</span><span class="o">=</span><span class="n">verify_tls</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">root</span> <span class="o">=</span> <span class="n">ET</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">except</span> <span class="n">ET</span><span class="o">.</span><span class="n">ParseError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">snippet</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">[:</span><span class="mi">1000</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&#34;</span><span class="se">\n</span><span class="s2">&#34;</span><span class="p">,</span> <span class="s2">&#34; &#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">raise</span> <span class="n">Error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;</span><span class="si">{</span><span class="n">operation</span><span class="si">}</span><span class="s2">: HTTP </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">snippet</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">exc</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">    <span class="n">fault</span> <span class="o">=</span> <span class="n">soap_fault_text</span><span class="p">(</span><span class="n">root</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">fault</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">raise</span> <span class="n">Error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;</span><span class="si">{</span><span class="n">operation</span><span class="si">}</span><span class="s2">: HTTP </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">fault</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="ow">not</span> <span class="mi">200</span> <span class="o">&lt;=</span> <span class="n">response</span><span class="o">.</span><span class="n">status_code</span> <span class="o">&lt;</span> <span class="mi">300</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">snippet</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">text</span><span class="p">[:</span><span class="mi">1000</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&#34;</span><span class="se">\n</span><span class="s2">&#34;</span><span class="p">,</span> <span class="s2">&#34; &#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">raise</span> <span class="n">Error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;</span><span class="si">{</span><span class="n">operation</span><span class="si">}</span><span class="s2">: HTTP </span><span class="si">{</span><span class="n">response</span><span class="o">.</span><span class="n">status_code</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">snippet</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">root</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">wsse_header</span><span class="p">(</span><span class="n">user</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">password</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">nonce</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">urandom</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">created</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">(</span><span class="n">UTC</span><span class="p">)</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&#34;%Y-%m-</span><span class="si">%d</span><span class="s2">T%H:%M:%SZ&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="n">digest</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha1</span><span class="p">(</span><span class="n">nonce</span> <span class="o">+</span> <span class="n">created</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span> <span class="o">+</span> <span class="n">password</span><span class="o">.</span><span class="n">encode</span><span class="p">())</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">textwrap</span><span class="o">.</span><span class="n">dedent</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="sa">f</span><span class="s2">&#34;&#34;&#34;</span><span class="se">\
+</span></span></span><span class="line"><span class="cl"><span class="s2">        &lt;wsse:Security xmlns:wsse=&#34;</span><span class="si">{</span><span class="n">WSSE_NS</span><span class="si">}</span><span class="s2">&#34;&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">          &lt;wsse:UsernameToken xmlns:wsu=&#34;</span><span class="si">{</span><span class="n">WSU_NS</span><span class="si">}</span><span class="s2">&#34; wsu:Id=&#34;SecurityToken-</span><span class="si">{</span><span class="n">os</span><span class="o">.</span><span class="n">urandom</span><span class="p">(</span><span class="mi">16</span><span class="p">)</span><span class="o">.</span><span class="n">hex</span><span class="p">()</span><span class="si">}</span><span class="s2">&#34;&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">            &lt;wsse:Username&gt;</span><span class="si">{</span><span class="n">xml_text</span><span class="p">(</span><span class="n">user</span><span class="p">)</span><span class="si">}</span><span class="s2">&lt;/wsse:Username&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">            &lt;wsse:Password Type=&#34;</span><span class="si">{</span><span class="n">PASSWORD_DIGEST_TYPE</span><span class="si">}</span><span class="s2">&#34;&gt;</span><span class="si">{</span><span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">digest</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&#34;ascii&#34;</span><span class="p">)</span><span class="si">}</span><span class="s2">&lt;/wsse:Password&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">            &lt;wsse:Nonce&gt;</span><span class="si">{</span><span class="n">base64</span><span class="o">.</span><span class="n">b64encode</span><span class="p">(</span><span class="n">nonce</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&#34;ascii&#34;</span><span class="p">)</span><span class="si">}</span><span class="s2">&lt;/wsse:Nonce&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">            &lt;wsu:Created&gt;</span><span class="si">{</span><span class="n">created</span><span class="si">}</span><span class="s2">&lt;/wsu:Created&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">          &lt;/wsse:UsernameToken&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">        &lt;/wsse:Security&gt;
+</span></span></span><span class="line"><span class="cl"><span class="s2">        &#34;&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">verify_served</span><span class="p">(</span><span class="n">host</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">port</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">server_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">material</span><span class="p">:</span> <span class="n">LocalMaterial</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">last</span> <span class="o">=</span> <span class="s2">&#34;&#34;</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">attempt</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">9</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">context</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">SSLContext</span><span class="p">(</span><span class="n">ssl</span><span class="o">.</span><span class="n">PROTOCOL_TLS_CLIENT</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">context</span><span class="o">.</span><span class="n">check_hostname</span> <span class="o">=</span> <span class="kc">False</span>
+</span></span><span class="line"><span class="cl">            <span class="n">context</span><span class="o">.</span><span class="n">verify_mode</span> <span class="o">=</span> <span class="n">ssl</span><span class="o">.</span><span class="n">CERT_NONE</span>
+</span></span><span class="line"><span class="cl">            <span class="k">with</span> <span class="n">socket</span><span class="o">.</span><span class="n">create_connection</span><span class="p">((</span><span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">),</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span> <span class="k">as</span> <span class="n">sock</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="k">with</span> <span class="n">context</span><span class="o">.</span><span class="n">wrap_socket</span><span class="p">(</span><span class="n">sock</span><span class="p">,</span> <span class="n">server_hostname</span><span class="o">=</span><span class="n">server_name</span><span class="p">)</span> <span class="k">as</span> <span class="n">tls_sock</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                    <span class="n">cert_der</span> <span class="o">=</span> <span class="n">tls_sock</span><span class="o">.</span><span class="n">getpeercert</span><span class="p">(</span><span class="n">binary_form</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="ow">not</span> <span class="n">cert_der</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="k">raise</span> <span class="n">Error</span><span class="p">(</span><span class="s2">&#34;TLS peer did not return a certificate&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">served</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">(</span><span class="n">cert_der</span><span class="p">)</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">            <span class="k">if</span> <span class="n">served</span> <span class="o">==</span> <span class="n">material</span><span class="o">.</span><span class="n">fingerprint</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;verified served HTTPS leaf on attempt </span><span class="si">{</span><span class="n">attempt</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">                <span class="k">return</span>
+</span></span><span class="line"><span class="cl">            <span class="n">last</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&#34;served </span><span class="si">{</span><span class="n">served</span><span class="si">}</span><span class="s2">, expected </span><span class="si">{</span><span class="n">material</span><span class="o">.</span><span class="n">fingerprint</span><span class="si">}</span><span class="s2">&#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="k">except</span> <span class="ne">OSError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">last</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">exc</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">raise</span> <span class="n">Error</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;served certificate verification failed: </span><span class="si">{</span><span class="n">last</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">certificate_data_fingerprint</span><span class="p">(</span><span class="n">data_text</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="ow">not</span> <span class="n">data_text</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="kc">None</span>
+</span></span><span class="line"><span class="cl">    <span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">raw</span> <span class="o">=</span> <span class="n">base64</span><span class="o">.</span><span class="n">b64decode</span><span class="p">(</span><span class="s2">&#34;&#34;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">data_text</span><span class="o">.</span><span class="n">split</span><span class="p">()),</span> <span class="n">validate</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="kc">None</span>
+</span></span><span class="line"><span class="cl">    <span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">cert</span> <span class="o">=</span> <span class="n">x509</span><span class="o">.</span><span class="n">load_der_x509_certificate</span><span class="p">(</span><span class="n">raw</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">blocks</span> <span class="o">=</span> <span class="n">extract_pem_blocks</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="s2">&#34;CERTIFICATE&#34;</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">            <span class="n">cert</span> <span class="o">=</span> <span class="n">x509</span><span class="o">.</span><span class="n">load_pem_x509_certificate</span><span class="p">(</span><span class="n">blocks</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</span></span><span class="line"><span class="cl">        <span class="k">except</span> <span class="p">(</span><span class="ne">IndexError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="kc">None</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">(</span><span class="n">cert</span><span class="o">.</span><span class="n">public_bytes</span><span class="p">(</span><span class="n">serialization</span><span class="o">.</span><span class="n">Encoding</span><span class="o">.</span><span class="n">DER</span><span class="p">))</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">preferred_tls_name</span><span class="p">(</span><span class="n">cert</span><span class="p">:</span> <span class="n">x509</span><span class="o">.</span><span class="n">Certificate</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="n">san</span> <span class="o">=</span> <span class="n">cert</span><span class="o">.</span><span class="n">extensions</span><span class="o">.</span><span class="n">get_extension_for_oid</span><span class="p">(</span><span class="n">ExtensionOID</span><span class="o">.</span><span class="n">SUBJECT_ALTERNATIVE_NAME</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="n">dns_names</span> <span class="o">=</span> <span class="n">san</span><span class="o">.</span><span class="n">value</span><span class="o">.</span><span class="n">get_values_for_type</span><span class="p">(</span><span class="n">x509</span><span class="o">.</span><span class="n">DNSName</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">dns_names</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="n">dns_names</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">except</span> <span class="n">x509</span><span class="o">.</span><span class="n">ExtensionNotFound</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">pass</span>
+</span></span><span class="line"><span class="cl">    <span class="n">names</span> <span class="o">=</span> <span class="n">cert</span><span class="o">.</span><span class="n">subject</span><span class="o">.</span><span class="n">get_attributes_for_oid</span><span class="p">(</span><span class="n">NameOID</span><span class="o">.</span><span class="n">COMMON_NAME</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">names</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span> <span class="k">if</span> <span class="n">names</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">names</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="kc">None</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">soap_fault_text</span><span class="p">(</span><span class="n">root</span><span class="p">:</span> <span class="n">ET</span><span class="o">.</span><span class="n">Element</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">fault</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">iter_local</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="p">{</span><span class="s2">&#34;Fault&#34;</span><span class="p">}),</span> <span class="kc">None</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">if</span> <span class="n">fault</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">return</span> <span class="kc">None</span>
+</span></span><span class="line"><span class="cl">    <span class="n">texts</span> <span class="o">=</span> <span class="p">[</span>
+</span></span><span class="line"><span class="cl">        <span class="n">node</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">        <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">iter_local</span><span class="p">(</span><span class="n">fault</span><span class="p">,</span> <span class="p">{</span><span class="s2">&#34;Text&#34;</span><span class="p">,</span> <span class="s2">&#34;faultstring&#34;</span><span class="p">})</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">text</span> <span class="ow">and</span> <span class="n">node</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="p">]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="s2">&#34;; &#34;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span> <span class="k">if</span> <span class="n">texts</span> <span class="k">else</span> <span class="n">ET</span><span class="o">.</span><span class="n">tostring</span><span class="p">(</span><span class="n">fault</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&#34;unicode&#34;</span><span class="p">)[:</span><span class="mi">800</span><span class="p">]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">extract_pem_blocks</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="nb">bytes</span><span class="p">,</span> <span class="n">label</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">bytes</span><span class="p">]:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">pattern</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+</span></span><span class="line"><span class="cl">        <span class="sa">rb</span><span class="s2">&#34;-----BEGIN &#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="o">+</span> <span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">label</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&#34;ascii&#34;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">        <span class="o">+</span> <span class="sa">rb</span><span class="s2">&#34;-----.*?-----END &#34;</span>
+</span></span><span class="line"><span class="cl">        <span class="o">+</span> <span class="n">re</span><span class="o">.</span><span class="n">escape</span><span class="p">(</span><span class="n">label</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s2">&#34;ascii&#34;</span><span class="p">))</span>
+</span></span><span class="line"><span class="cl">        <span class="o">+</span> <span class="sa">rb</span><span class="s2">&#34;-----\s*&#34;</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">        <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">DOTALL</span><span class="p">,</span>
+</span></span><span class="line"><span class="cl">    <span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="p">[</span><span class="k">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="k">match</span> <span class="ow">in</span> <span class="n">pattern</span><span class="o">.</span><span class="n">finditer</span><span class="p">(</span><span class="n">data</span><span class="p">)]</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">iter_local</span><span class="p">(</span><span class="n">root</span><span class="p">:</span> <span class="n">ET</span><span class="o">.</span><span class="n">Element</span><span class="p">,</span> <span class="n">names</span><span class="p">:</span> <span class="nb">set</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="n">ET</span><span class="o">.</span><span class="n">Element</span><span class="p">]:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">node</span> <span class="ow">in</span> <span class="n">root</span><span class="o">.</span><span class="n">iter</span><span class="p">():</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">node</span><span class="o">.</span><span class="n">tag</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s2">&#34;}&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="k">yield</span> <span class="n">node</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">child_text</span><span class="p">(</span><span class="n">root</span><span class="p">:</span> <span class="n">ET</span><span class="o">.</span><span class="n">Element</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">child</span> <span class="ow">in</span> <span class="nb">list</span><span class="p">(</span><span class="n">root</span><span class="p">):</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">child</span><span class="o">.</span><span class="n">tag</span><span class="o">.</span><span class="n">rsplit</span><span class="p">(</span><span class="s2">&#34;}&#34;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="n">name</span> <span class="ow">and</span> <span class="n">child</span><span class="o">.</span><span class="n">text</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="k">return</span> <span class="n">child</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="kc">None</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">descendant_text</span><span class="p">(</span><span class="n">root</span><span class="p">:</span> <span class="n">ET</span><span class="o">.</span><span class="n">Element</span><span class="p">,</span> <span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">node</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">iter_local</span><span class="p">(</span><span class="n">root</span><span class="p">,</span> <span class="p">{</span><span class="n">name</span><span class="p">}),</span> <span class="kc">None</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">node</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">if</span> <span class="n">node</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">node</span><span class="o">.</span><span class="n">text</span> <span class="k">else</span> <span class="kc">None</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">xml_text</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">escape</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">{</span><span class="s1">&#39;&#34;&#39;</span><span class="p">:</span> <span class="s2">&#34;&amp;quot;&#34;</span><span class="p">,</span> <span class="s2">&#34;&#39;&#34;</span><span class="p">:</span> <span class="s2">&#34;&amp;apos;&#34;</span><span class="p">})</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">def</span> <span class="nf">unique</span><span class="p">(</span><span class="n">values</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+</span></span><span class="line"><span class="cl">    <span class="n">result</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
+</span></span><span class="line"><span class="cl">    <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">if</span> <span class="n">value</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">            <span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">    <span class="k">return</span> <span class="n">result</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl"><span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&#34;__main__&#34;</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">    <span class="k">try</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="k">raise</span> <span class="ne">SystemExit</span><span class="p">(</span><span class="n">main</span><span class="p">())</span>
+</span></span><span class="line"><span class="cl">    <span class="k">except</span> <span class="n">Error</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+</span></span><span class="line"><span class="cl">        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&#34;error: </span><span class="si">{</span><span class="n">exc</span><span class="si">}</span><span class="s2">&#34;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
+</span></span><span class="line"><span class="cl">        <span class="k">raise</span> <span class="ne">SystemExit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="kn">from</span> <span class="nn">exc</span></span></span></code></pre></div></div>
 ]]></description></item><item><title>#TwoMinuteTeardown: USB-C charged AAA battery</title><link>https://karlquinsland.com/usbc-aaa-battery-teardown/</link><pubDate>Sun, 01 Feb 2026 00:00:00 +0000</pubDate><author>karl</author><guid>https://karlquinsland.com/usbc-aaa-battery-teardown/</guid><description><![CDATA[<h1 id="two-minute-teardown-usb-c-charged-aaa-battery">Two Minute Teardown: USB-C charged AAA battery</h1>
 <p>First, these things have existed for quite a few years now but people still seem to be discovering them.
 If you are one of todays <a href="https://xkcd.com/1053/" target="_blank" rel="noopener noreffer ">lucky 10,000 people to find out about them</a>, you&rsquo;re welcome.
@@ -3476,244 +4060,4 @@ https://karlquinsland.com/duogalia-am70-optical-fiber-multi-meter/files/manual-s
 
 
 " rel="">here</a>.</p>
-]]></description></item><item><title>TESmart HKS801-P23-USBK KVM Teardown</title><link>https://karlquinsland.com/tesmart-hks801-p23-usbk-kvm-teardown/</link><pubDate>Sat, 17 May 2025 00:00:00 +0000</pubDate><author>karl</author><guid>https://karlquinsland.com/tesmart-hks801-p23-usbk-kvm-teardown/</guid><description><![CDATA[<h1 id="tesmart-hks801-p23-usbk-kvm-teardown">TESmart HKS801-P23-USBK KVM Teardown</h1>
-<p>Recently, one of the USB ports on <a href="/hdmi-kvm-teardown-and-esphome/" rel="">my previous KVM switch</a> failed. Since it&rsquo;s a critical piece of equipment, I needed a replacement the same day. The original AliExpress product page was no longer available; the seller seems to have closed up shop entirely.</p>
-<p>Fortunately, the OEM—<code>XUFUNG</code>—has released an updated version, now sold in the US as the <a href="https://www.tesmart.com/products/hks801-p23" target="_blank" rel="noopener noreffer ">TESmart HKS801-P23-USBK</a>. It looks visually identical to the previous KVM switch, but the USB ports now feature the characteristic blue color indicating USB 3.0 support.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            OEM &#39;what&#39;s in the box&#39; image.
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            OEM feature overview image.
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            OEM &#34;what&#39;s new&#34; image; the big upgrade here is 5 Gbps USB support.
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<div class="details admonition note open">
-        <div class="details-summary admonition-title">
-            <i class="icon fas fa-pencil-alt" aria-hidden="true"></i>Note<i class="details-icon fas fa-angle-right" aria-hidden="true"></i>
-        </div>
-        <div class="details-content">
-            <div class="admonition-content">Despite every PCB featuring a clear <code>XUFUNG</code> label, that specific string doesn&rsquo;t appear in many places online! A quick Google search only returns my prior post and <a href="https://dancharblog.wordpress.com/2025/05/02/tesmart-hdc202-x24-thunderbolt-4-kvm-teardown-and-review/" target="_blank" rel="noopener noreffer ">this teardown of another TESmart KVM</a>. You should check out the internals of that one too! Because it uses Thunderbolt, the internals are quite a bit more complicated.</div>
-        </div>
-    </div>
-<h2 id="whats-inside">What&rsquo;s inside?</h2>
-<div class="details admonition tip open">
-        <div class="details-summary admonition-title">
-            <i class="icon fas fa-lightbulb" aria-hidden="true"></i>TL;DR<i class="details-icon fas fa-angle-right" aria-hidden="true"></i>
-        </div>
-        <div class="details-content">
-            <div class="admonition-content">It&rsquo;s the same architecture as before, but with some minor component changes and corresponding PCB layout updates.</div>
-        </div>
-    </div>
-<p>As before, two main PCBs are stacked: the top houses the main microcontroller and HDMI ports, while the bottom contains the USB ports and power supply.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            Photo taken just after top cover removed.
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<p><figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            Close up of the &#34;output&#34; portion of the HDMI PCB.
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            Closeup of the network interface PCB.
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            Angled shot of the dupont connector between the top (HDMI) and bottom (USB) PCBs.
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-</p>
-<p>It&rsquo;s interesting to see that the power rails differ: 5V for the 4K version, and apparently there&rsquo;s an 8K version that uses 12V. It&rsquo;s also nice that the RX/TX lines are explicitly labeled; it makes things a bit easier to hack on.</p>
-<figure >
-
-    
-        
-        
-
-    
-
-    <figcaption>
-        
-        <p>
-            Close up of the RTS5411S USB hub controller and the mysterious F68B chips.
-            
-                
-                
-        </p> 
-    </figcaption>
-    
-</figure>
-
-
-<h2 id="chips">Chips</h2>
-<p>In no particular order, here are the main ICs I identified on the PCB:</p>
-<ul>
-<li>
-<p><a href="https://lcsc.com/product-detail/USB-Converters_Realtek-Semicon-RTS5411S-GR_C5356838.html" target="_blank" rel="noopener noreffer ">RTS5411s</a> - USB 3.1 Super-Speed HUB Controller
-cx32l003f8</p>
-</li>
-<li>
-<p>F68B / A1V8 - Not sure, can&rsquo;t find any positive ID. There&rsquo;s one for every RTS5411S port, though, and some traces do daisy chain between the individual F68B chips so i&rsquo;m guessing they&rsquo;re related to USB and possibly a buffer/signal conditioner?</p>
-<ul>
-<li>Interestingly enough, I don&rsquo;t see any traces from this chip to the &ldquo;slow&rdquo; USB ports that are meant to handle the keyboard/mouse. Those are monitored by the CH545L which is probably looking for the keyboard/mouse signals to trigger switching between banks.</li>
-</ul>
-</li>
-<li>
-<p><a href="https://lcsc.com/product-detail/Microcontrollers-MCU-MPU-SOC_WCH-Jiangsu-Qin-Heng-CH545L_C19183926.html?s_z=n_C19183926" target="_blank" rel="noopener noreffer ">WCH CH545L</a> - USB multi-host multi-device enhanced E8051 MCU</p>
-</li>
-<li>
-<p><a href="https://www.zbitsemi.com/upload/file/20200903/20200903105452_99571.pdf" target="_blank" rel="noopener noreffer ">CX32L003F8</a> - ARM® Cortex®-M0+ 32-bit</p>
-<ul>
-<li>Used in a few different locations: front panel to scan buttons, update the display, monitor IR signals.</li>
-</ul>
-</li>
-<li>
-<p><a href="https://www.wch-ic.com/products/CH578_7.html" target="_blank" rel="noopener noreffer ">WCH CH578M</a> - ARM® Cortex®-M0 Core Bluetooth Low Energy MCU</p>
-<ul>
-<li>This is the micro on the LAN port; makes sense as it has a built in 10M Ethernet PHY</li>
-<li>Assuming there&rsquo;s no restriction that prevents the ethernet PHY and BT PHY from being used at the same time, this KVM could have ditched the IR remote and used a phone app instead&hellip;</li>
-<li>Previously, this was handled with a <a href="https://www.st.com/en/microcontrollers-microprocessors/stm8s003f3.html" target="_blank" rel="noopener noreffer ">ST 8S003f3p6</a> and a <a href="https://jlcpcb.com/partdetail/WCH_Jiangsu_Qin_Heng-CH395Q/C87390" target="_blank" rel="noopener noreffer ">WCH CH395Q</a> so the LAN controller has definitely had a BOM consolidation!</li>
-</ul>
-</li>
-<li>
-<p><a href="https://en.chipsea.com/product/details/?choice_id=1079" target="_blank" rel="noopener noreffer ">Chipsea CS32F031C8T6</a> - ARM® Cortex®-M0 MCU</p>
-<ul>
-<li>Happens to be the exact same micro as the previous KVM and seems to be featured in Dan&rsquo;s KVM, too</li>
-</ul>
-</li>
-<li>
-<p><a href="https://jlcpcb.com/partdetail/GEC-WS3232ECN/C2973151" target="_blank" rel="noopener noreffer ">WS3232ECN</a> - Generic RS232 transceiver</p>
-<ul>
-<li>Previously this was done with a <code>SIPEX SP3223EEX</code> which is not the same footprint as the WS3232ECN.. so that&rsquo;s a minor layout change</li>
-</ul>
-</li>
-<li>
-<p><a href="https://web.archive.org/web/20240523025020/https://www.ite.com.tw/en/product/view?mid=99" target="_blank" rel="noopener noreffer ">IT66341TE</a> - 4 IN to 1 OUT HDMI2.0 18Gb/s Switch.</p>
-<ul>
-<li>Still can&rsquo;t find any formal technical info on this chip, probably due to <a href="https://en.wikipedia.org/wiki/High-bandwidth_Digital_Content_Protection" target="_blank" rel="noopener noreffer ">HDCP</a> restrictions.</li>
-<li>Same as the previous KVM, but that one also used an IT66321E, which is not present on this PCB.</li>
-</ul>
-</li>
-</ul>
 ]]></description></item></channel></rss>

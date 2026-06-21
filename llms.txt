@@ -12,6 +12,7 @@ Karl Quinsland's personal site, professional resume, and technical blog about in
 
 ## Recent Blog Posts
 - [Converting PurpleAir Classic to ESPHome](https://karlquinsland.com/converting-purpleair-classic-to-esphome/index.md): LLM assisted firmware reverse engineering and ESPHome conversion of a PurpleAir Classic air quality sensor.
+- [Loading a certificate onto Avigilon without using CCT](https://karlquinsland.com/adding-custom-certs-to-avigilon-without-camera-configuration-tool/index.md): Automating certificate deployment on Avigilon cameras without using the Camera Configuration Tool (CCT).
 - [#TwoMinuteTeardown: USB-C charged AAA battery](https://karlquinsland.com/usbc-aaa-battery-teardown/index.md): It's an AAA battery with the charger built in! Teardown and analysis.
 - [#TwoMinuteTeardown: Corporate Systems Engineering SSHAAC00-S041911](https://karlquinsland.com/cse-sshaac00-s041911/index.md): Utility grade Air Conditioning Load Shed Device teardown.
 - [Frigate in Kubernetes](https://karlquinsland.com/frigate-in-k8s/index.md): Frigate: Kubernetes edition This is a follow up to my ‘Frigate From Scratch’ post. Most of that post is still relevant today but I have since moved almost all of my workloads into …
@@ -20,7 +21,6 @@ Karl Quinsland's personal site, professional resume, and technical blog about in
 - [#TwoMinuteTeardown: Ubiquiti SFP Wizard](https://karlquinsland.com/ubiquiti-uacc-sfp-wizard/index.md): Two Minute Teardown: Ubiquiti SFP Wizard Disregard note below about 1.0.5 To make a long story short, I allocated a few hours to build a tool that can read/write the SFP module’s …
 - [#TwoMinuteTeardown: Hamgeek YK-1000H NTP](https://karlquinsland.com/hamgeek-yk-1000h-gps-ntp-server/index.md): Two Minute Teardown: Hamgeek YK-1000H NTP Curiosity got the better of me when browsing AliExpress and I spotted this GPS NTP server for under $100 USD. I needed a cart-stuffer …
 - [#TwoMinuteTeardown: Duogalia AM70 Optical Fiber Multi-Meter](https://karlquinsland.com/duogalia-am70-optical-fiber-multi-meter/index.md): Two Minute Teardown: Duogalia A-M70 Optical Fiber Multi-Meter While diagnosing a flakey fiber link, i ran into a situation where a basic “flashing red” visual fault finder was not …
-- [TESmart HKS801-P23-USBK KVM Teardown](https://karlquinsland.com/tesmart-hks801-p23-usbk-kvm-teardown/index.md): KVM died, so I bought a new one. Different brand/make/model but similar architecture and internals.
 
 ## All Markdown Pages
 - [Contact](https://karlquinsland.com/contact/index.md)
@@ -70,6 +70,7 @@ Karl Quinsland's personal site, professional resume, and technical blog about in
 - [Installing Tasmota on the Xiaomi Desk Lamp](https://karlquinsland.com/xaomi-s1-monitor-lamp-teardown-and-tasmota/index.md)
 - [Integrating a dumb coffee maker with Home Assistant via ESPHome](https://karlquinsland.com/improved-esphome-coffee-automation/index.md)
 - [Integrating ESPHome with a cheap Geiger Counter](https://karlquinsland.com/esphome-geiger-counter/index.md)
+- [Loading a certificate onto Avigilon without using CCT](https://karlquinsland.com/adding-custom-certs-to-avigilon-without-camera-configuration-tool/index.md)
 - [Monitoring APC AP7900 switched PDU with Prometheus and Grafana](https://karlquinsland.com/monitoring-ap7900-switched-pdu-prometheus-grafana/index.md)
 - [Monitoring HVAC system with ESPHome](https://karlquinsland.com/esphome-hvac-monitor/index.md)
 - [Multi-Material Printing Hack for Prusa XL](https://karlquinsland.com/multi-material-printing-hack/index.md)
